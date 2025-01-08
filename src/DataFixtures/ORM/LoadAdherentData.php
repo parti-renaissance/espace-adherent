@@ -202,7 +202,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->addCharter(new CommitteeHostCharter());
         $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent5->setMandates([MandateTypeEnum::CONSEILLER_MUNICIPAL]);
-        $adherent5->donatedForMembership();
+        $adherent5->donatedForMembership(new \DateTime());
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([
@@ -388,7 +388,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent16->tags = [TagEnum::getAdherentYearTag()];
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent16->donatedForMembership();
+        $adherent16->donatedForMembership(new \DateTime());
         $this->addReference('adherent-16', $adherent16);
 
         $adherent17 = $this->adherentFactory->createFromArray([
@@ -877,7 +877,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             $adherent->certify();
             if ($index > 50) {
                 $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-                $adherent->donatedForMembership();
+                $adherent->donatedForMembership(new \DateTime());
             }
             $adherent->tags = [TagEnum::getAdherentYearTag()];
             $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
@@ -925,7 +925,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->donatedForMembership();
+        $adherent->donatedForMembership(new \DateTime());
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createProcurationManager([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createFdeCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')]));
@@ -985,7 +985,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->donatedForMembership();
+        $adherent->donatedForMembership(new \DateTime());
         $this->addReference('renaissance-user-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
@@ -1005,7 +1005,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->donatedForMembership();
+        $adherent->donatedForMembership(new \DateTime());
         $adherent->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
         $adherent->certify();
         $this->addReference('renaissance-user-2', $adherent);
@@ -1027,7 +1027,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->donatedForMembership();
+        $adherent->donatedForMembership(new \DateTime());
         $adherent->certify();
         $this->addReference('renaissance-user-3', $adherent);
 

@@ -834,6 +834,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Date de création de compte',
                 'field_type' => DateRangePickerType::class,
             ])
+            ->add('firstMembershipDonation', DateRangeFilter::class, [
+                'label' => 'Date de première cotisation',
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('lastMembershipDonation', DateRangeFilter::class, [
                 'label' => 'Date de dernière cotisation',
                 'show_filter' => true,
@@ -993,6 +997,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->add('registeredAt', null, [
                 'label' => 'Date de création de compte',
             ])
+            ->add('firstMembershipDonation', null, [
+                'label' => 'Première cotisation',
+            ])
             ->add('lastMembershipDonation', null, [
                 'label' => 'Dernière cotisation',
             ])
@@ -1074,6 +1081,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         return $str;
                     }, $adherent->getElectedRepresentativeMandates())),
                     'Date de création de compte' => $adherent->getRegisteredAt()?->format('d/m/Y H:i:s'),
+                    'Date de première cotisation' => $adherent->getFirstMembershipDonation()?->format('d/m/Y H:i:s'),
                     'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
                     'Date de dernière connexion' => $adherent->getLastLoggedAt()?->format('d/m/Y H:i:s'),
                 ];

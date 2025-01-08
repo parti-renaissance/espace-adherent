@@ -1289,10 +1289,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $results;
     }
 
-    public function refreshLastDonationDate(Adherent $adherent): void
+    public function refreshDonationDates(Adherent $adherent): void
     {
-        $lastDonationDate = $this->createQueryBuilder('a')
-            ->select('MAX(donation.donatedAt)')
+        $donationDates = $this->createQueryBuilder('a')
+            ->select('MAX(donation.donatedAt) AS last, MIN(donation.donatedAt) AS first')
             ->innerJoin(Donator::class, 'donator', Join::WITH, 'donator.adherent = a')
             ->innerJoin('donator.donations', 'donation', Join::WITH, 'donation.membership = 1 AND donation.status = :status')
             ->where('a = :adherent')
@@ -1301,10 +1301,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'status' => Donation::STATUS_FINISHED,
             ])
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getOneOrNullResult()
         ;
 
-        $adherent->setLastMembershipDonation($lastDonationDate ? new \DateTime($lastDonationDate) : null);
+        $adherent->setFirstMembershipDonation($donationDates['first'] ? new \DateTime($donationDates['first']) : null);
+        $adherent->setLastMembershipDonation($donationDates['last'] ? new \DateTime($donationDates['last']) : null);
+
         $this->getEntityManager()->flush();
     }
 

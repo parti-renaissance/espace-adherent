@@ -78,6 +78,7 @@ Feature:
                     }
                 ],
                 "interests": [],
+                "first_membership_donation": null,
                 "last_membership_donation": null,
                 "committee_membership": {
                     "committee": {
@@ -812,6 +813,7 @@ Feature:
                     "region": null
                 },
                 "interests": [],
+                "first_membership_donation": null,
                 "last_membership_donation": null,
                 "committee_membership": null,
                 "party_membership": "exclusive",
@@ -1321,6 +1323,7 @@ Feature:
                     "country": "FR",
                     "region": null
                 },
+                "first_membership_donation": "@string@.isDateTime()",
                 "last_membership_donation": "@string@.isDateTime()",
                 "party_membership": "exclusive",
                 "other_party_membership": false,
@@ -1433,6 +1436,7 @@ Feature:
                     "country": "FR",
                     "region": null
                 },
+                "first_membership_donation": "@string@.isDateTime()",
                 "last_membership_donation": "@string@.isDateTime()",
                 "party_membership": "exclusive",
                 "other_party_membership": false,
@@ -1519,6 +1523,7 @@ Feature:
                     "country": "FR",
                     "region": null
                 },
+                "first_membership_donation": "@string@.isDateTime()",
                 "last_membership_donation": "@string@.isDateTime()",
                 "party_membership": "exclusive",
                 "other_party_membership": false,

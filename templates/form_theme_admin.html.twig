@@ -663,10 +663,15 @@
 
 {% block app_admin_adherent_lastMembershipDonationDate_hidden_row %}
     {% set object = form.parent.vars.data %}
-    {% if object.isRenaissanceAdherent() %}
-        <p>
-            <span class="text-bold">Dernière cotisation :</span> {{ object.getLastMembershipDonation()|date('d/m/Y') }}
-        </p>
+    {% if object.getFirstMembershipDonation() %}
+        <div>
+            <span class="text-bold">Première cotisation :</span> {{ object.getFirstMembershipDonation()|date('d/m/Y H:i:s') }}
+        </div>
+    {% endif %}
+    {% if object.getLastMembershipDonation() %}
+        <div>
+            <span class="text-bold">Dernière cotisation :</span> {{ object.getLastMembershipDonation()|date('d/m/Y H:i:s') }}
+        </div>
     {% endif %}
 {% endblock %}
 

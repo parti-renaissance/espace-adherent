@@ -3,7 +3,7 @@
 {% block sonata_tab_content %}
     {{ parent() }}
 
-    {% set tax_receipts = get_tax_receipts_for_donator(object) %}
+    {% set tax_receipts = object.getId() ? get_tax_receipts_for_donator(object) : [] %}
 
     <div class="col-md-6">
         <div class="box box-primary">
