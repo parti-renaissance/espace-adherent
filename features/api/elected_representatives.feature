@@ -332,14 +332,6 @@ Feature:
                             "type": "text"
                         },
                         {
-                            "code": "emailSubscription",
-                            "label": "Abonné email",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
-                        },
-                        {
                             "code": "zones",
                             "label": "Zone géographique",
                             "options": {
@@ -398,6 +390,14 @@ Feature:
                                 },
                                 "multiple": true,
                                 "required": false
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "isCommitteeMember",
+                            "label": "Membre d'un comité",
+                            "options": {
+                                "choices": ["Non", "Oui"]
                             },
                             "type": "select"
                         },
