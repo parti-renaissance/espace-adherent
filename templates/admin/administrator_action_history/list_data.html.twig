@@ -21,13 +21,7 @@
                             <b>{{ key }}:</b>
                         {% endif %}
 
-                        {% if key is same as('role') %}
-                            {{ ('role.' ~ value)|trans }}
-                        {% elseif key is same as('zones') %}
-                            {{ value|join(', ') }}
-                        {% else %}
-                            {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
-                        {% endif %}
+                        {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
                     {% endif %}
                 </li>
             {% endfor %}
