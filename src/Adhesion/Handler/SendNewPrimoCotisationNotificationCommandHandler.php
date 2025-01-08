@@ -8,6 +8,7 @@ use App\Adhesion\Command\SendNewPrimoCotisationNotificationCommand;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
+use App\Repository\CommitteeRepository;
 use App\Utils\StringCleaner;
 use App\ValueObject\Genders;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -21,6 +22,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
 {
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
+        private readonly CommitteeRepository $committeeRepository,
         private readonly ChatterInterface $chatter,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly string $telegramChatIdPrimoAdhesion,
@@ -74,6 +76,10 @@ class SendNewPrimoCotisationNotificationCommandHandler
         }
 
         $zoneLines = StringCleaner::escapeMarkdown(implode("\n", $zoneLines));
+
+        if (!$committeeMembership) {
+            $zoneLines = "\n_".(($committeesInAdherentZone = \count($this->committeeRepository->findInAdherentZone($adherent))) ? $committeesInAdherentZone.' comité(s) dans l\'Assemblée' : 'Aucun comité dans l\'Assemblée').'_';
+        }
 
         $smsSubscriber = $adherent->hasSmsSubscriptionType() ? '✅' : '❌';
         $emailSubscriber = $adherent->isEmailSubscribed() ? '✅' : '❌';

@@ -50,7 +50,7 @@ Feature:
                     "committee": {
                         "type": "committee",
                         "name": "En Marche Paris 8",
-                        "assembly_committees_count": 0,
+                        "assembly_committees_count": 2,
                         "can_change_committee": true,
                         "members_count": 0,
                         "message": null,
