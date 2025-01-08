@@ -12,5 +12,5 @@ framework:
 
         ohme_api_request:
             policy: 'fixed_window'
-            limit: 100
+            limit: 90
             interval: '1 minute'
