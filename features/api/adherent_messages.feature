@@ -383,6 +383,14 @@ Feature:
                             "type": "select"
                         },
                         {
+                            "code": "isCommitteeMember",
+                            "label": "Membre d'un comité",
+                            "options": {
+                                "choices": ["Non", "Oui"]
+                            },
+                            "type": "select"
+                        },
+                        {
                             "code": "donatorStatus",
                             "label": "Donateur",
                             "options": {
