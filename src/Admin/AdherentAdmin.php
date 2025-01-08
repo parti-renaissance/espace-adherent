@@ -137,13 +137,14 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'lastName',
             'postAddress',
             'committee',
-            'registeredAt',
-            'lastMembershipDonation',
-            'lastLoggedAt',
             'type',
             'allMandates',
             'mailchimpStatus',
             ListMapper::NAME_ACTIONS,
+            'registeredAt',
+            'firstMembershipDonation',
+            'lastMembershipDonation',
+            'lastLoggedAt',
         ]);
     }
 }

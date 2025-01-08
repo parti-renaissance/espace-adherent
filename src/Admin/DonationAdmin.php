@@ -659,7 +659,7 @@ class DonationAdmin extends AbstractAdmin
 
     private function refreshAdherent(Adherent $adherent): void
     {
-        $this->adherentRepository->refreshLastDonationDate($adherent);
+        $this->adherentRepository->refreshDonationDates($adherent);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 

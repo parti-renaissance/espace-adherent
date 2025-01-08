@@ -2,9 +2,16 @@
 
 {% block field_value %}
     {% if object.hasActiveMembership() %}
-        <span class="label" style="background-color:#166534;">A jour de cotisation</span>
+        <div class="label" style="background-color:#166534;">A jour de cotisation</div>
     {% else %}
-        <span class="label" style="background-color:#c11e1e;">Non à jour de cotisation</span>
+        <div class="label" style="background-color:#c11e1e;">Non à jour de cotisation</div>
     {% endif %}
-    {% if object.isRenaissanceAdherent() %}<span class="text-bold"> Dernière cotisation: {{ object.getLastMembershipDonation()|date('d-m-Y') }}</span>{% endif %}
+
+    {% if object.getFirstMembershipDonation() %}
+        <div class="text-bold"> Première cotisation: {{ object.getFirstMembershipDonation()|date('d/m/Y H:i:s') }}</div>
+    {% endif %}
+
+    {% if object.getLastMembershipDonation() %}
+        <div class="text-bold"> Dernière cotisation: {{ object.getLastMembershipDonation()|date('d/m/Y H:i:s') }}</div>
+    {% endif %}
 {% endblock %}

@@ -297,7 +297,11 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastMembershipDonation;
+    public ?\DateTimeInterface $lastMembershipDonation = null;
+
+    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $firstMembershipDonation = null;
 
     /**
      * name of committee v2
@@ -378,6 +382,7 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
         ?int $voteCommitteeId = null,
         ?\DateTime $certifiedAt = null,
         ?\DateTime $lastMembershipDonation = null,
+        ?\DateTime $firstMembershipDonation = null,
         ?string $committee = null,
         ?UuidInterface $committeeUuid = null,
         array $interests = [],
@@ -415,6 +420,7 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
         $this->createdAt = $createdAt;
         $this->certifiedAt = $certifiedAt;
         $this->lastMembershipDonation = $lastMembershipDonation;
+        $this->firstMembershipDonation = $firstMembershipDonation;
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
         $this->voteCommitteeId = $voteCommitteeId;
@@ -667,11 +673,6 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
-    }
-
-    public function getLastMembershipDonation(): ?\DateTime
-    {
-        return $this->lastMembershipDonation;
     }
 
     #[Groups(['managed_users_list'])]

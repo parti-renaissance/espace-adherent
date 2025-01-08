@@ -4,13 +4,17 @@ namespace App\Donation\Handler;
 
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Donation\Command\DonatorMergeCommand;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class DonatorMergeCommandHandler
 {
-    public function __construct(private readonly EntityManagerInterface $em, private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly MessageBusInterface $bus,
+    ) {
     }
 
     public function handle(DonatorMergeCommand $donatorMergeCommand): void
@@ -26,12 +30,14 @@ class DonatorMergeCommandHandler
         $this->em->remove($sourceDonator);
         $this->em->flush();
 
-        if ($sourceDonator->isAdherent()) {
-            $this->bus->dispatch(new RefreshAdherentTagCommand($sourceDonator->getAdherent()->getUuid()));
-        }
+        $adherents = array_filter([
+            $sourceDonator->getAdherent(),
+            $destinationDonator->getAdherent(),
+        ]);
 
-        if ($destinationDonator->isAdherent()) {
-            $this->bus->dispatch(new RefreshAdherentTagCommand($destinationDonator->getAdherent()->getUuid()));
+        foreach ($adherents as $adherent) {
+            $this->adherentRepository->refreshDonationDates($adherent);
+            $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
         }
     }
 }

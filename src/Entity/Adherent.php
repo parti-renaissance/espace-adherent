@@ -461,13 +461,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $papUserRole = false;
 
-    #[ORM\JoinColumn(nullable: true)]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
-    private ?Zone $activismZone = null;
-
     #[Groups(['profile_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMembershipDonation = null;
+
+    #[Groups(['profile_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $firstMembershipDonation = null;
 
     #[Groups(['profile_read'])]
     #[ORM\Column(options: ['default' => MembershipTypeEnum::EXCLUSIVE])]
@@ -2130,20 +2130,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->authAppVersion = $authAppVersion;
     }
 
-    public function setActivismZone(?Zone $zone): void
+    public function donatedForMembership(\DateTimeInterface $donatedAt): void
     {
-        $this->activismZone = $zone;
-    }
-
-    public function getActivismZone(): ?Zone
-    {
-        return $this->activismZone;
-    }
-
-    public function donatedForMembership(?\DateTimeInterface $donatedAt = null): void
-    {
-        if (!$donatedAt) {
-            $donatedAt = new \DateTime('now');
+        if (!$this->firstMembershipDonation || $this->firstMembershipDonation > $donatedAt) {
+            $this->firstMembershipDonation = $donatedAt;
         }
 
         if (!$this->lastMembershipDonation || $this->lastMembershipDonation < $donatedAt) {
@@ -2151,19 +2141,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function setLastMembershipDonation(?\DateTime $date): void
+    public function setLastMembershipDonation(?\DateTimeInterface $date): void
     {
         $this->lastMembershipDonation = $date;
-    }
-
-    public function hasActiveMembership(): bool
-    {
-        return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
     }
 
     public function getLastMembershipDonation(): ?\DateTimeInterface
     {
         return $this->lastMembershipDonation;
+    }
+
+    public function setFirstMembershipDonation(?\DateTimeInterface $date): void
+    {
+        $this->firstMembershipDonation = $date;
+    }
+
+    public function getFirstMembershipDonation(): ?\DateTimeInterface
+    {
+        return $this->firstMembershipDonation;
+    }
+
+    public function hasActiveMembership(): bool
+    {
+        return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
     }
 
     public function isExclusiveMembership(): bool
