@@ -553,6 +553,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         [
                             "$alias.id",
                             "$alias.uuid",
+                            "$alias.publicId",
                         ]
                     );
 
@@ -983,6 +984,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         $list
             ->add('id', null, [
                 'label' => 'ID',
+                'template' => 'admin/adherent/list_identifier.html.twig',
             ])
             ->add('lastName', null, [
                 'label' => 'Prénom Nom',

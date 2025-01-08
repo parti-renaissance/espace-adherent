@@ -56,6 +56,7 @@ use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
+use App\Utils\PublicIdGenerator;
 use App\Validator\UniqueMembership;
 use App\Validator\ZoneBasedRoles as AssertZoneBasedRoles;
 use App\ValueObject\Genders;
@@ -125,6 +126,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityUTMTrait;
     use EntityAdministratorBlameableTrait;
     use ImageTrait;
+    use PublicIdTrait;
 
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
@@ -567,6 +569,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent = new self();
 
         $adherent->uuid = Uuid::uuid4();
+        $adherent->publicId = PublicIdGenerator::generatePublicIdFromUuid($adherent->uuid);
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;
         $adherent->lastName = $lastName;
@@ -606,6 +609,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent = new self();
 
         $adherent->uuid = $uuid;
+        $adherent->publicId = PublicIdGenerator::generatePublicIdFromUuid($uuid);
         $adherent->password = $password;
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;
@@ -2438,15 +2442,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isBesoinDEuropeUser(): bool
     {
         return MembershipSourceEnum::BESOIN_D_EUROPE === $this->source;
-    }
-
-    #[Groups(['jemarche_user_profile'])]
-    #[SerializedName('id')]
-    public function getPublicId(): string
-    {
-        return 6 > ($idLength = \strlen($this->id))
-            ? substr($this->uuid->toString(), 0, 6 - $idLength).$this->id
-            : substr($this->id, -6);
     }
 
     public function getImagePath(): string
