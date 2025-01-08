@@ -72,6 +72,7 @@ class AdministratorActionHistoryAdmin extends AbstractAdmin
             ])
             ->add('data', null, [
                 'label' => 'Données',
+                'template' => 'admin/administrator_action_history/list_data.html.twig',
             ])
         ;
     }
