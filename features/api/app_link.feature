@@ -12,7 +12,31 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "url": "@string@.isUrl().matchRegex('/&_target_path=https?.+%2Fadhesion/')",
+                "url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&@string@&_target_path=%2Fadhesion",
+                "expires_at": "@string@.isDateTime()"
+            }
+            """
+        When I send a "GET" request to "/api/v3/app-link/donation?utm_source=app"
+        Then the JSON should be equal to:
+            """
+            {
+                "url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&@string@&_target_path=%2Fdon",
+                "expires_at": "@string@.isDateTime()"
+            }
+            """
+        When I send a "GET" request to "/api/v3/app-link/donation?duration=-1"
+        Then the JSON should be equal to:
+            """
+            {
+                "url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&@string@&_target_path=%2Fdon%3Fduration%3D-1",
+                "expires_at": "@string@.isDateTime()"
+            }
+            """
+        When I send a "GET" request to "/api/v3/app-link/cadre"
+        Then the JSON should be equal to:
+            """
+            {
+                "url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&@string@&_target_path=%2Fcadre",
                 "expires_at": "@string@.isDateTime()"
             }
             """
