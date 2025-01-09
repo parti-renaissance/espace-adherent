@@ -43,7 +43,7 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
 
                 foreach ($value->getValue() as $index => $choice) {
                     $orX->add($alias.'.tags '.$condition.' :tag_'.$field.'_'.$index);
-                    $qb->setParameter('tag_'.$field.'_'.$index, '%'.$choice.'%');
+                    $qb->setParameter('tag_'.$field.'_'.$index, '%'.(str_contains($choice, ':') ? $choice : $choice.':').'%');
                 }
 
                 $qb->andWhere($orX);
