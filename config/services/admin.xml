@@ -1159,14 +1159,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.je_marche" class="App\Admin\JeMarcheReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\JeMarcheReport</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Archives » Socle programmatique

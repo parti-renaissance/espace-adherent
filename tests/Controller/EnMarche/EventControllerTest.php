@@ -6,11 +6,8 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
-use App\Entity\Event\EventRegistration;
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailer\Message\EventInvitationMessage;
-use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
-use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Repository\Email\EmailLogRepository;
 use App\Repository\EventRegistrationRepository;
 use Cake\Chronos\Chronos;
@@ -41,62 +38,9 @@ class EventControllerTest extends AbstractEventControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
 
-        $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
+        $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
-
-        $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertEmpty($crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertEmpty($crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertEmpty($crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-        self::assertSame(1, $crawler->filter('#field-accept-terms')->count());
-        self::assertSame(1, $crawler->filter('#field-newsletter-subscriber')->count());
-
-        $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame(4, $crawler->filter('.form__errors')->count());
-        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
-        self::assertSame('Veuillez cocher cette case pour continuer', $crawler->filter('#field-accept-terms .form__errors > li')->text());
-
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form([
-            'event_registration' => [
-                'firstName' => 'Pauline',
-                'emailAddress' => 'paupau75@example.org',
-                'lastName' => '75001',
-                'joinNewsletter' => true,
-                'acceptTerms' => true,
-            ],
-        ]));
-
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'paupau75@example.org'));
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertStringContainsString('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertCount(1, $this->emailRepository->findMessages(RenaissanceNewsletterSubscriptionConfirmationMessage::class));
-
-        $this->assertCount(1, $subscriptions = $this->getRepository(NewsletterSubscription::class)->findAll());
-
-        /** @var NewsletterSubscription $subscription */
-        $subscription = $subscriptions[0];
-
-        $this->assertSame('paupau75@example.org', $subscription->getEmail());
-        $this->assertNull($subscription->zipCode);
 
         Chronos::setTestNow();
     }
@@ -113,38 +57,9 @@ class EventControllerTest extends AbstractEventControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
 
-        $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
+        $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
-
-        $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->click($crawler->selectLink('Je veux participer')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->client->followRedirect();
-
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertStringContainsString('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
-
-        $crawler = $this->client->click($crawler->selectLink('Retour')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
-
-        $this->client->click($crawler->selectLink('Mes événements')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
 
         Chronos::setTestNow();
     }

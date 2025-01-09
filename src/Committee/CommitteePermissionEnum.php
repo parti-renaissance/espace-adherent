@@ -14,7 +14,6 @@ final class CommitteePermissionEnum
     public const CHANGE_MANDATE = 'CHANGE_MANDATE_OF_COMMITTEE';
     public const ADD_MANDATE = 'ADD_MANDATE_TO_COMMITTEE';
     public const MANAGE_DESIGNATIONS = 'MANAGE_COMMITTEE_DESIGNATIONS';
-    public const ADMIN_FEED = 'ADMIN_FEED_COMMITTEE';
 
     public const FOLLOWER = [
         self::FOLLOW,

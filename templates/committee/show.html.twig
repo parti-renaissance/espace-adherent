@@ -128,9 +128,6 @@
             </h2>
 
             {% if committee_timeline|length %}
-                <div id="committee-timeline-page-1">
-                    {{ include('committee/timeline/_feed.html.twig') }}
-                </div>
                 <div class="text--center space--30-0">
                     <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
                 </div>
@@ -152,7 +149,7 @@
 
             {% if committee_timeline is defined and committee_timeline|length %}
             var page = 1;
-            var limit = {{ committee_timeline_max_messages }};
+            var limit = 10;
             var moreButton = dom('#committee-timeline-more');
 
             moreButton && on(moreButton, 'click', function() {

@@ -23,11 +23,6 @@
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="postUpdate"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="preRemove"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="postRemove"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="prePersist"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="preUpdate"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="postUpdate"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="preRemove"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="postRemove"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Jecoute\News" event="prePersist"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Jecoute\News" event="preUpdate"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\Jecoute\News" event="postUpdate"/>

@@ -4,7 +4,6 @@ parameters:
     pattern_uuid: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1: '[0-9A-Fa-f]{40}'
     pattern_coordinate: '-?\d+(\.\d{1,7})?'
-    timeline_max_messages: 30
     search_max_results: 30
     enable_canary: '%env(ENABLE_CANARY)%'
     transactional_sender_email: 'contact@parti-renaissance.fr'
@@ -47,7 +46,6 @@ services:
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
-            $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%app_renaissance_host%'
             $adminRenaissanceHost: '%admin_renaissance_host%'
             $jemengageHost: '%env(JEMENGAGE_HOST)%'
