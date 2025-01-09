@@ -3,7 +3,6 @@
 namespace Tests\App;
 
 use App\Address\AddressInterface;
-use App\Committee\Feed\CommitteeFeedManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
@@ -11,7 +10,6 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Administrator;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Donation;
 use App\Entity\Donator;
@@ -23,7 +21,6 @@ use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Filesystem\File;
 use App\Entity\Invite;
-use App\Entity\JeMarcheReport;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\Entity\NewsletterSubscription;
@@ -46,7 +43,6 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\AdherentResetPasswordTokenRepository;
 use App\Repository\AdministratorRepository;
-use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
@@ -59,7 +55,6 @@ use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
 use App\Repository\InviteRepository;
-use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
 use App\Repository\NewsletterSubscriptionRepository;
@@ -189,11 +184,6 @@ trait TestHelperTrait
         return $this->getRepository(CommitteeEvent::class);
     }
 
-    public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
-    {
-        return $this->getRepository(CommitteeFeedItem::class);
-    }
-
     public function getCommitteeMembershipRepository(): CommitteeMembershipRepository
     {
         return $this->getRepository(CommitteeMembership::class);
@@ -239,11 +229,6 @@ trait TestHelperTrait
         return $this->getRepository(NewsletterSubscription::class);
     }
 
-    public function getJeMarcheReportRepository(): JeMarcheReportRepository
-    {
-        return $this->getRepository(JeMarcheReport::class);
-    }
-
     public function getEmailRepository(): EmailLogRepository
     {
         return $this->getRepository(EmailLog::class);
@@ -272,11 +257,6 @@ trait TestHelperTrait
     public function getFileRepository(): FileRepository
     {
         return $this->getRepository(File::class);
-    }
-
-    public function getCommitteeFeedManager(): CommitteeFeedManager
-    {
-        return $this->get(CommitteeFeedManager::class);
     }
 
     protected function getAdherent(string $uuid): ?Adherent

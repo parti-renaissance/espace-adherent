@@ -4,8 +4,6 @@ namespace Tests\App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
-use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use Tests\App\AbstractKernelTestCase;
@@ -64,30 +62,5 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         $adherent->expects(static::any())->method('getFullName')->willReturn($firstName.' '.$lastName);
 
         return $adherent;
-    }
-
-    protected function createCommitteeFeedItemMock(
-        Adherent $author,
-        string $content,
-        ?BaseEvent $event = null,
-        ?string $committeeName = null,
-    ): CommitteeFeedItem {
-        $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
-        $mock->expects($this->any())->method('getAuthor')->willReturn($author);
-        $mock->expects($this->any())->method('getAuthorFirstName')->willReturn($author->getFirstName());
-        $mock->expects($this->any())->method('getContent')->willReturn($content);
-
-        if ($event) {
-            $mock->expects($this->any())->method('getEvent')->willReturn($event);
-        }
-
-        if ($committeeName) {
-            $committee = $this->createMock(Committee::class);
-            $committee->expects(static::any())->method('getName')->willReturn($committeeName);
-
-            $mock->expects(static::any())->method('getCommittee')->willReturn($committee);
-        }
-
-        return $mock;
     }
 }

@@ -3,9 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Committee\CommitteeManager;
-use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,9 +22,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
     /* @var EventRepository */
     private $committeeEventRepository;
-
-    /* @var CommitteeFeedItemRepository */
-    private $committeeFeedItemRepository;
 
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
@@ -271,42 +266,10 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
     }
 
-    private function getCommitteeSubscribersCount(Committee $committee): int
-    {
-        return $this
-            ->committeeMembershipRepository
-            ->findForHostEmail($committee)
-            ->getCommitteesNotificationsSubscribers()
-            ->count()
-        ;
-    }
-
     private function seeMembersList(Crawler $crawler, int $count): void
     {
         // Header row is part of the count
         self::assertCount($count, $crawler->filter('table tr'));
-    }
-
-    private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool
-    {
-        if ($errorMessages) {
-            $errors = $crawler->filter('form[name="committee_feed_message"] .form__error');
-
-            $this->assertCount(\count($errorMessages), $errors);
-
-            foreach ($errorMessages as $i => $errorMessage) {
-                $this->assertSame($errorMessage, trim($errors->eq($i)->text()));
-            }
-        } else {
-            $this->assertCount(0, $crawler->filter('form[name="committee_feed_message"] .form__errors'));
-        }
-
-        return 1 === \count($crawler->filter('form[name="committee_feed_message"]'));
-    }
-
-    private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
-    {
-        $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
     }
 
     protected function setUp(): void
@@ -314,7 +277,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         parent::setUp();
 
         $this->committeeEventRepository = $this->getEventRepository();
-        $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
 
         $this->disableRepublicanSilence();
@@ -323,7 +285,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
     protected function tearDown(): void
     {
         $this->committeeMembershipRepository = null;
-        $this->committeeFeedItemRepository = null;
         $this->committeeEventRepository = null;
 
         parent::tearDown();

@@ -240,12 +240,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $animatorCommittees;
 
     /**
-     * @var CommitteeFeedItem[]|Collection|iterable
-     */
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: CommitteeFeedItem::class, cascade: ['remove'])]
-    private $committeeFeedItems;
-
-    /**
      * @var InMemoryOAuthUser|null
      */
     private $oAuthUser;
@@ -1342,11 +1336,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         foreach ($subscriptionTypes as $type) {
             $this->addSubscriptionType($type);
         }
-    }
-
-    public function getCommitteeFeedItems(): iterable
-    {
-        return $this->committeeFeedItems;
     }
 
     public function isDelegatedDeputy(): bool

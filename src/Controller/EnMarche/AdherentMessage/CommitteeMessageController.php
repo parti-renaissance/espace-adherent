@@ -13,11 +13,9 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -255,26 +253,6 @@ class CommitteeMessageController extends AbstractController
     public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
     {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
-    }
-
-    #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")]
-    public function publishMessageAction(
-        AbstractAdherentMessage $message,
-        EntityManagerInterface $manager,
-        Committee $committee,
-    ): Response {
-        $message->setSendToTimeline(true);
-        $manager->persist(CommitteeFeedItem::createMessage(
-            $committee,
-            $message->getAuthor(),
-            $message->getContent()
-        ));
-        $manager->flush();
-
-        $this->addFlash('info', 'Le message a bien été publié.');
-
-        return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]

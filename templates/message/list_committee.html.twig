@@ -1,15 +1,1 @@
 {% extends 'message/list.html.twig' %}
-
-{% block message_table_action %}
-    {% if not message.isSendToTimeline %}
-        {% set items = [{
-            href: path('app_message_committee_publish_message', {committee_slug: committee.slug, uuid: message.uuid}),
-            label: 'Publier sur la page',
-            linkAttr: {
-                class: 'row-action text--blue--dark link--no-decor',
-            },
-        }] %}
-    {% endif %}
-
-    {{ parent() }}
-{% endblock %}

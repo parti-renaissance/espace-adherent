@@ -10,7 +10,6 @@ use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Events;
@@ -18,11 +17,9 @@ use App\Exception\CommitteeMembershipException;
 use App\Geo\ZoneMatcher;
 use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
-use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
@@ -67,14 +64,6 @@ class CommitteeManager
         }
 
         return $membership->isDemotableHost();
-    }
-
-    public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
-    {
-        return $this
-            ->getCommitteeFeedItemRepository()
-            ->findPaginatedMostRecentFeedItems((string) $committee->getUuid(), $limit, $firstResultIndex)
-        ;
     }
 
     public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
@@ -235,11 +224,6 @@ class CommitteeManager
     private function getCommitteeRepository(): CommitteeRepository
     {
         return $this->entityManager->getRepository(Committee::class);
-    }
-
-    private function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
-    {
-        return $this->entityManager->getRepository(CommitteeFeedItem::class);
     }
 
     private function getMembershipRepository(): CommitteeMembershipRepository

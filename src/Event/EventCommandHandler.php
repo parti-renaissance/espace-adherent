@@ -2,7 +2,6 @@
 
 namespace App\Event;
 
-use App\Entity\CommitteeFeedItem;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
@@ -29,9 +28,6 @@ class EventCommandHandler
         $this->manager->persist($event);
 
         if ($event instanceof CommitteeEvent) {
-            if ($event->getCommittee()) {
-                $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
-            }
             $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());
         } else {
             $sfEvent = new EventEvent($command->getAuthor(), $event);

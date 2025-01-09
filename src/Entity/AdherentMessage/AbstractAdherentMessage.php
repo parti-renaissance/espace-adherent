@@ -184,12 +184,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     private $recipientCount;
 
     /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $sendToTimeline = false;
-
-    /**
      * @var string
      */
     #[Groups(['message_read', 'message_read_list'])]
@@ -375,16 +369,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function isMailchimp(): bool
     {
         return $this instanceof CampaignAdherentMessageInterface;
-    }
-
-    public function isSendToTimeline(): bool
-    {
-        return $this->sendToTimeline;
-    }
-
-    public function setSendToTimeline(bool $value): void
-    {
-        $this->sendToTimeline = $value;
     }
 
     public function setAuthor(Adherent $adherent): void

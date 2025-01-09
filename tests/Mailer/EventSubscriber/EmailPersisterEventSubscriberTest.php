@@ -2,8 +2,6 @@
 
 namespace Tests\App\Mailer\EventSubscriber;
 
-use App\Entity\Adherent;
-use App\Entity\CommitteeFeedItem;
 use App\Entity\Email\EmailLog;
 use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
@@ -13,7 +11,6 @@ use App\Mailer\Template\Manager;
 use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailPersisterEventSubscriberTest extends TestCase
@@ -103,27 +100,6 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->assertTrue($message1->isDelivered());
         $this->assertSame($requestPayload, $message1->getRequestPayloadJson());
         $this->assertSame($responsePayload, $message1->getResponsePayloadJson());
-    }
-
-    private function createAdherentMock(string $emailAddress, string $firstName, string $lastName)
-    {
-        $mock = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
-        $mock->expects($this->any())->method('getEmailAddress')->willReturn($emailAddress);
-        $mock->expects($this->any())->method('getFirstName')->willReturn($firstName);
-        $mock->expects($this->any())->method('getFullName')->willReturn($firstName.' '.$lastName);
-
-        return $mock;
-    }
-
-    private function createCommitteeFeedItemMock(string $uuid, string $content, Adherent $author)
-    {
-        $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
-        $mock->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
-        $mock->expects($this->any())->method('getAuthorFirstName')->willReturn($author->getFirstName());
-        $mock->expects($this->any())->method('getContent')->willReturn($content);
-        $mock->expects($this->any())->method('getAuthor')->willReturn($author);
-
-        return $mock;
     }
 
     protected function setUp(): void

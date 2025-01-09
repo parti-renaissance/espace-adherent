@@ -2,19 +2,12 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Committee\Feed\CommitteeEvent;
-use App\Committee\Feed\CommitteeFeedManager;
-use App\Committee\Feed\CommitteeMessage;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent as EntityEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\NullablePostAddress;
-use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
-use App\Event\EventRegistrationFactory;
-use App\FranceCities\FranceCities;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -45,20 +38,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
 
     public const EVENT_22_UUID = '7917497a-89b2-4b25-a242-213191c21964';
     public const EVENT_23_UUID = '5b279c9f-2b1e-4b93-9c34-1669f56e9d64';
-
-    private CommitteeFeedManager $committeeFeedManager;
-
-    public function __construct(
-        string $environment,
-        EventFactory $eventFactory,
-        EventRegistrationFactory $eventRegistrationFactory,
-        CommitteeFeedManager $committeeFeedManager,
-        FranceCities $franceCities,
-    ) {
-        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
-
-        $this->committeeFeedManager = $committeeFeedManager;
-    }
 
     public function loadEvents(ObjectManager $manager): void
     {
@@ -516,87 +495,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration3));
 
         $manager->flush();
-
-        foreach ($this->getCommitteeMessageData($committee1) as $data) {
-            $this->publishCommitteeMessage($committee1, $author3, $data['subject'], $data['text'], $data['created_at']);
-        }
-
-        foreach ($this->getCommitteeMessageData($committee3) as $data) {
-            $this->publishCommitteeMessage($committee3, $author3, $data['subject'], $data['text'], $data['created_at']);
-        }
-
-        for ($day = 1; $day <= 31; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author3, 'Foo subject', \sprintf("Rapport d'activité du %u janvier 2017.", $day), \sprintf('2017-01-%02u 09:00:00', $day));
-        }
-
-        for ($day = 1; $day <= 5; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author7, 'Foo subject', \sprintf("Rapport d'activité du %u janvier 2017.", $day), \sprintf('2017-01-%02u 09:00:00', $day));
-        }
-
-        $this->publishCommitteeEvent($event1);
-    }
-
-    private function publishCommitteeMessage(
-        Committee $committee,
-        Adherent $author,
-        string $subject,
-        string $text,
-        string $createdAt = 'now',
-    ) {
-        return $this->committeeFeedManager->createMessage(
-            new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt)
-        );
-    }
-
-    private function publishCommitteeEvent(EntityEvent $event): void
-    {
-        $this->committeeFeedManager->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
-    }
-
-    private function getCommitteeMessageData(Committee $committee): \Generator
-    {
-        $uuid = (string) $committee->getUuid();
-
-        if (LoadCommitteeV1Data::COMMITTEE_1_UUID === $uuid) {
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => 'Ouverture du comité !',
-                'created_at' => '2017-01-12 20:13:26',
-            ];
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => "Comment ça va aujourd'hui les Marcheurs ?",
-                'created_at' => '2017-01-13 08:31:12',
-            ];
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => 'Tout le monde est prêt pour le porte à porte ?',
-                'created_at' => '2017-01-13 10:08:45',
-            ];
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => 'Réunion écologiste en préparation !',
-                'created_at' => '2017-01-14 11:14:54',
-            ];
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => "Visite d'Émmanuel Macron le 20 janvier.",
-                'created_at' => '2017-01-15 13:28:33',
-            ];
-        }
-
-        if (LoadCommitteeV1Data::COMMITTEE_3_UUID === $uuid) {
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => 'Lancement du comité !',
-                'created_at' => '2017-01-16 13:14:56',
-            ];
-            yield [
-                'subject' => '[Comité local] Nouveau message',
-                'text' => 'À la recherche de volontaires !',
-                'created_at' => '2017-01-17 20:02:21',
-            ];
-        }
     }
 
     public function getDependencies(): array

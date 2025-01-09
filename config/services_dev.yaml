@@ -1,6 +1,3 @@
-parameters:
-    timeline_max_messages: 10
-
 services:
     _defaults:
         autowire: true

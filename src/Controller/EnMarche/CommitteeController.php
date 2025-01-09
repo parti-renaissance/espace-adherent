@@ -7,14 +7,10 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
-use App\Form\CommitteeFeedItemMessageType;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Security\Voter\Committee\ChangeCommitteeVoter;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +25,6 @@ class CommitteeController extends AbstractController
     public function __construct(
         private readonly CommitteeManager $committeeManager,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
-        private readonly int $timelineMaxItems,
     ) {
     }
 
@@ -50,59 +45,10 @@ class CommitteeController extends AbstractController
             ]);
         }
 
-        $feeds = $this->committeeManager->getTimeline($committee, $this->timelineMaxItems);
-
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $feeds,
-            'committee_timeline_max_messages' => $this->timelineMaxItems,
-        ]);
-    }
-
-    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
-    #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
-    #[Route(path: '/timeline/{id}/modifier', name: 'app_committee_timeline_edit', methods: ['GET', 'POST'])]
-    public function timelineEditAction(
-        EntityManagerInterface $manager,
-        Request $request,
-        Committee $committee,
-        CommitteeFeedItem $committeeFeedItem,
-    ): Response {
-        $form = $this
-            ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->flush();
-            $this->addFlash('info', 'common.message_edited');
-
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-        }
-
-        return $this->render('committee/timeline/edit.html.twig', [
-            'committee' => $committee,
-            'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[IsGranted('SHOW_COMMITTEE', subject: 'committee')]
-    #[Route(path: '/timeline', name: 'app_committee_timeline', methods: ['GET'])]
-    public function timelineAction(Request $request, Committee $committee): Response
-    {
-        $timeline = $this->committeeManager->getTimeline(
-            $committee,
-            $this->timelineMaxItems,
-            $request->query->getInt('offset', 0)
-        );
-
-        return $this->render('committee/timeline/_feed.html.twig', [
-            'committee' => $committee,
-            'committee_timeline' => $timeline,
-            'has_role_user' => $this->isGranted('ROLE_USER'),
+            'committee_timeline' => [],
         ]);
     }
 

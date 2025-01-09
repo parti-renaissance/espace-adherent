@@ -3,9 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
-use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeFeedItem;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,7 +129,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
             ['LO', 'Lucie O.', 'Adhérente désignée'],
             ['JP', 'Jacques P.', 'Adhérent désigné'],
         ]);
-        $this->assertCountTimelineMessages($crawler, 2);
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -139,7 +136,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCountTimelineMessages($crawler, 2);
 
         $this->logout($this->client);
 
@@ -149,7 +145,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCountTimelineMessages($crawler, 2);
     }
 
     public function testAnyoneCanSeeSupervisorProvisionalOnCommitteePage()
@@ -253,33 +248,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertEditDeleteButton($crawler, 0);
     }
 
-    public function testEditMessage()
-    {
-        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
-        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
-        $this->isSuccessful($this->client->getResponse());
-
-        $form = $crawler->selectButton('committee_feed_item_message_send')->form();
-        $this->assertSame($messages->getContent(), $form->get('committee_feed_item_message[content]')->getValue());
-
-        $form->setValues(['committee_feed_item_message[content]' => $messages->getContent().' test']);
-        $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
-
-        $this->client->followRedirect();
-        self::assertStringContainsString($messages->getContent().' test', $this->client->getResponse()->getContent());
-    }
-
-    public function testGetTimeLineNotConnected()
-    {
-        $crawler = $this->client->request('GET', '/comites/en-marche-paris-8/timeline?offset=10');
-
-        $this->assertEditDeleteButton($crawler, 0);
-    }
-
     private function seeLoginLink(Crawler $crawler): bool
     {
         return 1 === \count($crawler->filter('#committee-login-link'));
@@ -355,20 +323,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         );
     }
 
-    private function seeSelfHostContactLink(Crawler $crawler, string $name, string $role): bool
-    {
-        /** @var \DOMElement $host */
-        foreach ($crawler->filter('.committee__card .committee-host') as $host) {
-            if (str_contains($host->textContent, 'Contacter')) {
-                continue;
-            }
-
-            return preg_match('/'.preg_quote($name).'\s+'.$role.'\s+\(vous\)/', $host->textContent);
-        }
-
-        return false;
-    }
-
     private function seeHostNav(Crawler $crawler): bool
     {
         return 1 === \count($crawler->filter('#committee-host-nav'));
@@ -389,19 +343,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         }
 
         return 1 === \count($crawler->filter('form[name="committee_feed_message"]'));
-    }
-
-    private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
-    {
-        self::assertCount($nb, $crawler->filter('.committee__timeline__message'), $message);
-    }
-
-    private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
-    {
-        foreach ($messages as $position => $message) {
-            [$author, $role, $text] = $message;
-            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
-        }
     }
 
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\CommitteeFeedItem;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\UserDocument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -29,22 +28,6 @@ class UserDocumentRepository extends ServiceEntityRepository
             ->getResult()
         ;
 
-        if ($event && $event[0] > 0) {
-            return true;
-        }
-
-        $committeeFeed = $this
-            ->getEntityManager()->createQueryBuilder()
-            ->from(CommitteeFeedItem::class, 'committeeFeed')
-            ->select('committeeFeed.id')
-            ->join('committeeFeed.documents', 'documents')
-            ->where('documents.id = :documentId')
-            ->setParameter('documentId', $document->getId())
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult()
-        ;
-
-        return $committeeFeed && $committeeFeed[0] > 0;
+        return $event && $event[0] > 0;
     }
 }
