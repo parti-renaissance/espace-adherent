@@ -108,7 +108,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             return [TagEnum::SYMPATHISANT_ENSEMBLE2024];
         }
 
-        if (!$adherent->isV2() && $adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17')) {
+        if (!$adherent->isV2() && $adherent->getRegisteredAt() < new \DateTime('2022-09-17')) {
             return [TagEnum::SYMPATHISANT_COMPTE_EM];
         }
 

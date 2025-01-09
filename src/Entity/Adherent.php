@@ -1329,7 +1329,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setSubscriptionTypes(array $subscriptionTypes): void
     {
-        $this->subscriptionTypes = new ArrayCollection();
+        $codes = array_map(static function (SubscriptionType $type) {
+            return $type->getCode();
+        }, $subscriptionTypes);
+
+        foreach ($this->subscriptionTypes as $type) {
+            if (!\in_array($type->getCode(), $codes, true)) {
+                $this->removeSubscriptionType($type);
+            }
+        }
+
         foreach ($subscriptionTypes as $type) {
             $this->addSubscriptionType($type);
         }
