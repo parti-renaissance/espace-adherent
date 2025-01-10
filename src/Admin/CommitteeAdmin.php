@@ -8,9 +8,11 @@ use App\Committee\Event\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\Geo\Zone;
 use App\Events;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -66,6 +68,17 @@ class CommitteeAdmin extends AbstractAdmin
         return [
             'approve' => 'APPROVE',
         ];
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        $actions = parent::configureActionButtons($buttonList, $action, $object);
+
+        if ('list' === $action) {
+            $actions['map'] = ['template' => 'admin/committee/action_button_map.html.twig'];
+        }
+
+        return $actions;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -151,57 +164,111 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->with('Comité', ['class' => 'col-md-7'])
-                ->add('name', null, [
-                    'label' => 'Nom',
-                ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
-                ])
-                ->add('slug', null, [
-                    'label' => 'Slug',
-                ])
-                ->add('facebookPageUrl', UrlType::class, [
-                    'label' => 'Facebook',
-                    'required' => false,
-                ])
-                ->add('twitterNickname', null, [
-                    'label' => 'Twitter',
-                    'required' => false,
-                ])
+            ->tab('Général')
+                ->with('Comité', ['class' => 'col-md-7'])
+                    ->add('name', null, [
+                        'label' => 'Nom',
+                    ])
+                    ->add('description', null, [
+                        'label' => 'Description',
+                        'attr' => [
+                            'rows' => '3',
+                        ],
+                    ])
+                    ->add('slug', null, [
+                        'label' => 'Slug',
+                    ])
+                    ->add('facebookPageUrl', UrlType::class, [
+                        'label' => 'Facebook',
+                        'required' => false,
+                    ])
+                    ->add('twitterNickname', null, [
+                        'label' => 'Twitter',
+                        'required' => false,
+                    ])
+                ->end()
+                ->with('Responsable comité local', ['class' => 'col-md-5'])
+                    ->add('animator', RenaissanceAdherentAutocompleteType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'req_params' => [
+                            'field' => 'animator',
+                            '_sonata_admin' => 'app.admin.committee',
+                        ],
+                    ])
+                ->end()
+                ->with('Localisation', ['class' => 'col-md-5'])
+                    ->add('postAddress.address', TextType::class, [
+                        'required' => false,
+                        'label' => 'Adresse postale',
+                    ])
+                    ->add('postAddress.postalCode', TextType::class, [
+                        'required' => false,
+                        'label' => 'Code postal',
+                    ])
+                    ->add('postAddress.cityName', TextType::class, [
+                        'required' => false,
+                        'label' => 'Ville',
+                    ])
+                    ->add('postAddress.country', CountryType::class, [
+                        'required' => false,
+                        'label' => 'Pays',
+                    ])
+                ->end()
             ->end()
-            ->with('Responsable comité local', ['class' => 'col-md-5'])
-                ->add('animator', RenaissanceAdherentAutocompleteType::class, [
-                    'label' => false,
-                    'required' => false,
-                    'req_params' => [
-                        'field' => 'animator',
-                        '_sonata_admin' => 'app.admin.committee',
-                    ],
-                ])
-            ->end()
-            ->with('Localisation', ['class' => 'col-md-5'])
-                ->add('postAddress.address', TextType::class, [
-                    'required' => false,
-                    'label' => 'Adresse postale',
-                ])
-                ->add('postAddress.postalCode', TextType::class, [
-                    'required' => false,
-                    'label' => 'Code postal',
-                ])
-                ->add('postAddress.cityName', TextType::class, [
-                    'required' => false,
-                    'label' => 'Ville',
-                ])
-                ->add('postAddress.country', CountryType::class, [
-                    'required' => false,
-                    'label' => 'Pays',
-                ])
+            ->tab('Périmètres géographiques')
+                ->with('Zones')
+                    ->add('zones', ModelAutocompleteType::class, [
+                        'label' => false,
+                        'multiple' => true,
+                        'required' => false,
+                        'minimum_input_length' => 1,
+                        'items_per_page' => 20,
+                        'btn_add' => false,
+                        'safe_label' => true,
+                        'callback' => [$this, 'prepareAutocompleteFilterCallback'],
+                        'to_string_callback' => [$this, 'toStringCallback'],
+                        'property' => ['name', 'code'],
+                    ])
+                ->end()
             ->end()
         ;
+    }
+
+    public static function prepareAutocompleteFilterCallback(AbstractAdmin $admin, array $properties, string $value): void
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+
+        $subQuery = $admin->getModelManager()->getEntityManager(Committee::class)->createQueryBuilder()
+            ->select('z.id')
+            ->from(Committee::class, 'c')
+            ->join('c.zones', 'z')
+            ->getDQL()
+        ;
+
+        $qb
+            ->andWhere(\sprintf('%s.id NOT IN (%s)', $alias, $subQuery))
+            ->andWhere(\sprintf('%s.active = 1', $alias))
+            ->andWhere($orx)
+        ;
+    }
+
+    public function toStringCallback(Zone $zone): string
+    {
+        return \sprintf(
+            '%s (%s) <span class="badge bg-gray-active">%s</span>',
+            $zone->getName(),
+            $zone->getCode(),
+            $this->getTranslator()->trans('geo_zone.'.$zone->getType()),
+        );
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void

@@ -38,8 +38,12 @@
             });
 
             const popup = new mapboxgl.Popup({
+                closeOnClick: false,
+                closeOnMove: false,
                 closeButton: false
             });
+
+            let currentCommitteeId = null;
 
             map.on('load', async () => {
                 map.addSource('committees', {
@@ -71,9 +75,15 @@
             });
 
             map.on('mousemove', 'committees-layer', (e) => {
-                map.getCanvas().style.cursor = 'pointer';
-
                 const feature = e.features[0];
+
+                if (currentCommitteeId && currentCommitteeId === feature.properties.id) {
+                    return;
+                }
+
+                currentCommitteeId = feature.properties.id
+
+                map.getCanvas().style.cursor = 'pointer';
 
                 map.setFilter('committees-layer-highlighted', [
                     '==',
@@ -81,19 +91,62 @@
                     feature.properties.id
                 ]);
 
-                popup
-                    .setLngLat(e.lngLat)
-                    .setText(feature.properties.name)
-                    .addTo(map);
-            });
+                const text = [
+                    '<div><strong>Comité : </strong><a href="' +
+                    ('{{ path('admin_app_committee_edit', {id: 111}) }}'.replace('111', feature.properties.id)) +
+                    '" class="text-ui_blue-50" target="_blank">' + feature.properties.name + '</a></div>',
+                '<div><strong>Animateur : </strong>' +
+                (feature.properties.animator_first_name
+                    ? ('<a href="' + ('{{ path('admin_app_adherent_edit', {id: 111}) }}'.replace('111', feature.properties.animator_id)) +
+                    '" class="text-ui_blue-50" target="_blank">' + feature.properties.animator_first_name + ' ' + feature.properties.animator_last_name + '</a>') : '~') + '</div>',
+            ].join('');
 
-            map.on('mouseleave', 'committees-layer', () => {
-                map.getCanvas().style.cursor = '';
-                popup.remove();
-                map.setFilter('committees-layer-highlighted', ['==', ['get', 'id'], '']);
+                popup
+                    .setLngLat(getFeatureCenter(feature))
+                    .setHTML(text)
+                    .addTo(map);
             });
 
             map.addControl(new mapboxgl.NavigationControl());
         });
+
+        const getFeatureCenter = (feature) => {
+            if (feature.geometry.type === 'Point') {
+                return feature.geometry.coordinates;
+            }
+
+            if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                let coordinates = feature.geometry.coordinates;
+
+                if (feature.geometry.type === 'MultiPolygon') {
+                    coordinates = coordinates.flat(1);
+                }
+
+                let totalX = 0;
+                let totalY = 0;
+                let totalPoints = 0;
+
+                coordinates[0].forEach(coord => {
+                    totalX += coord[0];
+                    totalY += coord[1];
+                    totalPoints++;
+                });
+
+                return [totalX / totalPoints, totalY / totalPoints];
+            }
+
+            if (feature.geometry.type === 'LineString' || feature.geometry.type === 'MultiLineString') {
+                let coordinates = feature.geometry.coordinates;
+
+                if (feature.geometry.type === 'MultiLineString') {
+                    coordinates = coordinates.flat(1);
+                }
+
+                const midIndex = Math.floor(coordinates.length / 2);
+                return coordinates[midIndex];
+            }
+
+            throw new Error(`Unsupported geometry type: ${feature.geometry.type}`);
+        };
     </script>
 {% endblock %}
