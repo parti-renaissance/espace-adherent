@@ -489,15 +489,20 @@ class CommitteeRepository extends ServiceEntityRepository
             ->addSelect('animator.emailAddress')
             ->addSelect('c.membersCount')
             ->addSelect('c.sympathizersCount')
-            ->addSelect('COALESCE(gd1.id, gd2.id) AS shapeId')
-            ->addSelect('ST_AsText(st_simplify(COALESCE(gd1.geoShape, gd2.geoShape), 0.0001)) AS shape')
-            ->innerJoin('c.zones', 'z')
-            ->leftJoin('z.children', 'child_city', Join::WITH, 'z.type IN (:city_child_types)')
-            ->leftJoin('z.geoData', 'gd1')
-            ->leftJoin('child_city.geoData', 'gd2')
+            ->innerJoin(Zone::class, 'z')
+            ->innerJoin('z.geoData', 'gd')
+            ->addSelect('ST_AsText(st_simplify(gd.geoShape, 0.0001)) AS shape')
+            ->andWhere(\sprintf('z.id IN (%s)', $this
+                ->createQueryBuilder('c2')
+                ->select('DISTINCT COALESCE(zc.id, IF(zp.type IN (:city_child_types), -1, zp.id))')
+                ->innerJoin('c2.zones', 'zp')
+                ->leftJoin('zp.children', 'zc', Join::WITH, 'zp.type IN (:city_child_types) AND zc.type = :city')
+                ->where('c2.id = c.id')
+                ->getDQL()
+            ))
             ->leftJoin('c.animator', 'animator')
-            ->where('COALESCE(gd1.geoShape, gd2.geoShape) IS NOT NULL')
             ->setParameters([
+                'city' => Zone::CITY,
                 'city_child_types' => [Zone::CANTON, Zone::CITY_COMMUNITY],
             ])
             ->getQuery()
@@ -521,14 +526,10 @@ class CommitteeRepository extends ServiceEntityRepository
                     'membersCount' => $row['membersCount'],
                     'sympathizersCount' => $row['sympathizersCount'],
                     'features' => [],
-                    'features_id' => [],
                 ];
             }
 
-            if ($row['shape'] && !\in_array($row['shapeId'], $committees[$row['id']]['features_id'])) {
-                $committees[$row['id']]['features'][] = $row['shape'];
-                $committees[$row['id']]['features_id'][] = $row['shapeId'];
-            }
+            $committees[$row['id']]['features'][] = $row['shape'];
         }
 
         foreach ($committees as $key => &$committee) {
@@ -536,7 +537,6 @@ class CommitteeRepository extends ServiceEntityRepository
                 unset($committees[$key]);
                 continue;
             }
-            unset($committee['features_id']);
             $committee['features'] = GeometryUtils::mergeWkt($committee['features'])->toJson();
         }
 
