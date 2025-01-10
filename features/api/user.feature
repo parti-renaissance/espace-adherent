@@ -16,7 +16,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "C9E-7BB",
+                "id": "@string@",
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                 "email_address": "carl999@example.fr",
                 "email_subscribed": true,
@@ -67,7 +67,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "D5C-399",
+                "id": "@string@",
                 "nickname": "kikouslove",
                 "email_address": "jacques.picard@en-marche.fr",
                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",

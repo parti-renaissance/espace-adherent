@@ -19,6 +19,7 @@ class DonationRequestTest extends AbstractKernelTestCase
 
         $adherent = Adherent::create(
             $uuid,
+            'ABC-234',
             $email,
             'password',
             'male',

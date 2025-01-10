@@ -17,7 +17,7 @@ Feature:
             """
             {
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                "id": "C9E-7BB",
+                "id": "@string@",
                 "email_address": "carl999@example.fr",
                 "first_name": "Carl",
                 "last_name": "Mirabeau",
@@ -785,7 +785,7 @@ Feature:
             """
             {
                 "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9699",
-                "id": "B6H-873",
+                "id": "@string@",
                 "first_name": "Simple",
                 "last_name": "User",
                 "certified": false,
@@ -1328,7 +1328,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "G86-5E4",
+                "id": "@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {
@@ -1441,7 +1441,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "G86-5E4",
+                "id": "@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {
@@ -1528,7 +1528,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "G86-5E4",
+                "id": "@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {

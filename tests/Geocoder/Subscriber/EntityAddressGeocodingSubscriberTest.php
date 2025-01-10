@@ -130,6 +130,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
     {
         return Adherent::create(
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
+            'ABC-234',
             'john.smith@example.org',
             'super-password',
             'male',

@@ -40,6 +40,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
     {
         return Adherent::create(
             Adherent::createUuid('john.smith@example.org'),
+            'ABC-234',
             'john.smith@example.org',
             'super-password',
             'male',

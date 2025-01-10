@@ -136,6 +136,7 @@ class AdherentTest extends AbstractKernelTestCase
 
         return Adherent::create(
             Adherent::createUuid($email),
+            'ABC-234',
             $email,
             'super-password',
             'male',

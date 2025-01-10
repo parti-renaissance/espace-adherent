@@ -65,6 +65,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
     {
         return Adherent::create(
             Uuid::fromString(self::ADHERENT_UUID),
+            'ABC-234',
             'foo@bar.com',
             'password',
             'male',
