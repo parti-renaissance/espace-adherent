@@ -69,7 +69,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                     continue;
                 }
 
-                $payments = $this->ohme->getPayments(100, 0, ['contact_id' => $contact['id']]);
+                $payments = $this->ohme->getPayments(['contact_id' => $contact['id']]);
 
                 foreach ($payments['data'] as $paymentData) {
                     if (!$payment = $adherent->getPaymentByOhmeId($paymentData['id'])) {
