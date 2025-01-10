@@ -77,7 +77,7 @@
         "myclabs/php-enum": "^1.5",
         "nelmio/cors-bundle": "^2.2",
         "nyholm/psr7": "^1.5",
-        "odolbeau/phone-number-bundle": "^3.3",
+        "odolbeau/phone-number-bundle": "^4.1",
         "openai-php/client": "^0.10.1",
         "phpoffice/phpspreadsheet": "^3.3",
         "ramsey/uuid": "^4.1",
