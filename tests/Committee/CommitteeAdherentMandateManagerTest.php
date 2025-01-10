@@ -381,6 +381,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
+            'ABC-234',
             'd.dupont@test.com',
             'password',
             $gender,

@@ -12,7 +12,7 @@ class LoadBannedAdherentData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $adherent = Adherent::createBlank('male', 'test', 'test', 'FR', PostAddress::createEmptyAddress(), 'disabled-email@test.com', null, new \DateTime('-18 years'));
+        $adherent = Adherent::createBlank('ABC-234', 'male', 'test', 'test', 'FR', PostAddress::createEmptyAddress(), 'disabled-email@test.com', null, new \DateTime('-18 years'));
 
         $manager->persist(BannedAdherent::createFromAdherent($adherent));
         $manager->flush();

@@ -56,7 +56,6 @@ use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
-use App\Utils\PublicIdGenerator;
 use App\Validator\UniqueMembership;
 use App\Validator\ZoneBasedRoles as AssertZoneBasedRoles;
 use App\ValueObject\Genders;
@@ -555,6 +554,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     public static function createBlank(
+        string $publicId,
         string $gender,
         string $firstName,
         string $lastName,
@@ -569,7 +569,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent = new self();
 
         $adherent->uuid = Uuid::uuid4();
-        $adherent->publicId = PublicIdGenerator::generatePublicIdFromUuid($adherent->uuid);
+        $adherent->publicId = $publicId;
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;
         $adherent->lastName = $lastName;
@@ -588,6 +588,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public static function create(
         UuidInterface $uuid,
+        string $publicId,
         string $emailAddress,
         ?string $password,
         ?string $gender,
@@ -609,7 +610,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent = new self();
 
         $adherent->uuid = $uuid;
-        $adherent->publicId = PublicIdGenerator::generatePublicIdFromUuid($uuid);
+        $adherent->publicId = $publicId;
         $adherent->password = $password;
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;

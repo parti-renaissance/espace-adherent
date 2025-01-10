@@ -3,6 +3,7 @@
 namespace App\Membership;
 
 use App\Address\PostAddressFactory;
+use App\Adherent\PublicIdGenerator;
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
@@ -21,11 +22,13 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 class AdherentFactory
 {
     private PasswordHasherInterface $hasher;
+    private PublicIdGenerator $publicIdGenerator;
     private PostAddressFactory $addressFactory;
 
-    public function __construct(PasswordHasherFactoryInterface $hasherFactory, ?PostAddressFactory $addressFactory = null)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory, PublicIdGenerator $publicIdGenerator, ?PostAddressFactory $addressFactory = null)
     {
         $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
+        $this->publicIdGenerator = $publicIdGenerator;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -42,6 +45,7 @@ class AdherentFactory
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
+            $this->generatePublicId(),
             $request->getEmailAddress(),
             $this->hashPassword(Uuid::uuid4()),
             null,
@@ -62,6 +66,7 @@ class AdherentFactory
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
+            $this->generatePublicId(),
             $request->getEmailAddress(),
             $this->hashPassword(Uuid::uuid4()),
             $request->gender,
@@ -83,6 +88,7 @@ class AdherentFactory
     {
         $adherent = Adherent::create(
             uuid: Uuid::uuid4(),
+            publicId: $this->generatePublicId(),
             emailAddress: $membershipRequest->email,
             password: null,
             gender: $membershipRequest->civility,
@@ -102,6 +108,7 @@ class AdherentFactory
     {
         $adherent = Adherent::create(
             uuid: Uuid::uuid4(),
+            publicId: $this->generatePublicId(),
             emailAddress: $inscriptionRequest->email,
             password: null,
             gender: $inscriptionRequest->civility,
@@ -128,6 +135,7 @@ class AdherentFactory
         Administrator $administrator,
     ): Adherent {
         $adherent = Adherent::createBlank(
+            $this->generatePublicId(),
             $command->gender,
             $command->firstName,
             $command->lastName,
@@ -155,6 +163,7 @@ class AdherentFactory
 
         return Adherent::create(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
+            $data['public_id'] ?? $this->generatePublicId(),
             $data['email'],
             $this->hashPassword($data['password']),
             $data['gender'] ?? null,
@@ -190,5 +199,10 @@ class AdherentFactory
     private function hashPassword(string $password): string
     {
         return $this->hasher->hash($password);
+    }
+
+    private function generatePublicId(): string
+    {
+        return $this->publicIdGenerator->generate();
     }
 }

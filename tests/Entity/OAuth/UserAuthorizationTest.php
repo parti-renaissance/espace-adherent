@@ -58,6 +58,7 @@ class UserAuthorizationTest extends AbstractKernelTestCase
     {
         return Adherent::create(
             Uuid::uuid4(),
+            'ABC-234',
             'fake@example.org',
             '',
             'male',

@@ -60,6 +60,7 @@ class EventHydrator extends AbstractHydrator
         if ($uuidOrganizer = $row['adherent_uuid'] ? Uuid::fromString($row['adherent_uuid']) : null) {
             $organizer = Adherent::create(
                 $uuidOrganizer,
+                $row['adherent_public_id'],
                 $row['adherent_email_address'],
                 $uuidOrganizer,
                 $row['adherent_gender'],
