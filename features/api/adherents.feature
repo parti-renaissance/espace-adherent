@@ -386,7 +386,7 @@ Feature:
                         "last_name": "Fullstack",
                         "image_url": null,
                         "birthdate": "1942-01-10T00:00:00+02:00",
-                        "age": 82,
+                        "age": 83,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -756,7 +756,7 @@ Feature:
                         "last_name": "Fullstack",
                         "image_url": null,
                         "birthdate": "1942-01-10T00:00:00+02:00",
-                        "age": 82,
+                        "age": 83,
                         "phone": null,
                         "nationality": null,
                         "tags": [
