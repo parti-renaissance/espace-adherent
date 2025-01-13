@@ -107,7 +107,7 @@ class ActivateEmailController extends AbstractController
                 $this->bus->dispatch(new GenerateActivationCodeCommand($adherent));
                 $this->addFlash('success', 'Un nouveau code vous a été envoyé par email');
             } catch (HandlerFailedException $e) {
-                if ($exceptions = $e->getNestedExceptionOfClass(ActivationCodeExceptionInterface::class)) {
+                if ($exceptions = $e->getWrappedExceptions(ActivationCodeExceptionInterface::class)) {
                     $this->addFlash('error', $exceptions[0]->getMessage());
                 } else {
                     throw $e;

@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\Adhesion;
 use App\Adhesion\Request\MembershipRequest;
 use App\Controller\Renaissance\Adhesion\Api\PersistEmailController;
 use App\Donation\Handler\DonationRequestHandler;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\MembershipRequestType;
@@ -56,16 +57,19 @@ class AdhesionController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $membershipRequest->amount);
+            $donationRequest = DonationRequest::create($request, $membershipRequest->amount, PayboxPaymentSubscription::NONE, $adherent);
             $donationRequest->forMembership();
 
             $donation = $this->donationRequestHandler->handle($donationRequest, $adherent, $adherent->isRenaissanceAdherent());
 
-            return $this->redirectToRoute('app_payment', ['uuid' => $donation->getUuid()]);
+            return $this->redirectToRoute(
+                'app_payment',
+                UtmParams::mergeParams(['uuid' => $donation->getUuid()], $donation->utmSource, $donation->utmCampaign)
+            );
         }
 
-        return $this->renderForm('renaissance/adhesion/form.html.twig', [
-            'form' => $form,
+        return $this->render('renaissance/adhesion/form.html.twig', [
+            'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->step,
         ]);

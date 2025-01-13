@@ -57,11 +57,11 @@ class AdherentCreateCommandHandler
 
         $this->entityManager->flush();
 
-        $donationRequest = DonationRequest::createFromAdherent(
-            $adherent,
+        $donationRequest = DonationRequest::create(
             null,
             $command->getCotisationAmount(),
             PayboxPaymentSubscription::NONE,
+            $adherent,
             $command->isCotisationTypeTPE() ? Donation::TYPE_TPE : Donation::TYPE_CHECK
         );
         $donationRequest->forMembership();

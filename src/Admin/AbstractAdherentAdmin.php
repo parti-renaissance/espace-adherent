@@ -187,6 +187,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'label' => 'adherent.mandate.admin.label',
                     'template' => 'admin/adherent/show_mandates.html.twig',
                 ])
+                ->add('utmSource', null, ['label' => 'UTM Source'])
+                ->add('utmCampaign', null, ['label' => 'UTM Campagne'])
             ->end()
             ->with('Adresse', ['class' => 'col-md-3'])
                 ->add('postAddress.address', null, ['label' => 'Rue'])

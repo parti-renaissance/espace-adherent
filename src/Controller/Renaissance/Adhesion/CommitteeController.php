@@ -8,6 +8,7 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Repository\CommitteeRepository;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,16 +30,18 @@ class CommitteeController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME, $utmParams);
         }
 
         if (!$adherent->isRenaissanceAdherent()) {
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_finish');
+            return $this->redirectToRoute('app_adhesion_finish', $utmParams);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::COMMITTEE)) {
@@ -55,14 +58,14 @@ class CommitteeController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_finish');
+            return $this->redirectToRoute('app_adhesion_finish', $utmParams);
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
             if (!$selectedCommittee = $this->committeeRepository->findOneByUuid($request->request->get('committee'))) {
                 $this->addFlash('error', "Le comité local sélectionné n'existe pas.");
 
-                return $this->redirectToRoute(self::ROUTE_NAME);
+                return $this->redirectToRoute(self::ROUTE_NAME, $utmParams);
             }
 
             $this->committeeMembershipManager->followCommittee(
@@ -73,10 +76,10 @@ class CommitteeController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_finish');
+            return $this->redirectToRoute('app_adhesion_finish', $utmParams);
         }
 
-        return $this->renderForm('renaissance/adhesion/committee.html.twig', [
+        return $this->render('renaissance/adhesion/committee.html.twig', [
             'committees' => $committees,
             'default_committee' => $defaultCommittee,
         ]);

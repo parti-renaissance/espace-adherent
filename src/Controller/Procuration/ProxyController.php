@@ -69,8 +69,8 @@ class ProxyController extends AbstractController
             ]);
         }
 
-        return $this->renderForm('procuration_v2/proxy_form.html.twig', [
-            'form' => $form,
+        return $this->render('procuration_v2/proxy_form.html.twig', [
+            'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'election' => $election,
             'step' => $this->step,

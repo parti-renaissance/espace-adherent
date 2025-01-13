@@ -321,8 +321,8 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         self::assertNull($this->getDonatorRepository()->findOneForMatching(
             $submittedValues['email'],
             $submittedValues['firstName'],
-            $submittedValues['lastName'])
-        );
+            $submittedValues['lastName']
+        ));
 
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 

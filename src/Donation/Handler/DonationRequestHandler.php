@@ -27,11 +27,8 @@ class DonationRequestHandler
     ) {
     }
 
-    public function handle(
-        DonationRequest $donationRequest,
-        ?Adherent $adherent = null,
-        bool $forReAdhesion = false,
-    ): Donation {
+    public function handle(DonationRequest $donationRequest, ?Adherent $adherent = null, bool $forReAdhesion = false): Donation
+    {
         if (!$donator = $this->donatorRepository->findOneForMatching(
             $donationRequest->getEmailAddress(),
             $donationRequest->getFirstName(),

@@ -5,6 +5,7 @@ namespace Tests\App\Donation;
 use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use libphonenumber\PhoneNumber;
+use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractKernelTestCase;
 
 class DonationRequestTest extends AbstractKernelTestCase
@@ -31,7 +32,7 @@ class DonationRequestTest extends AbstractKernelTestCase
             $phone
         );
 
-        $donationRequest = DonationRequest::createFromAdherent($adherent, '3.3.3.3', '30.0', 0);
+        $donationRequest = DonationRequest::create(Request::createFromGlobals(), 30.0, 0, $adherent);
 
         $this->assertInstanceOf(DonationRequest::class, $donationRequest);
         $this->assertSame('male', $donationRequest->getGender());
@@ -45,6 +46,5 @@ class DonationRequestTest extends AbstractKernelTestCase
         $this->assertSame('FR', $donationRequest->getAddress()->getCountry());
         $this->assertSame(30.0, $donationRequest->getAmount());
         $this->assertSame(0, $donationRequest->getDuration());
-        $this->assertSame('3.3.3.3', $donationRequest->getClientIp());
     }
 }

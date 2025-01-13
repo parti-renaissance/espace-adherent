@@ -4,6 +4,7 @@ namespace App\Controller\Renaissance\Payment;
 
 use App\Controller\Renaissance\Adhesion\ActivateEmailController;
 use App\Entity\Donation;
+use App\Utils\UtmParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,16 +18,17 @@ class CheckStatusController extends AbstractController
         $isSuccess = false;
         if ($request->getSession()->get(StatusController::SESSION_KEY) === $donation->getUuid()->toString() && $donation->isSuccess()) {
             $isSuccess = true;
+            $params = UtmParams::mergeParams([], $donation->utmSource, $donation->utmCampaign);
 
             if ($donation->isMembership()) {
                 if (!$donation->isReAdhesion()) {
                     $this->addFlash('success', 'Votre paiement a bien été validé !');
-                    $redirectUri = $this->generateUrl(ActivateEmailController::ROUTE_NAME);
+                    $redirectUri = $this->generateUrl(ActivateEmailController::ROUTE_NAME, $params);
                 } else {
-                    $redirectUri = $this->generateUrl('app_adhesion_finish');
+                    $redirectUri = $this->generateUrl('app_adhesion_finish', $params);
                 }
             } else {
-                $redirectUri = $this->generateUrl('app_donation_finish');
+                $redirectUri = $this->generateUrl('app_donation_finish', $params);
             }
         }
 
