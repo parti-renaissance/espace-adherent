@@ -8,12 +8,15 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractEnMarcheWebTestCase;
+use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
 #[Group('functional')]
 #[Group('committee')]
-class CommitteeControllerTest extends AbstractGroupControllerTestCase
+class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
 {
+    use ControllerTestTrait;
     use MessengerTestTrait;
 
     private $committeeRepository;
@@ -133,7 +136,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -188,7 +191,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertTrue($this->seeMembersCount($crawler, 1), 'The guest should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 1), 'The guest should see the hosts');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
-        $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
         $this->seeMessageForContactHosts($crawler);
     }
@@ -237,15 +239,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The follower should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
         $this->assertFalse($this->seeMessageForm($crawler));
-    }
-
-    public function testNoEditLinkWithAnonymousUser()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertEditDeleteButton($crawler, 0);
     }
 
     private function seeLoginLink(Crawler $crawler): bool
@@ -345,38 +338,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         return 1 === \count($crawler->filter('form[name="committee_feed_message"]'));
     }
 
-    private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
-    {
-        $facebookLinkPattern = 'a.committee__social--facebook';
-        $twitterLinkPattern = 'a.committee__social--twitter';
-
-        if ($facebookUrl = $committee->getFacebookPageUrl()) {
-            $this->assertCount(1, $facebookLink = $crawler->filter($facebookLinkPattern));
-            $this->assertSame($facebookUrl, $facebookLink->attr('href'));
-        } else {
-            $this->assertCount(0, $crawler->filter($facebookLinkPattern));
-        }
-
-        if ($twitterNickname = $committee->getTwitterNickname()) {
-            $this->assertCount(1, $twitterLink = $crawler->filter($twitterLinkPattern));
-            $this->assertSame(\sprintf('https://twitter.com/%s', $twitterNickname), $twitterLink->attr('href'));
-        } else {
-            $this->assertCount(0, $crawler->filter($twitterLinkPattern));
-        }
-    }
-
-    public function assertRedictIfCommitteeNotExist()
-    {
-        $this->client->request(Request::METHOD_GET, '/comites/ariege-leze');
-
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
-
-        $this->assertClientIsRedirectedTo('/comites', $this->client);
-        $this->client->followRedirect();
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -390,19 +351,5 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->committeeRepository = null;
 
         parent::tearDown();
-    }
-
-    protected function getGroupUrl(): string
-    {
-        return '/comites/en-marche-dammarie-les-lys';
-    }
-
-    private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)
-    {
-        $result = $crawler->selectLink('Modifier le message');
-        $this->assertSame($nbExpected, $result->count());
-
-        $result = $crawler->selectButton('delete_entity[delete]');
-        $this->assertSame($nbExpected, $result->count());
     }
 }

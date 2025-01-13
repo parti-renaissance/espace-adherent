@@ -2,8 +2,8 @@
 
 namespace App\Validator;
 
-use App\Committee\Event\CommitteeEvent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

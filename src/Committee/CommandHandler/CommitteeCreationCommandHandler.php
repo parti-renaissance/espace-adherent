@@ -4,8 +4,7 @@ namespace App\Committee\CommandHandler;
 
 use App\Committee\CommitteeFactory;
 use App\Committee\DTO\CommitteeCreationCommand;
-use App\Committee\Event\CommitteeEvent;
-use App\Events;
+use App\Committee\Event\EditCommitteeEvent;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +42,7 @@ class CommitteeCreationCommandHandler
         $this->entityManager->persist($committee);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_CREATED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
         $this->mailer->sendMessage($message);

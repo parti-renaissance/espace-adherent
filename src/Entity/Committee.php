@@ -27,7 +27,6 @@ use App\Report\ReportType;
 use App\Repository\CommitteeRepository;
 use App\Validator\ZoneType as AssertZoneType;
 use App\ValueObject\Genders;
-use App\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -110,7 +109,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
      * The group current status.
      */
     #[ORM\Column(length: 20)]
-    protected $status;
+    protected $status = self::APPROVED;
 
     /**
      * The timestamp when an administrator approved this group.
@@ -205,7 +204,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     #[Groups(['committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER', inversedBy: 'animatorCommittees')]
     public ?Adherent $animator = null;
 
     public function __construct(
@@ -368,40 +367,20 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         $this->description = $description;
     }
 
-    public function setSocialNetworks(?string $facebookPageUrl = null, ?string $twitterNickname = null)
+    public function setSocialNetworks(?string $facebookPageUrl = null, ?string $twitterNickname = null): void
     {
         $this->facebookPageUrl = $facebookPageUrl;
         $this->setTwitterNickname($twitterNickname);
     }
 
-    public function setFacebookPageUrl($facebookPageUrl)
+    public function setFacebookPageUrl($facebookPageUrl): void
     {
         $this->facebookPageUrl = $facebookPageUrl;
     }
 
-    public function setTwitterNickname($twitterNickname)
+    public function setTwitterNickname($twitterNickname): void
     {
         $this->twitterNickname = ltrim((string) $twitterNickname, '@');
-    }
-
-    /**
-     * Returns the list of social networks links.
-     *
-     * @return Link[]
-     */
-    public function getSocialNetworksLinks(): array
-    {
-        $links = [];
-
-        if ($this->facebookPageUrl) {
-            $links['facebook'] = $this->createLink($this->facebookPageUrl, 'Facebook');
-        }
-
-        if ($this->twitterNickname) {
-            $links['twitter'] = $this->createLink(\sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
-        }
-
-        return $links;
     }
 
     public function update(string $name, string $description, AddressInterface $address): void
@@ -414,11 +393,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         }
     }
 
-    private function createLink(string $url, string $label): Link
-    {
-        return new Link($url, $label);
-    }
-
     public function getReportType(): string
     {
         return ReportType::COMMITTEE;
@@ -427,11 +401,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function getAdherentMandates(): Collection
     {
         return $this->adherentMandates;
-    }
-
-    public function setAdherentMandates(Collection $adherentMandates): void
-    {
-        $this->adherentMandates = $adherentMandates;
     }
 
     public function addAdherentMandate(CommitteeAdherentMandate $adherentMandate): void

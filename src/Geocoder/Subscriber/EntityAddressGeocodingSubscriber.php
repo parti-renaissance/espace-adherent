@@ -3,6 +3,7 @@
 namespace App\Geocoder\Subscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
+use App\Committee\Event\CommitteeEventInterface;
 use App\Donation\DonationEvents;
 use App\Entity\Event\BaseEvent;
 use App\Events;
@@ -85,12 +86,15 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         return [
             UserEvents::USER_CREATED => ['updateCoordinates', -256],
             UserEvents::USER_UPDATED => ['updateCoordinates', -256],
-            Events::COMMITTEE_CREATED => ['updateCoordinates', -256],
-            Events::COMMITTEE_UPDATED => ['updateCoordinates', -256],
+
+            CommitteeEventInterface::class => ['updateCoordinates', -256],
+
             Events::EVENT_CREATED => ['updateCoordinates', -256],
             Events::EVENT_UPDATED => ['updateCoordinates', -256],
+
             DonationEvents::CREATED => ['updateCoordinates', -256],
             DonationEvents::UPDATED => ['updateCoordinates', -256],
+
             KernelEvents::VIEW => ['apiUpdateCoordinates', EventPriorities::POST_WRITE],
         ];
     }

@@ -25,7 +25,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertSame('69003-69383', $committee->getCity());
         $this->assertSame('69383', $committee->getInseeCode());
         $this->assertSame('50 Rue de la Villette', $committee->getAddress());
-        $this->assertEmpty($committee->getSocialNetworksLinks());
         $this->assertNull($committee->getFacebookPageUrl());
         $this->assertNull($committee->getTwitterNickname());
         $this->assertFalse($committee->isApproved());
@@ -62,14 +61,12 @@ class CommitteeTest extends AbstractKernelTestCase
             '@EnMarcheLyon'
         );
 
-        $this->assertCount(2, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon', $committee->getTwitterNickname());
 
         $committee->setFacebookPageUrl('https://facebook.com/en-marche-avant');
         $committee->setTwitterNickname('EnMarcheLyon69');
 
-        $this->assertCount(2, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche-avant', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon69', $committee->getTwitterNickname());
     }

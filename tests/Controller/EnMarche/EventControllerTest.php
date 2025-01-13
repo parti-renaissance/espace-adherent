@@ -15,11 +15,15 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractEnMarcheWebTestCase;
+use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('controller')]
-class EventControllerTest extends AbstractEventControllerTestCase
+class EventControllerTest extends AbstractEnMarcheWebTestCase
 {
+    use ControllerTestTrait;
+
     private ?EventRegistrationRepository $repository;
     private ?EmailLogRepository $emailRepository;
 

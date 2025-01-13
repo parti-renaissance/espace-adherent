@@ -4,14 +4,14 @@
     {{ parent() }}
 
     <style>
-        .select2-selection__rendered {
+        div[id^="sonata-ba-field-container-"][id$="_zones"] .select2-selection__rendered {
             display: flex !important;
             flex-direction: column;
             gap: 10px;
             padding: 10px !important;
         }
 
-        .select2-selection__choice {
+        div[id^="sonata-ba-field-container-"][id$="_zones"] .select2-selection__choice {
             cursor: pointer !important;
             width: 100%;
             float: none !important;
@@ -19,7 +19,7 @@
             padding: 8px !important;
         }
 
-        .select2-selection__choice:hover {
+        div[id^="sonata-ba-field-container-"][id$="_zones"] .select2-selection__choice:hover {
             border-color: #cf00ff !important;
         }
     </style>

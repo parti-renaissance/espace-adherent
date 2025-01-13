@@ -3,7 +3,7 @@
 namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeManager;
-use App\Committee\Event\CommitteeEventInterface;
+use App\Committee\Event\CommitteeMembershipEventInterface;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\CommitteeCandidacy;
@@ -70,7 +70,7 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
         $this->committeeManager->enableVoteInMembership($membership, $adherent);
     }
 
-    public function onUpdateCommitteeMembership(CommitteeEventInterface $event): void
+    public function onUpdateCommitteeMembership(CommitteeMembershipEventInterface $event): void
     {
         if (!$this->authorizationChecker->isGranted('IS_IMPERSONATOR')) {
             return;

@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Synchronisation\EventListener;
 
 use App\Adherent\Certification\Events as AdherentCertificationEvents;
-use App\Committee\Event\CommitteeEventInterface;
+use App\Committee\Event\CommitteeMembershipEventInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Membership\Event\UserEvent;
@@ -48,7 +48,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $this->adherentEmail ?? $adherent->getEmailAddress());
     }
 
-    public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void
+    public function onCommitteePrivilegeChange(CommitteeMembershipEventInterface $event): void
     {
         $adherent = $event->getCommitteeMembership()->getAdherent();
 
