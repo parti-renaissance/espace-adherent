@@ -78,7 +78,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
         $zoneLines = StringCleaner::escapeMarkdown(implode("\n", $zoneLines));
 
         if (!$committeeMembership) {
-            $zoneLines = "\n_".(($committeesInAdherentZone = \count($this->committeeRepository->findInAdherentZone($adherent))) ? $committeesInAdherentZone.' comité\(s\) dans l\'Assemblée' : 'Aucun comité dans l\'Assemblée').'_';
+            $zoneLines .= "\n_".(($committeesInAdherentZone = \count($this->committeeRepository->findInAdherentZone($adherent))) ? $committeesInAdherentZone.' comité\(s\) dans l\'Assemblée' : 'Aucun comité dans l\'Assemblée').'_';
         }
 
         $smsSubscriber = $adherent->hasSmsSubscriptionType() ? '✅' : '❌';
