@@ -8,7 +8,6 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\DonationRequestV2Type;
 use App\Security\Http\Session\AnonymousFollowerSession;
-use App\Utils\UtmParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,8 +47,8 @@ class DonationController extends AbstractController
             return $this->redirectToRoute('app_payment', ['uuid' => $donation->getUuid()]);
         }
 
-        return $this->renderForm('renaissance/donation/form.html.twig', [
-            'form' => $form,
+        return $this->render('renaissance/donation/form.html.twig', [
+            'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->getCurrentStep($request, $adherent),
         ]);
@@ -57,9 +56,8 @@ class DonationController extends AbstractController
 
     private function getDonationRequest(Request $request, ?Adherent $currentUser): DonationRequest
     {
-        $clientIp = $request->getClientIp();
-
         $duration = $request->query->getInt('duration', PayboxPaymentSubscription::NONE);
+
         if (!PayboxPaymentSubscription::isValid($duration)) {
             $duration = PayboxPaymentSubscription::NONE;
         }
@@ -79,19 +77,7 @@ class DonationController extends AbstractController
 
         $localDestination = $request->query->getBoolean('localDestination');
 
-        $donationRequest = $currentUser
-            ? DonationRequest::createFromAdherent($currentUser, $clientIp, $amount)
-            : new DonationRequest($clientIp, $amount);
-
-        if ($request->query->has(UtmParams::UTM_SOURCE)) {
-            $donationRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
-        }
-        if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
-            $donationRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
-        }
-
-        $donationRequest->setDuration($duration);
-
+        $donationRequest = DonationRequest::create($request, $amount, $duration, $currentUser);
         $donationRequest->localDestination = $localDestination;
 
         return $donationRequest;

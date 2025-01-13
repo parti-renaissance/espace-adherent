@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class UtmParams
 {
     public const UTM_SOURCE = 'utm_source';
@@ -14,5 +16,21 @@ class UtmParams
         }
 
         return mb_substr($utmParameter, 0, 255);
+    }
+
+    public static function mergeParams(array $initialParams, ?string $utmSource, ?string $utmCampaign): array
+    {
+        return array_merge($initialParams, array_filter([
+            self::UTM_SOURCE => $utmSource,
+            self::UTM_CAMPAIGN => $utmCampaign,
+        ]));
+    }
+
+    public static function fromRequest(Request $request): array
+    {
+        return array_filter([
+            self::UTM_SOURCE => self::filterUtmParameter($request->query->get(self::UTM_SOURCE)),
+            self::UTM_CAMPAIGN => self::filterUtmParameter($request->query->get(self::UTM_CAMPAIGN)),
+        ]);
     }
 }

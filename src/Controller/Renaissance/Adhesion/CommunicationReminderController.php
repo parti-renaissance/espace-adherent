@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Form\AdhesionCommunicationType;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,11 @@ class CommunicationReminderController extends AbstractController
 
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME, $utmParams);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::COMMUNICATION)) {
@@ -44,7 +47,7 @@ class CommunicationReminderController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
+            return $this->redirectToRoute(CommitteeController::ROUTE_NAME, $utmParams);
         }
 
         $form = $this
@@ -68,11 +71,11 @@ class CommunicationReminderController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
+            return $this->redirectToRoute(CommitteeController::ROUTE_NAME, $utmParams);
         }
 
-        return $this->renderForm('renaissance/adhesion/communication_reminder.html.twig', [
-            'form' => $form,
+        return $this->render('renaissance/adhesion/communication_reminder.html.twig', [
+            'form' => $form->createView(),
             'accept_sms' => $acceptSms,
             'accept_email' => $acceptEmail,
             'has_phone' => $hasPhone,

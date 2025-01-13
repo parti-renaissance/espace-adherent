@@ -54,8 +54,13 @@ class CreateAccountCommandHandler
 
         $currentUser->setPostAddress(PostAddressFactory::createFromAddress($membershipRequest->address));
         $currentUser->setSource(MembershipSourceEnum::RENAISSANCE);
-        $currentUser->utmSource = $membershipRequest->utmSource;
-        $currentUser->utmCampaign = $membershipRequest->utmCampaign;
+
+        if ($membershipRequest->utmSource) {
+            $currentUser->utmSource = $membershipRequest->utmSource;
+        }
+        if ($membershipRequest->utmCampaign) {
+            $currentUser->utmCampaign = $membershipRequest->utmCampaign;
+        }
 
         $currentUser->partyMembership = $membershipRequest->exclusiveMembership ? MembershipTypeEnum::EXCLUSIVE : match ($membershipRequest->partyMembership) {
             1 => MembershipTypeEnum::TERRITOIRES_PROGRES,

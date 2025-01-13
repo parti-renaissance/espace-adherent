@@ -10,6 +10,7 @@ use App\Adhesion\Request\ValidateAccountRequest;
 use App\Entity\Adherent;
 use App\Form\ActivateEmailByCodeType;
 use App\Form\ConfirmActionType;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -35,9 +36,11 @@ class ActivateEmailController extends AbstractController
     #[Route(path: '/adhesion/confirmation-email', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
     public function validateAction(Request $request): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME, $utmParams);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
@@ -57,7 +60,7 @@ class ActivateEmailController extends AbstractController
                     $this->activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
-                    return $this->redirectToRoute(CreatePasswordController::ROUTE_NAME);
+                    return $this->redirectToRoute(CreatePasswordController::ROUTE_NAME, $utmParams);
                 } catch (ActivationCodeExceptionInterface $e) {
                     $form->get('code')->addError(new FormError($e->getMessage()));
                 }
@@ -67,7 +70,7 @@ class ActivateEmailController extends AbstractController
                 if (!$limiter->consume()->isAccepted()) {
                     $this->addFlash('error', 'Veuillez patienter quelques minutes avant de retenter.');
 
-                    return $this->redirectToRoute(self::ROUTE_NAME);
+                    return $this->redirectToRoute(self::ROUTE_NAME, $utmParams);
                 }
 
                 $adherent->setEmailAddress($validateAccountRequest->emailAddress);
@@ -76,14 +79,15 @@ class ActivateEmailController extends AbstractController
 
                 $this->addFlash('success', 'Votre adresse email a bien été modifiée ! Veuillez saisir le nouveau code reçu par email.');
 
-                return $this->redirectToRoute(self::ROUTE_NAME);
+                return $this->redirectToRoute(self::ROUTE_NAME, $utmParams);
             }
         }
 
-        return $this->renderForm('renaissance/adhesion/confirmation_email.html.twig', [
+        return $this->render('renaissance/adhesion/confirmation_email.html.twig', [
             'code_ttl' => ActivationCodeManager::CODE_TTL,
             'request' => $validateAccountRequest,
-            'form' => $form,
+            'form' => $form->createView(),
+            'utm_params' => $utmParams,
             'new_code_form' => $this->createForm(ConfirmActionType::class, null, ['with_deny' => false, 'allow_label' => 'Renvoyer le code']),
         ]);
     }
@@ -91,6 +95,8 @@ class ActivateEmailController extends AbstractController
     #[Route(path: '/adhesion/nouveau-code', name: 'app_adhesion_request_new_activation_code', methods: ['POST'])]
     public function requestNewCodeAction(Request $request): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
@@ -101,7 +107,7 @@ class ActivateEmailController extends AbstractController
                 $this->bus->dispatch(new GenerateActivationCodeCommand($adherent));
                 $this->addFlash('success', 'Un nouveau code vous a été envoyé par email.');
             } catch (HandlerFailedException $e) {
-                if ($exceptions = $e->getNestedExceptionOfClass(ActivationCodeExceptionInterface::class)) {
+                if ($exceptions = $e->getWrappedExceptions(ActivationCodeExceptionInterface::class)) {
                     $this->addFlash('error', $exceptions[0]->getMessage());
                 } else {
                     throw $e;
@@ -109,6 +115,6 @@ class ActivateEmailController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute(self::ROUTE_NAME);
+        return $this->redirectToRoute(self::ROUTE_NAME, $utmParams);
     }
 }

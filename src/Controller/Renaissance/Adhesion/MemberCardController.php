@@ -10,6 +10,7 @@ use App\Form\MemberCardType;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentZoneManager;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -32,16 +33,18 @@ class MemberCardController extends AbstractController
 
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME, $utmParams);
         }
 
         if (!$adherent->isRenaissanceAdherent()) {
             $adherent->finishAdhesionStep(AdhesionStepEnum::MEMBER_CARD);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME);
+            return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME, $utmParams);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::MEMBER_CARD)) {
@@ -74,12 +77,12 @@ class MemberCardController extends AbstractController
                     $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
                 }
 
-                return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME);
+                return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME, $utmParams);
             }
         }
 
-        return $this->renderForm('renaissance/adhesion/member_card.html.twig', [
-            'form' => $form,
+        return $this->render('renaissance/adhesion/member_card.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

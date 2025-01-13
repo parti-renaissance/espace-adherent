@@ -4,6 +4,7 @@ namespace App\Donation\Handler;
 
 use App\Donation\Request\DonationRequestUtils;
 use App\Repository\DonationRepository;
+use App\Utils\UtmParams;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,11 @@ class TransactionCallbackHandler
 
         return new RedirectResponse($this->router->generate(
             'app_payment_status',
-            $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
+            UtmParams::mergeParams(
+                $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid),
+                $donation->utmSource,
+                $donation->utmCampaign
+            )
         ));
     }
 }

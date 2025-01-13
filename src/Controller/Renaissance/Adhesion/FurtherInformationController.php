@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\Adhesion;
 use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
 use App\Form\AdhesionFurtherInformationType;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +19,11 @@ class FurtherInformationController extends AbstractController
 
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $utmParams = UtmParams::fromRequest($request);
+
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME, $utmParams);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION)) {
@@ -36,11 +39,11 @@ class FurtherInformationController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION);
             $entityManager->flush();
 
-            return $this->redirectToRoute(MemberCardController::ROUTE_NAME);
+            return $this->redirectToRoute(MemberCardController::ROUTE_NAME, $utmParams);
         }
 
-        return $this->renderForm('renaissance/adhesion/further_information.html.twig', [
-            'form' => $form,
+        return $this->render('renaissance/adhesion/further_information.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
