@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b276d478ae15ff7f24c23ec0dd0bd4d",
+    "content-hash": "bc1dba1202ceabc6488a906f0ab0ecef",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -8278,16 +8278,16 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.10.1",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "67ee847f81957bdc909f681ff9f578231eed8cfa"
+                "reference": "6501d1770339928785da9234e9f718affbef8d4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/67ee847f81957bdc909f681ff9f578231eed8cfa",
-                "reference": "67ee847f81957bdc909f681ff9f578231eed8cfa",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/6501d1770339928785da9234e9f718affbef8d4d",
+                "reference": "6501d1770339928785da9234e9f718affbef8d4d",
                 "shasum": ""
             },
             "require": {
@@ -8345,9 +8345,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.10.1"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v4.1.0"
             },
-            "time": "2023-12-06T19:54:58+00:00"
+            "time": "2025-01-09T10:56:51+00:00"
         },
         {
             "name": "openai-php/client",
