@@ -16,8 +16,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Action ciblée",
                     "slug": "action-ciblee"
@@ -26,8 +28,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Atelier",
+                        "alert": null,
                         "slug": "atelier"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "ancrage local",
                     "slug": "ancrage-local"
@@ -36,8 +40,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
@@ -46,8 +52,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Conférence-débat",
                     "slug": "conference-debat"
@@ -56,8 +64,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Convivialité",
                     "slug": "convivialite"
@@ -66,8 +76,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Conférence",
+                        "alert": null,
                         "slug": "conference"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Débat",
                     "slug": "debat"
@@ -76,8 +88,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Évènements de campagne",
+                        "alert": null,
                         "slug": "evenements-de-campagne"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Élections départementales",
                     "slug": "elections-departementales"
@@ -86,8 +100,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Évènements de campagne",
+                        "alert": null,
                         "slug": "evenements-de-campagne"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Élections régionales",
                     "slug": "elections-regionales"
@@ -96,8 +112,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Événement innovant",
                     "slug": "evenement-innovant"
@@ -106,8 +124,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Kiosque",
                     "slug": "kiosque"
@@ -116,8 +136,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Marche",
                     "slug": "marche"
@@ -126,8 +148,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Porte-à-porte",
                     "slug": "porte-a-porte"
@@ -136,8 +160,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Atelier",
+                        "alert": null,
                         "slug": "atelier"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "projets citoyens",
                     "slug": "projets-citoyens"
@@ -146,8 +172,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Réunion d'équipe",
                     "slug": "reunion-dequipe"
@@ -156,8 +184,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Support party",
                     "slug": "support-party"
@@ -166,8 +196,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
+                        "alert": null,
                         "slug": "evenement"
                     },
+                    "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Tractage",
                     "slug": "tractage"
@@ -176,8 +208,10 @@ Feature:
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "Atelier",
+                        "alert": null,
                         "slug": "atelier"
                     },
+                    "alert": null,
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Un An",
                     "slug": "un-an"

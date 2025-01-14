@@ -44,6 +44,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
+    #[Groups(['event_category_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $alert = null;
+
     public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)
     {
         if ($name) {

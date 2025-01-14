@@ -549,6 +549,10 @@ event.personal_data_collect: J’accepte que LaREM traite mes données personnel
 event_type.municipal: Municipal
 event_type.committee: Comité
 event_type.default: Standard
+event.visibility.public: Public
+event.visibility.private: Interne
+event.visibility.adherent: Adhérents
+event.visibility.adherent_dues: Adhérent à jour
 
 #
 # Interactive

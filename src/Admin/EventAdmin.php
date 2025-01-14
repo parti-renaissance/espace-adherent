@@ -10,6 +10,7 @@ use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventCategory;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
+use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Form\EventCategoryType;
 use App\Utils\PhpConfigurator;
@@ -24,11 +25,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -209,8 +212,9 @@ class EventAdmin extends AbstractAdmin
                 ->add('published', null, [
                     'label' => 'Publié',
                 ])
-                ->add('private', null, [
-                    'label' => 'Réservé aux adhérents',
+                ->add('visibility', EnumType::class, [
+                    'label' => 'Visibilité',
+                    'class' => EventVisibilityEnum::class,
                 ])
                 ->add('renaissanceEvent', null, [
                     'label' => 'Événement renaissance',
@@ -269,6 +273,15 @@ class EventAdmin extends AbstractAdmin
 
                     return true;
                 },
+            ])
+            ->add('visibility', ChoiceFilter::class, [
+                'label' => 'Visibilité',
+                'show_filter' => true,
+                'field_type' => EnumType::class,
+                'field_options' => [
+                    'multiple' => true,
+                    'class' => EventVisibilityEnum::class,
+                ],
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',

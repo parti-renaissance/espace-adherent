@@ -36,9 +36,8 @@ class EventCategoryAdmin extends AbstractAdmin
                     'Masqué' => BaseEventCategory::DISABLED,
                 ],
             ])
-            ->add('eventGroupCategory', ModelType::class, [
-                'label' => 'Groupe',
-            ])
+            ->add('eventGroupCategory', ModelType::class, ['label' => 'Groupe', 'btn_add' => false])
+            ->add('alert', null, ['label' => 'Alerte'])
         ;
     }
 
