@@ -141,7 +141,7 @@ class ContactAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('lastPaymentAt', DateRangeFilter::class, [
+            ->add('lastPaymentDate', DateRangeFilter::class, [
                 'label' => 'Date de dernier paiement',
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
