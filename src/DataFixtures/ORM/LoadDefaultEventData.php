@@ -29,7 +29,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $senatorialCandidate = $this->getReference('senatorial-candidate', Adherent::class);
         $adherent5 = $this->getReference('adherent-5', Adherent::class);
         $adherentRe4 = $this->getReference('renaissance-user-4', Adherent::class);
-        $pad92 = $this->getReference('renaissance-user-4', Adherent::class);
+        $pad92 = $this->getReference('president-ad-1', Adherent::class);
 
         $eventCategory7 = $this->getReference('CE007', EventCategory::class);
 

@@ -10,9 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
-#[ORM\Index(columns: ['email_address'], name: 'event_registration_email_address_idx')]
-#[ORM\Index(columns: ['adherent_uuid'], name: 'event_registration_adherent_uuid_idx')]
+#[ORM\Index(columns: ['email_address'])]
+#[ORM\Index(columns: ['adherent_uuid'])]
 #[ORM\Table(name: 'events_registrations')]
+#[ORM\UniqueConstraint(columns: ['adherent_uuid', 'event_id'])]
 class EventRegistration
 {
     use EntityIdentityTrait;
@@ -22,7 +23,7 @@ class EventRegistration
     #[ORM\ManyToOne(targetEntity: BaseEvent::class)]
     private $event;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private $emailAddress;
 
     #[ORM\Column(length: 15, nullable: true)]
@@ -92,11 +93,6 @@ class EventRegistration
     public function isEventFinished(): bool
     {
         return $this->event->isFinished();
-    }
-
-    public function getAttendedAt(): \DateTimeImmutable
-    {
-        return \DateTimeImmutable::createFromMutable($this->event->getBeginAt());
     }
 
     public function getFullName(): string
