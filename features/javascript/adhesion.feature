@@ -224,7 +224,7 @@ Feature:
         And I should see "Vous êtes désormais adhérent, félicitations !"
         And User "adherent@renaissance.code" should be in "Comité des 3 communes" committee
         When I click the ".re-button" selector
-        Then I should be on "/app"
+        Then I should be on "/app" wait otherwise
 
     Scenario: I can become sympathizer
         Given the following fixtures are loaded:
@@ -358,7 +358,7 @@ Feature:
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais sympathisant, bienvenue !"
         When I click the ".re-button" selector
-        Then I should be on "/app"
+        Then I should be on "/app" wait otherwise
 
     Scenario: I can pay for new year as adherent RE
         Given the following fixtures are loaded:
@@ -615,4 +615,4 @@ Feature:
         And I should see "Vous êtes désormais adhérent, félicitations !"
         And User "carl999@example.fr" should have zones "district_92-5, city_92024"
         When I click the ".re-button" selector
-        Then I should be on "/app"
+        Then I should be on "/app" wait otherwise
