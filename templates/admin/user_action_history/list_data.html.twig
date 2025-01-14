@@ -8,9 +8,8 @@
                     {% if key is same as('adherent_uuid') %}
                         {% set adherent = get_adherent_by_uuid(value) %}
 
-                        <b>Adhérent:</b>
                         {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-                            <a href="{{ path('admin_app_administrator_edit', {id: adherent.id}) }}">
+                            <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}">
                                 {{ adherent.fullName }}
                             </a>
                         {% else %}
