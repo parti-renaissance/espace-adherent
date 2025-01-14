@@ -53,7 +53,7 @@
         "exercise/htmlpurifier-bundle": "^5.0",
         "firebase/php-jwt": "^6.10",
         "friendsofsymfony/ckeditor-bundle": "^2.5",
-        "fusonic/opengraph": "^2.1",
+        "fusonic/opengraph": "^3.0",
         "gedmo/doctrine-extensions": "^3.14",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^3.0",
