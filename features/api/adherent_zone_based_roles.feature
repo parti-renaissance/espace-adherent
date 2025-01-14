@@ -1,4 +1,5 @@
 @api
+@debug
 Feature:
     In order to manage adherent mandates
     As a logged-in user
@@ -14,6 +15,7 @@ Feature:
                 "zones": ["e3efe6fd-906e-11eb-a875-0242ac150002"]
             }
             """
+        Then print last JSON response
         Then the response status code should be 201
         And the response should be in JSON
         And the JSON should be equal to:
