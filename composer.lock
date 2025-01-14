@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc1dba1202ceabc6488a906f0ab0ecef",
+    "content-hash": "e559c47ec62bc903f59d50d27c060cdf",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -3590,34 +3590,39 @@
         },
         {
             "name": "fusonic/opengraph",
-            "version": "v2.3.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fusonic/opengraph.git",
-                "reference": "09dca70b04b4221c9dc664e1689e876a3faa50c2"
+                "reference": "2daa6dce84f23b1bb6d66bf03b3e9371c39cd378"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/09dca70b04b4221c9dc664e1689e876a3faa50c2",
-                "reference": "09dca70b04b4221c9dc664e1689e876a3faa50c2",
+                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/2daa6dce84f23b1bb6d66bf03b3e9371c39cd378",
+                "reference": "2daa6dce84f23b1bb6d66bf03b3e9371c39cd378",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
-                "php": "^7.4|^8.0",
+                "php": "^8.1",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
-                "symfony/css-selector": "^3.0|^4.0|^5.0|^6.0",
-                "symfony/dom-crawler": "^3.0|^4.0|^5.0|^6.0"
+                "symfony/css-selector": "^5.4 || ^6.4 || ^7.1",
+                "symfony/dom-crawler": "^5.4 || ^6.4 || ^7.1"
             },
             "require-dev": {
-                "nyholm/psr7": "^1.2",
-                "phpunit/phpunit": "^9.0",
-                "symfony/http-client": "^6.0"
+                "friendsofphp/php-cs-fixer": "^3.65",
+                "nyholm/psr7": "^1.8",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^10.5 || ^11.4",
+                "symfony/http-client": "^5.4 || ^6.4 || ^7.1"
             },
             "suggest": {
-                "nyholm/psr7": "^1.2",
-                "symfony/http-client": "^5.0"
+                "nyholm/psr7": "^1.8",
+                "symfony/http-client": "^5.4 || ^6.4 || ^7.1"
             },
             "type": "library",
             "autoload": {
@@ -3636,15 +3641,15 @@
                 }
             ],
             "description": "PHP library for consuming and publishing Open Graph resources.",
-            "homepage": "https://github.com/fusonic/fusonic-opengraph",
+            "homepage": "https://github.com/fusonic/opengraph",
             "keywords": [
                 "opengraph"
             ],
             "support": {
                 "issues": "https://github.com/fusonic/opengraph/issues",
-                "source": "https://github.com/fusonic/opengraph/tree/v2.3.0"
+                "source": "https://github.com/fusonic/opengraph/tree/v3.0.0"
             },
-            "time": "2023-12-05T14:26:51+00:00"
+            "time": "2025-01-13T07:23:24+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
