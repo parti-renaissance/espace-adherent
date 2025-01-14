@@ -64,7 +64,7 @@
     "@types/google.maps": "^3.55.9",
     "eslint": "^8.0.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-import-resolver-webpack": "^0.13.9",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-jsx-a11y": "^6.10.0",
