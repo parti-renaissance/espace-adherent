@@ -3,8 +3,7 @@
 namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeAdherentMandateManager;
-use App\Committee\Event\CommitteeEvent;
-use App\Events;
+use App\Committee\Event\ApproveCommitteeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitializeSupervisorMandatesListener implements EventSubscriberInterface
@@ -15,12 +14,10 @@ class InitializeSupervisorMandatesListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            Events::COMMITTEE_APPROVED => 'onCommitteeApproved',
-        ];
+        return [ApproveCommitteeEvent::class => 'onCommitteeApproved'];
     }
 
-    public function onCommitteeApproved(CommitteeEvent $event): void
+    public function onCommitteeApproved(ApproveCommitteeEvent $event): void
     {
         $committee = $event->getCommittee();
 

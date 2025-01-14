@@ -297,7 +297,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
     public function findInAdherentZone(Adherent $adherent): array
     {
-        return $this->findInZones([$adherent->getAssemblyZone()]);
+        return $this->findInZones(array_filter([$adherent->getAssemblyZone()]));
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

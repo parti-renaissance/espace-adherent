@@ -8,18 +8,15 @@ use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class CommitteeEvent extends Event implements GeocodableEntityEventInterface
+abstract class AbstractCommitteeEvent extends Event implements CommitteeEventInterface, GeocodableEntityEventInterface
 {
     use GeoHashChangeAwareTrait;
 
-    private $committee;
-
-    public function __construct(?Committee $committee = null)
+    public function __construct(private readonly Committee $committee)
     {
-        $this->committee = $committee;
     }
 
-    public function getCommittee()
+    public function getCommittee(): Committee
     {
         return $this->committee;
     }

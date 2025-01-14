@@ -2,7 +2,7 @@
 
 namespace Tests\App\Geocoder\Subscriber;
 
-use App\Committee\Event\CommitteeEvent;
+use App\Committee\Event\EditCommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Geocoder\Geocoder;
@@ -93,7 +93,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($committee->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new CommitteeEvent($committee));
+        $this->subscriber->updateCoordinates(new EditCommitteeEvent($committee));
 
         $this->assertSame(45.7713288, $committee->getLatitude());
         $this->assertSame(4.8288758, $committee->getLongitude());
@@ -107,7 +107,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());
 
-        $this->subscriber->updateCoordinates(new CommitteeEvent($committee));
+        $this->subscriber->updateCoordinates(new EditCommitteeEvent($committee));
 
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());

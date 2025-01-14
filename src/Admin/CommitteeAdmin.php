@@ -4,12 +4,12 @@ namespace App\Admin;
 
 use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Committee\Event\CommitteeEvent;
+use App\Committee\Event\BeforeEditCommitteeEvent;
+use App\Committee\Event\EditCommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
-use App\Events;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\QueryBuilder;
@@ -156,9 +156,14 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
+    protected function alterObject(object $object): void
+    {
+        $this->dispatcher->dispatch(new BeforeEditCommitteeEvent($object));
+    }
+
     protected function postUpdate(object $object): void
     {
-        $this->dispatcher->dispatch(new CommitteeEvent($object), Events::COMMITTEE_UPDATED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($object));
     }
 
     protected function configureFormFields(FormMapper $form): void

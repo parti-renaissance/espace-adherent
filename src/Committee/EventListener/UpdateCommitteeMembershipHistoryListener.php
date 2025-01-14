@@ -2,7 +2,7 @@
 
 namespace App\Committee\EventListener;
 
-use App\Committee\Event\CommitteeEventInterface;
+use App\Committee\Event\CommitteeMembershipEventInterface;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Entity\Reporting\CommitteeMembershipHistory;
@@ -21,7 +21,7 @@ class UpdateCommitteeMembershipHistoryListener implements EventSubscriberInterfa
         return [UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onUserUpdateCommitteePrivilege'];
     }
 
-    public function onUserUpdateCommitteePrivilege(CommitteeEventInterface $event): void
+    public function onUserUpdateCommitteePrivilege(CommitteeMembershipEventInterface $event): void
     {
         $this->entityManager->persist(new CommitteeMembershipHistory(
             $event->getCommitteeMembership(),

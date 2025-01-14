@@ -4,7 +4,7 @@ namespace App\Geo\Subscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Address\AddressInterface;
-use App\Committee\Event\CommitteeEvent;
+use App\Committee\Event\CommitteeEventInterface;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
 use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
@@ -39,12 +39,13 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function assignZoneToCommittee(CommitteeEvent $event): void
+    public function assignZoneToCommittee(CommitteeEventInterface $event): void
     {
-        $committee = $event->getCommittee();
-        if (!$committee || !$event->isAddressChanged()) {
+        if (!$event->isAddressChanged()) {
             return;
         }
+
+        $committee = $event->getCommittee();
 
         $this->assignZone($committee, $committee->getPostAddress());
 
@@ -181,11 +182,13 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::COMMITTEE_CREATED => ['assignZoneToCommittee', -1024],
-            Events::COMMITTEE_UPDATED => ['assignZoneToCommittee', -1024],
+            CommitteeEventInterface::class => ['assignZoneToCommittee', -1024],
+
             Events::EVENT_CREATED => ['assignZoneToEvent', -1024],
             Events::EVENT_UPDATED => ['assignZoneToEvent', -1024],
+
             KernelEvents::VIEW => ['assignZoneToAction', EventPriorities::PRE_WRITE],
+
             UserEvents::USER_CREATED => ['assignZoneToAdherent', -257],
             UserEvents::USER_UPDATED => ['assignZoneToAdherent', -257],
         ];

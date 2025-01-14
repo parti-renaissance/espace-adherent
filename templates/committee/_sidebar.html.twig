@@ -95,16 +95,4 @@
             </ul>
         {% endif %}
     </div>
-
-    {% if committee.socialNetworksLinks|length > 0 %}
-        <div class="committee__card">
-            <h5>Suivez notre comité</h5>
-            {% for key, link in committee.socialNetworksLinks %}
-                <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{ key }} b__nudge--bottom-tiny">
-                    <i class="fa fa--auto fa-{{ key }} text--medium"></i>
-                    {{- link.label -}}
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
 </aside>

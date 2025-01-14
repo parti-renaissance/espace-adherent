@@ -4,7 +4,8 @@ namespace App\Committee;
 
 use App\Address\AddressInterface;
 use App\Collection\AdherentCollection;
-use App\Committee\Event\CommitteeEvent;
+use App\Committee\Event\ApproveCommitteeEvent;
+use App\Committee\Event\EditCommitteeEvent;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
@@ -12,7 +13,6 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
-use App\Events;
 use App\Exception\CommitteeMembershipException;
 use App\Geo\ZoneMatcher;
 use App\Membership\UserEvents;
@@ -133,8 +133,8 @@ class CommitteeManager
 
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_APPROVED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
+        $this->dispatcher->dispatch(new ApproveCommitteeEvent($committee));
     }
 
     /**
@@ -148,7 +148,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
     }
 
     /**
@@ -178,7 +178,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
     }
 
     /**
@@ -192,7 +192,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
+        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
     }
 
     /**
