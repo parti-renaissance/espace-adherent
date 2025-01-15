@@ -11,9 +11,6 @@ framework:
             template_webhook.client:
                 base_uri: '%env(PRODUCTION_WEBHOOK_HOST)%'
                 auth_bearer: '%env(TEMPLATE_WEBHOOK_KEY)%'
-            captain_verify.client:
-                base_uri: 'https://api.captainverify.com'
-                timeout: 15
             friendly_captcha.client:
                 base_uri: 'https://eu-api.friendlycaptcha.eu'
             mailchimp_signup.client:

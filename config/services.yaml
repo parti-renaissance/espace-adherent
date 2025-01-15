@@ -56,7 +56,6 @@ services:
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
             $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
-            $captainVerifyApiKey: '%env(CAPTAIN_VERIFY_API_KEY)%'
             $systemPayMode: '%env(SYSTEMPAY_MODE)%'
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
@@ -439,15 +438,6 @@ services:
     App\Messenger\AmqpTransport\AmqpTransportFactory:
         decorates: 'messenger.transport.amqp.factory'
         arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
-
-    App\CaptainVerify\Storage:
-        arguments:
-            [
-                !service {
-                    class: Symfony\Component\Cache\Psr16Cache,
-                    arguments: ['@app.cache.captain_verify'],
-                },
-            ]
 
     League\Glide\Responses\SymfonyResponseFactory: ~
 
