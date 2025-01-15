@@ -1,5 +1,5 @@
 parameters:
-    env(RABBITMQ_DSN): 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%2f?&heartbeat=5'
+    env(RABBITMQ_DSN): 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%2f?&heartbeat=60&read_timeout=180&write_timeout=90'
 
 framework:
     messenger:
