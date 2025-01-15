@@ -2,10 +2,8 @@
 
 namespace App\Validator;
 
-use App\Validator\Email\CaptainVerifyValidator;
 use App\Validator\Email\DisabledEmailValidator;
 use App\Validator\Email\DisposableEmailValidation;
-use App\Validator\Email\Reason\InvalidEmailByCaptainVerify;
 use Egulias\EmailValidator\EmailValidator as EguliasEmailValidator;
 use Egulias\EmailValidator\Result\MultipleErrors;
 use Egulias\EmailValidator\Result\Reason\DomainAcceptsNoMail;
@@ -24,10 +22,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class StrictEmailValidator extends ConstraintValidator
 {
-    public function __construct(
-        private readonly DisabledEmailValidator $disabledEmailValidator,
-        private readonly CaptainVerifyValidator $captainVerifyValidator,
-    ) {
+    public function __construct(private readonly DisabledEmailValidator $disabledEmailValidator)
+    {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -58,10 +54,6 @@ class StrictEmailValidator extends ConstraintValidator
             $emailValidators[] = new DNSCheckValidation();
         }
 
-        if ($constraint->captainVerifyCheck) {
-            $emailValidators[] = $this->captainVerifyValidator;
-        }
-
         if ($constraint->disabledEmail) {
             $emailValidators[] = $this->disabledEmailValidator;
         }
@@ -89,7 +81,6 @@ class StrictEmailValidator extends ConstraintValidator
             UnableToGetDNSRecord::class,
             NoDNSRecord::class,
             DomainAcceptsNoMail::class,
-            InvalidEmailByCaptainVerify::class,
         ];
 
         foreach ($dnsCheckReasonsClass as $class) {

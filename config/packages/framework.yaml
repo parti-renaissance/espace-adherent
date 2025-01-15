@@ -19,5 +19,3 @@ framework:
             app.cache.redirection: ~
             app.cache.france_cities: ~
             app.cache.geocoder: ~
-            app.cache.captain_verify:
-                default_lifetime: 3600

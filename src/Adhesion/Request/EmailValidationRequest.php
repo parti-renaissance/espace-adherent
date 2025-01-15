@@ -17,7 +17,7 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank(message: "L'adresse email est nécessaire pour continuer.", groups: ['Default', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'])]
     #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:validate', 'bde-email:persist'])]
-    #[StrictEmail(captainVerifyCheck: true, groups: ['Default'])]
+    #[StrictEmail(groups: ['Default'])]
     #[StrictEmail(dnsCheck: false, groups: ['adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'])]
     private ?string $email = null;
 
