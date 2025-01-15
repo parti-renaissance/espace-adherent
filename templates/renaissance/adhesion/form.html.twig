@@ -24,7 +24,7 @@
                 />
             </header>
 
-            <section class="bg-[#F6F7F4] md:flex bg-cover overflow-y-auto bg-no-repeat" style="height: calc(100vh - 80px);background-image: url('{{ asset('/images/renaissance/adhesion.jpg') }}">
+            <section class="bg-[#F6F7F4] md:flex overflow-y-auto bg-no-repeat bg-[length:1000px_auto] md:bg-cover bg-[top_-80px_left_-160px] md:bg-[top_30%_left_48%]" style="height:calc(100vh - 80px);background-image: url({{ asset('/images/renaissance/adhesion.jpg') }});">
                 <div class="w-full">&nbsp;</div>
 
                 <div class="w-full">
@@ -87,13 +87,14 @@
                                             attr: {onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'civility'},
                                         }) }}
                                         <div class="flex flex-col xs:flex-row gap-5 ">
-                                            {{ form_row(form.lastName, {
-                                                label: false,
-                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
-                                            }) }}
                                             {{ form_row(form.firstName, {
                                                 label: false,
                                                 attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
+                                            }) }}
+
+                                            {{ form_row(form.lastName, {
+                                                label: false,
+                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
                                             }) }}
                                         </div>
 
@@ -153,7 +154,7 @@
 
                                             <div>
                                                 <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                                                    <twig:Atoms:ReLabel class="mb-6">En adhérant :</twig:Atoms:ReLabel>
+                                                    <twig:Atoms:ReLabel class="mb-6">En adhérent :</twig:Atoms:ReLabel>
                                                 </template>
 
                                                 {{ form_row(form.allowNotifications, {

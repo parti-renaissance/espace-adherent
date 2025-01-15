@@ -194,7 +194,7 @@ Feature:
 
         # Step 9 : member card
         Then I should be on "/adhesion/carte-adherent" wait otherwise
-        And I should see "Carte d'adhérant"
+        And I should see "Carte d'adhérent"
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
             | member_card[address][address]           | 92 bld Victor Hugo |
@@ -585,7 +585,7 @@ Feature:
                 }
             }
             """
-        And I should see "Carte d'adhérant"
+        And I should see "Carte d'adhérent"
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
             | member_card[address][address]           | 92 bld Victor Hugo |
