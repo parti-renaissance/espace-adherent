@@ -1885,7 +1885,6 @@ Feature:
                 "items": [
                     {
                         "subscription_date": "@string@.isDateTime()",
-                        "type": "sympathisant",
                         "first_name": "Referent",
                         "last_name": "Referent",
                         "postal_code": "77000",
@@ -1895,7 +1894,6 @@ Feature:
                     },
                     {
                         "subscription_date": "@string@.isDateTime()",
-                        "type": "sympathisant",
                         "first_name": "Francis",
                         "last_name": "Brioul",
                         "postal_code": "77000",
@@ -1905,7 +1903,6 @@ Feature:
                     },
                     {
                         "subscription_date": "@string@.isDateTime()",
-                        "type": "sympathisant",
                         "first_name": "Simple",
                         "last_name": "User",
                         "postal_code": "8057",
@@ -1915,7 +1912,6 @@ Feature:
                     },
                     {
                         "subscription_date": "@string@.isDateTime()",
-                        "type": "contact",
                         "first_name": "Marie",
                         "last_name": "CLAIRE",
                         "postal_code": null,

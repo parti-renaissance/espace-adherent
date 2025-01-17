@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Adherent\Tag\TagEnum;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
@@ -47,13 +46,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
         self::validUuids($uuids);
 
         return $this->findBy(['event' => $event, 'uuid' => $uuids]);
-    }
-
-    public function getByEventAndUuid(BaseEvent $event, array $uuids): EventRegistrationCollection
-    {
-        self::validUuids($uuids);
-
-        return $this->createEventRegistrationCollection($this->findBy(['event' => $event, 'uuid' => $uuids]));
     }
 
     public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?EventRegistration
@@ -204,11 +196,10 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('event_registration')
             ->select('event_registration.createdAt AS subscription_date')
-            ->addSelect('IF(adherent.id IS NOT NULL, IF(adherent.tags LIKE :adherent_tag, \'adherent\', \'sympathisant\'), \'contact\') AS type')
-            ->addSelect('IF(adherent.id IS NOT NULL, adherent.firstName, event_registration.firstName) AS first_name')
-            ->addSelect('IF(adherent.id IS NOT NULL, adherent.lastName, event_registration.lastName) AS last_name')
-            ->addSelect('IF(adherent.id IS NOT NULL, adherent.postAddress.postalCode, event_registration.postalCode) AS postal_code')
-            ->addSelect('IF(adherent.id IS NOT NULL, adherent.emailAddress, event_registration.emailAddress) AS email_address')
+            ->addSelect('COALESCE(adherent.firstName, event_registration.firstName) AS first_name')
+            ->addSelect('COALESCE(adherent.lastName, event_registration.lastName) AS last_name')
+            ->addSelect('COALESCE(adherent.postAddress.postalCode, event_registration.postalCode) AS postal_code')
+            ->addSelect('COALESCE(adherent.emailAddress, event_registration.emailAddress) AS email_address')
             ->addSelect('adherent.phone')
             ->addSelect('adherent.tags')
             ->leftJoin(
@@ -218,11 +209,9 @@ class EventRegistrationRepository extends ServiceEntityRepository
                 'event_registration.adherentUuid = adherent.uuid'
             )
             ->where('event_registration.event = :event')
+            ->andWhere('event_registration.emailAddress IS NOT NULL')
             ->orderBy('event_registration.createdAt', 'ASC')
-            ->setParameters([
-                'event' => $event,
-                'adherent_tag' => TagEnum::ADHERENT.':%',
-            ])
+            ->setParameter('event', $event)
         ;
     }
 
@@ -245,6 +234,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return (int) $this->createQueryBuilder('event_registration')
             ->select('COUNT(1)')
             ->where('event_registration.event = :event AND event_registration.adherentUuid != :organiser_uuid')
+            ->andWhere('event_registration.emailAddress IS NOT NULL')
             ->setParameter('event', $event)
             ->setParameter('organiser_uuid', $event->getOrganizer()->getUuid()->toString())
             ->getQuery()
