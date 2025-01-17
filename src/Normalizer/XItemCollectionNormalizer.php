@@ -34,11 +34,11 @@ class XItemCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
 
         return [
             'metadata' => [
-                'total_items' => $data->getTotalItems(),
-                'items_per_page' => $data->getItemsPerPage(),
+                'total_items' => (int) $data->getTotalItems(),
+                'items_per_page' => (int) $data->getItemsPerPage(),
                 'count' => $data->count(),
-                'current_page' => $data->getCurrentPage(),
-                'last_page' => $data->getLastPage(),
+                'current_page' => (int) $data->getCurrentPage(),
+                'last_page' => (int) $data->getLastPage(),
             ],
             'items' => $items,
         ];
