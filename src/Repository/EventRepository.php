@@ -353,4 +353,33 @@ class EventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllForPublicMap(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select(
+                'e.uuid',
+                'e.slug',
+                'e.name',
+                'e.beginAt',
+                'e.postAddress.latitude AS latitude',
+                'e.postAddress.longitude AS longitude',
+                'e.postAddress.cityName AS city',
+                'e.postAddress.postalCode AS postalCode',
+                'e.postAddress.country AS country',
+            )
+            ->where('e.visibility IN (:visibilities)')
+            ->andWhere('e.postAddress.latitude IS NOT NULL AND e.postAddress.longitude IS NOT NULL')
+            ->andWhere('e.status = :status')
+            ->andWhere('e.mode = :mode')
+            ->setParameters([
+                'mode' => BaseEvent::MODE_MEETING,
+                'status' => BaseEvent::STATUS_SCHEDULED,
+                'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
+            ])
+            ->getQuery()
+            ->enableResultCache(3600)
+            ->getArrayResult()
+        ;
+    }
 }
