@@ -223,22 +223,28 @@ class EventAdmin extends AbstractAdmin
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
+                    'required' => false,
                 ])
                 ->add('postAddress.postalCode', TextType::class, [
                     'label' => 'Code postal',
+                    'required' => false,
                 ])
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
+                    'required' => false,
                 ])
                 ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
+                    'required' => false,
                 ])
                 ->add('postAddress.latitude', NumberType::class, [
                     'label' => 'Latitude',
+                    'required' => false,
                     'html5' => true,
                 ])
                 ->add('postAddress.longitude', NumberType::class, [
                     'label' => 'Longitude',
+                    'required' => false,
                     'html5' => true,
                 ])
                 ->add('timeZone', null, [

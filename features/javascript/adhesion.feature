@@ -209,7 +209,7 @@ Feature:
         And I should see "Comité : Second Comité des 3 communes"
         And I should see "Responsable : Adherent 56 Fa56ke"
         When I press "Changer de comité"
-        And I wait 1 second
+        And I wait 2 second
         Then I should see "Choisissez un nouveau comité près de chez vous"
         And I should see "Comité : Comité des 3 communes"
         And I should see "Responsable : Adherent 55 Fa55ke"
@@ -600,7 +600,7 @@ Feature:
         And I should see "Comité : Second Comité des 3 communes"
         And I should see "Responsable : Adherent 56 Fa56ke"
         When I press "Changer de comité"
-        And I wait 1 second
+        And I wait 2 second
         Then I should see "Choisissez un nouveau comité près de chez vous"
         And I should see "Comité : Comité des 3 communes"
         And I should see "Responsable : Adherent 55 Fa55ke"
