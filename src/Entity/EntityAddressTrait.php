@@ -16,12 +16,14 @@ trait EntityAddressTrait
     /**
      * The address street.
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
-    #[ORM\Column(length: 150, nullable: true)]
+    #[ORM\Column(nullable: true)]
     protected ?string $address = null;
 
+    #[Assert\Length(max: 255)]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
-    #[ORM\Column(length: 150, nullable: true)]
+    #[ORM\Column(nullable: true)]
     protected ?string $additionalAddress = null;
 
     /**

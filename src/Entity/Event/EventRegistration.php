@@ -70,7 +70,7 @@ class EventRegistration
         return $this->event;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
@@ -80,7 +80,7 @@ class EventRegistration
         return $this->postalCode;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

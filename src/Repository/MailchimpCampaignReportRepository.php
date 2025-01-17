@@ -52,11 +52,7 @@ class MailchimpCampaignReportRepository extends ServiceEntityRepository
             ->setParameter('last_month', new \DateTime("-$maxHistory days"))
         ;
 
-        if (!AdherentMessageTypeEnum::isValid($messageType)) {
-            throw new \InvalidArgumentException('Message type is invalid');
-        }
-
-        if (!\in_array($messageType, ScopeEnum::NATIONAL_SCOPES)) {
+        if (!\in_array($messageType, ScopeEnum::NATIONAL_SCOPES) && AdherentMessageTypeEnum::isValid($messageType)) {
             $qb
                 ->andWhere('message INSTANCE OF :type')
                 ->setParameter('type', $messageType)

@@ -1679,7 +1679,7 @@ Feature:
                         },
                         {
                             "name": "event_url",
-                            "content": "http://vox.code/evenements/@uuid@"
+                            "content": "http://vox.code/evenements/@string@.isDateTime()-nouvel-evenement-online"
                         },
                         {
                             "name": "event_date",
