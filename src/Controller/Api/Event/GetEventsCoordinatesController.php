@@ -4,15 +4,16 @@ namespace App\Controller\Api\Event;
 
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/events/coordinates', name: 'api_events_get_coordinates', methods: ['GET'])]
 class GetEventsCoordinatesController extends AbstractController
 {
-    public function __invoke(EventRepository $repository): Response
+    public function __invoke(Request $request, EventRepository $repository): Response
     {
-        $events = $repository->findAllForPublicMap();
+        $events = $repository->findAllForPublicMap($request->query->get('category'));
 
         $geojson = [
             'type' => 'FeatureCollection',

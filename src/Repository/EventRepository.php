@@ -6,6 +6,7 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
@@ -354,9 +355,9 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllForPublicMap(): array
+    public function findAllForPublicMap(?string $categorySlug): array
     {
-        return $this->createQueryBuilder('e')
+        $qb = $this->createQueryBuilder('e')
             ->select(
                 'e.uuid',
                 'e.slug',
@@ -377,9 +378,17 @@ class EventRepository extends ServiceEntityRepository
                 'status' => BaseEvent::STATUS_SCHEDULED,
                 'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
             ])
-            ->getQuery()
-            ->enableResultCache(3600)
-            ->getArrayResult()
         ;
+
+        if ($categorySlug) {
+            $qb
+                ->innerJoin('e.category', 'c')
+                ->andWhere('c.slug = :category AND c.status = :cat_status')
+                ->setParameter('category', $categorySlug)
+                ->setParameter('cat_status', BaseEventCategory::ENABLED)
+            ;
+        }
+
+        return $qb->getQuery()->enableResultCache(3600)->getArrayResult();
     }
 }
