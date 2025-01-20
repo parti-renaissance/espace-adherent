@@ -18040,16 +18040,16 @@
         },
         {
             "name": "willdurand/geocoder-bundle",
-            "version": "5.20.1",
+            "version": "5.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/BazingaGeocoderBundle.git",
-                "reference": "0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b"
+                "reference": "737e905630208f67d51577f9810f9316fec798a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b",
-                "reference": "0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b",
+                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/737e905630208f67d51577f9810f9316fec798a3",
+                "reference": "737e905630208f67d51577f9810f9316fec798a3",
                 "shasum": ""
             },
             "require": {
@@ -18057,9 +18057,9 @@
                 "php": "^7.4 || ^8.0",
                 "php-http/curl-client": "^2.3",
                 "php-http/discovery": "^1.14",
-                "symfony/console": "^4.4 || ^5.4 || ^6.4 || ^7.0",
-                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.4 || ^7.0",
-                "symfony/options-resolver": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+                "symfony/console": "^5.4 || ^6.4 || ^7.0",
+                "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.0",
+                "symfony/options-resolver": "^5.4 || ^6.4 || ^7.0",
                 "willdurand/geocoder": "^4.6"
             },
             "conflict": {
@@ -18068,9 +18068,9 @@
             "require-dev": {
                 "doctrine/annotations": "^1.11.1 || ^2.0",
                 "doctrine/doctrine-bundle": "^2.3",
-                "doctrine/orm": "^2.8",
+                "doctrine/orm": "^2.8 || ^3.0",
                 "fakerphp/faker": "^1.20",
-                "friendsofphp/php-cs-fixer": "^3.0",
+                "friendsofphp/php-cs-fixer": "^3.13",
                 "geocoder-php/algolia-places-provider": "^0.4",
                 "geocoder-php/arcgis-online-provider": "^4.4",
                 "geocoder-php/bing-maps-provider": "^4.3",
@@ -18109,12 +18109,12 @@
                 "phpstan/phpstan": "^1.9.2",
                 "psr/http-client": "^1.0",
                 "psr/simple-cache": "^1.0 || ^2.0",
-                "symfony/cache": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/phpunit-bridge": "^6.1",
-                "symfony/validator": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/var-exporter": "^5.0 || ^6.0 || ^7.0",
-                "symfony/yaml": "^4.4 || ^5.0 || ^6.0 || ^7.0"
+                "symfony/cache": "^5.4 || ^6.4 || ^7.0",
+                "symfony/config": "^5.4 || ^6.4 || ^7.0",
+                "symfony/phpunit-bridge": "^5.4 || ^6.4 || ^7.0",
+                "symfony/validator": "^5.4 || ^6.4 || ^7.0",
+                "symfony/var-exporter": "^5.4 || ^6.4 || ^7.0",
+                "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -18144,9 +18144,9 @@
             ],
             "support": {
                 "issues": "https://github.com/geocoder-php/BazingaGeocoderBundle/issues",
-                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.20.1"
+                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.21.0"
             },
-            "time": "2024-05-22T10:35:41+00:00"
+            "time": "2025-01-17T11:44:57+00:00"
         },
         {
             "name": "willdurand/negotiation",
