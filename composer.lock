@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e559c47ec62bc903f59d50d27c060cdf",
+    "content-hash": "c2708bf160aa2ca1f1a7331ba2931d6e",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -4395,16 +4395,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.17.2",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "41749f7e1ce35fcfa1dd50ab67ecdbdbea4c5fe6"
+                "reference": "09422ade313b90646058bc63624233510a49abb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/41749f7e1ce35fcfa1dd50ab67ecdbdbea4c5fe6",
-                "reference": "41749f7e1ce35fcfa1dd50ab67ecdbdbea4c5fe6",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/09422ade313b90646058bc63624233510a49abb0",
+                "reference": "09422ade313b90646058bc63624233510a49abb0",
                 "shasum": ""
             },
             "require": {
@@ -4439,9 +4439,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.17.2"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v2.0.0"
             },
-            "time": "2024-12-12T21:15:35+00:00"
+            "time": "2025-01-11T02:14:50+00:00"
         },
         {
             "name": "google/cloud-storage",
