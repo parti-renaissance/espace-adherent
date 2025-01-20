@@ -3,7 +3,8 @@
 namespace App\Entity\JeMengage;
 
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\ImageExposeInterface;
+use App\Entity\ImageManageableInterface;
 use App\Entity\ImageTrait;
 use App\Repository\JeMengage\HeaderBlockRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: HeaderBlockRepository::class)]
 #[ORM\Table(name: 'jemengage_header_blocks')]
 #[UniqueEntity(fields: ['name'], message: 'header_block.name.unique')]
-class HeaderBlock implements ExposedImageOwnerInterface
+class HeaderBlock implements ImageManageableInterface, ImageExposeInterface
 {
     use EntityTimestampableTrait;
     use ImageTrait;

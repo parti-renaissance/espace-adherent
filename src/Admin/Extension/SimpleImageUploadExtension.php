@@ -2,7 +2,7 @@
 
 namespace App\Admin\Extension;
 
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 use App\Image\ImageManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -28,7 +28,7 @@ class SimpleImageUploadExtension extends AbstractAdminExtension
 
     public function postRemove(AdminInterface $admin, object $object): void
     {
-        if (!$object instanceof ImageOwnerInterface) {
+        if (!$object instanceof ImageManageableInterface) {
             return;
         }
 
@@ -37,7 +37,7 @@ class SimpleImageUploadExtension extends AbstractAdminExtension
 
     private function saveImage($object): void
     {
-        if (!$object instanceof ImageOwnerInterface) {
+        if (!$object instanceof ImageManageableInterface) {
             return;
         }
 

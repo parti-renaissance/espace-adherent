@@ -4,6 +4,7 @@ namespace App\Controller\Api\Event;
 
 use App\Entity\Event\BaseEvent;
 use App\Exporter\EventParticipantsExporter;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\EventRegistrationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -33,7 +34,10 @@ class GetEventParticipantsController extends AbstractController
                 $request->query->getInt('page', 1),
                 $request->query->getInt('page_size', 30)
             ),
-            context: [TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true]
+            context: [
+                'groups' => ['event_registration_list', ImageExposeNormalizer::NORMALIZATION_GROUP],
+                TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
+            ]
         );
     }
 }

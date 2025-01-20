@@ -76,12 +76,10 @@ class CommitteeTest extends AbstractKernelTestCase
         $committee = $this->createCommittee();
         $committee->preApproved();
 
-        $this->assertTrue($committee->isPreApproved());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertFalse($committee->isPreRefused());
         $this->assertEquals(null, $committee->getApprovedAt());
     }
 
@@ -90,12 +88,10 @@ class CommitteeTest extends AbstractKernelTestCase
         $committee = $this->createCommittee();
         $committee->preRefused();
 
-        $this->assertTrue($committee->isPreRefused());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertFalse($committee->isPreApproved());
         $this->assertEquals(null, $committee->getApprovedAt());
     }
 
@@ -109,8 +105,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
         $this->assertFalse($committee->isWaitingForApproval());
-        $this->assertFalse($committee->isPreApproved());
-        $this->assertFalse($committee->isPreRefused());
         $this->assertEquals(new \DateTime($timestamp), $committee->getApprovedAt());
     }
 
@@ -131,8 +125,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isWaitingForApproval());
-        $this->assertFalse($committee->isPreApproved());
-        $this->assertFalse($committee->isPreRefused());
         $this->assertTrue($committee->isClosed());
     }
 

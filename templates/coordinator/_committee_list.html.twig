@@ -9,15 +9,6 @@
     {% endif %}
 
     <tr class="coordinator__item space--20-0">
-        <td>
-            {{ committee.creator.fullName }}
-            <br />
-            {{ committee.creator.emailAddress }}
-            {% if committee.creator.phone %}
-            <br />
-            {{ committee.creator.phone|phone_number_format }}
-            {% endif %}
-        </td>
         <td>{{ committee.name }}</td>
         <td>{{ committee.cityName }}</td>
         <td>{{ committee.postalCode }}</td>

@@ -38,9 +38,6 @@ doctrine:
             softdeleteable:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
-            enabled:
-                class: App\Doctrine\Filter\EnabledFilter
-                enabled: true
 
         dql:
             datetime_functions:

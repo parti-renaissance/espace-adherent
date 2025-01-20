@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Api\DTO\ImageContent;
 use App\Image\ImageUploadHelper;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +42,6 @@ class UpdateImageController extends AbstractController
 
         $this->imageUploadHelper->uploadImage($object, $image);
 
-        return $this->json($object, Response::HTTP_OK, [], ['groups' => [ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]);
+        return $this->json($object, Response::HTTP_OK, [], ['groups' => [ImageExposeNormalizer::NORMALIZATION_GROUP]]);
     }
 }

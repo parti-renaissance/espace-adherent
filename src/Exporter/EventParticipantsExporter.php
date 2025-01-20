@@ -4,6 +4,7 @@ namespace App\Exporter;
 
 use App\Adherent\Tag\TagTranslator;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\EventRegistration;
 use App\Repository\EventRegistrationRepository;
 use App\Utils\PhoneNumberUtils;
 use Cocur\Slugify\Slugify;
@@ -33,16 +34,17 @@ class EventParticipantsExporter
             new IteratorCallbackSourceIterator(
                 $this->eventRegistrationRepository->iterateByEvent($event),
                 function (array $data) {
+                    /** @var EventRegistration $registration */
                     $registration = array_shift($data);
                     $row = [];
 
-                    $row['Prénom'] = $registration['first_name'];
-                    $row['Nom'] = $registration['last_name'];
-                    $row['Email'] = $registration['email_address'];
-                    $row['Labels'] = implode(', ', array_map(fn (string $tag) => $this->tagTranslator->trans($tag, false), $registration['tags'] ?? []));
-                    $row['Code postal'] = $registration['postal_code'];
-                    $row['Téléphone'] = PhoneNumberUtils::format($registration['phone']);
-                    $row['Date d\'inscription'] = $registration['subscription_date']->format('Y-m-d H:i:s');
+                    $row['Prénom'] = $registration->getFirstName();
+                    $row['Nom'] = $registration->getLastName();
+                    $row['Email'] = $registration->getEmailAddress();
+                    $row['Labels'] = implode(', ', array_map(fn (string $tag) => $this->tagTranslator->trans($tag, false), $registration->getTags() ?? []));
+                    $row['Code postal'] = $registration->getPostalCode();
+                    $row['Téléphone'] = PhoneNumberUtils::format($registration->getPhone());
+                    $row['Date d\'inscription'] = $registration->getCreatedAt()->format('Y-m-d H:i:s');
 
                     return $row;
                 })

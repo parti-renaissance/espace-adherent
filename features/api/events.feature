@@ -883,7 +883,6 @@ Feature:
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8",
-                    "link": "http://test.enmarche.code/comites/en-marche-paris-8",
                     "created_at": "@string@.isDateTime()"
                 },
                 "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
@@ -1050,7 +1049,6 @@ Feature:
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8",
-                    "link": "http://test.enmarche.code/comites/en-marche-paris-8",
                     "created_at": "@string@.isDateTime()"
                 },
                 "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
@@ -1329,7 +1327,6 @@ Feature:
                     "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
                     "name": "Comité des 3 communes",
                     "slug": "comite-des-3-communes",
-                    "link": "http://test.enmarche.code/comites/comite-des-3-communes",
                     "created_at": "@string@.isDateTime()"
                 },
                 "participants_count": 1,
@@ -1884,39 +1881,47 @@ Feature:
                 },
                 "items": [
                     {
-                        "subscription_date": "@string@.isDateTime()",
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
                         "first_name": "Referent",
                         "last_name": "Referent",
                         "postal_code": "77000",
                         "email_address": "referent@en-marche-dev.fr",
                         "phone": "+33 6 73 65 43 49",
+                        "image_url": null,
                         "tags": []
                     },
                     {
-                        "subscription_date": "@string@.isDateTime()",
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
                         "first_name": "Francis",
                         "last_name": "Brioul",
                         "postal_code": "77000",
                         "email_address": "francis.brioul@yahoo.com",
+                        "image_url": null,
                         "phone": "+33 6 73 65 43 49",
                         "tags": []
                     },
                     {
-                        "subscription_date": "@string@.isDateTime()",
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
                         "first_name": "Simple",
                         "last_name": "User",
                         "postal_code": "8057",
                         "email_address": "simple-user@example.ch",
                         "phone": null,
+                        "image_url": null,
                         "tags": []
                     },
                     {
-                        "subscription_date": "@string@.isDateTime()",
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
                         "first_name": "Marie",
                         "last_name": "CLAIRE",
                         "postal_code": null,
                         "email_address": "marie.claire@test.com",
                         "phone": null,
+                        "image_url": null,
                         "tags": []
                     }
                 ]

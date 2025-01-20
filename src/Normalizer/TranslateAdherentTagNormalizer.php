@@ -49,7 +49,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
                 };
             }
 
-            $data['tags'] = array_values(array_filter(array_map($callback, $data['tags'])));
+            $data['tags'] = array_values(array_filter(array_map($callback, $data['tags'] ?? [])));
         }
 
         return $data;

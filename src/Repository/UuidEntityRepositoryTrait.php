@@ -13,13 +13,9 @@ trait UuidEntityRepositoryTrait
      *
      * @throws InvalidUuidException
      */
-    public function findOneByUuid(string $uuid, bool $disabledEntity = false): ?object
+    public function findOneByUuid(string $uuid): ?object
     {
         static::validUuid($uuid);
-
-        if ($disabledEntity && $this->_em->getFilters()->isEnabled('enabled')) {
-            $this->_em->getFilters()->disable('enabled');
-        }
 
         return $this->findOneBy(['uuid' => $uuid]);
     }

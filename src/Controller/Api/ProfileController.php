@@ -20,7 +20,7 @@ use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\OAuth\TokenRevocationAuthority;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
@@ -48,7 +48,7 @@ class ProfileController extends AbstractController
 {
     private const READ_PROFILE_SERIALIZATION_GROUPS = [
         'profile_read',
-        ImageOwnerExposedNormalizer::NORMALIZATION_GROUP,
+        ImageExposeNormalizer::NORMALIZATION_GROUP,
     ];
 
     private const WRITE_PROFILE_SERIALIZATION_GROUPS = [

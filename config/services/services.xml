@@ -14,9 +14,6 @@
         <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
 
         <!-- DoctrineExtension -->
-        <service id="App\Api\Doctrine\VisibleStatusesExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>

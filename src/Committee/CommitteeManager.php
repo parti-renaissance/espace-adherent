@@ -251,14 +251,7 @@ class CommitteeManager
 
     public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilter $filter): array
     {
-        $committees = $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filter);
-
-        foreach ($committees as $committee) {
-            $creator = $this->getCommitteeCreator($committee);
-            $committee->setCreator($creator);
-        }
-
-        return $committees;
+        return $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filter);
     }
 
     private function changePrivilegeOnMembership(

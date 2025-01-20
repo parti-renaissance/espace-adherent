@@ -31,7 +31,7 @@ use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Action\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(
             uriTemplate: '/v3/actions/{uuid}',
-            normalizationContext: ['groups' => ['action_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
+            normalizationContext: ['groups' => ['action_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
         ),
         new Put(
             uriTemplate: '/v3/actions/{uuid}',
@@ -70,11 +70,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/v3/actions',
-            normalizationContext: ['groups' => ['action_read_list', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['action_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]]
         ),
         new Post(uriTemplate: '/v3/actions'),
     ],
-    normalizationContext: ['groups' => ['action_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
+    normalizationContext: ['groups' => ['action_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['action_write']],
     order: ['date' => 'ASC'],
     paginationItemsPerPage: 300,

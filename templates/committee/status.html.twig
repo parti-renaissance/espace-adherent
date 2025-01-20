@@ -1,11 +1,7 @@
 {% if committee.isRefused %}
     <span class="label label-danger">Refusé</span>
-{% elseif committee.isPreRefused %}
-    <span class="label label-danger"><i class="fa fa-times"></i></span>
 {% elseif committee.isApproved %}
     <span class="label label-success">Accepté</span>
-{% elseif committee.isPreApproved %}
-    <span class="label label-success"><i class="fa fa-check-circle"></i></span>
 {% elseif committee.isClosed %}
     <span class="label label-default">Fermé</span>
 {% else %}

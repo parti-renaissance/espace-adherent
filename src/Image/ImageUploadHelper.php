@@ -3,7 +3,7 @@
 namespace App\Image;
 
 use App\Api\DTO\ImageContent;
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 use App\Image\Event\ImageUploadedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -17,7 +17,7 @@ final class ImageUploadHelper
     ) {
     }
 
-    public function uploadImage(ImageOwnerInterface $entity, ImageContent $imageContent): void
+    public function uploadImage(ImageManageableInterface $entity, ImageContent $imageContent): void
     {
         if ($entity->hasImageName()) {
             $this->imageManager->removeImage($entity);
@@ -31,7 +31,7 @@ final class ImageUploadHelper
         $this->eventDispatcher->dispatch(new ImageUploadedEvent($entity));
     }
 
-    public function removeImage(ImageOwnerInterface $entity): void
+    public function removeImage(ImageManageableInterface $entity): void
     {
         if (!$entity->hasImageName()) {
             return;

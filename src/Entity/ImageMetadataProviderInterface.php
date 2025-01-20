@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
-interface AdvancedImageOwnerInterface extends ImageOwnerInterface
+/**
+ * Interface for image metadata aware entities.
+ */
+interface ImageMetadataProviderInterface
 {
     public function getImageSize(): ?int;
 

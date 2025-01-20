@@ -10,7 +10,7 @@ use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
@@ -79,7 +79,7 @@ class UserController extends AbstractController
         }
 
         $context['groups'][] = 'user_profile';
-        $context['groups'][] = ImageOwnerExposedNormalizer::NORMALIZATION_GROUP;
+        $context['groups'][] = ImageExposeNormalizer::NORMALIZATION_GROUP;
 
         return $context;
     }
