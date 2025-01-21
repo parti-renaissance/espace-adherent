@@ -30,7 +30,8 @@ class GetEventsCoordinatesController extends AbstractController
                 'properties' => [
                     'slug' => $event['slug'],
                     'name' => $event['name'],
-                    'date' => $event['beginAt']->format('\L\e d/m/Y à H:i'),
+                    'date' => $event['beginAt']->format('Y-m-d H:i:s'),
+                    'timestamp' => $event['beginAt']->getTimestamp(),
                     'city' => $event['city'],
                     'country' => $event['country'],
                     'postalCode' => $event['postalCode'],
