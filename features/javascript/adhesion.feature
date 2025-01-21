@@ -141,12 +141,12 @@ Feature:
         Then I should see "Le code d'activation est erroné."
         When I fill activation code from email
         And I press "Valider"
-        And I wait 3 seconds
         Then I should be on "/adhesion/creation-mot-de-passe" wait otherwise
         And I should see "Votre adresse email a bien été validée !"
 
         # Step 7 : password creation
         And I should see "Nouveau mot de passe"
+        And I wait 1 second
         When I fill in the following:
             | adherent_reset_password[password][first]  | test1234 |
             | adherent_reset_password[password][second] | 1234test |
@@ -224,7 +224,6 @@ Feature:
         And I should see "Vous êtes désormais adhérent, félicitations !"
         And User "adherent@renaissance.code" should be in "Comité des 3 communes" committee
         When I click the ".re-button" selector
-        And I wait 1 second
         Then I should be on "/app" wait otherwise
 
     Scenario: I can become sympathizer
@@ -258,7 +257,7 @@ Feature:
         And I click the "membership_request_isPhysicalPerson" element
         And I click the "membership_request_allowNotifications" element
         And I click the "#step_3 .re-button" selector
-        And I wait 5 seconds
+        And I wait 3 seconds
         Then User "sympathisant@renaissance.code" should have 7 subscription types
         And User "sympathisant@renaissance.code" should have zones "borough_75108, district_75-4"
         And I should be on "/adhesion/confirmation-email" wait otherwise
@@ -310,7 +309,6 @@ Feature:
         Then I should see "Le code d'activation est erroné."
         When I fill activation code from email
         And I press "Valider"
-        And I wait 3 seconds
         Then I should be on "/adhesion/creation-mot-de-passe" wait otherwise
         And User "sympathisant@renaissance.code" should be in "Comité du QG" committee
         And I should see "Votre adresse email a bien été validée !"
@@ -359,7 +357,6 @@ Feature:
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais sympathisant, bienvenue !"
         When I click the ".re-button" selector
-        And I wait 1 second
         Then I should be on "/app" wait otherwise
 
     Scenario: I can pay for new year as adherent RE
@@ -617,5 +614,4 @@ Feature:
         And I should see "Vous êtes désormais adhérent, félicitations !"
         And User "carl999@example.fr" should have zones "district_92-5, city_92024"
         When I click the ".re-button" selector
-        And I wait 1 second
         Then I should be on "/app" wait otherwise

@@ -51,7 +51,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @Then I should be on :url wait otherwise
      */
-    public function assertPageAddressAfterAllRedirection(string $url, int $ttl = 5, int $try = 5): void
+    public function assertPageAddressAfterAllRedirection(string $url, int $ttl = 5, int $try = 1): void
     {
         $sleep = 100000; // 0.1 second
 
@@ -75,6 +75,7 @@ class FeatureContext extends RawMinkContext
         $field = $this->getSession()->getPage()->find('css', $cssElementSelector);
 
         Assert::notNull($field, "Cannot find '$cssElementSelector'");
+        sleep(1);
 
         $field->click();
     }
