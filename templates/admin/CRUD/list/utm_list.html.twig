@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% if object.utmSource %}
+            <li>UTM Source : {{ object.utmSource }}</li>
+        {% endif %}
+        {% if object.utmCampaign %}
+            <li>UTM Campagne : {{ object.utmCampaign }}</li>
+        {% endif %}
+    </ul>
+{% endblock %}

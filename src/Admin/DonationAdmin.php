@@ -5,6 +5,7 @@ namespace App\Admin;
 use App\Address\AddressInterface;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Admin\Filter\UtmFilter;
 use App\Donation\DonationEvents;
 use App\Donation\Event\DonationWasCreatedEvent;
 use App\Donation\Event\DonationWasUpdatedEvent;
@@ -489,6 +490,7 @@ class DonationAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('utm', UtmFilter::class, ['label' => 'UTM Source / Campagne', 'show_filter' => true])
         ;
     }
 
@@ -519,6 +521,11 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('donatedAt', null, [
                 'label' => 'Date',
+            ])
+            ->add('utm', null, [
+                'label' => 'UTM',
+                'virtual_field' => true,
+                'template' => 'admin/CRUD/list/utm_list.html.twig',
             ])
             ->add('tags', null, [
                 'label' => 'Tags',
@@ -563,7 +570,7 @@ class DonationAdmin extends AbstractAdmin
                 'Don récurrent' => $donation->hasSubscription(),
                 'Status' => $donation->getStatus(),
                 'Nationalité' => $donation->getNationality(),
-                'Addresse' => $donation->getAddress(),
+                'Adresse' => $donation->getAddress(),
                 'Code postal' => $donation->getPostalCode(),
                 'Ville' => $donation->getCityName(),
                 'Pays' => $donation->getCountry(),
@@ -584,6 +591,8 @@ class DonationAdmin extends AbstractAdmin
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
                 'Cotisation' => $donation->isMembership(),
+                'UTM Source' => $donation->utmSource,
+                'UTM Campagne' => $donation->utmCampaign,
             ];
         }];
     }
