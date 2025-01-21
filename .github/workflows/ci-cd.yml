@@ -28,7 +28,7 @@ concurrency:
 jobs:
     build:
         name: Build dev
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
 
     build-static:
         name: Build assets
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
 
     lint:
         name: Lint
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [build]
         env:
             EXEC:
@@ -154,7 +154,7 @@ jobs:
 
     phpunit:
         name: PHPUnit
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [build]
 
         steps:
@@ -193,7 +193,7 @@ jobs:
 
     behat:
         name: Behat
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [build]
 
         steps:
@@ -224,7 +224,7 @@ jobs:
 
     behat-selenium:
         name: Behat/Selenium
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [build, build-static]
         strategy:
             fail-fast: false
@@ -268,7 +268,7 @@ jobs:
 
     docker-build-push-gcr:
         name: Build prod & push on registry
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [lint, phpunit, behat, behat-selenium]
         if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
 
@@ -327,7 +327,7 @@ jobs:
 
     deploy-staging:
         name: Deploy Staging
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [docker-build-push-gcr]
         environment: staging
         if: github.event.ref == 'refs/heads/master'
