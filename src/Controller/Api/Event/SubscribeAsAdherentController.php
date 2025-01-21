@@ -49,7 +49,7 @@ class SubscribeAsAdherentController extends AbstractController
         if ($request->isMethod(Request::METHOD_DELETE)) {
             $eventRegistration = $this->entityManager->getRepository(EventRegistration::class)->findOneBy([
                 'event' => $event,
-                'adherentUuid' => $adherent->getUuid(),
+                'adherent' => $adherent,
             ]);
 
             if ($eventRegistration) {
