@@ -15,11 +15,11 @@ framework:
                 base_uri: 'https://eu-api.friendlycaptcha.eu'
             mailchimp_signup.client:
                 base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%'
-                timeout: 15
             geo_gouv.client:
                 base_uri: 'https://geo.api.gouv.fr'
             mandrill.client:
                 base_uri: 'https://mandrillapp.com/api/1.0/'
+                timeout: 60
             mailchimp.client:
                 base_uri: 'https://us16.api.mailchimp.com'
                 auth_bearer: '%env(MAILCHIMP_API_KEY)%'
@@ -35,4 +35,3 @@ framework:
                     'client-secret': '%env(OHME_CLIENT_SECRET)%'
             google_place.client:
                 base_uri: 'https://maps.googleapis.com/maps/api/place/'
-                timeout: 15
