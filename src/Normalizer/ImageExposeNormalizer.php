@@ -2,14 +2,14 @@
 
 namespace App\Normalizer;
 
-use App\Entity\ExposedAdvancedImageOwnerInterface;
-use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\ImageExposeInterface;
+use App\Entity\ImageMetadataProviderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class ImageExposeNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -21,7 +21,7 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
 
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        /** @var ExposedImageOwnerInterface|ExposedAdvancedImageOwnerInterface $object */
+        /** @var ImageExposeInterface $object */
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__.$object::class => true]);
 
         $imageUrl = $object->getImageName() ? $this->urlGenerator->generate(
@@ -32,7 +32,7 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
 
         $data['image_url'] = $imageUrl;
 
-        if ($object instanceof ExposedAdvancedImageOwnerInterface) {
+        if ($object instanceof ImageMetadataProviderInterface) {
             $data['image'] = $imageUrl ? [
                 'url' => $imageUrl,
                 'width' => $object->getImageWidth(),
@@ -47,8 +47,7 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     {
         return [
             '*' => null,
-            ExposedImageOwnerInterface::class => false,
-            ExposedAdvancedImageOwnerInterface::class => false,
+            ImageExposeInterface::class => false,
         ];
     }
 
@@ -56,10 +55,7 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     {
         return
             \in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])
-            && (
-                $data instanceof ExposedImageOwnerInterface
-                || $data instanceof ExposedAdvancedImageOwnerInterface
-            )
+            && $data instanceof ImageExposeInterface
             && !isset($context[__CLASS__.$data::class]);
     }
 }

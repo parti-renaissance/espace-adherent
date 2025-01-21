@@ -10,12 +10,13 @@ use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\AdherentList\AdherentListController;
 use App\Entity\EntityZoneTrait;
-use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\Geo\Zone;
+use App\Entity\ImageAwareInterface;
+use App\Entity\ImageExposeInterface;
 use App\Entity\ImageTrait;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\MembershipSourceEnum;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -39,7 +40,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
             requirements: ['adherentUuid' => '%pattern_uuid%'],
             normalizationContext: [
                 'enable_tag_translator' => true,
-                'groups' => ['managed_user_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP],
+                'groups' => ['managed_user_read', ImageExposeNormalizer::NORMALIZATION_GROUP],
             ],
         ),
         new GetCollection(
@@ -56,7 +57,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 #[ORM\Index(columns: ['original_id'])]
 #[ORM\Index(columns: ['zones_ids'])]
 #[ORM\Table(name: 'projection_managed_users')]
-class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
+class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface
 {
     use EntityZoneTrait;
     use ImageTrait;

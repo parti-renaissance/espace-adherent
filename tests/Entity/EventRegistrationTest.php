@@ -18,33 +18,6 @@ class EventRegistrationTest extends TestCase
     public const ADHERENT_1_UUID = '0936205b-35fb-4250-a97e-bfc3a2bcba12';
     public const ADHERENT_2_UUID = '59e4203a-cf4a-4a39-a5f1-768d46c3575e';
 
-    public function testCreateEventRegistrationForRegisteredAdherent()
-    {
-        $registration = new EventRegistration(
-            Uuid::fromString(self::REGISTRATION_UUID),
-            $event = $this->createEventMock(self::EVENT_1_UUID),
-            'Joseph',
-            'Seguin',
-            'joseph.seguin@domain.tld',
-            null,
-            false,
-            Uuid::fromString(self::ADHERENT_1_UUID)
-        );
-
-        $this->assertEquals(Uuid::fromString(self::REGISTRATION_UUID), $registration->getUuid());
-        $this->assertSame($event, $registration->getEvent());
-        $this->assertSame('Joseph', $registration->getFirstName());
-        $this->assertSame('Seguin', $registration->getLastName());
-        $this->assertSame('joseph.seguin@domain.tld', $registration->getEmailAddress());
-        $this->assertFalse($registration->isNewsletterSubscriber());
-
-        $this->assertTrue($registration->matches($event, $this->createAdherentMock(self::ADHERENT_1_UUID)));
-        $this->assertFalse($registration->matches($event, $this->createAdherentMock(self::ADHERENT_2_UUID)));
-        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_1_UUID)));
-        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID), $this->createAdherentMock(self::ADHERENT_2_UUID)));
-        $this->assertFalse($registration->matches($this->createEventMock(self::EVENT_2_UUID)));
-    }
-
     public function testCreateEventRegistrationForGuest()
     {
         $registration = new EventRegistration(

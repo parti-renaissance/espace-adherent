@@ -39,7 +39,7 @@ class CommitteeController extends AbstractController
             return $authenticate;
         }
 
-        if ($committee->isPending() || $committee->isPreApproved()) {
+        if ($committee->isPending()) {
             return $this->redirectToRoute('app_committee_manager_edit', [
                 'slug' => $committee->getSlug(),
             ]);

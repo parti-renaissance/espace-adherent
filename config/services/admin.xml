@@ -1217,10 +1217,6 @@
             <tag name="sonata.admin.extension" target="app.admin.proposal" />
         </service>
 
-        <service id="app.admin.enabled_filter_configuration_extension" class="App\Admin\Extension\DoctrineEnabledFilterConfigurationAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.report" />
-        </service>
-
         <service id="app.admin.softdeleteable_filter_configuration_extension" class="App\Admin\Extension\DoctrineSoftdeleteableFilterConfigurationAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>

@@ -38,8 +38,8 @@ final class MySubscribedEventsFilter extends AbstractFilter
 
         $queryBuilder
             ->innerJoin(EventRegistration::class, 'event_registration', Join::WITH, 'event_registration.event = '.$queryBuilder->getRootAliases()[0])
-            ->andWhere('event_registration.adherentUuid = :adherent_uuid')
-            ->setParameter('adherent_uuid', $user->getUuid())
+            ->andWhere('event_registration.adherent = :adherent')
+            ->setParameter('adherent', $user)
         ;
     }
 

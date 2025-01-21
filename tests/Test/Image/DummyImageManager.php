@@ -2,17 +2,17 @@
 
 namespace Tests\App\Test\Image;
 
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 use App\Image\ImageManagerInterface;
 
 class DummyImageManager implements ImageManagerInterface
 {
-    public function saveImage(ImageOwnerInterface $object): void
+    public function saveImage(ImageManageableInterface $object): void
     {
         $object->setImageName($object->getImage());
     }
 
-    public function removeImage(ImageOwnerInterface $object): void
+    public function removeImage(ImageManageableInterface $object): void
     {
         $object->setImageName(null);
     }

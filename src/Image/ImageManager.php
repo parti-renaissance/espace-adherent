@@ -2,7 +2,7 @@
 
 namespace App\Image;
 
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 use App\Storage\ImageStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -18,7 +18,7 @@ class ImageManager implements ImageManagerInterface
         $this->imageStorage = $imageStorage;
     }
 
-    public function saveImage(ImageOwnerInterface $object): void
+    public function saveImage(ImageManageableInterface $object): void
     {
         if (!$object->getImage() instanceof UploadedFile) {
             throw new \RuntimeException(\sprintf('The image must be an instance of %s', UploadedFile::class));
@@ -31,7 +31,7 @@ class ImageManager implements ImageManagerInterface
         $this->imageStorage->save($object->getImage(), $object->getImagePath(), $oldPath);
     }
 
-    public function removeImage(ImageOwnerInterface $object): void
+    public function removeImage(ImageManageableInterface $object): void
     {
         if (!$object->hasImageName()) {
             throw new \RuntimeException('This object does not contain an image.');

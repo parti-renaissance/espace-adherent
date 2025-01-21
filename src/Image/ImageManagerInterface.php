@@ -2,11 +2,11 @@
 
 namespace App\Image;
 
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 
 interface ImageManagerInterface
 {
-    public function saveImage(ImageOwnerInterface $object): void;
+    public function saveImage(ImageManageableInterface $object): void;
 
-    public function removeImage(ImageOwnerInterface $object): void;
+    public function removeImage(ImageManageableInterface $object): void;
 }

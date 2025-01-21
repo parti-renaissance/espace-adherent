@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FacebookVideo
 {
     use EntityTimestampableTrait;
-    use EntityPublishableTrait;
 
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -41,6 +40,12 @@ class FacebookVideo
 
     #[ORM\Column(type: 'integer')]
     private $position = 1;
+
+    /**
+     * @var bool
+     */
+    #[ORM\Column(type: 'boolean')]
+    private $published = false;
 
     public function __construct()
     {
@@ -100,5 +105,17 @@ class FacebookVideo
     public function setPosition(?int $position)
     {
         $this->position = $position;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published)
+    {
+        $this->published = $published;
+
+        return $this;
     }
 }

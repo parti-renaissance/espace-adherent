@@ -6,9 +6,10 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\ImageExposeInterface;
+use App\Entity\ImageManageableInterface;
 use App\Entity\ImageTrait;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Jecoute\ResourceLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -24,12 +25,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
         ),
     ],
-    normalizationContext: ['groups' => ['jecoute_resource_links_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
+    normalizationContext: ['groups' => ['jecoute_resource_links_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     order: ['position' => 'ASC']
 )]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
 #[ORM\Table(name: 'jecoute_resource_link')]
-class ResourceLink implements ExposedImageOwnerInterface
+class ResourceLink implements ImageManageableInterface, ImageExposeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

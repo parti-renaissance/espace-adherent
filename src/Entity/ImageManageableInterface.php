@@ -4,19 +4,16 @@ namespace App\Entity;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-interface ImageOwnerInterface
+/**
+ * Interface for manageable image aware entities.
+ */
+interface ImageManageableInterface extends ImageAwareInterface
 {
     public function setImageName(?UploadedFile $image): void;
-
-    public function getImageName(): ?string;
-
-    public function hasImageName(): bool;
 
     public function getImage(): ?UploadedFile;
 
     public function setImage(?UploadedFile $image): void;
-
-    public function getImagePath(): string;
 
     public function isRemoveImage(): bool;
 

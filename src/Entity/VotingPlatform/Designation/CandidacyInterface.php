@@ -3,10 +3,10 @@
 namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\Adherent;
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageManageableInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface CandidacyInterface extends ImageOwnerInterface
+interface CandidacyInterface extends ImageManageableInterface
 {
     public const STATUS_DRAFT = 'draft';
     public const STATUS_CONFIRMED = 'confirmed';

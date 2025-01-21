@@ -66,6 +66,7 @@ class EventRegistrationCommand
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
+        $this->postalCode = $adherent->getPostalCode();
     }
 
     public function setAdherent(?Adherent $adherent): void
@@ -126,11 +127,6 @@ class EventRegistrationCommand
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
-    }
-
-    public function getAdherentUuid(): ?UuidInterface
-    {
-        return $this->adherent?->getUuid();
     }
 
     public function getAuthAppCode(): ?string

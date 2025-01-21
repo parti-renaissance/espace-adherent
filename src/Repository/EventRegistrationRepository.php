@@ -9,7 +9,6 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,7 +52,8 @@ class EventRegistrationRepository extends ServiceEntityRepository
         self::validUuid($adherentUuid);
 
         return $this->createEventRegistrationQueryBuilder($eventUuid)
-            ->andWhere('r.adherentUuid = :adherent_uuid')
+            ->innerJoin('r.adherent', 'a')
+            ->andWhere('a.uuid = :adherent_uuid')
             ->setParameter('adherent_uuid', $adherentUuid)
             ->getQuery()
             ->getOneOrNullResult()
@@ -157,11 +157,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('r');
 
         $qb->update()
-            ->set('r.adherentUuid', 'NULL')
+            ->set('r.adherent', 'NULL')
             ->set('r.firstName', $qb->expr()->literal('Anonyme'))
             ->set('r.emailAddress', 'NULL')
-            ->where('r.adherentUuid = :uuid')
-            ->setParameter(':uuid', $adherent->getUuid()->toString())
+            ->where('r.adherent = :adherent')
+            ->setParameter(':adherent', $adherent)
             ->getQuery()
             ->execute()
         ;
@@ -202,24 +202,13 @@ class EventRegistrationRepository extends ServiceEntityRepository
     private function createQueryBuilderByEvent(BaseEvent $event): QueryBuilder
     {
         return $this
-            ->createQueryBuilder('event_registration')
-            ->select('event_registration.createdAt AS subscription_date')
-            ->addSelect('COALESCE(adherent.firstName, event_registration.firstName) AS first_name')
-            ->addSelect('COALESCE(adherent.lastName, event_registration.lastName) AS last_name')
-            ->addSelect('COALESCE(adherent.postAddress.postalCode, event_registration.postalCode) AS postal_code')
-            ->addSelect('COALESCE(adherent.emailAddress, event_registration.emailAddress) AS email_address')
-            ->addSelect('adherent.phone')
-            ->addSelect('adherent.tags')
-            ->leftJoin(
-                Adherent::class,
-                'adherent',
-                Join::WITH,
-                'event_registration.adherentUuid = adherent.uuid'
-            )
-            ->where('event_registration.event = :event')
-            ->andWhere('event_registration.emailAddress IS NOT NULL')
-            ->orderBy('event_registration.createdAt', 'ASC')
-            ->setParameter('event', $event)
+            ->createQueryBuilder('er')
+            ->addSelect('a')
+            ->leftJoin('er.adherent', 'a')
+            ->where('er.event = :event')
+            ->andWhere('er.emailAddress IS NOT NULL')
+            ->orderBy('er.createdAt', 'ASC')
+            ->setParameters(['event' => $event])
         ;
     }
 
@@ -241,7 +230,8 @@ class EventRegistrationRepository extends ServiceEntityRepository
     {
         return (int) $this->createQueryBuilder('event_registration')
             ->select('COUNT(1)')
-            ->where('event_registration.event = :event AND event_registration.adherentUuid != :organiser_uuid')
+            ->leftJoin('event_registration.adherent', 'adherent')
+            ->where('event_registration.event = :event AND (adherent.uuid IS NULL OR adherent.uuid != :organiser_uuid)')
             ->andWhere('event_registration.emailAddress IS NOT NULL')
             ->setParameter('event', $event)
             ->setParameter('organiser_uuid', $event->getOrganizer()->getUuid()->toString())
@@ -267,7 +257,8 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('er')
             ->select('er', 'e')
             ->leftJoin('er.event', 'e')
-            ->where('er.adherentUuid = :adherent')
+            ->innerJoin('er.adherent', 'adherent')
+            ->where('adherent.uuid = :adherent')
             ->setParameter('adherent', $adherentUuid)
         ;
     }

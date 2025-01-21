@@ -4,6 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @deprecated
+ * @see EntityAdministratorBlameableTrait instead
+ */
 trait EntityAdministratorTrait
 {
     /**

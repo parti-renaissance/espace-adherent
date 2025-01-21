@@ -3,7 +3,7 @@
 namespace App\Controller\Api\JeMengage;
 
 use App\Entity\Adherent;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\JeMengage\HeaderBlockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +26,7 @@ class GetHeaderBlockContentController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $data = $normalizer->normalize($headerBlock, 'array', ['groups' => ['header_block_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]);
+        $data = $normalizer->normalize($headerBlock, 'array', ['groups' => ['header_block_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]);
 
         if (isset($data['content']) && $content = $data['content']) {
             if ($user) {

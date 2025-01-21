@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
@@ -82,7 +82,7 @@ class AdherentListController extends AbstractController
             Response::HTTP_OK,
             [],
             [
-                'groups' => ['managed_users_list', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP],
+                'groups' => ['managed_users_list', ImageExposeNormalizer::NORMALIZATION_GROUP],
                 TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
             ]
         );

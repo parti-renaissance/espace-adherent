@@ -22,6 +22,7 @@ use App\Entity\Report\ReportableInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
+use App\Exception\CoordinatorAreaAlreadyTreatedException;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
 use App\Repository\CommitteeRepository;
@@ -76,7 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: 'committees')]
-class Committee implements StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
+class Committee implements StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, EntityAdherentBlameableInterface, GeoPointInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityZoneTrait;
@@ -84,7 +85,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     use StaticSegmentTrait;
     use EntityAdherentBlameableTrait;
     use EntityAdministratorBlameableTrait;
-    use CoordinatorAreaTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
@@ -93,6 +93,8 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public const PENDING = 'PENDING';
     public const REFUSED = 'REFUSED';
     public const CLOSED = 'CLOSED';
+    public const PRE_APPROVED = 'PRE_APPROVED';
+    public const PRE_REFUSED = 'PRE_REFUSED';
 
     public const WAITING_STATUSES = [
         self::PENDING,
@@ -585,23 +587,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         return $this->adherentMandates->matching($criteria);
     }
 
-    public function getNormalizationGroups(): array
-    {
-        return [
-            'event_read',
-        ];
-    }
-
-    public function getExposedRouteName(): string
-    {
-        return 'app_committee_show';
-    }
-
-    public function getExposedRouteParams(): array
-    {
-        return ['slug' => $this->getSlug()];
-    }
-
     public function __toString()
     {
         return $this->name ?? '';
@@ -769,5 +754,23 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
             && $designation->getElectionCreationDate() < ($now = new \DateTime())
             && $designation->getVoteEndDate() > $now
         );
+    }
+
+    public function preRefused(): void
+    {
+        if ($this->isApproved() || $this->isRefused()) {
+            throw new CoordinatorAreaAlreadyTreatedException($this->uuid);
+        }
+
+        $this->status = self::PRE_REFUSED;
+    }
+
+    public function preApproved(): void
+    {
+        if ($this->isApproved() || $this->isRefused()) {
+            throw new CoordinatorAreaAlreadyTreatedException($this->uuid);
+        }
+
+        $this->status = self::PRE_APPROVED;
     }
 }

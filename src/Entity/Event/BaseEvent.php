@@ -36,8 +36,9 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\ExposedAdvancedImageOwnerInterface;
 use App\Entity\Geo\Zone;
+use App\Entity\ImageExposeInterface;
+use App\Entity\ImageFullManageableInterface;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\NullablePostAddress;
@@ -49,7 +50,7 @@ use App\Event\EventVisibilityEnum;
 use App\Geocoder\GeoPointInterface;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
-use App\Normalizer\ImageOwnerExposedNormalizer;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Report\ReportType;
 use App\Repository\Event\BaseEventRepository;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
@@ -125,11 +126,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/v3/events',
-            normalizationContext: ['groups' => ['event_list_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]
         ),
         new GetCollection(
             uriTemplate: '/events',
-            normalizationContext: ['groups' => ['event_list_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]
         ),
         new Post(
             uriTemplate: '/v3/events',
@@ -138,7 +139,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             validationContext: ['groups' => ['Default', 'api_put_validation', 'event_creation']]
         ),
     ],
-    normalizationContext: ['groups' => ['event_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
+    normalizationContext: ['groups' => ['event_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['event_write']],
     order: ['beginAt' => 'ASC']
 )]
@@ -158,7 +159,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, NotificationObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
