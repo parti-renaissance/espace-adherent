@@ -9,6 +9,7 @@ use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Geo\Zone;
+use App\Event\EventVisibilityEnum;
 use App\Event\ListFilter;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
@@ -211,5 +212,42 @@ class BaseEventRepository extends ServiceEntityRepository
     public function findOneBySlug(string $slug): ?BaseEvent
     {
         return $this->findOneBy(['slug' => $slug]);
+    }
+
+    public function findAllForPublicMap(?string $categorySlug): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->select(
+                'e.uuid',
+                'e.slug',
+                'e.name',
+                'e.beginAt',
+                'e.postAddress.latitude AS latitude',
+                'e.postAddress.longitude AS longitude',
+                'e.postAddress.cityName AS city',
+                'e.postAddress.postalCode AS postalCode',
+                'e.postAddress.country AS country',
+            )
+            ->where('e.visibility IN (:visibilities)')
+            ->andWhere('e.postAddress.latitude IS NOT NULL AND e.postAddress.longitude IS NOT NULL')
+            ->andWhere('e.status = :status')
+            ->andWhere('e.mode = :mode')
+            ->setParameters([
+                'mode' => BaseEvent::MODE_MEETING,
+                'status' => BaseEvent::STATUS_SCHEDULED,
+                'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
+            ])
+        ;
+
+        if ($categorySlug) {
+            $qb
+                ->innerJoin('e.category', 'c')
+                ->andWhere('c.slug = :category AND c.status = :cat_status')
+                ->setParameter('category', $categorySlug)
+                ->setParameter('cat_status', BaseEventCategory::ENABLED)
+            ;
+        }
+
+        return $qb->getQuery()->enableResultCache(3600)->getArrayResult();
     }
 }
