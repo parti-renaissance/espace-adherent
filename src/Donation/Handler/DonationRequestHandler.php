@@ -35,19 +35,19 @@ class DonationRequestHandler
             $donationRequest->getLastName()
         )) {
             $donator = $this->createDonator($donationRequest);
+            $this->manager->persist($donator);
+            $this->manager->flush();
         }
 
-        if ($adherent && !$donator->isAdherent()) {
-            $donator->setAdherent($adherent);
+        if ($adherent) {
+            $this->donatorRepository->updateDonatorLink($adherent);
+            $this->manager->refresh($donator);
         }
 
         $donation = $this->donationFactory->createFromDonationRequest($donationRequest, $donator, $forReAdhesion);
-
         $donator->addDonation($donation);
 
-        $this->manager->persist($donator);
         $this->manager->persist($donation);
-
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);

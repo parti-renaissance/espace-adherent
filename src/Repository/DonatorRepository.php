@@ -26,9 +26,30 @@ class DonatorRepository extends ServiceEntityRepository
                 'firstName' => $firstName,
                 'lastName' => $lastName,
             ])
+            ->orderBy('donator.createdAt', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function updateDonatorLink(Adherent $adherent): void
+    {
+        $this->createQueryBuilder('d')
+            ->update()
+            ->set('d.adherent', ':adherent')
+            ->where('d.adherent IS NULL')
+            ->andWhere('d.firstName = :first_name')
+            ->andWhere('d.lastName = :last_name')
+            ->andWhere('d.emailAddress = :email')
+            ->setParameters([
+                'adherent' => $adherent,
+                'first_name' => $adherent->getFirstName(),
+                'last_name' => $adherent->getLastName(),
+                'email' => $adherent->getEmailAddress(),
+            ])
+            ->getQuery()
+            ->execute()
         ;
     }
 
