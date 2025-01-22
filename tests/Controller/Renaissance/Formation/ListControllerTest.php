@@ -28,7 +28,7 @@ class ListControllerTest extends AbstractRenaissanceWebTestCase
 
     public function testNonREAdherentCanNotSeeFormations(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/formations');
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);

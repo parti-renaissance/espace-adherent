@@ -20,7 +20,7 @@ class TagTranslator
     ) {
     }
 
-    public function trans(string $tag, bool $fullTag = true): string
+    public function trans(string $tag, bool $fullTag = true, string $domain = '_label_'): string
     {
         if (substr_count($tag, ':')) {
             $this->loadStaticLabels();
@@ -39,40 +39,41 @@ class TagTranslator
             }
 
             foreach ($parts as $index => $part) {
-                if ($negation = str_ends_with($part, '--')) {
-                    $part = substr($part, 0, -2);
-                }
-
                 $matches = [];
                 // Matches a year in the format _YYYY or _YYYY:
                 if (preg_match('/_(\d{4}):?/', $part, $matches)) {
                     $year = $matches[1];
-                    $parts[$index] = $this->translator->trans('adherent.tag.'.str_replace('_'.$year, '_%s', $part), ['year' => $year]);
+                    $parts[$index] = $this->translate(str_replace('_'.$year, '_%s', $part), $domain, $part, ['year' => $year]);
                 }
                 // Matches a national_event tag in the format national_event:slug
                 elseif (TagEnum::NATIONAL_EVENT === TagEnum::getMainLevel($tag) && $index > 0) {
                     $parts[$index] = $this->tagBuilder->buildLabelFromSlug($part);
                 } else {
-                    $parts[$index] = $this->translate('adherent.tag.'.$part, $part);
-                }
-
-                if ($negation) {
-                    $parts[$index] = $this->translator->trans('adherent.tag.--negation--.'.TagEnum::getMainLevel($tag)).' '.$parts[$index];
+                    $parts[$index] = $this->translate($part, $domain);
                 }
             }
 
             return $fullTag ? implode(' - ', $parts) : end($parts);
         }
 
-        return $this->translate('adherent.tag.'.$tag, $tag);
+        return $this->translate($tag, $domain);
     }
 
-    private function translate(string $fullKey, string $part): string
+    private function translate(string $key, string $domain, ?string $part = null, array $parameters = []): string
     {
-        $trans = $this->translator->trans($fullKey);
+        $pattern = 'adherent.tag%s.%s';
+
+        $fullKey = \sprintf($pattern, '.'.$domain, $key);
+        $fullKeyFallback = \sprintf($pattern, '', $key);
+
+        $trans = $this->translator->trans($fullKey, $parameters = array_merge(['current_year' => date('Y')], $parameters));
 
         if ($trans === $fullKey) {
-            return ucfirst($part);
+            $trans = $this->translator->trans($fullKeyFallback, $parameters);
+
+            if ($trans === $fullKeyFallback) {
+                return ucfirst($part ?? $key);
+            }
         }
 
         return $trans;

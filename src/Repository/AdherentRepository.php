@@ -1219,7 +1219,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if ($votersOnly) {
             $qb
                 ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', TagEnum::getAdherentYearTag(2024).'%')
+                ->setParameter('adherent_tag', TagEnum::getAdherentYearTag().'%')
             ;
         }
 

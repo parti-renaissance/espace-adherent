@@ -2172,7 +2172,7 @@ Feature:
             | gisele-berthoux@caramail.com          | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c | DELETE | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image  |
 
     Scenario: As connected user I can subscribe to an event
-        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/events/2b7238f9-10ca-4a39-b8a4-ad7f438aa95f/subscribe"
         Then the response status code should be 400
         And the JSON should be equal to:

@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\AddressInterface;
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
@@ -14,14 +15,14 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class LoadDonationData extends Fixture implements DependentFixtureInterface
 {
-    private $slugify;
-
-    public function __construct(SlugifyInterface $slugify)
-    {
-        $this->slugify = $slugify;
+    public function __construct(
+        private readonly SlugifyInterface $slugify,
+        private readonly MessageBusInterface $bus,
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -168,21 +169,22 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         );
         $this->createTransaction($donation);
 
-        $donator0->computeLastSuccessfulDonation();
-        $donator1->computeLastSuccessfulDonation();
-        $donator2->computeLastSuccessfulDonation();
-        $donator3->computeLastSuccessfulDonation();
-        $donator4->computeLastSuccessfulDonation();
-        $donator5->computeLastSuccessfulDonation();
+        foreach ([
+            $donator0,
+            $donator1,
+            $donator2,
+            $donator3,
+            $donator4,
+            $donator5,
+        ] as $donator) {
+            $donator->computeLastSuccessfulDonation();
+            $manager->persist($donator);
+            $manager->flush();
 
-        $manager->persist($donator0);
-        $manager->persist($donator1);
-        $manager->persist($donator2);
-        $manager->persist($donator3);
-        $manager->persist($donator4);
-        $manager->persist($donator5);
-
-        $manager->flush();
+            if ($donator->isAdherent()) {
+                $this->bus->dispatch(new RefreshAdherentTagCommand($donator->getAdherent()->getUuid()));
+            }
+        }
     }
 
     public function createDonator(string $accountId, Adherent $adherent): Donator
