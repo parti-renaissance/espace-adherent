@@ -33,7 +33,7 @@ const CommonFormStep = () => ({
 
     _handleBadRequest(data) {
         data.violations.forEach((x) => {
-            const prop = x.property.startsWith('address') ? `address_${snakeToCamelCase(x.property)}` : snakeToCamelCase(x.property);
+            const prop = x.propertyPath.startsWith('address') ? `address_${snakeToCamelCase(x.propertyPath)}` : snakeToCamelCase(x.propertyPath);
             this.$dispatch(`x-validate:membership_request_${prop}`, {
                 status: data.status,
                 message: x.message,

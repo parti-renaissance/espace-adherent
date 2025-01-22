@@ -57,7 +57,7 @@ class MembershipRequest implements DonationRequestInterface
     #[Assert\NotBlank(message: "Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.", groups: ['adhesion:amount'])]
     public ?int $amount = null;
 
-    public bool $allowNotifications = false;
+    public ?bool $allowNotifications = null;
 
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;

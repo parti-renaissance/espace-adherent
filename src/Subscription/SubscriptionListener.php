@@ -30,7 +30,7 @@ class SubscriptionListener implements EventSubscriberInterface
 
     public function addSubscriptionTypeToAdherent(UserEvent $event): void
     {
-        if (false === $event->allowEmailNotifications() && false === $event->allowMobileNotifications()) {
+        if (!$event->allowEmailNotifications() && !$event->allowMobileNotifications()) {
             return;
         }
 
