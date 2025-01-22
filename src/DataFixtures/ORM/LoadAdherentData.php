@@ -79,6 +79,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
 
     public function load(ObjectManager $manager): void
     {
+        $subscriptionTypes = $this->getStandardSubscriptionTypes();
+
         // Create adherent users list
         $adherent1 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
@@ -91,7 +93,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1972-11-23',
         ]);
         $adherent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
-        $adherent1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent1->setSubscriptionTypes($subscriptionTypes);
         $adherent1->setPapUserRole(true);
         $this->addReference('adherent-1', $adherent1);
 
@@ -111,7 +113,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2016-11-16 20:45:33',
         ]);
         $adherent2->tags = [TagEnum::SYMPATHISANT_COMPTE_EM];
-        $adherent2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent2->setSubscriptionTypes($subscriptionTypes);
         $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL, SubscriptionType::class));
 
         $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
@@ -134,7 +136,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->setVoteInspector(true);
-        $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent3->setSubscriptionTypes($subscriptionTypes);
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -164,7 +166,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent4->setPosition(ActivityPositionsEnum::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
-        $adherent4->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent4->setSubscriptionTypes($subscriptionTypes);
         $adherent4->removeSubscriptionTypeByCode(SubscriptionTypeEnum::DEPUTY_EMAIL);
         $adherent4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $zoneDpt92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
@@ -191,7 +193,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-08 05:55:43',
         ]);
         $adherent5->tags = [TagEnum::getAdherentYearTag(), TagEnum::ELU_COTISATION_OK_EXEMPTE];
-        $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent5->setSubscriptionTypes($subscriptionTypes);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms', SubscriptionType::class));
@@ -219,7 +221,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33673643424',
             'registered_at' => '2017-01-16 18:33:22',
         ]);
-        $adherent6->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent6->setSubscriptionTypes($subscriptionTypes);
         $adherent6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_13055'));
         $adherent6->certify();
         $this->addReference('adherent-6', $adherent6);
@@ -239,7 +241,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $adherent7->clean();
-        $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent7->setSubscriptionTypes($subscriptionTypes);
         $adherent7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $zoneCanton7711 = LoadGeoZoneData::getZoneReference($manager, 'zone_canton_7711');
         $candidateManagedAreaCanton = new CandidateManagedArea();
@@ -262,7 +264,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
-        $adherent9->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent9->setSubscriptionTypes($subscriptionTypes);
         $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $adherent9->addCharter(new CommitteeHostCharter());
         $adherent9->certify();
@@ -282,7 +284,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+492211653540',
             'registered_at' => '2017-02-23 13:56:12',
         ]);
-        $adherent10->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent10->setSubscriptionTypes($subscriptionTypes);
         $adherent10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_DE'));
         $this->addReference('adherent-10', $adherent10);
 
@@ -300,7 +302,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+6566888868',
             'registered_at' => '2017-04-10 14:08:12',
         ]);
-        $adherent11->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent11->setSubscriptionTypes($subscriptionTypes);
         $adherent11->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_SG'));
         $this->addReference('adherent-11', $adherent11);
 
@@ -318,7 +320,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+12123150100',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
-        $adherent12->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent12->setSubscriptionTypes($subscriptionTypes);
         $adherent12->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_US'));
         $this->addReference('adherent-12', $adherent12);
 
@@ -332,7 +334,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, null, 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
         ]);
-        $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent13->setSubscriptionTypes($subscriptionTypes);
         $adherent13->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent13->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
         $adherent13->certify();
@@ -349,7 +351,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1988-04-13',
             'phone' => '+33111223345',
         ]);
-        $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent14->setSubscriptionTypes($subscriptionTypes);
         $adherent14->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent14->certify();
         $this->addReference('adherent-14', $adherent14);
@@ -366,7 +368,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1982-05-12',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
-        $adherent15->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent15->setSubscriptionTypes($subscriptionTypes);
         $adherent15->setStatus(Adherent::ENABLED);
         $adherent15->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $this->addReference('adherent-15', $adherent15);
@@ -407,7 +409,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent17->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350'));
         $adherent17->setPosition(ActivityPositionsEnum::EMPLOYED);
-        $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent17->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('municipal-manager-lille', $adherent17);
 
         $adherent18 = $this->adherentFactory->createFromArray([
@@ -425,7 +427,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent18->setPosition(ActivityPositionsEnum::EMPLOYED);
-        $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent18->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('municipal-manager-roubaix', $adherent18);
 
         $adherent19 = $this->adherentFactory->createFromArray([
@@ -443,7 +445,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33187264236',
             'registered_at' => '2018-01-03 08:47:54',
         ]);
-        $adherent19->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent19->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('adherent-20', $adherent19);
 
         $referent = $this->adherentFactory->createFromArray([
@@ -460,7 +462,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $referent->setPhoningManagerRole(true);
-        $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $referent->setSubscriptionTypes($subscriptionTypes);
         $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $referent->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
@@ -486,7 +488,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+336765204050',
             'registered_at' => '2018-05-12 12:31:45',
         ]);
-        $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $referent75and77->setSubscriptionTypes($subscriptionTypes);
         $referent75and77->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'),
@@ -506,7 +508,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'position' => 'employed',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $referentChild->setSubscriptionTypes($subscriptionTypes);
         $referentChild->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $this->addReference('referent-child', $referent75and77);
 
@@ -523,7 +525,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
-        $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $coordinator->setSubscriptionTypes($subscriptionTypes);
         $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
         $coordinator->addZoneBasedRole(AdherentZoneBasedRole::createRegionalCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_region_93')]));
 
@@ -540,7 +542,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
-        $coordinatorCP->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $coordinatorCP->setSubscriptionTypes($subscriptionTypes);
         $coordinatorCP->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('adherent-17', $coordinatorCP);
 
@@ -559,7 +561,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_1->setNationalCommunicationRole(true);
         $deputy_75_1->setPhoningManagerRole(true);
         $deputy_75_1->setPapNationalManagerRole(true);
-        $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $deputy_75_1->setSubscriptionTypes($subscriptionTypes);
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -580,7 +582,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2018-08-05 15:02:34',
             'phone' => '+33187656781',
         ]);
-        $deputy_75_2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $deputy_75_2->setSubscriptionTypes($subscriptionTypes);
         $deputy_75_2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $deputy_75_2->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-2')));
         $this->addReference('deputy-75-2', $deputy_75_2);
@@ -596,7 +598,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1979-07-02',
             'registered_at' => '2017-06-26 10:15:17',
         ]);
-        $deputy_ch_li->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $deputy_ch_li->setSubscriptionTypes($subscriptionTypes);
         $deputy_ch_li->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $deputy_ch_li->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
@@ -665,7 +667,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
         ]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -684,7 +686,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -704,7 +706,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699887766',
         ]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -722,7 +724,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -741,7 +743,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330688887766',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -759,7 +761,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -778,7 +780,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330677887766',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -796,7 +798,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -815,7 +817,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330666887766',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -833,7 +835,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
         $manager->persist($adherent);
@@ -873,7 +875,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
                 'registered_at' => '2017-01-25 19:31:45',
                 'phone' => "+3306998877$index",
             ]);
-            $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+            $adherent->setSubscriptionTypes($subscriptionTypes);
             $adherent->certify();
             if ($index > 50) {
                 $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
@@ -1050,6 +1052,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->donatedForMembership(new \DateTime('2021-02-02'));
         $adherent->certify();
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('renaissance-user-4', $adherent);
 
         // RE Sympathizer

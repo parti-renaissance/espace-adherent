@@ -82,14 +82,14 @@ const FirstForm = (props) => ({
 
     _handleBadRequest($dispatch) {
         return (data) => data.violations.forEach((x) => {
-            if ('email' === x.property) {
+            if ('email' === x.propertyPath) {
                 $dispatch('x-validate:inscription_request_email', {
                     status: data.status,
                     message: x.message,
                 });
             }
 
-            if ('recaptcha' === x.property) {
+            if ('recaptcha' === x.propertyPath) {
                 this.captchaToken = null;
                 this.fieldsValid.captcha = false;
                 this.generalNotification = {
