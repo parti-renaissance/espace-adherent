@@ -45,18 +45,18 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/formations/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Put(
             uriTemplate: '/formations/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Post(
             uriTemplate: '/formations/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: FormationUploadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Get(
             uriTemplate: '/formations/{uuid}/file',
@@ -73,7 +73,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/formations/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new GetCollection(
             uriTemplate: '/formations',
@@ -88,7 +88,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['formation_read']],
     denormalizationContext: ['groups' => ['formation_write']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'adherent_formations')"
 )]
 #[FormationContent]
 #[ORM\Entity(repositoryClass: FormationRepository::class)]

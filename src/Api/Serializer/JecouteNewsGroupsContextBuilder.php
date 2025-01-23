@@ -7,7 +7,7 @@ use App\Entity\Jecoute\News;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
-use App\Security\Voter\FeatureVoter;
+use App\Security\Voter\RequestScopeVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -33,7 +33,7 @@ class JecouteNewsGroupsContextBuilder implements SerializerContextBuilderInterfa
         $resourceClass = $context['resource_class'] ?? null;
 
         if (News::class !== $resourceClass
-            || !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::NEWS)
+            || !$this->authorizationChecker->isGranted(RequestScopeVoter::SCOPE_AND_FEATURE_GRANTED, FeatureEnum::NEWS)
             || !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
         ) {
             return $context;

@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/v3/my_team_members/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'object.getTeam().getOwner() == user and is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'my_team\')'
+            security: "object.getTeam().getOwner() == user and is_granted('REQUEST_SCOPE_GRANTED', 'my_team')"
         ),
         new Post(
             uriTemplate: '/v3/my_team_members',
@@ -45,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['iri' => true, 'groups' => ['my_team_member_read']],
     denormalizationContext: ['groups' => ['my_team_member_write']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'my_team\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'my_team')"
 )]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'my_team_member')]

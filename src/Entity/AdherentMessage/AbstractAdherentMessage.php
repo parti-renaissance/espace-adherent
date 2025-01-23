@@ -50,19 +50,19 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Get(
             uriTemplate: '/v3/adherent_messages/{uuid}/content',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read_content']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Put(
             uriTemplate: '/v3/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Post(
             uriTemplate: '/v3/adherent_messages/{uuid}/send',
@@ -91,7 +91,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/v3/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new GetCollection(
             uriTemplate: '/v3/adherent_messages',
@@ -109,7 +109,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['message_read_list']],
     denormalizationContext: ['groups' => ['message_write']],
     paginationClientEnabled: true,
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages')"
 )]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(AdherentMessageTypeEnum::CLASSES)]

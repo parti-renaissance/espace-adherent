@@ -56,13 +56,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'news')"
         ),
         new Put(
             uriTemplate: '/v3/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'news') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new GetCollection(
             uriTemplate: '/jecoute/news',
@@ -72,12 +72,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/jecoute/news',
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'news')"
         ),
         new Post(
             uriTemplate: '/v3/jecoute/news',
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'news')"
         ),
     ],
     normalizationContext: ['groups' => ['jecoute_news_read']],

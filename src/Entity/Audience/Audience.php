@@ -37,12 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/audiences',
             controller: RetrieveAudiencesController::class,
             normalizationContext: ['groups' => ['audience_list_read']],
-            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'REQUEST_SCOPE_GRANTED\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED') and is_granted('ROLE_AUDIENCE')"
         ),
         new Post(
             uriTemplate: '/v3/audiences',
             defaults: ['scope_position' => 'request'],
-            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'REQUEST_SCOPE_GRANTED\')',
+            security: "is_granted('REQUEST_SCOPE_GRANTED') and is_granted('ROLE_AUDIENCE')",
             validationContext: ['groups' => ['Default', 'api_scope_context']]
         ),
     ],

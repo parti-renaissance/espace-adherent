@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationClientItemsPerPage: true,
     paginationItemsPerPage: 50,
     paginationMaximumItemsPerPage: 100,
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'procurations')"
 )]
 #[ExcludedAssociations]
 #[ORM\Entity(repositoryClass: ProxyRepository::class)]

@@ -25,12 +25,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/committee_candidacies/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee())'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())"
         ),
         new Delete(
             uriTemplate: '/committee_candidacies/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee()) and not object.isVotePeriodStarted()'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted()"
         ),
         new Post(uriTemplate: '/committee_candidacies'),
     ],
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['committee_candidacy:read']],
     denormalizationContext: ['groups' => ['committee_candidacy:write']],
     validationContext: ['groups' => ['api_committee_candidacy_validation']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee')"
 )]
 #[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de candidature sur une élection en cours', groups: ['api_committee_candidacy_validation'])]
 #[ORM\Entity(repositoryClass: CommitteeCandidacyRepository::class)]

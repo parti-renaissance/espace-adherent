@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['my_team_read']],
     filters: [MyTeamScopeFilter::class],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'my_team\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'my_team')"
 )]
 #[ORM\Entity(repositoryClass: MyTeamRepository::class)]
 class MyTeam

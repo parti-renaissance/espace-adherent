@@ -52,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/pap_campaign_histories',
             normalizationContext: ['groups' => ['pap_campaign_history_read_list']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
         new Post(uriTemplate: '/v3/pap_campaign_histories'),
     ],

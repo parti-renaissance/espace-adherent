@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/v3/phoning_campaigns/{uuid}/replies.{_format}', name: 'api_phoning_camapign_get_campaign_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[Security("is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'phoning_campaign')")]
 class GetPhoningCampaignSurveyRepliesController extends AbstractController
 {
     public function __invoke(

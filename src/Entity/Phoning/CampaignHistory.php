@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/phoning_campaign_histories',
             normalizationContext: ['groups' => ['phoning_campaign_history_read_list']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'phoning_campaign')"
         ),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['phoning_campaign_history_read']],

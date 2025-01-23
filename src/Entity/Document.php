@@ -23,13 +23,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/documents/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'documents')"
         ),
         new Get(
             uriTemplate: '/documents/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: DocumentDownloadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'documents')"
         ),
         new GetCollection(
             uriTemplate: '/documents',
@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['document_read']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'documents')"
 )]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\Table]

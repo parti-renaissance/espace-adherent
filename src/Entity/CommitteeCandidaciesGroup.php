@@ -20,14 +20,14 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(
         uriTemplate: '/committee_candidacies_groups/{uuid}',
         requirements: ['uuid' => '%pattern_uuid%'],
-        security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee()) and not object.isVotePeriodStarted() and object.isEmptyCandidacies()'
+        security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted() and object.isEmptyCandidacies()"
     ),
     new Post(uriTemplate: '/committee_candidacies_groups'),
 ],
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['committee_candidacies_group:read']],
     denormalizationContext: ['groups' => ['committee_candidacies_group:write']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee')"
 )]
 #[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de liste sur une élection en cours')]
 #[ORM\Entity(repositoryClass: CommitteeCandidaciesGroupRepository::class)]

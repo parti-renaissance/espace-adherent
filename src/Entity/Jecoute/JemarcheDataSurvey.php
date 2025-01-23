@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/jemarche_data_surveys/kpi',
             controller: JemarcheDataSurveyKpiController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey')"
         ),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['jemarche_data_survey_read']],

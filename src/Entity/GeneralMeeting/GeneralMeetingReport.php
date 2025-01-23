@@ -37,24 +37,24 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/general_meeting_reports/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'general_meeting_reports\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Put(
             uriTemplate: '/general_meeting_reports/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'general_meeting_reports\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Post(
             uriTemplate: '/general_meeting_reports/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GeneralMeetingReportUploadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'general_meeting_reports\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Get(
             uriTemplate: '/general_meeting_reports/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GeneralMeetingReportDownloadFileController::class,
-            security: 'is_granted(\'RENAISSANCE_ADHERENT\') or (is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'general_meeting_reports\') and is_granted(\'SCOPE_CAN_MANAGE\', object))'
+            security: "is_granted('RENAISSANCE_ADHERENT')"
         ),
         new GetCollection(
             uriTemplate: '/general_meeting_reports',
@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['general_meeting_report_read']],
     denormalizationContext: ['groups' => ['general_meeting_report_write']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'general_meeting_reports\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'general_meeting_reports')"
 )]
 #[ORM\Entity(repositoryClass: GeneralMeetingReportRepository::class)]
 #[ORM\Table(name: 'general_meeting_report')]

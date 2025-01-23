@@ -41,12 +41,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/teams/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Put(
             uriTemplate: '/v3/teams/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new GetCollection(
             uriTemplate: '/v3/teams',
@@ -58,7 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['team_read']],
     denormalizationContext: ['groups' => ['team_write']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'team')"
 )]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Table]
