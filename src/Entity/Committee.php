@@ -45,26 +45,26 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['committee:list', 'committee:read']],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Put(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['committee:list', 'committee:read']],
             denormalizationContext: ['groups' => ['committee:write']],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Delete(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Put(
             uriTemplate: '/committees/{uuid}/animator',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['committee:list', 'committee:read']],
             denormalizationContext: ['groups' => ['committee:update_animator']],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new GetCollection(),
         new Post(denormalizationContext: ['groups' => ['committee:write']]),
@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['committee:list']],
     validationContext: ['groups' => ['api_committee_edition']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee')"
 )]
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]

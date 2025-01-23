@@ -29,18 +29,18 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/email_templates/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and is_granted(\'CAN_READ_EMAIL_TEMPLATE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and is_granted('CAN_READ_EMAIL_TEMPLATE', object)"
         ),
         new Put(
             uriTemplate: '/email_templates/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['email_template_read_restricted']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))"
         ),
         new Delete(
             uriTemplate: '/email_templates/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), \'messages\'))'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))"
         ),
         new GetCollection(
             uriTemplate: '/email_templates',
@@ -55,7 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['email_template_read']],
     denormalizationContext: ['groups' => ['email_template_write']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages')"
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'email_templates')]

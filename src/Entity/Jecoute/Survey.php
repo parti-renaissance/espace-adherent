@@ -45,31 +45,31 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/surveys/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['survey_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Put(
             uriTemplate: '/v3/surveys/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['survey_read_dc']],
             denormalizationContext: ['groups' => ['survey_write_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey')"
         ),
         new GetCollection(
             uriTemplate: '/v3/surveys',
             paginationMaximumItemsPerPage: 1000,
             normalizationContext: ['groups' => ['survey_list_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'survey\', \'phoning_campaign\', \'pap_v2\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])"
         ),
         new Post(
             uriTemplate: '/v3/surveys',
             normalizationContext: ['groups' => ['survey_read_dc']],
             denormalizationContext: ['groups' => ['survey_write_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey')"
         ),
         new GetCollection(
             uriTemplate: '/v3/surveys/kpi',
             controller: GetSurveysKpiController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey')"
         ),
     ],
     normalizationContext: ['groups' => ['survey_list']],

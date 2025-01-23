@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-#[Security("is_granted('IS_FEATURE_GRANTED', 'messages') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class SendAdherentMessageController extends AbstractController
 {
     public function __construct(private readonly AdherentMessageManager $manager)

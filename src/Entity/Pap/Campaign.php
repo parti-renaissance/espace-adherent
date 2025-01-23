@@ -56,19 +56,19 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/pap_campaigns/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['pap_campaign_read_after_write']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Get(
             uriTemplate: '/v3/pap_campaigns/{uuid}/questioners',
             defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetPapCampaignQuestionersStatsController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
         new Delete(
             uriTemplate: '/v3/pap_campaigns/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) and is_granted(\'CAN_DELETE_PAP_CAMPAIGN\', object)'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) and is_granted('CAN_DELETE_PAP_CAMPAIGN', object)"
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaigns',
@@ -77,20 +77,20 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             uriTemplate: '/v3/pap_campaigns',
             normalizationContext: ['groups' => ['pap_campaign_read_after_write']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])',
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])",
             validationContext: ['groups' => ['Default', 'pap_campaign_creation']]
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaigns/kpi',
             controller: GetPapCampaignsKpiController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaigns/{uuid}/building_statistics',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetCampaignBuildingStatisticsController::class,
             normalizationContext: ['groups' => ['pap_building_statistics_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaigns/{uuid}/vote_places',
@@ -98,21 +98,21 @@ use Symfony\Component\Validator\Constraints as Assert;
             controller: GetCampaignVotePlacesController::class,
             paginationEnabled: false,
             normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaigns/{uuid}/available_vote_places',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetAvailableVotePlaceForCampaignController::class,
             normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
         ),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['pap_campaign_read']],
     denormalizationContext: ['groups' => ['pap_campaign_write']],
     order: ['createdAt' => 'DESC'],
     paginationClientEnabled: true,
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) or (is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\'))'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))"
 )]
 #[AssertStartedPapCampaignValid]
 #[AssertVotePlacesValid]

@@ -9,34 +9,43 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RequestScopeVoter extends Voter
 {
-    public const PERMISSION = 'REQUEST_SCOPE_GRANTED';
+    public const SCOPE_AND_FEATURE_GRANTED = 'REQUEST_SCOPE_GRANTED';
 
-    private RequestStack $requestStack;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
-    public function __construct(RequestStack $requestStack, ScopeGeneratorResolver $scopeGeneratorResolver)
-    {
-        $this->requestStack = $requestStack;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+    ) {
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        $scope = $this->scopeGeneratorResolver->generate();
-
-        if (!$scope) {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return false;
         }
 
-        $scopeCode = $scope ? $scope->getMainCode() : null;
+        if (!$subject) {
+            return true;
+        }
 
-        return null === $subject || $subject === $scopeCode;
+        if ($subject === $scope->getMainCode()) {
+            return true;
+        }
+
+        if (!\is_array($subject)) {
+            $subject = [$subject];
+        }
+
+        foreach ($subject as $feature) {
+            if ($scope->hasFeature($feature)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function supports(string $attribute, $subject): bool
     {
-        return
-            self::PERMISSION === $attribute
-            && $this->requestStack->getMainRequest();
+        return self::SCOPE_AND_FEATURE_GRANTED === $attribute && $this->requestStack->getMainRequest();
     }
 }

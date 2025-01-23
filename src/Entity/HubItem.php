@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['hub_items_list']],
     order: ['position' => 'ASC'],
     paginationItemsPerPage: 30,
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'dashboard\')'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'dashboard')"
 )]
 #[ORM\Entity]
 class HubItem implements EntityAdministratorBlameableInterface

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [],
     normalizationContext: ['groups' => ['pap_building_statistics_read']],
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+    security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
 )]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
 #[ORM\Index(columns: ['status'])]

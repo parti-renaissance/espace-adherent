@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/v3/designations/{uuid}/results', name: 'app_designation_get_results', methods: ['GET'])]
-#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'designation')")]
 class ElectionResultsController extends AbstractController
 {
     public function __invoke(Designation $designation, ElectionRepository $electionRepository): Response

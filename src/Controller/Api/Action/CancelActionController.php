@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[Security("is_granted('IS_FEATURE_GRANTED', 'actions') and (action.getAuthor() == user or user.hasDelegatedFromUser(action.getAuthor(), 'actions'))")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'actions') and (action.getAuthor() == user or user.hasDelegatedFromUser(action.getAuthor(), 'actions'))")]
 class CancelActionController extends AbstractController
 {
     public function __invoke(Action $action, EntityManagerInterface $manager, MessageBusInterface $bus): Response

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/v3/pap_campaigns/{uuid}/replies.{_format}', name: 'api_pap_camapign_get_campaign_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[Security("is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', campaign)")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', campaign)")]
 class GetPapCampaignSurveyRepliesController extends AbstractController
 {
     public function __invoke(

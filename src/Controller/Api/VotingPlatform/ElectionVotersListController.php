@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/v3/designations/{uuid}/voters.{_format}', name: 'app_designation_get_voters', requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|xlsx'], defaults: ['_format' => 'json'], methods: ['GET'])]
-#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')")]
+#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'designation')")]
 class ElectionVotersListController extends AbstractController
 {
     public function __invoke(
