@@ -83,7 +83,13 @@ Feature:
                     "total": 7,
                     "last_month": 7
                 },
-                "tags": [],
+                "tags": [
+                    {
+                        "code": "adherent:a_jour_2025:recotisation",
+                        "label": "Adhérent à jour 2025",
+                        "type": "adherent"
+                    }
+                ],
                 "cadre_access": true,
                 "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth",
                 "instances": {

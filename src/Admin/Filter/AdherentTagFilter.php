@@ -53,14 +53,10 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
             'field_options' => [
                 'multiple' => true,
                 'choice_label' => function (string $tag) {
-                    $label = $this->tagTranslator->trans($tag, false);
+                    $label = $this->tagTranslator->trans($tag, false, '_filter_');
 
                     if ($count = substr_count($tag, ':')) {
-                        return \sprintf(
-                            '•%s%s',
-                            str_repeat("\u{a0}", $count * 4),
-                            $label
-                        );
+                        return \sprintf('•%s%s', str_repeat("\u{a0}", $count * 4), $label);
                     }
 
                     return $label;

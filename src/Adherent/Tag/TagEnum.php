@@ -13,6 +13,9 @@ class TagEnum extends Enum
     public const ADHERENT_YEAR_RECOTISATION_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':recotisation';
     public const ADHERENT_YEAR_ELU_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':elu_a_jour';
 
+    public const ADHERENT_NOT_UP_TO_DATE = self::ADHERENT.':plus_a_jour';
+    public const ADHERENT_NOT_UP_TO_DATE_TAG_PATTERN = self::ADHERENT_NOT_UP_TO_DATE.':annee_%s';
+
     public const SYMPATHISANT = 'sympathisant';
     public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
     public const SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE = 'sympathisant:compte_avecvous_jemengage';
@@ -50,6 +53,7 @@ class TagEnum extends Enum
                 \sprintf(self::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear),
                 \sprintf(self::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear),
                 \sprintf(self::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear),
+                self::ADHERENT_NOT_UP_TO_DATE,
             ],
             array_map(
                 fn (int $year) => self::getAdherentYearTag($year),
@@ -90,9 +94,19 @@ class TagEnum extends Enum
         ];
     }
 
-    public static function getAdherentYearTag(?int $year = null, string $tag = self::ADHERENT_YEAR_TAG_PATTERN): string
+    public static function getAdherentYearTag(?int $year = null, ?string $tag = null): string
     {
-        return \sprintf($tag, $year ?? date('Y'));
+        $currentYear = date('Y');
+
+        if (!$tag) {
+            if (!$year || $currentYear == $year) {
+                $tag = self::ADHERENT_YEAR_TAG_PATTERN;
+            } else {
+                $tag = self::ADHERENT_NOT_UP_TO_DATE_TAG_PATTERN;
+            }
+        }
+
+        return \sprintf($tag, $year ?? $currentYear);
     }
 
     public static function includesTag(string $searchTag, array $previousTags): bool

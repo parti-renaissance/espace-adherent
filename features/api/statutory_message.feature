@@ -131,7 +131,7 @@ Feature:
                 "label": "Message statutaire de test",
                 "subject": "Voici un message statutaire",
                 "status": "draft",
-                "recipient_count": 2,
+                "recipient_count": 3,
                 "preview_link": null,
                 "source": "api",
                 "author": {
