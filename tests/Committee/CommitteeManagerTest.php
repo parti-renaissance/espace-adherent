@@ -46,7 +46,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
     public function testGetOptinCommitteeFollowers()
     {
-        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertCount(0, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
         $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
         $this->assertCount(10, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
         $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));

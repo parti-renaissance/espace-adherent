@@ -48,7 +48,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "updated_at": "@string@.isDateTime()",
                         "name": "Second Comité des 3 communes",
-                        "members_count": 3,
+                        "members_count": 2,
                         "members_em_count": 0,
                         "sympathizers_count": 0
                     }
@@ -61,7 +61,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -115,7 +115,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -172,7 +172,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",
@@ -228,7 +228,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",

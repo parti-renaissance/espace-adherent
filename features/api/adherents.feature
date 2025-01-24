@@ -285,9 +285,14 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2025",
+                                "label": "À jour 2025",
                                 "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:exempte",
+                                "label": "Exempté de cotisation",
+                                "type": "elu"
                             },
                             {
                                 "type": "role",
@@ -466,9 +471,14 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2025",
+                                "label": "À jour 2025",
                                 "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:exempte",
+                                "label": "Exempté de cotisation",
+                                "type": "elu"
                             },
                             {
                                 "type": "role",
@@ -649,9 +659,14 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2025",
+                                "label": "À jour 2025",
                                 "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:exempte",
+                                "label": "Exempté de cotisation",
+                                "type": "elu"
                             },
                             {
                                 "type": "role",
@@ -916,11 +931,10 @@ Feature:
                                     "adherent:a_jour_2025": "Adhérent - À jour 2025",
                                     "adherent:a_jour_2025:primo": "Adhérent - À jour 2025 - Primo-adhérent",
                                     "adherent:a_jour_2025:recotisation": "Adhérent - À jour 2025 - Recotisation",
-                                    "adherent:a_jour_2025:elu_a_jour": "Adhérent - À jour 2025 - Élu à jour",
-                                    "adherent:plus_a_jour": "Adhérent - Plus à jour",
-                                    "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
-                                    "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
-                                    "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
+                                    "adherent:a_jour_2025:elu_a_jour": "Adhérent - À jour 2025 - Car à jour de cotisation élu",
+                                    "adherent:a_jour_2024": "Adhérent - À jour 2024",
+                                    "adherent:a_jour_2023": "Adhérent - À jour 2023",
+                                    "adherent:a_jour_2022": "Adhérent - À jour 2022",
                                     "sympathisant": "Sympathisant",
                                     "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                                     "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
@@ -1161,11 +1175,6 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
-                                "type": "adherent"
-                            },
-                            {
                                 "type": "role",
                                 "label": "Président assemblée départementale",
                                 "tooltip": "Responsable mobilisation"
@@ -1236,11 +1245,6 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
-                                "type": "adherent"
-                            },
-                            {
                                 "type": "role",
                                 "label": "Président assemblée départementale",
                                 "tooltip": "Responsable mobilisation"
@@ -1303,7 +1307,7 @@ Feature:
             """
             {
                 "adherent": 6,
-                "sympathizer": 3
+                "sympathizer": 2
             }
             """
         When I send a "GET" request to "/api/v3/adherents/count?scope=president_departmental_assembly&since=2022"
@@ -1313,7 +1317,7 @@ Feature:
             {
                 "adherent": 6,
                 "adherent_since": 5,
-                "sympathizer": 3
+                "sympathizer": 2
             }
             """
         When I send a "POST" request to "/api/v3/adherents/count?scope=president_departmental_assembly" with body:
@@ -1324,7 +1328,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "adherent": 3,
+                "adherent": 2,
                 "sympathizer": 1
             }
             """
