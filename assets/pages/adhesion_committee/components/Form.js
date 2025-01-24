@@ -3,7 +3,7 @@
 /**
  * @param {{
  *     committees: Array,
- *     defaultCommittee: string,
+ *     defaultCommittee: Object,
  * }} props
  * @returns {AlpineComponent}
  */
@@ -19,7 +19,9 @@ const Form = (props) => ({
     },
 
     init() {
-        this.setSelectCommittee(props.defaultCommittee);
+        this.selectedCommittee = props.defaultCommittee;
+        this.committees = props.committees.filter((x) => x.uuid !== props.defaultCommittee.uuid);
+        this.isOpen = false;
     },
 
     /**

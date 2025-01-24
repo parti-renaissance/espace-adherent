@@ -50,7 +50,9 @@ class CommitteeController extends AbstractController
 
         $committees = $this->committeeRepository->findInAdherentZone($adherent);
 
-        if (!$defaultCommittee = $this->committeeManager->findCommitteeByAddress($adherent->getPostAddress())) {
+        if ($defaultCommittee = $this->committeeManager->findCommitteeByAddress($adherent->getPostAddress())) {
+            $committees = array_unique(array_merge($committees, [$defaultCommittee]));
+        } else {
             $defaultCommittee = $committees[0] ?? null;
         }
 
