@@ -333,7 +333,7 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     public function setZone(?Zone $zone): void
     {
         $this->traitSetZone($zone);
-        $this->visibility = $this->zone || $this->committee ? ScopeVisibilityEnum::LOCAL : $this->visibility;
+        $this->updateVisibility();
     }
 
     public function getIndexOptions(): array
@@ -358,7 +358,9 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     public function updateVisibility(): void
     {
-        $this->visibility = $this->zone || $this->committee ? ScopeVisibilityEnum::LOCAL : $this->visibility;
+        if ($this->isNationalVisibility() && $this->committee) {
+            $this->visibility = ScopeVisibilityEnum::LOCAL;
+        }
     }
 
     public function getCommittee(): ?Committee
