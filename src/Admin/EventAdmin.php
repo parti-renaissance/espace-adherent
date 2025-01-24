@@ -67,16 +67,16 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Nom',
                     'format_title_case' => true,
                 ])
-                ->add('category', null, [
-                    'label' => 'Catégorie',
-                ])
-                ->add('type', 'trans', [
-                    'format' => 'event_type.%s',
-                ])
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
                     'virtual_field' => true,
                     'template' => 'admin/event/show_committee.html.twig',
+                ])
+                ->add('visibility', null, [
+                    'label' => 'Visibilité',
+                ])
+                ->add('category', null, [
+                    'label' => 'Catégorie',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
@@ -102,9 +102,6 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
-                ])
-                ->add('private', null, [
-                    'label' => 'Réservé aux adhérents',
                 ])
                 ->add('electoral', null, [
                     'label' => 'Électoral',
@@ -338,9 +335,6 @@ class EventAdmin extends AbstractAdmin
             ->add('published', BooleanFilter::class, [
                 'label' => 'Publié',
             ])
-            ->add('private', BooleanFilter::class, [
-                'label' => 'Réservé aux adhérents',
-            ])
             ->add('electoral', BooleanFilter::class, [
                 'label' => 'Électoral',
             ])
@@ -353,9 +347,6 @@ class EventAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'Id',
             ])
-            ->add('type', 'trans', [
-                'format' => 'event_type.%s',
-            ])
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -363,6 +354,10 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Comité organisateur',
                 'virtual_field' => true,
                 'template' => 'admin/event/list_committee.html.twig',
+            ])
+            ->add('visibility', null, [
+                'label' => 'Visibilité',
+                'class' => EventVisibilityEnum::class,
             ])
             ->add('organizer', null, [
                 'label' => 'Organisateur',
@@ -385,12 +380,6 @@ class EventAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/event/list_status.html.twig',
-            ])
-            ->add('private', null, [
-                'label' => 'Réservé aux adhérents',
-            ])
-            ->add('electoral', null, [
-                'label' => 'Électoral',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
