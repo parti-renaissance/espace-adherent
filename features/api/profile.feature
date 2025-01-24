@@ -1362,7 +1362,7 @@ Feature:
                     "name": "Comité des 3 communes"
                 },
                 {
-                    "members_count": 3,
+                    "members_count": 2,
                     "sympathizers_count": 0,
                     "members_em_count": 0,
                     "description": "Un petit comité avec seulement 3 communes",
@@ -1655,7 +1655,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can unregister
-        Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
         When I send a "POST" request to "/api/v3/profile/unregister" with body:
             """
             {
@@ -1728,7 +1728,7 @@ Feature:
                     "type": "committee",
                     "uuid": "@uuid@",
                     "name": "Second Comité des 3 communes",
-                    "members_count": 3,
+                    "members_count": 2,
                     "assembly_committees_count": 2,
                     "can_change_committee": true,
                     "message": null

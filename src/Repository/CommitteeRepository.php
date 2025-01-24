@@ -162,7 +162,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 c.members_em_count = t.members_em_count,
                 c.sympathizers_count = t.sympathizers_count',
             [
-                TagEnum::ADHERENT.'%',
+                TagEnum::getAdherentYearTag().'%',
                 TagEnum::SYMPATHISANT.'%',
                 TagEnum::SYMPATHISANT_COMPTE_EM.'%',
             ]

@@ -45,7 +45,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     {
         $choices = [];
         foreach ($this->tags as $tag) {
-            $choices[$tag] = $this->translator->trans($tag, $this->fullTag, '_filter_');
+            $choices[$tag] = $this->translator->trans($tag, $this->fullTag);
         }
 
         return $choices;

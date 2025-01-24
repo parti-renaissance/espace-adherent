@@ -42,7 +42,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                 return [\sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear)];
             }
 
-            if (\count($adherent->getConfirmedPayments()) || $adherent->hasRecentContribution()) {
+            if (
+                \count($adherent->getConfirmedPayments())
+                || $adherent->hasRecentContribution()
+            ) {
                 return [\sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear)];
             }
 
@@ -54,8 +57,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                     && $totalContributionPaymentsByYear[$currentYear] >= 30
                     && (
                         !$adherent->findElectedRepresentativeMandates(true)
-                        || $adherent->exemptFromCotisation
-                        || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        || (
+                            $adherent->exemptFromCotisation
+                            || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        )
                     )
                 ) {
                     return [\sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear)];
@@ -66,13 +71,13 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                 array_keys($countCotisationByYear),
                 array_keys($totalContributionPaymentsByYear)
             ));
-
             unset($allYears[$currentYear]);
-            rsort($allYears);
+            sort($allYears);
+            $allYears = array_reverse($allYears);
 
             foreach ($allYears as $year) {
                 if (\array_key_exists($year, $countCotisationByYear)) {
-                    return [TagEnum::getAdherentYearTag($year)];
+                    return [\sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $year)];
                 }
 
                 if (
@@ -80,11 +85,13 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                     && $totalContributionPaymentsByYear[$year] >= 30
                     && (
                         !$adherent->findElectedRepresentativeMandates(true)
-                        || $adherent->exemptFromCotisation
-                        || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        || (
+                            $adherent->exemptFromCotisation
+                            || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        )
                     )
                 ) {
-                    return [TagEnum::getAdherentYearTag($year)];
+                    return [\sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $year)];
                 }
             }
         }
