@@ -145,7 +145,6 @@ class NewsAdmin extends AbstractAdmin
         });
 
         $form->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
-        $form->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
 
     public function preSubmit(FormEvent $event): void
