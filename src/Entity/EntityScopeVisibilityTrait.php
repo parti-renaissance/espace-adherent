@@ -28,11 +28,8 @@ trait EntityScopeVisibilityTrait
 
     public function setZone(?Zone $zone): void
     {
-        $this->visibility = null !== $zone
-            ? ScopeVisibilityEnum::LOCAL
-            : ScopeVisibilityEnum::NATIONAL;
-
         $this->zone = $zone;
+        $this->visibility = $zone && !$zone->isFrance() ? ScopeVisibilityEnum::LOCAL : ScopeVisibilityEnum::NATIONAL;
     }
 
     public function getVisibility(): string

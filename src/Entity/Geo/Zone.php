@@ -345,4 +345,9 @@ class Zone implements GeoInterface, UuidEntityInterface
     {
         return $this->hasTag(ZoneTagEnum::ASSEMBLY);
     }
+
+    public function isFrance(): bool
+    {
+        return AddressInterface::FRANCE === $this->code;
+    }
 }
