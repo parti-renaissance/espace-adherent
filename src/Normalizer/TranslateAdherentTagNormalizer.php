@@ -6,6 +6,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\ProcurationV2\AbstractProcuration;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -17,7 +18,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
     public const ENABLE_TAG_TRANSLATOR = 'enable_tag_translator';
     public const NO_STATIC_TAGS = 'no_static_tags';
 
-    public function __construct(private readonly TagTranslator $tagTranslator)
+    public function __construct(private readonly TagTranslator $tagTranslator, private readonly Security $security)
     {
     }
 
@@ -33,13 +34,15 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
             if ($object instanceof TranslatedTagInterface) {
-                $callback = function (string $tag) use ($context) {
+                $appVersion = $this->security->getUser()?->getAuthAppVersion();
+
+                $callback = function (string $tag) use ($appVersion, $context) {
                     if (
                         empty($context[self::NO_STATIC_TAGS])
                         || \in_array($tag, array_merge(TagEnum::getElectTags(), TagEnum::getAdherentTags()), true)
                     ) {
                         return [
-                            'code' => $tag,
+                            'code' => $appVersion && $appVersion < 6000000 ? str_replace('plus_a_jour:annee_', 'a_jour_', $tag) : $tag,
                             'label' => $this->tagTranslator->trans($tag, false),
                             'type' => TagEnum::getMainLevel($tag),
                         ];

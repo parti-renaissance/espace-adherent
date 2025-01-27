@@ -56,7 +56,7 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
                     $label = $this->tagTranslator->trans($tag, false, '_filter_');
 
                     if ($count = substr_count($tag, ':')) {
-                        return \sprintf('•%s%s', str_repeat("\u{a0}", $count * 4), $label);
+                        return \sprintf('%s• %s', str_repeat("\u{a0}", $count * 3), $label);
                     }
 
                     return $label;
