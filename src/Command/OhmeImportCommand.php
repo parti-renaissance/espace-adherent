@@ -92,11 +92,11 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $this->contactImporter->importContacts($pageSize, $offset, $filters);
+            $contactsCount = $this->contactImporter->importContacts($pageSize, $offset, $filters);
 
-            $this->io->progressAdvance($pageSize);
+            $this->io->progressAdvance($contactsCount);
 
-            $offset += $pageSize;
+            $offset += $contactsCount;
         } while ($offset < $total);
 
         $this->io->progressFinish();
@@ -120,9 +120,9 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $this->paymentImporter->importPayments($pageSize, $offset);
+            $paymentsCount = $this->paymentImporter->importPayments($pageSize, $offset);
 
-            $this->io->progressAdvance($pageSize);
+            $this->io->progressAdvance($paymentsCount);
 
             $offset += $pageSize;
         } while ($offset < $total);

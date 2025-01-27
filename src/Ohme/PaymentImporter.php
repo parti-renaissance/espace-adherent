@@ -22,15 +22,19 @@ class PaymentImporter
         return $payments['count'] ?? 0;
     }
 
-    public function importPayments(int $limit = 100, int $offset = 0, array $options = []): void
+    public function importPayments(int $limit = 100, int $offset = 0, array $options = []): int
     {
         $payments = $this->client->getPayments($limit, $offset, $options);
 
         if (empty($payments['data']) || !is_iterable($payments['data'])) {
-            return;
+            return 0;
         }
 
+        $total = 0;
+
         foreach ($payments['data'] as $paymentData) {
+            ++$total;
+
             if (empty($paymentData['contact_id'])) {
                 continue;
             }
@@ -71,6 +75,8 @@ class PaymentImporter
                 $this->contactRepository->save($contact);
             }
         }
+
+        return $total;
     }
 
     private function findPayment(string $identifier): ?Payment
