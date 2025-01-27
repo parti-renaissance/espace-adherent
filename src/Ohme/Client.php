@@ -8,8 +8,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client implements ClientInterface
 {
-    private const PAGE_LIMIT = 100;
-
     private readonly LimiterInterface $limiter;
 
     public function __construct(
@@ -40,39 +38,12 @@ class Client implements ClientInterface
         return $this->request('GET', 'contacts', $options);
     }
 
-    public function getPayments(array $options = []): array
-    {
-        $page = 1;
-        $firstPage = $this->getPaymentsPage(1, $options);
-
-        $payments = $firstPage['data'] ?? [];
-        $totalPayments = $firstPage['count'] ?? 0;
-
-        if ($totalPayments > self::PAGE_LIMIT) {
-            do {
-                ++$page;
-
-                $paymentsPage = $this->getPaymentsPage($page, $options);
-
-                $payments = array_merge(
-                    $payments,
-                    $paymentsPage['data'] ?? []
-                );
-            } while (($page * self::PAGE_LIMIT) < $totalPayments);
-        }
-
-        return [
-            'count' => $totalPayments,
-            'data' => $payments,
-        ];
-    }
-
-    private function getPaymentsPage(int $page = 1, array $options = []): array
+    public function getPayments(int $limit = 100, int $offset = 0, array $options = []): array
     {
         $options = [
             'query' => array_merge($options, [
-                'limit' => self::PAGE_LIMIT,
-                'offset' => ($page * self::PAGE_LIMIT) - self::PAGE_LIMIT,
+                'limit' => $limit,
+                'offset' => $offset,
             ]),
         ];
 

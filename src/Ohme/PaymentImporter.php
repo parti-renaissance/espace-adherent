@@ -3,7 +3,6 @@
 namespace App\Ohme;
 
 use App\Entity\Contribution\Payment;
-use App\Entity\Ohme\Contact;
 use App\Repository\Contribution\PaymentRepository;
 use App\Repository\Ohme\ContactRepository;
 
@@ -16,18 +15,16 @@ class PaymentImporter
     ) {
     }
 
-    public function importPayments(Contact $contact, array $options = []): void
+    public function getPaymentsCount(): int
     {
-        $options['contact_id'] = $contact->ohmeIdentifier;
+        $payments = $this->client->getPayments();
 
-        $payments = $this->client->getPayments($options);
+        return $payments['count'] ?? 0;
+    }
 
-        $totalPayments = $payments['count'] ?? 0;
-        if ($totalPayments !== $contact->paymentCount) {
-            $contact->paymentCount = $totalPayments;
-
-            $this->contactRepository->save($contact);
-        }
+    public function importPayments(int $limit = 100, int $offset = 0, array $options = []): void
+    {
+        $payments = $this->client->getPayments($limit, $offset, $options);
 
         if (empty($payments['data']) || !is_iterable($payments['data'])) {
             return;
@@ -38,8 +35,10 @@ class PaymentImporter
                 continue;
             }
 
+            $contact = $this->contactRepository->findOneByOhmeIdentifier($paymentData['contact_id']);
+
             // Do not retrieve payments that can't be associated to an adherent
-            if (!$contact->adherent) {
+            if (!$contact || !$contact->adherent) {
                 continue;
             }
 
@@ -49,7 +48,16 @@ class PaymentImporter
 
             $identifier = (string) $paymentData['id'];
 
-            $payment = $this->findPayment($identifier) ?? $this->createPayment($identifier);
+            $payment = $this->findPayment($identifier);
+
+            if (!$payment) {
+                $payment = $this->createPayment($identifier);
+
+                $contact->incrementPaymentCount();
+
+                $this->contactRepository->save($contact);
+            }
+
             $payment->adherent = $contact->adherent;
 
             $this->updatePayment($payment, $paymentData);

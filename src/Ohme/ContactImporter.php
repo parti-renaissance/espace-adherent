@@ -12,7 +12,6 @@ class ContactImporter
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
         private readonly AdherentRepository $adherentRepository,
-        private readonly PaymentImporter $paymentImporter,
     ) {
     }
 
@@ -41,8 +40,6 @@ class ContactImporter
             $contact = $this->findContact($identifier) ?? $this->createContact($identifier);
 
             $this->updateContact($contact, $contactData);
-
-            $this->paymentImporter->importPayments($contact);
         }
     }
 
