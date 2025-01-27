@@ -92,13 +92,11 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $currentPageSize = min($pageSize, $total - $offset);
+            $this->contactImporter->importContacts($pageSize, $offset, $filters);
 
-            $this->contactImporter->importContacts($currentPageSize, $offset, $filters);
+            $this->io->progressAdvance($pageSize);
 
-            $this->io->progressAdvance($currentPageSize);
-
-            $offset += $currentPageSize;
+            $offset += $pageSize;
         } while ($offset < $total);
 
         $this->io->progressFinish();
@@ -122,13 +120,11 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $currentPageSize = min($pageSize, $total - $offset);
+            $this->paymentImporter->importPayments($pageSize, $offset);
 
-            $this->paymentImporter->importPayments($currentPageSize, $offset);
+            $this->io->progressAdvance($pageSize);
 
-            $this->io->progressAdvance($currentPageSize);
-
-            $offset += $currentPageSize;
+            $offset += $pageSize;
         } while ($offset < $total);
 
         $this->io->progressFinish();
