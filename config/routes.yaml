@@ -209,16 +209,6 @@ renaissance_qr_code:
     methods: 'GET'
     controller: App\Controller\EnMarche\QrCodeController
 
-app_api_user_show_me:
-    host: '{app_domain}'
-    path: '%api_path_prefix%/users/me'
-    methods: GET
-    controller: App\Controller\Api\UserController::showMe
-    defaults:
-        app_domain: '%app_host%'
-    requirements:
-        app_domain: '%app_host%|%app_renaissance_host%'
-
 app_validate_email:
     host: '{app_domain}'
     path: '/api/validate-email'

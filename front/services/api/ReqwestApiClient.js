@@ -12,13 +12,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    getMe(callback) {
-        this._createRequest(callback, {
-            url: '/api/users/me',
-            type: 'json',
-        });
-    }
-
     getResubscribeEmailPayload(callback) {
         this._createRequest(callback, {
             url: '/api/resubscribe-email',

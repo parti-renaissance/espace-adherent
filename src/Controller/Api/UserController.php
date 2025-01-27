@@ -18,7 +18,6 @@ use App\OAuth\OAuthTokenGenerator;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Response as PsrResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
     #[Route(path: '/me', name: 'app_api_user_show_me_for_oauth', methods: ['GET'])]
-    public function oauthShowMe(SerializerInterface $serializer)
+    public function oauthShowMe()
     {
         /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
@@ -46,26 +45,7 @@ class UserController extends AbstractController
             $user = $user->getDevice();
         }
 
-        return new JsonResponse(
-            $serializer->serialize($user, 'json', $this->getGrantedNormalizationContext()),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
-    }
-
-    #[IsGranted('ROLE_USER')]
-    public function showMe(SerializerInterface $serializer): JsonResponse
-    {
-        /* @var Adherent $user */
-        $groups = ['user_profile', 'legacy'];
-
-        return new JsonResponse(
-            $serializer->serialize($this->getUser(), 'json', ['groups' => $groups]),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
+        return $this->json($user, context: $this->getGrantedNormalizationContext());
     }
 
     private function getGrantedNormalizationContext(): array
