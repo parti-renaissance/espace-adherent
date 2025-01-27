@@ -209,7 +209,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'interests' => ['europe', 'numerique', 'sante'],
             'cotisation_dates' => ['2022-02-01 12:00:00', '2023-03-01 12:00:00'],
             'tags' => $adherent->tags,
-            'additional_tags' => ['new_adherent', 'donator_n-x'],
         ]);
         $managedUser5->setRoles($this->getRoles($adherent));
 
@@ -244,7 +243,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'interests' => ['europe', 'numerique'],
             'cotisation_dates' => ['2022-01-01 12:00:00', '2023-01-01 12:00:00'],
             'tags' => $adherent->tags,
-            'additional_tags' => ['new_adherent', 'old_adherent_em', 'donator_n', 'donator_n-x'],
         ]);
         $managedUser6->setRoles($this->getRoles($adherent));
 

@@ -23,8 +23,6 @@ interface AudienceInterface extends ZoneableWithScopeEntityInterface, InjectScop
 
     public function getIsCertified(): ?bool;
 
-    public function getRenaissanceMembership(): ?string;
-
     public function getIsCommitteeMember(): ?bool;
 
     public function getHasSmsSubscription(): ?bool;

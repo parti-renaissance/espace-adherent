@@ -129,7 +129,6 @@ Feature:
                 "registered_until": "2021-04-29",
                 "is_committee_member": true,
                 "is_certified": false,
-                "renaissance_membership": null,
                 "has_email_subscription": false,
                 "has_sms_subscription": true
             }
@@ -154,7 +153,6 @@ Feature:
                 },
                 "is_committee_member": true,
                 "is_certified": false,
-                "renaissance_membership": null,
                 "has_email_subscription": false,
                 "has_sms_subscription": true,
                 "uuid": "@uuid@"
@@ -177,7 +175,6 @@ Feature:
                 "registered_until": "2021-06-28",
                 "is_committee_member": false,
                 "is_certified": true,
-                "renaissance_membership": "others_adherent",
                 "has_email_subscription": false,
                 "has_sms_subscription": true
             }
@@ -202,7 +199,6 @@ Feature:
                 },
                 "is_committee_member": false,
                 "is_certified": true,
-                "renaissance_membership": "others_adherent",
                 "has_email_subscription": false,
                 "has_sms_subscription": true,
                 "uuid": "f7ac8140-0a5b-4832-a5f4-47e661dc130c"
@@ -283,7 +279,6 @@ Feature:
                 "registered_until": "2021-07-01T00:00:00+02:00",
                 "is_committee_member": true,
                 "is_certified": false,
-                "renaissance_membership": null,
                 "has_email_subscription": true,
                 "has_sms_subscription": false,
                 "uuid": "f7ac8140-0a5b-4832-a5f4-47e661dc130c"
@@ -313,7 +308,6 @@ Feature:
                 "registered_until": null,
                 "is_committee_member": null,
                 "is_certified": null,
-                "renaissance_membership": null,
                 "has_email_subscription": null,
                 "has_sms_subscription": null,
                 "uuid": "bd298079-f763-4c7a-9a8a-a243d01d0e31"

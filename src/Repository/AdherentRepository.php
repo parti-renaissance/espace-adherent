@@ -34,7 +34,6 @@ use App\Entity\VotingPlatform\VotersList;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
-use App\Repository\Helper\MembershipFilterHelper;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -567,10 +566,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb->andWhere('adherent.certifiedAt '.($isCertified ? 'IS NOT NULL' : 'IS NULL'));
         }
 
-        if (null !== $renaissanceMembership = $audience->getRenaissanceMembership()) {
-            MembershipFilterHelper::withMembershipFilter($qb, 'adherent', $renaissanceMembership);
-        }
-
         if ($zones = $audience->getZones()->toArray()) {
             $this->withGeoZones(
                 $zones,
@@ -858,15 +853,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             }
         }
 
-        if ($filter->type) {
-            MembershipFilterHelper::withMembershipFilter($qb, 'a', $filter->type);
+        if ($filter->tag) {
+            $qb
+                ->andWhere('a.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', $filter->tag.'%')
+            ;
         }
 
-        return $qb
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $qb->setMaxResults($limit)->getQuery()->getResult();
     }
 
     public function countInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance, ?int $since = null): int

@@ -76,7 +76,6 @@ trait AudienceFieldsTrait
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isCertified;
 
-    #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\Column(nullable: true)]
     private ?string $renaissanceMembership = null;
 
@@ -205,16 +204,6 @@ trait AudienceFieldsTrait
         $this->isCertified = $isCertified;
     }
 
-    public function getRenaissanceMembership(): ?string
-    {
-        return $this->renaissanceMembership;
-    }
-
-    public function setRenaissanceMembership(?string $renaissanceMembership): void
-    {
-        $this->renaissanceMembership = $renaissanceMembership;
-    }
-
     public function getHasEmailSubscription(): ?bool
     {
         return $this->hasEmailSubscription;
@@ -279,7 +268,6 @@ trait AudienceFieldsTrait
             'has_email_subscription' => $this->hasEmailSubscription,
             'is_committee_member' => $this->isCommitteeMember,
             'is_certified' => $this->isCertified,
-            'renaissance_membership' => $this->renaissanceMembership,
             'scope' => $this->scope,
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getUuid()->toString();

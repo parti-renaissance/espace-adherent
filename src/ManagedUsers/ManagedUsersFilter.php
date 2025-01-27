@@ -6,7 +6,6 @@ use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -120,10 +119,6 @@ class ManagedUsersFilter
 
     #[Groups(['filter_write'])]
     public ?bool $isCertified = null;
-
-    #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
-    #[Groups(['filter_write'])]
-    public ?string $renaissanceMembership = null;
 
     #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipSince = null;

@@ -114,13 +114,6 @@
                                 {{ form_widget(form.interests, {attr: {class: 'filter__field multi_select2 candidate-incompatible', 'data-placeholder': 'referent.filter.interests'|trans}}) }}
                             </div>
                         {% endif %}
-
-                        {% if form.renaissanceMembership is defined %}
-                            <div class="filter__row">
-                                <label class="filter__label">Renaissance</label>
-                                {{ form_widget(form.renaissanceMembership, {attr: {class: 'filter__field'}}) }}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endif %}

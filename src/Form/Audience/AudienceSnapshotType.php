@@ -6,7 +6,6 @@ use App\Adherent\AdherentRoleEnum;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,11 +29,6 @@ class AudienceSnapshotType extends AbstractType
             ->add('isCertified', BooleanType::class, ['transform' => true, 'label' => 'Certifié', 'required' => false])
             ->add('isCommitteeMember', BooleanType::class, ['transform' => true, 'label' => 'Membre de comité', 'required' => false])
             ->add('hasSmsSubscription', BooleanType::class, ['transform' => true, 'label' => 'Abonné aux SMS', 'required' => false])
-            ->add('renaissanceMembership', ChoiceType::class, [
-                'label' => 'Renaissance',
-                'required' => false,
-                'choices' => RenaissanceMembershipFilterEnum::CHOICES,
-            ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôles',
                 'required' => false,
