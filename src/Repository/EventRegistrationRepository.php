@@ -228,16 +228,19 @@ class EventRegistrationRepository extends ServiceEntityRepository
 
     public function countEventParticipantsWithoutCreator(BaseEvent $event): int
     {
-        return (int) $this->createQueryBuilder('event_registration')
-            ->select('COUNT(1)')
-            ->leftJoin('event_registration.adherent', 'adherent')
-            ->where('event_registration.event = :event AND (adherent.uuid IS NULL OR adherent.uuid != :organiser_uuid)')
-            ->andWhere('event_registration.emailAddress IS NOT NULL')
+        $qb = $this->createQueryBuilder('er')
+            ->select('COUNT(DISTINCT er.id)')
+            ->leftJoin('er.adherent', 'a')
+            ->where('er.event = :event')
+            ->andWhere('er.emailAddress IS NOT NULL')
             ->setParameter('event', $event)
-            ->setParameter('organiser_uuid', $event->getOrganizer()->getUuid()->toString())
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
+
+        if ($author = $event->getAuthor()) {
+            $qb->andWhere('a IS NULL OR a != :author')->setParameter('author', $author);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder

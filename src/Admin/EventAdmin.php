@@ -294,11 +294,11 @@ class EventAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('organizer.firstName', null, [
+            ->add('author.firstName', null, [
                 'label' => 'Prénom de l\'organisateur',
                 'show_filter' => true,
             ])
-            ->add('organizer.lastName', null, [
+            ->add('author.lastName', null, [
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
             ])
