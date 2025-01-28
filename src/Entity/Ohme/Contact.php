@@ -90,4 +90,9 @@ class Contact
             $this->lastname,
         ]));
     }
+
+    public function incrementPaymentCount(): void
+    {
+        ++$this->paymentCount;
+    }
 }

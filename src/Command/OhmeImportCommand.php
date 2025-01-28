@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Ohme\ContactImporter;
+use App\Ohme\PaymentImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,7 @@ class OhmeImportCommand extends Command
 
     public function __construct(
         private readonly ContactImporter $contactImporter,
+        private readonly PaymentImporter $paymentImporter,
     ) {
         parent::__construct();
     }
@@ -34,6 +36,7 @@ class OhmeImportCommand extends Command
             ->addOption('contact-ohme-id', null, InputOption::VALUE_REQUIRED)
             ->addOption('contact-email', null, InputOption::VALUE_REQUIRED)
             ->addOption('contact-uuid-adherent', null, InputOption::VALUE_REQUIRED)
+            ->addOption('with-payments', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -50,6 +53,10 @@ class OhmeImportCommand extends Command
             $input->getOption('contact-email'),
             $input->getOption('contact-uuid-adherent')
         );
+
+        if ($input->getOption('with-payments')) {
+            $this->importPayments();
+        }
 
         return self::SUCCESS;
     }
@@ -85,16 +92,42 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $currentPageSize = min($pageSize, $total - $offset);
+            $contactsCount = $this->contactImporter->importContacts($pageSize, $offset, $filters);
 
-            $this->contactImporter->importContacts($currentPageSize, $offset, $filters);
+            $this->io->progressAdvance($contactsCount);
 
-            $this->io->progressAdvance($currentPageSize);
-
-            $offset += $currentPageSize;
+            $offset += $contactsCount;
         } while ($offset < $total);
 
         $this->io->progressFinish();
         $this->io->success("$offset contacts handled successfully.");
+    }
+
+    private function importPayments(): void
+    {
+        $total = $this->paymentImporter->getPaymentsCount();
+
+        if (0 === $total) {
+            $this->io->text('No payment to import.');
+
+            return;
+        }
+
+        $this->io->section('Importing payments');
+        $this->io->progressStart($total);
+
+        $pageSize = $total ? min($total, self::MAX_PAGE_SIZE) : self::MAX_PAGE_SIZE;
+        $offset = 0;
+
+        do {
+            $paymentsCount = $this->paymentImporter->importPayments($pageSize, $offset);
+
+            $this->io->progressAdvance($paymentsCount);
+
+            $offset += $pageSize;
+        } while ($offset < $total);
+
+        $this->io->progressFinish();
+        $this->io->success("$offset payments handled successfully.");
     }
 }

@@ -12,7 +12,6 @@ class ContactImporter
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
         private readonly AdherentRepository $adherentRepository,
-        private readonly PaymentImporter $paymentImporter,
     ) {
     }
 
@@ -23,15 +22,19 @@ class ContactImporter
         return $contacts['count'] ?? 0;
     }
 
-    public function importContacts(int $limit = 100, int $offset = 0, array $options = []): void
+    public function importContacts(int $limit = 100, int $offset = 0, array $options = []): int
     {
         $contacts = $this->client->getContacts($limit, $offset, $options);
 
         if (empty($contacts['data']) || !is_iterable($contacts['data'])) {
-            return;
+            return 0;
         }
 
+        $total = 0;
+
         foreach ($contacts['data'] as $contactData) {
+            ++$total;
+
             if (empty($contactData['id'])) {
                 continue;
             }
@@ -41,9 +44,9 @@ class ContactImporter
             $contact = $this->findContact($identifier) ?? $this->createContact($identifier);
 
             $this->updateContact($contact, $contactData);
-
-            $this->paymentImporter->importPayments($contact);
         }
+
+        return $total;
     }
 
     private function findContact(string $ohmeIdentifier): ?Contact
