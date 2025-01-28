@@ -15,9 +15,7 @@ use App\Entity\ImageAwareInterface;
 use App\Entity\ImageExposeInterface;
 use App\Entity\ImageTrait;
 use App\Mailchimp\Contact\ContactStatusEnum;
-use App\Membership\MembershipSourceEnum;
 use App\Normalizer\ImageExposeNormalizer;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
@@ -318,10 +316,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?UuidInterface $committeeUuid;
 
-    #[Groups(['managed_users_list'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
-    private ?array $additionalTags;
-
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $mandates;
@@ -368,7 +362,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?string $committees = null,
         ?array $committeeUuids = null,
         ?array $tags = null,
-        ?array $additionalTags = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeProvisionalSupervisor = 0,
@@ -411,7 +404,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         $this->committees = $committees;
         $this->committeeUuids = $committeeUuids;
         $this->tags = $tags;
-        $this->additionalTags = $additionalTags;
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
@@ -677,18 +669,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     }
 
     #[Groups(['managed_users_list'])]
-    public function getRenaissanceMembership(): ?string
-    {
-        if (MembershipSourceEnum::RENAISSANCE === $this->source) {
-            return null !== $this->lastMembershipDonation
-                ? RenaissanceMembershipFilterEnum::ADHERENT_RE
-                : RenaissanceMembershipFilterEnum::SYMPATHIZER_RE;
-        }
-
-        return null;
-    }
-
-    #[Groups(['managed_users_list'])]
     public function getCityCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::CITY, true);
@@ -710,11 +690,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function getCommitteeUuid(): ?UuidInterface
     {
         return $this->committeeUuid;
-    }
-
-    public function getAdditionalTags(): ?array
-    {
-        return $this->additionalTags;
     }
 
     public function getMandates(): ?array

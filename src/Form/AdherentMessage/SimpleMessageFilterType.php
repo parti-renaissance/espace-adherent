@@ -5,9 +5,7 @@ namespace App\Form\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,11 +28,6 @@ class SimpleMessageFilterType extends AbstractType
             ->add('ageMax', IntegerType::class, ['required' => false])
             ->add('registeredSince', DatePickerType::class, ['required' => false])
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
-            ->add('renaissanceMembership', ChoiceType::class, [
-                'required' => false,
-                'placeholder' => 'Tous',
-                'choices' => RenaissanceMembershipFilterEnum::CHOICES,
-            ])
         ;
     }
 

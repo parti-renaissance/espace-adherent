@@ -11,7 +11,6 @@ use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Repository\GeoZoneTrait;
-use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -251,10 +250,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $qb->andWhere(\sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));
         }
 
-        if ($renaissanceMembership = $filter->getRenaissanceMembership()) {
-            $this->withRenaissanceMembership($qb, $renaissanceMembership);
-        }
-
         if ($committees = $filter->getCommitteeUuids()) {
             if (!\in_array('adherent', $qb->getAllAliases(), true)) {
                 $qb->innerJoin('er.adherent', 'adherent');
@@ -314,58 +309,22 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     public function hasActiveParliamentaryMandate(Adherent $adherent): bool
     {
         return 0 < (int) $this->createQueryBuilder('e')
-            ->select('COUNT(1)')
-            ->innerJoin('e.mandates', 'm')
-            ->where('m.onGoing = :true AND m.isElected = :true AND m.finishAt IS NULL')
-            ->andWhere('m.type IN (:types)')
-            ->andWhere('e.adherent = :adherent')
-            ->setParameters([
-                'true' => true,
-                'adherent' => $adherent,
-                'types' => [
-                    MandateTypeEnum::SENATOR,
-                    MandateTypeEnum::DEPUTY,
-                    MandateTypeEnum::EURO_DEPUTY,
-                ],
-            ])
-            ->getQuery()
-            ->getSingleScalarResult()
+                ->select('COUNT(1)')
+                ->innerJoin('e.mandates', 'm')
+                ->where('m.onGoing = :true AND m.isElected = :true AND m.finishAt IS NULL')
+                ->andWhere('m.type IN (:types)')
+                ->andWhere('e.adherent = :adherent')
+                ->setParameters([
+                    'true' => true,
+                    'adherent' => $adherent,
+                    'types' => [
+                        MandateTypeEnum::SENATOR,
+                        MandateTypeEnum::DEPUTY,
+                        MandateTypeEnum::EURO_DEPUTY,
+                    ],
+                ])
+                ->getQuery()
+                ->getSingleScalarResult()
         ;
-    }
-
-    public function getAdherentMandateTypes(Adherent $adherent): array
-    {
-        $mandateTypes = $this->createQueryBuilder('elected_representative')
-            ->select('DISTINCT(mandate.type)')
-            ->innerJoin(
-                'elected_representative.mandates',
-                'mandate',
-                Join::WITH,
-                '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1'
-            )
-            ->andWhere('elected_representative.adherent = :adherent')
-            ->setParameters([
-                'adherent' => $adherent,
-                'now' => new \DateTime(),
-            ])
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return array_map('current', $mandateTypes);
-    }
-
-    private function withRenaissanceMembership(
-        QueryBuilder $qb,
-        string $renaissanceMembership,
-        string $alias = 'er',
-        string $adherentAlias = 'adherent',
-    ): QueryBuilder {
-        if (!\in_array('adherent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin($alias.'.adherent', $adherentAlias);
-        }
-        MembershipFilterHelper::withMembershipFilter($qb, $adherentAlias, $renaissanceMembership);
-
-        return $qb;
     }
 }

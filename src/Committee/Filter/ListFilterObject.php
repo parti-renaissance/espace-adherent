@@ -83,11 +83,6 @@ class ListFilterObject
      */
     private $certified;
 
-    /**
-     * @var string|null
-     */
-    private $renaissanceMembership;
-
     public function getAgeMin(): ?int
     {
         return $this->ageMin;
@@ -236,16 +231,6 @@ class ListFilterObject
     public function setCertified(?bool $certified = null): void
     {
         $this->certified = $certified;
-    }
-
-    public function getRenaissanceMembership(): ?string
-    {
-        return $this->renaissanceMembership;
-    }
-
-    public function setRenaissanceMembership(?string $renaissanceMembership): void
-    {
-        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public static function getSortableFields(): array

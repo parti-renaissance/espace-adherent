@@ -76,7 +76,6 @@ trait GeneralFilterTrait
     #[ORM\Column(type: 'date', nullable: true)]
     private $registeredUntil;
 
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
     protected ?string $renaissanceMembership = null;
 
@@ -189,16 +188,6 @@ trait GeneralFilterTrait
         $this->registeredUntil = $registeredUntil;
     }
 
-    public function getRenaissanceMembership(): ?string
-    {
-        return $this->renaissanceMembership;
-    }
-
-    public function setRenaissanceMembership(?string $renaissanceMembership): void
-    {
-        $this->renaissanceMembership = $renaissanceMembership;
-    }
-
     public function getLastMembershipSince(): ?\DateTime
     {
         return $this->lastMembershipSince;
@@ -230,7 +219,6 @@ trait GeneralFilterTrait
         $this->interests = [];
         $this->registeredSince = null;
         $this->registeredUntil = null;
-        $this->renaissanceMembership = null;
         $this->lastMembershipSince = null;
         $this->lastMembershipBefore = null;
     }

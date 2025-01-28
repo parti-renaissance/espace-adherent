@@ -12,7 +12,6 @@ use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
-use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -342,10 +341,6 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->isCertified) {
             $qb->andWhere(\sprintf('u.certifiedAt %s NULL', $filter->isCertified ? 'IS NOT' : 'IS'));
-        }
-
-        if (null !== $renaissanceMembership = $filter->renaissanceMembership) {
-            MembershipFilterHelper::withMembershipFilter($qb, 'u', $renaissanceMembership);
         }
 
         if ($lastMembershipSince = $filter->lastMembershipSince) {

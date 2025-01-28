@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -99,10 +98,6 @@ class ListFilter
     #[Assert\Choice(choices: ['a', 'd'])]
     #[Assert\NotBlank]
     private $order = 'a';
-
-    #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
-    #[Groups(['filter_write'])]
-    private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdOrUpdatedByAdherent = null;
 
@@ -266,16 +261,6 @@ class ListFilter
     public function setOrder(string $order): void
     {
         $this->order = $order;
-    }
-
-    public function getRenaissanceMembership(): ?string
-    {
-        return $this->renaissanceMembership;
-    }
-
-    public function setRenaissanceMembership(?string $renaissanceMembership): void
-    {
-        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public function getCommitteeUuids(): array

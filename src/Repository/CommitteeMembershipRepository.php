@@ -14,7 +14,6 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -199,10 +198,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 $qb
                     ->andWhere(\sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
                 ;
-            }
-
-            if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
-                MembershipFilterHelper::withMembershipFilter($qb, 'a', $renaissanceMembership);
             }
 
             if (null !== $filter->isSubscribed()) {
