@@ -42,7 +42,7 @@ class CreateAccountController extends AbstractController
                 'message' => 'Validation Failed',
                 'status' => 'error',
                 'violations' => [[
-                    'property' => 'email',
+                    'propertyPath' => 'email',
                     'message' => 'Veuillez valider cette première étape du parcours.',
                 ]],
             ], Response::HTTP_BAD_REQUEST);
@@ -55,7 +55,7 @@ class CreateAccountController extends AbstractController
                 'message' => 'Validation Failed',
                 'status' => 'error',
                 'violations' => [[
-                    'property' => 'email',
+                    'propertyPath' => 'email',
                     'message' => 'L’adresse email renseignée ne correspond pas à celle renseignée précédemment.',
                 ]],
             ], Response::HTTP_BAD_REQUEST);
