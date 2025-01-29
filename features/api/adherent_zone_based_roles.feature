@@ -1,5 +1,4 @@
 @api
-@debug
 Feature:
     In order to manage adherent mandates
     As a logged-in user
@@ -26,14 +25,20 @@ Feature:
                     "uuid": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
                     "zones": [
                         {
-                            "uuid": "@uuid@"
+                            "uuid": "@uuid@",
+                            "type": "department",
+                            "code": "77",
+                            "name": "Seine-et-Marne"
                         }
                     ]
                 },
                 "uuid": "@uuid@",
                 "zones": [
                     {
-                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "code": "92",
+                        "name": "Hauts-de-Seine",
+                        "type": "department"
                     }
                 ]
             }
