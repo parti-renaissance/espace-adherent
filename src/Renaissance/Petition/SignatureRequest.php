@@ -46,7 +46,7 @@ class SignatureRequest implements RecaptchaChallengeInterface
     #[Groups(['petition:write'])]
     public ?PhoneNumber $phone = null;
 
-    #[Assert\IsTrue]
+    #[Assert\IsTrue(message: 'Merci de lire et d\'accepter les conditions générales d\'utilisation avant de poursuivre.')]
     #[Groups(['petition:write'])]
     public ?bool $cguAccepted = false;
 
