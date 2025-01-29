@@ -17846,16 +17846,16 @@
         },
         {
             "name": "twig/markdown-extra",
-            "version": "v3.18.0",
+            "version": "v3.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/markdown-extra.git",
-                "reference": "76219b06e104a706879752e6e4d79f63ef7e9f23"
+                "reference": "6c464fc3e016ada9f17be4511daf2576ba4085c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/markdown-extra/zipball/76219b06e104a706879752e6e4d79f63ef7e9f23",
-                "reference": "76219b06e104a706879752e6e4d79f63ef7e9f23",
+                "url": "https://api.github.com/repos/twigphp/markdown-extra/zipball/6c464fc3e016ada9f17be4511daf2576ba4085c5",
+                "reference": "6c464fc3e016ada9f17be4511daf2576ba4085c5",
                 "shasum": ""
             },
             "require": {
@@ -17902,7 +17902,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/markdown-extra/tree/v3.18.0"
+                "source": "https://github.com/twigphp/markdown-extra/tree/v3.19.0"
             },
             "funding": [
                 {
@@ -17914,7 +17914,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-02T08:57:02+00:00"
+            "time": "2025-01-19T15:54:05+00:00"
         },
         {
             "name": "twig/string-extra",
@@ -17985,16 +17985,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.18.0",
+            "version": "v3.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "acffa88cc2b40dbe42eaf3a5025d6c0d4600cc50"
+                "reference": "d4f8c2b86374f08efc859323dbcd95c590f7124e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/acffa88cc2b40dbe42eaf3a5025d6c0d4600cc50",
-                "reference": "acffa88cc2b40dbe42eaf3a5025d6c0d4600cc50",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d4f8c2b86374f08efc859323dbcd95c590f7124e",
+                "reference": "d4f8c2b86374f08efc859323dbcd95c590f7124e",
                 "shasum": ""
             },
             "require": {
@@ -18049,7 +18049,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.18.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.19.0"
             },
             "funding": [
                 {
@@ -18061,7 +18061,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-29T10:51:50+00:00"
+            "time": "2025-01-29T07:06:14+00:00"
         },
         {
             "name": "willdurand/geocoder",
