@@ -18,7 +18,7 @@ class PetitionConfirmationMessage extends AbstractRenaissanceMessage
             [
                 'first_name' => $signature->firstName,
                 'petition_name' => $signature->petitionName,
-                'validation_url' => $url,
+                'primary_link' => $url,
             ],
         );
     }

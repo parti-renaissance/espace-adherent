@@ -32,7 +32,6 @@ class SignatureRequest implements RecaptchaChallengeInterface
     #[Groups(['petition:write'])]
     public ?string $lastName = null;
 
-    #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
     #[Groups(['petition:write'])]
     #[StrictEmail(dnsCheck: false)]
