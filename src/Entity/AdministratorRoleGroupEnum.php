@@ -22,6 +22,7 @@ enum AdministratorRoleGroupEnum: string
     case ARCHIVES = 'archives';
     case SOCLE_PROGRAMMATIQUE = 'socle_programmatique';
     case COMMUNAUTES_THEMATIQUES = 'communautes_thematiques';
+    case PETITION = 'petition';
 
     // Legacy
     case RE_SITE_WEB = 're_site_web';

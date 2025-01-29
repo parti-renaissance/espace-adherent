@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
-use App\ValueObject\Genders;
+use App\Enum\CivilityEnum;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CivilityType extends AbstractType
@@ -11,15 +12,12 @@ class CivilityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'choices' => Genders::CIVILITY_CHOICES,
-            'translation_domain' => 'messages',
-            'expanded' => true,
-            'invalid_message' => 'common.gender.invalid_choice',
+            'class' => CivilityEnum::class,
         ]);
     }
 
     public function getParent(): string
     {
-        return ReChoiceTabType::class;
+        return EnumType::class;
     }
 }

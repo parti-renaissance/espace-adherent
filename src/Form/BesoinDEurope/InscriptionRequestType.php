@@ -4,7 +4,7 @@ namespace App\Form\BesoinDEurope;
 
 use App\BesoinDEurope\Inscription\InscriptionRequest;
 use App\Form\AutocompleteAddressType;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\RequiredCheckboxType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,7 +21,7 @@ class InscriptionRequestType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('civility', CivilityType::class)
+            ->add('civility', GenderCivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('address', AutocompleteAddressType::class, ['with_additional_address' => true])

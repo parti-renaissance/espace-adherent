@@ -2,6 +2,7 @@
 
 namespace App\Renaissance\Petition;
 
+use App\Enum\CivilityEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -16,7 +17,7 @@ class SignatureRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    #[Assert\Choice(['madame', 'monsieur'])]
+    #[Assert\Choice(callback: [CivilityEnum::class, 'getAsArray'])]
     #[Assert\NotBlank]
     #[Groups(['petition:write'])]
     public ?string $civility = null;

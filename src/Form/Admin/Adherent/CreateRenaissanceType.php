@@ -5,7 +5,7 @@ namespace App\Form\Admin\Adherent;
 use App\Address\AddressInterface;
 use App\Form\AddressType;
 use App\Form\BirthdateType;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Renaissance\Membership\Admin\CotisationAmountChoiceEnum;
@@ -28,7 +28,7 @@ class CreateRenaissanceType extends AbstractType
         $fromCertifiedAdherent = $options['from_certified_adherent'];
 
         $builder
-            ->add('gender', CivilityType::class, ['disabled' => $fromCertifiedAdherent])
+            ->add('gender', GenderCivilityType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
                 'disabled' => $fromCertifiedAdherent,

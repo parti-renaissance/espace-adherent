@@ -529,6 +529,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des communautés thématiques',
             AdministratorRoleGroupEnum::COMMUNAUTES_THEMATIQUES
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_PETITION',
+            'Administrateur des pétitions / signatures',
+            AdministratorRoleGroupEnum::PETITION
+        );
         // Élections départementales
         yield $this->createRole(
             'ROLE_ADMIN_ELECTIONS_DEPARTEMENTALES_ALL',

@@ -26,7 +26,7 @@ class DonationRequestV2Type extends AbstractType
             ])
             ->add('localDestination', CheckboxType::class)
 
-            ->add('gender', CivilityType::class)
+            ->add('gender', GenderCivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('emailAddress', EmailType::class)

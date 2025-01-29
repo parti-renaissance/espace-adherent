@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CivilityEnum;
 use App\Renaissance\Petition\SignatureRequest;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -14,8 +15,8 @@ class PetitionSignature
     use EntityUTMTrait;
     use EntityTimestampableTrait;
 
-    #[ORM\Column]
-    public ?string $civility = null;
+    #[ORM\Column(enumType: CivilityEnum::class)]
+    public ?CivilityEnum $civility = null;
 
     #[ORM\Column]
     public ?string $firstName = null;
@@ -24,7 +25,7 @@ class PetitionSignature
     public ?string $lastName = null;
 
     #[ORM\Column]
-    public ?string $email = null;
+    public ?string $emailAddress = null;
 
     #[ORM\Column]
     public ?string $postalCode = null;
@@ -49,10 +50,10 @@ class PetitionSignature
     public static function createFromRequest(SignatureRequest $request): self
     {
         $signature = new self();
-        $signature->civility = $request->civility;
+        $signature->civility = CivilityEnum::from($request->civility);
         $signature->firstName = $request->firstName;
         $signature->lastName = $request->lastName;
-        $signature->email = $request->email;
+        $signature->emailAddress = $request->email;
         $signature->postalCode = $request->postalCode;
         $signature->phone = $request->phone;
         $signature->petitionName = $request->petitionName;
@@ -71,5 +72,10 @@ class PetitionSignature
     public function validate(): void
     {
         $this->validatedAt = new \DateTime();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 }
