@@ -31,7 +31,11 @@ Feature:
                     ]
                 },
                 "uuid": "@uuid@",
-                "zones": []
+                "zones": [
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    }
+                ]
             }
             """
 
