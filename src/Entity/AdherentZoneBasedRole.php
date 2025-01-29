@@ -2,14 +2,42 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/v3/zone_based_role',
+        ),
+        new Post(
+            uriTemplate: '/v3/zone_based_role',
+        ),
+        new Put(
+            uriTemplate: '/v3/zone_based_role/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+        new Delete(
+            uriTemplate: '/v3/zone_based_role/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+    ],
+    normalizationContext: ['groups' => ['zone_based_role_read']],
+    denormalizationContext: ['groups' => ['zone_based_role_write']],
+    validationContext: ['groups' => ['Default', 'zone_based_role_write']],
+    security: 'is_granted(\'REQUEST_SCOPE_GRANTED\', \'circonscriptions\')'
+)]
 #[ORM\Entity]
 class AdherentZoneBasedRole
 {
@@ -19,10 +47,12 @@ class AdherentZoneBasedRole
 
     #[Assert\Choice(choices: ZoneBasedRoleTypeEnum::ALL)]
     #[Assert\NotBlank]
+    #[Groups(['zone_based_role_read', 'zone_based_role_write'])]
     #[ORM\Column]
     private ?string $type;
 
     #[Assert\NotBlank]
+    #[Groups(['zone_based_role_read', 'zone_based_role_write'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'zoneBasedRoles')]
     private ?Adherent $adherent = null;
@@ -88,6 +118,11 @@ class AdherentZoneBasedRole
     public function setType(?string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
     }
 
     public function setAdherent(Adherent $adherent): void

@@ -121,6 +121,8 @@ trait EntityIdentityTrait
         'zone_read',
         'tax_receipt:list',
         'event_registration_list',
+        'zone_based_role_read',
+        'zone_based_role_write',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

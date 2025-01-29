@@ -4,16 +4,30 @@ namespace App\Entity;
 
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
+use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityZoneTrait
 {
     /**
      * @var ZoneCollection|Zone[]
      */
-    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
+    #[Assert\All(
+        constraints: [new AssertZoneInScopeZones()],
+        groups: ['zone_based_role_write'],
+    )]
+    #[Groups([
+        'phoning_campaign_read',
+        'phoning_campaign_write',
+        'read_api',
+        'managed_users_list',
+        'managed_user_read',
+        'zone_based_role_read',
+        'zone_based_role_write',
+    ])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 

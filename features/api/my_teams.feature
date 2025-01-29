@@ -340,7 +340,8 @@ Feature:
                                     "statutory_message",
                                     "procurations",
                                     "actions",
-                                    "featurebase"
+                                    "featurebase",
+                                    "circonscriptions"
                                 ],
                                 "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                             }
@@ -425,7 +426,8 @@ Feature:
                                     "statutory_message",
                                     "procurations",
                                     "actions",
-                                    "featurebase"
+                                    "featurebase",
+                                    "circonscriptions"
                                 ],
                                 "uuid": "@uuid@"
                             }
