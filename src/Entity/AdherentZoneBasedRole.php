@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['zone_based_role_read']],
     denormalizationContext: ['groups' => ['zone_based_role_write']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'circonscriptions\')'
+    security: 'is_granted(\'REQUEST_SCOPE_GRANTED\', \'circonscriptions\')'
 )]
 #[ORM\Entity]
 class AdherentZoneBasedRole
