@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
+use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -13,6 +14,10 @@ trait EntityZoneTrait
     /**
      * @var ZoneCollection|Zone[]
      */
+    #[Assert\All(
+        constraints: [new AssertZoneInScopeZones()],
+        groups: ['zone_based_role_write'],
+    )]
     #[Groups([
         'phoning_campaign_read',
         'phoning_campaign_write',
