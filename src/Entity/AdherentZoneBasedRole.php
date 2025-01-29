@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['zone_based_role_read']],
     denormalizationContext: ['groups' => ['zone_based_role_write']],
-    validationContext: ['groups' => ['zone_based_role_write']],
+    validationContext: ['groups' => ['Default', 'zone_based_role_write']],
     security: 'is_granted(\'REQUEST_SCOPE_GRANTED\', \'circonscriptions\')'
 )]
 #[ORM\Entity]
