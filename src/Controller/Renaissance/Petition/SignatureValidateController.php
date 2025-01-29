@@ -22,7 +22,7 @@ class SignatureValidateController extends AbstractController
     public function __invoke(PetitionSignature $signature, string $token): Response
     {
         $thanksUrl = \sprintf(
-            '%s/petitions/%s/merci',
+            '%s/petitions/%s?merci',
             rtrim($this->generateUrl('renaissance_site'), '/'),
             $signature->petitionSlug
         );

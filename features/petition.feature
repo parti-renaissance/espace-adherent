@@ -63,4 +63,4 @@ Feature:
         When I stop following redirections
         And I click on the email link "primary_link"
         Then the response status code should be 302
-        And the header "Location" should be equal to "/petitions/ma-premiere-petition/merci"
+        And the header "Location" should be equal to "/petitions/ma-premiere-petition?merci"
