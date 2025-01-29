@@ -50,6 +50,9 @@ class SignatureRequest implements RecaptchaChallengeInterface
     #[Groups(['petition:write'])]
     public ?bool $cguAccepted = false;
 
+    #[Groups(['petition:write'])]
+    public ?bool $newsletter = false;
+
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
     #[Groups(['petition:write'])]

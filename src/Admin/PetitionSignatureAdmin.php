@@ -40,6 +40,7 @@ class PetitionSignatureAdmin extends AbstractAdmin
             ->with('Autre', ['class' => 'col-md-6'])
                 ->add('createdAt', null, ['label' => 'Créée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('validatedAt', null, ['label' => 'Email confirmé', 'widget' => 'single_text', 'disabled' => true])
+                ->add('newsletter', null, ['label' => 'Accepte recevoir la communication', 'disabled' => true])
                 ->add('utmSource', null, ['label' => 'UTM Source'])
                 ->add('utmCampaign', null, ['label' => 'UTM Campagne'])
             ->end()
@@ -56,13 +57,13 @@ class PetitionSignatureAdmin extends AbstractAdmin
             ])
             ->add('postalCode', null, ['label' => 'Code postal'])
             ->add('validatedAt', 'boolean', ['label' => 'Email confirmé'])
+            ->add('newsletter', 'boolean', ['label' => 'Newsletter'])
             ->add('utm', null, [
                 'label' => 'UTM',
                 'virtual_field' => true,
                 'template' => 'admin/CRUD/list/utm_list.html.twig',
             ])
-            ->add('createdAt', null, ['label' => 'Créé le'])
-            ->add('updatedAt', null, ['label' => 'Modifié le'])
+            ->add('createdAt', null, ['label' => 'Créée le'])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],

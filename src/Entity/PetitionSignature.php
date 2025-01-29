@@ -33,6 +33,9 @@ class PetitionSignature
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public ?bool $newsletter = false;
+
     #[ORM\Column]
     public ?string $petitionName = null;
 
@@ -56,6 +59,7 @@ class PetitionSignature
         $signature->emailAddress = $request->email;
         $signature->postalCode = $request->postalCode;
         $signature->phone = $request->phone;
+        $signature->newsletter = $request->newsletter;
         $signature->petitionName = $request->petitionName;
         $signature->petitionSlug = $request->petitionSlug;
         $signature->utmSource = $request->utmSource;

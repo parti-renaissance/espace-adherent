@@ -16,7 +16,8 @@ Feature:
                 "utm_source": "from-email",
                 "utm_campaign": "2025-01-29",
                 "recaptcha": "fake",
-                "cgu_accepted": true
+                "cgu_accepted": true,
+                "newsletter": false
             }
             """
         Then the response status code should be 201
