@@ -20,7 +20,6 @@ class SaveNewSignatureController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly SignatureManager $signatureManager,
-        private readonly string $friendlyCaptchaRESiteKey,
     ) {
     }
 
@@ -29,7 +28,6 @@ class SaveNewSignatureController extends AbstractController
         $signature = $this->serializer->deserialize($request->getContent(), SignatureRequest::class, JsonEncoder::FORMAT, [
             AbstractNormalizer::GROUPS => ['petition:write'],
         ]);
-        $signature->setRecaptchaSiteKey($this->friendlyCaptchaRESiteKey);
 
         $errors = $this->validator->validate($signature);
 
