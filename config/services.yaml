@@ -39,6 +39,7 @@ services:
         public: false
         bind:
             $environment: '%kernel.environment%'
+            $secret: '%kernel.secret%'
             $projectDir: '%kernel.project_dir%'
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
@@ -56,6 +57,7 @@ services:
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
             $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
+            $friendlyCaptchaRESiteKey: '%env(FRIENDLY_CAPTCHA_RE_SITE_KEY)%'
             $systemPayMode: '%env(SYSTEMPAY_MODE)%'
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
@@ -117,7 +119,6 @@ services:
 
     App\Twig\AssetRuntime:
         arguments:
-            $secret: '%kernel.secret%'
             $appVersion: '%env(APP_VERSION)%'
             $symfonyAssetExtension: '@twig.extension.assets'
             $mimeTypes: '@mime_types'

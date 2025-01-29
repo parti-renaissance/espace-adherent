@@ -1,0 +1,12 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Pétition' %}
+{% block flash_message '' %}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+            {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}

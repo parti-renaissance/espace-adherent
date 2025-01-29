@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Renaissance\Petition;
+
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\StrictEmail;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[AssertRecaptcha]
+class SignatureRequest implements RecaptchaChallengeInterface
+{
+    use RecaptchaChallengeTrait;
+
+    #[Assert\Choice(['madame', 'monsieur'])]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $civility = null;
+
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $firstName = null;
+
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $lastName = null;
+
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    #[StrictEmail(dnsCheck: false)]
+    public ?string $email = null;
+
+    #[Assert\Length(max: 10)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $postalCode = null;
+
+    #[AssertPhoneNumber]
+    #[Groups(['petition:write'])]
+    public ?PhoneNumber $phone = null;
+
+    #[Assert\IsTrue]
+    #[Groups(['petition:write'])]
+    public ?bool $cguAccepted = false;
+
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $petitionName = null;
+
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Groups(['petition:write'])]
+    public ?string $petitionSlug = null;
+
+    #[Assert\Length(max: 255)]
+    #[Groups(['petition:write'])]
+    public ?string $utmSource = null;
+
+    #[Assert\Length(max: 255)]
+    #[Groups(['petition:write'])]
+    public ?string $utmCampaign = null;
+}
