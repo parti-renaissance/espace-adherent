@@ -5,7 +5,7 @@ namespace App\Form\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\BirthdateType;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -22,7 +22,7 @@ class EventInscriptionType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('civility', CivilityType::class)
+            ->add('civility', GenderCivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years)])

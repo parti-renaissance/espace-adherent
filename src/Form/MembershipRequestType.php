@@ -22,7 +22,7 @@ class MembershipRequestType extends AbstractType
 
         $builder
             ->add('email', EmailType::class)
-            ->add('civility', CivilityType::class, ['disabled' => $fromCertifiedAdherent])
+            ->add('civility', GenderCivilityType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('firstName', TextType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('lastName', TextType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE], 'disabled' => $fromCertifiedAdherent])

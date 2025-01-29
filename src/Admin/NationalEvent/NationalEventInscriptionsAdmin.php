@@ -11,7 +11,7 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
 use App\NationalEvent\InscriptionStatusEnum;
@@ -104,7 +104,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
         $form
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('status', ChoiceType::class, ['label' => 'Statut', 'choices' => array_combine(InscriptionStatusEnum::toArray(), InscriptionStatusEnum::toArray())])
-                ->add('gender', CivilityType::class, ['label' => 'Civilité'])
+                ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
                 ->add('firstName', null, ['label' => 'Prénom'])
                 ->add('lastName', null, ['label' => 'Nom'])
                 ->add('postalCode', null, ['label' => 'Code postal'])

@@ -7,7 +7,7 @@ use App\Entity\ProcurationV2\Round;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
 use App\Form\ZoneUuidType;
 use Doctrine\ORM\EntityRepository;
@@ -46,7 +46,7 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('acceptCgu', AcceptPersonalDataCollectType::class, [
                 'mapped' => false,
             ])
-            ->add('gender', CivilityType::class)
+            ->add('gender', GenderCivilityType::class)
             ->add('firstNames', TextType::class)
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class)

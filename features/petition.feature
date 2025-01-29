@@ -5,7 +5,7 @@ Feature:
         Given I send a "POST" request to "/api/petition/signature" with body:
             """
             {
-                "civility": "madame",
+                "civility": "Madame",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "phone": null,

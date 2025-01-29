@@ -4,7 +4,7 @@ namespace App\Form\BesoinDEurope;
 
 use App\Address\AddressInterface;
 use App\Form\AutocompleteAddressType;
-use App\Form\CivilityType;
+use App\Form\GenderCivilityType;
 use App\Form\RequiredCheckboxType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -20,7 +20,7 @@ class DonationRequestType extends AbstractType
         $builder
             ->add('amount', HiddenType::class)
             ->add('email', EmailType::class)
-            ->add('civility', CivilityType::class)
+            ->add('civility', GenderCivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE]])

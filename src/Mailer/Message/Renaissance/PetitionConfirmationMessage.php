@@ -12,7 +12,7 @@ class PetitionConfirmationMessage extends AbstractRenaissanceMessage
     {
         return new self(
             Uuid::uuid4(),
-            $signature->email,
+            $signature->emailAddress,
             $signature->getFullName(),
             'Confirmez votre signature à la pétition',
             [

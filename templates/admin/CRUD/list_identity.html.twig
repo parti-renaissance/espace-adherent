@@ -1,0 +1,21 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="display: flex;flex-direction: column;">
+        <span>
+            {% if admin.hasAccess('edit') %}
+                <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
+                    {{ object.civility.value }} {{ object.fullName }}
+                </a>
+            {% else %}
+                {{ object.civility == 'male' ? 'M' : 'Mme' }} {{ object.fullName }}
+            {% endif %}
+        </span>
+
+        <span>{{ object.emailAddress }}</span>
+
+        {% if object.phone %}
+            <span>{{ object.phone|phone_number_format }}</span>
+        {% endif %}
+    </div>
+{% endblock %}

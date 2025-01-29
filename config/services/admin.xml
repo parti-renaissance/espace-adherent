@@ -1010,6 +1010,10 @@
             <argument />
         </service>
 
+        <service id="app.admin.petition_signature" class="App\Admin\PetitionSignatureAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Signatures" group="Pétitions" model_class="App\Entity\PetitionSignature"/>
+        </service>
+
         <!--
         ######################################################
         # Archives » Formation
@@ -1134,14 +1138,6 @@
             <call method="setAssetRuntime">
                 <argument type="service" id="App\Twig\AssetRuntime" />
             </call>
-        </service>
-
-        <service id="app.admin.order_section" class="App\Admin\OrderSectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\OrderSection</argument>
-            <argument />
         </service>
 
         <service id="app.admin.facebook_profile" class="App\Admin\FacebookProfileAdmin">
