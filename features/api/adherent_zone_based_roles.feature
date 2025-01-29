@@ -1,8 +1,8 @@
 @api
 Feature:
-    In order to manage adherent mandates
-    As a logged-in user
-    I should be able to access adherent mandates API
+    In order to manage adherent zone based roles
+    As a logged-in user granted with a specific feature
+    I should be able to create, read and update adherent zone based roles
 
     Scenario Outline: As a user granted with local scope, I can create an adherent zone based role
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -14,7 +14,6 @@ Feature:
                 "zones": ["e3efe6fd-906e-11eb-a875-0242ac150002"]
             }
             """
-        Then print last JSON response
         Then the response status code should be 201
         And the response should be in JSON
         And the JSON should be equal to:
