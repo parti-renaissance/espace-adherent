@@ -607,6 +607,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
                 $rolePart = explode('|', $role);
 
                 $roleData['role'] = $rolePart[0];
+                $roleData['is_delegated'] = true;
                 $roleData['function'] = $rolePart[1];
             }
             $roles[] = $roleData;
