@@ -8,21 +8,21 @@ use Doctrine\DBAL\Types\Type;
 
 final class GeoPointType extends Type
 {
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if ($platform instanceof MySQLPlatform) {
-            return \sprintf('FLOAT (10,6)');
+            return 'FLOAT (10,6)';
         }
 
-        return $platform->getFloatDeclarationSQL($fieldDeclaration);
+        return $platform->getFloatDeclarationSQL($column);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'geo_point';
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): true
     {
         return true;
     }

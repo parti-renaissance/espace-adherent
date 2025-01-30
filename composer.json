@@ -62,7 +62,6 @@
         "google/cloud-recaptcha-enterprise": "^1.2",
         "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
-        "knplabs/doctrine-behaviors": "^2.6",
         "knplabs/knp-time-bundle": "^2.0",
         "kreait/firebase-bundle": "^5.0",
         "league/commonmark": "^2.5",

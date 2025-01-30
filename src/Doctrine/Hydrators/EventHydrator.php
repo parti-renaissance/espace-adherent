@@ -13,20 +13,20 @@ use Ramsey\Uuid\Uuid;
 
 class EventHydrator extends AbstractHydrator
 {
-    protected function hydrateAllData()
+    protected function hydrateAllData(): mixed
     {
         $result = [];
-        foreach ($this->_stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        foreach ($this->_stmt->fetchAllAssociative() as $row) {
             $this->hydrateRowData($row, $result);
         }
 
         return $result;
     }
 
-    protected function hydrateRowData(array $row, array &$result)
+    protected function hydrateRowData(array $row, array &$result): void
     {
         if (!\count($row)) {
-            return false;
+            return;
         }
 
         if (AddressInterface::FRANCE === $row['event_address_country']) {
