@@ -21,25 +21,15 @@ class PublicIdGenerator
 
     public static function build(): string
     {
-        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-        $charactersArray = str_split($characters);
-
-        shuffle($charactersArray);
-
-        $block1 = self::generateRandomBlock($charactersArray, 3);
-        $block2 = self::generateRandomBlock($charactersArray, 3);
-
-        return $block1.'-'.$block2;
+        return self::generateRandomBlock(3).'-'.self::generateRandomBlock(3);
     }
 
-    private static function generateRandomBlock(array $characters, int $length): string
+    private static function generateRandomBlock(int $length): string
     {
         $block = '';
-        $maxIndex = \count($characters) - 1;
 
         for ($i = 0; $i < $length; ++$i) {
-            $block .= $characters[random_int(0, $maxIndex)];
+            $block .= random_int(0, 9);
         }
 
         return $block;
