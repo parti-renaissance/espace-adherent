@@ -70,7 +70,7 @@ class Mandate
      *
      * @deprecated Will be replaced by $geoZone
      */
-    #[ORM\ManyToOne(targetEntity: Zone::class, cascade: ['merge', 'detach'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     /**

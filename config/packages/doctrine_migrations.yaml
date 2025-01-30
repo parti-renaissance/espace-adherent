@@ -5,3 +5,4 @@ doctrine_migrations:
     storage:
         table_storage:
             table_name: 'migrations'
+    organize_migrations: 'BY_YEAR'

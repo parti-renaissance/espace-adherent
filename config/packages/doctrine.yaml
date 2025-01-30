@@ -11,7 +11,7 @@ doctrine:
         user: '%env(DATABASE_USER)%'
         password: '%env(DATABASE_PASSWORD)%'
         unix_socket: '%env(DATABASE_SOCKET)%'
-        server_version: 8.0
+        server_version: '8'
         options:
             1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
             utf8mb4: 'SET NAMES utf8mb4'
