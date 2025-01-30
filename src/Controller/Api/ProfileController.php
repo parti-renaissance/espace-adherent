@@ -291,7 +291,7 @@ class ProfileController extends AbstractController
         /** @var Adherent $user */
         $validationGroups = [$user->isRenaissanceAdherent() ? 'unregister_adherent' : 'unregister_user'];
 
-        if ($user->getAuthAppVersion() >= 5110000) {
+        if ($user->getAuthAppVersion() >= 5180000) {
             $validationGroups[] = 'unregister';
         }
 
