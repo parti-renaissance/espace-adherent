@@ -47,7 +47,11 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                         function (array $role) {
                             return [
                                 'type' => 'role',
-                                'label' => ($label = $this->translator->trans($key = 'role.'.$role['role'])) === $key ? $role['role'] : $label,
+                                'label' => \sprintf(
+                                    '%s%s',
+                                    ($label = $this->translator->trans($key = 'role.'.$role['role'])) === $key ? $role['role'] : $label,
+                                    !empty($role['is_delegated']) ? ' délégué' : ''
+                                ),
                                 'tooltip' => $role['function'] ?? null,
                             ];
                         },
