@@ -31,14 +31,10 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
-        'App/doctrine_migration_clean' => true,
         'attribute_empty_parentheses' => true,
         'ordered_attributes' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs/.php_cs.cache')
-    ->registerCustomFixers([
-        new App\Fixer\DoctrineMigrationCleanFixer(),
-    ])
 ;
