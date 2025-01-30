@@ -555,47 +555,47 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription",
+                                "label": "Délégué de circonscription délégué",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénateur",
+                                "label": "Sénateur délégué",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription",
+                                "label": "Délégué de circonscription délégué",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat",
+                                "label": "Candidat délégué",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat Sénatoriales 2020",
+                                "label": "Candidat Sénatoriales 2020 délégué",
                                 "tooltip": "Candidat Sénateur délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale",
+                                "label": "Président assemblée départementale délégué",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale",
+                                "label": "Président assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable local",
+                                "label": "Responsable local délégué",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat aux législatives",
+                                "label": "Candidat aux législatives délégué",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -1004,7 +1004,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale",
+                                "label": "Président assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -1061,7 +1061,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale",
+                                "label": "Président assemblée départementale délégué",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
@@ -1134,7 +1134,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale",
+                                "label": "Président assemblée départementale délégué",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
