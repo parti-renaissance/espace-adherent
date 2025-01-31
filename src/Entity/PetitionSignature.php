@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Enum\CivilityEnum;
 use App\Renaissance\Petition\SignatureRequest;
+use App\Repository\PetitionSignatureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: PetitionSignatureRepository::class)]
 class PetitionSignature
 {
     use EntityIdentityTrait;
@@ -44,6 +45,9 @@ class PetitionSignature
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $validatedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $remindedAt = null;
 
     public function __construct()
     {
