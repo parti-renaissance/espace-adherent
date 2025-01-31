@@ -33,12 +33,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "nickname: Cette valeur est déjà utilisée.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "nickname",
                         "message": "Cette valeur est déjà utilisée."
                     }
@@ -59,12 +57,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "nickname: Vous devez saisir au maximum 25 caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "nickname",
                         "message": "Vous devez saisir au maximum 25 caractères."
                     }
@@ -82,7 +78,19 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "nickname: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -"
+        And the JSON should be equal to:
+            """
+            {
+                "message": "Validation Failed",
+                "status": "error",
+                "violations": [
+                    {
+                        "propertyPath": "nickname",
+                        "message": "La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -"
+                    }
+                ]
+            }
+            """
 
     Scenario: As a logged-in user I can set my nickname but not use it
         Given I am logged as "jacques.picard@en-marche.fr"

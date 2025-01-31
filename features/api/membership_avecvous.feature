@@ -207,12 +207,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "recaptcha",
                         "message": "Merci de confirmer le captcha avant de continuer."
                     }
@@ -237,12 +235,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "recaptcha: Le captcha soumis est invalide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "recaptcha",
                         "message": "Le captcha soumis est invalide."
                     }
@@ -267,12 +263,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "cgu_accepted: Veuillez accepter les CGU.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "cgu_accepted",
                         "message": "Veuillez accepter les CGU."
                     }
@@ -297,12 +291,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "email_address: Ceci n'est pas une adresse email valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "email_address",
                         "message": "Ceci n'est pas une adresse email valide."
                     }
@@ -327,12 +319,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "email_address: Cette valeur est déjà utilisée.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "email_address",
                         "message": "Cette valeur est déjà utilisée."
                     }
@@ -357,12 +347,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "first_name: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -387,12 +375,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "first_name: Votre prénom doit comporter au moins 2 caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Votre prénom doit comporter au moins 2 caractères."
                     }
@@ -417,12 +403,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "first_name: Votre prénom ne peut pas dépasser 50 caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Votre prénom ne peut pas dépasser 50 caractères."
                     }
@@ -447,12 +431,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "source: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "source",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -477,12 +459,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "source: Cette valeur n'est pas valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "source",
                         "message": "Cette valeur n'est pas valide."
                     }
@@ -502,12 +482,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "interests: Une ou plusieurs des valeurs soumises sont invalides.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "interests",
                         "message": "Une ou plusieurs des valeurs soumises sont invalides."
                     }
@@ -527,12 +505,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "cgu_accepted: Veuillez accepter les CGU.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "cgu_accepted",
                         "message": "Veuillez accepter les CGU."
                     }
@@ -552,12 +528,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "phone: Cette valeur n'est pas un numéro de téléphone valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "phone",
                         "message": "Cette valeur n'est pas un numéro de téléphone valide."
                     }
@@ -577,12 +551,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "birthdate: Cette valeur doit être comprise entre @string@ et @string@.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "birthdate",
                         "message": "Cette valeur doit être comprise entre @string@ et @string@."
                     }
@@ -604,12 +576,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "post_address.address: Vous devez saisir au maximum @string@ caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "post_address.address",
                         "message": "Vous devez saisir au maximum @string@ caractères."
                     }
@@ -631,12 +601,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "post_address.postal_code: Vous devez saisir au maximum @string@ caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "post_address.postal_code",
                         "message": "Vous devez saisir au maximum @string@ caractères."
                     }
@@ -658,12 +626,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "post_address.city_name: Vous devez saisir au maximum @string@ caractères.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "post_address.city_name",
                         "message": "Vous devez saisir au maximum @string@ caractères."
                     }
@@ -685,12 +651,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "post_address.country: Ce pays n'est pas valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "post_address.country",
                         "message": "Ce pays n'est pas valide."
                     }
