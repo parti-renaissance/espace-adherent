@@ -5,6 +5,7 @@ namespace App\Renaissance\Petition;
 use App\Entity\PetitionSignature;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\PetitionConfirmationMessage;
+use App\Mailer\Message\Renaissance\PetitionConfirmationReminderMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,10 +24,21 @@ class SignatureManager
         $this->entityManager->persist($signature = PetitionSignature::createFromRequest($request));
         $this->entityManager->flush();
 
-        $this->transactionalMailer->sendMessage(PetitionConfirmationMessage::create($signature, $this->generateUrl($signature)));
+        $this->transactionalMailer->sendMessage(PetitionConfirmationMessage::create($signature, $this->generateConfirmUrl($signature)));
     }
 
-    private function generateUrl(PetitionSignature $signature): string
+    public function remind(PetitionSignature $signature): void
+    {
+        if ($signature->validatedAt || $signature->remindedAt) {
+            return;
+        }
+
+        $this->transactionalMailer->sendMessage(PetitionConfirmationReminderMessage::create($signature, $this->generateConfirmUrl($signature)));
+        $signature->remindedAt = new \DateTime();
+        $this->entityManager->flush();
+    }
+
+    private function generateConfirmUrl(PetitionSignature $signature): string
     {
         return $this->urlGenerator->generate('app_petition_validate', [
             'uuid' => $signature->getUuid(),
