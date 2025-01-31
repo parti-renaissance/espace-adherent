@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(),
-        new GetCollection(uriTemplate: '/event_categories'),
+        new GetCollection(),
     ],
     normalizationContext: ['groups' => ['event_category_read']],
     order: ['slug' => 'ASC'],

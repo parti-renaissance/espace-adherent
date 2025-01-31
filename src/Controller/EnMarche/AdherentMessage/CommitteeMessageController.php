@@ -17,24 +17,24 @@ use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[IsGranted('HOST_COMMITTEE', subject: 'committee')]
 #[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
-#[Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")]
 class CommitteeMessageController extends AbstractController
 {
     #[Route(name: 'list', methods: ['GET'])]
     public function messageListAction(
         Request $request,
         AdherentMessageRepository $repository,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         /** @var Adherent $adherent */
@@ -63,6 +63,7 @@ class CommitteeMessageController extends AbstractController
     #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function createMessageAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         AdherentMessageManager $manager,
     ): Response {
@@ -108,6 +109,7 @@ class CommitteeMessageController extends AbstractController
         Request $request,
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if ($message->isSent()) {
@@ -145,6 +147,7 @@ class CommitteeMessageController extends AbstractController
     public function filterMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         AdherentMessageManager $manager,
         FilterFormFactory $formFactory,
@@ -194,8 +197,11 @@ class CommitteeMessageController extends AbstractController
 
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
-    public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
-    {
+    public function previewMessageAction(
+        CommitteeAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
+        Committee $committee,
+    ): Response {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -208,6 +214,7 @@ class CommitteeMessageController extends AbstractController
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         $manager->remove($message);
@@ -223,6 +230,7 @@ class CommitteeMessageController extends AbstractController
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {
@@ -248,10 +256,13 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) and subject.isSent()"), subject: 'message')]
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")]
-    public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
-    {
+    public function sendSuccessAction(
+        AbstractAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
+        Committee $committee,
+    ): Response {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
     }
 
@@ -260,6 +271,7 @@ class CommitteeMessageController extends AbstractController
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {

@@ -8,15 +8,16 @@ use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'survey')]
 #[Route(path: '/v3/surveys/{uuid}/replies.{_format}', name: 'api_survey_get_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', survey)")]
 class GetSurveyRepliesController extends AbstractController
 {
     public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)

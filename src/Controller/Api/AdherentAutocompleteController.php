@@ -5,18 +5,19 @@ namespace App\Controller\Api;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Repository\AdherentRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['team', 'my_team', 'committee'])"))]
 #[Route(path: '/v3/adherents/autocomplete', name: 'api_adherent_autocomplete', methods: ['GET'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', ['team', 'my_team', 'committee'])")]
 class AdherentAutocompleteController extends AbstractController
 {
     public function __invoke(

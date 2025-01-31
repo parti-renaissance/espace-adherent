@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/jecoute/resource-links',
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
     ],
     normalizationContext: ['groups' => ['jecoute_resource_links_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],

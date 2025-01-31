@@ -6,14 +6,15 @@ use App\Entity\Pap\Campaign;
 use App\Exporter\PapCampaignSurveyRepliesExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/v3/pap_campaigns/{uuid}/replies.{_format}', name: 'api_pap_camapign_get_campaign_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', campaign)")]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'campaign')]
+#[Route(path: '/v3/pap_campaigns/{uuid}/replies.{_format}', name: 'api_pap_camapign_get_campaign_survey_replies', requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'], methods: ['GET'])]
 class GetPapCampaignSurveyRepliesController extends AbstractController
 {
     public function __invoke(

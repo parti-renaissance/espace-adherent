@@ -5,15 +5,16 @@ namespace App\Controller\Api\VotingPlatform;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\Exporter\ExporterInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'designation')"))]
 #[Route('/v3/designations/{uuid}/voters.{_format}', name: 'app_designation_get_voters', requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|xlsx'], defaults: ['_format' => 'json'], methods: ['GET'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'designation')")]
 class ElectionVotersListController extends AbstractController
 {
     public function __invoke(

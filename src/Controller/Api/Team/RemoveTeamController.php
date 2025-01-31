@@ -5,14 +5,15 @@ namespace App\Controller\Api\Team;
 use App\Entity\Team\Team;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'team')]
 #[Route(path: '/v3/teams/{uuid}', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_team_remove', methods: ['DELETE'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")]
 class RemoveTeamController extends AbstractController
 {
     public function __invoke(Team $team, EntityManagerInterface $entityManager): JsonResponse

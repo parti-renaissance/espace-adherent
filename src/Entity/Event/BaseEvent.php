@@ -325,7 +325,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     /**
      * @var EventCategoryInterface|EventCategory|null
      */
-    #[Groups(['event_read', 'event_list_read', 'event_write'])]
+    #[Groups(['event_read', 'event_list_read', 'event_write', 'event_write_creation'])]
     #[ORM\ManyToOne(targetEntity: EventCategory::class)]
     protected $category;
 

@@ -22,13 +22,13 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminCommitteeController extends AbstractController
@@ -141,8 +141,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', subject)"), 'committee')]
     #[Route(path: '/committee/{id}/mandates/add', name: 'app_admin_committee_add_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)")]
     public function addMandateAction(
         Request $request,
         Committee $committee,
@@ -178,8 +178,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', subject.getCommittee())"), 'mandate')]
     #[Route(path: '/committee/mandates/{id}/replace', name: 'app_admin_committee_replace_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
     {
         $committee = $mandate->getCommittee();
@@ -221,8 +221,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', subject.getCommittee())"), 'mandate')]
     #[Route(path: '/committee/mandates/{id}/close', name: 'app_admin_committee_close_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
     public function closeMandateAction(
         Request $request,
         CommitteeAdherentMandate $mandate,

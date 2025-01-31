@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     operations: [
         new Get(
             uriTemplate: '/v3/push-token/{identifier}',
-            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+            security: "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
         ),
         new Delete(
             uriTemplate: '/v3/push-token/{identifier}',
-            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+            security: "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
         ),
         new Post(
             uriTemplate: '/v3/push-token',

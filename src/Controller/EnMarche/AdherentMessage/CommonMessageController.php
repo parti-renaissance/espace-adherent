@@ -6,10 +6,10 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_MESSAGE_REDACTOR')]
 #[Route(path: '/adherent-message', name: 'app_message_common_')]

@@ -5,13 +5,14 @@ namespace App\Controller\Api\Committee;
 use App\Geo\Http\ZoneAutocompleteFilter;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'committee')"))]
 #[Route(path: '/v3/committees/used-zones', name: 'api_committee_get_used_zones', methods: ['GET'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'committee')")]
 class GetCommitteesZonesController extends AbstractController
 {
     public function __invoke(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository): Response

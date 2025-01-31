@@ -8,11 +8,12 @@ use App\Entity\Adherent;
 use App\Event\EventManagerSpaceEnum;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Event\BaseEventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))"))]
 #[Route(path: '/espace-depute', name: 'app_deputy_event_manager')]
-#[Security("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")]
 class DeputyEventManagerController extends AbstractEventManagerController
 {
     private $repository;

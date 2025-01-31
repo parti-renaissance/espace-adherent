@@ -6,11 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\OAuth\JWTTokenGenerator;
 use App\Security\Voter\OAuthClientVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_USER')]
 #[Route(path: '/sso/{uuid}', name: 'app_front_oauth_sso', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]

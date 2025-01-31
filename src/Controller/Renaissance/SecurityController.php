@@ -14,7 +14,7 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,12 +86,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
-    #[Entity('resetPasswordToken', expr: 'repository.findByToken(reset_password_token)')]
     #[Route(path: '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}', name: 'app_adherent_reset_password', methods: ['GET', 'POST'])]
     public function resetPasswordAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneByUuid(adherent_uuid)')]
         Adherent $adherent,
+        #[MapEntity(expr: 'repository.findByToken(reset_password_token)')]
         AdherentResetPasswordToken $resetPasswordToken,
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
@@ -134,11 +134,11 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
-    #[Entity('token', expr: 'repository.findByToken(change_email_token)')]
     #[Route(path: '/valider-changement-email/{adherent_uuid}/{change_email_token}', name: 'user_validate_new_email', requirements: ['adherent_uuid' => '%pattern_uuid%', 'change_email_token' => '%pattern_sha1%'], methods: ['GET'])]
     public function activateNewEmailAction(
+        #[MapEntity(expr: 'repository.findOneByUuid(adherent_uuid)')]
         Adherent $adherent,
+        #[MapEntity(expr: 'repository.findByToken(change_email_token)')]
         AdherentChangeEmailToken $token,
         AdherentChangeEmailHandler $handler,
         TokenStorageInterface $tokenStorage,

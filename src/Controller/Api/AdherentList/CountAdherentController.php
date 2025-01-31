@@ -8,19 +8,20 @@ use App\Repository\AdherentRepository;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'committee', 'designation'])"))]
 #[Route(path: '/v3/adherents/count', name: 'app_adherents_count_get', methods: ['GET', 'POST'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'committee', 'designation'])")]
 class CountAdherentController extends AbstractController
 {
     public function __construct(

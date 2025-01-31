@@ -53,7 +53,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             uriTemplate: '/v3/actions/{uuid}',
-            security: 'object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'actions\')'
+            security: "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')"
         ),
         new Put(
             uriTemplate: '/v3/actions/{uuid}/cancel',
