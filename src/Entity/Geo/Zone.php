@@ -95,14 +95,14 @@ class Zone implements GeoInterface, UuidEntityInterface
      * @var UuidInterface
      */
     #[ApiProperty(identifier: true, openapiContext: ['type' => 'string', 'format' => 'uuid', 'example' => 'b4219d47-3138-5efd-9762-2ef9f9495084'])]
-    #[Groups(['zone_read', 'survey_write_dc', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'general_meeting_report_write', 'elected_mandate_write', 'action_read', 'department_site_write', 'committee:write', 'audience_write', 'profile_read', 'zone_based_role_write', 'zone_based_role_read'])]
+    #[Groups(['zone_read', 'survey_write_dc', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'general_meeting_report_write', 'elected_mandate_write', 'action_read', 'department_site_write', 'committee:write', 'audience_write', 'profile_read', 'zone_based_role_write', 'zone_based_role_read', 'general_convention_list', 'general_convention_read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string
      */
-    #[Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'profile_read', 'zone_based_role_read'])]
+    #[Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'profile_read', 'zone_based_role_read', 'general_convention_list', 'general_convention_read'])]
     #[ORM\Column]
     private $type;
 

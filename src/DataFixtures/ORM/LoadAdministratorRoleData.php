@@ -325,6 +325,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des mandants & mandataires',
             AdministratorRoleGroupEnum::ELECTIONS
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_GENERAL_CONVENTIONS',
+            'Administrateur des états généraux',
+            AdministratorRoleGroupEnum::TERRITOIRES
+        );
         // Application Mobile
         yield $this->createRole(
             'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',

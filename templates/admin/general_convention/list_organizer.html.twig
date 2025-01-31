@@ -1,0 +1,5 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {{ ('general_convention.organizer.' ~ object.organizer.value)|trans }}
+{% endblock %}

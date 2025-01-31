@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.committeeZone %}
+        Comité: {{ object.committeeZone }}
+    {% elseif object.districtZone %}
+        Circonscription: {{ object.districtZone }}
+    {% endif %}
+{% endblock %}

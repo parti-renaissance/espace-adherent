@@ -310,6 +310,14 @@
         </service>
         <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
 
+        <service id="app.admin.general_convention" class="App\Admin\GeneralConventionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="États généraux" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\GeneralConvention\GeneralConvention</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Mobilisation
