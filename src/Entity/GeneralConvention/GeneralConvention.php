@@ -40,7 +40,7 @@ class GeneralConvention
     public ?OrganizerEnum $organizer = null;
 
     #[Assert\NotBlank]
-    #[ORM\JoinColumn]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $reporter = null;
 

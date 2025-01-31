@@ -83,6 +83,7 @@ class GeneralConventionAdmin extends AbstractAdmin
             ])
             ->add('reporter', ModelAutocompleteType::class, [
                 'label' => 'Auteur de la remontée',
+                'required' => true,
                 'minimum_input_length' => 1,
                 'items_per_page' => 20,
                 'property' => [
