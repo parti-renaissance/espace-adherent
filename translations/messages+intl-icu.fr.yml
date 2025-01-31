@@ -1308,3 +1308,17 @@ administrator_action_history.type.export: Export
 administrator_action_history.type.adherent_profile_update: Mise à jour du profil adhérent
 administrator_action_history.type.adherent_role_add: Ajout de rôle adhérent
 administrator_action_history.type.adherent_role_remove: Suppression de rôle adhérent
+
+#
+# GeneralConvention
+#
+general_convention.organizer.assembly: Assemblée
+general_convention.organizer.district: Circonscription
+general_convention.organizer.committee: Comité
+
+general_convention.meeting_type.on_site: Présentiel
+general_convention.meeting_type.remote: Visio
+
+general_convention.participant_quality.adherent: Adhérents
+general_convention.participant_quality.sympathizer: Sympathisants
+general_convention.participant_quality.adherent_before: Anciens adhérents
