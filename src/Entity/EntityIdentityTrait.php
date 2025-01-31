@@ -123,6 +123,8 @@ trait EntityIdentityTrait
         'event_registration_list',
         'zone_based_role_read',
         'zone_based_role_write',
+        'general_convention_list',
+        'general_convention_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

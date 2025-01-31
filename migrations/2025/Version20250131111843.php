@@ -5,13 +5,13 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20250131104505 extends AbstractMigration
+final class Version20250131111843 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE general_convention (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-          department_zone_id INT UNSIGNED DEFAULT NULL,
+          department_zone_id INT UNSIGNED NOT NULL,
           committee_zone_id INT UNSIGNED DEFAULT NULL,
           district_zone_id INT UNSIGNED DEFAULT NULL,
           reporter_id INT UNSIGNED DEFAULT NULL,

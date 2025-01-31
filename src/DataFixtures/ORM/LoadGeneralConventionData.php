@@ -13,9 +13,15 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class LoadGeneralConventionData extends Fixture implements DependentFixtureInterface
 {
+    private const UUID_1 = 'c5317499-7130-4255-a7f8-418e72f5dfa5';
+    private const UUID_2 = 'b3a2b082-01fc-4306-9fdb-6559ebe765b1';
+    private const UUID_3 = '54c9ae4c-3e2d-475d-8993-54639ec58ea1';
+
     private Generator $faker;
 
     public function __construct()
@@ -26,6 +32,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
     public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createGeneralConvention(
+            Uuid::fromString(self::UUID_1),
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             OrganizerEnum::ASSEMBLY,
             MeetingTypeEnum::ON_SITE,
@@ -35,6 +42,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
         ));
 
         $manager->persist($this->createGeneralConvention(
+            Uuid::fromString(self::UUID_2),
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             OrganizerEnum::COMMITTEE,
             MeetingTypeEnum::REMOTE,
@@ -62,6 +70,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
         ));
 
         $manager->persist($this->createGeneralConvention(
+            Uuid::fromString(self::UUID_3),
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             OrganizerEnum::DISTRICT,
             MeetingTypeEnum::REMOTE,
@@ -92,6 +101,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
     }
 
     private function createGeneralConvention(
+        UuidInterface $uuid,
         Zone $departmentZone,
         OrganizerEnum $organizer,
         MeetingTypeEnum $meetingType,
@@ -117,7 +127,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
         ?string $workWithPartners = null,
         ?string $additionalComments = null,
     ): GeneralConvention {
-        $generalConvention = new GeneralConvention();
+        $generalConvention = new GeneralConvention($uuid);
 
         $generalConvention->departmentZone = $departmentZone;
         $generalConvention->organizer = $organizer;

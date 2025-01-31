@@ -101,9 +101,10 @@ class GeneralConventionAdmin extends AbstractAdmin
             ])
             ->add('reportedAt', null, [
                 'label' => 'Date de la remontée',
+                'widget' => 'single_text',
             ])
             ->add('meetingType', EnumType::class, [
-                'label' => 'Instance organisatrice',
+                'label' => 'Type de réunion',
                 'class' => MeetingTypeEnum::class,
                 'choice_label' => function (MeetingTypeEnum $meetingType) {
                     return 'general_convention.meeting_type.'.$meetingType->value;
