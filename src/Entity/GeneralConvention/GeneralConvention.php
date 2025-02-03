@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -45,8 +46,8 @@ class GeneralConvention
     public ?Zone $departmentZone = null;
 
     #[Groups(['general_convention_list', 'general_convention_read'])]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
-    public ?Zone $committeeZone = null;
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
+    public ?Committee $committee = null;
 
     #[Groups(['general_convention_list', 'general_convention_read'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]

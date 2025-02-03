@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\GeneralConvention\GeneralConvention;
 use App\Entity\Geo\Zone;
 use App\GeneralConvention\MeetingTypeEnum;
@@ -49,7 +50,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
             ParticipantQuality::SYMPATHIZER,
             $this->getReference('adherent-3', Adherent::class),
             new \DateTime('now'),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
+            $this->getReference('committee-v2-1', Committee::class),
             null,
             20,
             $this->faker->text(),
@@ -108,7 +109,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
         ParticipantQuality $participantQuality,
         Adherent $reporter,
         \DateTimeInterface $reportedAt,
-        ?Zone $committeeZone = null,
+        ?Committee $committee = null,
         ?Zone $districtZone = null,
         int $membersCount = 0,
         ?string $generalSummary = null,
@@ -133,7 +134,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
         $generalConvention->organizer = $organizer;
         $generalConvention->meetingType = $meetingType;
         $generalConvention->participantQuality = $participantQuality;
-        $generalConvention->committeeZone = $committeeZone;
+        $generalConvention->committee = $committee;
         $generalConvention->districtZone = $districtZone;
         $generalConvention->reporter = $reporter;
         $generalConvention->reportedAt = $reportedAt;
