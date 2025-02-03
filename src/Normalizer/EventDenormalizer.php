@@ -8,7 +8,6 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventTypeEnum;
-use App\Event\EventVisibilityEnum;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -60,7 +59,6 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 
         if (($scope = $this->scopeGeneratorResolver->generate()) && ScopeEnum::NATIONAL === $scope->getMainCode()) {
             $object->national = true;
-            $object->visibility = EventVisibilityEnum::ADHERENT_DUES;
         }
 
         return $object;

@@ -53,7 +53,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->getAuthor();
+        return $object->national ? null : $object->getAuthor();
     }
 
     /** @param BaseEvent $object */
