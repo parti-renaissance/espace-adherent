@@ -46,7 +46,6 @@ Feature:
                             "uuid": "@uuid@",
                             "name": "Comité des 3 communes",
                             "slug": "comite-des-3-communes"
-
                         },
                         "district_zone": null,
                         "organizer": "committee",

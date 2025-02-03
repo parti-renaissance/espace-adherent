@@ -46,6 +46,7 @@ class GeneralConvention
     public ?Zone $departmentZone = null;
 
     #[Groups(['general_convention_list', 'general_convention_read'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
     public ?Committee $committee = null;
 
