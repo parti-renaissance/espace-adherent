@@ -26,7 +26,7 @@ Feature:
                             "code": "92",
                             "name": "Hauts-de-Seine"
                         },
-                        "committee_zone": null,
+                        "committee": null,
                         "district_zone": null,
                         "organizer": "assembly",
                         "reported_at": "@string@.isDateTime()",
@@ -42,11 +42,11 @@ Feature:
                             "code": "92",
                             "name": "Hauts-de-Seine"
                         },
-                        "committee_zone": {
+                        "committee": {
                             "uuid": "@uuid@",
-                            "type": "city",
-                            "code": "92024",
-                            "name": "Clichy"
+                            "name": "Comité des 3 communes",
+                            "slug": "comite-des-3-communes"
+
                         },
                         "district_zone": null,
                         "organizer": "committee",
@@ -63,7 +63,7 @@ Feature:
                             "code": "92",
                             "name": "Hauts-de-Seine"
                         },
-                        "committee_zone": null,
+                        "committee": null,
                         "district_zone": {
                             "uuid": "@uuid@",
                             "type": "district",
@@ -94,7 +94,7 @@ Feature:
                     "code": "92",
                     "name": "Hauts-de-Seine"
                 },
-                "committee_zone": null,
+                "committee": null,
                 "district_zone": null,
                 "organizer": "assembly",
                 "reported_at": "@string@.isDateTime()",
