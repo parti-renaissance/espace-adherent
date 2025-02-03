@@ -1233,6 +1233,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $baseQueryBuilder = $this->createQueryBuilder('a')
             ->select('COUNT(DISTINCT IF(a.tags LIKE :tag_sympathisant, a.id, NULL)) AS total_sympathisant')
+            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n3, a.id, NULL)) AS total_year_n3')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n2, a.id, NULL)) AS total_year_n2')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n1, a.id, NULL)) AS total_year_n1')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n, a.id, NULL)) AS total_year_n')
@@ -1248,6 +1249,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'tag_a_jour_n' => TagEnum::getAdherentYearTag().'%',
                 'tag_a_jour_n1' => TagEnum::getAdherentYearTag($currentYear - 1).'%',
                 'tag_a_jour_n2' => TagEnum::getAdherentYearTag($currentYear - 2).'%',
+                'tag_a_jour_n3' => TagEnum::getAdherentYearTag($currentYear - 3).'%',
                 'tag_sympathisant' => TagEnum::SYMPATHISANT.'%',
             ])
         ;

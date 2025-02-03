@@ -142,12 +142,13 @@
                                             <th class="sorting">Code</th>
                                             <th class="sorting">Département</th>
                                             <th class="sorting">{{ 'adherent.tag.sympathisant'|trans }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year - 2}) }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year - 1}) }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year}) }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.primo'|trans }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.recotisation'|trans }}</th>
-                                            <th class="sorting">{{ 'adherent.tag.elu_a_jour'|trans }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.a_jour_%s'|trans({year: current_year - 3}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.a_jour_%s'|trans({year: current_year - 2}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.a_jour_%s'|trans({year: current_year - 1}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.a_jour_%s'|trans({year: current_year}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.primo'|trans({current_year: ''}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.recotisation'|trans({current_year: ''}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag._label_.elu_a_jour'|trans }}</th>
                                         </tr>
                                     </thead>
 
