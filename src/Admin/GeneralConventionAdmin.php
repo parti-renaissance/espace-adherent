@@ -38,22 +38,11 @@ class GeneralConventionAdmin extends AbstractAdmin
                 },
                 'btn_add' => false,
             ])
-            ->add('committeeZone', ModelAutocompleteType::class, [
+            ->add('committee', ModelAutocompleteType::class, [
                 'multiple' => false,
-                'label' => 'Comité (zone)',
+                'label' => 'Comité',
                 'required' => false,
-                'property' => ['name', 'code'],
-                'callback' => function (AdminInterface $admin, array $property, $value): void {
-                    $datagrid = $admin->getDatagrid();
-                    $query = $datagrid->getQuery();
-                    $rootAlias = $query->getRootAlias();
-                    $query
-                        ->andWhere($rootAlias.'.type = :type_city')
-                        ->setParameter('type_city', Zone::CITY)
-                    ;
-
-                    $datagrid->setValue($property[0], null, $value);
-                },
+                'property' => ['name'],
                 'btn_add' => false,
             ])
             ->add('districtZone', ModelAutocompleteType::class, [
