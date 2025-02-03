@@ -75,9 +75,9 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         }
 
         $queryBuilder
-            ->addSelect("CASE WHEN $alias.beginAt >= NOW() THEN 1 ELSE 0 END AS HIDDEN is_future")
+            ->addSelect("IF($alias.national = 1 AND $alias.beginAt >= NOW(), 2, IF($alias.beginAt >= NOW(), 1, 0)) AS HIDDEN priority")
             ->addSelect("ABS(TIMESTAMPDIFF(SECOND, NOW(), $alias.beginAt)) AS HIDDEN time_to_begin")
-            ->addOrderBy('is_future', 'DESC')
+            ->addOrderBy('priority', 'DESC')
             ->addOrderBy('time_to_begin', 'ASC')
         ;
     }

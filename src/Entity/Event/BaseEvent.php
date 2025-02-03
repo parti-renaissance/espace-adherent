@@ -271,6 +271,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     protected $participantsCount = 0;
 
+    #[Groups(['event_read', 'event_list_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $national = false;
+
     /**
      * @var string|null
      */

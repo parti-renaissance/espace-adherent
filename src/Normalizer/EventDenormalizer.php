@@ -8,6 +8,9 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventTypeEnum;
+use App\Event\EventVisibilityEnum;
+use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -16,6 +19,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
+
+    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
+    {
+    }
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
@@ -49,6 +56,11 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
             if ($date = $object->getFinishAt()) {
                 $object->setFinishAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
             }
+        }
+
+        if (($scope = $this->scopeGeneratorResolver->generate()) && ScopeEnum::NATIONAL === $scope->getMainCode()) {
+            $object->national = true;
+            $object->visibility = EventVisibilityEnum::ADHERENT_DUES;
         }
 
         return $object;
