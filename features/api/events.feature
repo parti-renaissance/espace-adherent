@@ -39,6 +39,7 @@ Feature:
                 "committee": null,
                 "visibility": "private",
                 "created_at": null,
+                "national": false,
                 "object_state": "partial",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": null,
@@ -75,6 +76,7 @@ Feature:
                     "slug": "reunion-dequipe"
                 },
                 "visio_url": null,
+                "national": false,
                 "mode": "meeting",
                 "local_begin_at": null,
                 "local_finish_at": null,
@@ -157,6 +159,7 @@ Feature:
                         },
                         "visio_url": null,
                         "editable": false,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "2017-02-20T19:00:00+01:00",
@@ -208,6 +211,7 @@ Feature:
                         },
                         "visio_url": null,
                         "editable": false,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -282,6 +286,7 @@ Feature:
                             "slug": "atelier-du-programme"
                         },
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -333,6 +338,7 @@ Feature:
                             "slug": "atelier-du-programme"
                         },
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -384,6 +390,7 @@ Feature:
                             "slug": "conference-debat"
                         },
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -451,6 +458,7 @@ Feature:
                             "slug": "convivialite"
                         },
                         "visio_url": "https://parti-renaissance.fr",
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -493,6 +501,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "category": null,
                         "visio_url": null,
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -535,6 +544,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "category": null,
                         "visio_url": null,
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -603,6 +613,7 @@ Feature:
                         },
                         "created_at": "@string@.isDateTime()",
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -654,6 +665,7 @@ Feature:
                             "slug": "tractage"
                         },
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -705,6 +717,7 @@ Feature:
                         },
                         "created_at": "@string@.isDateTime()",
                         "visio_url": null,
+                        "national": false,
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -771,6 +784,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "category": null,
                         "visio_url": null,
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -813,6 +827,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "category": null,
                         "visio_url": null,
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -856,6 +871,7 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "category": null,
                         "visio_url": null,
+                        "national": false,
                         "mode": "online",
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
@@ -928,6 +944,7 @@ Feature:
                     "slug": "categorie-masquee"
                 },
                 "visio_url": null,
+                "national": false,
                 "mode": null,
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
@@ -978,12 +995,14 @@ Feature:
                 },
                 "category": null,
                 "visio_url": null,
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
                 "user_registered_at": null,
+                "national": false,
                 "object_state": "full",
                 "editable": false
             }
@@ -1027,12 +1046,14 @@ Feature:
                 },
                 "category": null,
                 "visio_url": null,
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
                 "user_registered_at": null,
+                "national": false,
                 "object_state": "full",
                 "editable": false
             }
@@ -1096,6 +1117,7 @@ Feature:
                     "slug": "categorie-masquee"
                 },
                 "visio_url": null,
+                "national": false,
                 "mode": null,
                 "image_url": null,
                 "image": null,
@@ -1172,6 +1194,7 @@ Feature:
                 "begin_at": "2023-02-20 16:30:30",
                 "finish_at": "2023-01-30 16:30:30",
                 "capacity": 100,
+                "national": false,
                 "mode": "online",
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "post_address": {
@@ -1209,6 +1232,7 @@ Feature:
                 "begin_at": "2023-01-29 16:30:30",
                 "finish_at": "2023-01-30 16:30:30",
                 "capacity": 100,
+                "national": false,
                 "mode": "online",
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "time_zone": "Europe/Paris",
@@ -1263,6 +1287,7 @@ Feature:
                     "slug": "kiosque"
                 },
                 "visio_url": "https://en-marche.fr/reunions/123",
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
@@ -1286,6 +1311,7 @@ Feature:
                 "finish_at": "2023-01-30 16:30:30",
                 "capacity": 100,
                 "committee": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                "national": false,
                 "mode": "online",
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "post_address": {
@@ -1352,6 +1378,7 @@ Feature:
                     "slug": "kiosque"
                 },
                 "visio_url": "https://en-marche.fr/reunions/123",
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
@@ -1569,6 +1596,7 @@ Feature:
                 "category": "kiosque",
                 "begin_at": "2023-01-29T16:30:30+01:00",
                 "finish_at": "2023-01-30T16:30:30+01:00",
+                "national": false,
                 "mode": "online",
                 "visio_url": "http://visio.fr",
                 "post_address": {
@@ -1591,6 +1619,7 @@ Feature:
                 "category": "kiosque",
                 "begin_at": "2022-12-12 10:30:00",
                 "finish_at": "2022-12-12 16:30:00",
+                "national": false,
                 "mode": "online",
                 "visio_url": "http://visio.fr",
                 "post_address": {
@@ -1650,6 +1679,7 @@ Feature:
                     "slug": "kiosque"
                 },
                 "visio_url": "http://visio.fr",
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
@@ -1944,6 +1974,7 @@ Feature:
                 "begin_at": "2023-01-29 16:30:30",
                 "finish_at": "2023-01-30 16:30:30",
                 "capacity": 100,
+                "national": false,
                 "mode": "online",
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "post_address": {
@@ -2004,6 +2035,7 @@ Feature:
                     "longitude": 2.344967
                 },
                 "visio_url": "https://en-marche.fr/reunions/123",
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
@@ -2034,6 +2066,7 @@ Feature:
                 "category": "kiosque",
                 "begin_at": "2022-12-12 10:30:00",
                 "finish_at": "2022-12-12 16:30:00",
+                "national": false,
                 "mode": "online",
                 "visio_url": "http://visio.fr",
                 "post_address": {
@@ -2092,6 +2125,7 @@ Feature:
                     "slug": "kiosque"
                 },
                 "visio_url": "http://visio.fr",
+                "national": false,
                 "mode": "online",
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",

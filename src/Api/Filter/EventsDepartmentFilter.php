@@ -42,10 +42,9 @@ final class EventsDepartmentFilter extends AbstractFilter
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
-        $this->baseEventRepository->withGeoZones(
+        $zoneQueryBuilder = $this->baseEventRepository->createGeoZonesQueryBuilder(
             [$zone],
             $queryBuilder,
-            $rootAlias,
             $resourceClass,
             'e2',
             'zones',
@@ -56,6 +55,8 @@ final class EventsDepartmentFilter extends AbstractFilter
             true,
             'zip_code_filter_zone_parent'
         );
+
+        $queryBuilder->andWhere(\sprintf('(%s.id IN (%s) OR %s.national = 1)', $rootAlias, $zoneQueryBuilder->getDQL(), $rootAlias));
     }
 
     public function getDescription(string $resourceClass): array

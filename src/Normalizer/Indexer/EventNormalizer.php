@@ -15,6 +15,12 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
+    protected function isNational(object $object): bool
+    {
+        return $object->national;
+    }
+
+    /** @param BaseEvent $object */
     protected function getTitle(object $object): string
     {
         return $object->getName();

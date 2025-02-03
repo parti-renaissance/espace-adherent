@@ -46,6 +46,7 @@ class EventCleaner
         'status',
         'visibility',
         'category',
+        'national',
         'mode',
         'editable',
         'user_registered_at',
