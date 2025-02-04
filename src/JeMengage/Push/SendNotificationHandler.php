@@ -5,6 +5,7 @@ namespace App\JeMengage\Push;
 use App\Entity\Action\Action;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Geo\Zone;
@@ -69,8 +70,11 @@ class SendNotificationHandler
 
     private function findTokensForNotification(NotificationInterface $notification, NotificationObjectInterface $object): array
     {
-        // National notification for News
-        if ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility()) {
+        // National notification for News or Event
+        if (
+            ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility())
+            || ($object instanceof BaseEvent && $object->national)
+        ) {
             $notification->setScope('national');
 
             return $this->pushTokenRepository->findAllForNational();
