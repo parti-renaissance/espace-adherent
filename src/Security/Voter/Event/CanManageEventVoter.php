@@ -3,8 +3,7 @@
 namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\FeatureEnum;
@@ -25,7 +24,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
     ) {
     }
 
-    /** @param BaseEvent $subject */
+    /** @param Event $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         if (self::CAN_MANAGE_EVENT === $attribute) {
@@ -41,11 +40,11 @@ class CanManageEventVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return (self::CAN_MANAGE_EVENT === $attribute && $subject instanceof BaseEvent)
+        return (self::CAN_MANAGE_EVENT === $attribute && $subject instanceof Event)
             || (self::CAN_MANAGE_EVENT_ITEM === $attribute && \is_array($subject));
     }
 
-    private function canManageEvent(BaseEvent $subject): bool
+    private function canManageEvent(Event $subject): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return false;
@@ -59,7 +58,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($subject instanceof CommitteeEvent) {
+        if ($subject->getCommittee()) {
             return \in_array($subject->getCommitteeUuid(), $scope->getCommitteeUuids());
         }
 

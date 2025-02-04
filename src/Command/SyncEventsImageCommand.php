@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Event\BaseEvent;
-use App\Repository\Event\BaseEventRepository;
+use App\Entity\Event\Event;
+use App\Repository\Event\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\FilesystemOperator;
@@ -23,7 +23,7 @@ class SyncEventsImageCommand extends Command
     private $io;
 
     public function __construct(
-        private readonly BaseEventRepository $eventRepository,
+        private readonly EventRepository $eventRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly FilesystemOperator $defaultStorage,
     ) {
@@ -88,7 +88,7 @@ class SyncEventsImageCommand extends Command
         ;
     }
 
-    /** @return BaseEvent[] */
+    /** @return Event[] */
     private function getEvents(): array
     {
         return $this

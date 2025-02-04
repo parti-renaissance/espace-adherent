@@ -34,6 +34,7 @@ Feature:
                 "name": "Réunion de réflexion bellifontaine",
                 "description": null,
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "slug": "@string@",
                 "committee": null,
@@ -966,6 +967,7 @@ Feature:
                 "slug": "@string@-un-evenement-du-referent-annule",
                 "description": "Description de l'événement du référent annulé",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -1017,6 +1019,7 @@ Feature:
                 "slug": "@string@-un-evenement-du-referent-annule",
                 "description": "Description de l'événement du référent annulé",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -1249,6 +1252,7 @@ Feature:
                 "slug": "2023-01-29-nouveau-evenement",
                 "description": "Une description de l'événement",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "private",
                 "created_at": "@string@.isDateTime()",
@@ -1304,7 +1308,6 @@ Feature:
             """
             {
                 "name": "Nouveau événement",
-                "type": "committee",
                 "category": "kiosque",
                 "description": "Une description de l'événement",
                 "begin_at": "2023-01-29 16:30:30",
@@ -1582,7 +1585,7 @@ Feature:
                 }
             }
             """
-        And I should have 1 notification "CommitteeEventCreatedNotification" with data:
+        And I should have 1 notification "EventCreatedNotification" with data:
             | key   | value                                                              |
             | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"} |
             | scope | committee:17                                                       |
@@ -1641,6 +1644,7 @@ Feature:
                 "slug": "@string@-nouvel-evenement-online",
                 "description": "Nouvelle description",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -2007,6 +2011,7 @@ Feature:
                 "slug": "2023-01-29-nouveau-evenement",
                 "description": "Une description de l'événement",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -2045,7 +2050,7 @@ Feature:
                 "edit_link": "@string@.isUrl()"
             }
             """
-        And I should have 1 notification "DefaultEventCreatedNotification" with data:
+        And I should have 1 notification "EventCreatedNotification" with data:
             | key   | value                                                                                     |
             | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                        |
             | scope | zone:75                                                                                   |
@@ -2087,6 +2092,7 @@ Feature:
                 "slug": "@string@-un-evenement-du-candidat-aux-legislatives",
                 "description": "Nouvelle description",
                 "time_zone": "Europe/Paris",
+                "committee": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",

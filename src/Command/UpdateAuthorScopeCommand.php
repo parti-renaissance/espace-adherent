@@ -6,7 +6,7 @@ use App\Entity\Action\Action;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Jecoute\News;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\MyTeam\RoleEnum;
@@ -29,7 +29,7 @@ class UpdateAuthorScopeCommand extends Command
 {
     private const AUTHOR_INSTANCE_ENTITIES = [
         Action::class,
-        BaseEvent::class,
+        Event::class,
         News::class,
     ];
 

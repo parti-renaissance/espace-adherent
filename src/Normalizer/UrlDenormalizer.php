@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Jecoute\Riposte;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -15,7 +15,7 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         $urlProperty = 'url';
-        if (is_a($type, BaseEvent::class, true)) {
+        if (is_a($type, Event::class, true)) {
             $urlProperty = 'visio_url';
         } elseif (is_a($type, Riposte::class, true)) {
             $urlProperty = 'source_url';
@@ -34,7 +34,7 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
     {
         return [
             '*' => null,
-            BaseEvent::class => false,
+            Event::class => false,
             Riposte::class => false,
         ];
     }
@@ -43,7 +43,7 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
     {
         return !isset($context[__CLASS__])
             && (
-                is_a($type, BaseEvent::class, true)
+                is_a($type, Event::class, true)
                 || Riposte::class === $type
             );
     }

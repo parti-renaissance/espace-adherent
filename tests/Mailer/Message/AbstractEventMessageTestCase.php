@@ -4,7 +4,7 @@ namespace Tests\App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use Tests\App\AbstractKernelTestCase;
 
@@ -18,10 +18,10 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         ?string $committeeName = null,
         string $timeZone = 'Europe/Paris',
         string $description = '',
-    ): CommitteeEvent {
+    ): Event {
         $address = $this->createPostAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
-        $event = $this->createMock(CommitteeEvent::class);
+        $event = $this->createMock(Event::class);
         $event->expects(static::any())->method('getName')->willReturn($name);
         $event->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
         $event->expects(static::any())->method('getTimeZone')->willReturn($timeZone);

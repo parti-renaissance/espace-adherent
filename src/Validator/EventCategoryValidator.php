@@ -2,9 +2,7 @@
 
 namespace App\Validator;
 
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -22,12 +20,11 @@ class EventCategoryValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof BaseEvent) {
-            throw new UnexpectedValueException($value, BaseEvent::class);
+        if (!$value instanceof Event) {
+            throw new UnexpectedValueException($value, Event::class);
         }
 
-        if (null === $value->getCategory()
-            && \in_array($value::class, [DefaultEvent::class, CommitteeEvent::class], true)) {
+        if (null === $value->getCategory()) {
             $this
                 ->context
                 ->buildViolation($constraint->message)

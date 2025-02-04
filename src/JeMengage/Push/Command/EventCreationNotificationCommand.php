@@ -4,7 +4,7 @@ namespace App\JeMengage\Push\Command;
 
 use App\Entity\Event\Event;
 
-class EventReminderNotificationCommand extends AbstractSendNotificationCommand
+class EventCreationNotificationCommand extends AbstractSendNotificationCommand
 {
     public function getClass(): string
     {

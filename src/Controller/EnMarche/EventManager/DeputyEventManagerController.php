@@ -7,7 +7,7 @@ use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Event\EventManagerSpaceEnum;
 use App\Geo\ManagedZoneProvider;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -23,7 +23,7 @@ class DeputyEventManagerController extends AbstractEventManagerController
      */
     private $managedZoneProvider;
 
-    public function __construct(BaseEventRepository $repository, ManagedZoneProvider $managedZoneProvider)
+    public function __construct(EventRepository $repository, ManagedZoneProvider $managedZoneProvider)
     {
         $this->repository = $repository;
         $this->managedZoneProvider = $managedZoneProvider;

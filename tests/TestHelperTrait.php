@@ -16,7 +16,7 @@ use App\Entity\Donator;
 use App\Entity\DonatorIdentifier;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email\EmailLog;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Filesystem\File;
@@ -51,8 +51,8 @@ use App\Repository\DonatorRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\Email\EmailLogRepository;
 use App\Repository\EmailSubscriptionHistoryRepository;
+use App\Repository\Event\EventRepository;
 use App\Repository\EventRegistrationRepository;
-use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
 use App\Repository\InviteRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
@@ -181,7 +181,7 @@ trait TestHelperTrait
 
     public function getEventRepository(): EventRepository
     {
-        return $this->getRepository(CommitteeEvent::class);
+        return $this->getRepository(Event::class);
     }
 
     public function getCommitteeMembershipRepository(): CommitteeMembershipRepository

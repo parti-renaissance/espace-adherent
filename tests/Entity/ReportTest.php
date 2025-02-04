@@ -4,7 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Report\Report;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ class ReportTest extends TestCase
     public static function provideSubjectClass(): iterable
     {
         yield [Committee::class];
-        yield [CommitteeEvent::class];
+        yield [Event::class];
     }
 
     #[DataProvider('provideSubjectClass')]

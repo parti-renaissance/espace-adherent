@@ -3,7 +3,7 @@
 namespace Tests\App\Repository;
 
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\Group;
@@ -31,7 +31,7 @@ class EventRepositoryTest extends AbstractKernelTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(5, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(8, \count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',
@@ -44,7 +44,7 @@ class EventRepositoryTest extends AbstractKernelTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(1, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(2, \count($this->repository->searchAllEvents($search)));
 
         Chronos::setTestNow();
     }

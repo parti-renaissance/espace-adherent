@@ -2,8 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
@@ -49,7 +48,7 @@ class CommitteeEventManagerController extends AbstractController
     public function editAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        CommitteeEvent $event,
+        Event $event,
         EventCommandHandler $handler,
     ): Response {
         $form = $this->createForm(
@@ -81,7 +80,7 @@ class CommitteeEventManagerController extends AbstractController
     public function cancelAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        CommitteeEvent $event,
+        Event $event,
         EventCanceledHandler $eventCanceledHandler,
     ): Response {
         $form = $this->createForm(FormType::class);
@@ -104,7 +103,7 @@ class CommitteeEventManagerController extends AbstractController
     }
 
     #[Route(path: '/inscrits', name: 'app_committee_event_members', methods: ['GET'])]
-    public function membersAction(BaseEvent $event): Response
+    public function membersAction(Event $event): Response
     {
         return $this->render('events/members.html.twig', [
             'event' => $event,
@@ -115,7 +114,7 @@ class CommitteeEventManagerController extends AbstractController
     #[Route(path: '/inscrits/exporter', name: 'app_committee_event_export_members', methods: ['POST'])]
     public function exportMembersAction(
         Request $request,
-        BaseEvent $event,
+        Event $event,
         EventRegistrationExporter $exporter,
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
@@ -140,7 +139,7 @@ class CommitteeEventManagerController extends AbstractController
     #[Route(path: '/inscrits/contacter', name: 'app_committee_event_contact_members', methods: ['POST'])]
     public function contactMembersAction(
         Request $request,
-        BaseEvent $event,
+        Event $event,
         EventContactMembersCommandHandler $handler,
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
@@ -178,7 +177,7 @@ class CommitteeEventManagerController extends AbstractController
         ]);
     }
 
-    private function getRegistrations(Request $request, BaseEvent $event, string $action): array
+    private function getRegistrations(Request $request, Event $event, string $action): array
     {
         if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");

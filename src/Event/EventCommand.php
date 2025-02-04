@@ -6,8 +6,7 @@ use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
 use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
@@ -23,11 +22,6 @@ class EventCommand extends BaseEventCommand
 {
     #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]
     private $capacity;
-
-    /**
-     * @var bool
-     */
-    private $isForLegislatives;
 
     /**
      * @var Committee|null
@@ -51,27 +45,24 @@ class EventCommand extends BaseEventCommand
         ?Address $address = null,
         ?\DateTimeInterface $beginAt = null,
         ?\DateTimeInterface $finishAt = null,
-        bool $isForLegislatives = false,
-        ?BaseEvent $event = null,
+        ?Event $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
         ?string $visioUrl = null,
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 
         $this->committee = $committee;
-        $this->isForLegislatives = $isForLegislatives;
     }
 
-    public static function createFromEvent(BaseEvent $event): self
+    public static function createFromEvent(Event $event): self
     {
         $command = new self(
             $event->getOrganizer(),
-            $event instanceof CommitteeEvent ? $event->getCommittee() : null,
+            $event->getCommittee(),
             $event->getUuid(),
             self::getAddressModelFromEvent($event),
             $event->getBeginAt(),
             $event->getFinishAt(),
-            $event instanceof CommitteeEvent ? $event->isForLegislatives() : false,
             $event,
             $event->getTimeZone(),
             $event->getVisioUrl()
@@ -98,16 +89,6 @@ class EventCommand extends BaseEventCommand
         }
 
         $this->capacity = $capacity;
-    }
-
-    public function isForLegislatives(): bool
-    {
-        return $this->isForLegislatives;
-    }
-
-    public function setIsForLegislatives(bool $isForLegislatives): void
-    {
-        $this->isForLegislatives = $isForLegislatives;
     }
 
     public function getCommittee(): ?Committee

@@ -4,12 +4,12 @@ namespace App\Api\Provider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use Ramsey\Uuid\Uuid;
 
 class EventProvider implements ProviderInterface
 {
-    public function __construct(private readonly BaseEventRepository $eventRepository)
+    public function __construct(private readonly EventRepository $eventRepository)
     {
     }
 

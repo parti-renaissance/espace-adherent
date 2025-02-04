@@ -68,6 +68,7 @@ trait EntityIdentityTrait
         'email_template_read_restricted',
         'event_list_read',
         'event_read',
+        'event_write_creation',
         'formation_list_read',
         'formation_read',
         'general_meeting_report_list_read',

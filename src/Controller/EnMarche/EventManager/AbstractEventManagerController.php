@@ -6,8 +6,7 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
@@ -60,7 +59,7 @@ abstract class AbstractEventManagerController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $eventCommandHandler->handle($command, $this->getEventClassName());
+            $event = $eventCommandHandler->handle($command);
 
             return $this->renderTemplate('event_manager/event_create_success.html.twig', [
                 'event' => $event,
@@ -75,7 +74,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     #[IsGranted('HOST_EVENT', subject: 'event')]
     #[Route(path: '/evenements/{slug}/modifier', name: '_edit', methods: ['GET', 'POST'])]
-    public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
+    public function editAction(Request $request, Event $event, EventCommandHandler $handler): Response
     {
         $command = EventCommand::createFromEvent($event);
 
@@ -102,7 +101,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     #[IsGranted('HOST_EVENT', subject: 'event')]
     #[Route(path: '/evenements/{slug}/annuler', name: '_cancel', methods: ['GET'])]
-    public function cancelAction(BaseEvent $event, EventCanceledHandler $eventCanceledHandler): Response
+    public function cancelAction(Event $event, EventCanceledHandler $eventCanceledHandler): Response
     {
         if (!$event->isActive()) {
             throw new BadRequestHttpException();
@@ -117,7 +116,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     abstract protected function getSpaceType(): string;
 
-    protected function createEventForm(EventCommand $command, ?BaseEvent $event = null): FormInterface
+    protected function createEventForm(EventCommand $command, ?Event $event = null): FormInterface
     {
         return $this->createForm(
             EventCommandType::class,
@@ -150,11 +149,6 @@ abstract class AbstractEventManagerController extends AbstractController
     protected function redirectToEventManagerRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_{$this->getSpaceType()}_event_manager_{$subName}", $parameters);
-    }
-
-    protected function getEventClassName(): string
-    {
-        return DefaultEvent::class;
     }
 
     protected function getEventGroupCategory(): ?EventGroupCategory

@@ -2,15 +2,12 @@
 
 namespace App\Search;
 
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 
 class EventSearchResultsProvider implements SearchResultsProviderInterface
 {
-    private $eventRepository;
-
-    public function __construct(EventRepository $eventRepository)
+    public function __construct(private readonly EventRepository $eventRepository)
     {
-        $this->eventRepository = $eventRepository;
     }
 
     public function find(SearchParametersFilter $search): array

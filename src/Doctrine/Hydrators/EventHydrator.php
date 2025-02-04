@@ -5,8 +5,9 @@ namespace App\Doctrine\Hydrators;
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
+use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
@@ -42,11 +43,11 @@ class EventHydrator extends AbstractHydrator
             $addressCommittee = $this->createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         }
 
-        if (AddressInterface::FRANCE === $row['adherent_address_country']) {
-            $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_city_name'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
-        } else {
-            $addressAdherent = $this->createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
-        }
+        //        if (AddressInterface::FRANCE === $row['adherent_address_country']) {
+        //            $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_city_name'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+        //        } else {
+        //            $addressAdherent = $this->createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+        //        }
 
         $uuidEvent = Uuid::fromString($row['event_uuid']);
         $committee = null;
@@ -67,29 +68,23 @@ class EventHydrator extends AbstractHydrator
                 $row['adherent_first_name'],
                 $row['adherent_last_name'],
                 new \DateTime($row['adherent_birthdate']),
-                $row['adherent_position'],
-                $addressAdherent
+                $row['adherent_position']
             );
         }
 
-        $event = new CommitteeEvent(
-            $uuidEvent,
-            $organizer,
-            $committee,
-            $row['event_name'],
-            new EventCategory($row['event_category_name']),
-            $row['event_description'],
-            $addressEvent,
-            $row['event_begin_at'],
-            $row['event_finish_at'],
-            $row['event_capacity'],
-            $row['event_is_for_legislatives'],
-            $row['event_created_at'],
-            $row['event_participants_count'],
-            $row['event_slug'],
-            $row['event_type'],
-            $row['timeZone']
-        );
+        $event = new Event($uuidEvent);
+        $event->setAuthor($organizer);
+        $event->setCommittee($committee);
+        $event->setName($row['event_name']);
+        $event->setDescription($row['event_description']);
+        $event->setCategory(new EventCategory($row['event_category_name']));
+        $event->setPostAddress($addressEvent);
+        $event->setBeginAt(new \DateTime($row['event_begin_at']));
+        $event->setFinishAt(new \DateTime($row['event_finish_at']));
+        $event->setCapacity($row['event_capacity']);
+        $event->setCreatedAt(new \DateTime($row['event_created_at']));
+        $event->setTimeZone($row['timeZone']);
+        $event->setSlug($row['event_slug']);
 
         $result[] = $event;
     }
@@ -100,8 +95,8 @@ class EventHydrator extends AbstractHydrator
         ?string $cityName,
         ?float $latitude,
         ?float $longitude,
-    ): PostAddress {
-        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $cityName ?? '', null, null, $latitude, $longitude);
+    ): NullablePostAddress {
+        return NullablePostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $cityName ?? '', null, null, $latitude, $longitude);
     }
 
     private function createForeignAddress(

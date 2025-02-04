@@ -21,7 +21,7 @@
                 <article class="activity-card b__nudge--bottom space--30">
                     <div class="activity-card__type activity-card__type--event">Événement</div>
                     <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
-                    {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                    {% if event.committee %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% elseif event.organizer %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
@@ -72,7 +72,7 @@
                 <article class="activity-card b__nudge--bottom space--30">
                     <div class="activity-card__type activity-card__type--event">Événement</div>
                     <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
-                    {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                    {% if event.committee %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% elseif event.organizer %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Event;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Exporter\EventParticipantsExporter;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
@@ -20,7 +20,7 @@ class GetEventParticipantsController extends AbstractController
 {
     public function __invoke(
         Request $request,
-        BaseEvent $event,
+        Event $event,
         string $_format,
         EventRegistrationRepository $eventRegistrationRepository,
         EventParticipantsExporter $exporter,

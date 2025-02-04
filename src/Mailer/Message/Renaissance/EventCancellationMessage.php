@@ -2,13 +2,13 @@
 
 namespace App\Mailer\Message\Renaissance;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class EventCancellationMessage extends AbstractRenaissanceMessage
 {
-    public static function create(array $recipients, BaseEvent $event, string $eventsLink): self
+    public static function create(array $recipients, Event $event, string $eventsLink): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');

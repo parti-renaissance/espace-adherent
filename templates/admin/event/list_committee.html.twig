@@ -1,7 +1,5 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.getType() == constant('App\\Event\\EventTypeEnum::TYPE_COMMITTEE') %}
-        {{ object.getCommittee() }}
-    {% endif %}
+    {{ object.getCommittee() }}
 {% endblock %}

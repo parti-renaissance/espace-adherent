@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use Cake\Chronos\Chronos;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -25,7 +25,7 @@ class RemindEventCommand extends Command
 
     public function __construct(
         private readonly MessageBusInterface $bus,
-        private readonly BaseEventRepository $eventRepository,
+        private readonly EventRepository $eventRepository,
     ) {
         parent::__construct();
     }
@@ -49,10 +49,10 @@ class RemindEventCommand extends Command
     {
         $mode = $input->getArgument('mode');
 
-        if (BaseEvent::MODE_MEETING === $mode) {
+        if (Event::MODE_MEETING === $mode) {
             $startAfter = (new Chronos())->modify(\sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
             $startBefore = (clone $startAfter)->modify('+1 day');
-        } elseif (BaseEvent::MODE_ONLINE === $mode) {
+        } elseif (Event::MODE_ONLINE === $mode) {
             $startAfter = (new Chronos())->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
             $startBefore = (new Chronos())->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
         } else {

@@ -5,9 +5,7 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use App\Geo\ZoneMatcher;
 use App\Image\ImageManager;
 use Ramsey\Uuid\Uuid;
@@ -28,7 +26,7 @@ class EventFactory
         $this->imageManager = $imageManager;
     }
 
-    public function createFromArray(array $data): CommitteeEvent
+    public function createFromArray(array $data): Event
     {
         foreach (['uuid', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
@@ -36,21 +34,16 @@ class EventFactory
             }
         }
 
-        $uuid = Uuid::fromString($data['uuid']);
-
-        $event = new CommitteeEvent(
-            $uuid,
-            $data['organizer'] ?? null,
-            $data['committee'] ?? null,
-            $data['name'],
-            $data['category'],
-            $data['description'],
-            $data['address'],
-            $data['begin_at'],
-            $data['finish_at'],
-            $data['capacity'],
-            $data['is_for_legislatives'] ?? false
-        );
+        $event = new Event(Uuid::fromString($data['uuid']));
+        $event->setAuthor($data['organizer'] ?? null);
+        $event->setCommittee($data['committee'] ?? null);
+        $event->setName($data['name']);
+        $event->setCategory($data['category']);
+        $event->setDescription($data['description']);
+        $event->setPostAddress($data['address']);
+        $event->setBeginAt(new \DateTimeImmutable($data['begin_at']));
+        $event->setFinishAt(new \DateTimeImmutable($data['finish_at']));
+        $event->setCapacity($data['capacity']);
 
         if (!empty($data['time_zone'])) {
             $event->setTimeZone($data['time_zone']);
@@ -70,33 +63,10 @@ class EventFactory
         return $event;
     }
 
-    public function createFromEventCommand(EventCommand $command, string $eventClass): BaseEvent
+    public function createFromEventCommand(EventCommand $command): Event
     {
-        if (!is_a($eventClass, BaseEvent::class, true)) {
-            throw new \InvalidArgumentException(\sprintf('Invalid Event type: "%s"', $eventClass));
-        }
-
-        switch ($eventClass) {
-            case CommitteeEvent::class:
-                /** @var CommitteeEvent $event */
-                $event = new CommitteeEvent(
-                    $command->getUuid(),
-                    $command->getAuthor(),
-                    $command->getCommittee(),
-                    $command->getName(),
-                    $command->getCategory(),
-                    $command->getDescription(),
-                    $this->createPostAddress($command->getAddress()),
-                    $command->getBeginAt()->format(\DATE_ATOM),
-                    $command->getFinishAt()->format(\DATE_ATOM),
-                    $command->getCapacity(),
-                    $command->isForLegislatives()
-                );
-                break;
-            default:
-                $event = new DefaultEvent($command->getUuid());
-        }
-
+        $event = new Event($command->getUuid());
+        $event->setCommittee($command->getCommittee());
         $event->setMode($command->getMode());
         $event->setAuthor($command->getAuthor());
         $event->setName($command->getName());
@@ -119,7 +89,7 @@ class EventFactory
         return $event;
     }
 
-    public function updateFromEventCommand(BaseEvent $event, EventCommand $command): void
+    public function updateFromEventCommand(Event $event, EventCommand $command): void
     {
         $event->update(
             $command->getName(),
@@ -133,10 +103,6 @@ class EventFactory
             $command->isPrivate(),
             $command->isElectoral()
         );
-
-        if ($event instanceof CommitteeEvent) {
-            $event->setIsForLegislatives($command->isForLegislatives());
-        }
 
         $event->setMode($command->getMode());
         $event->setCategory($command->getCategory());

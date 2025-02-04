@@ -3,17 +3,12 @@
 namespace App\Adherent\Unregistration\Handlers;
 
 use App\Entity\Adherent;
-use App\Event\EventTypeEnum;
-use App\Repository\EventRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Event\EventRepository;
 
 class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private readonly EventRepository $repository)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function supports(Adherent $adherent): bool
@@ -23,14 +18,7 @@ class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
 
     public function handle(Adherent $adherent): void
     {
-        foreach (EventTypeEnum::CLASSES as $class) {
-            $this->updateEvents($this->entityManager->getRepository($class), $adherent);
-        }
-    }
-
-    private function updateEvents(EventRepository $repository, Adherent $adherent): void
-    {
-        $repository->removeOrganizerEvents($adherent, EventRepository::TYPE_PAST, true);
-        $repository->removeOrganizerEvents($adherent, EventRepository::TYPE_UPCOMING);
+        $this->repository->removeOrganizerEvents($adherent, EventRepository::TYPE_PAST, true);
+        $this->repository->removeOrganizerEvents($adherent, EventRepository::TYPE_UPCOMING);
     }
 }

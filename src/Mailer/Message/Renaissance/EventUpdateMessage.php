@@ -2,13 +2,13 @@
 
 namespace App\Mailer\Message\Renaissance;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 class EventUpdateMessage extends AbstractRenaissanceMessage
 {
-    public static function create(array $recipients, BaseEvent $event, string $eventUrl): self
+    public static function create(array $recipients, Event $event, string $eventUrl): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');
@@ -37,7 +37,7 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
         return $message;
     }
 
-    private static function getTemplateVars(BaseEvent $event, string $eventUrl): array
+    private static function getTemplateVars(Event $event, string $eventUrl): array
     {
         return [
             'event_name' => self::escape($event->getName()),

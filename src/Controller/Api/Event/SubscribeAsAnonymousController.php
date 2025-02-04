@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Event;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Repository\AdherentRepository;
@@ -24,7 +24,7 @@ class SubscribeAsAnonymousController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, BaseEvent $event): Response
+    public function __invoke(Request $request, Event $event): Response
     {
         if (!$event->isPublic()) {
             throw $this->createNotFoundException('Event is not public');

@@ -3,7 +3,7 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,11 +28,11 @@ class PostEventEditListener implements EventSubscriberInterface
 
     public function onEventChange(ViewEvent $viewEvent): void
     {
-        /** @var BaseEvent $event */
+        /** @var Event $event */
         $event = $viewEvent->getControllerResult();
         $request = $viewEvent->getRequest();
 
-        if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT]) || !$event instanceof BaseEvent) {
+        if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT]) || !$event instanceof Event) {
             return;
         }
 

@@ -5,7 +5,7 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -28,7 +28,7 @@ final class MyCreatedEventsFilter extends AbstractFilter
         array $context = [],
     ) {
         if (
-            BaseEvent::class !== $resourceClass
+            Event::class !== $resourceClass
             || self::PROPERTY_NAME !== $property
             || !$user = $this->security->getUser()
         ) {

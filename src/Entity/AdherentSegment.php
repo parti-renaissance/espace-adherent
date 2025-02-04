@@ -97,16 +97,6 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
         $this->memberIds = $memberIds;
     }
 
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Adherent $author): void
-    {
-        $this->author = $author;
-    }
-
     public function isSynchronized(): bool
     {
         return $this->synchronized;

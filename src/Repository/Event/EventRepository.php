@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Event;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
-use App\Event\EventTypeEnum;
+use App\Entity\Event\BaseEventCategory;
+use App\Entity\Event\Event;
+use App\Entity\Geo\Zone;
 use App\Event\EventVisibilityEnum;
+use App\Event\ListFilter;
 use App\Geocoder\Coordinates;
+use App\Repository\GeoZoneTrait;
+use App\Repository\NearbyTrait;
+use App\Repository\PaginatorTrait;
+use App\Repository\UuidEntityRepositoryTrait;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -22,6 +26,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class EventRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
     use PaginatorTrait;
     use GeoZoneTrait;
     use NearbyTrait;
@@ -33,54 +38,266 @@ class EventRepository extends ServiceEntityRepository
     public const TYPE_UPCOMING = 'upcoming';
     public const TYPE_ALL = 'all';
 
-    public function __construct(ManagerRegistry $registry, string $className = CommitteeEvent::class)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, $className);
+        parent::__construct($registry, Event::class);
     }
 
-    public function findOneBySlug(string $slug): ?CommitteeEvent
+    public function findOnePublishedBySlug(string $slug): ?Event
     {
-        $query = $this
-            ->createQueryBuilder('e')
-            ->select('e', 'a', 'c', 'o')
-            ->leftJoin('e.category', 'a')
-            ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.author', 'o')
-            ->where('e.slug = :slug')
-            ->andWhere('e.published = :published')
-            ->andWhere('c.status = :status')
-            ->setParameter('slug', $slug)
-            ->setParameter('published', true)
-            ->setParameter('status', Committee::APPROVED)
+        return $this
+            ->createSlugQueryBuilder($slug)
             ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param Zone[] $zones
+     *
+     * @return Event[]|PaginatorInterface
+     */
+    public function findManagedByPaginator(array $zones, int $page = 1, int $limit = 50): PaginatorInterface
+    {
+        $qb = $this->createQueryBuilder('event')
+            ->select('event', 'category', 'organizer')
+            ->leftJoin('event.category', 'category')
+            ->leftJoin('event.author', 'organizer')
+            ->where('event.published = :published')
+            ->orderBy('event.beginAt', 'DESC')
+            ->addOrderBy('event.name', 'ASC')
+            ->setParameter('published', true)
         ;
 
-        return $query->getOneOrNullResult();
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'event',
+            Event::class,
+            'e2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
+            }
+        );
+
+        return $this->configurePaginator($qb, $page, $limit);
     }
 
-    public function findOneByUuid(string $uuid): ?BaseEvent
+    public function findOneActiveBySlug(string $slug): ?Event
+    {
+        return $this
+            ->createSlugQueryBuilder($slug)
+            ->andWhere('event.status = :status')
+            ->setParameter('status', Event::STATUS_SCHEDULED)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    protected function createSlugQueryBuilder(string $slug): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('event')
+            ->select('event', 'organizer')
+            ->leftJoin('event.author', 'organizer')
+            ->where('event.slug = :slug')
+            ->andWhere('event.published = :published')
+            ->setParameters([
+                'published' => true,
+                'slug' => $slug,
+            ])
+        ;
+    }
+
+    public function findEventsToRemind(
+        \DateTimeInterface $startAfter,
+        \DateTimeInterface $startBefore,
+        ?string $mode = null,
+    ): array {
+        $qb = $this
+            ->createQueryBuilder('event')
+            ->andWhere('event.beginAt >= :start_after')
+            ->andWhere('event.beginAt < :start_before')
+            ->andWhere('event.reminded = :false')
+            ->setParameters([
+                'start_after' => $startAfter,
+                'start_before' => $startBefore,
+                'false' => false,
+            ])
+        ;
+
+        if ($mode) {
+            $qb
+                ->andWhere('event.mode = :mode')
+                ->setParameter('mode', $mode)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllByFilter(ListFilter $filter, int $limit = 50): array
+    {
+        $qb = $this->createQueryBuilder('event');
+
+        $qb
+            ->leftJoin('event.category', 'category')
+            ->where('event.published = :published')
+            ->andWhere('event.status = :event_status')
+            ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
+            ->andWhere('category IS NULL OR category.status = :category_status')
+            ->orderBy('event.beginAt', 'ASC')
+            ->addOrderBy('event.name', 'ASC')
+            ->setParameter('published', true)
+            ->setParameter('event_status', Event::STATUS_SCHEDULED)
+            ->setParameter('now', new \DateTime('now'))
+            ->setParameter('category_status', BaseEventCategory::ENABLED)
+            ->setMaxResults($limit)
+        ;
+
+        if ($name = $filter->getName()) {
+            $qb
+                ->andWhere('event.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%')
+            ;
+        }
+
+        if ($category = $filter->getCategory()) {
+            $qb
+                ->andWhere('category = :category')
+                ->setParameter('category', $category)
+            ;
+        }
+
+        if ($zone = $filter->getZone() ?? $filter->getDefaultZone()) {
+            $this->withGeoZones(
+                array_merge([$zone], $zone->isCountry() ? $zone->getParentsOfType(Zone::CUSTOM) : []),
+                $qb,
+                'event',
+                Event::class,
+                'e2',
+                'zones',
+                'z2',
+                function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                    $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
+                },
+                !$zone->isCountry()
+            );
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllForPublicMap(?string $categorySlug): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->select(
+                'e.uuid',
+                'e.slug',
+                'e.name',
+                'e.beginAt',
+                'e.postAddress.latitude AS latitude',
+                'e.postAddress.longitude AS longitude',
+                'e.postAddress.cityName AS city',
+                'e.postAddress.postalCode AS postalCode',
+                'e.postAddress.country AS country',
+            )
+            ->where('e.visibility IN (:visibilities)')
+            ->andWhere('e.postAddress.latitude IS NOT NULL AND e.postAddress.longitude IS NOT NULL')
+            ->andWhere('e.status = :status')
+            ->andWhere('e.mode = :mode')
+            ->setParameters([
+                'mode' => Event::MODE_MEETING,
+                'status' => Event::STATUS_SCHEDULED,
+                'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
+            ])
+        ;
+
+        if ($categorySlug) {
+            $qb
+                ->innerJoin('e.category', 'c')
+                ->andWhere('c.slug = :category AND c.status = :cat_status')
+                ->setParameter('category', $categorySlug)
+                ->setParameter('cat_status', BaseEventCategory::ENABLED)
+            ;
+        }
+
+        return $qb->getQuery()->enableResultCache(3600)->getArrayResult();
+    }
+
+    /**
+     * @return Event[]|PaginatorInterface
+     */
+    public function findEventsByOrganizerPaginator(
+        Adherent $organizer,
+        int $page = 1,
+        int $limit = 50,
+        ?string $groupCategorySlug = null,
+    ): PaginatorInterface {
+        $qb = $this
+            ->createQueryBuilder('event')
+            ->andWhere('event.author = :organizer')
+            ->setParameter('organizer', $organizer)
+            ->orderBy('event.createdAt', 'DESC')
+        ;
+
+        if ($groupCategorySlug) {
+            $qb
+                ->innerJoin('event.category', 'category')
+                ->innerJoin('category.eventGroupCategory', 'groupCategory')
+                ->andWhere('groupCategory.slug = :group_category_slug')
+                ->setParameter('group_category_slug', $groupCategorySlug)
+            ;
+        }
+
+        return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    public function removeOrganizerEvents(Adherent $organizer, string $type = self::TYPE_ALL, $anonymize = false)
+    {
+        $type = strtolower($type);
+        $qb = $this->createQueryBuilder('e');
+        if ($anonymize) {
+            $qb->update()
+                ->set('e.author', ':new_value')
+                ->setParameter('new_value', null)
+            ;
+        } else {
+            $qb->delete();
+        }
+
+        $qb
+            ->where('e.author = :organizer')
+            ->setParameter('organizer', $organizer)
+        ;
+
+        if (\in_array($type, [self::TYPE_UPCOMING, self::TYPE_PAST], true)) {
+            if (self::TYPE_PAST === $type) {
+                $qb->andWhere('e.beginAt <= :date');
+            } else {
+                $qb->andWhere('e.beginAt >= :date');
+            }
+            // The extra 24 hours enable to include events in foreign
+            // countries that are on different timezones.
+            $qb->setParameter('date', new \DateTime('-24 hours'));
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function findOneBySlug(string $slug): ?Event
+    {
+        return $this->findOneBy(['slug' => $slug]);
+    }
+
+    public function findOneByUuid(string $uuid): ?Event
     {
         return $this->findOneByValidUuid($uuid);
-    }
-
-    public function findOnePublishedBySlug(string $slug): ?BaseEvent
-    {
-        return $this
-            ->createSlugQueryBuilder($slug)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
-    public function findOneActiveBySlug(string $slug): ?BaseEvent
-    {
-        return $this
-            ->createSlugQueryBuilder($slug)
-            ->andWhere('e.status = :status')
-            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     public function findStartedEventBetweenDatesForZones(
@@ -101,7 +318,7 @@ class EventRepository extends ServiceEntityRepository
             ->setParameters([
                 'start_date' => $startDate,
                 'end_date' => $endDate,
-                'status' => BaseEvent::STATUS_SCHEDULED,
+                'status' => Event::STATUS_SCHEDULED,
             ])
             ->leftJoin('event.committee', 'committee')
             ->leftJoin('committee.zones', 'committeeZones')
@@ -142,52 +359,15 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    protected function createSlugQueryBuilder(string $slug): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('e')
-            ->select('e', 'a', 'c', 'o')
-            ->leftJoin('e.category', 'a')
-            ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.author', 'o')
-            ->where('e.slug = :slug')
-            ->setParameter('slug', $slug)
-            ->andWhere('e.published = :published')
-            ->setParameter('published', true)
-        ;
-    }
-
-    public function findEventsByOrganizerPaginator(
-        Adherent $organizer,
-        int $page = 1,
-        int $limit = 50,
-    ): PaginatorInterface {
-        return $this->configurePaginator(
-            $this
-                ->createQueryBuilder('e')
-                ->andWhere('e.author = :organizer')
-                ->setParameter('organizer', $organizer)
-                ->orderBy('e.createdAt', 'DESC'),
-            $page,
-            $limit,
-            static function (Query $query) {
-                $query
-                    ->useResultCache(true)
-                    ->setResultCacheLifetime(1800)
-                ;
-            }
-        );
-    }
-
     public function searchAllEvents(SearchParametersFilter $search): array
     {
         $sql = <<<'SQL'
             SELECT events.uuid AS event_uuid, events.author_id AS event_organizer_id, events.committee_id AS event_committee_id,
             events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description,
             events.begin_at AS event_begin_at, events.finish_at AS event_finish_at,
-            events.capacity AS event_capacity, events.is_for_legislatives AS event_is_for_legislatives,
+            events.capacity AS event_capacity,
             events.created_at AS event_created_at, events.participants_count AS event_participants_count, events.slug AS event_slug,
-            events.type AS event_type, events.address_address AS event_address_address,
+            events.address_address AS event_address_address,
             events.address_country AS event_address_country, events.address_city_name AS event_address_city_name,
             events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code,
             events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, events.time_zone AS timeZone,
@@ -211,14 +391,13 @@ class EventRepository extends ServiceEntityRepository
             FROM events
             LEFT JOIN adherents ON adherents.id = events.author_id
             LEFT JOIN committees ON committees.id = events.committee_id
-            LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id AND events.type IN (:base_event_types)
+            LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id
             WHERE (events.address_latitude IS NOT NULL
                 AND events.address_longitude IS NOT NULL
                 AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max
                 AND events.begin_at > :today
                 AND events.published = :published
                 AND events.status = :scheduled
-                AND events.renaissance_event = :renaissance
                 AND event_category.id IS NOT NULL
                 )
                 __filter_query__
@@ -275,45 +454,11 @@ class EventRepository extends ServiceEntityRepository
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
-        $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
-        $query->setParameter('base_event_types', [EventTypeEnum::TYPE_COMMITTEE, EventTypeEnum::TYPE_DEFAULT]);
+        $query->setParameter('scheduled', Event::STATUS_SCHEDULED);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
-        $query->setParameter('renaissance', $search->isRenaissanceEvent(), \PDO::PARAM_INT);
 
         return $query->getResult('EventHydrator');
-    }
-
-    public function removeOrganizerEvents(Adherent $organizer, string $type = self::TYPE_ALL, $anonymize = false)
-    {
-        $type = strtolower($type);
-        $qb = $this->createQueryBuilder('e');
-        if ($anonymize) {
-            $qb->update()
-                ->set('e.author', ':new_value')
-                ->setParameter('new_value', null)
-            ;
-        } else {
-            $qb->delete();
-        }
-
-        $qb
-            ->where('e.author = :organizer')
-            ->setParameter('organizer', $organizer)
-        ;
-
-        if (\in_array($type, [self::TYPE_UPCOMING, self::TYPE_PAST], true)) {
-            if (self::TYPE_PAST === $type) {
-                $qb->andWhere('e.beginAt <= :date');
-            } else {
-                $qb->andWhere('e.beginAt >= :date');
-            }
-            // The extra 24 hours enable to include events in foreign
-            // countries that are on different timezones.
-            $qb->setParameter('date', new \DateTime('-24 hours'));
-        }
-
-        return $qb->getQuery()->execute();
     }
 
     public function paginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
@@ -328,10 +473,10 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return CommitteeEvent[]
+     * @return Event[]
      */
     public function findNearbyOf(
-        CommitteeEvent $event,
+        Event $event,
         int $radius = SearchParametersFilter::RADIUS_10,
         int $max = 3,
     ): array {
@@ -341,12 +486,10 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('n.beginAt > :date')
             ->andWhere('n.status = :status')
             ->andwhere('n.published = :published')
-            ->andwhere('n.renaissanceEvent = :for_renaissance_event')
             ->setParameter('distance_max', $radius)
             ->setParameter('date', $event->getBeginAt())
-            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
+            ->setParameter('status', Event::STATUS_SCHEDULED)
             ->setParameter('published', true)
-            ->setParameter('for_renaissance_event', false)
             ->addOrderBy('n.beginAt', 'ASC')
             ->setMaxResults($max)
             ->getQuery()

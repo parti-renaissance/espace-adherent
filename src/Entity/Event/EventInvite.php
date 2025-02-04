@@ -16,10 +16,10 @@ class EventInvite
     use EntityPersonNameTrait;
 
     /**
-     * @var BaseEvent|null
+     * @var Event|null
      */
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: BaseEvent::class)]
+    #[ORM\ManyToOne(targetEntity: Event::class)]
     private $event;
 
     /**
@@ -46,7 +46,7 @@ class EventInvite
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    public function __construct(BaseEvent $event)
+    public function __construct(Event $event)
     {
         $this->uuid = Uuid::uuid4();
         $this->event = $event;
@@ -58,7 +58,7 @@ class EventInvite
         return \sprintf('Invitation à l\'évenement %s de %s', $this->event, $this->getFullName());
     }
 
-    public static function create(BaseEvent $event, EventInvitation $invitation): self
+    public static function create(Event $event, EventInvitation $invitation): self
     {
         $invite = new self($event);
         $invite->firstName = $invitation->firstName;
@@ -70,7 +70,7 @@ class EventInvite
         return $invite;
     }
 
-    public function getEvent(): ?BaseEvent
+    public function getEvent(): ?Event
     {
         return $this->event;
     }

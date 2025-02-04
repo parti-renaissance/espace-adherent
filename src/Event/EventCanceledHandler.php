@@ -2,11 +2,9 @@
 
 namespace App\Event;
 
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventCanceledHandler
@@ -17,19 +15,12 @@ class EventCanceledHandler
     ) {
     }
 
-    public function handle(BaseEvent $event): void
+    public function handle(Event $event): void
     {
         $event->cancel();
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch($this->createDispatchedEvent($event), Events::EVENT_CANCELLED);
-    }
-
-    private function createDispatchedEvent(BaseEvent $event): Event
-    {
-        return $event instanceof CommitteeEvent
-            ? new CommitteeEventEvent($event->getOrganizer(), $event, $event->getCommittee())
-            : new EventEvent($event->getOrganizer(), $event);
+        $this->dispatcher->dispatch(new EventEvent($event->getOrganizer(), $event), Events::EVENT_CANCELLED);
     }
 }

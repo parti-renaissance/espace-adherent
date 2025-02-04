@@ -3,7 +3,7 @@
 namespace App\JeMengage;
 
 use App\Entity\Action\Action;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Jecoute\News;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -28,7 +28,7 @@ class Router
             return '/actions?uuid='.$object->getUuid();
         }
 
-        if ($object instanceof BaseEvent) {
+        if ($object instanceof Event) {
             return '/evenements/'.$object->getSlug();
         }
 

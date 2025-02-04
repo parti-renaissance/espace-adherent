@@ -5,7 +5,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\Committee\CommitteeManager;
 use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeMembershipRepository;
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
@@ -21,7 +21,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     /* @var EventRepository */
-    private $committeeEventRepository;
+    private $eventRepository;
 
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
@@ -276,7 +276,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
     {
         parent::setUp();
 
-        $this->committeeEventRepository = $this->getEventRepository();
+        $this->eventRepository = $this->getEventRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
 
         $this->disableRepublicanSilence();
@@ -285,7 +285,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
     protected function tearDown(): void
     {
         $this->committeeMembershipRepository = null;
-        $this->committeeEventRepository = null;
+        $this->eventRepository = null;
 
         parent::tearDown();
     }

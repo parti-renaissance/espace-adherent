@@ -4,7 +4,7 @@ namespace App\Security\Voter;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
 use App\Entity\ZoneableWithScopeEntityInterface;
@@ -43,7 +43,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $spaceType = $this->getSpaceType($attribute);
         }
 
-        if (!empty($committeeUuids) && $subject instanceof CommitteeEvent) {
+        if (!empty($committeeUuids) && $subject instanceof Event && $subject->getCommittee()) {
             return \in_array($subject->getCommitteeUuid(), $committeeUuids);
         }
 

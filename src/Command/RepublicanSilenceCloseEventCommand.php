@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\RepublicanSilence;
 use App\Event\EventCanceledHandler;
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 use App\RepublicanSilence\RepublicanSilenceManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

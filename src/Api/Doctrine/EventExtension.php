@@ -7,8 +7,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Api\Serializer\PrivatePublicContextBuilder;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Event\EventVisibilityEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Join;
@@ -28,7 +27,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         ?Operation $operation = null,
         array $context = [],
     ): void {
-        if (!is_a($resourceClass, BaseEvent::class, true)) {
+        if (!is_a($resourceClass, Event::class, true)) {
             return;
         }
 
@@ -42,12 +41,12 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         ?Operation $operation = null,
         array $context = [],
     ): void {
-        if (!is_a($resourceClass, BaseEvent::class, true)) {
+        if (!is_a($resourceClass, Event::class, true)) {
             return;
         }
         $filters = $context['filters'] ?? [];
 
-        $this->modifyQuery($queryBuilder, PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? null : ($filters['status'] ?? BaseEvent::STATUS_SCHEDULED));
+        $this->modifyQuery($queryBuilder, PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? null : ($filters['status'] ?? Event::STATUS_SCHEDULED));
 
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -57,7 +56,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             if ($scope && $committeeUuids = $scope->getCommitteeUuids()) {
                 $queryBuilder->andWhere(\sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
                     ->select('ce.id')
-                    ->from(CommitteeEvent::class, 'ce')
+                    ->from(Event::class, 'ce')
                     ->innerJoin('ce.committee', 'committee', Join::WITH, 'committee.uuid IN (:committee_uuids)')
                     ->getDQL()
                 ));

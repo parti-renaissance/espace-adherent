@@ -32,6 +32,7 @@ use App\Entity\Adherent;
 use App\Entity\AdvancedImageTrait;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
+use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -45,14 +46,13 @@ use App\Entity\NullablePostAddress;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
-use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
 use App\Geocoder\GeoPointInterface;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Report\ReportType;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
@@ -150,16 +150,13 @@ use Symfony\Component\Validator\Constraints as Assert;
     interval: '3 days',
     messageDate: 'committee.event.invalid_finish_date'
 )]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
-#[ORM\Entity(repositoryClass: BaseEventRepository::class)]
+#[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Index(columns: ['begin_at'])]
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface
+class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
@@ -237,6 +234,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     #[Groups(['event_read', 'event_write'])]
     #[ORM\Column(type: 'text')]
     protected $description;
+
+    #[Groups(['event_read', 'event_write_creation'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class, fetch: 'EAGER')]
+    private $committee;
 
     /**
      * @var string
@@ -341,9 +343,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $renaissanceEvent = false;
-
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
@@ -368,6 +367,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
         $this->category = $category;
     }
 
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
     public function getCategoryName(): ?string
     {
         return $this->category?->getName();
@@ -375,7 +379,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
 
     public function __toString(): string
     {
-        return $this->name ?: '';
+        return $this->getName();
     }
 
     protected static function canonicalize(string $name): string
@@ -556,7 +560,24 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
         return $this->participantsCount >= $this->capacity;
     }
 
-    abstract public function getType(): string;
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(?Committee $committee): void
+    {
+        $this->committee = $committee;
+    }
+
+    public function getCommitteeUuid(): ?string
+    {
+        if (!$committee = $this->getCommittee()) {
+            return null;
+        }
+
+        return $committee->getUuidAsString();
+    }
 
     public function equals(self $other): bool
     {
@@ -580,7 +601,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
 
     public function isOnline(): bool
     {
-        return BaseEvent::MODE_ONLINE === $this->mode;
+        return Event::MODE_ONLINE === $this->mode;
     }
 
     public function getVisioUrl(): ?string
@@ -632,7 +653,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
 
     public function needNotifyForRegistration(): bool
     {
-        return false;
+        return (bool) $this->committee;
     }
 
     public function isReminded(): bool
@@ -677,16 +698,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     public function getIndexOptions(): array
     {
         return [];
-    }
-
-    public function isRenaissanceEvent(): bool
-    {
-        return $this->renaissanceEvent;
-    }
-
-    public function setRenaissanceEvent(bool $renaissanceEvent): void
-    {
-        $this->renaissanceEvent = $renaissanceEvent;
     }
 
     public function isPublic(): bool

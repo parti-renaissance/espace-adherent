@@ -3,7 +3,7 @@
 namespace App\JeMengage\Timeline;
 
 use App\Entity\Action\Action;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Jecoute\News;
 use App\Entity\Jecoute\Riposte;
 use App\Entity\Jecoute\Survey;
@@ -27,7 +27,7 @@ class TimelineFeedTypeEnum extends Enum
         PhoningCampaign::class => self::PHONING_CAMPAIGN,
         Riposte::class => self::RIPOSTE,
         Survey::class => self::SURVEY,
-        BaseEvent::class => self::EVENT,
+        Event::class => self::EVENT,
         Action::class => self::ACTION,
     ];
 }

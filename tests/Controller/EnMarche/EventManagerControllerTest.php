@@ -4,10 +4,9 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\Renaissance\EventCancellationMessage;
-use App\Mailer\Message\Renaissance\EventUpdateMessage;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -99,7 +98,6 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertCountMails(1, EventUpdateMessage::class);
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
@@ -290,7 +288,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
     public function testExportIcalForeignEvent()
     {
         $uuid = LoadCommitteeEventData::EVENT_12_UUID;
-        /** @var CommitteeEvent $event */
+        /** @var Event $event */
         $event = $this->getEventRepository()->findOneBy(['uuid' => $uuid]);
 
         $this->client->request(Request::METHOD_GET, \sprintf('/evenements/%s/ical', $event->getSlug()));

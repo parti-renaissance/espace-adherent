@@ -20,7 +20,7 @@ trait AuthoredTrait
         return $this->author;
     }
 
-    public function setAuthor(Adherent $author): void
+    public function setAuthor(?Adherent $author): void
     {
         $this->author = $author;
     }
