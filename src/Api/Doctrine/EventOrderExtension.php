@@ -5,7 +5,7 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use Doctrine\ORM\QueryBuilder;
 
 class EventOrderExtension implements QueryCollectionExtensionInterface
@@ -17,7 +17,7 @@ class EventOrderExtension implements QueryCollectionExtensionInterface
         ?Operation $operation = null,
         array $context = [],
     ): void {
-        if (!is_a($resourceClass, BaseEvent::class, true)) {
+        if (!is_a($resourceClass, Event::class, true)) {
             return;
         }
 

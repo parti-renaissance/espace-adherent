@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Exception\EventRegistrationException;
 use App\Repository\EventRegistrationRepository;
@@ -29,7 +29,7 @@ class EventRegistrationManager
         return $this->repository->findOneByUuid($uuid);
     }
 
-    public function searchRegistration(BaseEvent $event, string $emailAddress, ?Adherent $adherent): ?EventRegistration
+    public function searchRegistration(Event $event, string $emailAddress, ?Adherent $adherent): ?EventRegistration
     {
         if ($adherent) {
             return $this->searchAdherentRegistration($event, $adherent);
@@ -38,12 +38,12 @@ class EventRegistrationManager
         return $this->searchGuestRegistration($event, $emailAddress);
     }
 
-    public function searchGuestRegistration(BaseEvent $event, string $emailAddress): ?EventRegistration
+    public function searchGuestRegistration(Event $event, string $emailAddress): ?EventRegistration
     {
         return $this->repository->findGuestRegistration($event->getUuid()->toString(), $emailAddress);
     }
 
-    public function searchAdherentRegistration(BaseEvent $event, Adherent $adherent): ?EventRegistration
+    public function searchAdherentRegistration(Event $event, Adherent $adherent): ?EventRegistration
     {
         return $this->repository->findAdherentRegistration(
             $event->getUuid()->toString(),

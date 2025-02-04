@@ -207,11 +207,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->id;
     }
 
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
     public function getLabel(): ?string
     {
         return $this->label;
@@ -369,11 +364,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function isMailchimp(): bool
     {
         return $this instanceof CampaignAdherentMessageInterface;
-    }
-
-    public function setAuthor(Adherent $adherent): void
-    {
-        $this->author = $adherent;
     }
 
     public function getSource(): string

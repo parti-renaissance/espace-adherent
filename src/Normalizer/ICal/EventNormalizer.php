@@ -2,13 +2,13 @@
 
 namespace App\Normalizer\ICal;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Serializer\Encoder\ICalEncoder;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EventNormalizer implements NormalizerInterface
 {
-    /** @param BaseEvent $object */
+    /** @param Event $object */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $eventData = [
@@ -33,12 +33,12 @@ class EventNormalizer implements NormalizerInterface
     {
         return [
             '*' => null,
-            BaseEvent::class => true,
+            Event::class => true,
         ];
     }
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return ICalEncoder::FORMAT === $format && $data instanceof BaseEvent;
+        return ICalEncoder::FORMAT === $format && $data instanceof Event;
     }
 }

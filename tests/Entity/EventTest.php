@@ -3,9 +3,9 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
-use App\Entity\PostAddress;
+use App\Entity\NullablePostAddress;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -15,19 +15,15 @@ class EventTest extends TestCase
     #[DataProvider('provideNotFinishedEventDate')]
     public function testEventIsNotConsideredFinished(string $timeZone, string $date)
     {
-        $address = $this->createMock(PostAddress::class);
+        $address = $this->createMock(NullablePostAddress::class);
 
-        $event = new CommitteeEvent(
-            $this->createMock(UuidInterface::class),
-            $this->createMock(Adherent::class),
-            null,
-            '',
-            $this->createMock(EventCategory::class),
-            '',
-            $address,
-            '',
-            $date
-        );
+        $event = new Event($this->createMock(UuidInterface::class));
+        $event->setAuthor($this->createMock(Adherent::class));
+        $event->setCategory($this->createMock(EventCategory::class));
+        $event->setCapacity(2);
+        $event->setPostAddress($address);
+        $event->setBeginAt(new \DateTime($date));
+        $event->setFinishAt(new \DateTime('+1 hour'));
         $event->setTimeZone($timeZone);
 
         $this->assertFalse($event->isFinished());
@@ -47,20 +43,15 @@ class EventTest extends TestCase
     #[DataProvider('provideFinishedEventDate')]
     public function testEventIsConsideredFinished(string $country, string $date)
     {
-        $address = $this->createMock(PostAddress::class);
+        $address = $this->createMock(NullablePostAddress::class);
         $address->expects($this->any())->method('getCountry')->willReturn($country);
 
-        $event = new CommitteeEvent(
-            $this->createMock(UuidInterface::class),
-            $this->createMock(Adherent::class),
-            null,
-            '',
-            $this->createMock(EventCategory::class),
-            '',
-            $address,
-            '',
-            $date
-        );
+        $event = new Event($this->createMock(UuidInterface::class));
+        $event->setAuthor($this->createMock(Adherent::class));
+        $event->setCategory($this->createMock(EventCategory::class));
+        $event->setCapacity(2);
+        $event->setPostAddress($address);
+        $event->setFinishAt(new \DateTime($date));
 
         $this->assertTrue($event->isFinished());
     }
@@ -81,22 +72,10 @@ class EventTest extends TestCase
 
     public function testIsFull()
     {
-        $event = new CommitteeEvent(
-            $this->createMock(UuidInterface::class),
-            $this->createMock(Adherent::class),
-            null,
-            '',
-            $this->createMock(EventCategory::class),
-            '',
-            $this->createMock(PostAddress::class),
-            '',
-            '',
-            2,
-            false,
-            null,
-            0,
-            null
-        );
+        $event = new Event($this->createMock(UuidInterface::class));
+        $event->setAuthor($this->createMock(Adherent::class));
+        $event->setCapacity(2);
+
         $this->assertFalse($event->isFull());
 
         $event->incrementParticipantsCount();
@@ -104,23 +83,5 @@ class EventTest extends TestCase
 
         $event->incrementParticipantsCount();
         $this->assertTrue($event->isFull());
-
-        $event = new CommitteeEvent(
-            $this->createMock(UuidInterface::class),
-            $this->createMock(Adherent::class),
-            null,
-            '',
-            $this->createMock(EventCategory::class),
-            '',
-            $this->createMock(PostAddress::class),
-            '',
-            '',
-            null,
-            false,
-            null,
-            10000000,
-            null
-        );
-        $this->assertFalse($event->isFull());
     }
 }

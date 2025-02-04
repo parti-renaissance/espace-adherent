@@ -5,8 +5,8 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
+use App\Entity\Event\Event;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BaseEventCommand
 {
     /**
-     * @var BaseEvent|null
+     * @var Event|null
      */
     protected $event;
 
@@ -62,7 +62,7 @@ class BaseEventCommand
     /**
      * @var string|null
      */
-    #[Assert\Choice(choices: BaseEvent::MODES)]
+    #[Assert\Choice(choices: Event::MODES)]
     private $mode;
 
     /**
@@ -74,7 +74,7 @@ class BaseEventCommand
         ?Address $address = null,
         ?\DateTimeInterface $beginAt = null,
         ?\DateTimeInterface $finishAt = null,
-        ?BaseEvent $event = null,
+        ?Event $event = null,
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE,
         ?string $visioUrl = null,
     ) {
@@ -180,7 +180,7 @@ class BaseEventCommand
         $this->timeZone = $timeZone;
     }
 
-    public function getEvent(): ?BaseEvent
+    public function getEvent(): ?Event
     {
         return $this->event;
     }
@@ -230,7 +230,7 @@ class BaseEventCommand
         throw new \LogicException(\sprintf('The method "%s" must be overridden in "%s".', __METHOD__, static::class));
     }
 
-    final protected static function getAddressModelFromEvent(BaseEvent $event): Address
+    final protected static function getAddressModelFromEvent(Event $event): Address
     {
         return Address::createFromAddress($event->getPostAddress());
     }

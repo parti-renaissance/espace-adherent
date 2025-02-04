@@ -27,7 +27,6 @@ class EventDateTimeZoneTransformerTest extends TestCase
             null,
             new \DateTime($begintAt),
             new \DateTime($finishAt),
-            false,
             null,
             $timeZone
         );
@@ -53,7 +52,6 @@ class EventDateTimeZoneTransformerTest extends TestCase
             null,
             new \DateTime($begintAt),
             new \DateTime($finishAt),
-            false,
             null,
             $timeZone
         );

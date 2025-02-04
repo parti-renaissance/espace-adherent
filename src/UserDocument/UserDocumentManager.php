@@ -65,14 +65,10 @@ class UserDocumentManager
 
     public function removeIfUnused(UserDocument $document): void
     {
-        $isUsed = $this->manager->getRepository(UserDocument::class)->checkIfDocumentIsUsed($document);
-
-        if (!$isUsed) {
-            $path = $document->getPath();
-            $this->manager->remove($document);
-            $this->manager->flush();
-            $this->removeFromStorage($path);
-        }
+        $path = $document->getPath();
+        $this->manager->remove($document);
+        $this->manager->flush();
+        $this->removeFromStorage($path);
     }
 
     private function removeFromStorage(string $path): void

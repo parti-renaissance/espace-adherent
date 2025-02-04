@@ -5,8 +5,7 @@ namespace Tests\App\Controller\Api\Event;
 use App\AppCodeEnum;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
-use App\Entity\Event\BaseEvent;
-use App\Event\EventTypeEnum;
+use App\Entity\Event\Event;
 use App\Mailer\Message\Renaissance\EventUpdateMessage;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -38,7 +37,6 @@ class EventControllerTest extends AbstractApiTestCase
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
-            'type' => EventTypeEnum::TYPE_DEFAULT,
             'category' => 'kiosque',
             'name' => 'My best event !',
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -47,7 +45,7 @@ class EventControllerTest extends AbstractApiTestCase
             'finish_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 16:30:00',
             'capacity' => 10,
             'visio_url' => 'https://en-marche.fr/123',
-            'mode' => BaseEvent::MODE_ONLINE,
+            'mode' => Event::MODE_ONLINE,
         ]));
 
         $this->assertResponseStatusCodeSame(201);

@@ -3,7 +3,7 @@
 namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -18,6 +18,6 @@ class CanAccessEventVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
+        return self::PERMISSION === $attribute && $subject instanceof Event;
     }
 }

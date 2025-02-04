@@ -27,7 +27,7 @@
         "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
         {% if event.organizer %}
         "organizer": {
-            {% if event.type == 'committee' and event.getCommittee() %}
+            {% if event.getCommittee() %}
             "@type": "Organization",
             "name": "{{ event.getCommittee().name }}",
             "url": "{{ url('app_committee_show', {slug: event.getCommittee().slug}) }}"
@@ -98,7 +98,7 @@
 
             <div class="b__nudge--top-10 text--body text--small">
                 {% if is_granted('HOST_EVENT', event) %}
-                    {% if event.type == 'committee' and event.active %}
+                    {% if event.getCommittee() and event.active %}
                         <a class="b__nudge--right-small link--newblue"
                                href="{{ path('app_committee_event_edit', {slug: event.slug}) }}">
                             {{ 'event.edit'|trans }}

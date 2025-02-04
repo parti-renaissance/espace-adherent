@@ -4,17 +4,12 @@ namespace App\Admin;
 
 use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\DefaultEvent;
-use App\Entity\Event\EventCategory;
-use App\Event\CommitteeEventEvent;
+use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Form\EventCategoryType;
 use App\Utils\PhpConfigurator;
-use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
@@ -34,22 +29,12 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class EventAdmin extends AbstractAdmin
 {
     private $dispatcher;
     private $beforeUpdate;
-
-    public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        EventDispatcherInterface $dispatcher,
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->dispatcher = $dispatcher;
-    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -134,7 +119,7 @@ class EventAdmin extends AbstractAdmin
     }
 
     /**
-     * @param BaseEvent $object
+     * @param Event $object
      */
     protected function alterObject(object $object): void
     {
@@ -151,17 +136,11 @@ class EventAdmin extends AbstractAdmin
     }
 
     /**
-     * @param BaseEvent $object
+     * @param Event $object
      */
     protected function postUpdate(object $object): void
     {
-        if ($object instanceof CommitteeEvent) {
-            $event = new CommitteeEventEvent($object->getOrganizer(), $object);
-        } else {
-            $event = new EventEvent($object->getOrganizer(), $object);
-        }
-
-        $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
+        $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_UPDATED);
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -176,21 +155,15 @@ class EventAdmin extends AbstractAdmin
                 ->add('category', EventCategoryType::class, [
                     'label' => 'Catégorie',
                 ])
-        ;
-
-        if (CommitteeEvent::class === $event::class) {
-            $form->add('committee', null, [
-                'label' => 'Comité organisateur',
-            ]);
-        }
-
-        $form
-            ->add('description', null, [
-                'label' => 'Description',
-                'attr' => [
-                    'rows' => '3',
-                ],
-            ])
+                ->add('committee', null, [
+                    'label' => 'Comité organisateur',
+                ])
+                ->add('description', null, [
+                    'label' => 'Description',
+                    'attr' => [
+                        'rows' => '3',
+                    ],
+                ])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
                 ])
@@ -199,7 +172,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
-                    'choices' => BaseEvent::STATUSES,
+                    'choices' => Event::STATUSES,
                     'choice_translation_domain' => 'forms',
                     'choice_label' => function (?string $choice) {
                         return $choice;
@@ -211,9 +184,6 @@ class EventAdmin extends AbstractAdmin
                 ->add('visibility', EnumType::class, [
                     'label' => 'Visibilité',
                     'class' => EventVisibilityEnum::class,
-                ])
-                ->add('renaissanceEvent', null, [
-                    'label' => 'Événement renaissance',
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
@@ -266,9 +236,7 @@ class EventAdmin extends AbstractAdmin
                     }
 
                     $qb
-                        ->leftJoin(CommitteeEvent::class, 'committeeEvent', Join::WITH, 'committeeEvent.id = '.$alias.'.id')
-                        ->leftJoin(DefaultEvent::class, 'defaultEvent', Join::WITH, 'defaultEvent.id = '.$alias.'.id')
-                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category')
+                        ->leftJoin('event.category', 'eventCategory')
                         ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value->getValue())
                     ;
@@ -404,5 +372,11 @@ class EventAdmin extends AbstractAdmin
             'Date de création' => 'createdAt',
             'Date de modification' => 'updatedAt',
         ];
+    }
+
+    #[Required]
+    public function setDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
     }
 }

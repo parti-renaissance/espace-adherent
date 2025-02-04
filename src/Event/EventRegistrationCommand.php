@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventRegistrationCommand
 {
     /**
-     * @var BaseEvent
+     * @var Event
      */
     private $event;
 
@@ -50,7 +50,7 @@ class EventRegistrationCommand
 
     private $registrationUuid;
 
-    public function __construct(BaseEvent $event, ?Adherent $adherent = null)
+    public function __construct(Event $event, ?Adherent $adherent = null)
     {
         $this->event = $event;
         $this->registrationUuid = Uuid::uuid4();
@@ -74,7 +74,7 @@ class EventRegistrationCommand
         $this->adherent = $adherent;
     }
 
-    public function getEvent(): BaseEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }

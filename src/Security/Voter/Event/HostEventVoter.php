@@ -3,19 +3,18 @@
 namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Security\Voter\AbstractAdherentVoter;
 
 class HostEventVoter extends AbstractAdherentVoter
 {
     protected function supports(string $attribute, $subject): bool
     {
-        return 'HOST_EVENT' === $attribute && $subject instanceof BaseEvent;
+        return 'HOST_EVENT' === $attribute && $subject instanceof Event;
     }
 
     /**
-     * @param CommitteeEvent $event
+     * @param Event $event
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $event): bool
     {
@@ -23,11 +22,7 @@ class HostEventVoter extends AbstractAdherentVoter
             return true;
         }
 
-        if ($event instanceof CommitteeEvent) {
-            if (!$committee = $event->getCommittee()) {
-                return false;
-            }
-
+        if ($committee = $event->getCommittee()) {
             return $adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee);
         }
 

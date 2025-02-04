@@ -7,7 +7,7 @@ namespace App\Entity;
  */
 interface AuthorInterface
 {
-    public function setAuthor(Adherent $adherent): void;
+    public function setAuthor(?Adherent $adherent): void;
 
     public function getAuthor(): ?Adherent;
 }

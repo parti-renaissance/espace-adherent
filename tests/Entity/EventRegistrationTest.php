@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -60,7 +60,7 @@ class EventRegistrationTest extends TestCase
     {
         $uuid = Uuid::fromString($uuid);
 
-        $event = $this->createPartialMock(CommitteeEvent::class, ['getUuid']);
+        $event = $this->createPartialMock(Event::class, ['getUuid']);
 
         // Hack to ensure the $uuid protected property contains
         // a valid UuidInterface instance.

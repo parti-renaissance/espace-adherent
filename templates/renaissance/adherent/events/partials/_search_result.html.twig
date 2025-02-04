@@ -34,7 +34,7 @@
                         <p class="flex items-center flex-wrap">
                             {{ include('icons/user.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                             <span>
-                                {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                                {% if event.committee %}
                                     Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
                                 {% elseif event.organizer %}
                                     Par <span class="font-medium text-gray-700">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span>

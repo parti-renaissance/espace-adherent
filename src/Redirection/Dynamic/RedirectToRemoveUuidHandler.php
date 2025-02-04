@@ -2,7 +2,7 @@
 
 namespace App\Redirection\Dynamic;
 
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;

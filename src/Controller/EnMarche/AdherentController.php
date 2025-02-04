@@ -10,7 +10,7 @@ use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\EventRegistrationException;
@@ -179,7 +179,7 @@ class AdherentController extends AbstractController
                 if ('committee' === $fromType) {
                     $from = $entityManager->getRepository(Committee::class)->findOneByUuid($fromId);
                 } else {
-                    $from = $entityManager->getRepository(CommitteeEvent::class)->findOneByUuid($fromId);
+                    $from = $entityManager->getRepository(Event::class)->findOneByUuid($fromId);
                 }
             }
         } catch (InvalidUuidException $e) {
@@ -202,7 +202,7 @@ class AdherentController extends AbstractController
                     ]);
                 }
 
-                if ($from instanceof CommitteeEvent) {
+                if ($from->getCommittee()) {
                     return $this->redirectToRoute('app_committee_event_show', [
                         'slug' => $from->getSlug(),
                     ]);

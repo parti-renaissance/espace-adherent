@@ -3,7 +3,7 @@
 namespace App\Exporter;
 
 use App\Adherent\Tag\TagTranslator;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Repository\EventRegistrationRepository;
 use App\Utils\PhoneNumberUtils;
@@ -21,7 +21,7 @@ class EventParticipantsExporter
     ) {
     }
 
-    public function export(BaseEvent $event, string $format): StreamedResponse
+    public function export(Event $event, string $format): StreamedResponse
     {
         return $this->exporter->getResponse(
             $format,

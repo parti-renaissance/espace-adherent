@@ -5,8 +5,7 @@ namespace App\Event\EventListener;
 use App\Address\AddressInterface;
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Event\EventRegistrationEvent;
 use App\Events;
@@ -49,7 +48,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
     {
         $event = $event->getEvent();
 
-        if (!$event instanceof CommitteeEvent || !$committee = $event->getCommittee()) {
+        if (!$committee = $event->getCommittee()) {
             return;
         }
 
@@ -123,27 +122,30 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
     public function onEventPostUpdate(EventEvent $event): void
     {
-        if ($event->needSendMessage()) {
-            $event = $event->getEvent();
-            if (!$this->matchChanges($event)) {
-                return;
-            }
+        if (!$event->needSendMessage()) {
+            return;
+        }
 
-            if (!$subscriptions = $this->registrationRepository->findByEvent($event)->toArray()) {
-                return;
-            }
+        $event = $event->getEvent();
 
-            foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
-                $this->transactionalMailer->sendMessage(EventUpdateMessage::create(
-                    $chunk,
-                    $event,
-                    $this->generateUrl('vox_app').'/evenements/'.$event->getSlug(),
-                ));
-            }
+        if (!$this->matchChanges($event)) {
+            return;
+        }
+
+        if (!$subscriptions = $this->registrationRepository->findByEvent($event)->toArray()) {
+            return;
+        }
+
+        foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
+            $this->transactionalMailer->sendMessage(EventUpdateMessage::create(
+                $chunk,
+                $event,
+                $this->generateUrl('vox_app').'/evenements/'.$event->getSlug(),
+            ));
         }
     }
 
-    private function matchChanges(BaseEvent $event): bool
+    private function matchChanges(Event $event): bool
     {
         return
             $this->eventBeginAt != $event->getBeginAt()

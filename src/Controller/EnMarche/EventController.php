@@ -3,8 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
@@ -14,7 +13,7 @@ use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
 use App\Form\EventInvitationType;
 use App\Form\EventRegistrationType;
-use App\Repository\EventRepository;
+use App\Repository\Event\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Serializer\Encoder\ICalEncoder;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -36,7 +35,7 @@ class EventController extends AbstractController
     #[Route(name: '_show', methods: ['GET'])]
     public function showAction(
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventRepository $eventRepository,
     ): Response {
         $params = [
@@ -45,12 +44,10 @@ class EventController extends AbstractController
             'committee' => null,
         ];
 
-        if ($event instanceof CommitteeEvent) {
-            $params = array_merge($params, [
-                'eventsNearby' => $event->isGeocoded() ? $eventRepository->findNearbyOf($event) : null,
-                'committee' => $event->getCommittee(),
-            ]);
-        }
+        $params = array_merge($params, [
+            'eventsNearby' => $event->isGeocoded() ? $eventRepository->findNearbyOf($event) : null,
+            'committee' => $event->getCommittee(),
+        ]);
 
         return $this->render('events/show.html.twig', $params);
     }
@@ -58,7 +55,7 @@ class EventController extends AbstractController
     #[Route(path: '/ical', name: '_export_ical', methods: ['GET'])]
     public function exportIcalAction(
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         SerializerInterface $serializer,
     ): Response {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
@@ -74,7 +71,7 @@ class EventController extends AbstractController
     #[Route(path: '/inscription-adherent', name: '_attend_adherent', methods: ['GET'])]
     public function attendAdherentAction(
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
     ): Response {
@@ -112,7 +109,7 @@ class EventController extends AbstractController
     public function attendAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         AnonymousFollowerSession $anonymousFollowerSession,
     ): Response {
@@ -161,7 +158,7 @@ class EventController extends AbstractController
     public function attendConfirmationAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventRegistrationManager $manager,
     ): Response {
         try {
@@ -186,7 +183,7 @@ class EventController extends AbstractController
     public function inviteAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventInvitationHandler $handler,
     ): Response {
         $eventInvitation = EventInvitation::createFromAdherent(
@@ -221,7 +218,7 @@ class EventController extends AbstractController
     public function invitationSentAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
     ): Response {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
             return $this->redirectToRoute('app_committee_event_invite', [
@@ -239,7 +236,7 @@ class EventController extends AbstractController
     public function unregistrationAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventRegistrationManager $eventRegistrationManager,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {

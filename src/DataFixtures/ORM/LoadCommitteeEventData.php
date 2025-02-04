@@ -4,7 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
 use App\Entity\NullablePostAddress;
 use App\Event\EventRegistrationCommand;
@@ -103,7 +103,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
-            'is_for_legislatives' => true,
         ]);
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event1->incrementParticipantsCount();
@@ -138,7 +137,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'electoral' => true,
         ]);
         $event3->incrementParticipantsCount();
-        $event3->setMode(BaseEvent::MODE_MEETING);
+        $event3->setMode(Event::MODE_MEETING);
 
         $event4 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_4_UUID,
@@ -242,7 +241,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         ]);
         $event10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event10->incrementParticipantsCount();
-        $event10->setMode(BaseEvent::MODE_MEETING);
+        $event10->setMode(Event::MODE_MEETING);
 
         $event11 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_11_UUID,
@@ -405,7 +404,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         ]);
         $event21->setPublished(true);
         $event21->incrementParticipantsCount(3);
-        $event21->setRenaissanceEvent(true);
 
         $event22 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_23_UUID,
@@ -421,7 +419,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         ]);
         $event22->setPublished(true);
         $event22->incrementParticipantsCount(3);
-        $event22->setRenaissanceEvent(true);
 
         $manager->persist($eventHidden);
         $manager->persist($event1);

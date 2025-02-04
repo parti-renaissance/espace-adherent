@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -82,17 +82,17 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
     public function testListAllEvents()
     {
         /** @var Paginator $evenets */
-        $events = $this->getRepository(CommitteeEvent::class)->paginate();
+        $events = $this->getRepository(Event::class)->paginate();
 
         $this->client->request(Request::METHOD_GET, '/tous-les-evenements/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/tous-les-evenements/1');
 
-        $this->assertSame($events->count(), $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(30, $crawler->filter('div.search__results__row')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="prev"]')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="next"]')->count());
-        $this->assertSame(1, $crawler->filter('.listing__paginator li')->count());
+        $this->assertSame(3, $crawler->filter('.listing__paginator li')->count());
         $this->assertSame('/tous-les-evenements', $crawler->filter('.listing__paginator li a')->attr('href'));
         $this->assertSame('1', trim($crawler->filter('.listing__paginator li a')->text()));
     }
@@ -105,11 +105,11 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $this->assertSame(5, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(8, $crawler->filter('div.search__results__row')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 
-        $this->assertSame(1, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(2, $crawler->filter('div.search__results__row')->count());
         $this->assertSame('Conférence-débat', $crawler->filter('.search__results__info .search__results__tag div')->text());
         $this->assertSame('Réunion de réflexion évryenne', trim($crawler->filter('.search__results__info .search__results__meta h2 a')->text()));
 
@@ -126,11 +126,11 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $this->assertSame(5, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(8, $crawler->filter('div.search__results__row')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 
-        $this->assertSame(1, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(2, $crawler->filter('div.search__results__row')->count());
         $this->assertSame('Conférence-débat', $crawler->filter('.search__results__info .search__results__tag div')->text());
         $this->assertSame('Réunion de réflexion évryenne', trim($crawler->filter('.search__results__info .search__results__meta h2 a')->text()));
 

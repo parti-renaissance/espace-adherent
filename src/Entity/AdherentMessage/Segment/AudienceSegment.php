@@ -85,14 +85,4 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     {
         $this->filter = $filter;
     }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Adherent $author): void
-    {
-        $this->author = $author;
-    }
 }

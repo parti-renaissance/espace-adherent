@@ -3,21 +3,20 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event as SfEvent;
 
-class EventEvent extends Event implements GeocodableEntityEventInterface
+class EventEvent extends SfEvent implements GeocodableEntityEventInterface
 {
     use GeoHashChangeAwareTrait;
 
     protected $author;
     protected $event;
 
-    public function __construct(?Adherent $author, BaseEvent $event)
+    public function __construct(?Adherent $author, Event $event)
     {
         $this->author = $author;
         $this->event = $event;
@@ -28,7 +27,7 @@ class EventEvent extends Event implements GeocodableEntityEventInterface
         return $this->author;
     }
 
-    public function getEvent(): BaseEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }
@@ -40,6 +39,6 @@ class EventEvent extends Event implements GeocodableEntityEventInterface
 
     public function needSendMessage(): bool
     {
-        return DefaultEvent::class === \get_class($this->event);
+        return !$this->event->getCommittee();
     }
 }

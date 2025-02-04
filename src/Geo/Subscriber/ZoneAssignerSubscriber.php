@@ -7,7 +7,6 @@ use App\Address\AddressInterface;
 use App\Committee\Event\CommitteeEventInterface;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
 use App\Event\EventEvent;
@@ -68,7 +67,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     {
         $event = $eventEvent->getEvent();
 
-        if ($event->getZones()->isEmpty() && $event instanceof BaseCommitteeEvent) {
+        if ($event->getZones()->isEmpty() && $event->getCommittee()) {
             /** @var Zone $firstZone */
             $firstZone = $event->getCommittee()->getZones()->first();
 

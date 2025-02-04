@@ -2,10 +2,9 @@
 
 namespace App\Event;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
-use App\Mailer\Message\EventInvitationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventInvitationMessage;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,19 +25,15 @@ class EventInvitationHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(EventInvitation $invitation, BaseEvent $event)
+    public function handle(EventInvitation $invitation, Event $event)
     {
         $invite = EventInvite::create($event, $invitation);
 
-        $url = $this->urlGenerator->generate($event->isRenaissanceEvent() ? 'app_renaissance_event_show' : 'app_committee_event_show', [
+        $url = $this->urlGenerator->generate('app_renaissance_event_show', [
             'slug' => $event->getSlug(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $this->mailer->sendMessage(
-            $event->isRenaissanceEvent()
-            ? RenaissanceEventInvitationMessage::createFromInvite($invite, $event, $url)
-            : EventInvitationMessage::createFromInvite($invite, $event, $url)
-        );
+        $this->mailer->sendMessage(RenaissanceEventInvitationMessage::createFromInvite($invite, $event, $url));
 
         $this->manager->persist($invite);
         $this->manager->flush();

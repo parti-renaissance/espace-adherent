@@ -8,7 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
 use App\Geo\ManagedZoneProvider;
-use App\Repository\Event\DefaultEventRepository;
+use App\Repository\Event\EventRepository;
 use App\Repository\EventGroupCategoryRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,7 +28,7 @@ class CandidateEventManagerController extends AbstractEventManagerController
     private $eventGroupCategoryRepository;
 
     public function __construct(
-        DefaultEventRepository $repository,
+        EventRepository $repository,
         ManagedZoneProvider $managedZoneProvider,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
     ) {

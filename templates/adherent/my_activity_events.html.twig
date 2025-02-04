@@ -36,10 +36,6 @@
                     <div class="event-registration search__results__row l__row l__row--h-stretch l__row--v-center">
                         <div class="search__results__info l__col l__col--v-stretch l__col--left">
                             <div class="search__results__meta">
-                                {% if event.isForLegislatives %}
-                                    <div class="tag--orange">Législatives</div>
-                                {% endif %}
-
                                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                                     <a class="link--no-decor"
                                        href="{{ path('app_committee_event_show', {slug: event.slug}) }}">
@@ -51,7 +47,7 @@
                                     {{ event.beginAt|format_datetime('none', 'none', 'd MMMM yyyy') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
 
-                                {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                                {% if event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                                 {% elseif event.organizer %}
                                     <div class="text--body">Organisé par <span class="text--bold">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span></div>

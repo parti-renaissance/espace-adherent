@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Event;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -22,6 +22,6 @@ class CanDeleteEventVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
+        return self::PERMISSION === $attribute && $subject instanceof Event;
     }
 }

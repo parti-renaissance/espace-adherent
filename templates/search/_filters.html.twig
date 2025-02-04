@@ -2,7 +2,7 @@
     <div class="search__bar__options">
         <input class="search-box" name="{{ constant('PARAMETER_QUERY', search) }}" placeholder="Rechercher...">
 
-        {% if search.isTypeEvents() %}
+        {% if search.type == 'events' %}
             <div class="search__bar__options__types">
                 <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
                     <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les événements</option>

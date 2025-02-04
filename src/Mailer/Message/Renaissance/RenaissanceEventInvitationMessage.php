@@ -2,13 +2,13 @@
 
 namespace App\Mailer\Message\Renaissance;
 
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventInvite;
 use Ramsey\Uuid\Uuid;
 
 class RenaissanceEventInvitationMessage extends AbstractRenaissanceMessage
 {
-    public static function createFromInvite(EventInvite $invite, BaseEvent $event, string $eventUrl): self
+    public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
     {
         $message = new self(
             Uuid::uuid4(),

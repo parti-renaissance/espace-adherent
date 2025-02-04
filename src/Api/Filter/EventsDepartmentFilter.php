@@ -5,9 +5,9 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -16,7 +16,7 @@ final class EventsDepartmentFilter extends AbstractFilter
 {
     public const PROPERTY_NAME = 'zone';
 
-    private BaseEventRepository $baseEventRepository;
+    private EventRepository $eventRepository;
     private ZoneRepository $zoneRepository;
 
     protected function filterProperty(
@@ -29,7 +29,7 @@ final class EventsDepartmentFilter extends AbstractFilter
         array $context = [],
     ): void {
         if (
-            !is_a($resourceClass, BaseEvent::class, true)
+            !is_a($resourceClass, Event::class, true)
             || self::PROPERTY_NAME !== $property
             || empty($value)
         ) {
@@ -42,7 +42,7 @@ final class EventsDepartmentFilter extends AbstractFilter
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
-        $zoneQueryBuilder = $this->baseEventRepository->createGeoZonesQueryBuilder(
+        $zoneQueryBuilder = $this->eventRepository->createGeoZonesQueryBuilder(
             [$zone],
             $queryBuilder,
             $resourceClass,
@@ -83,9 +83,9 @@ final class EventsDepartmentFilter extends AbstractFilter
     }
 
     #[Required]
-    public function setBaseEventRepository(BaseEventRepository $baseEventRepository): void
+    public function setEventRepository(EventRepository $eventRepository): void
     {
-        $this->baseEventRepository = $baseEventRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     #[Required]

@@ -5,7 +5,7 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -40,7 +40,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]
      */
-    public function findByEventAndUuid(BaseEvent $event, array $uuids): array
+    public function findByEventAndUuid(Event $event, array $uuids): array
     {
         self::validUuids($uuids);
 
@@ -167,7 +167,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByEvent(BaseEvent $event): EventRegistrationCollection
+    public function findByEvent(Event $event): EventRegistrationCollection
     {
         $registrations = $this->createQueryBuilder('er')
             ->where('er.event = :event')
@@ -183,7 +183,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]|PaginatorInterface|iterable
      */
-    public function findPaginatedByEvent(BaseEvent $event, int $page = 1, ?int $limit = 30): iterable
+    public function findPaginatedByEvent(Event $event, int $page = 1, ?int $limit = 30): iterable
     {
         return $this->configurePaginator(
             $this->createQueryBuilderByEvent($event),
@@ -194,12 +194,12 @@ class EventRegistrationRepository extends ServiceEntityRepository
         );
     }
 
-    public function iterateByEvent(BaseEvent $event): \Iterator
+    public function iterateByEvent(Event $event): \Iterator
     {
         return $this->createQueryBuilderByEvent($event)->getQuery()->iterate();
     }
 
-    private function createQueryBuilderByEvent(BaseEvent $event): QueryBuilder
+    private function createQueryBuilderByEvent(Event $event): QueryBuilder
     {
         return $this
             ->createQueryBuilder('er')
@@ -212,7 +212,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function isAlreadyRegistered(string $email, BaseEvent $event): bool
+    public function isAlreadyRegistered(string $email, Event $event): bool
     {
         return (bool) $this
             ->createQueryBuilder('er')
@@ -226,7 +226,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countEventParticipantsWithoutCreator(BaseEvent $event): int
+    public function countEventParticipantsWithoutCreator(Event $event): int
     {
         $qb = $this->createQueryBuilder('er')
             ->select('COUNT(DISTINCT er.id)')

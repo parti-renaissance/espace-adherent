@@ -5,8 +5,7 @@ namespace App\Normalizer;
 use App\Adherent\Tag\TagEnum;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Event\EventCleaner;
 use App\Event\EventVisibilityEnum;
 use App\Repository\EventRegistrationRepository;
@@ -31,7 +30,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
     ) {
     }
 
-    /** @param BaseEvent $object */
+    /** @param Event $object */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $event = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
@@ -51,7 +50,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
                     'instance' => $object->getAuthorInstance(),
                     'zones' => $object->getZones()->toArray(),
-                    'committee_uuid' => $object instanceof CommitteeEvent ? $object->getCommitteeUuid() : null,
+                    'committee_uuid' => $object->getCommitteeUuid(),
                 ]);
 
             if ($event['editable']) {
@@ -66,7 +65,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
         return [
             '*' => null,
-            BaseEvent::class => false,
+            Event::class => false,
         ];
     }
 
@@ -75,10 +74,10 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return
             !isset($context[__CLASS__])
             && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY])
-            && $data instanceof BaseEvent;
+            && $data instanceof Event;
     }
 
-    private function cleanEventDataIfNeed(BaseEvent $event, ?Adherent $adherent, array $eventData, string $apiContext): array
+    private function cleanEventDataIfNeed(Event $event, ?Adherent $adherent, array $eventData, string $apiContext): array
     {
         if (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext) {
             return $eventData;

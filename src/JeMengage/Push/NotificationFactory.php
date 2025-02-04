@@ -39,12 +39,8 @@ class NotificationFactory
             }
         }
 
-        if ($command instanceof Command\CommitteeEventCreationNotificationCommand) {
-            return Notification\CommitteeEventCreatedNotification::create($object);
-        }
-
-        if ($command instanceof Command\DefaultEventCreationNotificationCommand) {
-            return Notification\DefaultEventCreatedNotification::create($object);
+        if ($command instanceof Command\EventCreationNotificationCommand) {
+            return Notification\EventCreatedNotification::create($object);
         }
 
         if ($command instanceof Command\EventReminderNotificationCommand) {

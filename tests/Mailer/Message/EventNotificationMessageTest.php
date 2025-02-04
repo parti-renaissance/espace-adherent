@@ -3,8 +3,8 @@
 namespace Tests\App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Mailer\Message\EventNotificationMessage;
 use App\Mailer\Message\MessageRecipient;
+use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 
 class EventNotificationMessageTest extends AbstractEventMessageTestCase
 {
@@ -17,7 +17,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
         $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
         $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
 
-        $message = EventNotificationMessage::create(
+        $message = RenaissanceEventNotificationMessage::create(
             $recipients,
             $recipients[0],
             $this->createEventMock(
@@ -31,11 +31,11 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
             ),
             self::SHOW_EVENT_URL,
             function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
 
-        $this->assertSame('event-notification', $message->generateTemplateName());
+        $this->assertSame('renaissance-event-notification', $message->generateTemplateName());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('1 février - 15h30 : Nouvel événement de EM Lyon : En Marche Lyon', $message->getSubject());
         $this->assertCount(8, $message->getVars());
@@ -74,13 +74,13 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
     public function testCreateEventNotificationMessageTimeZone(): void
     {
         $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
-        $message = EventNotificationMessage::create(
+        $message = RenaissanceEventNotificationMessage::create(
             $recipients,
             $recipients[0],
             $this->createEventMock('petit-dejeuner', '2019-02-14 01:00:00', 'conrad hong-kong pacific place 88', '69006-69386', 'EM Lyon', 'Asia/Hong_Kong'),
             self::SHOW_EVENT_URL,
             function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
 

@@ -6,8 +6,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
@@ -55,7 +54,7 @@ class PushTokenRepository extends ServiceEntityRepository
 
         $filterEnabled = false;
 
-        if ($object instanceof DefaultEvent) {
+        if ($object instanceof Event && !$object->getCommittee()) {
             $filterEnabled = true;
 
             $queryBuilder
@@ -63,7 +62,7 @@ class PushTokenRepository extends ServiceEntityRepository
                 ->andWhere('er.event = :event')
                 ->setParameter('event', $object)
             ;
-        } elseif ($object instanceof CommitteeEvent || $object instanceof News) {
+        } elseif (($object instanceof Event && $object->getCommittee()) || $object instanceof News) {
             $filterEnabled = true;
 
             $queryBuilder

@@ -5,9 +5,7 @@ namespace App\JeMengage\Push;
 use App\Entity\Action\Action;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Entity\NotificationObjectInterface;
@@ -73,7 +71,7 @@ class SendNotificationHandler
         // National notification for News or Event
         if (
             ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility())
-            || ($object instanceof BaseEvent && $object->national)
+            || ($object instanceof Event && $object->national)
         ) {
             $notification->setScope('national');
 
@@ -81,8 +79,9 @@ class SendNotificationHandler
         }
 
         if (
-            \in_array($notification::class, [Notification\ActionCreatedNotification::class, Notification\DefaultEventCreatedNotification::class], true)
+            Notification\ActionCreatedNotification::class === $notification::class
             || ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && !$object->getCommittee())
+            || ($notification instanceof Notification\EventCreatedNotification && $object instanceof Event && !$object->getCommittee())
         ) {
             /** @var Zone[] $zones */
             $zones = [];
@@ -113,16 +112,22 @@ class SendNotificationHandler
             Notification\ActionBeginNotification::class,
             Notification\ActionCancelledNotification::class,
             Notification\ActionUpdatedNotification::class,
-            Notification\CommitteeEventCreatedNotification::class,
+            Notification\EventCreatedNotification::class,
             Notification\EventReminderNotification::class,
             Notification\NewsCreatedNotification::class,
         ], true)) {
-            $notification->setScope(match ($object::class) {
-                CommitteeEvent::class, News::class => 'committee:'.$object->getCommittee()->getId(),
-                DefaultEvent::class => 'event:'.$object->getId(),
-                Action::class => 'action:'.$object->getId(),
-                default => null,
-            });
+            if (
+                ($object instanceof Event && $object->getCommittee())
+                || $object instanceof News
+            ) {
+                $notification->setScope('committee:'.$object->getCommittee()->getId());
+            } else {
+                $notification->setScope(match ($object::class) {
+                    Event::class => 'event:'.$object->getId(),
+                    Action::class => 'action:'.$object->getId(),
+                    default => null,
+                });
+            }
 
             return $this->pushTokenRepository->findAllForNotificationObject($object);
         }

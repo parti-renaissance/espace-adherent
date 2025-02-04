@@ -5,7 +5,7 @@ namespace App\Controller\Renaissance\Adherent;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
@@ -16,7 +16,7 @@ use App\Event\ListFilter;
 use App\Form\ContactMessageType;
 use App\Form\EventFilterType;
 use App\Form\EventInvitationType;
-use App\Repository\Event\BaseEventRepository;
+use App\Repository\Event\EventRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Serializer\Encoder\ICalEncoder;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -38,7 +38,7 @@ class EventController extends AbstractController
     private const ITEMS_PER_PAGE = 6;
 
     public function __construct(
-        private readonly BaseEventRepository $baseEventRepository,
+        private readonly EventRepository $eventRepository,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly EventRegistrationManager $manager,
         private readonly TranslatorInterface $translator,
@@ -67,7 +67,7 @@ class EventController extends AbstractController
             $filter = new ListFilter($zone);
         }
 
-        $results = $this->baseEventRepository->findAllByFilter($filter);
+        $results = $this->eventRepository->findAllByFilter($filter);
 
         return $this->render('renaissance/adherent/events/list.html.twig', [
             'form' => $form->createView(),
@@ -94,7 +94,7 @@ class EventController extends AbstractController
     #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     public function registrationAction(
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
     ): Response {
@@ -139,7 +139,7 @@ class EventController extends AbstractController
     public function invitationAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         EventInvitationHandler $handler,
     ): Response {
         $eventInvitation = EventInvitation::createFromAdherent(
@@ -172,7 +172,7 @@ class EventController extends AbstractController
     #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
     public function unregistrationAction(
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
     ): Response {
         if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
             throw $this->createNotFoundException('Impossible de se désinscrire à cet évévenement. Inscription non trouvée.');
@@ -188,7 +188,7 @@ class EventController extends AbstractController
     #[Route(path: '/{slug}/ical', name: '_ical', methods: ['GET'])]
     public function icalAction(
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         SerializerInterface $serializer,
     ): Response {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
@@ -204,7 +204,7 @@ class EventController extends AbstractController
     public function contactAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        BaseEvent $event,
+        Event $event,
         ContactMessageHandler $handler,
     ): Response {
         /** @var Adherent $adherent */

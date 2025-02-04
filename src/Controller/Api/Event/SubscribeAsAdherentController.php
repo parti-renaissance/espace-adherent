@@ -5,7 +5,7 @@ namespace App\Controller\Api\Event;
 use App\Adherent\Tag\TagEnum;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationEvent;
@@ -31,7 +31,7 @@ class SubscribeAsAdherentController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, BaseEvent $event): Response
+    public function __invoke(Request $request, Event $event): Response
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

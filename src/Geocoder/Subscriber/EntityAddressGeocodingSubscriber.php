@@ -5,7 +5,7 @@ namespace App\Geocoder\Subscriber;
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Committee\Event\CommitteeEventInterface;
 use App\Donation\DonationEvents;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Events;
 use App\Geocoder\Coordinates;
 use App\Geocoder\Event\DefaultEvent;
@@ -64,7 +64,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         }
 
         $object = $viewEvent->getControllerResult();
-        if (!$object instanceof GeocodableInterface || $object instanceof BaseEvent) {
+        if (!$object instanceof GeocodableInterface || $object instanceof Event) {
             return;
         }
 

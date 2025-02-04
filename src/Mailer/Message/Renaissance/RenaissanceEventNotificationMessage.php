@@ -3,7 +3,7 @@
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use Ramsey\Uuid\Uuid;
 
 final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessage
@@ -16,7 +16,7 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
     public static function create(
         array $recipients,
         Adherent $host,
-        CommitteeEvent $event,
+        Event $event,
         string $eventLink,
         \Closure $recipientVarsGenerator,
     ): self {

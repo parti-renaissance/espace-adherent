@@ -24,7 +24,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     use EntityPersonNameTrait;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: BaseEvent::class)]
+    #[ORM\ManyToOne(targetEntity: Event::class)]
     private $event;
 
     #[Groups(['event_registration_list'])]
@@ -49,7 +49,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
 
     public function __construct(
         UuidInterface $uuid,
-        BaseEvent $event,
+        Event $event,
         string $firstName,
         string $lastName,
         string $emailAddress,
@@ -71,7 +71,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         $this->postalCode = $postalCode;
     }
 
-    public function getEvent(): BaseEvent
+    public function getEvent(): Event
     {
         return $this->event;
     }
@@ -116,7 +116,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         return $this->event->isFinished();
     }
 
-    public function matches(BaseEvent $event, ?Adherent $adherent = null): bool
+    public function matches(Event $event, ?Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {
             return false;

@@ -196,18 +196,8 @@
         </service>
 
         <service id="app.admin.event" class="App\Admin\EventAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoires" />
+            <tag name="sonata.admin" manager-type="orm" label="Événements" model_class="App\Entity\Event\Event" group="Territoires" />
 
-            <argument />
-            <argument>App\Entity\Event\BaseEvent</argument>
-            <argument />
-            <argument type="service" id="event_dispatcher"/>
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument>App\Entity\Event\DefaultEvent</argument>
-                    <argument>App\Entity\Event\CommitteeEvent</argument>
-                </argument>
-            </call>
             <call method="setTemplate">
                 <argument>show</argument>
                 <argument>admin/event/show.html.twig</argument>

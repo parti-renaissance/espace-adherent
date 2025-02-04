@@ -3,7 +3,7 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,7 +30,7 @@ class PreEventEditListener implements EventSubscriberInterface
         $request = $requestEvent->getRequest();
 
         if ('_api_/v3/events/{uuid}_put' !== $request->attributes->get('_api_operation_name')
-            || BaseEvent::class !== $request->attributes->get('_api_resource_class')) {
+            || Event::class !== $request->attributes->get('_api_resource_class')) {
             return;
         }
 

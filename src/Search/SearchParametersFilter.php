@@ -69,8 +69,6 @@ class SearchParametersFilter
     private $withPrivate = false;
     private $cache;
 
-    private bool $renaissanceEvent = false;
-
     public function __construct(Geocoder $geocoder, AdapterInterface $cache)
     {
         $this->geocoder = $geocoder;
@@ -213,25 +211,5 @@ class SearchParametersFilter
     public function setWithPrivate(bool $withPrivate): void
     {
         $this->withPrivate = $withPrivate;
-    }
-
-    public function isTypeCommittees(): bool
-    {
-        return self::TYPE_COMMITTEES === $this->getType();
-    }
-
-    public function isTypeEvents(): bool
-    {
-        return self::TYPE_EVENTS === $this->getType();
-    }
-
-    public function isRenaissanceEvent(): bool
-    {
-        return $this->renaissanceEvent;
-    }
-
-    public function setRenaissanceEvent(bool $renaissanceEvent): void
-    {
-        $this->renaissanceEvent = $renaissanceEvent;
     }
 }

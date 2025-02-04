@@ -7,7 +7,7 @@ use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Mailer\Message\EventInvitationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventInvitationMessage;
 use App\Repository\Email\EmailLogRepository;
 use App\Repository\EventRegistrationRepository;
 use Cake\Chronos\Chronos;
@@ -135,7 +135,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(RenaissanceEventInvitationMessage::class));
         $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
@@ -201,7 +201,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
+        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(RenaissanceEventInvitationMessage::class));
         $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 

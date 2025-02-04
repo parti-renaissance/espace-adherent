@@ -2,8 +2,7 @@
 
 namespace App\Event;
 
-use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\Event;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -21,32 +20,22 @@ class EventCommandHandler
         $this->manager = $manager;
     }
 
-    public function handle(EventCommand $command, string $eventClass = CommitteeEvent::class): BaseEvent
+    public function handle(EventCommand $command): Event
     {
-        $event = $this->factory->createFromEventCommand($command, $eventClass);
+        $event = $this->factory->createFromEventCommand($command);
 
         $this->manager->persist($event);
 
-        if ($event instanceof CommitteeEvent) {
-            $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());
-        } else {
-            $sfEvent = new EventEvent($command->getAuthor(), $event);
-        }
-
         $this->manager->flush();
 
-        $this->dispatcher->dispatch($sfEvent, Events::EVENT_CREATED);
+        $this->dispatcher->dispatch(new EventEvent($command->getAuthor(), $event), Events::EVENT_CREATED);
 
         return $event;
     }
 
-    public function handleUpdate(BaseEvent $event, EventCommand $command): BaseEvent
+    public function handleUpdate(Event $event, EventCommand $command): Event
     {
-        if ($event instanceof CommitteeEvent) {
-            $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());
-        } else {
-            $sfEvent = new EventEvent($command->getAuthor(), $event);
-        }
+        $sfEvent = new EventEvent($command->getAuthor(), $event);
 
         $this->dispatcher->dispatch($sfEvent, Events::EVENT_PRE_UPDATE);
 

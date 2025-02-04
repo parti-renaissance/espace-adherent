@@ -3,8 +3,8 @@
 namespace Tests\App\Controller\Api\Event;
 
 use App\DataFixtures\ORM\LoadCommitteeEventData;
-use App\DataFixtures\ORM\LoadDefaultEventData;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\DataFixtures\ORM\LoadEventData;
+use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +70,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
 
     public static function provideEvents(): iterable
     {
-        yield [LoadDefaultEventData::EVENT_1_UUID];
+        yield [LoadEventData::EVENT_1_UUID];
     }
 
     public static function provideCancelledEvents(): iterable

@@ -5,7 +5,7 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\BaseEvent;
+use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -29,7 +29,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         array $context = [],
     ) {
         if (
-            !is_a($resourceClass, BaseEvent::class, true)
+            !is_a($resourceClass, Event::class, true)
             || self::PROPERTY_NAME !== $property
             || !$user = $this->security->getUser()
         ) {
