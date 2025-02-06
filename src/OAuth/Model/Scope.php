@@ -34,6 +34,8 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const READ_PROFILE = 'read:profile';
     public const WRITE_PROFILE = 'write:profile';
 
+    public const WRITE_GENERAL_CONVENTIONS = 'write:general_conventions';
+
     public function __toString()
     {
         return (string) $this->getIdentifier();
