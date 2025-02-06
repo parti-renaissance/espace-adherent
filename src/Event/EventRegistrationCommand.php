@@ -24,24 +24,24 @@ class EventRegistrationCommand
     #[Assert\Sequentially([
         new Assert\NotBlank(),
         new Assert\Length(min: 2, max: 50),
-    ])]
+    ], groups: ['registration_public'])]
     #[Groups(['event_registration_write'])]
     private $firstName;
 
     #[Assert\Sequentially([
         new Assert\NotBlank(),
         new Assert\Length(min: 1, max: 50),
-    ])]
+    ], groups: ['registration_public'])]
     #[Groups(['event_registration_write'])]
     private $lastName;
 
-    #[Assert\Email]
-    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
-    #[Assert\NotBlank]
+    #[Assert\Email(groups: ['registration_public'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['registration_public'])]
+    #[Assert\NotBlank(groups: ['registration_public'])]
     #[Groups(['event_registration_write'])]
     private $emailAddress;
 
-    #[Assert\Length(min: 5, max: 5)]
+    #[Assert\Length(min: 4, groups: ['registration_public'])]
     #[Groups(['event_registration_write'])]
     private $postalCode;
 

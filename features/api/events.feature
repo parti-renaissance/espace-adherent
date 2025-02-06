@@ -2231,3 +2231,17 @@ Feature:
             """
             "OK"
             """
+        When I send a "POST" request to "/api/events/594e7ad0-c289-49ae-8c23-0129275d128b/subscribe" with body:
+            """
+            {
+                "first_name": "Jean",
+                "last_name": "Dupont",
+                "email_address": "test@test.com",
+                "postal_code": "123455"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON should be equal to:
+            """
+            "OK"
+            """
