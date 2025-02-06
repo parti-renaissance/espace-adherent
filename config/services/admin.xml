@@ -195,6 +195,10 @@
             </call>
         </service>
 
+        <service id="app.admin.live_stream" class="App\Admin\LiveStreamAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Live Stream" model_class="App\Entity\LiveStream" group="Territoires" />
+        </service>
+
         <service id="app.admin.event" class="App\Admin\EventAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Événements" model_class="App\Entity\Event\Event" group="Territoires" />
 
@@ -1235,6 +1239,7 @@
             <tag name="sonata.admin.extension" target="app.admin.hub_item" />
             <tag name="sonata.admin.extension" target="app.admin.transactional_email_template" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute.news" />
+            <tag name="sonata.admin.extension" target="app.admin.live_stream" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

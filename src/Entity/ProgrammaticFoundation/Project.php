@@ -6,6 +6,7 @@ use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'programmatic_foundation_project')]
 #[UniqueEntity(fields: ['position', 'measure'], message: 'programmatic_foundation.unique_position.project', errorPath: 'position')]
-class Project
+class Project implements Timestampable
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

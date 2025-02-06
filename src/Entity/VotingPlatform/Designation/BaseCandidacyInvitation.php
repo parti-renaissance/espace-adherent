@@ -5,12 +5,13 @@ namespace App\Entity\VotingPlatform\Designation;
 use App\Entity\CommitteeMembership;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\MappedSuperclass]
-abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
+abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface, Timestampable
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

@@ -8,10 +8,11 @@ use App\Entity\MailchimpSegment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
-class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
+class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, Timestampable
 {
     use TimestampableEntity;
 
