@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/general_conventions',
             normalizationContext: ['groups' => ['general_convention_read']],
             denormalizationContext: ['groups' => ['general_convention_write']],
+            security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:GENERAL_CONVENTIONS')",
         ),
     ],
 )]

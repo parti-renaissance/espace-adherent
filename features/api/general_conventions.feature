@@ -118,9 +118,9 @@ Feature:
                 "uuid": "c5317499-7130-4255-a7f8-418e72f5dfa5"
             }
             """
-
+@debug
     Scenario: As a granted user, I can post general conventions
-        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Web"
+        Given I am logged with "carl999@example.fr" via OAuth client "Make App" with scopes "write:general_conventions"
         And I send a "POST" request to "/api/v3/general_conventions" with body:
         """
         {
