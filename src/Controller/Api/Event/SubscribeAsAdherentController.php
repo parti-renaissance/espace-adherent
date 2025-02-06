@@ -92,11 +92,7 @@ class SubscribeAsAdherentController extends AbstractController
         $this->entityManager->flush();
 
         if ($newRegistration) {
-            $this->dispatcher->dispatch(new EventRegistrationEvent(
-                $registration,
-                $event->getSlug(),
-                true
-            ), Events::EVENT_REGISTRATION_CREATED);
+            $this->dispatcher->dispatch(new EventRegistrationEvent($registration, true), Events::EVENT_REGISTRATION_CREATED);
         }
 
         return $this->json('OK', Response::HTTP_CREATED);

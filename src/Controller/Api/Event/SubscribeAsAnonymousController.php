@@ -39,7 +39,7 @@ class SubscribeAsAnonymousController extends AbstractController
             AbstractNormalizer::OBJECT_TO_POPULATE => $command = new EventRegistrationCommand($event),
         ]);
 
-        $errors = $this->validator->validate($command);
+        $errors = $this->validator->validate($command, groups: ['registration_public']);
 
         if ($errors->count()) {
             return $this->json($errors, Response::HTTP_BAD_REQUEST);

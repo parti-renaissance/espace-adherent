@@ -31,10 +31,6 @@ class EventRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $this->dispatcher->dispatch(new EventRegistrationEvent(
-            $registration,
-            $event->getSlug(),
-            $sendMail
-        ), Events::EVENT_REGISTRATION_CREATED);
+        $this->dispatcher->dispatch(new EventRegistrationEvent($registration, $sendMail), Events::EVENT_REGISTRATION_CREATED);
     }
 }
