@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\SimpleMDEContent;
@@ -10,13 +11,84 @@ use App\GeneralConvention\OrganizerEnum;
 use App\GeneralConvention\ParticipantQuality;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class GeneralConventionAdmin extends AbstractAdmin
 {
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
+        $filter
+            ->add('departmentZone', ZoneAutocompleteFilter::class, [
+                'label' => 'Département',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'multiple' => false,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                ],
+            ])
+            ->add('districtZone', ZoneAutocompleteFilter::class, [
+                'label' => 'Circonscription',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'multiple' => false,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                ],
+            ])
+            ->add('committee', CallbackFilter::class, [
+                'label' => 'Comité',
+                'field_type' => ModelAutocompleteType::class,
+                'show_filter' => true,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => 'name',
+                ],
+            ])
+            ->add('reporter', ModelFilter::class, [
+                'label' => 'Auteur',
+                'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'property' => [
+                        'search',
+                    ],
+                    'to_string_callback' => static function (Adherent $adherent): string {
+                        return \sprintf(
+                            '%s (%s) [%s]',
+                            $adherent->getFullName(),
+                            $adherent->getEmailAddress(),
+                            $adherent->getId()
+                        );
+                    },
+                ],
+            ])
+            ->add('reportedAt', DateRangeFilter::class, [
+                'label' => 'Date de remontée',
+                'field_type' => DateRangePickerType::class,
+            ])
+        ;
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form

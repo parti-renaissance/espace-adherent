@@ -304,8 +304,14 @@
         </service>
         <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
 
+        <!--
+        ######################################################
+        # Idées
+        ######################################################
+        -->
+
         <service id="app.admin.general_convention" class="App\Admin\GeneralConventionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="États généraux" group="Territoires" />
+            <tag name="sonata.admin" manager-type="orm" label="États généraux" group="Idées" />
 
             <argument />
             <argument>App\Entity\GeneralConvention\GeneralConvention</argument>
