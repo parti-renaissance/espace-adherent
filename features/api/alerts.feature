@@ -1,6 +1,7 @@
 @api
 @renaissance
 Feature:
+
     Scenario: As a logged-in VOX user I can get my alerts
         Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/alerts"
