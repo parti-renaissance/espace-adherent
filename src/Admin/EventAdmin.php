@@ -236,7 +236,7 @@ class EventAdmin extends AbstractAdmin
                     }
 
                     $qb
-                        ->leftJoin('event.category', 'eventCategory')
+                        ->innerJoin($alias.'.category', 'eventCategory')
                         ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value->getValue())
                     ;
