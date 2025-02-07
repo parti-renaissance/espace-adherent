@@ -38,8 +38,7 @@ class ElectionAlertProvider implements AlertProviderInterface
 
         foreach ($designations as $designation) {
             if ($designation->alertTitle && $designation->alertDescription) {
-                $alerts[] = new Alert(
-                    'Consultation / Élection',
+                $alerts[] = Alert::createElection(
                     $designation->alertTitle,
                     $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,

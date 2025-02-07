@@ -1,7 +1,6 @@
 @api
 @renaissance
 Feature:
-
     Scenario: As a logged-in VOX user I can get my alerts
         Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/alerts"
@@ -11,6 +10,7 @@ Feature:
             """
             [
                 {
+                    "type": "election",
                     "label": "Consultation / Élection",
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
@@ -18,6 +18,7 @@ Feature:
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@"
                 },
                 {
+                    "type": "election",
                     "label": "Consultation / Élection",
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
