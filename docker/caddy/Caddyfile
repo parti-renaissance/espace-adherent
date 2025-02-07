@@ -33,8 +33,8 @@ route {
 	# Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
 	header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-	# Disallow the site to be rendered within a frame
-	header Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+	@noLiveEvent not path /live-event/*
+    header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
 
 	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
 	header X-Content-Type-Options "nosniff"
