@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Address\AddressInterface;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonatorManager;
@@ -14,6 +13,7 @@ use App\Entity\DonatorTag;
 use App\Entity\Transaction;
 use App\Form\Admin\DonatorKinshipType;
 use App\Form\GenderType;
+use App\Form\ReCountryType;
 use App\Repository\DonationRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -33,7 +33,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonatorAdmin extends AbstractAdmin
@@ -113,10 +112,7 @@ class DonatorAdmin extends AbstractAdmin
                 ->add('city', null, [
                     'label' => 'Ville',
                 ])
-                ->add('country', CountryType::class, [
-                    'label' => 'Pays',
-                    'preferred_choices' => [AddressInterface::FRANCE],
-                ])
+                ->add('country', ReCountryType::class)
             ->end()
             ->with('Administration', ['class' => 'col-md-6'])
                 ->add('tags', null, [
@@ -183,7 +179,7 @@ class DonatorAdmin extends AbstractAdmin
             ->add('donations.nationality', ChoiceFilter::class, [
                 'label' => 'Nationalité',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
                 'field_options' => [
                     'multiple' => true,
                 ],
@@ -191,7 +187,7 @@ class DonatorAdmin extends AbstractAdmin
             ->add('country', ChoiceFilter::class, [
                 'label' => 'Pays de résidence',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
                 'field_options' => [
                     'multiple' => true,
                 ],

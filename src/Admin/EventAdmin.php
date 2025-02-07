@@ -9,6 +9,7 @@ use App\Event\EventEvent;
 use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Form\EventCategoryType;
+use App\Form\ReCountryType;
 use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,7 +25,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -199,8 +199,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Ville',
                     'required' => false,
                 ])
-                ->add('postAddress.country', CountryType::class, [
-                    'label' => 'Pays',
+                ->add('postAddress.country', ReCountryType::class, [
                     'required' => false,
                 ])
                 ->add('postAddress.latitude', NumberType::class, [

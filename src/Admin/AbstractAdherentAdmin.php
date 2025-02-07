@@ -33,6 +33,7 @@ use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\EventListener\CommitteeMembershipListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
+use App\Form\ReCountryType;
 use App\Form\TelNumberType;
 use App\FranceCities\FranceCities;
 use App\History\AdministratorActionEvent;
@@ -73,7 +74,6 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -272,7 +272,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('emailAddress', null, [
                             'label' => 'Adresse email',
                         ])
-                        ->add('nationality', CountryType::class, [
+                        ->add('nationality', ReCountryType::class, [
                             'label' => 'Nationalité',
                         ])
                         ->add('phone', TelNumberType::class, [
@@ -311,7 +311,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('postAddress.additionalAddress', TextType::class, ['label' => 'Complément d\'adresse', 'required' => false])
                         ->add('postAddress.postalCode', TextType::class, ['label' => 'Code postal'])
                         ->add('postAddress.cityName', TextType::class, ['label' => 'Ville'])
-                        ->add('postAddress.country', CountryType::class, ['label' => 'Pays'])
+                        ->add('postAddress.country', ReCountryType::class, ['label' => 'Pays'])
                         ->add('postAddress.latitude', NumberType::class, [
                             'label' => 'Latitude',
                             'html5' => true,
@@ -632,7 +632,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
             ])
             ->add('mailchimpStatus', ChoiceFilter::class, [
                 'label' => 'Abonnement email',

@@ -8,7 +8,6 @@ use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -32,9 +31,8 @@ class AdherentProfileType extends AbstractType
                 'format_identity_case' => true,
                 'disabled' => $options['disabled_form'],
             ])
-            ->add('nationality', CountryType::class, [
+            ->add('nationality', ReCountryType::class, [
                 'placeholder' => 'Nationalité',
-                'preferred_choices' => [AddressInterface::FRANCE],
             ])
             ->add('emailAddress', EmailType::class)
             ->add('position', ActivityPositionType::class, [
