@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Address\AddressInterface;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\UtmFilter;
@@ -15,6 +14,7 @@ use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\Form\ReCountryType;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
@@ -40,7 +40,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -152,9 +151,8 @@ class DonationAdmin extends AbstractAdmin
                     'btn_add' => false,
                     'callback' => [$this, 'prepareDestinationAutocompleteCallback'],
                 ])
-                ->add('nationality', CountryType::class, [
+                ->add('nationality', ReCountryType::class, [
                     'label' => 'Nationalité',
-                    'preferred_choices' => [AddressInterface::FRANCE],
                 ])
                 ->add('donatedAt', null, [
                     'label' => 'Date du don',
@@ -198,7 +196,7 @@ class DonationAdmin extends AbstractAdmin
                     'label' => 'Ville',
                     'required' => true,
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', ReCountryType::class, [
                     'label' => 'Pays',
                     'required' => true,
                 ])
@@ -455,7 +453,7 @@ class DonationAdmin extends AbstractAdmin
             ->add('nationality', ChoiceFilter::class, [
                 'label' => 'Nationalité',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
                 'field_options' => [
                     'multiple' => true,
                 ],
@@ -463,7 +461,7 @@ class DonationAdmin extends AbstractAdmin
             ->add('postAddress.country', ChoiceFilter::class, [
                 'label' => 'Pays de résidence',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
                 'field_options' => [
                     'multiple' => true,
                 ],

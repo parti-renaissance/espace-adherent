@@ -10,6 +10,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\AbstractProcuration;
 use App\Entity\ProcurationV2\Round;
 use App\Form\GenderType;
+use App\Form\ReCountryType;
 use App\Form\TelNumberType;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
@@ -28,7 +29,6 @@ use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -80,7 +80,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 ->add('postAddress.additionalAddress', TextType::class, ['label' => 'Complément d\'adresse', 'required' => false])
                 ->add('postAddress.postalCode', TextType::class, ['label' => 'Code postal'])
                 ->add('postAddress.cityName', TextType::class, ['label' => 'Ville'])
-                ->add('postAddress.country', CountryType::class, ['label' => 'Pays'])
+                ->add('postAddress.country', ReCountryType::class)
                 ->add('joinNewsletter', CheckboxType::class, [
                     'label' => 'Inscription à la newsletter',
                     'required' => false,

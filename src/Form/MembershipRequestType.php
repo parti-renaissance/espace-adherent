@@ -2,12 +2,10 @@
 
 namespace App\Form;
 
-use App\Address\AddressInterface;
 use App\Adhesion\Request\MembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,7 +23,7 @@ class MembershipRequestType extends AbstractType
             ->add('civility', GenderCivilityType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('firstName', TextType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('lastName', TextType::class, ['disabled' => $fromCertifiedAdherent])
-            ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE], 'disabled' => $fromCertifiedAdherent])
+            ->add('nationality', ReCountryType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('address', AutocompleteAddressType::class, ['with_additional_address' => true])
             ->add('consentDataCollect', AcceptPersonalDataCollectType::class)
             ->add('utmSource', HiddenType::class)

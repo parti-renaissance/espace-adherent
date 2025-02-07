@@ -7,7 +7,6 @@ use App\Address\AddressInterface;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,9 +30,8 @@ class AutocompleteAddressType extends AbstractType
                 'required' => false,
             ])
             ->add('cityName', TextType::class)
-            ->add('country', CountryType::class, [
+            ->add('country', ReCountryType::class, [
                 'placeholder' => '',
-                'preferred_choices' => [AddressInterface::FRANCE],
                 'invalid_message' => 'common.country.invalid',
             ])
             ->add('postalCode', TextType::class)

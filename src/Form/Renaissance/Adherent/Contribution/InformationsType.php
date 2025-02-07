@@ -2,10 +2,9 @@
 
 namespace App\Form\Renaissance\Adherent\Contribution;
 
-use App\Address\AddressInterface;
 use App\Adherent\Contribution\ContributionRequest;
+use App\Form\ReCountryType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,9 +15,7 @@ class InformationsType extends AbstractType
     {
         $builder
             ->add('accountName', TextType::class)
-            ->add('accountCountry', CountryType::class, [
-                'preferred_choices' => [AddressInterface::FRANCE],
-            ])
+            ->add('accountCountry', ReCountryType::class)
             ->add('iban', TextType::class)
         ;
     }

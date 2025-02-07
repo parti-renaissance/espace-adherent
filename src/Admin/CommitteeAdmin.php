@@ -11,6 +11,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
+use App\Form\ReCountryType;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -27,7 +28,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -215,9 +215,8 @@ class CommitteeAdmin extends AbstractAdmin
                         'required' => false,
                         'label' => 'Ville',
                     ])
-                    ->add('postAddress.country', CountryType::class, [
+                    ->add('postAddress.country', ReCountryType::class, [
                         'required' => false,
-                        'label' => 'Pays',
                     ])
                 ->end()
             ->end()
@@ -400,7 +399,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ReCountryType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
                         return false;

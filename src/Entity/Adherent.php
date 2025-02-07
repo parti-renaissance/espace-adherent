@@ -850,7 +850,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isForeignResident(): bool
     {
-        return !\in_array(strtoupper($this->getCountry()), AddressInterface::FRENCH_CODES, true);
+        return AddressInterface::FRANCE !== strtoupper($this->getCountry());
     }
 
     public function isParisResident(): bool

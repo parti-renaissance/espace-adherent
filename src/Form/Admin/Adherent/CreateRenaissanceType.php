@@ -6,6 +6,7 @@ use App\Address\AddressInterface;
 use App\Form\AddressType;
 use App\Form\BirthdateType;
 use App\Form\GenderCivilityType;
+use App\Form\ReCountryType;
 use App\Form\TelNumberType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Renaissance\Membership\Admin\CotisationAmountChoiceEnum;
@@ -13,7 +14,6 @@ use App\Renaissance\Membership\Admin\CotisationTypeChoiceEnum;
 use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -37,8 +37,7 @@ class CreateRenaissanceType extends AbstractType
                 'format_identity_case' => true,
                 'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('nationality', CountryType::class, [
-                'preferred_choices' => [AddressInterface::FRANCE],
+            ->add('nationality', ReCountryType::class, [
                 'disabled' => $fromCertifiedAdherent,
                 'invalid_message' => 'common.nationality.invalid',
             ])
