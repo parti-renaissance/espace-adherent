@@ -347,6 +347,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
 
+    #[Assert\Url]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $liveUrl = null;

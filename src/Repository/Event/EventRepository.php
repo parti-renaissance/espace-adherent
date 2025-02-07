@@ -496,4 +496,29 @@ class EventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return Event[]
+     */
+    public function findWithLiveStream(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->addSelect('IF(e.beginAt < :now, 2, 1) AS HIDDEN priority')
+            ->addSelect('ABS(TIMESTAMPDIFF(SECOND, NOW(), e.beginAt)) AS HIDDEN time_to_begin')
+            ->addOrderBy('priority', 'DESC')
+            ->addOrderBy('time_to_begin', 'ASC')
+            ->where('e.status = :status')
+            ->andWhere('e.national = 1')
+            ->andWhere('e.liveUrl LIKE :live_url')
+            ->andWhere('DATE_SUB(e.beginAt, 2, \'DAY\') < :now')
+            ->andWhere('e.finishAt >= :now')
+            ->setParameters([
+                'status' => Event::STATUS_SCHEDULED,
+                'live_url' => 'https://vimeo.com/%',
+                'now' => new \DateTime('now'),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

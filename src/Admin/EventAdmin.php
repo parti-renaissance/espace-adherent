@@ -28,6 +28,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -145,8 +146,6 @@ class EventAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        $event = $this->getSubject();
-
         $form
             ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
@@ -166,9 +165,11 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
+                    'widget' => 'single_text',
                 ])
                 ->add('finishAt', null, [
                     'label' => 'Date de fin',
+                    'widget' => 'single_text',
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
@@ -184,6 +185,11 @@ class EventAdmin extends AbstractAdmin
                 ->add('visibility', EnumType::class, [
                     'label' => 'Visibilité',
                     'class' => EventVisibilityEnum::class,
+                ])
+                ->add('national', null, ['label' => 'National'])
+                ->add('liveUrl', UrlType::class, [
+                    'label' => 'Live URL',
+                    'required' => false,
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
