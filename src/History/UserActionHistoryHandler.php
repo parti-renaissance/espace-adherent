@@ -4,6 +4,7 @@ namespace App\History;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\History\Command\UserActionHistoryCommand;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -125,6 +126,18 @@ class UserActionHistoryHandler
                 'zones' => $this->getZoneNames($zones),
             ],
             $administrator
+        );
+    }
+
+    public function createLiveParticipation(Adherent $adherent, Event $event): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::LIVE_VIEW,
+            [
+                'event' => $event->getName(),
+                'event_id' => $event->getId(),
+            ]
         );
     }
 
