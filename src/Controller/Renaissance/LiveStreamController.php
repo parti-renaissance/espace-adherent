@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\LiveStream;
+use App\History\UserActionHistoryHandler;
 use App\OAuth\OAuthAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,7 @@ class LiveStreamController extends AbstractController
     }
 
     #[Route('/live-event/{slug}', name: 'app_live_event', methods: ['GET'])]
-    public function liveEventAction(Request $request, OAuthAuthenticator $authAuthenticator, Event $event): Response
+    public function liveEventAction(Request $request, UserActionHistoryHandler $userActionHistoryHandler, OAuthAuthenticator $authAuthenticator, Event $event): Response
     {
         if (!($user = $this->getUser()) instanceof Adherent) {
             $newRequest = $request->duplicate([]);
@@ -47,6 +48,8 @@ class LiveStreamController extends AbstractController
 
             return $this->redirectToRoute('app_adhesion_index');
         }
+
+        $userActionHistoryHandler->createLiveParticipation($user, $event);
 
         return $this->render('renaissance/live_event.html.twig', [
             'event' => $event,

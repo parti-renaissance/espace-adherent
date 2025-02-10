@@ -15,4 +15,5 @@ enum UserActionHistoryTypeEnum: string
     case EMAIL_CHANGE_VALIDATE = 'email_change_validate';
     case ROLE_ADD = 'role_add';
     case ROLE_REMOVE = 'role_remove';
+    case LIVE_VIEW = 'live_view';
 }
