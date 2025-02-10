@@ -36,7 +36,7 @@ class Alert
         );
     }
 
-    public static function createLive(Event $event): self
+    public static function createLive(Event $event, string $url): self
     {
         $now = new \DateTimeImmutable();
 
@@ -46,7 +46,7 @@ class Alert
             $event->getName(),
             '',
             'Voir',
-            '/evenements/'.$event->getSlug(),
+            $url,
         );
     }
 }

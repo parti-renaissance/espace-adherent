@@ -34,11 +34,13 @@ class LiveStreamController extends AbstractController
     #[Route('/live-event/{slug}', name: 'app_live_event', methods: ['GET'])]
     public function liveEventAction(Request $request, OAuthAuthenticator $authAuthenticator, Event $event): Response
     {
-        $newRequest = $request->duplicate([]);
-        $newRequest->headers->set('Authorization', 'Bearer '.$request->query->get('token'));
+        if (!($user = $this->getUser()) instanceof Adherent) {
+            $newRequest = $request->duplicate([]);
+            $newRequest->headers->set('Authorization', 'Bearer '.$request->query->get('token'));
 
-        /** @var Adherent $user */
-        $user = $authAuthenticator->authenticate($newRequest)->getUser();
+            /** @var Adherent $user */
+            $user = $authAuthenticator->authenticate($newRequest)->getUser();
+        }
 
         if (!$user->isRenaissanceAdherent()) {
             $this->addFlash('info', 'Vous devez être adhérent pour accéder à cet événement.');
