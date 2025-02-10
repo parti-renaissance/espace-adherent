@@ -19,7 +19,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return [
             'type' => $this->getType(),
             'identifier' => $this->getIdentifier($object),
-            'is_local' => $this->isLocal($object),
             'title' => $this->getTitle($object),
             'description' => $this->getDescription($object),
             'category' => $this->getCategory($object),
@@ -49,8 +48,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     abstract protected function getTitle(object $object): string;
 
     abstract protected function getDescription(object $object): ?string;
-
-    abstract protected function isLocal(object $object): bool;
 
     abstract protected function getDate(object $object): ?\DateTime;
 

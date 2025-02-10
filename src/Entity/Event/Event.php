@@ -64,6 +64,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
@@ -275,7 +276,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
 
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    public bool $national = false;
+    private bool $national = false;
 
     /**
      * @var string|null
@@ -396,6 +397,17 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function getCanonicalName(): ?string
     {
         return $this->canonicalName;
+    }
+
+    #[SerializedName('is_national')]
+    public function isNational(): bool
+    {
+        return $this->national;
+    }
+
+    public function setNational(bool $national): void
+    {
+        $this->national = $national;
     }
 
     public function getSlug(): ?string

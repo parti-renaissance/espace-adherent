@@ -52,7 +52,7 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
             }
         }
 
-        if ($object instanceof Event && $object->national) {
+        if ($object instanceof Event && $object->isNational()) {
             $data[$authorKey] = null;
         }
 

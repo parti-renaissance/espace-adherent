@@ -36,7 +36,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         }
 
         if (($scope = $this->scopeGeneratorResolver->generate()) && ScopeEnum::NATIONAL === $scope->getMainCode()) {
-            $object->national = true;
+            $object->setNational(true);
         }
 
         return $object;

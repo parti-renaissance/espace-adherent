@@ -25,12 +25,6 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param News $object */
-    protected function isLocal(object $object): bool
-    {
-        return !$object->isNationalVisibility();
-    }
-
-    /** @param News $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
