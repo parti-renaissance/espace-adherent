@@ -2,10 +2,13 @@
 
 namespace App\JeMengage\Alert;
 
+use App\Entity\Event\Event;
+
 class Alert
 {
     public const TYPE_ELECTION = 'election';
     public const TYPE_LIVE = 'live';
+    public const TYPE_LIVE_ANNOUNCE = 'live_announce';
 
     public function __construct(
         public readonly string $type,
@@ -33,19 +36,17 @@ class Alert
         );
     }
 
-    public static function createLive(
-        string $title,
-        string $description,
-        ?string $ctaLabel = null,
-        ?string $ctaUrl = null,
-    ): self {
+    public static function createLive(Event $event): self
+    {
+        $now = new \DateTimeImmutable();
+
         return new self(
-            self::TYPE_LIVE,
-            'Live',
-            $title,
-            $description,
-            $ctaLabel,
-            $ctaUrl,
+            $event->getBeginAt() < $now ? self::TYPE_LIVE : self::TYPE_LIVE_ANNOUNCE,
+            $event->getBeginAt() < $now ? 'En direct' : 'En direct à '.$event->getBeginAt()->format('H\hi'),
+            $event->getName(),
+            '',
+            'Voir',
+            '/evenements/'.$event->getSlug(),
         );
     }
 }
