@@ -47,6 +47,10 @@ class NotificationFactory
             return Notification\EventReminderNotification::create($object);
         }
 
+        if ($command instanceof Command\EventLiveBeginNotificationCommand) {
+            return Notification\EventLiveBeginNotification::create($object);
+        }
+
         if ($command instanceof Command\NewsCreatedNotificationCommand) {
             return Notification\NewsCreatedNotification::create($object);
         }
