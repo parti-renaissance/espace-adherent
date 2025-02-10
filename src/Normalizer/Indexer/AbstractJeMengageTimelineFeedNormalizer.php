@@ -26,6 +26,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'post_address' => $this->getPostAddress($object),
             'image' => $this->getImage($object),
             'url' => $this->getUrl($object),
+            'live_url' => $this->getLiveUrl($object),
             'media_type' => $this->getMediaType($object),
             'begin_at' => $this->formatDate($this->getBeginAt($object), 'c'),
             'finish_at' => $this->formatDate($this->getFinishAt($object), 'c'),
@@ -230,6 +231,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getParticipantsCount(object $object): ?int
+    {
+        return null;
+    }
+
+    protected function getLiveUrl(mixed $object): ?string
     {
         return null;
     }

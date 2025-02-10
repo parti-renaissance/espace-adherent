@@ -139,4 +139,10 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $object->getCommitteeUuid();
     }
+
+    /** @param Event $object */
+    protected function getLiveUrl(mixed $object): ?string
+    {
+        return $object->liveUrl;
+    }
 }
