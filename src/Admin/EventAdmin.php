@@ -148,9 +148,8 @@ class EventAdmin extends AbstractAdmin
     {
         $form
             ->with('Événement', ['class' => 'col-md-7'])
-                ->add('name', null, [
-                    'label' => 'Nom',
-                ])
+                ->add('name', null, ['label' => 'Nom'])
+                ->add('slug', null, ['label' => 'Slug', 'disabled' => true])
                 ->add('category', EventCategoryType::class, [
                     'label' => 'Catégorie',
                 ])
