@@ -521,4 +521,25 @@ class EventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return Event[]
+     */
+    public function findWithLiveToNotify(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.status = :status')
+            ->andWhere('e.national = 1')
+            ->andWhere('e.liveUrl LIKE :live_url')
+            ->andWhere('e.pushSentAt IS NULL')
+            ->andWhere('e.beginAt < :now AND e.finishAt >= :now')
+            ->setParameters([
+                'status' => Event::STATUS_SCHEDULED,
+                'live_url' => 'https://vimeo.com/%',
+                'now' => $now = new \DateTime('now'),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

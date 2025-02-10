@@ -19,7 +19,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
     name: 'app:events:remind',
     description: 'This command finds upcoming events and send reminders',
 )]
-class RemindEventCommand extends Command
+class EventReminderCommand extends Command
 {
     private SymfonyStyle $io;
 

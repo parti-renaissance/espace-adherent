@@ -278,6 +278,9 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $national = false;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $pushSentAt = null;
+
     /**
      * @var string|null
      */
