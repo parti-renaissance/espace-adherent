@@ -28,6 +28,7 @@
         "title",
         "type",
         "url",
+        "live_url",
         "visibility",
         "zone_codes"
     ],
