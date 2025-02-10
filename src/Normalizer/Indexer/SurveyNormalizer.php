@@ -25,12 +25,6 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
-    protected function isLocal(object $object): bool
-    {
-        return $object->isLocal();
-    }
-
-    /** @param Survey $object */
     protected function isNational(object $object): bool
     {
         return $object->isNational();

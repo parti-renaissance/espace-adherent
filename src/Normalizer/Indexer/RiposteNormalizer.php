@@ -25,12 +25,6 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Riposte $object */
-    protected function isLocal(object $object): bool
-    {
-        return false;
-    }
-
-    /** @param Riposte $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();

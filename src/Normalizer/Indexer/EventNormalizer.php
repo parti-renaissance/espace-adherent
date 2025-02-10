@@ -16,7 +16,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Event $object */
     protected function isNational(object $object): bool
     {
-        return $object->national;
+        return $object->isNational();
     }
 
     /** @param Event $object */
@@ -38,12 +38,6 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Event $object */
-    protected function isLocal(object $object): bool
-    {
-        return true;
-    }
-
-    /** @param Event $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -52,7 +46,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Event $object */
     protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->national ? null : $object->getAuthor();
+        return $object->isNational() ? null : $object->getAuthor();
     }
 
     /** @param Event $object */

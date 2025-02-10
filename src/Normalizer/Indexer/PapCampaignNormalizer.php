@@ -25,12 +25,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function isLocal(object $object): bool
-    {
-        return !$object->isNationalVisibility();
-    }
-
-    /** @param Campaign $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();

@@ -74,6 +74,7 @@ class EventProcessor extends AbstractFeedProcessor
             'instance' => $item['author']['instance'] ?? null,
             'zones' => array_map(fn (string $code) => explode('_', $code, 2)[1], $item['zone_codes'] ?? []),
             'committee_uuid' => $item['committee_uuid'] ?? null,
+            'is_national' => $item['is_national'] ?? false,
         ]);
 
         if ($item['editable']) {

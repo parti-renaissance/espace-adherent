@@ -71,7 +71,7 @@ class SendNotificationHandler
         // National notification for News or Event
         if (
             ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility())
-            || ($object instanceof Event && $object->national)
+            || ($object instanceof Event && $object->isNational())
         ) {
             $notification->setScope('national');
 

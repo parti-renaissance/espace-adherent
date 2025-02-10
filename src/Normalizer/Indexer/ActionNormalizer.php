@@ -25,12 +25,6 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Action $object */
-    protected function isLocal(object $object): bool
-    {
-        return true;
-    }
-
-    /** @param Action $object */
     protected function getCategory(object $object): ?string
     {
         return ucfirst($object->type);
