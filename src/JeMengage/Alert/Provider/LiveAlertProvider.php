@@ -5,11 +5,16 @@ namespace App\JeMengage\Alert\Provider;
 use App\Entity\Adherent;
 use App\JeMengage\Alert\Alert;
 use App\Repository\Event\EventRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class LiveAlertProvider implements AlertProviderInterface
 {
-    public function __construct(private readonly EventRepository $eventRepository)
-    {
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     public function getAlerts(Adherent $adherent): array
@@ -19,9 +24,20 @@ class LiveAlertProvider implements AlertProviderInterface
         }
 
         $alerts = [];
+        $now = new \DateTimeImmutable();
 
         foreach ($events as $event) {
-            $alerts[] = Alert::createLive($event);
+            $url = '/evenements/'.$event->getSlug();
+
+            if ($adherent->getAuthAppVersion() < 5140101 && $event->getBeginAt() < $now) {
+                $url = $this->loginLinkHandler->createLoginLink(
+                    $adherent,
+                    lifetime: 3600,
+                    targetPath: $this->urlGenerator->generate('app_live_event', ['slug' => $event->getSlug()]),
+                )->getUrl();
+            }
+
+            $alerts[] = Alert::createLive($event, $url);
         }
 
         return $alerts;
