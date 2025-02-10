@@ -510,11 +510,12 @@ class EventRepository extends ServiceEntityRepository
             ->where('e.status = :status')
             ->andWhere('e.national = 1')
             ->andWhere('e.liveUrl LIKE :live_url')
-            ->andWhere('e.beginAt < :now AND e.finishAt >= :now')
+            ->andWhere('DATE(e.beginAt) = :today AND e.finishAt >= :now')
             ->setParameters([
                 'status' => Event::STATUS_SCHEDULED,
                 'live_url' => 'https://vimeo.com/%',
-                'now' => new \DateTime('now'),
+                'now' => $now = new \DateTime('now'),
+                'today' => $now->format('Y-m-d'),
             ])
             ->getQuery()
             ->getResult()

@@ -21,7 +21,7 @@ class LiveAlertProvider implements AlertProviderInterface
         $alerts = [];
 
         foreach ($events as $event) {
-            $alerts[] = Alert::createLive($event->getName(), '', 'Voir', '/evenements/'.$event->getSlug());
+            $alerts[] = Alert::createLive($event);
         }
 
         return $alerts;
