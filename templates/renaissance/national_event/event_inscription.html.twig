@@ -15,7 +15,7 @@
 {% block content_section %}
     {{ form_start(form) }}
         <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
-            <div class="flex gap-8 flex-col mt-64 md:mt-[120px] pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
+            <div class="flex gap-8 flex-col mt-[90px] pt-[150px] md:pt-[50px] p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
                 <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[1px] ">
                     {% if event.intoImagePath %}
                         <img class="w-full" src="{{ path('asset_url', {path: 'static' ~ event.intoImagePath, app_domain: national_event_host}) }}" alt="{{ event.name }}">
