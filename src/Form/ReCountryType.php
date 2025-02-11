@@ -27,9 +27,10 @@ class ReCountryType extends AbstractType
         }, \ARRAY_FILTER_USE_KEY);
 
         $resolver->setDefaults([
-            'choices' => $filteredCountries,
+            'choices' => array_flip($filteredCountries),
             'label' => 'Pays',
             'preferred_choices' => [AddressInterface::FRANCE],
+            'choice_loader' => null,
         ]);
     }
 
