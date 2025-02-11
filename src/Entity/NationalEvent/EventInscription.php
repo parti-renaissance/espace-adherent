@@ -68,6 +68,18 @@ class EventInscription
     public ?string $postalCode = null;
 
     #[ORM\Column(nullable: true)]
+    public ?string $birthPlace = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $accessibility = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $transportNeeds = false;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $volunteer = false;
+
+    #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
     #[Groups(['national_event_inscription:webhook'])]
@@ -119,6 +131,10 @@ class EventInscription
         $this->phone = $inscriptionRequest->phone;
         $this->postalCode = $inscriptionRequest->postalCode;
         $this->qualities = $inscriptionRequest->qualities;
+        $this->birthPlace = $inscriptionRequest->birthPlace;
+        $this->accessibility = $inscriptionRequest->accessibility;
+        $this->transportNeeds = $inscriptionRequest->transportNeeds;
+        $this->volunteer = $inscriptionRequest->volunteer;
         $this->birthdate = $inscriptionRequest->birthdate;
         $this->utmSource = $inscriptionRequest->utmSource;
         $this->utmCampaign = $inscriptionRequest->utmCampaign;

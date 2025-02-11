@@ -40,6 +40,10 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\Range(max: '-1 years')]
     public ?\DateTime $birthdate = null;
 
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    public ?string $birthPlace = null;
+
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
     public ?PhoneNumber $phone = null;
 
@@ -49,12 +53,18 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
+    public bool $transportNeeds = false;
+    public bool $volunteer = false;
+
     public bool $allowNotifications = false;
 
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
 
     public array $qualities = [];
+
+    #[Assert\Length(max: 255)]
+    public ?string $accessibility = null;
 
     public function __construct(
         public readonly string $sessionId,

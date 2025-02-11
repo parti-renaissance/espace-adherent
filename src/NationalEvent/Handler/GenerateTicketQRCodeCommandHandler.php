@@ -17,10 +17,11 @@ class GenerateTicketQRCodeCommandHandler
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly FilesystemOperator $nationalEventStorage,
+        private readonly QrCodeResponseFactory $qrCodeResponseFactory,
     ) {
     }
 
-    public function __invoke(GenerateTicketQRCodeCommand $command, QrCodeResponseFactory $qrCodeResponseFactory): void
+    public function __invoke(GenerateTicketQRCodeCommand $command): void
     {
         /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {
@@ -30,7 +31,7 @@ class GenerateTicketQRCodeCommandHandler
         // generate QR code
         $this->nationalEventStorage->write(
             $fileName = ($eventInscription->event->getSlug().'/'.$eventInscription->getUuid().'.png'),
-            $qrCodeResponseFactory->getQrContent($eventInscription->getUuid()->toString())->getString()
+            $this->qrCodeResponseFactory->getQrContent($eventInscription->getUuid()->toString())->getString()
         );
 
         $eventInscription->ticketQRCodeFile = $fileName;

@@ -109,6 +109,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('lastName', null, ['label' => 'Nom'])
                 ->add('postalCode', null, ['label' => 'Code postal'])
                 ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
+                ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
+                ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
+                ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
+                ->add('accessibility', null, ['label' => 'Handicap visible ou invisible', 'required' => false])
                 ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités'])
                 ->add('phone', TelNumberType::class, [
                     'required' => false,

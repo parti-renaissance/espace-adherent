@@ -1,0 +1,29 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block body_classes 'h-screen bg-[#17211c]' %}
+
+{%- block canonical_url -%}
+    {% apply spaceless %}
+        {% if event is defined %}
+            {{ url('app_national_event_by_slug', {slug: event.getSlug()}) }}
+        {% else %}
+            {{ 'https://' ~ national_event_host }}
+        {% endif %}
+    {% endapply %}
+{%- endblock -%}
+
+{% block header %}
+    <header class="fixed w-full top-0 z-20 border-b border-b-black bg-white flex flex-col p-4 items-center h-auto xs:p-6 md:p-0 md:grid md:grid-cols-4 md:h-20 lg:grid-cols-3">
+        <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
+            <a href="{{ path('renaissance_site') }}"><img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/></a>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <main class="re_new_ui bg-primary relative" style="height:calc(100vh - 80px);">
+        {{ include('renaissance/national_event/partials/background_video.html.twig') }}
+
+        {% block content_section '' %}
+    </main>
+{% endblock %}
