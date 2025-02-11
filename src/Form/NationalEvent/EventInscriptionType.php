@@ -25,6 +25,7 @@ class EventInscriptionType extends AbstractType
             ->add('civility', GenderCivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
+            ->add('birthPlace', TextType::class)
             ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years)])
             ->add('phone', TelNumberType::class, [
                 'required' => false,
@@ -34,7 +35,9 @@ class EventInscriptionType extends AbstractType
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
             ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
-            ->add('qualities', QualityChoiceType::class)
+            ->add('transportNeeds', CheckboxType::class, ['required' => false])
+            ->add('volunteer', CheckboxType::class, ['required' => false])
+            ->add('accessibility', TextType::class, ['required' => false])
             ->add('utmSource', HiddenType::class)
             ->add('utmCampaign', HiddenType::class)
         ;

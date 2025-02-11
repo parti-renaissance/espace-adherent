@@ -1,0 +1,27 @@
+{% extends 'renaissance/national_event/_layout.html.twig' %}
+
+{% block page_title 'Confirmation' %}
+
+{% block content_section %}
+    <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative">
+        <div class="flex gap-8 flex-col mt-64 md:mt-[120px] pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
+            <twig:Atoms:ReCard class="max-w-[500px] re-step gap-0 !border-black !border-[2px]">
+                <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
+                    {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+
+                    {{ event.textConfirmation|raw }}
+
+                    <div class="h-[2px] bg-black w-full"></div>
+
+                    <p class="text-ui_gray-80">Suivez nos réseaux sociaux pour ne rien rater de la campagne des Européennes :</p>
+                </div>
+
+                <div class="flex items-center justify-center gap-[40px] py-[40px]">
+                    {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
+                </div>
+
+                <twig:ReButton class="w-full" color="black" tag="a" href="{{ path('renaissance_site') }}">Retourner sur le site</twig:ReButton>
+            </twig:Atoms:ReCard>
+        </div>
+    </div>
+{% endblock %}

@@ -155,9 +155,9 @@ app_besoindeurope:
     resource: '../src/Controller/BesoinDEurope'
     type: attribute
 
-app_bde_national_event:
+app_national_event:
     host: '%national_event_host%'
-    resource: '../src/Controller/BesoinDEurope/NationalEvent'
+    resource: '../src/Controller/Renaissance/NationalEvent'
     type: attribute
 
 renaissance_site:

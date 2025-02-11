@@ -1,4 +1,4 @@
-{% extends 'besoindeurope/national_event/_layout.html.twig' %}
+{% extends 'renaissance/national_event/_layout.html.twig' %}
 
 {% block page_title 'Inscription' %}
 
@@ -12,30 +12,11 @@
     </script>
 {% endblock %}
 
-{% block header_inner %}
-    {% if not is_open %}
-        <div class="flex flex-col md:flex-row md:gap-12 gap-8 bg-white justify-center items-center p-8">
-            <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux de campagne.</p>
-            <div class="flex gap-8">
-                {{ include('besoindeurope/partials/sn_links.html.twig') }}
-            </div>
-        </div>
-
-        <div class="fixed h-full w-full flex items-center justify-center">
-            <div class="absolute top-0 left-0 w-full h-full bg-black opacity-40"></div>
-            <h1 class="font-sharp font-bold p-8 md:p-12 min-w-[90vw] md:min-w-[70vw] lg:min-w-[50vw] transform rotate-12 text-center rounded-lg bg-[#FF005C] text-4xl md:text-9xl">COMPLET</h1>
-        </div>
-    {% endif %}
-{% endblock %}
-
 {% block content_section %}
-    <main class="bg-[#F4F4F7] re_new_ui bg-primary">
-        {{ include('besoindeurope/national_event/partials/background_video.html.twig') }}
-
-        {{ form_start(form) }}
+    {{ form_start(form) }}
         <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
             <div class="flex gap-8 flex-col mt-64 md:mt-[120px] pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
-                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[2px] ">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[1px] ">
                     {% if event.intoImagePath %}
                         <img class="w-full" src="{{ path('asset_url', {path: 'static' ~ event.intoImagePath, app_domain: national_event_host}) }}" alt="{{ event.name }}">
                     {% endif %}
@@ -66,6 +47,7 @@
 
                     {{ form_row(form.email, {
                         label: 'Mon adresse email',
+                        help: 'Si vous êtes déjà militant, merci de renseigner l\'adresse email de votre compte',
                         attr: {
                             placeholder: 'adresse@mail.com',
                             validate: "['required', 'email']",
@@ -110,19 +92,23 @@
                         {{ form_errors(form.birthdate) }}
                     </fieldset>
 
-                    <fieldset>
-                        {{ form_row(form.qualities, {label: 'Je suis (optionnel)'}) }}
-                    </fieldset>
+                    {{ form_row(form.birthPlace, {
+                        label: 'Lieu de naissance',
+                        attr: {onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                    }) }}
 
                     <fieldset>
                         {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
-                    {{ form_row(form.allowNotifications, {label: "Je m’abonne à la newsletter pour ne rien rater des actualités de Besoin d'Europe (optionnel)"}) }}
+                    {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
+                    {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
+                    {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
 
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
                     {{ form_row(form.acceptMedia, {label: 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}
+                    {{ form_row(form.accessibility, {label: 'Avez-vous un handicap visible ou invisible nécessitant des aménagements spécifiques ?'}) }}
 
                     <div class="w-full re-field-frame !h-auto cursor-pointer"
                          @click="dom('.frc-button')?.click()">
@@ -132,14 +118,14 @@
                     <twig:ReButton
                             class="w-full"
                             color="black"
-                    >Je m'inscris</twig:ReButton>
+                    >Je réserve ma place</twig:ReButton>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[2px] ">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[1px] ">
                     {{ event.textHelp|raw }}
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-white/20 !border-[2px] text-white !bg-[rgb(47,53,50)]">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-white/20 !border-[1px] text-white !bg-[rgb(47,53,50)]">
                     <h2 class="font-medium">Légalités</h2>
 
                     <p>
@@ -148,13 +134,12 @@
                     </p>
 
                     <p>
-                        (1)    J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+                        (1) J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
                         Si je participe en compagnie d’une personne mineure, en qualité de représentant légal de cette personne mineure, j’autorise sans réserve Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer les images de la personne participante dont j’ai la responsabilité, ainsi que les éléments sonores dont elle serait l’émettrice, durant l’événement autorise Renaissance à exploiter ces images et/ou éléments sonores, à les diffuser intégralement ou par extrait, sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par Renaissance ou ses partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour un durée de 2 ans. J’accepte également que cette vidéo contenant l’image et/ou la voix de la personne dont j’ai la responsabilité soit partagée sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
                     </p>
                 </twig:Atoms:ReCard>
             </div>
         </div>
         <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
-        {{ form_end(form) }}
-    </main>
+    {{ form_end(form) }}
 {% endblock %}
