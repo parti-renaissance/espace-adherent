@@ -22,7 +22,7 @@
                     {% endif %}
 
                     {% if event.textIntro %}
-                        <div class="text-subtitle1">{{ event.textIntro|raw }}</div>
+                        <div class="text-subtitle1">{{ event.textIntro|tw_html }}</div>
                     {% endif %}
 
                     {{ form_errors(form) }}
@@ -62,7 +62,7 @@
                     }) }}
 
                     <fieldset class="relative">
-                        <twig:Atoms:ReLabel class="mb-6">Date de naissance</twig:Atoms:ReLabel>
+                        <twig:Atoms:ReLabel class="mb-3">Date de naissance</twig:Atoms:ReLabel>
 
                         <fieldset class="flex gap-2.5 relative">
                             {{ form_widget(form.birthdate.day, {label: false, attr: {
@@ -103,6 +103,9 @@
 
                     {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
                     {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
+
+                    <hr/>
+
                     {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
 
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}

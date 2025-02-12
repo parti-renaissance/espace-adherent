@@ -11,7 +11,7 @@
 
 {% block form_label %}
     {% if label is not same as(false) %}
-        <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ id }}" class="{{ label_attr|default({}).class ?? 'mb-6' }}">
+        <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ id }}" class="{{ label_attr|default({}).class ?? 'mb-3' }}">
             {{ label|trans|raw }}
         </twig:Atoms:ReLabel>
     {% endif %}

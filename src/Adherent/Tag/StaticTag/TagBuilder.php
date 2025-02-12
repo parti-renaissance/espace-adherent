@@ -30,7 +30,7 @@ class TagBuilder
         return TagEnum::getNationalEventTag($event->getSlug());
     }
 
-    public function buildLabelFromSlug(string $slug)
+    public function buildLabelFromSlug(string $slug): string
     {
         return $this->nationalEventRepository->findOneBySlug($slug)?->name ?? (new UnicodeString(str_replace('-', ' ', $slug)))->title(true);
     }

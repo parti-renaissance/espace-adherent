@@ -2,6 +2,7 @@
 
 namespace App\Admin\NationalEvent;
 
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Admin\AbstractAdmin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
@@ -17,6 +18,7 @@ use App\Form\TelNumberType;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Repository\Geo\ZoneRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
@@ -38,6 +40,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     use IterableCallbackDataSourceTrait;
 
     private TagTranslator $tagTranslator;
+    private ZoneRepository $zoneRepository;
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -132,16 +135,23 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     protected function configureExportFields(): array
     {
         PhpConfigurator::disableMemoryLimit();
+        $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $inscription) {
+        $departments = $this->zoneRepository->findAllDepartmentsIndexByCode();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $inscription) use ($translator, $departments) {
             /** @var EventInscription $inscription */
             $inscription = $inscription[0];
             $nationalEvent = $inscription->event;
             $adherent = $inscription->adherent;
 
-            $translator = $this->getTranslator();
+            $code = substr($inscription->postalCode, 0, 2);
+
+            $zone = $departments[$code] ?? null;
 
             return [
+                'Région' => $zone['region_name'] ?? null,
+                'Département' => $zone['name'] ?? null,
                 'Événement national' => $nationalEvent->getName(),
                 'Événement national UUID' => $nationalEvent->getUuid()->toString(),
                 'Participant UUID' => $inscription->getUuid()->toString(),
@@ -149,7 +159,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Civilité' => $inscription->gender ? $translator->trans(array_search($inscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
                 'Prénom' => $inscription->firstName,
                 'Nom' => $inscription->lastName,
-                'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent?->tags ?? [])),
+                'Labels Adhérent' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ADHERENT) || str_starts_with($tag, TagEnum::SYMPATHISANT)))),
+                'Labels Élu' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ELU)))),
+                'Labels Divers' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => !str_starts_with($tag, TagEnum::ADHERENT) && !str_starts_with($tag, TagEnum::SYMPATHISANT) && !str_starts_with($tag, TagEnum::ELU)))),
                 'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role) use ($translator): string {
                     return \sprintf(
                         '%s [%s]',
@@ -180,12 +192,16 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                     return $str;
                 }, $adherent?->getElectedRepresentativeMandates() ?? [])),
                 'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
+                'Lieu de naissance' => $inscription->birthPlace,
                 'Téléphone' => PhoneNumberUtils::format($inscription->phone),
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
+                'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',
+                'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
+                'Handicap' => $inscription->accessibility,
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];
@@ -219,5 +235,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     public function setTagTranslator(TagTranslator $tagTranslator): void
     {
         $this->tagTranslator = $tagTranslator;
+    }
+
+    #[Required]
+    public function setZoneRepository(ZoneRepository $zoneRepository): void
+    {
+        $this->zoneRepository = $zoneRepository;
     }
 }
