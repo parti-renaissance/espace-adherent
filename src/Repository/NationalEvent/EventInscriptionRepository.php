@@ -30,7 +30,9 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->addSelect('e')
             ->innerJoin('ei.event', 'e')
             ->where('ei.adherent = :adherent')
+            ->andWhere('e.startDate >= :start_date')
             ->setParameter('adherent', $adherent)
+            ->setParameter('start_date', new \DateTime('-6 months'))
             ->getQuery()
             ->getResult()
         ;

@@ -38,10 +38,6 @@ class TagEnum extends Enum
     public const NATIONAL_EVENT = 'national_event';
     public const NATIONAL_EVENT_PATTERN = self::NATIONAL_EVENT.':%s';
 
-    public const PROCURATION = 'procuration';
-    public const PROCURATION_PROXY = self::PROCURATION.':mandataire';
-    public const PROCURATION_REQUEST = self::PROCURATION.':mandant';
-
     public static function getAdherentTags(bool $adherentOnly = false): array
     {
         $currentYear = date('Y');
@@ -83,14 +79,6 @@ class TagEnum extends Enum
             self::ELU_COTISATION_OK_SOUMIS,
             self::ELU_COTISATION_NOK,
             self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK,
-        ];
-    }
-
-    public static function getStaticTags(): array
-    {
-        return [
-            self::PROCURATION_REQUEST,
-            self::PROCURATION_PROXY,
         ];
     }
 

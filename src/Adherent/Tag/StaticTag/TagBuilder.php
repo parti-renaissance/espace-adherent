@@ -20,7 +20,7 @@ class TagBuilder
     public function buildAll(): array
     {
         return array_merge(
-            array_map([$this, 'buildForEvent'], $this->nationalEventRepository->findAll()),
+            array_map([$this, 'buildForEvent'], $this->nationalEventRepository->findAllSince(new \DateTime('-6 months'))),
             array_map(fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
         );
     }

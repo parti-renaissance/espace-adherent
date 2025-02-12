@@ -27,4 +27,14 @@ class NationalEventRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['slug' => $part]);
     }
+
+    public function findAllSince(\DateTime $since): array
+    {
+        return $this->createQueryBuilder('event')
+            ->where('event.startDate >= :start_date')
+            ->setParameter('start_date', $since)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

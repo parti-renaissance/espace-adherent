@@ -3,7 +3,6 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\StaticTag\TagBuilder;
-use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 
@@ -16,7 +15,7 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
 
     protected function init(): void
     {
-        $this->tags = array_merge($this->eventTagBuilder->buildAll(), TagEnum::getStaticTags());
+        $this->tags = $this->eventTagBuilder->buildAll();
 
         $this->fieldName = 'static_tags';
         $this->fieldLabel = 'Labels divers';
