@@ -868,9 +868,7 @@ Feature:
                                 "favorite": true,
                                 "choices": {
                                     "national_event:event-national-1": "Event National 1",
-                                    "national_event:event-national-2": "Event National 2",
-                                    "procuration:mandant": "Mandant",
-                                    "procuration:mandataire": "Mandataire"
+                                    "national_event:event-national-2": "Event National 2"
                                 }
                             },
                             "type": "select"
