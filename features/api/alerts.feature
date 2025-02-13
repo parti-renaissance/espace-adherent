@@ -16,7 +16,8 @@ Feature:
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Voir",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@"
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
+                    "image_url": null
                 },
                 {
                     "type": "election",
@@ -24,7 +25,17 @@ Feature:
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Consulter",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@"
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
+                    "image_url": null
+                },
+                {
+                    "type": "meeting",
+                    "label": "Grand rassemblement",
+                    "title": "Event national 1",
+                    "description": "",
+                    "cta_label": "Je réserve ma place",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
+                    "image_url": null
                 }
             ]
             """

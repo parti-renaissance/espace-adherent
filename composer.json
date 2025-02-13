@@ -143,6 +143,7 @@
         "twig/intl-extra": "^3.3",
         "twig/markdown-extra": "^3.10",
         "twig/string-extra": "^3.3",
+        "vich/uploader-bundle": "^2.5",
         "willdurand/geocoder-bundle": "^5.12"
     },
     "require-dev": {

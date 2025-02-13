@@ -5,6 +5,7 @@ namespace App\Entity\NationalEvent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\UploadableFile;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -61,8 +62,24 @@ class NationalEvent
     #[ORM\Column(nullable: true)]
     public ?string $source = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $ogTitle = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $ogDescription = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $alertTitle = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $alertDescription = null;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $ogImage = null;
+
     #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*'])]
-    public ?UploadedFile $file = null;
+    public ?UploadedFile $intoImageFile = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {

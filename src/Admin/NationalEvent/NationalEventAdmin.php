@@ -8,6 +8,7 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,30 +49,47 @@ class NationalEventAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->with('Général', ['class' => 'col-md-6'])
-                ->add('name', null, ['label' => 'Nom'])
-                ->add('source', null, ['label' => 'Source', 'help' => 'UTM source pour s\'inscrire même après la fermeture des inscriptions'])
-                ->add('startDate', null, ['label' => 'Date de début', 'widget' => 'single_text', 'with_seconds' => true])
-                ->add('endDate', null, ['label' => 'Date de fin', 'widget' => 'single_text', 'with_seconds' => true])
-                ->add('ticketStartDate', null, ['label' => 'Billetterie - date de début', 'widget' => 'single_text', 'with_seconds' => true])
-                ->add('ticketEndDate', null, ['label' => 'Billetterie - date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+            ->tab('Général')
+                ->with('Général', ['class' => 'col-md-6'])
+                    ->add('name', null, ['label' => 'Nom'])
+                    ->add('source', null, ['label' => 'Source', 'help' => 'UTM source pour s\'inscrire même après la fermeture des inscriptions'])
+                    ->add('startDate', null, ['label' => 'Date de début', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('endDate', null, ['label' => 'Date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('ticketStartDate', null, ['label' => 'Billetterie - date de début', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('ticketEndDate', null, ['label' => 'Billetterie - date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+
+                    ->add('intoImageFile', FileType::class, ['label' => 'Image de cover', 'required' => false])
+                ->end()
+                ->with('Introduction', ['class' => 'col-md-6'])
+                    ->add('textIntro', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                ->end()
+                ->with('Message d\'aide', ['class' => 'col-md-6'])
+                    ->add('textHelp', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                ->end()
+                ->with('Message de confirmation', ['class' => 'col-md-6'])
+                    ->add('textConfirmation', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                ->end()
             ->end()
-            ->with('Image', ['class' => 'col-md-6'])
-                ->add('file', FileType::class, ['label' => false, 'required' => false])
+            ->tab('Alerte & OG')
+                ->with('Alerte', ['class' => 'col-md-6'])
+                    ->add('alertTitle', TextType::class, ['label' => 'Titre', 'required' => false])
+                    ->add('alertDescription', TextType::class, ['label' => 'Description', 'required' => false])
+                ->end()
+                ->with('Open Graph', ['class' => 'col-md-6'])
+                    ->add('ogTitle', TextType::class, ['label' => 'Titre', 'required' => false])
+                    ->add('ogDescription', TextType::class, ['label' => 'Description', 'required' => false])
+                    ->add('ogImage', AdminType::class, [
+                        'label' => 'Image Open Graph & Alerte',
+                        'required' => false,
+                    ])
+                ->end()
             ->end()
-            ->with('Introduction', ['class' => 'col-md-6'])
-                ->add('textIntro', CKEditorType::class, ['label' => false, 'required' => true])
-            ->end()
-            ->with('Message d\'aide', ['class' => 'col-md-6'])
-                ->add('textHelp', CKEditorType::class, ['label' => false, 'required' => true])
-            ->end()
-            ->with('Message de confirmation', ['class' => 'col-md-6'])
-                ->add('textConfirmation', CKEditorType::class, ['label' => false, 'required' => true])
-            ->end()
-            ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
-                ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
-                ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
-                ->add('textTicketEmail', CKEditorType::class, ['label' => 'Détail', 'required' => true])
+            ->tab('Ticket')
+                ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
+                    ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
+                    ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
+                    ->add('textTicketEmail', CKEditorType::class, ['label' => 'Détail', 'required' => true, 'config' => ['versionCheck' => false]])
+                ->end()
             ->end()
         ;
     }
@@ -104,12 +122,12 @@ class NationalEventAdmin extends AbstractAdmin
 
     private function handleFileUpload(NationalEvent $object): void
     {
-        if (!$object->file) {
+        if (!$object->intoImageFile) {
             return;
         }
 
-        $object->intoImagePath = \sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->file->getClientOriginalExtension());
+        $object->intoImagePath = \sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->intoImageFile->getClientOriginalExtension());
 
-        $this->storage->write('/static'.$object->intoImagePath, file_get_contents($object->file->getPathname()));
+        $this->storage->write('/static'.$object->intoImagePath, file_get_contents($object->intoImageFile->getPathname()));
     }
 }

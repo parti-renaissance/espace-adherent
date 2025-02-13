@@ -1,0 +1,12 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+    metadata:
+        type: attribute
+    mappings:
+        uploadable_file:
+            uri_prefix: /assets
+            upload_destination: default.storage
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            directory_namer:
+                service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer

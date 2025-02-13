@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/', name: 'app_national_event_index', methods: ['GET', 'POST'])]
 #[Route('/{slug}', name: 'app_national_event_by_slug', methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
