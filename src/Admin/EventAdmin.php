@@ -368,7 +368,6 @@ class EventAdmin extends AbstractAdmin
             'Date' => 'beginAt',
             'Titre' => 'name',
             'Organisateur' => 'organizer.getFullName',
-            'Type' => 'type',
             'Catégorie' => 'category',
             'Ville' => 'cityName',
             'Code Postal' => 'postalCode',

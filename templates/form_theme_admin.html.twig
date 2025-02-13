@@ -474,6 +474,21 @@
     {% endif %}
 {% endblock %}
 
+{% block app_admin_uploadable_file_vich_file_row %}
+    {{ block('form_row') }}
+
+    {% set file_object = form.parent.vars.value %}
+
+    {% if file_object and file_object.name %}
+        <div>
+            <p><em>Image actuelle :</em></p>
+            <p class="text-center">
+                <embed class="img-thumbnail" type="{{ file_object.mimeType }}" src="{{ vich_uploader_asset(file_object) }}" style="max-height: 300px"/>
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block city_manager_row %}
     <tr>
         <td class="sonata-ba-list-field sonata-ba-list-field-text">

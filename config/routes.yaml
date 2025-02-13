@@ -38,7 +38,7 @@ app_assets:
     defaults:
         app_domain: '%user_vox_host%'
     requirements:
-        app_domain: '%app_host%|%app_renaissance_host%|%national_event_host%|%user_vox_host%'
+        app_domain: '%app_host%|%app_renaissance_host%|%national_event_host%|%user_vox_host%|%admin_renaissance_host%'
 
 #
 # Mooc
@@ -156,9 +156,14 @@ app_besoindeurope:
     type: attribute
 
 app_national_event:
-    host: '%national_event_host%'
+    host: '{app_domain}'
     resource: '../src/Controller/Renaissance/NationalEvent'
+    prefix: '/grand-rassemblement'
     type: attribute
+    defaults:
+        app_domain: '%national_event_host%'
+    requirements:
+        app_domain: '%national_event_host%|%user_vox_host%'
 
 renaissance_site:
     host: '%renaissance_host%'

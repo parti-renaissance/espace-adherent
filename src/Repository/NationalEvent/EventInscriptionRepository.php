@@ -138,4 +138,17 @@ class EventInscriptionRepository extends ServiceEntityRepository
             'count',
             'status');
     }
+
+    public function findOneForAdherent(Adherent $adherent, NationalEvent $event): ?EventInscription
+    {
+        return $this->createQueryBuilder('ei')
+            ->where('ei.adherent = :adherent')
+            ->andWhere('ei.event = :event')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('event', $event)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

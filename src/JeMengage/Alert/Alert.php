@@ -3,12 +3,14 @@
 namespace App\JeMengage\Alert;
 
 use App\Entity\Event\Event;
+use App\Entity\NationalEvent\NationalEvent;
 
 class Alert
 {
     public const TYPE_ELECTION = 'election';
     public const TYPE_LIVE = 'live';
     public const TYPE_LIVE_ANNOUNCE = 'live_announce';
+    public const TYPE_MEETING = 'meeting';
 
     public function __construct(
         public readonly string $type,
@@ -17,6 +19,7 @@ class Alert
         public readonly string $description,
         public readonly ?string $ctaLabel = null,
         public readonly ?string $ctaUrl = null,
+        public readonly ?string $imageUrl = null,
     ) {
     }
 
@@ -47,6 +50,19 @@ class Alert
             '',
             'Voir',
             $url,
+        );
+    }
+
+    public static function createMeeting(NationalEvent $event, string $ctaLabel, string $ctaUrl, ?string $imageUrl = null): self
+    {
+        return new self(
+            self::TYPE_MEETING,
+            'Grand rassemblement',
+            $event->alertTitle ?? $event->getName(),
+            (string) $event->alertDescription,
+            $ctaLabel,
+            $ctaUrl,
+            $imageUrl,
         );
     }
 }

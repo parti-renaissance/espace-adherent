@@ -2,8 +2,16 @@
 
 {% block body_classes 'h-screen bg-[#D9DDD7]' %}
 
-{% block open_graph_title '🎬 L\'évènement Renaissance – Saison 2' %}
-{% block open_graph_description 'Le 6 avril, rejoignez-nous à la Cité du Cinéma pour un meeting inédit : un parti refondé, des idées affirmées, une énergie décuplée !' %}
+{% block open_graph_title event.ogTitle ?? event.name %}
+{% block open_graph_description event.ogDescription %}
+
+{% block open_graph %}
+    {% if event.ogImage %}
+        <meta property="og:image" content="{{ path('asset_url', {path: event.ogImage.getPath()}) }}" />
+        <meta property="og:image:width" content="{{ event.ogImage.getWidth() }}" />
+        <meta property="og:image:height" content="{{ event.ogImage.getHeight() }}" />
+    {% endif %}
+{% endblock %}
 
 {%- block canonical_url -%}
     {% apply spaceless %}
