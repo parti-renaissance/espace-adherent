@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Adherent\Referral\IdentifierGenerator;
 use App\Adherent\Referral\ModeEnum;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
@@ -18,10 +17,6 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
 {
     public const UUID_1 = 'abeb6804-a88b-478a-8859-0c5e2f549d17';
     public const UUID_2 = '2055b072-73f4-46c3-a9ab-1fb617c464f1';
-
-    public function __construct(private readonly IdentifierGenerator $referralIdentifierGenerator)
-    {
-    }
 
     public function load(ObjectManager $manager): void
     {
@@ -54,7 +49,7 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
         $referral->firstName = $firstName;
         $referral->referrer = $referrer;
 
-        $referral->identifier = $this->referralIdentifierGenerator->generate();
+        $referral->identifier = 'PABC12';
         $referral->type = TypeEnum::INVITATION;
         $referral->mode = ModeEnum::EMAIL;
         $referral->status = StatusEnum::INVITATION_SENT;
