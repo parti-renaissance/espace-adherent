@@ -21,17 +21,17 @@ class EventInscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('civility', GenderCivilityType::class)
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
+            ->add('email', EmailType::class, ['disabled' => $options['from_adherent']])
+            ->add('civility', GenderCivilityType::class, ['disabled' => $options['from_adherent']])
+            ->add('firstName', TextType::class, ['disabled' => $options['from_adherent']])
+            ->add('lastName', TextType::class, ['disabled' => $options['from_adherent']])
             ->add('birthPlace', TextType::class)
-            ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years)])
+            ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years), 'disabled' => $options['from_adherent']])
             ->add('phone', TelNumberType::class, [
                 'required' => false,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
-            ->add('postalCode', TextType::class)
+            ->add('postalCode', TextType::class, ['disabled' => $options['from_adherent']])
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
             ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
@@ -45,8 +45,13 @@ class EventInscriptionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => EventInscriptionRequest::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => EventInscriptionRequest::class,
+                'from_adherent' => false,
+            ])
+            ->setDefined('from_adherent')
+            ->addAllowedTypes('from_adherent', 'bool')
+        ;
     }
 }

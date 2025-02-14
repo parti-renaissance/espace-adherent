@@ -9,10 +9,13 @@
                 <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
                     {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
-                    <h1 class="font-bold text-2xl">Merci !</h1>
+                    {% if app.request.query.has('already-registered') %}
+                        <h1 class="font-bold text-2xl">Vous êtes déjà inscrit</h1>
+                    {% else %}
+                        <h1 class="font-bold text-2xl">Merci !</h1>
 
-                    {{ event.textConfirmation|raw }}
-
+                        {{ event.textConfirmation|raw }}
+                    {% endif %}
                     <div class="h-[2px] bg-black w-full"></div>
 
                     <p class="text-ui_gray-80">Suivez nos réseaux sociaux :</p>
