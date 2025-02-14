@@ -40,7 +40,7 @@ Feature:
         And I click the "membership_request_allowNotifications" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
-        And User "adherent@renaissance.code" should have 7 subscription types
+        And User "adherent@renaissance.code" should have 8 subscription types
         And User "adherent@renaissance.code" should have zones "borough_75108, district_75-4"
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
@@ -258,7 +258,7 @@ Feature:
         And I click the "membership_request_allowNotifications" element
         And I click the "#step_3 .re-button" selector
         And I wait 3 seconds
-        Then User "sympathisant@renaissance.code" should have 7 subscription types
+        Then User "sympathisant@renaissance.code" should have 8 subscription types
         And User "sympathisant@renaissance.code" should have zones "borough_75108, district_75-4"
         And I should be on "/adhesion/confirmation-email" wait otherwise
         And I should not see "Votre paiement a bien été validé !"
@@ -422,7 +422,7 @@ Feature:
             | membership_request[address][cityName]   | Paris                 |
         When I press "Suivant"
         And I wait 3 seconds
-        Then User "renaissance-user-4@en-marche-dev.fr" should have 7 subscription types
+        Then User "renaissance-user-4@en-marche-dev.fr" should have 8 subscription types
         And I should see "Cotisation pour l’année 2025"
         When I press "Je cotise pour 60 €"
 
@@ -533,7 +533,7 @@ Feature:
         And I click the "membership_request_allowNotifications" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
-        And User "carl999@example.fr" should have 6 subscription types
+        And User "carl999@example.fr" should have 7 subscription types
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"

@@ -70,6 +70,11 @@ class LoadSubscriptionTypeData extends Fixture
                 'code' => SubscriptionTypeEnum::JAM_EMAIL,
                 'position' => 8,
             ],
+            [
+                'label' => 'Recevoir les emails d\'événements',
+                'code' => SubscriptionTypeEnum::EVENT_EMAIL,
+                'position' => 9,
+            ],
         ];
     }
 }

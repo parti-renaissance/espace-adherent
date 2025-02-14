@@ -37,12 +37,12 @@ class AdherentEmailSubscriptionType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'error_bubbling' => true,
-                'query_builder' => function (EntityRepository $er) use ($options) {
+                'query_builder' => function (EntityRepository $er) {
                     return $er
                         ->createQueryBuilder('st')
                         ->orderBy('st.position')
                         ->where('st.code IN (:codes)')
-                        ->setParameter('codes', $options['is_adherent'] ? SubscriptionTypeEnum::ADHERENT_TYPES : SubscriptionTypeEnum::USER_TYPES)
+                        ->setParameter('codes', SubscriptionTypeEnum::ALL())
                     ;
                 },
                 'group_by' => function (SubscriptionType $type) {
@@ -58,10 +58,11 @@ class AdherentEmailSubscriptionType extends AbstractType
                         case SubscriptionTypeEnum::LOCAL_HOST_EMAIL:
                         case SubscriptionTypeEnum::CANDIDATE_EMAIL:
                         case SubscriptionTypeEnum::SENATOR_EMAIL:
+                        case SubscriptionTypeEnum::EVENT_EMAIL:
                             return 'subscription_type.group.territories_emails';
                     }
 
-                    return null;
+                    return '';
                 },
             ])
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
