@@ -2,6 +2,7 @@
 
 namespace App\Event\Request;
 
+use App\Entity\Adherent;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -70,5 +71,16 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         public readonly string $sessionId,
         public readonly string $clientIp,
     ) {
+    }
+
+    public function updateFromAdherent(Adherent $user): void
+    {
+        $this->email = $user->getEmailAddress();
+        $this->civility = $user->getGender();
+        $this->firstName = $user->getFirstName();
+        $this->lastName = $user->getLastName();
+        $this->birthdate = $user->getBirthdate();
+        $this->phone = $user->getPhone();
+        $this->postalCode = $user->getPostalCode();
     }
 }
