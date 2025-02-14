@@ -17,6 +17,7 @@ final class SubscriptionTypeEnum extends Enum
     public const REFERENT_EMAIL = 'subscribed_emails_referents';
     public const CANDIDATE_EMAIL = 'candidate_email';
     public const SENATOR_EMAIL = 'senator_email';
+    public const EVENT_EMAIL = 'event_email';
 
     public const MILITANT_ACTION_SMS = 'militant_action_sms';
 
@@ -28,28 +29,11 @@ final class SubscriptionTypeEnum extends Enum
         self::SENATOR_EMAIL,
         self::REFERENT_EMAIL,
         self::CANDIDATE_EMAIL,
-    ];
-
-    public const USER_TYPES = [
-        self::MILITANT_ACTION_SMS,
-        self::MOVEMENT_INFORMATION_EMAIL,
-        self::WEEKLY_LETTER_EMAIL,
+        self::EVENT_EMAIL,
     ];
 
     public const DEFAULT_MOBILE_TYPES = [
         self::MILITANT_ACTION_SMS,
-    ];
-
-    public const ADHERENT_TYPES = [
-        self::MILITANT_ACTION_SMS,
-        self::LOCAL_HOST_EMAIL,
-        self::MOVEMENT_INFORMATION_EMAIL,
-        self::WEEKLY_LETTER_EMAIL,
-        self::DEPUTY_EMAIL,
-        self::REFERENT_EMAIL,
-        self::CANDIDATE_EMAIL,
-        self::SENATOR_EMAIL,
-        self::JAM_EMAIL,
     ];
 
     public const SUBSCRIPTION_TYPES_BY_SCOPES = [
@@ -67,4 +51,9 @@ final class SubscriptionTypeEnum extends Enum
 
         ScopeEnum::ANIMATOR => self::LOCAL_HOST_EMAIL,
     ];
+
+    public static function ALL(): array
+    {
+        return array_merge(self::DEFAULT_EMAIL_TYPES, self::DEFAULT_MOBILE_TYPES);
+    }
 }

@@ -75,6 +75,10 @@ Feature:
                     {
                         "label": "Recevoir les emails des candidats du parti",
                         "code": "candidate_email"
+                    },
+                    {
+                        "label": "Recevoir les emails d'événements",
+                        "code": "event_email"
                     }
                 ],
                 "interests": [],
@@ -411,31 +415,6 @@ Feature:
                     {
                         "label": "Numérique",
                         "code": "numerique"
-                    }
-                ]
-            }
-            """
-
-        # Update subscription types
-        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
-            """
-            {
-                "subscription_types": ["unknown_subscription_code"]
-            }
-            """
-        Then the response status code should be 400
-        And the response should be in JSON
-        And the JSON should be equal to:
-            """
-            {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
-                "violations": [
-                    {
-                        "code": "@uuid@",
-                        "propertyPath": "subscription_types",
-                        "message": "Une ou plusieurs des valeurs de la suscription aux notifications sont invalides. Merci de contacter le support."
                     }
                 ]
             }
@@ -961,6 +940,10 @@ Feature:
                     {
                         "code": "jam_email",
                         "label": "Recevoir les emails des Jeunes avec Macron"
+                    },
+                    {
+                        "label": "Recevoir les emails d'événements",
+                        "code": "event_email"
                     }
                 ],
                 "positions": [
@@ -1300,6 +1283,10 @@ Feature:
                     {
                         "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
+                    },
+                    {
+                        "label": "Recevoir les emails d'événements",
+                        "code": "event_email"
                     }
                 ],
                 "facebook_page_url": null,
@@ -1413,6 +1400,10 @@ Feature:
                     {
                         "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
+                    },
+                    {
+                        "label": "Recevoir les emails d'événements",
+                        "code": "event_email"
                     }
                 ],
                 "facebook_page_url": null,
@@ -1500,6 +1491,10 @@ Feature:
                     {
                         "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
+                    },
+                    {
+                        "label": "Recevoir les emails d'événements",
+                        "code": "event_email"
                     }
                 ],
                 "facebook_page_url": null,

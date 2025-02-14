@@ -797,7 +797,7 @@
         </service>
 
         <service id="app.admin.subscription_type" class="App\Admin\SubscriptionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Types d'Emails" group="Tech" />
+            <tag name="sonata.admin" manager-type="orm" label="Préférence de notifications" group="Tech" />
 
             <argument />
             <argument>App\Entity\SubscriptionType</argument>

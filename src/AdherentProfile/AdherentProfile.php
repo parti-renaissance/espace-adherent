@@ -10,7 +10,6 @@ use App\Entity\JobEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Renaissance\Membership\Admin\MembershipTypeEnum;
-use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\AdherentInterests;
 use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
@@ -158,7 +157,6 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var array
      */
-    #[Assert\Choice(choices: SubscriptionTypeEnum::ADHERENT_TYPES, multiple: true, multipleMessage: 'adherent_profile.subscription_types.invalid_choice')]
     #[Groups(['profile_write'])]
     private $subscriptionTypes = [];
 

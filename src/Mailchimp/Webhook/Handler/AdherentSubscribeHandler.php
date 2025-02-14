@@ -4,7 +4,6 @@ namespace App\Mailchimp\Webhook\Handler;
 
 use App\Mailchimp\Webhook\EventTypeEnum;
 use App\Subscription\SubscriptionHandler;
-use App\Subscription\SubscriptionTypeEnum;
 
 class AdherentSubscribeHandler extends AbstractAdherentHandler
 {
@@ -17,7 +16,7 @@ class AdherentSubscribeHandler extends AbstractAdherentHandler
         if ($adherent = $this->getAdherent($data['email'])) {
             $adherent->setEmailUnsubscribed(false);
 
-            $this->subscriptionHandler->handleUpdateSubscription($adherent, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES);
+            $this->subscriptionHandler->addDefaultTypesToAdherent($adherent, true, false);
         }
     }
 

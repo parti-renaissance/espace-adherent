@@ -79,7 +79,7 @@
                                 {% if is_granted('IS_IMPERSONATOR') %}
                                     <a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
                                 {% else %}
-                                    <a href="{{ path('logout', {app_domain: app_renaissance_host}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
+                                    <a href="{{ path('logout', {app_domain: user_vox_host}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
                                 {% endif %}
                             </div>
                         </div>

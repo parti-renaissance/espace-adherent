@@ -35,7 +35,7 @@ class MailchimpUpdateControllerTest extends AbstractRenaissanceWebTestCase
         self::assertResponseIsSuccessful();
 
         self::assertTrue($adherent->isEmailSubscribed());
-        self::assertCount(7, $adherent->getSubscriptionTypeCodes());
+        self::assertCount(8, $adherent->getSubscriptionTypeCodes());
     }
 
     public function testCleanAdherentViaMailchimpWebhook(): void

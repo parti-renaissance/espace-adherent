@@ -67,18 +67,13 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     {
         $event = $eventEvent->getEvent();
 
-        if ($event->getZones()->isEmpty() && $event->getCommittee()) {
-            /** @var Zone $firstZone */
-            $firstZone = $event->getCommittee()->getZones()->first();
-
-            if ($firstZone->isCountry() || Zone::CUSTOM === $firstZone->getType()) {
-                $event->setZones($event->getCommittee()->getZones()->getParentsOfType(Zone::COUNTRY));
-            } else {
-                $event->setZones($event->getCommittee()->getZones()->getParentsOfType(Zone::DEPARTMENT));
-            }
+        if (!$event->getZones()->isEmpty()) {
+            return;
         }
 
-        if ($event->getZones()->isEmpty() && $scope = $this->scopeGeneratorResolver->generate()) {
+        if ($event->getCommittee()) {
+            $event->setZones([$event->getCommittee()->getAssemblyZone()]);
+        } elseif ($scope = $this->scopeGeneratorResolver->generate()) {
             $event->setZones($scope->getZones());
         }
 
