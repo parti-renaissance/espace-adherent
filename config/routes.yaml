@@ -155,6 +155,16 @@ app_besoindeurope:
     resource: '../src/Controller/BesoinDEurope'
     type: attribute
 
+app_national_event_redirect:
+    host: '%national_event_host%'
+    path: '/{slug}'
+    requirements:
+        slug: '[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'app_national_event_by_slug'
+        slug: 'slug'
+
 app_national_event:
     host: '{app_domain}'
     resource: '../src/Controller/Renaissance/NationalEvent'
