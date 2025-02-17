@@ -134,6 +134,7 @@ trait EntityIdentityTrait
         'general_convention_list',
         'general_convention_read',
         'general_convention_write',
+        'referral_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

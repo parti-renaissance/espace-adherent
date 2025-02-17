@@ -5,12 +5,16 @@ namespace App\Entity;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityNullablePostAddressTrait
 {
     /**
      * @var NullablePostAddress
      */
+    #[Assert\Valid(groups: ['referral_write'])]
+    #[Groups(['referral_read', 'referral_write'])]
     #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
