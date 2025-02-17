@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Adherent\ReferralIdentifierGenerator;
 use App\Entity\Adherent;
 use App\Entity\Referral;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -15,6 +16,7 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
 
     public function __construct(
         private readonly Security $security,
+        private readonly ReferralIdentifierGenerator $referralIdentifierGenerator,
     ) {
     }
 
@@ -28,6 +30,8 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
             $currentUser = $this->security->getUser();
 
             $data->referrer = $currentUser;
+
+            $data->identifier = $this->referralIdentifierGenerator->generate();
         }
 
         return $data;

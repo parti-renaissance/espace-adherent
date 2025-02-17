@@ -16,6 +16,9 @@ class ReferralAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
+            ->add('identifier', null, [
+                'label' => 'Numéro',
+            ])
             ->add('referrer', null, [
                 'label' => 'Adhérent',
                 'template' => 'admin/referral/list_referrer.html.twig',

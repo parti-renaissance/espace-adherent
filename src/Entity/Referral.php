@@ -83,6 +83,10 @@ class Referral
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referred = null;
 
+    #[Groups(['referral_read'])]
+    #[ORM\Column(length: 6)]
+    public ?string $identifier = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
