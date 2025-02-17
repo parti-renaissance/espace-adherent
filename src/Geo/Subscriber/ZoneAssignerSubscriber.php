@@ -178,7 +178,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         return [
             CommitteeEventInterface::class => ['assignZoneToCommittee', -1024],
 
-            Events::EVENT_CREATED => ['assignZoneToEvent', -1024],
+            Events::EVENT_CREATED => ['assignZoneToEvent', 0],
             Events::EVENT_UPDATED => ['assignZoneToEvent', -1024],
 
             KernelEvents::VIEW => ['assignZoneToAction', EventPriorities::PRE_WRITE],

@@ -1181,8 +1181,8 @@ Feature:
             """
 
     Scenario: As a deputy I can create an event
-        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "POST" request to "/api/v3/events?scope=deputy" with body:
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/events?scope=president_departmental_assembly" with body:
             """
             {
                 "name": "Nouveau événement",
@@ -1218,7 +1218,7 @@ Feature:
                 ]
             }
             """
-        When I send a "POST" request to "/api/v3/events?scope=deputy" with body:
+        When I send a "POST" request to "/api/v3/events?scope=president_departmental_assembly" with body:
             """
             {
                 "name": "Nouveau événement",
@@ -1251,14 +1251,14 @@ Feature:
                 "begin_at": "2023-01-29T16:30:30+01:00",
                 "finish_at": "2023-01-30T16:30:30+01:00",
                 "organizer": {
-                    "uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
-                    "first_name": "Député",
-                    "last_name": "PARIS I",
-                    "scope": "deputy",
-                    "role": "Délégué",
-                    "instance": "Circonscription",
+                    "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+                    "first_name": "Damien",
+                    "last_name": "Durock",
+                    "scope": "president_departmental_assembly",
+                    "role": "Président",
+                    "instance": "Assemblée départementale",
                     "image_url": null,
-                    "zone": "Paris (1) (75-1)"
+                    "zone": "Hauts-de-Seine"
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -1291,6 +1291,102 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
+            }
+            """
+        And I should have 1 email "RenaissanceEventNotificationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
+            """
+            {
+                "template_name": "renaissance-event-notification",
+                "template_content": [],
+                "message": {
+                    "subject": "29 janvier - 16h30 : Nouvel événement : Nouveau événement",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "animator_firstname",
+                            "content": "Damien"
+                        },
+                        {
+                            "name": "event_name",
+                            "content": "Nouveau événement"
+                        },
+                        {
+                            "content": "dimanche 29 janvier 2023",
+                            "name": "event_date"
+                        },
+                        {
+                            "content": "16h30",
+                            "name": "event_hour"
+                        },
+                        {
+                            "content": "",
+                            "name": "event_address"
+                        },
+                        {
+                            "content": "http://test.renaissance.code/app/evenements/2023-01-29-nouveau-evenement",
+                            "name": "event_slug"
+                        },
+                        {
+                            "content": "Une description de l'événement",
+                            "name": "event_description"
+                        },
+                        {
+                            "content": null,
+                            "name": "committee_name"
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "headers": {
+                        "Reply-To": "president-ad@renaissance-dev.fr"
+                    },
+                    "merge_vars": [
+                        {
+                            "rcpt": "renaissance-user-4@en-marche-dev.fr",
+                            "vars": [
+                                {
+                                    "content": "Louis",
+                                    "name": "target_firstname"
+                                }
+                            ]
+                        },
+                        {
+                            "rcpt": "luciole1989@spambox.fr",
+                            "vars": [
+                                {
+                                    "content": "Lucie",
+                                    "name": "target_firstname"
+                                }
+                            ]
+                        },
+                        {
+                            "rcpt": "gisele-berthoux@caramail.com",
+                            "vars": [
+                                {
+                                    "content": "Gisele",
+                                    "name": "target_firstname"
+                                }
+                            ]
+                        }
+                    ],
+                    "to": [
+                        {
+                            "email": "renaissance-user-4@en-marche-dev.fr",
+                            "name": "Louis Roche",
+                            "type": "to"
+                        },
+                        {
+                            "email": "luciole1989@spambox.fr",
+                            "name": "Lucie Olivera",
+                            "type": "to"
+                        },
+                        {
+                            "email": "gisele-berthoux@caramail.com",
+                            "name": "Gisele Berthoux",
+                            "type": "to"
+                        }
+                    ]
+                }
             }
             """
 
