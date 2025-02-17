@@ -22,7 +22,7 @@ Feature:
                 "items": [
                     {
                         "uuid": "abeb6804-a88b-478a-8859-0c5e2f549d17",
-                        "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
+                        "identifier": "PAB123",
                         "email_address": "jean.martin@dev.test",
                         "first_name": "Jean",
                         "last_name": null,
@@ -46,7 +46,7 @@ Feature:
                     },
                     {
                         "uuid": "2055b072-73f4-46c3-a9ab-1fb617c464f1",
-                        "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
+                        "identifier": "P789YZ",
                         "email_address": "john.doe@dev.test",
                         "first_name": "John",
                         "last_name": null,
