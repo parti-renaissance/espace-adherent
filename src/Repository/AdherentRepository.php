@@ -1336,4 +1336,43 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @return Adherent[]
+     */
+    public function findInAssembly(Zone $zone, string $tagPattern, ?string $subscriptionTypeCode = null): array
+    {
+        if (!$zone->isAssemblyZone()) {
+            throw new \InvalidArgumentException('Zone must be an assembly zone, got '.$zone->getNameCode());
+        }
+
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
+            ->where('a.status = :status')
+            ->andWhere('a.tags LIKE :tag')
+            ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('tag', $tagPattern.'%')
+        ;
+
+        if ($subscriptionTypeCode) {
+            $qb
+                ->innerJoin('a.subscriptionTypes', 'subscription_type')
+                ->andWhere('subscription_type.code = :subscription_type_code')
+                ->setParameter('subscription_type_code', $subscriptionTypeCode)
+            ;
+        }
+
+        $this->withGeoZones(
+            [$zone],
+            $qb,
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return $qb->getQuery()->getResult();
+    }
 }

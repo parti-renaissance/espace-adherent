@@ -13,13 +13,8 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
      *
      * @param Adherent[] $recipients
      */
-    public static function create(
-        array $recipients,
-        Adherent $host,
-        Event $event,
-        string $eventLink,
-        \Closure $recipientVarsGenerator,
-    ): self {
+    public static function create(array $recipients, Adherent $host, Event $event, string $eventLink): self
+    {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
@@ -41,7 +36,7 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
             $event->getInlineFormattedAddress(),
             $eventLink,
             $event->getDescription(),
-            $event->getCommittee()->getName()
+            $event->getCommittee()?->getName()
         );
 
         $message = new static(
@@ -49,23 +44,22 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             \sprintf(
-                '%s - %s : Nouvel événement de %s : %s',
+                '%s - %s : Nouvel événement%s : %s',
                 static::formatDate($event->getLocalBeginAt(), 'd MMMM'),
                 $vars['event_hour'],
-                $event->getCommittee()->getName(),
+                ($committeeName = $event->getCommittee()?->getName()) ? ' de '.$committeeName : '',
                 $vars['event_name']
             ),
             $vars,
-            $recipientVarsGenerator($recipient),
+            static::getRecipientVars($recipient->getFirstName()),
             $host->getEmailAddress()
         );
 
-        /* @var Adherent[] $recipients */
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName(),
-                $recipientVarsGenerator($recipient)
+                static::getRecipientVars($recipient->getFirstName())
             );
         }
 
@@ -80,7 +74,7 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
         string $eventAddress,
         string $eventLink,
         string $eventDescription,
-        string $committeeName,
+        ?string $committeeName,
     ): array {
         return [
             // Global common variables

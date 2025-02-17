@@ -2,7 +2,6 @@
 
 namespace Tests\App\Mailer\Message;
 
-use App\Entity\Adherent;
 use App\Mailer\Message\MessageRecipient;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 
@@ -29,10 +28,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
                 'Europe/Paris',
                 'Donec non dolor a sapien luctus lacinia id auctor orci'
             ),
-            self::SHOW_EVENT_URL,
-            function (Adherent $adherent) {
-                return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
-            }
+            self::SHOW_EVENT_URL
         );
 
         $this->assertSame('renaissance-event-notification', $message->generateTemplateName());
@@ -54,6 +50,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
         );
 
         $recipient = $message->getRecipient(0);
+
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
         $this->assertSame('em@example.com', $recipient->getEmailAddress());
         $this->assertSame('Émmanuel Macron', $recipient->getFullName());
@@ -79,9 +76,6 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
             $recipients[0],
             $this->createEventMock('petit-dejeuner', '2019-02-14 01:00:00', 'conrad hong-kong pacific place 88', '69006-69386', 'EM Lyon', 'Asia/Hong_Kong'),
             self::SHOW_EVENT_URL,
-            function (Adherent $adherent) {
-                return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
-            }
         );
 
         $this->assertCount(1, $message->getRecipients());

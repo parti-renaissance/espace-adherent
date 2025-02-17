@@ -357,6 +357,10 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $liveUrl = null;
 
+    #[Groups(['event_write_creation'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $sendInvitationEmail = true;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

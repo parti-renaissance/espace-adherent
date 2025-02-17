@@ -3,9 +3,8 @@
 namespace App\Event\EventListener;
 
 use App\Address\AddressInterface;
-use App\Committee\CommitteeManager;
-use App\Entity\Adherent;
 use App\Entity\Event\Event;
+use App\Event\Command\SendCreationNotificationCommand;
 use App\Event\EventEvent;
 use App\Event\EventRegistrationEvent;
 use App\Events;
@@ -13,9 +12,10 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\EventCancellationMessage;
 use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\Renaissance\EventUpdateMessage;
-use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventMessageNotifierListener implements EventSubscriberInterface
@@ -27,9 +27,9 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
     public function __construct(
         private readonly MailerService $transactionalMailer,
-        private readonly CommitteeManager $committeeManager,
         private readonly EventRegistrationRepository $registrationRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -48,27 +48,8 @@ class EventMessageNotifierListener implements EventSubscriberInterface
     {
         $event = $event->getEvent();
 
-        if (!$committee = $event->getCommittee()) {
-            return;
-        }
-
-        $chunks = array_chunk(
-            $this->committeeManager->getOptinCommitteeFollowers($committee),
-            MailerService::PAYLOAD_MAXSIZE
-        );
-
-        foreach ($chunks as $chunk) {
-            $this->transactionalMailer->sendMessage(
-                RenaissanceEventNotificationMessage::create(
-                    $chunk,
-                    $event->getAuthor(),
-                    $event,
-                    $this->generateUrl('app_renaissance_event_show', ['slug' => $event->getSlug()]),
-                    function (Adherent $adherent) {
-                        return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
-                    }
-                )
-            );
+        if ($event->sendInvitationEmail) {
+            $this->bus->dispatch(new SendCreationNotificationCommand($event->getUuid()), [new DelayStamp(600000)]);
         }
     }
 
