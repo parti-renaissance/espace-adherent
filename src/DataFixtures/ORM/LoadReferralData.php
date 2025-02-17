@@ -18,6 +18,10 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
     public const UUID_1 = 'abeb6804-a88b-478a-8859-0c5e2f549d17';
     public const UUID_2 = '2055b072-73f4-46c3-a9ab-1fb617c464f1';
 
+    public function __construct(private readonly ReferralIdentifierGenerator $referralIdentifierGenerator)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createReferral(
