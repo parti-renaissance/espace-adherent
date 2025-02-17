@@ -9,8 +9,6 @@ class JecouteDeviceNormalizer extends DeviceNormalizer
 {
     use NormalizerAwareTrait;
 
-    protected const ALREADY_CALLED = 'JECOUTE_DEVICE_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly JemarcheDataSurveyRepository $dataSurveyRepository)
     {
     }

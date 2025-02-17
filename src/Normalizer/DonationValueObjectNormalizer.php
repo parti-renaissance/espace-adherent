@@ -16,8 +16,6 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
     {
     }
 
-    protected const ALREADY_CALLED = 'DONATION_VALUE_OBJECT_NORMALIZER_ALREADY_CALLED';
-
     /**
      * @param DonationValueObject $object
      *
@@ -25,9 +23,7 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $groups = $context['groups'] ?? [];
 
         if (\in_array('donation_read', $groups)) {
@@ -47,7 +43,7 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[static::ALREADY_CALLED]) && $data instanceof DonationValueObject;
+        return !isset($context[__CLASS__]) && $data instanceof DonationValueObject;
     }
 
     private function translateDonationType(string $donationType): string

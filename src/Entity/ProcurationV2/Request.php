@@ -8,8 +8,8 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Api\Filter\ProcurationZoneFilter;
 use App\Controller\Api\Procuration\GetMatchedProxiesController;
@@ -42,17 +42,19 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['procuration_request_read'], 'enable_tag_translator' => true]
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/requests/{uuid}/match',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: MatchRequestWithProxyController::class
+            controller: MatchRequestWithProxyController::class,
+            deserialize: false
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/requests/{uuid}/unmatch',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: UnmatchRequestAndProxyController::class
+            controller: UnmatchRequestAndProxyController::class,
+            deserialize: false
         ),
         new Patch(
             uriTemplate: '/requests/{uuid}',

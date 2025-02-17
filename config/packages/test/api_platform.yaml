@@ -1,5 +1,3 @@
 api_platform:
-    enable_entrypoint: false
-    collection:
-        pagination:
-            items_per_page: 2
+    defaults:
+        pagination_items_per_page: 2

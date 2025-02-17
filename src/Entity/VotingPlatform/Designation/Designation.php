@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Filter\InZoneOfScopeFilter;
@@ -54,12 +55,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'designation')",
             validationContext: ['groups' => UpdateDesignationGroupGenerator::class]
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/designations/{uuid}/cancel',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CancelElectionController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'designation')"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'designation')",
+            deserialize: false
         ),
         new GetCollection(normalizationContext: ['groups' => ['designation_list']]),
         new Post(validationContext: ['groups' => ['api_designation_write']]),
@@ -273,7 +275,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     #[Groups(['designation_read', 'designation_list'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $isCanceled = false;
+    public bool $isCanceled = false;
 
     #[ORM\Column(nullable: true)]
     public ?string $alertTitle = null;

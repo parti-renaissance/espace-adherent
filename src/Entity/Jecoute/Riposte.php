@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Api\Jecoute\IncrementRiposteStatsCounterController;
@@ -39,12 +40,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/ripostes/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%']
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/ripostes/{uuid}/action/{action}',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: IncrementRiposteStatsCounterController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
+            deserialize: false,
         ),
         new GetCollection(
             uriTemplate: '/v3/ripostes',
@@ -103,7 +105,6 @@ class Riposte implements AuthorInterface, IndexableEntityInterface
     /**
      * @var bool
      */
-    #[Assert\Type('bool')]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $withNotification;
@@ -111,7 +112,6 @@ class Riposte implements AuthorInterface, IndexableEntityInterface
     /**
      * @var bool
      */
-    #[Assert\Type('bool')]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $enabled;

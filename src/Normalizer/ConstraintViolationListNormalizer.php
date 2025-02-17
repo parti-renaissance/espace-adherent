@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use ApiPlatform\Validator\Exception\ConstraintViolationListAwareExceptionInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -14,6 +15,10 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
 
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
+        if ($object instanceof ConstraintViolationListAwareExceptionInterface) {
+            $object = $object->getConstraintViolationList();
+        }
+
         $violations = [];
 
         foreach ($object as $violation) {
@@ -38,11 +43,12 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
         return [
             '*' => null,
             ConstraintViolationListInterface::class => true,
+            ConstraintViolationListAwareExceptionInterface::class => true,
         ];
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof ConstraintViolationListInterface;
+        return $data instanceof ConstraintViolationListInterface || $data instanceof ConstraintViolationListAwareExceptionInterface;
     }
 }

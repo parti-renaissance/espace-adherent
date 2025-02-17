@@ -25,9 +25,7 @@ class ElectedRepresentativeAdherentMandateNormalizer implements NormalizerInterf
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $groups = $context['groups'] ?? [];
 
         if (\in_array('adherent_elect_read', $groups)) {
@@ -47,7 +45,7 @@ class ElectedRepresentativeAdherentMandateNormalizer implements NormalizerInterf
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[static::ALREADY_CALLED]) && $data instanceof ElectedRepresentativeAdherentMandate;
+        return !isset($context[__CLASS__]) && $data instanceof ElectedRepresentativeAdherentMandate;
     }
 
     private function translateMandateType(string $mandateType): string

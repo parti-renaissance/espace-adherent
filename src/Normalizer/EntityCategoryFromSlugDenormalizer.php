@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Entity\Event\EventCategory;
 use App\Repository\EventCategoryRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

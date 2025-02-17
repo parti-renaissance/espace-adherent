@@ -44,12 +44,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "email_address: Ceci n'est pas une adresse email valide.",
-                "title": "An error occurred",
-                "type": "@string@.isUrl()",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "message": "Ceci n'est pas une adresse email valide.",
                         "propertyPath": "email_address"
                     }

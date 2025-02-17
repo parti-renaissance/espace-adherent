@@ -94,22 +94,22 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/v3/events/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            openapiContext: ['parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'uuid', 'description' => 'The UUID of the Event.', 'example' => 'de7982c4-3729-4f9d-9587-376df25354c3']]],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'events') and is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)"
         ),
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/events/{uuid}/subscribe',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SubscribeAsAdherentController::class,
-            security: 'is_granted(\'ROLE_USER\')'
+            security: 'is_granted(\'ROLE_USER\')',
+            deserialize: false
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/events/{uuid}/subscribe',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: SubscribeAsAnonymousController::class
+            controller: SubscribeAsAnonymousController::class,
+            deserialize: false
         ),
         new HttpOperation(
             method: 'POST|DELETE',
@@ -119,11 +119,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'events') and is_granted('CAN_MANAGE_EVENT', request.attributes.get('data'))",
             deserialize: false
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/events/{uuid}/cancel',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: CancelEventController::class
+            controller: CancelEventController::class,
+            deserialize: false
         ),
         new GetCollection(
             uriTemplate: '/v3/events',

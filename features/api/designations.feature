@@ -16,29 +16,24 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "custom_title: Cette valeur ne doit pas être vide.\ntype: Cette valeur ne doit pas être vide.\nvote_end_date: La date de clôture doit être postérieur à la date de début\ndescription: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
                         "propertyPath": "custom_title",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     },
                     {
                         "propertyPath": "type",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     },
                     {
                         "propertyPath": "vote_end_date",
-                        "message": "La date de clôture doit être postérieur à la date de début",
-                        "code": "@uuid@"
+                        "message": "La date de clôture doit être postérieur à la date de début"
                     },
                     {
                         "propertyPath": "description",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     }
                 ]
             }
@@ -63,7 +58,7 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "election_entity_identifier: Un identifiant est requis pour ce champs."
+        And the JSON node "violations[0].message" should be equal to "Un identifiant est requis pour ce champs."
 
         Examples:
             | user                      | scope                                          |

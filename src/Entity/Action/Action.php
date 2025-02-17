@@ -55,16 +55,17 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/actions/{uuid}',
             security: "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')"
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/actions/{uuid}/cancel',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CancelActionController::class
         ),
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/actions/{uuid}/register',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: RegisterController::class
         ),

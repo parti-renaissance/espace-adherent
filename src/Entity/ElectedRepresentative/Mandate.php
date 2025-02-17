@@ -63,7 +63,7 @@ class Mandate
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $isElected;
+    public $isElected;
 
     /**
      * @var Zone|null

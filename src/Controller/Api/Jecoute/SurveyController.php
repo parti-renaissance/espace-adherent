@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted(new Expression("(is_granted('ROLE_USER') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"))]
 #[Route(path: '/jecoute/survey')]
@@ -30,7 +29,6 @@ class SurveyController extends AbstractController
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
         ZoneRepository $zoneRepository,
-        SerializerInterface $serializer,
     ): Response {
         $postalCode = null;
         /** @var Adherent|DeviceApiUser $user */
@@ -54,18 +52,12 @@ class SurveyController extends AbstractController
 
         $localSurveys = $localSurveyRepository->findAllByZones($zones);
 
-        return new JsonResponse(
-            $serializer->serialize(
-                array_merge(
-                    $localSurveys,
-                    $nationalSurveyRepository->findAllPublished()
-                ),
-                'json',
-                ['groups' => ['survey_list']]
+        return $this->json(
+            array_merge(
+                $localSurveys,
+                $nationalSurveyRepository->findAllPublished()
             ),
-            JsonResponse::HTTP_OK,
-            [],
-            true
+            context: ['groups' => ['survey_list']]
         );
     }
 
@@ -115,7 +107,7 @@ class SurveyController extends AbstractController
         return new JsonResponse(['status' => 'ok'], JsonResponse::HTTP_CREATED);
     }
 
-    private function getFormErrors(FormInterface $form)
+    private function getFormErrors(FormInterface $form): array
     {
         $errors = [];
 
