@@ -5,6 +5,7 @@ namespace App\Form;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,11 +24,10 @@ class PartialDesignationType extends AbstractType
                 'max_date' => new \DateTime('+6 weeks'),
                 'minute_increment' => 15,
             ])
-            ->add('message', PurifiedTextareaType::class, [
+            ->add('message', TextareaType::class, [
                 'attr' => [
                     'maxlength' => 2000,
                 ],
-                'purify_html_profile' => 'basic_content',
                 'with_character_count' => true,
             ])
             ->add('back', SubmitType::class)

@@ -14,8 +14,8 @@ env:
     HASH: ${{ github.sha }}
     TAG: ${{ github.ref_name }}
 
-    NODE_VERSION: 18.x
-    PHP_VERSION: 8.3.7
+    NODE_VERSION: 20.x
+    PHP_VERSION: 8.4
 
     REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
     REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
@@ -86,6 +86,7 @@ jobs:
         runs-on: ubuntu-24.04
         needs: [build]
         env:
+            PHP_CS_FIXER_IGNORE_ENV: 1
             EXEC:
         steps:
             - uses: actions/checkout@v4

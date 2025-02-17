@@ -4,7 +4,6 @@ namespace App\Admin\ProgrammaticFoundation;
 
 use App\Entity\ProgrammaticFoundation\SubApproach;
 use App\Entity\ProgrammaticFoundation\Tag;
-use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -16,6 +15,7 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class MeasureAdmin extends AbstractAdmin
 {
@@ -108,10 +108,8 @@ class MeasureAdmin extends AbstractAdmin
                 ->add('isLeading', null, [
                     'label' => 'Mesure phare',
                 ])
-                ->add('content', PurifiedTextareaType::class, [
+                ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor-advanced'],
-                    'purify_html_profile' => 'enrich_content',
                 ])
                 ->add('isExpanded', null, [
                     'label' => 'Ouvert par défaut',

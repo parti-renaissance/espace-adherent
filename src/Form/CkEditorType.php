@@ -2,22 +2,23 @@
 
 namespace App\Form;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType as BaseCKEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurifiedTextareaType extends AbstractType
+class CkEditorType extends AbstractType
 {
     public function getParent(): string
     {
-        return TextareaType::class;
+        return BaseCKEditorType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'purify_html' => true,
-            'purify_html_profile' => 'default',
+            'config' => [
+                'versionCheck' => false,
+            ],
         ]);
     }
 }

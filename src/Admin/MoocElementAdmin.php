@@ -9,7 +9,6 @@ use App\Entity\Mooc\MoocElementTypeEnum;
 use App\Form\Admin\BaseFileType;
 use App\Form\AttachmentLinkType;
 use App\Form\ImageType;
-use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
 use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -19,6 +18,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -48,10 +48,8 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
                         'label' => 'Slug',
                         'disabled' => true,
                     ])
-                    ->add('content', PurifiedTextareaType::class, [
+                    ->add('content', TextareaType::class, [
                         'label' => 'Contenu',
-                        'attr' => ['class' => 'ck-editor-advanced'],
-                        'purify_html_profile' => 'enrich_content',
                     ])
                     ->add('chapter', EntityType::class, [
                         'class' => Chapter::class,
@@ -68,10 +66,9 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
                     ->add('shareEmailSubject', TextType::class, [
                         'label' => 'Sujet de l\'email de partage',
                     ])
-                    ->add('shareEmailBody', PurifiedTextareaType::class, [
+                    ->add('shareEmailBody', TextareaType::class, [
                         'label' => 'Corps de l\'email de partage',
                         'attr' => ['rows' => 5, 'maxlength' => 500],
-                        'purify_html_profile' => 'enrich_content',
                     ])
                 ->end()
                 ->with('Liens attachés', ['class' => 'col-md-6'])

@@ -18,7 +18,6 @@ default:
                                 chromeOptions:
                                     args:
                                         - "--start-maximized"
-        Bex\Behat\SkipTestsExtension: ~
         Behatch\Extension: ~
     suites:
         default:
