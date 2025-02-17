@@ -39,7 +39,10 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referred": null
+                        "referred": null,
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "invitation_sent"
                     },
                     {
                         "uuid": "2055b072-73f4-46c3-a9ab-1fb617c464f1",
@@ -60,7 +63,10 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referred": null
+                        "referred": null,
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "invitation_sent"
                     }
                 ]
             }
@@ -98,7 +104,10 @@ Feature:
                     "region": null
                 },
                 "phone": null,
-                "referred": null
+                "referred": null,
+                "type": "invitation",
+                "mode": "email",
+                "status": "invitation_sent"
             }
             """
 
@@ -145,7 +154,10 @@ Feature:
                     "region": null
                 },
                 "phone": "+33 6 01 23 45 67",
-                "referred": null
+                "referred": null,
+                "type": "preregistration",
+                "mode": "email",
+                "status": "invitation_sent"
             }
             """
 

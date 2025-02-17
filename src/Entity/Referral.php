@@ -5,6 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Adherent\Referral\ModeEnum;
+use App\Adherent\Referral\StatusEnum;
+use App\Adherent\Referral\TypeEnum;
 use App\Enum\CivilityEnum;
 use App\Repository\ReferralRepository;
 use App\Validator\ReferralEmail;
@@ -87,6 +90,18 @@ class Referral
     #[ORM\Column(length: 6)]
     public ?string $identifier = null;
 
+    #[Groups(['referral_read'])]
+    #[ORM\Column(enumType: TypeEnum::class)]
+    public ?TypeEnum $type = null;
+
+    #[Groups(['referral_read'])]
+    #[ORM\Column(enumType: ModeEnum::class)]
+    public ?ModeEnum $mode = null;
+
+    #[Groups(['referral_read'])]
+    #[ORM\Column(enumType: StatusEnum::class)]
+    public ?StatusEnum $status = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -95,5 +110,13 @@ class Referral
     public function __toString()
     {
         return $this->emailAddress;
+    }
+
+    public function hasFullInformations(): bool
+    {
+        return null !== $this->lastName
+            && !$this->postAddress?->isEmpty()
+            && null !== $this->civility
+            && null !== $this->nationality;
     }
 }
