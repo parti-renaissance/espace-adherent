@@ -109,6 +109,13 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'uuid', nullable: true)]
     private $adherentUuid;
 
+    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 7, nullable: true)]
+    public ?string $publicId = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $lastLoggedAt = null;
+
     /**
      * @var string
      */
@@ -626,36 +633,13 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return implode($separator, $this->getCommittees());
     }
 
-    public function getGenderLabel(): string
+    public function getCivilityLabel(): string
     {
         return match ($this->gender) {
-            Genders::MALE => 'Homme',
-            Genders::FEMALE => 'Femme',
-            default => 'Autre',
+            Genders::MALE => 'M',
+            Genders::FEMALE => 'Mme',
+            default => '',
         };
-    }
-
-    public function getUserRoleLabels($separator = ' / '): string
-    {
-        if ($this->isCommitteeSupervisor || $this->isCommitteeHost) {
-            $roles = [];
-
-            if ($this->isCommitteeSupervisor) {
-                $roles[] = 'Animateur local';
-            }
-
-            if ($this->isCommitteeProvisionalSupervisor) {
-                $roles[] = 'Animateur local provisoire';
-            }
-
-            if ($this->isCommitteeHost) {
-                $roles[] = 'Co-animateur local';
-            }
-
-            return implode($separator, $roles);
-        }
-
-        return 'Adherent';
     }
 
     public function getVoteCommitteeId(): ?int

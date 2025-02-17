@@ -131,6 +131,7 @@ Feature:
                 },
                 "items": [
                     {
+                        "public_id": null,
                         "adherent_uuid": "@uuid@",
                         "email": "francis.brioul@yahoo.com",
                         "address": "2 avenue Jean Jaurès",
@@ -183,6 +184,7 @@ Feature:
                         "available_for_resubscribe_email": false
                     },
                     {
+                        "public_id": null,
                         "adherent_uuid": "@uuid@",
                         "email": "gisele-berthoux@caramail.com",
                         "address": "47 rue Martre",
@@ -284,6 +286,7 @@ Feature:
                         "available_for_resubscribe_email": false
                     },
                     {
+                        "public_id": null,
                         "adherent_uuid": "@uuid@",
                         "email": "je-mengage-user-1@en-marche-dev.fr",
                         "address": "2 avenue Jean Jaurès",
@@ -360,6 +363,7 @@ Feature:
                 },
                 "items": [
                     {
+                        "public_id": null,
                         "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                         "email": "gisele-berthoux@caramail.com",
                         "address": "47 rue Martre",
@@ -468,6 +472,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "public_id": null,
                 "adherent_uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                 "email": "francis.brioul@yahoo.com",
                 "address": "2 avenue Jean Jaurès",
@@ -541,6 +546,7 @@ Feature:
                 },
                 "items": [
                     {
+                        "public_id": null,
                         "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                         "email": "gisele-berthoux@caramail.com",
                         "address": "47 rue Martre",
@@ -642,6 +648,7 @@ Feature:
                         "available_for_resubscribe_email": false
                     },
                     {
+                        "public_id": null,
                         "adherent_uuid": "@uuid@",
                         "email": "je-mengage-user-1@en-marche-dev.fr",
                         "address": "2 avenue Jean Jaurès",
@@ -988,6 +995,7 @@ Feature:
                 },
                 "items": [
                     {
+                        "public_id": null,
                         "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
                         "email": "deputy@en-marche-dev.fr",
                         "address": "3 Avenue du Général Eisenhower",
@@ -1045,6 +1053,7 @@ Feature:
                         "available_for_resubscribe_email": false
                     },
                     {
+                        "public_id": null,
                         "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                         "email": "jacques.picard@en-marche.fr",
                         "address": "36 rue de la Paix",
@@ -1118,6 +1127,7 @@ Feature:
                 },
                 "items": [
                     {
+                        "public_id": null,
                         "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                         "email": "jacques.picard@en-marche.fr",
                         "address": "36 rue de la Paix",

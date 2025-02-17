@@ -75,7 +75,7 @@ class Member
     private ?string $role;
 
     #[AssertScopeFeaturesValid]
-    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
+    #[Assert\Choice(callback: [FeatureEnum::class, 'getDelegatableFeatures'], multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $scopeFeatures;
