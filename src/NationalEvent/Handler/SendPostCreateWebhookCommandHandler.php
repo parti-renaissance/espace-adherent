@@ -21,6 +21,9 @@ class SendPostCreateWebhookCommandHandler
 
     public function __invoke(SendWebhookCommand $command): void
     {
+        // disable temporarily the webhook
+        return;
+
         if (!$command->isPostCreate()) {
             return;
         }
