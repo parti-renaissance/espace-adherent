@@ -237,6 +237,10 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'text')]
     protected $description;
 
+    #[Groups(['event_read', 'event_write', 'event_write_creation'])]
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $jsonDescription = null;
+
     #[Groups(['event_read', 'event_write_creation'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Committee::class, fetch: 'EAGER')]

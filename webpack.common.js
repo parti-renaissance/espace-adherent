@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         kernel: './front/kernel.js',
         bootstrap: './assets/bootstrap.js',
+        admin: './assets/admin.js',
     },
     output: {
         path: path.join(__dirname, './public/built'),
