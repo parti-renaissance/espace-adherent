@@ -68,4 +68,12 @@ class FeatureEnum extends Enum
         self::DASHBOARD,
         self::MOBILE_APP,
     ];
+
+    public static function getDelegatableFeatures(): array
+    {
+        return array_diff(self::ALL, [
+            self::FEATUREBASE,
+            self::CONTACTS_EXPORT,
+        ]);
+    }
 }
