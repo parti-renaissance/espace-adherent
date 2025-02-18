@@ -941,3 +941,16 @@
     {% endif %}
 
 {% endblock %}
+
+{% block tip_tap_content_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        <div class="sonata-ba-field tiptap-container">
+            <div class="tiptap-menu">
+                <div class="btn-group"></div>
+            </div>
+            <div class="tiptap-editor"></div>
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endblock %}

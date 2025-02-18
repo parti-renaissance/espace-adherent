@@ -8,6 +8,7 @@ use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Event\EventVisibilityEnum;
 use App\Events;
+use App\Form\Admin\TipTapContentType;
 use App\Form\EventCategoryType;
 use App\Form\ReCountryType;
 use App\Utils\PhpConfigurator;
@@ -26,6 +27,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -64,12 +66,7 @@ class EventAdmin extends AbstractAdmin
                 ->add('category', null, [
                     'label' => 'Catégorie',
                 ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
-                ])
+                ->add('description', null, ['label' => 'Description'])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
                 ])
@@ -156,12 +153,10 @@ class EventAdmin extends AbstractAdmin
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
                 ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
+                ->add('description', HiddenType::class, [
+                    'attr' => ['class' => 'tiptap-html-content'],
                 ])
+                ->add('jsonDescription', TipTapContentType::class, ['label' => 'Description'])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
                     'widget' => 'single_text',

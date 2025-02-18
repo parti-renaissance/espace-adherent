@@ -125,12 +125,27 @@
         .main-header .logo img {
             max-width: inherit;
         }
+        .tiptap-menu button img {
+            width: 20px;
+            height: 20px;
+        }
+        .tiptap-menu {
+            padding: 16px;
+            border-bottom: 1px solid #ccc;
+        }
+        .tiptap-container {
+            border: 1px solid #ccc;
+        }
+        .tiptap {
+            padding: 16px;
+        }
     </style>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
+    <script src="{{ webpack_asset('admin.js') }}"></script>
     <script src="{{ asset('js/simplemde.min.js') }}"></script>
     <script>
      $(function() {
