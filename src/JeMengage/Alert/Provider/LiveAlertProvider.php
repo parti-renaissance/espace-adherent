@@ -37,7 +37,8 @@ class LiveAlertProvider implements AlertProviderInterface
                 )->getUrl();
             }
 
-            $alerts[] = Alert::createLive($event, $url);
+            $alerts[] = $alert = Alert::createLive($event, $url);
+            $alert->date = $event->getLocalBeginAt();
         }
 
         return $alerts;
