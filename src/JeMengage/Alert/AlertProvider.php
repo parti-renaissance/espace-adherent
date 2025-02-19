@@ -17,10 +17,10 @@ class AlertProvider
         $allAlerts = [];
 
         foreach ($this->providers as $provider) {
-            if ($alerts = $provider->getAlerts($adherent)) {
-                $allAlerts = array_merge($allAlerts, $alerts);
-            }
+            $allAlerts = array_merge($allAlerts, $provider->getAlerts($adherent));
         }
+
+        usort($allAlerts, fn (Alert $a, Alert $b) => $b->date <=> $a->date);
 
         return $allAlerts;
     }

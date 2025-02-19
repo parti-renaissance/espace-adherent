@@ -38,7 +38,7 @@ class ElectionAlertProvider implements AlertProviderInterface
 
         foreach ($designations as $designation) {
             if ($designation->alertTitle && $designation->alertDescription) {
-                $alerts[] = Alert::createElection(
+                $alerts[] = $alert = Alert::createElection(
                     $designation->alertTitle,
                     $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,
@@ -47,6 +47,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                         targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
                     )
                 );
+                $alert->date = $designation->getVoteStartDate();
             }
         }
 

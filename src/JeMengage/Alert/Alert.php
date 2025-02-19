@@ -4,6 +4,7 @@ namespace App\JeMengage\Alert;
 
 use App\Entity\Event\Event;
 use App\Entity\NationalEvent\NationalEvent;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 class Alert
 {
@@ -11,6 +12,10 @@ class Alert
     public const TYPE_LIVE = 'live';
     public const TYPE_LIVE_ANNOUNCE = 'live_announce';
     public const TYPE_MEETING = 'meeting';
+
+    // Date used to sort alerts
+    #[Ignore]
+    public ?\DateTimeInterface $date = null;
 
     public function __construct(
         public readonly string $type,

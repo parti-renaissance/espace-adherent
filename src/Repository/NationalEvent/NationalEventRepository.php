@@ -23,15 +23,17 @@ class NationalEventRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneActive(): ?NationalEvent
+    /**
+     * @return NationalEvent[]
+     */
+    public function findOneActive(): array
     {
         return $this->createQueryBuilder('event')
             ->where('event.endDate > :now')
             ->setParameter('now', new \DateTime())
             ->orderBy('event.startDate', 'ASC')
-            ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 
