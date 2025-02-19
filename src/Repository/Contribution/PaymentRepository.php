@@ -16,12 +16,14 @@ class PaymentRepository extends ServiceEntityRepository
 
     public function findOneByOhmeIdentifier(string $identifier): ?Payment
     {
-        return $this->createQueryBuilder('payment')
+        $payments = $this->createQueryBuilder('payment')
             ->where('payment.ohmeId = :identifier')
             ->setParameter('identifier', $identifier)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
+
+        return $payments[0] ?? null;
     }
 
     public function save(Payment $payment): void
