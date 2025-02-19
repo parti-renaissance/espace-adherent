@@ -221,6 +221,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::EVENTS
         );
         yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_INSCRIPTIONS',
+            'Administrateur des inscrits aux événements nationaux',
+            AdministratorRoleGroupEnum::EVENTS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_COMMITTEES',
             'Administrateur des comités',
             AdministratorRoleGroupEnum::TERRITOIRES
