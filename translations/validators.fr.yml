@@ -550,3 +550,10 @@ admin.adherent.renaissance.membership_type.invalid_choice: Ce type d'adhésion n
 
 admin.membership.cotisation_amount_choice.not_blank: Veuillez spécifier un montant de cotisation.
 admin.membership.cotisation_amount_choice.invalid_choice: Ce montant de cotisation est invalide.
+
+#
+# Referral
+#
+
+referral.email_address.invalid: Cette adresse email ne peut pas être invitée.
+referral.informations.invalid: Veuillez remplir toutes les informations de préinscription (Civilité, Nom, Adresse postale, Nationalité).
