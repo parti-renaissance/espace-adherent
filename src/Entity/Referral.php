@@ -119,4 +119,12 @@ class Referral
             && null !== $this->civility
             && null !== $this->nationality;
     }
+
+    public function isAdhesion(): bool
+    {
+        return in_array($this->type, [
+            TypeEnum::INVITATION,
+            TypeEnum::PREREGISTRATION,
+        ], true);
+    }
 }
