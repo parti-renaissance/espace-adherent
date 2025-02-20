@@ -38,15 +38,15 @@ class ReferralAdmin extends AbstractAdmin
             ])
             ->add('type', null, [
                 'label' => 'Type',
-                'template' => 'admin/referral/list_type.html.twig',
+                'format' => 'referral.type.%s',
             ])
             ->add('mode', null, [
                 'label' => 'Mode',
-                'template' => 'admin/referral/list_mode.html.twig',
+                'format' => 'referral.mode.%s',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
-                'template' => 'admin/referral/list_status.html.twig',
+                'format' => 'referral.status.%s',
             ])
         ;
     }
