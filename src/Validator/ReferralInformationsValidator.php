@@ -12,6 +12,7 @@ class ReferralInformationsValidator extends ConstraintValidator
     private const PREREGISTRATION_FIELDS = [
         'civility',
         'lastName',
+        'postAddress',
         'nationality',
     ];
 
@@ -27,6 +28,16 @@ class ReferralInformationsValidator extends ConstraintValidator
 
         $filledCount = 0;
         foreach (self::PREREGISTRATION_FIELDS as $field) {
+            if ('postAddress' === $field) {
+                $postAddress = $value->getPostAddress();
+
+                if ($postAddress && !$postAddress->isEmpty()) {
+                    ++$filledCount;
+                }
+
+                continue;
+            }
+
             if (!empty($value->$field)) {
                 ++$filledCount;
             }

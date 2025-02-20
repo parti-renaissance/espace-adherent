@@ -11,11 +11,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class ReferralExtension implements QueryCollectionExtensionInterface
 {
-    private Security $security;
-
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     public function applyToCollection(

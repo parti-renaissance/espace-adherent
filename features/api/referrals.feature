@@ -38,7 +38,7 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referee": null
+                        "referred": null
                     },
                     {
                         "uuid": "2055b072-73f4-46c3-a9ab-1fb617c464f1",
@@ -58,7 +58,7 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referee": null
+                        "referred": null
                     }
                 ]
             }
@@ -66,7 +66,7 @@ Feature:
 
     Scenario: As an logged in user, I can create a new referral with only email and first name
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/referrals?page_size=10" with body:
+        And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
                 "email_address": "jane.doe@dev.test",
@@ -95,13 +95,13 @@ Feature:
                     "region": null
                 },
                 "phone": null,
-                "referee": null
+                "referred": null
             }
             """
 
     Scenario: As an logged in user, I can create a new referral with all informations
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/referrals?page_size=10" with body:
+        And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
                 "email_address": "jane.doe@dev.test",
@@ -141,13 +141,13 @@ Feature:
                     "region": null
                 },
                 "phone": "+33 6 01 23 45 67",
-                "referee": null
+                "referred": null
             }
             """
 
     Scenario: As an logged in user, I can not create a new referral with partial informations
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/referrals?page_size=10" with body:
+        And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
                 "email_address": "jane.doe@dev.test",
@@ -160,12 +160,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "Veuillez remplir toutes les informations de préinscription (Civilité, Nom, Adresse postale, Nationalité).",
-                "title": "An error occurred",
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "message": "Veuillez remplir toutes les informations de préinscription (Civilité, Nom, Adresse postale, Nationalité).",
                         "propertyPath": ""
                     }
@@ -175,7 +173,7 @@ Feature:
 
     Scenario Outline: As an logged in user, I can not create a new referral with an invalid email address
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/referrals?page_size=10" with body:
+        And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
                 "email_address": "<email>",
@@ -187,12 +185,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "email_address: Cette adresse email ne peut pas être invitée.",
-                "title": "An error occurred",
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "message": "Cette adresse email ne peut pas être invitée.",
                         "propertyPath": "email_address"
                     }
