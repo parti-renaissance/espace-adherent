@@ -1319,3 +1319,18 @@ general_convention.meeting_type.remote: Visio
 general_convention.participant_quality.adherent: Adhérents
 general_convention.participant_quality.sympathizer: Sympathisants
 general_convention.participant_quality.adherent_before: Anciens adhérents
+
+#
+# Referral
+#
+referral.type.link: Lien
+referral.type.invitation: Invitation
+referral.type.preregistration: Pré-inscription
+
+referral.mode.sms: SMS
+referral.mode.email: Email
+
+referral.status.invitation_sent: Invitation envoyée
+referral.status.account_created: Compte créé
+referral.status.adhesion_finished: Adhésion effectuée
+referral.status.adhesion_via_other_link: Adhésion via une autre invitation

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Adherent;
+namespace App\Adherent\Referral;
 
 use App\Repository\ReferralRepository;
 
-class ReferralIdentifierGenerator
+class IdentifierGenerator
 {
     private const CHARACTERS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
