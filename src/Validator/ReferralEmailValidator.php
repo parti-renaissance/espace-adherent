@@ -4,6 +4,7 @@ namespace App\Validator;
 
 use App\Repository\AdherentRepository;
 use App\Repository\BannedAdherentRepository;
+use App\Repository\ReferralRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -14,6 +15,7 @@ class ReferralEmailValidator extends ConstraintValidator
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly BannedAdherentRepository $bannedAdherentRepository,
+        private readonly ReferralRepository $referralRepository,
     ) {
     }
 
@@ -34,6 +36,7 @@ class ReferralEmailValidator extends ConstraintValidator
         if (
             $this->adherentRepository->findOneByEmail($value)
             || $this->bannedAdherentRepository->countForEmail($value)
+            || $this->referralRepository->isEmailReported($value)
         ) {
             $this->context
                 ->buildViolation($constraint->message)

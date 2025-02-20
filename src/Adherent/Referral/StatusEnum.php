@@ -8,4 +8,5 @@ enum StatusEnum: string
     case ACCOUNT_CREATED = 'account_created';
     case ADHESION_FINISHED = 'adhesion_finished';
     case ADHESION_VIA_OTHER_LINK = 'adhesion_via_other_link';
+    case REPORTED = 'reported';
 }

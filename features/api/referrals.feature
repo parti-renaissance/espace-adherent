@@ -110,6 +110,45 @@ Feature:
                 "status": "invitation_sent"
             }
             """
+        And I should have 1 email "ReferralAdhesionCreatedMessage" for "jane.doe@dev.test" with payload:
+            """
+            {
+                "template_name": "referral-adhesion-created",
+                "template_content": [],
+                "message": {
+                    "subject": "Nouveau parrainage",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "merge_vars": [
+                        {
+                            "rcpt": "jane.doe@dev.test",
+                            "vars": [
+                                {
+                                    "content": "Jane",
+                                    "name": "first_name"
+                                },
+                                {
+                                    "content": "http://test.renaissance.code/invitation/adhesion/@string@",
+                                    "name": "adhesion_link"
+                                },
+                                {
+                                    "content": "http://test.renaissance.code/invitation/@string@/signaler",
+                                    "name": "report_link"
+                                }
+                            ]
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "jane.doe@dev.test",
+                            "type": "to",
+                            "name": "Jane"
+                        }
+                    ]
+                }
+            }
+            """
 
     Scenario: As an logged in user, I can create a new referral with all informations
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"

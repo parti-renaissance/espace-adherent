@@ -87,7 +87,7 @@ class Referral
     public ?Adherent $referred = null;
 
     #[Groups(['referral_read'])]
-    #[ORM\Column(length: 6)]
+    #[ORM\Column(length: 6, unique: true)]
     public ?string $identifier = null;
 
     #[Groups(['referral_read'])]
@@ -122,9 +122,19 @@ class Referral
 
     public function isAdhesion(): bool
     {
-        return in_array($this->type, [
+        return \in_array($this->type, [
             TypeEnum::INVITATION,
             TypeEnum::PREREGISTRATION,
         ], true);
+    }
+
+    public function isReported(): bool
+    {
+        return StatusEnum::REPORTED === $this->status;
+    }
+
+    public function report(): void
+    {
+        $this->status = StatusEnum::REPORTED;
     }
 }

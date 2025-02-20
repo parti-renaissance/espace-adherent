@@ -3,7 +3,7 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Adherent\Referral\ReferralNotifier;
+use App\Adherent\Referral\Notifier;
 use App\Entity\Referral;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class PostReferralCreateListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly ReferralNotifier $referralNotifier)
+    public function __construct(private readonly Notifier $notifier)
     {
     }
 
@@ -29,7 +29,7 @@ class PostReferralCreateListener implements EventSubscriberInterface
         }
 
         if ($referral->isAdhesion()) {
-            $this->referralNotifier->sendAdhesionMessage($referral);
+            $this->notifier->sendAdhesionMessage($referral);
         }
     }
 }
