@@ -22,6 +22,7 @@ Feature:
                 "items": [
                     {
                         "uuid": "abeb6804-a88b-478a-8859-0c5e2f549d17",
+                        "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
                         "email_address": "jean.martin@dev.test",
                         "first_name": "Jean",
                         "last_name": null,
@@ -38,10 +39,14 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referred": null
+                        "referred": null,
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "invitation_sent"
                     },
                     {
                         "uuid": "2055b072-73f4-46c3-a9ab-1fb617c464f1",
+                        "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
                         "email_address": "john.doe@dev.test",
                         "first_name": "John",
                         "last_name": null,
@@ -58,7 +63,10 @@ Feature:
                             "region": null
                         },
                         "phone": null,
-                        "referred": null
+                        "referred": null,
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "invitation_sent"
                     }
                 ]
             }
@@ -79,6 +87,7 @@ Feature:
             """
             {
                 "uuid": "@uuid@",
+                "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
                 "email_address": "jane.doe@dev.test",
                 "first_name": "Jane",
                 "last_name": null,
@@ -95,7 +104,10 @@ Feature:
                     "region": null
                 },
                 "phone": null,
-                "referred": null
+                "referred": null,
+                "type": "invitation",
+                "mode": "email",
+                "status": "invitation_sent"
             }
             """
 
@@ -125,6 +137,7 @@ Feature:
             """
             {
                 "uuid": "@uuid@",
+                "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
                 "email_address": "jane.doe@dev.test",
                 "first_name": "Jane",
                 "last_name": "Doe",
@@ -141,7 +154,10 @@ Feature:
                     "region": null
                 },
                 "phone": "+33 6 01 23 45 67",
-                "referred": null
+                "referred": null,
+                "type": "preregistration",
+                "mode": "email",
+                "status": "invitation_sent"
             }
             """
 

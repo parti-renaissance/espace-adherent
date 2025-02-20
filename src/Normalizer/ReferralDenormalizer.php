@@ -2,6 +2,10 @@
 
 namespace App\Normalizer;
 
+use App\Adherent\Referral\IdentifierGenerator;
+use App\Adherent\Referral\ModeEnum;
+use App\Adherent\Referral\StatusEnum;
+use App\Adherent\Referral\TypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Referral;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -15,6 +19,7 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
 
     public function __construct(
         private readonly Security $security,
+        private readonly IdentifierGenerator $referralIdentifierGenerator,
     ) {
     }
 
@@ -24,10 +29,17 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
         $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
 
         if (!$data->getId()) {
-            /** @var Adherent $currentUser */
-            $currentUser = $this->security->getUser();
+            $data->referrer = $this->getCurrentUser();
 
-            $data->referrer = $currentUser;
+            $data->identifier = $this->referralIdentifierGenerator->generate();
+
+            $data->type = $data->hasFullInformations()
+                ? TypeEnum::PREREGISTRATION
+                : TypeEnum::INVITATION;
+
+            $data->mode = ModeEnum::EMAIL;
+
+            $data->status = StatusEnum::INVITATION_SENT;
         }
 
         return $data;
@@ -46,5 +58,10 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
         return !isset($context[__CLASS__])
             && is_a($type, Referral::class, true)
             && $this->security->getUser() instanceof Adherent;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        return $this->security->getUser();
     }
 }
