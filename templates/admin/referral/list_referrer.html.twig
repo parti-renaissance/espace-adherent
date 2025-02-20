@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.referrer %}
+        {{ include('admin/adherent/_summary.html.twig', {adherent: object.referrer}) }}
+    {% else %}
+        Compte supprimé
+    {% endif %}
+{% endblock %}
