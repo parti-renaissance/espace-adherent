@@ -39,7 +39,7 @@ class Referral
 
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    public ?Adherent $referee = null;
+    public ?Adherent $referred = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {

@@ -5,14 +5,14 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20250213123547 extends AbstractMigration
+final class Version20250220094247 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE referral (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           referrer_id INT UNSIGNED DEFAULT NULL,
-          referee_id INT UNSIGNED DEFAULT NULL,
+          referred_id INT UNSIGNED DEFAULT NULL,
           email_address VARCHAR(255) NOT NULL,
           first_name VARCHAR(50) NOT NULL,
           last_name VARCHAR(50) DEFAULT NULL,
@@ -34,7 +34,7 @@ final class Version20250213123547 extends AbstractMigration
           address_geocodable_hash VARCHAR(255) DEFAULT NULL,
           UNIQUE INDEX UNIQ_73079D00D17F50A6 (uuid),
           INDEX IDX_73079D00798C22DB (referrer_id),
-          INDEX IDX_73079D004A087CA2 (referee_id),
+          INDEX IDX_73079D00CFE2A98 (referred_id),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
@@ -46,7 +46,7 @@ final class Version20250213123547 extends AbstractMigration
         $this->addSql('ALTER TABLE
           referral
         ADD
-          CONSTRAINT FK_73079D004A087CA2 FOREIGN KEY (referee_id) REFERENCES adherents (id) ON DELETE
+          CONSTRAINT FK_73079D00CFE2A98 FOREIGN KEY (referred_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
     }
@@ -54,7 +54,7 @@ final class Version20250213123547 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE referral DROP FOREIGN KEY FK_73079D00798C22DB');
-        $this->addSql('ALTER TABLE referral DROP FOREIGN KEY FK_73079D004A087CA2');
+        $this->addSql('ALTER TABLE referral DROP FOREIGN KEY FK_73079D00CFE2A98');
         $this->addSql('DROP TABLE referral');
     }
 }
