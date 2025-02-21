@@ -45,7 +45,7 @@ class SendCreationNotificationCommandHandler
 
         $recipients = [];
         if ($committee = $event->getCommittee()) {
-            $recipients = $this->committeeManager->getOptinCommitteeFollowers($committee);
+            $recipients = $this->adherentRepository->findInCommittee($committee, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         } elseif ($zone = $event->getAssemblyZone()) {
             $recipients = $this->adherentRepository->findInAssembly($zone, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         }

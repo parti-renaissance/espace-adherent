@@ -79,24 +79,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findForCommittee(Committee $committee): array
-    {
-        return $this->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
-            ->innerJoin('adherent.committeeMembership', 'membership', Join::WITH, 'membership.committee = :committee')
-            ->andWhere('adherent.status = :status')
-            ->andWhere('adherent.tags like :adherent_tag')
-            ->setParameters([
-                'committee' => $committee,
-                'status' => Adherent::ENABLED,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-            ])
-            ->getQuery()
-            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->getResult()
-        ;
-    }
-
     /**
      * Finds an Adherent instance by its email address.
      */
@@ -1372,6 +1354,33 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'zones',
             'z2'
         );
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findInCommittee(Committee $committee, string $tag, ?string $subscriptionTypeCode = null): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
+            ->innerJoin('a.committeeMembership', 'cm')
+            ->innerJoin('cm.committee', 'c')
+            ->where('c = :committee')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.tags LIKE :adherent_tag')
+            ->setParameters([
+                'committee' => $committee,
+                'status' => Adherent::ENABLED,
+                'adherent_tag' => $tag.'%',
+            ])
+        ;
+
+        if ($subscriptionTypeCode) {
+            $qb
+                ->innerJoin('a.subscriptionTypes', 'subscription_type')
+                ->andWhere('subscription_type.code = :subscription_type_code')
+                ->setParameter('subscription_type_code', $subscriptionTypeCode)
+            ;
+        }
 
         return $qb->getQuery()->getResult();
     }
