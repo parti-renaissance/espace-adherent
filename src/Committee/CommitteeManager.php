@@ -81,11 +81,6 @@ class CommitteeManager
         return $committee->getCreatedBy() ? $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy()) : null;
     }
 
-    public function getOptinCommitteeFollowers(Committee $committee): array
-    {
-        return $this->getAdherentRepository()->findForCommittee($committee);
-    }
-
     /**
      * Promotes an adherent to be a host of a committee.
      */
