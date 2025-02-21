@@ -452,3 +452,5 @@ services:
     App\Security\Http\LoginLink\Authentication\DefaultAuthenticationSuccessHandler:
         decorates: 'security.authentication.success_handler.main.login_link'
         arguments: ['@.inner']
+
+    League\CommonMark\CommonMarkConverter: ~
