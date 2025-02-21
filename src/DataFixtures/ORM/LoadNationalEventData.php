@@ -13,7 +13,8 @@ class LoadNationalEventData extends Fixture
         $manager->persist($event = new NationalEvent());
 
         $event->setName('Event national 1');
-
+        $event->alertEnabled = true;
+        $event->alertTitle = 'Venez nombreux !';
         $event->startDate = new \DateTime('+1 month');
         $event->endDate = new \DateTime('+1.5 month');
         $event->ticketStartDate = new \DateTime('-1 day');

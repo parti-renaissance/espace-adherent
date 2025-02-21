@@ -26,10 +26,11 @@ class NationalEventRepository extends ServiceEntityRepository
     /**
      * @return NationalEvent[]
      */
-    public function findOneActive(): array
+    public function findOneActiveForAlert(): array
     {
         return $this->createQueryBuilder('event')
             ->where('event.endDate > :now')
+            ->andWhere('event.alertEnabled = 1')
             ->setParameter('now', new \DateTime())
             ->orderBy('event.startDate', 'ASC')
             ->getQuery()

@@ -72,6 +72,7 @@ class NationalEventAdmin extends AbstractAdmin
             ->end()
             ->tab('Alerte & OG')
                 ->with('Alerte', ['class' => 'col-md-6'])
+                    ->add('alertEnabled', null, ['label' => 'Alerte activée', 'required' => false])
                     ->add('alertTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('alertDescription', TextType::class, ['label' => 'Description', 'required' => false])
                 ->end()

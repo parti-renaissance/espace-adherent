@@ -21,7 +21,7 @@ class MeetingProvider implements AlertProviderInterface
 
     public function getAlerts(Adherent $adherent): array
     {
-        if (!$events = $this->eventRepository->findOneActive()) {
+        if (!$events = $this->eventRepository->findOneActiveForAlert()) {
             return [];
         }
 

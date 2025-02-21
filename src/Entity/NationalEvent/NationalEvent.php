@@ -68,6 +68,9 @@ class NationalEvent
     #[ORM\Column(nullable: true)]
     public ?string $ogDescription = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $alertEnabled = false;
+
     #[ORM\Column(nullable: true)]
     public ?string $alertTitle = null;
 
