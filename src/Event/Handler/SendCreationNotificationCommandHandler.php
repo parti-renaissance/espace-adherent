@@ -59,7 +59,7 @@ class SendCreationNotificationCommandHandler
                 $chunk,
                 $event->getAuthor(),
                 $event,
-                $this->urlGenerator->generate('app_renaissance_event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'evenements/'.$event->getSlug(),
             ));
         }
     }

@@ -1330,7 +1330,7 @@ Feature:
                             "name": "event_address"
                         },
                         {
-                            "content": "http://test.renaissance.code/app/evenements/2023-01-29-nouveau-evenement",
+                            "content": "http://vox.code/evenements/2023-01-29-nouveau-evenement",
                             "name": "event_slug"
                         },
                         {
@@ -1518,7 +1518,7 @@ Feature:
                         },
                         {
                             "name": "event_slug",
-                            "content": "http://test.renaissance.code/app/evenements/2023-01-29-nouveau-evenement"
+                            "content": "http://vox.code/evenements/2023-01-29-nouveau-evenement"
                         },
                         {
                             "name": "event_description",

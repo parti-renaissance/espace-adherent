@@ -283,11 +283,14 @@ robots:
 
 # VOX redirect paths
 app_renaissance_event_show:
+    host: '%user_vox_host%'
     path: '/app/evenements/{slug}'
     controller: App\Controller\OAuth\RedirectAppController::redirectToState
 vox_app_profile:
+    host: '%user_vox_host%'
     path: '/app/profil'
     controller: App\Controller\OAuth\RedirectAppController::redirectToState
 vox_app_elect:
+    host: '%user_vox_host%'
     path: '/app/profil/informations-elu'
     controller: App\Controller\OAuth\RedirectAppController::redirectToState
