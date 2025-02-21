@@ -39,6 +39,7 @@ class EventCleaner
 
         'type',
         'objectID',
+        'identifier',
         'uuid',
         'slug',
         'time_zone',
