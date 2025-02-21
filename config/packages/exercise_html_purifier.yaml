@@ -1,0 +1,9 @@
+exercise_html_purifier:
+    html_profiles:
+        default:
+            config:
+                Core.Encoding: 'UTF-8'
+                Cache.SerializerPermissions: ~
+        event:
+            config:
+                HTML.Allowed: p,em,strong,ol,ul,li,br,a[href|title|rel|target]

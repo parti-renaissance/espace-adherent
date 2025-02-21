@@ -14,14 +14,20 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 {
     use DenormalizerAwareTrait;
 
-    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
-    {
+    public function __construct(
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly \HTMLPurifier $eventPurifier,
+    ) {
     }
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         /** @var Event $object */
         $object = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
+
+        if (!empty($data['description'])) {
+            $object->setDescription($this->eventPurifier->purify($data['description']));
+        }
 
         if (GeoCoder::DEFAULT_TIME_ZONE !== $object->getTimeZone()) {
             $timeZone = new \DateTimeZone($object->getTimeZone());
