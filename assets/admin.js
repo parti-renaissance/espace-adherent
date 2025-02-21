@@ -1,6 +1,7 @@
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { Images } from './editor-icons';
+import Link from '@tiptap/extension-link';
+import Images from './editor-icons';
 
 const TOOLS = [
     {
@@ -23,6 +24,28 @@ const TOOLS = [
         disabled: (editor) => !editor.can().toggleBulletList(),
         image: () => Images.bulletList,
     },
+    {
+        onPress: (editor) => () => {
+            const previousUrl = editor.getAttributes('link').href;
+            const url = window.prompt('URL', previousUrl);
+
+            // cancelled
+            if (null === url) {
+                return;
+            }
+
+            // empty
+            if ('' === url) {
+                editor.chain().focus().extendMarkRange('link').unsetLink().run();
+                return;
+            }
+
+            // update link
+            editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+        },
+        disabled: () => false,
+        image: () => Images.link,
+    },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,7 +58,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const editor = new Editor({
             element: element.parentElement,
             content: inputJson.value ? JSON.parse(inputJson.value) : inputHtml.value,
-            extensions: [StarterKit],
+            extensions: [
+                StarterKit,
+                Link.configure({
+                    openOnClick: false,
+                    autolink: true,
+                    defaultProtocol: 'https',
+                    protocols: ['http', 'https'],
+                    isAllowedUri: (url, ctx) => {
+                        try {
+                            // construct URL
+                            const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`);
+
+                            // use default validation
+                            if (!ctx.defaultValidate(parsedUrl.href)) {
+                                return false;
+                            }
+
+                            const protocol = parsedUrl.protocol.replace(':', '');
+
+                            // only allow protocols specified in ctx.protocols
+                            const allowedProtocols = ctx.protocols.map((p) => ('string' === typeof p ? p : p.scheme));
+
+                            return allowedProtocols.includes(protocol);
+                        } catch {
+                            return false;
+                        }
+                    },
+                }),
+            ],
             onUpdate: (props) => {
                 inputJson.value = JSON.stringify(props.editor.getJSON());
                 inputHtml.value = props.editor.getHTML();
