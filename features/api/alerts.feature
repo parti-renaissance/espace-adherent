@@ -13,22 +13,12 @@ Feature:
                 {
                     "type": "meeting",
                     "label": "Grand rassemblement",
-                    "title": "Event national 1",
+                    "title": "Venez nombreux !",
                     "description": "",
                     "cta_label": "Je réserve ma place",
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
                     "image_url": null,
                     "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/event-national-1"
-                },
-                {
-                    "type": "meeting",
-                    "label": "Grand rassemblement",
-                    "title": "Event national 2",
-                    "description": "",
-                    "cta_label": "Je réserve ma place",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-2",
-                    "image_url": null,
-                    "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/event-national-2"
                 },
                 {
                     "type": "election",
