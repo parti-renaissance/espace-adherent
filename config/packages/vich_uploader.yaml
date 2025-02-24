@@ -10,3 +10,5 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             directory_namer:
                 service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
+            delete_on_update: false
+            delete_on_remove: true
