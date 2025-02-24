@@ -21,12 +21,13 @@ class EventInscriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Adherent|null $adherent */
         $adherent = $options['adherent'];
         $isAdherent = $adherent instanceof Adherent;
 
         $builder
             ->add('email', EmailType::class, ['disabled' => $isAdherent])
-            ->add('civility', GenderCivilityType::class, ['disabled' => $isAdherent && $adherent->getCivility()])
+            ->add('civility', GenderCivilityType::class, ['disabled' => $isAdherent && $adherent->getGender()])
             ->add('firstName', TextType::class, ['disabled' => $isAdherent && $adherent->getFirstName()])
             ->add('lastName', TextType::class, ['disabled' => $isAdherent && $adherent->getLastName()])
             ->add('birthPlace', TextType::class)
