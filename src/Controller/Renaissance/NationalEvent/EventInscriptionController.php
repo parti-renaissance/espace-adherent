@@ -67,7 +67,9 @@ class EventInscriptionController extends AbstractController
         $isOpen = !$event->isComplete($inscriptionRequest->utmSource);
 
         $form = $this
-            ->createForm(EventInscriptionType::class, $inscriptionRequest, ['from_adherent' => $user instanceof Adherent])
+            ->createForm(EventInscriptionType::class, $inscriptionRequest, [
+                'adherent' => $user,
+            ])
             ->handleRequest($request)
         ;
 

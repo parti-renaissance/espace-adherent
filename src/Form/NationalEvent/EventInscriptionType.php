@@ -2,6 +2,7 @@
 
 namespace App\Form\NationalEvent;
 
+use App\Entity\Adherent;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\BirthdateType;
@@ -20,18 +21,24 @@ class EventInscriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $adherent = $options['adherent'];
+        $isAdherent = $adherent instanceof Adherent;
+
         $builder
-            ->add('email', EmailType::class, ['disabled' => $options['from_adherent']])
-            ->add('civility', GenderCivilityType::class, ['disabled' => $options['from_adherent']])
-            ->add('firstName', TextType::class, ['disabled' => $options['from_adherent']])
-            ->add('lastName', TextType::class, ['disabled' => $options['from_adherent']])
+            ->add('email', EmailType::class, ['disabled' => $isAdherent])
+            ->add('civility', GenderCivilityType::class, ['disabled' => $isAdherent && $adherent->getCivility()])
+            ->add('firstName', TextType::class, ['disabled' => $isAdherent && $adherent->getFirstName()])
+            ->add('lastName', TextType::class, ['disabled' => $isAdherent && $adherent->getLastName()])
             ->add('birthPlace', TextType::class)
-            ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years), 'disabled' => $options['from_adherent']])
+            ->add('birthdate', BirthdateType::class, [
+                'years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years),
+                'disabled' => $isAdherent && $adherent->getBirthDate(),
+            ])
             ->add('phone', TelNumberType::class, [
                 'required' => false,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
-            ->add('postalCode', TextType::class, ['disabled' => $options['from_adherent']])
+            ->add('postalCode', TextType::class, ['disabled' => $isAdherent && $adherent->getPostalCode()])
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
             ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
@@ -48,10 +55,10 @@ class EventInscriptionType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => EventInscriptionRequest::class,
-                'from_adherent' => false,
+                'adherent' => null,
             ])
-            ->setDefined('from_adherent')
-            ->addAllowedTypes('from_adherent', 'bool')
+            ->setDefined('adherent')
+            ->addAllowedTypes('adherent', ['null', Adherent::class])
         ;
     }
 }
