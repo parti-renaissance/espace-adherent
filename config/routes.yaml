@@ -164,6 +164,7 @@ app_national_event_redirect:
     defaults:
         route: 'app_national_event_by_slug'
         slug: 'slug'
+        keepQueryParams: true
 
 app_national_event:
     host: '{app_domain}'
