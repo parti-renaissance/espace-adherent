@@ -4,6 +4,7 @@ namespace Tests\App\Controller\Renaissance\Referral\Report;
 
 use App\Adherent\Referral\StatusEnum;
 use App\Entity\Referral;
+use App\Mailer\Message\Renaissance\Referral\ReferralReportedMessage;
 use App\Repository\ReferralRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -20,13 +21,14 @@ class FormControllerTest extends AbstractWebTestCase
     private ?ReferralRepository $referralRepository = null;
 
     #[DataProvider('provideReportableReferralIdentifiers')]
-    public function testReferralCanBeReported(string $referralIdentifier): void
+    public function testReferralCanBeReported(string $identifier, string $referrerEmail): void
     {
-        $referral = $this->referralRepository->findOneBy(['identifier' => $referralIdentifier]);
+        $referral = $this->referralRepository->findOneBy(['identifier' => $identifier]);
         $this->assertInstanceOf(Referral::class, $referral);
         $this->assertNotEquals(StatusEnum::REPORTED, $referral->status);
+        $this->assertCountMails(0, ReferralReportedMessage::class, $referrerEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$referralIdentifier/signaler");
+        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$identifier/signaler");
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
             'Voulez-vous vraiment signaler ce parrainage ?',
@@ -43,8 +45,9 @@ class FormControllerTest extends AbstractWebTestCase
             $crawler->text()
         );
 
-        $referral = $this->referralRepository->findOneBy(['identifier' => $referralIdentifier]);
+        $referral = $this->referralRepository->findOneBy(['identifier' => $identifier]);
         $this->assertEquals(StatusEnum::REPORTED, $referral->status);
+        $this->assertCountMails(1, ReferralReportedMessage::class, $referrerEmail);
     }
 
     #[DataProvider('provideAlreadyReportedReferralIdentifiers')]
@@ -64,8 +67,8 @@ class FormControllerTest extends AbstractWebTestCase
 
     public static function provideReportableReferralIdentifiers(): iterable
     {
-        yield ['PAB123'];
-        yield ['P789YZ'];
+        yield ['PAB123', 'michelle.dufour@example.ch'];
+        yield ['P789YZ', 'michelle.dufour@example.ch'];
     }
 
     public static function provideAlreadyReportedReferralIdentifiers(): iterable

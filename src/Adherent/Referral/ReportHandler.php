@@ -7,8 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ReportHandler
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Notifier $notifier,
+    ) {
     }
 
     public function report(Referral $referral): void
@@ -16,5 +18,7 @@ class ReportHandler
         $referral->report();
 
         $this->entityManager->flush();
+
+        $this->notifier->sendReportMessage($referral);
     }
 }
