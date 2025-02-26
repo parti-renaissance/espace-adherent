@@ -1334,3 +1334,4 @@ referral.status.invitation_sent: Invitation envoyée
 referral.status.account_created: Compte créé
 referral.status.adhesion_finished: Adhésion effectuée
 referral.status.adhesion_via_other_link: Adhésion via une autre invitation
+referral.status.reported: Signalé

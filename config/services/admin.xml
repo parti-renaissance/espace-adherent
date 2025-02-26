@@ -92,6 +92,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.referral" class="App\Admin\ReferralAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Parrainages" group="Adhérents" />
+
+            <argument />
+            <argument>App\Entity\Referral</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Communication
@@ -303,14 +311,6 @@
             <argument type="service" id="App\Repository\ReportRepository" />
         </service>
         <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
-
-        <service id="app.admin.referral" class="App\Admin\ReferralAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Parrainages" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\Referral</argument>
-            <argument />
-        </service>
 
         <!--
         ######################################################
