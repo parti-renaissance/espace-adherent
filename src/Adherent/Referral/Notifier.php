@@ -21,6 +21,7 @@ class Notifier
     {
         $this->transactionalMailer->sendMessage(
             ReferralAdhesionCreatedMessage::create(
+                $referral->referrer->getFirstName(),
                 $referral->emailAddress,
                 $referral->firstName,
                 $this->generateUrl(

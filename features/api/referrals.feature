@@ -148,8 +148,12 @@ Feature:
                             "rcpt": "new-email@dev.test",
                             "vars": [
                                 {
+                                    "content": "Michelle",
+                                    "name": "referrer_first_name"
+                                },
+                                {
                                     "content": "Jane",
-                                    "name": "first_name"
+                                    "name": "referred_first_name"
                                 },
                                 {
                                     "content": "http://test.renaissance.code/invitation/adhesion/@string@",

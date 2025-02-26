@@ -8,19 +8,21 @@ use Ramsey\Uuid\Uuid;
 class ReferralAdhesionCreatedMessage extends AbstractRenaissanceMessage
 {
     public static function create(
-        string $email,
-        string $firstName,
+        string $referrerFirstName,
+        string $referredEmail,
+        string $referredFirstName,
         string $adhesionLink,
         string $reportLink,
     ): self {
         return new self(
             Uuid::uuid4(),
-            $email,
-            $firstName,
+            $referredEmail,
+            $referredFirstName,
             'Nouveau parrainage',
             [],
             [
-                'first_name' => self::escape($firstName),
+                'referrer_first_name' => self::escape($referrerFirstName),
+                'referred_first_name' => self::escape($referredFirstName),
                 'adhesion_link' => $adhesionLink,
                 'report_link' => $reportLink,
             ]
