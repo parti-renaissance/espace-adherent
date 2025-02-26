@@ -13,7 +13,6 @@ use Tests\App\AbstractWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-#[Group('debug')]
 class FormControllerTest extends AbstractWebTestCase
 {
     use ControllerTestTrait;

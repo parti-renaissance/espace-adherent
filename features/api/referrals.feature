@@ -13,9 +13,9 @@ Feature:
             """
             {
                 "metadata": {
-                    "total_items": 2,
+                    "total_items": 3,
                     "items_per_page": 10,
-                    "count": 2,
+                    "count": 3,
                     "current_page": 1,
                     "last_page": 1
                 },
@@ -67,6 +67,30 @@ Feature:
                         "type": "invitation",
                         "mode": "email",
                         "status": "invitation_sent"
+                    },
+                    {
+                        "uuid": "34abd1e0-46e3-4c02-a4ad-8f632e03f7ce",
+                        "email_address": "jane.doe@dev.test",
+                        "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
+                        "first_name": "Jane",
+                        "last_name": null,
+                        "civility": null,
+                        "birthdate": null,
+                        "nationality": null,
+                        "post_address": {
+                            "additional_address": null,
+                            "address": null,
+                            "city": null,
+                            "city_name": null,
+                            "country": null,
+                            "postal_code": null,
+                            "region": null
+                        },
+                        "phone": null,
+                        "referred": null,
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "reported"
                     }
                 ]
             }
@@ -77,7 +101,7 @@ Feature:
         And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
-                "email_address": "jane.doe@dev.test",
+                "email_address": "new-email@dev.test",
                 "first_name": "Jane"
             }
             """
@@ -88,7 +112,7 @@ Feature:
             {
                 "uuid": "@uuid@",
                 "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
-                "email_address": "jane.doe@dev.test",
+                "email_address": "new-email@dev.test",
                 "first_name": "Jane",
                 "last_name": null,
                 "civility": null,
@@ -110,7 +134,7 @@ Feature:
                 "status": "invitation_sent"
             }
             """
-        And I should have 1 email "ReferralAdhesionCreatedMessage" for "jane.doe@dev.test" with payload:
+        And I should have 1 email "ReferralAdhesionCreatedMessage" for "new-email@dev.test" with payload:
             """
             {
                 "template_name": "referral-adhesion-created",
@@ -121,7 +145,7 @@ Feature:
                     "html": null,
                     "merge_vars": [
                         {
-                            "rcpt": "jane.doe@dev.test",
+                            "rcpt": "new-email@dev.test",
                             "vars": [
                                 {
                                     "content": "Jane",
@@ -141,7 +165,7 @@ Feature:
                     "from_name": "Renaissance",
                     "to": [
                         {
-                            "email": "jane.doe@dev.test",
+                            "email": "new-email@dev.test",
                             "type": "to",
                             "name": "Jane"
                         }
@@ -155,7 +179,7 @@ Feature:
         And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
-                "email_address": "jane.doe@dev.test",
+                "email_address": "new-email@dev.test",
                 "first_name": "Jane",
                 "last_name": "Doe",
                 "civility": "Madame",
@@ -177,7 +201,7 @@ Feature:
             {
                 "uuid": "@uuid@",
                 "identifier": "@string@.matchRegex('/^P[A-Z0-9]{5}$/')",
-                "email_address": "jane.doe@dev.test",
+                "email_address": "new-email@dev.test",
                 "first_name": "Jane",
                 "last_name": "Doe",
                 "civility": "Madame",
@@ -205,7 +229,7 @@ Feature:
         And I send a "POST" request to "/api/v3/referrals" with body:
             """
             {
-                "email_address": "jane.doe@dev.test",
+                "email_address": "new-email@dev.test",
                 "first_name": "Jane",
                 "last_name": "Doe"
             }
