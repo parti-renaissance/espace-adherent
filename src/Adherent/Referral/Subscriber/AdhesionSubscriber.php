@@ -2,8 +2,10 @@
 
 namespace App\Adherent\Referral\Subscriber;
 
+use App\Adherent\Referral\Notifier;
 use App\Adherent\Referral\StatusEnum;
 use App\Adhesion\Events\NewCotisationEvent;
+use App\Entity\Referral;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\ReferralRepository;
@@ -15,6 +17,7 @@ class AdhesionSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly ReferralRepository $referralRepository,
         private readonly EntityManagerInterface $em,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -22,11 +25,23 @@ class AdhesionSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
+        /** @var Referral[] $referrals */
         $referrals = $this->referralRepository->findBy(['emailAddress' => $adherent->getEmailAddress()]);
 
         foreach ($referrals as $referral) {
+            if (
+                !\in_array($referral->status, [
+                    StatusEnum::INVITATION_SENT,
+                    StatusEnum::ACCOUNT_CREATED,
+                ])
+            ) {
+                continue;
+            }
+
             if ($adherent->isRenaissanceAdherent()) {
                 $referral->status = StatusEnum::ADHESION_FINISHED;
+
+                $this->notifier->sendAdhesionFinishedMessage($referral);
 
                 continue;
             }
