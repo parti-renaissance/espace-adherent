@@ -31,7 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['referral_read']],
     denormalizationContext: ['groups' => ['referral_write']],
-    validationContext: ['groups' => ['Default', 'referral_write']]
+    validationContext: ['groups' => ['Default', 'referral_write']],
+    security: "is_granted('RENAISSANCE_ADHERENT')",
 )]
 #[ORM\Entity(repositoryClass: ReferralRepository::class)]
 #[ReferralInformations]
