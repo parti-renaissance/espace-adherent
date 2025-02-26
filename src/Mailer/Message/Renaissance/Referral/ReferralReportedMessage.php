@@ -5,26 +5,22 @@ namespace App\Mailer\Message\Renaissance\Referral;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 use Ramsey\Uuid\Uuid;
 
-class ReferralAdhesionCreatedMessage extends AbstractRenaissanceMessage
+class ReferralReportedMessage extends AbstractRenaissanceMessage
 {
     public static function create(
+        string $referrerEmail,
         string $referrerFirstName,
-        string $referredEmail,
         string $referredFirstName,
-        string $adhesionLink,
-        string $reportLink,
     ): self {
         return new self(
             Uuid::uuid4(),
-            $referredEmail,
-            $referredFirstName,
-            'Nouveau parrainage',
+            $referrerEmail,
+            $referrerFirstName,
+            'Parrainage signalé',
             [],
             [
                 'referrer_first_name' => self::escape($referrerFirstName),
                 'referred_first_name' => self::escape($referredFirstName),
-                'adhesion_link' => $adhesionLink,
-                'report_link' => $reportLink,
             ]
         );
     }
