@@ -17,6 +17,7 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
 {
     public const UUID_1 = 'abeb6804-a88b-478a-8859-0c5e2f549d17';
     public const UUID_2 = '2055b072-73f4-46c3-a9ab-1fb617c464f1';
+    public const UUID_3 = '34abd1e0-46e3-4c02-a4ad-8f632e03f7ce';
 
     public function load(ObjectManager $manager): void
     {
@@ -36,6 +37,15 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
             'P789YZ'
         ));
 
+        $manager->persist($this->createReferral(
+            Uuid::fromString(self::UUID_3),
+            'jane.doe@dev.test',
+            'Jane',
+            $this->getReference('adherent-1', Adherent::class),
+            'PCD678',
+            StatusEnum::REPORTED
+        ));
+
         $manager->flush();
     }
 
@@ -45,6 +55,7 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
         string $firstName,
         Adherent $referrer,
         string $identifier,
+        StatusEnum $status = StatusEnum::INVITATION_SENT,
     ): Referral {
         $referral = new Referral($uuid);
 
@@ -55,7 +66,7 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
         $referral->identifier = $identifier;
         $referral->type = TypeEnum::INVITATION;
         $referral->mode = ModeEnum::EMAIL;
-        $referral->status = StatusEnum::INVITATION_SENT;
+        $referral->status = $status;
 
         return $referral;
     }
