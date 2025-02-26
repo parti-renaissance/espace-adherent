@@ -7,6 +7,7 @@ use App\Controller\Renaissance\Referral\Report\FormController;
 use App\Entity\Referral;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\Referral\ReferralAdhesionCreatedMessage;
+use App\Mailer\Message\Renaissance\Referral\ReferralAdhesionFinishedMessage;
 use App\Mailer\Message\Renaissance\Referral\ReferralReportedMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -49,6 +50,21 @@ class Notifier
 
         $this->transactionalMailer->sendMessage(
             ReferralReportedMessage::create(
+                $referral->referrer->getEmailAddress(),
+                $referral->referrer->getFirstName(),
+                $referral->firstName
+            )
+        );
+    }
+
+    public function sendAdhesionFinishedMessage(Referral $referral): void
+    {
+        if (!$referral->referrer) {
+            return;
+        }
+
+        $this->transactionalMailer->sendMessage(
+            ReferralAdhesionFinishedMessage::create(
                 $referral->referrer->getEmailAddress(),
                 $referral->referrer->getFirstName(),
                 $referral->firstName
