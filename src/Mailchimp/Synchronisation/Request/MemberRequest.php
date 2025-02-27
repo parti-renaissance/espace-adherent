@@ -9,6 +9,7 @@ class MemberRequest implements MemberRequestInterface
 {
     public const DATE_FORMAT = 'Y-m-d';
 
+    public const MERGE_FIELD_PUBLIC_ID = 'PUBLIC_ID';
     public const MERGE_FIELD_FIRST_NAME = 'FNAME';
     public const MERGE_FIELD_LAST_NAME = 'LNAME';
     public const MERGE_FIELD_CITY = 'CITY';

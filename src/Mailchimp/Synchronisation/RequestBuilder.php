@@ -27,6 +27,7 @@ class RequestBuilder implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    private $publicId;
     private $email;
     private $gender;
     private $firstName;
@@ -92,6 +93,7 @@ class RequestBuilder implements LoggerAwareInterface
     public function updateFromAdherent(Adherent $adherent): self
     {
         return $this
+            ->setPublicId($adherent->getPublicId())
             ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
@@ -146,6 +148,13 @@ class RequestBuilder implements LoggerAwareInterface
         foreach ($zones as $zone) {
             $this->setZoneCode($zone);
         }
+
+        return $this;
+    }
+
+    public function setPublicId(string $publicId): self
+    {
+        $this->publicId = $publicId;
 
         return $this;
     }
@@ -454,6 +463,10 @@ class RequestBuilder implements LoggerAwareInterface
     private function buildMergeFields(): array
     {
         $mergeFields = [];
+
+        if ($this->publicId) {
+            $mergeFields[MemberRequest::MERGE_FIELD_PUBLIC_ID] = $this->publicId;
+        }
 
         if ($this->gender) {
             $mergeFields[MemberRequest::MERGE_FIELD_GENDER] = $this->gender;
