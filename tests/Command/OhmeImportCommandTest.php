@@ -16,11 +16,11 @@ class OhmeImportCommandTest extends AbstractCommandTestCase
     {
         self::assertCount(0, $this->contactRepository->findAll());
 
-        $output = $this->runCommand('app:ohme:import');
+        $output = $this->runCommand('app:ohme:import', ['--with-payments' => true]);
         $output = $output->getDisplay();
 
         self::assertStringContainsString('[OK] 3 contacts handled successfully.', $output);
-
+        self::assertStringContainsString('[OK] 3 payments handled successfully.', $output);
         self::assertCount(3, $this->contactRepository->findAll());
     }
 
