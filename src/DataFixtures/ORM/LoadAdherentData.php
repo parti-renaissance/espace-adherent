@@ -84,6 +84,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         // Create adherent users list
         $adherent1 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
+            'public_id' => '123-456',
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'michelle.dufour@example.ch',
             'gender' => 'female',

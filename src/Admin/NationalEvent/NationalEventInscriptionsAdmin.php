@@ -98,6 +98,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('postalCode', null, ['label' => 'Code postal'])
             ->add('status', 'trans', ['label' => 'Statut'])
             ->add('adherent.tags', null, ['label' => 'Labels', 'template' => 'admin/national_event/list_adherent_tags.html.twig'])
+            ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
         ;
     }

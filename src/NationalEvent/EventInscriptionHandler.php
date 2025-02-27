@@ -27,6 +27,13 @@ class EventInscriptionHandler
             $eventInscription->adherent = $adherent;
         }
 
+        if (
+            $eventInscription->referrerCode
+            && $referrer = $this->adherentRepository->findOneBy(['publicId' => $eventInscription->referrerCode])
+        ) {
+            $eventInscription->referrer = $referrer;
+        }
+
         $this->entityManager->persist($eventInscription);
 
         $this->entityManager->flush();

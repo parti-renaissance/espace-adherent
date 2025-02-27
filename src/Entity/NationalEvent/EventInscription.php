@@ -113,6 +113,13 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $ticketQRCodeFile = null;
 
+    #[ORM\Column(length: 7, nullable: true)]
+    public ?string $referrerCode = null;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    public ?Adherent $referrer = null;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -138,6 +145,7 @@ class EventInscription
         $this->birthdate = $inscriptionRequest->birthdate;
         $this->utmSource = $inscriptionRequest->utmSource;
         $this->utmCampaign = $inscriptionRequest->utmCampaign;
+        $this->referrerCode = $inscriptionRequest->referrerCode;
     }
 
     public function getFullName(): string
