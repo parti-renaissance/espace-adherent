@@ -1,0 +1,9 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% if object.referrer %}
+        {{ include(('admin/adherent/_summary.html.twig'), {adherent: object.referrer}) }}
+    {% elseif object.referrerCode %}
+        Code: <b>{{ object.referrerCode }}</b>
+    {% endif %}
+{% endblock %}

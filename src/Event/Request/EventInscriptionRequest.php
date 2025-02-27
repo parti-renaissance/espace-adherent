@@ -62,6 +62,8 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
 
+    public ?string $referrerCode = null;
+
     public array $qualities = [];
 
     #[Assert\Length(max: 255)]

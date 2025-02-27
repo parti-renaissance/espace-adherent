@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\NationalEvent;
 
+use App\Adherent\Referral\ReferralParams;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/{slug}', name: 'app_national_event_by_slug', methods: ['GET', 'POST'])]
+#[Route('/{slug}/{referrerCode}', name: 'app_national_event_by_slug_with_referrer', methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
@@ -31,7 +33,7 @@ class EventInscriptionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $app_domain, ?NationalEvent $event = null): Response
+    public function __invoke(Request $request, string $app_domain, ?NationalEvent $event = null, ?string $referrerCode = null): Response
     {
         if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
             return $this->redirectToRoute('renaissance_site');
@@ -62,6 +64,10 @@ class EventInscriptionController extends AbstractController
         }
         if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
             $inscriptionRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
+        }
+
+        if ($referrerCode) {
+            $inscriptionRequest->referrerCode = ReferralParams::filterParameter($referrerCode);
         }
 
         $isOpen = !$event->isComplete($inscriptionRequest->utmSource);
