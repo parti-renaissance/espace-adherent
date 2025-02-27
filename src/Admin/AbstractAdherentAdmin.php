@@ -81,6 +81,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Intl\Countries;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -1038,24 +1039,29 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
             try {
                 return [
-                    'ID' => $adherent->getId(),
-                    'UUID' => $adherent->getUuid()->toString(),
+                    'PID' => $adherent->getPublicId(),
+                    'Email' => $adherent->getEmailAddress(),
                     'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
                     'Date de naissance' => $adherent->getBirthdate()?->format('d/m/Y'),
-                    'Adresse email' => $adherent->getEmailAddress(),
                     'Téléphone' => PhoneNumberUtils::format($adherent->getPhone()),
-                    'Préférences de notifications' => implode(', ', array_map(function (SubscriptionType $subscriptionType): string {
-                        return $subscriptionType->getLabel();
-                    }, $adherent->getSubscriptionTypes())),
-                    'Comité' => (string) $adherent->getCommitteeMembership()?->getCommittee(),
                     'Adresse postale' => $adherent->getAddress(),
                     'Complément d\'adresse' => $adherent->getAdditionalAddress(),
                     'Code postal' => $adherent->getPostalCode(),
+                    'Code INSEE' => $adherent->getInseeCode(),
                     'Ville' => $adherent->getCityName(),
-                    'Pays' => $adherent->getCountry(),
-                    'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent->tags)),
+                    'Pays' => Countries::getName($adherent->getCountry()),
+                    'Comité' => (string) $adherent->getCommitteeMembership()?->getCommittee(),
+                    'Circonscription' => implode(', ', array_map(function (Zone $zone): string {
+                        return $zone->getCode().' - '.$zone->getName();
+                    }, $adherent->getZonesOfType(Zone::DISTRICT))),
+                    'Département' => implode(', ', array_map(function (Zone $zone): string {
+                        return $zone->getCode().' - '.$zone->getName();
+                    }, $adherent->getZonesOfType(Zone::DEPARTMENT))),
+                    'Région' => implode(', ', array_map(function (Zone $zone): string {
+                        return $zone->getCode().' - '.$zone->getName();
+                    }, $adherent->getZonesOfType(Zone::REGION))),
                     'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role): string {
                         return \sprintf(
                             '%s [%s]',
@@ -1069,6 +1075,23 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                             }, $role->getZones()->toArray()))
                         );
                     }, $adherent->getZoneBasedRoles())),
+                    'Labels militants' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                        if (!\in_array($tag, TagEnum::getAdherentTags(), true)) {
+                            return null;
+                        }
+
+                        return $this->tagTranslator->trans($tag);
+                    }, $adherent->tags))),
+                    'Labels Élus' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                        if (!\in_array($tag, TagEnum::getElectTags(), true)) {
+                            return null;
+                        }
+
+                        return $this->tagTranslator->trans($tag);
+                    }, $adherent->tags))),
+                    'Déclaration de mandats' => implode(', ', array_map(function (string $declaredMandate): string {
+                        return $this->translator->trans("adherent.mandate.type.$declaredMandate");
+                    }, $adherent->getMandates())),
                     'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate): string {
                         $str = $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 
@@ -1082,6 +1105,19 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
                         return $str;
                     }, $adherent->getElectedRepresentativeMandates())),
+                    'Labels divers' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                        if (\in_array($tag, array_merge(TagEnum::getAdherentTags(), TagEnum::getElectTags()), true)) {
+                            return null;
+                        }
+
+                        return $this->tagTranslator->trans($tag);
+                    }, $adherent->tags))),
+                    'Labels statiques' => implode(', ', array_map(function (AdherentStaticLabel $label): string {
+                        return $label->label;
+                    }, $adherent->getStaticLabels()->toArray())),
+                    'Préférences de notifications' => implode(', ', array_map(function (SubscriptionType $subscriptionType): string {
+                        return $subscriptionType->getLabel();
+                    }, $adherent->getSubscriptionTypes())),
                     'Date de création de compte' => $adherent->getRegisteredAt()?->format('d/m/Y H:i:s'),
                     'Date de première cotisation' => $adherent->getFirstMembershipDonation()?->format('d/m/Y H:i:s'),
                     'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
