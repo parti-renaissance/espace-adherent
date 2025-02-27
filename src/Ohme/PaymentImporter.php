@@ -2,9 +2,12 @@
 
 namespace App\Ohme;
 
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Contribution\Payment;
 use App\Repository\Contribution\PaymentRepository;
 use App\Repository\Ohme\ContactRepository;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PaymentImporter
 {
@@ -12,6 +15,7 @@ class PaymentImporter
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
         private readonly PaymentRepository $paymentRepository,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -32,6 +36,7 @@ class PaymentImporter
 
         $total = 0;
 
+        $adherentsUuidToRefresh = [];
         foreach ($payments['data'] as $paymentData) {
             ++$total;
 
@@ -74,6 +79,15 @@ class PaymentImporter
 
                 $this->contactRepository->save($contact);
             }
+
+            $adherentUuid = $contact->adherent->getUuid()->toString();
+            if (!\in_array($adherentUuid, $adherentsUuidToRefresh)) {
+                $adherentsUuidToRefresh[] = $adherentUuid;
+            }
+        }
+
+        foreach ($adherentsUuidToRefresh as $adherentUuid) {
+            $this->bus->dispatch(new AsyncRefreshAdherentTagCommand(Uuid::fromString($adherentUuid)));
         }
 
         return $total;
