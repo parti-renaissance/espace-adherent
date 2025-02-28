@@ -16,7 +16,7 @@ Feature:
                     "title": "Venez nombreux !",
                     "description": "",
                     "cta_label": "Je réserve ma place",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1%2F@string@",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
                     "image_url": null,
                     "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/event-national-1/@string@"
                 },
