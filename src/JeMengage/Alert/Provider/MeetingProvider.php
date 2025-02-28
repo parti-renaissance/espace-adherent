@@ -49,8 +49,7 @@ class MeetingProvider implements AlertProviderInterface
                         'slug' => $event->getSlug(),
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
-            ;
+                );
 
             if ($event->ogImage) {
                 $imageUrl = $this->urlGenerator->generate('asset_url', ['path' => $event->ogImage->getPath()], UrlGeneratorInterface::ABSOLUTE_URL);
