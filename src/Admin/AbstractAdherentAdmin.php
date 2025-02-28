@@ -1058,10 +1058,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     }, $adherent->getZonesOfType(Zone::DISTRICT))),
                     'Département' => implode(', ', array_map(function (Zone $zone): string {
                         return $zone->getCode().' - '.$zone->getName();
-                    }, $adherent->getZonesOfType(Zone::DEPARTMENT))),
+                    }, $adherent->getParentZonesOfType(Zone::DEPARTMENT))),
                     'Région' => implode(', ', array_map(function (Zone $zone): string {
                         return $zone->getCode().' - '.$zone->getName();
-                    }, $adherent->getZonesOfType(Zone::REGION))),
+                    }, $adherent->getParentZonesOfType(Zone::REGION))),
                     'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role): string {
                         return \sprintf(
                             '%s [%s]',
