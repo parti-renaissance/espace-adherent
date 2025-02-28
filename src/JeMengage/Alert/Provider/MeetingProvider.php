@@ -34,7 +34,7 @@ class MeetingProvider implements AlertProviderInterface
             $ctaUrl = '';
             $imageUrl = null;
             $currentUser = $this->getCurrentUser();
-            $eventInscriptionUrl = $currentUser
+            $shareUrl = $currentUser
                 ? $this->urlGenerator->generate(
                     'app_national_event_by_slug_with_referrer',
                     [
@@ -60,11 +60,20 @@ class MeetingProvider implements AlertProviderInterface
                 $ctaUrl = $this->loginLinkHandler->createLoginLink(
                     $adherent,
                     lifetime: 3600,
-                    targetPath: parse_url($eventInscriptionUrl, \PHP_URL_PATH),
+                    targetPath: parse_url(
+                        $this->urlGenerator->generate(
+                            'app_national_event_by_slug',
+                            [
+                                'slug' => $event->getSlug(),
+                            ],
+                            UrlGeneratorInterface::ABSOLUTE_URL
+                        ),
+                        \PHP_URL_PATH
+                    ),
                 )->getUrl();
             }
 
-            $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $eventInscriptionUrl);
+            $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $shareUrl);
             $alert->date = $event->startDate;
         }
 
