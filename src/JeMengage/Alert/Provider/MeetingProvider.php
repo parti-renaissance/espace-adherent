@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\JeMengage\Alert\Alert;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
@@ -16,6 +17,7 @@ class MeetingProvider implements AlertProviderInterface
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Security $security,
     ) {
     }
 
@@ -31,7 +33,23 @@ class MeetingProvider implements AlertProviderInterface
             $ctaLabel = 'Inscrit';
             $ctaUrl = '';
             $imageUrl = null;
-            $eventInscriptionUrl = $this->urlGenerator->generate('app_national_event_by_slug', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $currentUser = $this->getCurrentUser();
+            $eventInscriptionUrl = $currentUser
+                ? $this->urlGenerator->generate(
+                    'app_national_event_by_slug_with_referrer',
+                    [
+                        'slug' => $event->getSlug(),
+                        'referrerCode' => $currentUser->getPublicId(),
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
+                : $this->urlGenerator->generate(
+                    'app_national_event_by_slug',
+                    [
+                        'slug' => $event->getSlug(),
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
 
             if ($event->ogImage) {
                 $imageUrl = $this->urlGenerator->generate('asset_url', ['path' => $event->ogImage->getPath()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -51,5 +69,12 @@ class MeetingProvider implements AlertProviderInterface
         }
 
         return $alerts;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        $user = $this->security->getUser();
+
+        return $user instanceof Adherent ? $user : null;
     }
 }
