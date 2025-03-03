@@ -15,7 +15,6 @@ use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -50,14 +49,6 @@ class ManagedUserRepository extends ServiceEntityRepository
     public function getExportQueryBuilder(ManagedUsersFilter $filter): Query
     {
         return $this->createFilterQueryBuilder($filter)->getQuery();
-    }
-
-    public function getExportIterator(ManagedUsersFilter $filter): IterableResult
-    {
-        return $this
-            ->getExportQueryBuilder($filter)
-            ->iterate()
-        ;
     }
 
     private function createFilterQueryBuilder(ManagedUsersFilter $filter): QueryBuilder

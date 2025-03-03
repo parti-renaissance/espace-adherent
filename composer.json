@@ -78,7 +78,7 @@
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^4.1",
         "openai-php/client": "^0.10.1",
-        "phpoffice/phpspreadsheet": "^3.3",
+        "phpoffice/phpspreadsheet": "^4.0",
         "ramsey/uuid": "^4.1",
         "ramsey/uuid-doctrine": "^2.0",
         "runroom-packages/sortable-behavior-bundle": "^0.18.0",
