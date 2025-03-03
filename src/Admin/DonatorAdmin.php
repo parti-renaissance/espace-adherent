@@ -96,7 +96,7 @@ class DonatorAdmin extends AbstractAdmin
                     'help' => 'Généré automatiquement à la création',
                 ])
                 ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
+                    'label' => 'Civilité',
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',

@@ -160,7 +160,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         $show
             ->with('Informations personnelles', ['class' => 'col-md-6'])
                 ->add('gender', null, [
-                    'label' => 'Genre',
+                    'label' => 'Civilité',
                 ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
@@ -260,7 +260,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 ->tab('Informations générales')
                     ->with('Informations personnelles', ['class' => 'col-md-6'])
                         ->add('gender', GenderType::class, [
-                            'label' => 'Genre',
+                            'label' => 'Civilité',
                         ])
                         ->add('lastName', TextType::class, [
                             'label' => 'Nom',

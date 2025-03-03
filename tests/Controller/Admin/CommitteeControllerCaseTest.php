@@ -137,7 +137,7 @@ class CommitteeControllerCaseTest extends AbstractAdminWebTestCase
         $errors = $crawler->filter('.sonata-ba-field-error-messages li');
 
         $this->assertCount(1, $errors);
-        $this->assertSame('Le genre de l\'adhérent ne correspond pas au genre du mandat.', trim($errors->first()->text()));
+        $this->assertSame('La civilité de l\'adhérent ne correspond pas à la civilité du mandat.', trim($errors->first()->text()));
     }
 
     public function testCannotReplaceMandateWhenAdherentIsMinor(): void
@@ -378,7 +378,7 @@ class CommitteeControllerCaseTest extends AbstractAdminWebTestCase
         $errors = $crawler->filter('.sonata-ba-field-error-messages li');
 
         $this->assertCount(1, $errors);
-        $this->assertSame('Le genre de l\'adhérent ne correspond pas au genre du mandat.', trim($errors->first()->text()));
+        $this->assertSame('La civilité de l\'adhérent ne correspond pas à la civilité du mandat.', trim($errors->first()->text()));
     }
 
     public function testCannotAddMandateWhenAdherentIsMinor(): void

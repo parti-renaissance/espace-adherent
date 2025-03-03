@@ -26,7 +26,7 @@ Feature:
                     },
                     {
                         "propertyPath": "gender",
-                        "message": "Veuillez renseigner un genre."
+                        "message": "Veuillez renseigner une civilité."
                     },
                     {
                         "propertyPath": "birthdate",

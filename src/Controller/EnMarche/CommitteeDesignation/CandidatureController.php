@@ -59,7 +59,7 @@ class CandidatureController extends AbstractController
                 $candidacyGender = $request->query->get('gender');
 
                 if (!$candidacyGender || !\in_array($candidacyGender, Genders::CIVILITY_CHOICES, true)) {
-                    $this->addFlash('error', 'Le genre de la candidature n\'a pas été sélectionné');
+                    $this->addFlash('error', 'La civilité de la candidature n\'a pas été sélectionné');
 
                     return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
                 }

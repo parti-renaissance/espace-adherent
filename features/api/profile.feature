@@ -215,7 +215,7 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "gender",
-                        "message": "Ce sexe n'est pas valide."
+                        "message": "Cette civilité n'est pas valide."
                     }
                 ]
             }

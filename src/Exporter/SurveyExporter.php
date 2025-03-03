@@ -86,7 +86,7 @@ class SurveyExporter
 
                     $row['Code postal'] = $adherent->getPostalCode();
                     $row['Tranche d\'age'] = null;
-                    $row['Genre'] = $adherent->getGender()
+                    $row['Civilité'] = $adherent->getGender()
                         ? (GenderEnum::OTHER === $adherent->getGender()
                             ? $adherent->getGenderOther()
                             : ($this->translator->trans('common.'.$adherent->getGender())))
@@ -109,7 +109,7 @@ class SurveyExporter
 
                     $row['Code postal'] = $papCampaignHistory->getVoterPostalCode();
                     $row['Tranche d\'age'] = $papCampaignHistory->getAgeRange();
-                    $row['Genre'] = $papCampaignHistory->getGender() ? $this->translator->trans('common.'.$papCampaignHistory->getGender()) : null;
+                    $row['Civilité'] = $papCampaignHistory->getGender() ? $this->translator->trans('common.'.$papCampaignHistory->getGender()) : null;
 
                     if ($fromAdmin) {
                         $row['Accepte que ses données soient traitées'] = null;
@@ -132,7 +132,7 @@ class SurveyExporter
 
                     $row['Code postal'] = $allowPersonalData ? $jemarcheDataSurvey->getPostalCode() : null;
                     $row['Tranche d\'age'] = $allowPersonalData && $jemarcheDataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$jemarcheDataSurvey->getAgeRange()) : null;
-                    $row['Genre'] = $allowPersonalData && $jemarcheDataSurvey->getGender() ? (GenderEnum::OTHER === $jemarcheDataSurvey->getGender() ? $jemarcheDataSurvey->getGenderOther() : $this->translator->trans('common.'.$jemarcheDataSurvey->getGender())) : null;
+                    $row['Civilité'] = $allowPersonalData && $jemarcheDataSurvey->getGender() ? (GenderEnum::OTHER === $jemarcheDataSurvey->getGender() ? $jemarcheDataSurvey->getGenderOther() : $this->translator->trans('common.'.$jemarcheDataSurvey->getGender())) : null;
 
                     if ($fromAdmin) {
                         $row['Accepte que ses données soient traitées'] = (int) $jemarcheDataSurvey->getAgreedToTreatPersonalData();
@@ -144,7 +144,7 @@ class SurveyExporter
                     $row['Latitude'] = $jemarcheDataSurvey->getLatitude();
                 } else {
                     $row['Nom'] = $row['Prénom'] = $row['Code postal'] = '';
-                    $row['Tranche d\'age'] = $row['Genre'] = $row['Profession'] = '';
+                    $row['Tranche d\'age'] = $row['Civilité'] = $row['Profession'] = '';
                     $row['Email'] = $row['Accepte d\'être contacté'] = '';
 
                     if ($fromAdmin) {

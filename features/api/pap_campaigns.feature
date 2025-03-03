@@ -1369,7 +1369,7 @@ Feature:
                                 "code": "gender",
                                 "type": "choice",
                                 "options": {
-                                    "label": "Quel est votre genre ?",
+                                    "label": "Quelle est votre civilité ?",
                                     "required": false,
                                     "multiple": false,
                                     "choices": {
@@ -1603,7 +1603,7 @@ Feature:
                     },
                     {
                         "propertyPath": "gender",
-                        "message": "Ce sexe n'est pas valide."
+                        "message": "Cette civilité n'est pas valide."
                     },
                     {
                         "propertyPath": "age_range",

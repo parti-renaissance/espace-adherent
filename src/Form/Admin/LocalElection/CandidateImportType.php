@@ -15,7 +15,7 @@ class CandidateImportType extends AbstractType
         $builder
             ->add('file', FileType::class, [
                 'label' => 'Ajouter un fichier',
-                'help' => 'Le fichier ne doit pas dépasser 5 Mo. Il doit contenir les colonnes GENRE;PRENOM;NOM;EMAIL;POSITION;LISTE',
+                'help' => 'Le fichier ne doit pas dépasser 5 Mo. Il doit contenir les colonnes CIVILITE;PRENOM;NOM;EMAIL;POSITION;LISTE',
                 'attr' => ['accept' => 'text/csv'],
             ])
         ;
