@@ -19,7 +19,7 @@ class AudienceSnapshotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('gender', GenderType::class, ['label' => 'Genre', 'required' => false, 'placeholder' => ''])
+            ->add('gender', GenderType::class, ['label' => 'Civilité', 'required' => false, 'placeholder' => ''])
             ->add('firstName', TextType::class, ['label' => 'Prénom', 'required' => false])
             ->add('lastName', TextType::class, ['label' => 'Nom', 'required' => false])
             ->add('ageMin', IntegerType::class, ['label' => 'Âge min', 'required' => false, 'attr' => ['min' => 1]])

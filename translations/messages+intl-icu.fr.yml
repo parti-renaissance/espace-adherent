@@ -84,7 +84,7 @@ number_of_days: >-
 First name: Prénom
 Last name: Nom
 Theme: Théme
-Gender: Genre
+Gender: Civilité
 
 #
 # Adherent
@@ -553,7 +553,7 @@ interactive.form.male: Homme
 interactive.form.female: Femme
 interactive.form.friend_first_name: Son prénom
 interactive.form.friend_age: Son âge
-interactive.form.friend_gender: Son genre
+interactive.form.friend_gender: Sa civilité
 interactive.form.friend_position: Sa situation professionnelle
 interactive.form.submit_fill_info: Continuer
 interactive.form.submit_fill_project: Continuer
@@ -1074,8 +1074,8 @@ adherent_mandate.committee.elected_adherent_male: Adhérent désigné
 adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
 adherent_mandate.committee.adherent.not_valid: L'adhérent ne doit pas être Parlementaire ou mineur.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
-adherent_mandate.committee.not_valid_gender: Le genre "{gender}" de l'adhérent ({email}) n'est pas valide.
-adherent_mandate.committee.inappropriate_gender: Le genre de l'adhérent ne correspond pas au genre du mandat.
+adherent_mandate.committee.not_valid_gender: La civilité "{gender}" de l'adhérent ({email}) n'est pas valide.
+adherent_mandate.committee.inappropriate_gender: La civilité de l'adhérent ne correspond pas à la civilité du mandat.
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({email}) est déjà un adhérent désigné dans un comité "{committee}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{committee}" a déjà un adhérent désigné ({gender}).
 adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"

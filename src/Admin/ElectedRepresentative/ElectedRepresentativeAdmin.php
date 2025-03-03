@@ -148,7 +148,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Prénom',
                 ])
                 ->add('gender', null, [
-                    'label' => 'Genre',
+                    'label' => 'Civilité',
                 ])
                 ->add('emailAddress', EmailType::class, [
                     'mapped' => false,
@@ -185,7 +185,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $form
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
+                    'label' => 'Civilité',
                     'placeholder' => 'common.gender.unknown',
                     'required' => false,
                     'choices' => [

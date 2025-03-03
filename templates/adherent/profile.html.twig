@@ -39,7 +39,7 @@
     {{ form_start(form, {attr: {class: 'em-form'}}) }}
         {% if app.user.certified %}
         <div class="alert alert--tips b__nudge--bottom-large">
-            Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
+            Votre profil est certifié, vous ne pouvez donc plus modifier votre civilité, nom, prénom et date de naissance.
         </div>
         {% endif %}
 
@@ -55,7 +55,7 @@
             </div>
             <div class="em-form__row">
                 {{ form_row(form.gender) }}
-                {{ form_row(form.customGender, {label: ' ', attr: {placeholder: 'Précisez votre genre'}}) }}
+                {{ form_row(form.customGender, {label: ' ', attr: {placeholder: 'Précisez votre civilité'}}) }}
             </div>
             <div class="em-form__row">
                 {{ form_row(form.birthdate, {label: 'Date de naissance'}) }}

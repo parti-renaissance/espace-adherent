@@ -309,7 +309,7 @@ Feature:
                     "filters": [
                         {
                             "code": "gender",
-                            "label": "Genre",
+                            "label": "Civilité",
                             "options": {
                                 "choices": {
                                     "female": "Femme",

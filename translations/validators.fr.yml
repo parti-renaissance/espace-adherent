@@ -10,8 +10,8 @@
 #
 # Common
 #
-common.gender.not_blank: Veuillez renseigner un genre.
-common.gender.invalid_choice: Ce sexe n'est pas valide.
+common.gender.not_blank: Veuillez renseigner une civilité.
+common.gender.invalid_choice: Cette civilité n'est pas valide.
 
 common.invalid_choice: Ce choix n'est pas valide.
 
@@ -133,7 +133,7 @@ committee.address.not_unique: Un comité actif existe déjà à l'adresse indiqu
 committee.address.not_in_zone: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.
 committee.provisional_supervisor.empty: Vous devez sélectionner au moins un Animateur provisoire parmi vos adhérents
 committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs
-committee.provisional_supervisor.gender.not_valid: Le genre de l'adhérent ne correspond pas au genre demandé.
+committee.provisional_supervisor.gender.not_valid: La civilité de l'adhérent ne correspond pas à la civilité demandée.
 
 committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
 
@@ -217,7 +217,7 @@ survey.answer.multiple_choice.with_text_field.invalid: La question {{ surveyQues
 
 survey.with_wrong_scope: Vous ne pouvez pas créer ou modifier un questionnaire de type {{ type }} avec le scope {{ scope }}.
 
-data.survey.gender_choice_other.not_selected: Vous devez sélectionner le choix Autre ou ne pas saisir d'autre genre.
+data.survey.gender_choice_other.not_selected: Vous devez sélectionner le choix Autre ou ne pas saisir d'autre civilité.
 data.survey.gender_other.empty: Vous avez sélectionné un autre choix, ce champ est donc obligatoire.
 
 data.survey.email_address.required: Si vous acceptez que l'on vous contacte, l'adresse email est obligatoire.

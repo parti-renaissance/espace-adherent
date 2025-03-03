@@ -491,11 +491,11 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
     {
         yield 'No gender' => [
             ['gender' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['gender' => ['Veuillez renseigner un genre.']],
+            ['gender' => ['Veuillez renseigner une civilité.']],
         ];
         yield 'Invalid gender' => [
             ['gender' => 'orc', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['gender' => ['Ce sexe n\'est pas valide.']],
+            ['gender' => ['Cette civilité n\'est pas valide.']],
         ];
         yield 'No first name' => [
             ['firstName' => null, 'email' => 'renaissance-user-1@en-marche-dev.fr'],

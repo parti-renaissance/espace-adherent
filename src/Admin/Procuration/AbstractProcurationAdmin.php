@@ -65,7 +65,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                     'label' => 'Nom',
                 ])
                 ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
+                    'label' => 'Civilité',
                 ])
                 ->add('birthdate', DatePickerType::class, [
                     'label' => 'Date de naissance',
