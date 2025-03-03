@@ -9,6 +9,7 @@ use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,13 +27,13 @@ class ManagedUsersExporter
 
     public function getResponse(string $format, ManagedUsersFilter $filter): Response
     {
-        $array = new \ArrayObject($this->repository->getExportQueryBuilder($filter)->getResult());
+        PhpConfigurator::disableMemoryLimit();
 
         return $this->exporter->getResponse(
             $format,
             \sprintf('adherents--%s.%s', date('d-m-Y--H-i'), $format),
             new IteratorCallbackSourceIterator(
-                $array->getIterator(),
+                new \ArrayIterator($this->repository->getExportQueryBuilder($filter)->getResult()),
                 function (ManagedUser $managedUser) {
                     return [
                         'PID' => $managedUser->publicId,
@@ -49,10 +50,10 @@ class ManagedUsersExporter
                         'Déclaration de mandats' => implode(', ', $managedUser->getDeclaredMandates()),
                         'Mandats' => implode(', ', $managedUser->getMandates()),
                         'Labels Divers' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($managedUser->tags ?? [], fn (string $tag) => !str_starts_with($tag, TagEnum::ADHERENT) && !str_starts_with($tag, TagEnum::SYMPATHISANT) && !str_starts_with($tag, TagEnum::ELU)))),
-                        'Date de création de compte' => $managedUser->getCreatedAt()?->format('d/m/Y H:i:s'),
-                        'Date de première cotisation' => $managedUser->firstMembershipDonation?->format('d/m/Y H:i:s'),
-                        'Date de dernière cotisation' => $managedUser->lastMembershipDonation?->format('d/m/Y H:i:s'),
-                        'Date de dernière connexion' => $managedUser->lastLoggedAt?->format('d/m/Y H:i:s'),
+                        'Date de création de compte' => $managedUser->getCreatedAt()?->format(\DateTimeInterface::RFC1123),
+                        'Date de première cotisation' => $managedUser->firstMembershipDonation?->format(\DateTimeInterface::RFC1123),
+                        'Date de dernière cotisation' => $managedUser->lastMembershipDonation?->format(\DateTimeInterface::RFC1123),
+                        'Date de dernière connexion' => $managedUser->lastLoggedAt?->format(\DateTimeInterface::RFC1123),
                     ];
                 }
             )
