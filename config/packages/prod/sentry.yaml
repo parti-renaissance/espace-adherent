@@ -18,6 +18,7 @@ sentry:
         default_integrations: false
         ignore_exceptions:
             - App\Sentry\SentryIgnoredExceptionInterface
+            - ApiPlatform\Validator\Exception\ValidationException
         integrations:
             - Sentry\Integration\FrameContextifierIntegration
             - Sentry\Integration\RequestIntegration
