@@ -3,6 +3,7 @@ exercise_html_purifier:
         default:
             config:
                 Core.Encoding: 'UTF-8'
+                Cache.SerializerPath: ~
                 Cache.SerializerPermissions: ~
         event:
             config:
