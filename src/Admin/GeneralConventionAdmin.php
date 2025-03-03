@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
@@ -37,6 +36,7 @@ class GeneralConventionAdmin extends AbstractAdmin
                         'name',
                         'code',
                     ],
+                    'callback' => [$this, 'prepareDepartmentAutocompleteFilterCallback'],
                 ],
             ])
             ->add('districtZone', ZoneAutocompleteFilter::class, [
@@ -50,9 +50,10 @@ class GeneralConventionAdmin extends AbstractAdmin
                         'name',
                         'code',
                     ],
+                    'callback' => [$this, 'prepareDistrictAutocompleteFilterCallback'],
                 ],
             ])
-            ->add('committee', CallbackFilter::class, [
+            ->add('committee', null, [
                 'label' => 'Comité',
                 'field_type' => ModelAutocompleteType::class,
                 'show_filter' => true,
@@ -305,6 +306,46 @@ class GeneralConventionAdmin extends AbstractAdmin
                     'edit' => [],
                 ],
             ])
+        ;
+    }
+
+    public static function prepareDepartmentAutocompleteFilterCallback(
+        AbstractAdmin $admin,
+        array $properties,
+        string $value,
+    ): void {
+        self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [Zone::DEPARTMENT]);
+    }
+
+    public static function prepareDistrictAutocompleteFilterCallback(
+        AbstractAdmin $admin,
+        array $properties,
+        string $value,
+    ): void {
+        self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [Zone::DISTRICT]);
+    }
+
+    private static function prepareZoneAutocompleteFilterCallback(
+        AbstractAdmin $admin,
+        array $properties,
+        string $value,
+        array $types,
+    ): void {
+        $datagrid = $admin->getDatagrid();
+        $qb = $datagrid->getQuery();
+        $alias = $qb->getRootAlias();
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+
+        $qb
+            ->orWhere($orx)
+            ->andWhere("$alias.type IN (:zone_types)")
+            ->andWhere("$alias.active = 1")
+            ->setParameter('zone_types', $types)
         ;
     }
 }
