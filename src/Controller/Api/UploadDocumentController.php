@@ -22,7 +22,11 @@ class UploadDocumentController extends AbstractController
         $file = $request->files->get('file');
 
         if (!$file instanceof UploadedFile) {
-            return $this->json(['error' => 'Invalid file'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['error' => 'Fichier invalid'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($file->getSize() > 25 * 1024 * 1024) {
+            return $this->json(['error' => 'Le fichier est trop volumineux. Taille max : 25 Mo.'], Response::HTTP_BAD_REQUEST);
         }
 
         $uuid = Uuid::uuid4()->toString();
