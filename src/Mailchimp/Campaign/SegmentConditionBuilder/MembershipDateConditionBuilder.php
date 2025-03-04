@@ -9,7 +9,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\DateUtils;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
-class LastMembershipDateConditionBuilder implements SegmentConditionBuilderInterface
+class MembershipDateConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
@@ -32,6 +32,24 @@ class LastMembershipDateConditionBuilder implements SegmentConditionBuilderInter
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         $conditions = [];
+
+        if ($firstMembershipSince = $filter->firstMembershipSince) {
+            $conditions[] = [
+                'condition_type' => 'DateMerge',
+                'op' => 'greater',
+                'field' => MemberRequest::MERGE_FIELD_FIRST_MEMBERSHIP_DONATION,
+                'value' => DateUtils::adjustDate($firstMembershipSince, false)->format(MemberRequest::DATE_FORMAT),
+            ];
+        }
+
+        if ($firstMembershipBefore = $filter->firstMembershipBefore) {
+            $conditions[] = [
+                'condition_type' => 'DateMerge',
+                'op' => 'less',
+                'field' => MemberRequest::MERGE_FIELD_FIRST_MEMBERSHIP_DONATION,
+                'value' => DateUtils::adjustDate($firstMembershipBefore, true)->format(MemberRequest::DATE_FORMAT),
+            ];
+        }
 
         if ($lastMembershipSince = $filter->getLastMembershipSince()) {
             $conditions[] = [

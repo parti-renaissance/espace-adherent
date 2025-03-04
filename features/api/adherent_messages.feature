@@ -404,18 +404,6 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "lastMembership",
-                            "label": "Dernière cotisation",
-                            "options": null,
-                            "type": "date_interval"
-                        },
-                        {
-                            "code": "registered",
-                            "label": "Inscrit",
-                            "options": null,
-                            "type": "date_interval"
-                        },
-                        {
                             "code": "static_tags",
                             "label": "Labels divers",
                             "options": {
@@ -427,6 +415,24 @@ Feature:
                                 }
                             },
                             "type": "select"
+                        },
+                        {
+                            "code": "registered",
+                            "label": "Inscrit",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "firstMembership",
+                            "label": "Première cotisation",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "lastMembership",
+                            "label": "Dernière cotisation",
+                            "options": null,
+                            "type": "date_interval"
                         }
                     ]
                 },

@@ -79,6 +79,14 @@ trait GeneralFilterTrait
     #[ORM\Column(nullable: true)]
     protected ?string $renaissanceMembership = null;
 
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'date', nullable: true)]
+    public ?\DateTime $firstMembershipSince = null;
+
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'date', nullable: true)]
+    public ?\DateTime $firstMembershipBefore = null;
+
     /**
      * @var \DateTime|null
      */
@@ -219,6 +227,8 @@ trait GeneralFilterTrait
         $this->interests = [];
         $this->registeredSince = null;
         $this->registeredUntil = null;
+        $this->firstMembershipSince = null;
+        $this->firstMembershipBefore = null;
         $this->lastMembershipSince = null;
         $this->lastMembershipBefore = null;
     }

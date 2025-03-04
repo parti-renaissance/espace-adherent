@@ -24,6 +24,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_INSEE_CODE = 'INSEE_CODE';
     public const MERGE_FIELD_DEPARTMENTAL_CODE = 'DPT_CODE';
     public const MERGE_FIELD_ADHERENT = 'ISADHERENT';
+    public const MERGE_FIELD_FIRST_MEMBERSHIP_DONATION = 'FIRSTCOTIS';
     public const MERGE_FIELD_LAST_MEMBERSHIP_DONATION = 'COTISATION';
     public const MERGE_FIELD_ZONE_BOROUGH = 'ZONE_BRGH';
     public const MERGE_FIELD_ZONE_CITY = 'ZONE_CITY';
