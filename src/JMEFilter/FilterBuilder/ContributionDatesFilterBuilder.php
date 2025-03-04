@@ -6,7 +6,7 @@ use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Scope\FeatureEnum;
 
-class LastMembershipDateFilterBuilder implements FilterBuilderInterface
+class ContributionDatesFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
@@ -16,7 +16,10 @@ class LastMembershipDateFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, ?string $feature = null): array
     {
         return (new FilterCollectionBuilder())
+            ->createDateInterval('firstMembership', 'Première cotisation')
+            ->setPosition(100)
             ->createDateInterval('lastMembership', 'Dernière cotisation')
+            ->setPosition(100)
             ->getFilters()
         ;
     }

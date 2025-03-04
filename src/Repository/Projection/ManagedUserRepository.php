@@ -348,6 +348,20 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($firstMembershipSince = $filter->firstMembershipSince) {
+            $qb
+                ->andWhere('u.firstMembershipDonation >= :first_membership_since')
+                ->setParameter('first_membership_since', $firstMembershipSince->format('Y-m-d 00:00:00'))
+            ;
+        }
+
+        if ($firstMembershipBefore = $filter->firstMembershipBefore) {
+            $qb
+                ->andWhere('u.firstMembershipDonation <= :first_membership_before')
+                ->setParameter('first_membership_before', $firstMembershipBefore->format('Y-m-d 23:59:59'))
+            ;
+        }
+
         if (null !== $filter->onlyJeMengageUsers) {
             $qb
                 ->andWhere(

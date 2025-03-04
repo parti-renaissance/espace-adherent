@@ -121,6 +121,12 @@ class ManagedUsersFilter
     public ?bool $isCertified = null;
 
     #[Groups(['filter_write'])]
+    public ?\DateTime $firstMembershipSince = null;
+
+    #[Groups(['filter_write'])]
+    public ?\DateTime $firstMembershipBefore = null;
+
+    #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipSince = null;
 
     #[Groups(['filter_write'])]
@@ -226,51 +232,15 @@ class ManagedUsersFilter
         }
     }
 
-    public function toArray(): array
+    #[Groups(['filter_write'])]
+    public function setFirstMembership(array $startEnd): void
     {
-        $roles = [
-            'CommitteeSupervisors' => $this->includeCommitteeSupervisors,
-            'CommitteeProvisionalSupervisors' => $this->includeCommitteeProvisionalSupervisors,
-            'CommitteeHosts' => $this->includeCommitteeHosts,
-        ];
+        if (!empty($startEnd['start'])) {
+            $this->firstMembershipSince = new \DateTime($startEnd['start']);
+        }
 
-        return array_merge(
-            [
-                'gender' => $this->gender,
-                'ageMin' => $this->ageMin,
-                'ageMax' => $this->ageMax,
-                'firstName' => $this->firstName,
-                'lastName' => $this->lastName,
-                'city' => $this->city,
-                'interests' => $this->interests,
-                'registeredSince' => $this->registeredSince?->format('Y-m-d'),
-                'registeredUntil' => $this->registeredUntil?->format('Y-m-d'),
-                'zones' => array_map(static function (Zone $zone) {
-                    return $zone->getId();
-                }, $this->zones),
-                'managedZones' => 1 === \count($this->managedZones) ? current($this->managedZones)->getId() : null,
-                'smsSubscription' => $this->smsSubscription,
-                'emailSubscription' => $this->emailSubscription,
-                'voteInCommittee' => $this->voteInCommittee,
-                'isCommitteeMember' => $this->isCommitteeMember,
-                'isCertified' => $this->isCertified,
-                'sort' => $this->sort,
-                'order' => $this->order,
-                'committee' => $this->committee?->getUuidAsString(),
-                'includeRoles' => array_keys(
-                    array_filter($roles, static function ($role) {
-                        return true === $role;
-                    })
-                ),
-                'excludeRoles' => array_keys(
-                    array_filter($roles, static function ($role) {
-                        return false === $role;
-                    })
-                ),
-                'mandates' => $this->mandates,
-                'declaredMandates' => $this->declaredMandates,
-                'isCampusRegistered' => $this->isCampusRegistered,
-            ],
-        );
+        if (!empty($startEnd['end'])) {
+            $this->firstMembershipBefore = new \DateTime($startEnd['end']);
+        }
     }
 }
