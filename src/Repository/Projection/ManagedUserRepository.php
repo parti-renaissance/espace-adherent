@@ -56,12 +56,13 @@ class ManagedUserRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('u')
             ->addSelect('zone')
+            ->addSelect('COALESCE(u.lastMembershipDonation, u.createdAt) as HIDDEN order_column')
             ->addSelect('parent_zone')
             ->leftJoin('u.zones', 'zone')
             ->leftJoin('zone.parents', 'parent_zone')
             ->where('u.status = :status')
             ->setParameter('status', ManagedUser::STATUS_READY)
-            ->orderBy('u.'.$filter->sort, 'd' === $filter->order ? 'DESC' : 'ASC')
+            ->orderBy('order_column', 'DESC')
         ;
 
         if ($managedZones = $filter->managedZones) {
