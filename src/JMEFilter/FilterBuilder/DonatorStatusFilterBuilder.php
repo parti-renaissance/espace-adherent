@@ -12,7 +12,7 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY === $scope && FeatureEnum::MESSAGES === $feature;
+        return ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY === $scope && \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]);
     }
 
     public function build(string $scope, ?string $feature = null): array

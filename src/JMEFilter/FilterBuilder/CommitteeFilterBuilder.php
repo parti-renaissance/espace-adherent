@@ -30,10 +30,10 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         $scope = $this->scopeGeneratorResolver->generate();
 
         return (new FilterCollectionBuilder())
-            ->createSelect(FeatureEnum::MESSAGES === $feature ? 'committee' : 'committeeUuids', 'Comités')
+            ->createSelect(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) ? 'committee' : 'committeeUuids', 'Comités')
             ->setChoices($this->getCommitteeChoices($scope))
-            ->setMultiple(FeatureEnum::MESSAGES !== $feature)
-            ->setRequired(FeatureEnum::MESSAGES === $feature && ScopeEnum::ANIMATOR === $scope->getCode())
+            ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]))
+            ->setRequired(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) && ScopeEnum::ANIMATOR === $scope->getCode())
             ->getFilters()
         ;
     }

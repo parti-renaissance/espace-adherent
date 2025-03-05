@@ -490,7 +490,6 @@ procuration.request.rounds: >-
         other {Scrutins concernés}
     }
 
-
 procuration.accept_cgu.label: J'ai lu et j'accepte la politique de protection des données et les mentions d'informations relatives au traitement de mes données ci-dessous.
 procuration.slots.choice_1: Je souhaite porter une procuration
 procuration.slots.choice_2: Je souhaite porter deux procurations
@@ -612,62 +611,62 @@ donation.destination.national: Siège
 #
 # Transactions
 #
-transaction.result_code.00000: "Opération réussie."
+transaction.result_code.00000: 'Opération réussie.'
 transaction.result_code.00001: "La connexion au centre d'autorisation a échoué."
-transaction.result_code.00003: "Erreur Paybox"
-transaction.result_code.00004: "Numéro de porteur ou cryptogramme visuel invalide."
-transaction.result_code.00006: "Accès refusé : site/rang/identifiant incorrects."
-transaction.result_code.00008: "Date de validité incorrecte."
+transaction.result_code.00003: 'Erreur Paybox'
+transaction.result_code.00004: 'Numéro de porteur ou cryptogramme visuel invalide.'
+transaction.result_code.00006: 'Accès refusé : site/rang/identifiant incorrects.'
+transaction.result_code.00008: 'Date de validité incorrecte.'
 transaction.result_code.00009: "Erreur de création d'un abonnement."
-transaction.result_code.00010: "Devise inconnue."
-transaction.result_code.00011: "Montant incorrect."
-transaction.result_code.00015: "paiement déjà effectué."
-transaction.result_code.00016: "Abonné déjà existant."
-transaction.result_code.00021: "Carte non autorisée."
-transaction.result_code.00029: "Carte non conforme."
+transaction.result_code.00010: 'Devise inconnue.'
+transaction.result_code.00011: 'Montant incorrect.'
+transaction.result_code.00015: 'paiement déjà effectué.'
+transaction.result_code.00016: 'Abonné déjà existant.'
+transaction.result_code.00021: 'Carte non autorisée.'
+transaction.result_code.00029: 'Carte non conforme.'
 transaction.result_code.00030: "Temps d'attente trop long."
-transaction.result_code.00033: "Pays non autorisé."
+transaction.result_code.00033: 'Pays non autorisé.'
 transaction.result_code.00102: "Autorisation refusée : contacter l'émetteur de carte."
-transaction.result_code.00103: "Autorisation refusée : commerçant invalide."
-transaction.result_code.00104: "Autorisation refusée : conserver la carte."
-transaction.result_code.00105: "Autorisation refusée : ne pas honorer."
-transaction.result_code.00107: "Autorisation refusée : conserver la carte, conditions spéciales."
-transaction.result_code.00108: "Autorisation refusée : approuver après identification du porteur."
-transaction.result_code.00112: "Autorisation refusée : transaction invalide."
-transaction.result_code.00113: "Autorisation refusée : montant invalide."
-transaction.result_code.00114: "Autorisation refusée : numéro de porteur invalide."
-transaction.result_code.00115: "Autorisation refusée : émetteur de carte inconnu."
-transaction.result_code.00117: "Autorisation refusée : annulation client."
-transaction.result_code.00119: "Autorisation refusée : répéter la transaction ultérieurement."
-transaction.result_code.00120: "Autorisation refusée : réponse erronée (erreur dans le domaine serveur)."
-transaction.result_code.00124: "Autorisation refusée : mise à jour de fichier non supportée."
-transaction.result_code.00125: "Autorisation refusée : impossible de localiser l‟enregistrement dans le fichier."
-transaction.result_code.00126: "Autorisation refusée : enregistrement dupliqué, ancien enregistrement remplacé."
-transaction.result_code.00127: "Autorisation refusée : erreur en « edit » sur champ de mise à jour fichier."
-transaction.result_code.00128: "Autorisation refusée : accès interdit au fichier."
-transaction.result_code.00129: "Autorisation refusée : mise à jour de fichier impossible."
-transaction.result_code.00130: "Autorisation refusée : erreur de format."
+transaction.result_code.00103: 'Autorisation refusée : commerçant invalide.'
+transaction.result_code.00104: 'Autorisation refusée : conserver la carte.'
+transaction.result_code.00105: 'Autorisation refusée : ne pas honorer.'
+transaction.result_code.00107: 'Autorisation refusée : conserver la carte, conditions spéciales.'
+transaction.result_code.00108: 'Autorisation refusée : approuver après identification du porteur.'
+transaction.result_code.00112: 'Autorisation refusée : transaction invalide.'
+transaction.result_code.00113: 'Autorisation refusée : montant invalide.'
+transaction.result_code.00114: 'Autorisation refusée : numéro de porteur invalide.'
+transaction.result_code.00115: 'Autorisation refusée : émetteur de carte inconnu.'
+transaction.result_code.00117: 'Autorisation refusée : annulation client.'
+transaction.result_code.00119: 'Autorisation refusée : répéter la transaction ultérieurement.'
+transaction.result_code.00120: 'Autorisation refusée : réponse erronée (erreur dans le domaine serveur).'
+transaction.result_code.00124: 'Autorisation refusée : mise à jour de fichier non supportée.'
+transaction.result_code.00125: 'Autorisation refusée : impossible de localiser l‟enregistrement dans le fichier.'
+transaction.result_code.00126: 'Autorisation refusée : enregistrement dupliqué, ancien enregistrement remplacé.'
+transaction.result_code.00127: 'Autorisation refusée : erreur en « edit » sur champ de mise à jour fichier.'
+transaction.result_code.00128: 'Autorisation refusée : accès interdit au fichier.'
+transaction.result_code.00129: 'Autorisation refusée : mise à jour de fichier impossible.'
+transaction.result_code.00130: 'Autorisation refusée : erreur de format.'
 transaction.result_code.00138: "Autorisation refusée : nombre d'essais code confidentiel dépassé."
-transaction.result_code.00141: "Autorisation refusée : carte perdue."
-transaction.result_code.00143: "Autorisation refusée : carte volée."
-transaction.result_code.00151: "Autorisation refusée : provision insuffisante ou crédit dépassé."
-transaction.result_code.00154: "Autorisation refusée : date de validité de la carte dépassée."
-transaction.result_code.00155: "Autorisation refusée : code confidentiel erroné."
-transaction.result_code.00156: "Autorisation refusée : carte absente du fichier."
-transaction.result_code.00157: "Autorisation refusée : transaction non permise à ce porteur."
-transaction.result_code.00158: "Autorisation refusée : transaction interdite au terminal."
-transaction.result_code.00159: "Autorisation refusée : suspicion de fraude."
+transaction.result_code.00141: 'Autorisation refusée : carte perdue.'
+transaction.result_code.00143: 'Autorisation refusée : carte volée.'
+transaction.result_code.00151: 'Autorisation refusée : provision insuffisante ou crédit dépassé.'
+transaction.result_code.00154: 'Autorisation refusée : date de validité de la carte dépassée.'
+transaction.result_code.00155: 'Autorisation refusée : code confidentiel erroné.'
+transaction.result_code.00156: 'Autorisation refusée : carte absente du fichier.'
+transaction.result_code.00157: 'Autorisation refusée : transaction non permise à ce porteur.'
+transaction.result_code.00158: 'Autorisation refusée : transaction interdite au terminal.'
+transaction.result_code.00159: 'Autorisation refusée : suspicion de fraude.'
 transaction.result_code.00160: "Autorisation refusée : l'accepteur de carte doit contacter l'acquéreur."
-transaction.result_code.00161: "Autorisation refusée : dépasse la limite du montant de retrait."
-transaction.result_code.00163: "Autorisation refusée : règles de sécurité non respectées."
-transaction.result_code.00168: "Autorisation refusée : réponse non parvenue ou reçue trop tard."
+transaction.result_code.00161: 'Autorisation refusée : dépasse la limite du montant de retrait.'
+transaction.result_code.00163: 'Autorisation refusée : règles de sécurité non respectées.'
+transaction.result_code.00168: 'Autorisation refusée : réponse non parvenue ou reçue trop tard.'
 transaction.result_code.00175: "Autorisation refusée : nombre d'essais code confidentiel dépassé."
-transaction.result_code.00176: "Autorisation refusée : porteur déjà en opposition, ancien enregistrement conservé."
-transaction.result_code.00190: "Autorisation refusée : arrêt momentané du système."
-transaction.result_code.00191: "Autorisation refusée : émetteur de cartes inaccessible."
-transaction.result_code.00194: "Autorisation refusée : demande dupliquée."
-transaction.result_code.00196: "Autorisation refusée : mauvais fonctionnement du système."
-transaction.result_code.00197: "Autorisation refusée : échéance de la temporisation de surveillance globale."
+transaction.result_code.00176: 'Autorisation refusée : porteur déjà en opposition, ancien enregistrement conservé.'
+transaction.result_code.00190: 'Autorisation refusée : arrêt momentané du système.'
+transaction.result_code.00191: 'Autorisation refusée : émetteur de cartes inaccessible.'
+transaction.result_code.00194: 'Autorisation refusée : demande dupliquée.'
+transaction.result_code.00196: 'Autorisation refusée : mauvais fonctionnement du système.'
+transaction.result_code.00197: 'Autorisation refusée : échéance de la temporisation de surveillance globale.'
 
 silence_republican.zones.label: Zones concernées par le silence républicain
 silence_republican.help: L'heure du silence se déclare sur l'heure de Paris. Si un silence a lieu à New-York de 12h à 16h, vous devez le déclarer de 18h à 22h car il y a -6h entre les 2 fuseaux horaires.
@@ -795,68 +794,68 @@ elected_representative.filter.email_subscription.unsubscribed: Non-abonné(e)
 elected_representative:
     contribution:
         status:
-            eligible: "Éligible"
-            not_eligible: "Non éligible"
+            eligible: 'Éligible'
+            not_eligible: 'Non éligible'
     mailchimp_tag:
         adherent: Adhérent(e)
         # Mandate
-        depute_europeen: "[M] Député européen"
-        senateur: "[M] Sénateur"
-        depute: "[M] Député"
-        president_conseil_regional: "[M] Président du Conseil régional"
-        conseiller_regional: "[M] Conseiller régional"
-        president_conseil_departemental: "[M] Président du Conseil départemental"
-        conseiller_departemental: "[M] Conseiller départemental"
-        conseiller_territorial: "[M] Conseiller territorial"
-        president_conseil_communautaire: "[M] Président du Conseil communautaire"
-        conseiller_communautaire: "[M] Conseiller communautaire"
-        maire: "[M] Maire"
-        conseiller_municipal: "[M] Conseiller municipal"
+        depute_europeen: '[M] Député européen'
+        senateur: '[M] Sénateur'
+        depute: '[M] Député'
+        president_conseil_regional: '[M] Président du Conseil régional'
+        conseiller_regional: '[M] Conseiller régional'
+        president_conseil_departemental: '[M] Président du Conseil départemental'
+        conseiller_departemental: '[M] Conseiller départemental'
+        conseiller_territorial: '[M] Conseiller territorial'
+        president_conseil_communautaire: '[M] Président du Conseil communautaire'
+        conseiller_communautaire: '[M] Conseiller communautaire'
+        maire: '[M] Maire'
+        conseiller_municipal: '[M] Conseiller municipal'
         conseiller_arrondissement: "[M] Conseiller d'arrondissement"
         membre_assemblee_fde: "[M] Membre de l'Assemblée des Français de l'étranger"
-        conseiller_fde: "[M] Conseiller FDE"
-        delegue_consulaire: "[M] Délégué consulaire"
+        conseiller_fde: '[M] Conseiller FDE'
+        delegue_consulaire: '[M] Délégué consulaire'
         # PoliticalFunction
-        mayor: "[F] Maire"
-        deputy_mayor: "[F] Maire délégué(e)"
-        mayor_assistant: "[F] Adjoint(e) au maire"
-        president_of_regional_council: "[F] Président(e) de conseil régional"
-        vice_president_of_regional_council: "[F] Vice-président(e) de conseil régional"
-        president_of_departmental_council: "[F] Président(e) de conseil départemental"
-        vice_president_of_departmental_council: "[F] Vice-président(e) de conseil départemental"
-        deputy_vice_president_of_departmental_council: "[F] Vice-président(e) délégué du conseil départemental"
-        secretary: "[F] Secrétaire"
-        quaestor: "[F] Questeur(rice)"
+        mayor: '[F] Maire'
+        deputy_mayor: '[F] Maire délégué(e)'
+        mayor_assistant: '[F] Adjoint(e) au maire'
+        president_of_regional_council: '[F] Président(e) de conseil régional'
+        vice_president_of_regional_council: '[F] Vice-président(e) de conseil régional'
+        president_of_departmental_council: '[F] Président(e) de conseil départemental'
+        vice_president_of_departmental_council: '[F] Vice-président(e) de conseil départemental'
+        deputy_vice_president_of_departmental_council: '[F] Vice-président(e) délégué du conseil départemental'
+        secretary: '[F] Secrétaire'
+        quaestor: '[F] Questeur(rice)'
         president_of_national_assembly: "[F] Président(e) de l'Assemblée nationale"
         vice_president_of_national_assembly: "[F] Vice-président(e) de l'Assemblée nationale"
-        president_of_senate: "[F] Président(e) du Sénat"
-        vice_president_of_senate: "[F] Vice-président(e) du Sénat"
-        president_of_commission: "[F] Président(e) de commission"
-        president_of_group: "[F] Président(e) de groupe"
+        president_of_senate: '[F] Président(e) du Sénat'
+        vice_president_of_senate: '[F] Vice-président(e) du Sénat'
+        president_of_commission: '[F] Président(e) de commission'
+        president_of_group: '[F] Président(e) de groupe'
         president_of_epci: "[F] Président(e) d'EPCI"
         vice_president_of_epci: "[F] Vice-président(e) d'EPCI"
-        other_member_of_standing_committee: "[F] Autre membre commission permanente"
-        other_member: "[F] Autre membre"
+        other_member_of_standing_committee: '[F] Autre membre commission permanente'
+        other_member: '[F] Autre membre'
         # UserListDefinition
-        supporting_la_rem: "[L] Majorité Présidentielle"
-        instances_member: "[L] Conseil territorial"
-        in-progress: "[L] En cours"
+        supporting_la_rem: '[L] Majorité Présidentielle'
+        instances_member: '[L] Conseil territorial'
+        in-progress: '[L] En cours'
         # ElectedRepresentativeLabel
-        LFI: "[E] LFI"
-        PCF: "[E] PCF"
-        PS: "[E] PS"
-        MRC: "[E] MRC"
-        "G.s": "[E] G.s"
-        TDP: "[E] TDP"
-        LaREM: "[E] LaREM"
-        Modem: "[E] Modem"
-        MRSL: "[E] MRSL"
-        Agir: "[E] Agir"
-        UDI: "[E] UDI"
-        LR: "[E] LR"
-        DLF: "[E] DLF"
-        RN: "[E] RN"
-        "Autre parti": "[E] Autre parti"
+        LFI: '[E] LFI'
+        PCF: '[E] PCF'
+        PS: '[E] PS'
+        MRC: '[E] MRC'
+        'G.s': '[E] G.s'
+        TDP: '[E] TDP'
+        LaREM: '[E] LaREM'
+        Modem: '[E] Modem'
+        MRSL: '[E] MRSL'
+        Agir: '[E] Agir'
+        UDI: '[E] UDI'
+        LR: '[E] LR'
+        DLF: '[E] DLF'
+        RN: '[E] RN'
+        'Autre parti': '[E] Autre parti'
 
 #
 # Election
@@ -955,9 +954,9 @@ voting_platform.vote.majority_vote_mention.fair: Passable
 voting_platform.vote.majority_vote_mention.insufficient: Insuffisant
 voting_platform.pool_title.committee_supervisor: Animateurs Locaux
 voting_platform.pool_title.local_election: Listes
-voting_platform.pool_title.poll:  
-voting_platform.pool_title.national_council:  
-voting_platform.pool_title.executive_office:  
+voting_platform.pool_title.poll:
+voting_platform.pool_title.national_council:
+voting_platform.pool_title.executive_office:
 voting_platform.pool_title.vote-statuses-resolution-title-1: Question 1
 voting_platform.pool_title.vote-statuses-resolution-title-2: Question 2
 voting_platform.pool_title.vote-statuses-resolution-title-3: Question 3
@@ -1078,14 +1077,14 @@ adherent_mandate.committee.not_valid_gender: La civilité "{gender}" de l'adhér
 adherent_mandate.committee.inappropriate_gender: La civilité de l'adhérent ne correspond pas à la civilité du mandat.
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({email}) est déjà un adhérent désigné dans un comité "{committee}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{committee}" a déjà un adhérent désigné ({gender}).
-adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"
+adherent_mandate.conseiller_municipal: 'Conseiller(e) municipal(e)'
 adherent_mandate.membre_EPCI: "Membre d'EPCI"
-adherent_mandate.conseiller_departemental: "Conseiller(e) départemental(e)"
-adherent_mandate.conseiller_regional: "Conseiller(e) régional(e)"
+adherent_mandate.conseiller_departemental: 'Conseiller(e) départemental(e)'
+adherent_mandate.conseiller_regional: 'Conseiller(e) régional(e)'
 adherent_mandate.membre_assemblee_corse: "Membre de l'Assemblée de Corse"
-adherent_mandate.depute: "Député(e)"
-adherent_mandate.senateur: "Sénateur(rice)"
-adherent_mandate.euro_depute: "Député(e) européen(ne)"
+adherent_mandate.depute: 'Député(e)'
+adherent_mandate.senateur: 'Sénateur(rice)'
+adherent_mandate.euro_depute: 'Député(e) européen(ne)'
 
 #
 # Geo Zone
@@ -1138,6 +1137,7 @@ scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
 scope.feature.contacts_export: Export contacts
 scope.feature.messages: Messagerie
+scope.feature.messages_vox: Messagerie V3 (beta)
 scope.feature.events: Événements
 scope.feature.my_team: Mon équipe
 scope.feature.mobile_app: Application Mobile

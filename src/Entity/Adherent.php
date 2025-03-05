@@ -1458,7 +1458,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isRegionalDelegate()
             || $this->isFdeCoordinator()
             || $this->hasDelegatedAccess(DelegatedAccess::ACCESS_MESSAGES)
-            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES);
+            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES)
+            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES_VOX);
     }
 
     public function __clone()
