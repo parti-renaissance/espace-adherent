@@ -750,4 +750,9 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
             $this->setReminded(true);
         }
     }
+
+    public function isLivePlayerEnabled(): bool
+    {
+        return str_starts_with($this->liveUrl ?? '', 'https://vimeo.com/');
+    }
 }
