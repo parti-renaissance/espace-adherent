@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'messages'])"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'messages', 'messages_vox'])"))]
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
 class GetCollectionFiltersController extends AbstractController
 {

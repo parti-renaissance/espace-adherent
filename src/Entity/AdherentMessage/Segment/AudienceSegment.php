@@ -26,17 +26,17 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new Put(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new Delete(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new Post(
             uriTemplate: '/v3/audience-segments',

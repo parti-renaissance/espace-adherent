@@ -10,7 +10,7 @@ class ContributionDatesFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS], true);
+        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX, FeatureEnum::CONTACTS], true);
     }
 
     public function build(string $scope, ?string $feature = null): array

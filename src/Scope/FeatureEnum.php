@@ -10,6 +10,7 @@ class FeatureEnum extends Enum
     public const CONTACTS = 'contacts';
     public const CONTACTS_EXPORT = 'contacts_export';
     public const MESSAGES = 'messages';
+    public const MESSAGES_VOX = 'messages_vox';
     public const EVENTS = 'events';
     public const MY_TEAM = 'my_team';
     public const MOBILE_APP = 'mobile_app';
@@ -39,6 +40,7 @@ class FeatureEnum extends Enum
         self::CONTACTS,
         self::CONTACTS_EXPORT,
         self::MESSAGES,
+        self::MESSAGES_VOX,
         self::EVENTS,
         self::MY_TEAM,
         self::MOBILE_APP,

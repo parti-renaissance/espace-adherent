@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (subject.getAuthor() == user or user.hasDelegatedFromUser(subject.getAuthor(), 'messages'))"), subject: 'message')]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (subject.getAuthor() == user or user.hasDelegatedFromUser(subject.getAuthor(), 'messages') or user.hasDelegatedFromUser(subject.getAuthor(), 'messages_vox'))"), subject: 'message')]
 class SendAdherentMessageController extends AbstractController
 {
     public function __construct(private readonly AdherentMessageManager $manager)
