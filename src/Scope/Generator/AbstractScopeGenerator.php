@@ -40,7 +40,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             $this->getScopeName($scopeEntity),
             $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
-            $this->getFeatures($scopeEntity),
+            $this->getFeatures($scopeEntity, $adherent),
             $adherent,
             $delegatedAccess
         );
@@ -101,9 +101,13 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         return $name;
     }
 
-    private function getFeatures(ScopeEntity $scopeEntity): array
+    private function getFeatures(ScopeEntity $scopeEntity, Adherent $adherent): array
     {
         $scopeFeatures = $scopeEntity->getFeatures();
+
+        if ($scopeEntity->canaryFeatures && !$adherent->canaryTester) {
+            $scopeFeatures = array_diff($scopeFeatures, $scopeEntity->canaryFeatures);
+        }
 
         if ($this->delegatedAccess) {
             if ($delegatedScopeFeatures = $this->delegatedAccess->getScopeFeatures()) {

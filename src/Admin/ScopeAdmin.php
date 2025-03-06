@@ -52,6 +52,15 @@ class ScopeAdmin extends AbstractAdmin
                     'expanded' => true,
                     'required' => false,
                 ])
+                ->add('canaryFeatures', ChoiceType::class, [
+                    'label' => 'Fonctionnalités en test',
+                    'choices' => FeatureEnum::ALL,
+                    'choice_label' => function (string $choice) {
+                        return "scope.feature.$choice";
+                    },
+                    'multiple' => true,
+                    'required' => false,
+                ])
             ->end()
         ;
     }
