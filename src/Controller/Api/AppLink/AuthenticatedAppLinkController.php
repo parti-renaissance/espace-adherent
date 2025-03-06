@@ -24,6 +24,11 @@ class AuthenticatedAppLinkController extends AbstractController
         'cadre' => ['route_name' => 'cadre_app_redirect', 'allowed_options' => ['state']],
     ];
 
+    private const ALLOWED_QUERY_PARAMS = [
+        'utm_source',
+        'utm_campaign',
+    ];
+
     public function __invoke(Request $request, string $userVoxHost, LoginLinkHandlerInterface $loginLinkHandler, string $key, UserInterface $user, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         if (!\array_key_exists($key, self::KEYS_TO_ROUTES)) {
@@ -53,6 +58,12 @@ class AuthenticatedAppLinkController extends AbstractController
                 if ($request->query->has($optionKey)) {
                     $parameters[$optionKey] = $request->query->get($optionKey);
                 }
+            }
+        }
+
+        foreach (self::ALLOWED_QUERY_PARAMS as $queryParam) {
+            if ($request->query->has($queryParam)) {
+                $parameters[$queryParam] = $request->query->get($queryParam);
             }
         }
 
