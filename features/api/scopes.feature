@@ -454,7 +454,6 @@ Feature:
                     "contacts",
                     "contacts_export",
                     "messages",
-                    "messages_vox",
                     "events",
                     "my_team",
                     "mobile_app",
