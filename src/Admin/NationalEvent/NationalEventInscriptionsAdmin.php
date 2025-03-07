@@ -121,6 +121,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('phone', TelNumberType::class, [
                     'required' => false,
                 ])
+                ->add('children', null, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
@@ -203,6 +204,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',
                 'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
                 'Handicap' => $inscription->accessibility,
+                'Enfants' => $inscription->children,
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];
