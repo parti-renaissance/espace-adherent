@@ -9,7 +9,7 @@ use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -21,26 +21,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsCommand(
-    name: 'mailchimp:sync:all-adherents',
-)]
+#[AsCommand(name: 'mailchimp:sync:all-adherents')]
 class MailchimpSyncAllAdherentsCommand extends Command
 {
-    private $adherentRepository;
-    private $entityManager;
-    private $bus;
     /** @var SymfonyStyle */
     private $io;
 
     public function __construct(
-        AdherentRepository $adherentRepository,
-        ObjectManager $entityManager,
-        MessageBusInterface $bus,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $bus,
     ) {
-        $this->adherentRepository = $adherentRepository;
-        $this->entityManager = $entityManager;
-        $this->bus = $bus;
-
         parent::__construct();
     }
 
@@ -51,6 +42,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('zones', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
+            ->addOption('with-error-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
             ->addOption('donator-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
@@ -76,6 +68,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('tags'),
             $input->getOption('zones'),
             $input->getOption('disabled-only'),
+            $input->getOption('with-error-only'),
             $input->getOption('certified-only'),
             $input->getOption('donator-only'),
             $input->getOption('committee-voter-only'),
@@ -127,6 +120,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         array $tags,
         array $zoneCodes,
         bool $disabledOnly,
+        bool $withErrorOnly,
         bool $certifiedOnly,
         bool $donatorOnly,
         bool $committeeVoterOnly,
@@ -172,6 +166,10 @@ class MailchimpSyncAllAdherentsCommand extends Command
                     'z2'
                 );
             }
+        }
+
+        if ($withErrorOnly) {
+            $queryBuilder->andWhere('adherent.lastMailchimpFailedSyncResponse IS NOT NULL');
         }
 
         if ($certifiedOnly) {
