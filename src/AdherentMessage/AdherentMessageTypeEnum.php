@@ -16,7 +16,7 @@ use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\AdherentMessage\StatutoryAdherentMessage;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
-use App\Security\Voter\RequestScopeVoter;
+use App\Security\Voter\ScopeFeatureVoter;
 use MyCLabs\Enum\Enum;
 
 class AdherentMessageTypeEnum extends Enum
@@ -69,7 +69,7 @@ class AdherentMessageTypeEnum extends Enum
 
         PresidentDepartmentalAssemblyAdherentMessage::class => ['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY', 'ROLE_DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY'],
 
-        StatutoryAdherentMessage::class => [[RequestScopeVoter::SCOPE_AND_FEATURE_GRANTED, [FeatureEnum::STATUTORY_MESSAGE]]],
+        StatutoryAdherentMessage::class => [[ScopeFeatureVoter::SCOPE_AND_FEATURE_GRANTED, [FeatureEnum::STATUTORY_MESSAGE]]],
 
         FdeCoordinatorAdherentMessage::class => ['ROLE_FDE_COORDINATOR', 'ROLE_DELEGATED_FDE_COORDINATOR'],
     ];

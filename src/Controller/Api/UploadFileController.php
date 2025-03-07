@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox'])"))]
 #[Route('/v3/upload-file', methods: ['POST'])]
-class UploadDocumentController extends AbstractController
+class UploadFileController extends AbstractController
 {
     public function __invoke(UserInterface $user, Request $request, FilesystemOperator $publicUserFileStorage, string $secret): Response
     {
@@ -31,7 +31,7 @@ class UploadDocumentController extends AbstractController
 
         $uuid = Uuid::uuid4()->toString();
 
-        $filePath = hash('sha256', $user->getUuid().$secret).'/'.$uuid.'.'.$file->getClientOriginalExtension();
+        $filePath = hash('sha256', $user->getUuid().$secret).'/'.$uuid.'.'.($file->guessClientExtension() ?? $file->getClientOriginalExtension());
 
         $publicUserFileStorage->write($filePath, $file->getContent());
 

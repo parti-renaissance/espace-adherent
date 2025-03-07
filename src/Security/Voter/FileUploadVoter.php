@@ -11,15 +11,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FileUploadVoter extends AbstractAdherentVoter
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     protected function supports(string $attribute, $subject): bool
@@ -35,7 +30,6 @@ class FileUploadVoter extends AbstractAdherentVoter
         switch ($type) {
             case UserDocument::TYPE_COMMITTEE_CONTACT:
             case UserDocument::TYPE_COMMITTEE_FEED:
-                return $adherent->isSupervisor() || $adherent->isHost();
             case UserDocument::TYPE_EVENT:
                 return $adherent->isSupervisor() || $adherent->isHost();
             case UserDocument::TYPE_ADHERENT_MESSAGE:

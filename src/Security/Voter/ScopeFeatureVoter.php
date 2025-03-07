@@ -2,25 +2,33 @@
 
 namespace App\Security\Voter;
 
+use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeGeneratorResolver;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class RequestScopeVoter extends Voter
+class ScopeFeatureVoter extends Voter
 {
     public const SCOPE_AND_FEATURE_GRANTED = 'REQUEST_SCOPE_GRANTED';
 
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly AuthorizationChecker $authorizationChecker,
+        private readonly Security $security,
     ) {
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
-            return false;
+            try {
+                return $this->authorizationChecker->isFeatureGranted($this->requestStack->getMainRequest(), $this->security->getUser(), \is_array($subject) ? $subject : [$subject]);
+            } catch (\Throwable) {
+                return false;
+            }
         }
 
         if (!$subject) {

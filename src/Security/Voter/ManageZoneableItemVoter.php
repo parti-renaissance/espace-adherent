@@ -32,7 +32,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         }
 
         if ($subject instanceof ZoneableWithScopeEntityInterface && $scopeCode = $subject->getScope()) {
-            if (!$this->authorizationChecker->isGranted(RequestScopeVoter::SCOPE_AND_FEATURE_GRANTED, $scopeCode)) {
+            if (!$this->authorizationChecker->isGranted(ScopeFeatureVoter::SCOPE_AND_FEATURE_GRANTED, $scopeCode)) {
                 return false;
             }
 
