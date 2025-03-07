@@ -83,6 +83,22 @@
     {% endif %}
 {% endblock %}
 
+{% block textarea_widget %}
+    <twig:Molecules:ReTextField
+        name="{{ full_name }}"
+        id="{{ id }}"
+        value="{{ value }}"
+        status="{{ valid ? 'default' : 'error' }}"
+        type="textarea"
+        label="{{ label|trans }}"
+        {{ ...{
+            ...attr,
+            ...(required ? {required: 'required'} : {}),
+            ...(disabled ? {disabled: 'disabled'} : {}),
+        } }}
+    />
+{% endblock %}
+
 {% block choice_widget_collapsed %}
     <twig:Molecules:ReSelect
         id="{{ id }}"
