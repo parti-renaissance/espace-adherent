@@ -101,8 +101,12 @@
                         {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
+                    <hr class="my-6" />
+
                     {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
                     {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
+
+                    <hr class="my-6" />
 
                     <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
                         {{ form_row(form.withChildren, {label: 'Je viens avec mes enfants', attr: {'x-model': 'with_children'}}) }}
@@ -116,13 +120,16 @@
                         </fieldset>
                     </div>
 
-                    <hr class="my-4" />
+                    <hr class="my-6" />
 
                     {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
 
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
                     {{ form_row(form.acceptMedia, {label: 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}
+
+                    <hr class="my-6" />
+
                     {{ form_row(form.accessibility, {label: 'Avez-vous un handicap visible ou invisible nécessitant des aménagements spécifiques ?'}) }}
 
                     <div class="w-full re-field-frame !h-auto cursor-pointer"
