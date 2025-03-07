@@ -18,11 +18,8 @@ class AuthorizationChecker
     private const SCOPE_POSITION_REQUEST = 'request';
     private const SCOPE_POSITION_QUERY = 'query';
 
-    private $scopeGenerator;
-
-    public function __construct(GeneralScopeGenerator $scopeGenerator)
+    public function __construct(private readonly GeneralScopeGenerator $scopeGenerator)
     {
-        $this->scopeGenerator = $scopeGenerator;
     }
 
     public function isFeatureGranted(Request $request, Adherent $adherent, array $featureCodes): bool
@@ -78,6 +75,10 @@ class AuthorizationChecker
 
     private function isDirectCheckAllowed(array $featureCodes): bool
     {
-        return $featureCodes === [FeatureEnum::ACTIONS];
+        return !empty(array_intersect($featureCodes, [
+            FeatureEnum::ACTIONS,
+            FeatureEnum::MESSAGES,
+            FeatureEnum::MESSAGES_VOX,
+        ]));
     }
 }
