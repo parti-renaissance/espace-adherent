@@ -94,6 +94,12 @@ class EventInscription
     public bool $joinNewsletter = false;
 
     #[ORM\Column(nullable: true)]
+    public ?string $children = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isResponsibilityWaived = false;
+
+    #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
 
     #[Groups(['national_event_inscription:webhook'])]
@@ -143,6 +149,8 @@ class EventInscription
         $this->transportNeeds = $inscriptionRequest->transportNeeds;
         $this->volunteer = $inscriptionRequest->volunteer;
         $this->birthdate = $inscriptionRequest->birthdate;
+        $this->children = $inscriptionRequest->children;
+        $this->isResponsibilityWaived = $inscriptionRequest->isResponsibilityWaived;
         $this->utmSource = $inscriptionRequest->utmSource;
         $this->utmCampaign = $inscriptionRequest->utmCampaign;
         $this->referrerCode = $inscriptionRequest->referrerCode;

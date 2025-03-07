@@ -97,14 +97,26 @@
                         attr: {onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
                     }) }}
 
-                    <fieldset>
+                    <fieldset class="mb-4">
                         {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
                     {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
                     {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
 
-                    <hr/>
+                    <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
+                        {{ form_row(form.withChildren, {label: 'Je viens avec mes enfants', attr: {'x-model': 'with_children'}}) }}
+
+                        <fieldset class="bg-gray-100 ml-6 mt-2 flex flex-col gap-4 rounded-lg p-4" x-show="with_children" x-transition>
+                            <span class="text-sm font-medium text-gray-900">Veillez indiquer le nom prénom âge de chaque enfant.</span>
+
+                            {{ form_row(form.children, {label: false}) }}
+
+                            {{ form_row(form.isResponsibilityWaived, {label: 'Déclare, en qualité de responsable légal, décharger de toute responsabilité le Parti Renaissance concernant les blessures et dommages matériels ou corporels occasionnés ou subis par mon enfant, en cas de vol ou de perte de biens ainsi que toute dégradation des sites pouvant lui être imputées.'}) }}
+                        </fieldset>
+                    </div>
+
+                    <hr class="my-4" />
 
                     {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
 

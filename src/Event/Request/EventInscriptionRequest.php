@@ -59,6 +59,15 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     public bool $allowNotifications = false;
 
+    public bool $withChildren = false;
+
+    #[Assert\Expression('!this.withChildren or this.isResponsibilityWaived', message: 'Veillez cocher cette case')]
+    public bool $isResponsibilityWaived = false;
+
+    #[Assert\Expression('!this.withChildren or this.children', message: 'Veillez renseigner ce champ')]
+    #[Assert\Length(max: 255)]
+    public ?string $children = null;
+
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
 
