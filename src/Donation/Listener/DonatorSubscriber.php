@@ -2,6 +2,7 @@
 
 namespace App\Donation\Listener;
 
+use App\Adhesion\Events\NewCotisationEvent;
 use App\Donation\DonationEvents;
 use App\Donation\Event\DonationWasCreatedEvent;
 use App\Donation\Event\DonatorWasUpdatedEvent;
@@ -22,6 +23,7 @@ class DonatorSubscriber implements EventSubscriberInterface
         return [
             DonationEvents::CREATED => ['attachAdherent'],
             DonationEvents::DONATOR_UPDATED => ['checkLastSuccessfulDonation'],
+            NewCotisationEvent::class => ['refreshDonationDates'],
         ];
     }
 
@@ -33,18 +35,19 @@ class DonatorSubscriber implements EventSubscriberInterface
         $donator = $event->getDonation()->getDonator();
 
         if (!$donator->isAdherent() && $donator->getEmailAddress() && $donator->getFirstName() && $donator->getLastName()) {
-            $donator->setAdherent($adherent = $this->adherentRepository->findOneForMatching(
+            $donator->setAdherent($this->adherentRepository->findOneForMatching(
                 $donator->getEmailAddress(),
                 $donator->getFirstName(),
                 $donator->getLastName()
             ));
 
             $this->em->flush();
-
-            if ($adherent) {
-                $this->adherentRepository->refreshDonationDates($adherent);
-            }
         }
+    }
+
+    public function refreshDonationDates(NewCotisationEvent $event): void
+    {
+        $this->adherentRepository->refreshDonationDates($event->getAdherent());
     }
 
     public function checkLastSuccessfulDonation(DonatorWasUpdatedEvent $event): void
