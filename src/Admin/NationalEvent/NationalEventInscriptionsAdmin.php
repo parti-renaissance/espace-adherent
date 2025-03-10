@@ -32,6 +32,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -121,7 +122,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('phone', TelNumberType::class, [
                     'required' => false,
                 ])
-                ->add('children', null, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
+                ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
