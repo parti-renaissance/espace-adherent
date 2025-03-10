@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AdherentStaticLabelRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdherentStaticLabelRepository::class)]
@@ -19,6 +20,7 @@ class AdherentStaticLabel
 
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
+    #[Groups(['profile_update'])]
     #[ORM\Column(unique: true)]
     public ?string $code = null;
 

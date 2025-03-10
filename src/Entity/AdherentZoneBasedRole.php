@@ -47,7 +47,7 @@ class AdherentZoneBasedRole
 
     #[Assert\Choice(choices: ZoneBasedRoleTypeEnum::ALL)]
     #[Assert\NotBlank]
-    #[Groups(['zone_based_role_read', 'zone_based_role_write'])]
+    #[Groups(['zone_based_role_read', 'zone_based_role_write', 'profile_update'])]
     #[ORM\Column]
     private ?string $type;
 
