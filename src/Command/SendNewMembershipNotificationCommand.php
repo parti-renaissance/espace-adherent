@@ -76,7 +76,7 @@ class SendNewMembershipNotificationCommand extends Command
                 'adherent.zoneBasedRoles',
                 'zone_based_role',
                 Expr\Join::WITH,
-                'zone_based_role.adherent = adherent AND zone_based_role.type = :type_pad'
+                'zone_based_role.adherent = adherent AND zone_based_role.type IN (:zone_based_role_types)'
             )
             ->andWhere('adherent.status = :status')
             ->andWhere((new Orx())
@@ -85,7 +85,10 @@ class SendNewMembershipNotificationCommand extends Command
             )
             ->setParameters([
                 'status' => Adherent::ENABLED,
-                'type_pad' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                'zone_based_role_types' => [
+                    ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                    ScopeEnum::DEPUTY,
+                ],
             ])
             ->getQuery()
             ->getResult()

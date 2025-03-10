@@ -23,8 +23,13 @@ class NewMembershipNotificationHandler
     {
         $newSympathizers = $newAdherents = 0;
 
-        if ($manager->isPresidentDepartmentalAssembly()) {
-            $zones = $manager->getPresidentDepartmentalAssemblyZones();
+        if (
+            $manager->isPresidentDepartmentalAssembly()
+            || $manager->isDeputy()
+        ) {
+            $zones = $manager->isPresidentDepartmentalAssembly()
+                ? $manager->getPresidentDepartmentalAssemblyZones()
+                : [$manager->getDeputyZone()];
 
             $newSympathizers = $this->countNewSympathizersInZones($zones, $from, $to);
             $newAdherents = $this->countNewAdherentsInZones($zones, $from, $to);
