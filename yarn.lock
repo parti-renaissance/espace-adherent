@@ -4940,9 +4940,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier-plugin-gherkin@^3.1.0:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-gherkin/-/prettier-plugin-gherkin-3.1.1.tgz#60e579062759c4364c8e408ff88b0df952087832"
-  integrity sha512-cCfjqKMdR2a8jOf8yKg32iUfRq0Dfmx+K2qTMOD/ixJJq0Rp7QS8BaoABWC7CDGXbvOkVeWOvzhxWvYcEbjglw==
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-gherkin/-/prettier-plugin-gherkin-3.1.2.tgz#9db0ab6bd4e303fd94bde40dc04ef8ee8f6556f0"
+  integrity sha512-LgehRNKCAqZsoE/yblmqXYfMpEK2mhVWQKNj/TFzeLR+0rhFGHqq3RlYcYhPgzbr0n6w2Bv+0Gm1yxNdzkdacw==
   dependencies:
     "@cucumber/gherkin" "^27.0.0"
     "@cucumber/messages" "^23.0.0"
