@@ -7,7 +7,6 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Donator;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
-use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -48,7 +47,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('declared-mandates-only', null, InputOption::VALUE_NONE)
-            ->addOption('source', null, InputOption::VALUE_REQUIRED, '', MembershipSourceEnum::RENAISSANCE)
+            ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
         ;
