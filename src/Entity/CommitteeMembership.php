@@ -43,7 +43,7 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * @var Committee
      */
-    #[Groups(['adherent_committees_modal', 'profile_read'])]
+    #[Groups(['adherent_committees_modal', 'profile_read', 'profile_update'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;

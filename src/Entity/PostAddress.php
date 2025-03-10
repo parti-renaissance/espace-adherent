@@ -18,7 +18,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address street.
      */
     #[Assert\Length(max: 150, groups: ['contact_update', 'procuration:write'])]
-    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write', 'profile_update'])]
     #[ORM\Column(length: 150, nullable: true)]
     protected ?string $address = null;
 
@@ -26,7 +26,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address zip code.
      */
     #[Assert\Length(max: 15, groups: ['contact_update', 'procuration:write'])]
-    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write', 'profile_update'])]
     #[ORM\Column(length: 15, nullable: true)]
     protected ?string $postalCode = null;
 
@@ -34,7 +34,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address city code (postal code + INSEE code).
      */
     #[Assert\Length(max: 15, groups: ['contact_update', 'procuration:write'])]
-    #[Groups(['contact_read_after_write', 'contact_update', 'profile_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[Groups(['contact_read_after_write', 'contact_update', 'profile_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write', 'profile_update'])]
     #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
     protected ?string $city = null;
 
@@ -42,7 +42,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address city name.
      */
     #[Assert\Length(max: 255, groups: ['contact_update', 'procuration:write'])]
-    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write', 'profile_update'])]
     #[ORM\Column(nullable: true)]
     protected ?string $cityName = null;
 
@@ -50,7 +50,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address country code (ISO2).
      */
     #[Assert\Country(groups: ['contact_update', 'procuration:write'])]
-    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write', 'profile_update'])]
     #[ORM\Column(length: 2, nullable: true)]
     protected ?string $country = null;
 

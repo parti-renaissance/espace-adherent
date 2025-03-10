@@ -136,7 +136,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
             'array',
             [
                 'groups' => [
-                    'profile_read',
+                    'profile_update',
                 ],
             ]
         );
