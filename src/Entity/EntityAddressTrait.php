@@ -22,7 +22,7 @@ trait EntityAddressTrait
     protected ?string $address = null;
 
     #[Assert\Length(max: 255)]
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write', 'profile_update'])]
     #[ORM\Column(nullable: true)]
     protected ?string $additionalAddress = null;
 

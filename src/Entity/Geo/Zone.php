@@ -102,7 +102,7 @@ class Zone implements GeoInterface, UuidEntityInterface
     /**
      * @var string
      */
-    #[Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'profile_read', 'zone_based_role_read', 'general_convention_list', 'general_convention_read'])]
+    #[Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'profile_read', 'zone_based_role_read', 'general_convention_list', 'general_convention_read', 'profile_update'])]
     #[ORM\Column]
     private $type;
 

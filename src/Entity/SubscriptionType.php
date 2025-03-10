@@ -49,7 +49,7 @@ class SubscriptionType
      */
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
-    #[Groups(['profile_read', 'subscription_type_read'])]
+    #[Groups(['profile_read', 'subscription_type_read', 'profile_update'])]
     #[ORM\Column(unique: true)]
     private $code;
 

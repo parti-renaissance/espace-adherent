@@ -133,8 +133,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             'array',
             [
                 'groups' => [
-                    'profile_write',
-                    'uncertified_profile_write',
+                    'profile_update',
                 ],
             ]
         );
