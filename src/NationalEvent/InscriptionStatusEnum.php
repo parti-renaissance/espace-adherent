@@ -10,4 +10,5 @@ class InscriptionStatusEnum extends Enum
     public const ACCEPTED = 'accepted';
     public const INCONCLUSIVE = 'inconclusive';
     public const REFUSED = 'refused';
+    public const DUPLICATE = 'duplicate';
 }
