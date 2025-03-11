@@ -106,7 +106,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         $scopeFeatures = $scopeEntity->getFeatures();
 
         if ($scopeEntity->canaryFeatures && !$adherent->canaryTester) {
-            $scopeFeatures = array_diff($scopeFeatures, $scopeEntity->canaryFeatures);
+            $scopeFeatures = array_values(array_diff($scopeFeatures, $scopeEntity->canaryFeatures));
         }
 
         if ($this->delegatedAccess) {
