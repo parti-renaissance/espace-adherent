@@ -38,7 +38,7 @@ class AnonymousFollowerSession
 
         $intentionUrl = $request->query->get(self::AUTHENTICATION_INTENTION);
 
-        if (!$this->isValidIntention($intentionUrl)) {
+        if (!$this->isValidIntention(parse_url($intentionUrl, \PHP_URL_PATH))) {
             return null;
         }
 
@@ -50,6 +50,16 @@ class AnonymousFollowerSession
     public function isStarted(): bool
     {
         return $this->requestStack->getSession()->has(self::SESSION_KEY);
+    }
+
+    public function getCallback(): ?string
+    {
+        return $this->requestStack->getSession()->get(self::SESSION_KEY);
+    }
+
+    public function setCallback(string $callback): void
+    {
+        $this->requestStack->getSession()->set(self::SESSION_KEY, $callback);
     }
 
     /**

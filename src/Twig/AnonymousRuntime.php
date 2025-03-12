@@ -20,9 +20,9 @@ class AnonymousRuntime implements RuntimeExtensionInterface
         return $this->doGeneratePathForAnonymousFollower('/connexion', $callbackRoute, $params);
     }
 
-    public function generateAdhesionPathForAnonymousFollower(string $callbackRoute = '', array $params = []): string
+    public function generateAdhesionPathForAnonymousFollower(string $callbackRoute = '', array $params = [], array $intentionRouteParams = []): string
     {
-        return $this->doGeneratePathForAnonymousFollower('/adhesion', $callbackRoute, $params);
+        return $this->doGeneratePathForAnonymousFollower('/adhesion'.($intentionRouteParams ? '?'.http_build_query($intentionRouteParams) : ''), $callbackRoute, $params);
     }
 
     private function doGeneratePathForAnonymousFollower(

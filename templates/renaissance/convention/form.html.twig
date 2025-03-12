@@ -1,0 +1,7 @@
+{% extends 'renaissance/convention/layout.html.twig' %}
+
+{% block form_content %}
+    <div style="height:100%;position:relative;">
+        <iframe src="https://tally.so/r/{{ convention.id }}?uuid={{ app.user.getUuid() }}&publicid={{ app.user.getPublicId() }}" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>
+    </div>
+{% endblock %}

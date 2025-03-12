@@ -1,0 +1,47 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title convention.title %}
+{% block flash_message '' %}
+
+{% block body_classes 'h-screen' %}
+
+{% block content %}
+    {% if app.user and adherent_access_granted %}
+        {% block form_content '' %}
+    {% else %}
+        <section class="flex flex-col justify-center items-center gap-10 w-full h-screen bg-[#F9F9FA]">
+            <div class=" flex-col gap-8 w-full">
+                <div class="flex gap-8 flex-col sm:p-5 flex-1 justify-center items-center">
+                    <twig:Atoms:ReCard class="max-w-[800px] h-screen sm:h-auto !p-0 !gap-4 !border-0 !rounded-none !bg-transparent relative">
+                        <a href="{{ path('renaissance_site') }}" class="text-[#212B36] flex w-fit items-center gap-4 absolute top-4 left-4 sm:static">
+                            <span class="w-9 h-9 flex items-center justify-center rounded-full bg-white">
+                                <img src="{{ asset('images/icons/icn_go-back-left-arrow.svg') }}" class="w-4 fon" alt="retour"/>
+                            </span>
+                            <span class="hidden sm:block font-medium">Retour</span>
+                        </a>
+
+                        <div class="flex flex-col h-full sm:flex-row overflow-hidden bg-white border rounded-2xl border-[#EEF0F2]">
+                            <div class="bg-[#ECF1F5] max-h-3/4 overflow-hidden sm:h-auto sm:w-1/2 ">
+                                <img class="mx-auto my-36" src="{{ asset('images/icons/lock.svg') }}" height="150" alt="Accès protégé"/>
+                            </div>
+                            <div class="sm:w-1/2 justify-center items-center flex flex-col p-10 text-sm flex-1">
+                                <p class="font-medium text-[#637381] text-sm text-center">Les conventions thématiques sont<br/>réservées aux adhérents à jour.<br/>Rejoignez-nous pour y participer.</p>
+
+                                <div class="mt-5 flex gap-6 items-center">
+                                    {% if not app.user %}
+                                        <a href="{{ login_path_for_anonymous_follower('app_convention', {slug: slug}) }}" class="font-medium text-[#212B36]">Me connecter</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Adhérer</a>
+                                    {% elseif app.user.isRenaissanceSympathizer() %}
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Adhérer pour participer</a>
+                                    {% else %}
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Me mettre à jour pour partiriper</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </twig:Atoms:ReCard>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

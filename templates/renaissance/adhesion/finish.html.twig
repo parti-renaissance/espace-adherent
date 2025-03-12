@@ -63,7 +63,7 @@
 
             {% if callback_path %}
                 <twig:ReButton tag="a" href="{{ callback_path }}" class="w-full" >
-                    Retourner à l'élection
+                    {{ callback_path starts with '/election' ? 'Retourner à l\'élection' : 'Continuer' }}
                 </twig:ReButton>
             {% else %}
                 <twig:ReButton tag="a" href="{{ type is same as ('readhesion') ? path('vox_app_profile') : path('vox_app_redirect') }}" class="w-full" >
