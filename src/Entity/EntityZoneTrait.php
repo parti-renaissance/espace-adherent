@@ -30,7 +30,6 @@ trait EntityZoneTrait
         'profile_update',
     ])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
-    #[ORM\OrderBy(['code' => 'ASC'])]
     protected Collection $zones;
 
     /**
