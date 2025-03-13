@@ -27,6 +27,7 @@ trait EntityZoneTrait
         'managed_user_read',
         'zone_based_role_read',
         'zone_based_role_write',
+        'profile_update',
     ])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
