@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMessage
 {
-    public static function create(EventInscription $eventInscription): self
+    public static function create(EventInscription $eventInscription, string $editUrl): self
     {
         $event = $eventInscription->event;
 
@@ -19,6 +19,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
             [
                 'event_name' => $event->getName(),
                 'text_confirmation' => $event->textConfirmation,
+                'edit_url' => $editUrl,
             ]
         );
     }

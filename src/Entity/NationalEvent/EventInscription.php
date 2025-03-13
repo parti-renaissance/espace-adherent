@@ -93,6 +93,8 @@ class EventInscription
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $joinNewsletter = false;
 
+    public bool $needSendNewsletterConfirmation = false;
+
     #[ORM\Column(nullable: true)]
     public ?string $children = null;
 
@@ -134,10 +136,9 @@ class EventInscription
 
     public function updateFromRequest(EventInscriptionRequest $inscriptionRequest): void
     {
-        $this->sessionId = $inscriptionRequest->sessionId;
-        $this->clientIp = $inscriptionRequest->clientIp;
         $this->addressEmail = $inscriptionRequest->email;
-        $this->joinNewsletter = $inscriptionRequest->allowNotifications;
+        $this->needSendNewsletterConfirmation = !$this->joinNewsletter && $inscriptionRequest->allowNotifications;
+        $this->joinNewsletter = $this->joinNewsletter ?: $inscriptionRequest->allowNotifications;
         $this->firstName = $inscriptionRequest->firstName;
         $this->lastName = $inscriptionRequest->lastName;
         $this->gender = $inscriptionRequest->civility;
@@ -149,11 +150,17 @@ class EventInscription
         $this->transportNeeds = $inscriptionRequest->transportNeeds;
         $this->volunteer = $inscriptionRequest->volunteer;
         $this->birthdate = $inscriptionRequest->birthdate;
-        $this->children = $inscriptionRequest->children;
+        $this->children = $inscriptionRequest->withChildren ? $inscriptionRequest->children : null;
         $this->isResponsibilityWaived = $inscriptionRequest->isResponsibilityWaived;
-        $this->utmSource = $inscriptionRequest->utmSource;
-        $this->utmCampaign = $inscriptionRequest->utmCampaign;
-        $this->referrerCode = $inscriptionRequest->referrerCode;
+
+        // Update only for creation
+        if (!$this->id) {
+            $this->sessionId = $inscriptionRequest->sessionId;
+            $this->clientIp = $inscriptionRequest->clientIp;
+            $this->utmSource = $inscriptionRequest->utmSource;
+            $this->utmCampaign = $inscriptionRequest->utmCampaign;
+            $this->referrerCode = $inscriptionRequest->referrerCode;
+        }
     }
 
     public function getFullName(): string

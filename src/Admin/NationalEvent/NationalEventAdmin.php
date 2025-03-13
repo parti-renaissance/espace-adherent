@@ -57,6 +57,7 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('endDate', null, ['label' => 'Date de fin', 'widget' => 'single_text', 'with_seconds' => true])
                     ->add('ticketStartDate', null, ['label' => 'Billetterie - date de début', 'widget' => 'single_text', 'with_seconds' => true])
                     ->add('ticketEndDate', null, ['label' => 'Billetterie - date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('inscriptionEditDeadline', null, ['label' => 'Date limite de modification de l\'inscription', 'widget' => 'single_text', 'with_seconds' => false])
 
                     ->add('intoImageFile', FileType::class, ['label' => 'Image de cover', 'required' => false])
                 ->end()

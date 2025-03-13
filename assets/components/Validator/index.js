@@ -162,28 +162,29 @@ function getValue(domEl) {
     /** @type {string|boolean|null} */
     let value = null;
     switch (domType) {
-    case 'checkbox':
-        value = domEl.checked;
-        break;
-    case 'email':
-    case 'text':
-    case 'number':
-    case 'password':
-        value = domEl.value;
-        break;
-    case 'radio':
-    case 'radio-group': {
-        const name = domEl.getAttribute('name');
-        if (!name) throw new Error('Missing name attribute');
-        const allRadios = document.querySelectorAll(`input[name="${name}"]`);
-        const radios = [...allRadios].find((r) => r.checked);
-        value = radios ? radios.value : null;
-    }
-        break;
-    case 'hidden':
-        return;
-    default:
-        throw new Error(`Unknown type ${domType}`);
+        case 'checkbox':
+            value = domEl.checked;
+            break;
+        case 'email':
+        case 'text':
+        case 'textarea':
+        case 'number':
+        case 'password':
+            value = domEl.value;
+            break;
+        case 'radio':
+        case 'radio-group': {
+            const name = domEl.getAttribute('name');
+            if (!name) throw new Error('Missing name attribute');
+            const allRadios = document.querySelectorAll(`input[name="${name}"]`);
+            const radios = [...allRadios].find((r) => r.checked);
+            value = radios ? radios.value : null;
+        }
+            break;
+        case 'hidden':
+            return;
+        default:
+            throw new Error(`Unknown type ${domType}`);
     }
     // eslint-disable-next-line consistent-return
     return value;

@@ -5,6 +5,8 @@
 {% block open_graph_title event.ogTitle ?? event.name %}
 {% block open_graph_description event.ogDescription %}
 
+{% block flash_message '' %}
+
 {% block open_graph %}
     {% if event.ogImage %}
         <meta property="og:image" content="{{ path('asset_url', {path: event.ogImage.getPath()}) }}" />
@@ -28,6 +30,16 @@
         <div class="py-3 md:pl-8 md:px-12">
             <a href="{{ path('renaissance_site') }}"><img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/></a>
         </div>
+
+        {% for label, messages in app.flashes(['error', 'info', 'success']) %}
+            {% if messages|length %}
+                <div class="p-4 text-sm {{ label == 'error' ? 'text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800' : 'text-blue-700 bg-blue-100 dark:bg-blue-200 dark:text-blue-800' }}" role="alert">
+                    {% for message in messages %}
+                        <div class="flash--{{ label }}">{{ message|trans }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </header>
 {% endblock %}
 
