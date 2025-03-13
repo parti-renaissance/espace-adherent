@@ -44,7 +44,6 @@ docs
 node_modules
 package.json
 webpack.*.js
-yarn.lock
 src/DataFixtures
 gcloud-service-key.json
 assets
