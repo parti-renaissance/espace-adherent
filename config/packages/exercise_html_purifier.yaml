@@ -1,10 +1,9 @@
 exercise_html_purifier:
+    default_cache_serializer_path: '%kernel.cache_dir%/htmlpurifier'
     html_profiles:
         default:
             config:
                 Core.Encoding: 'UTF-8'
-                Cache.SerializerPath: ~
-                Cache.SerializerPermissions: ~
         event:
             config:
                 HTML.Allowed: p,em,strong,ol,ul,li,br,a[href|title|rel|target]
