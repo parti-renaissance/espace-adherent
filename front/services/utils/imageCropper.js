@@ -1,10 +1,9 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Cropper from 'cropperjs';
-
 import Modal from '../../components/Modal';
 
-let modal;
+const modalRef = React.createRef();
 let cropper;
 let fileElement;
 let croppedImageElement;
@@ -37,7 +36,7 @@ async function handleCropAction(options) {
     croppedImageElement.value = dataUrl;
     fileElement.value = '';
 
-    modal.hideModal();
+    modalRef.current.hideModal();
 }
 
 function handleCancelAction() {
@@ -46,7 +45,7 @@ function handleCancelAction() {
 
     fileElement.value = '';
 
-    modal.hideModal();
+    modalRef.current.hideModal();
 }
 
 function getModalContent(url, options) {
@@ -65,13 +64,13 @@ function getModalContent(url, options) {
 }
 
 function displayCropperModal(url, options) {
-    modal = render(
+    createRoot(dom('#modal-wrapper')).render(
         <Modal
+            ref={modalRef}
             key={url}
             contentCallback={() => getModalContent(url, options)}
             withClose={false}
-        />,
-        dom('#modal-wrapper')
+        />
     );
 
     cropper = new Cropper(dom('.image-cropper--container img'), {
@@ -85,7 +84,7 @@ export default (inputFileElement, inputCroppedImageElement, inputsContainer, opt
     croppedImageElement = inputCroppedImageElement;
     container = inputsContainer;
 
-    const files = inputFileElement.files;
+    const {files} = inputFileElement;
 
     if (!files || 1 > files.length) {
         return;

@@ -2,9 +2,9 @@ import _ from 'lodash';
 
 export default class SearchEngine {
     static search(approaches, filters) {
-        let measures = _.flatMap(approaches, approach => _.flatMap(approach.sub_approaches, subApproach => _.flatMap(subApproach.measures)));
+        let measures = _.flatMap(approaches, (approach) => _.flatMap(approach.subApproaches, (subApproach) => _.flatMap(subApproach.measures)));
 
-        let projects = _.flatMap(measures, measure => _.flatMap(measure.projects));
+        let projects = _.flatMap(measures, (measure) => _.flatMap(measure.projects));
 
         if (filters.isLeading) {
             measures = _.filter(measures, {
@@ -25,8 +25,8 @@ export default class SearchEngine {
             };
         }
 
-        const filterCallback = item => -1 !== this.normalize(item.title).indexOf(this.normalize(filters.query))
-                || -1 !== this.normalize(_.uniq(_.flatMap(item.tags, tag => tag.label)).join()).indexOf(this.normalize(filters.query));
+        const filterCallback = (item) => -1 !== this.normalize(item.title).indexOf(this.normalize(filters.query))
+                || -1 !== this.normalize(_.uniq(_.flatMap(item.tags, (tag) => tag.label)).join()).indexOf(this.normalize(filters.query));
 
         return {
             measures: _.filter(measures, filterCallback),

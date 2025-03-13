@@ -8,6 +8,8 @@ ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable
 WORKDIR /srv/app
 
 FROM caddy:${CADDY_VERSION}-alpine AS caddy

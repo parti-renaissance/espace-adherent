@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Project from './Project';
 import ReactDOM from 'react-dom';
+import Project from './Project';
 
 export default class Measure extends React.Component {
     render() {
@@ -82,7 +82,7 @@ export default class Measure extends React.Component {
             const items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__measure');
 
-            for (let i = 0; i < items.length; ++i) {
+            for (let i = 0; i < items.length; i += 1) {
                 if (hasClass(items[i], 'expanded')) {
                     removeClass(items[i], 'expanded');
                 }

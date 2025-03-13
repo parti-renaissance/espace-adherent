@@ -1,5 +1,4 @@
-import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SearchEngine from '../services/datagrid/SearchEngine';
 import DataGridFactory from '../services/datagrid/DataGridFactory';
 
@@ -7,8 +6,8 @@ import DataGridFactory from '../services/datagrid/DataGridFactory';
  * List of items (for example, committees or events) managed by an adherent
  * with a specific role (for example, referent or deputy).
  */
-export default (slugifier, columns, items) => {
-    const dataGridFactory = new DataGridFactory(new SearchEngine(slugifier));
+export default (columns, items) => {
+    const dataGridFactory = new DataGridFactory(new SearchEngine());
     const dataGrid = dataGridFactory.createDataGrid(
         columns,
         items,
@@ -18,5 +17,5 @@ export default (slugifier, columns, items) => {
         'name'
     );
 
-    render(dataGrid, dom('#datagrid'));
+    createRoot(dom('#datagrid')).render(dataGrid);
 };

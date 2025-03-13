@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\Committee;
 
-use App\Api\CommitteeProvider;
 use App\Committee\Election\CandidacyManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -18,12 +17,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommitteesController extends AbstractController
 {
-    #[Route(path: '/committees', name: 'api_committees', methods: ['GET'])]
-    public function getApprovedCommitteesAction(CommitteeProvider $provider): Response
-    {
-        return new JsonResponse($provider->getApprovedCommittees());
-    }
-
     #[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
     #[Route(path: '/committees/{uuid}/candidacies', name: 'app_api_committee_candidacies_get', methods: ['GET'])]
     public function getCommitteeCandidaciesAction(

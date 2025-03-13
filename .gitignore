@@ -27,3 +27,4 @@ node_modules
 /.env.local.php
 /.env.*.local
 *.DS_Store
+.yarn

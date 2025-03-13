@@ -24,18 +24,18 @@ export default class Content extends React.Component {
 
     filterApproachesByIsLeading(approaches) {
         return _.filter(_.cloneDeep(approaches), (approach) => {
-            const subApproaches = _.filter(approach.sub_approaches, (sub_approach) => {
-                const measures = _.filter(sub_approach.measures, measure => measure.isLeading);
+            const subApproaches = _.filter(approach.subApproaches, (subApproach) => {
+                const measures = _.filter(subApproach.measures, (measure) => measure.isLeading);
 
                 if (measures.length) {
-                    sub_approach.measures = measures;
+                    subApproach.measures = measures;
                 }
 
                 return !!measures.length;
             });
 
             if (subApproaches.length) {
-                approach.sub_approaches = subApproaches;
+                approach.subApproaches = subApproaches;
             }
 
             return !!subApproaches.length;

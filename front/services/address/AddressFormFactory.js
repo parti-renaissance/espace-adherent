@@ -13,7 +13,7 @@ export default class AddressFormFactory {
             dom(`#${city}`),
             dom(`#${cityName}`),
             cityNameRequired,
-            region ? dom(`#${region}`) : null,
+            region ? dom(`#${region}`) : null
         );
     }
 }

@@ -13,7 +13,10 @@ runs:
         - name: Cache yarn dependencies
           uses: actions/cache@v4
           with:
-              path: node_modules/
+              path: |
+                  .yarn/cache
+                  .yarn/unplugged
+                  .yarn/install-state.gz
               key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
         - name: Cache static assets

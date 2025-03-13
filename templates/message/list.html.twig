@@ -87,27 +87,13 @@
                                         }]) %}
                                     {% endif %}
 
-                                    {% if message.isSent %}
-                                        {% if message.isMailchimp %}
-                                            {% set items = items|merge([{
-                                                href: 'javascript:void(0);',
-                                                label: 'Statistiques',
-                                                linkAttr: {
-                                                    class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
-                                                    'data-uuid': message.uuid,
-                                                    'data-subject': message.subject,
-                                                },
-                                            }]) %}
-                                        {% endif %}
-                                    {% else %}
-                                        {% set items = items|merge([{
-                                            href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
-                                            label: 'Filtrer',
-                                            linkAttr: {
-                                                class: 'row-action text--blue--dark link--no-decor',
-                                            },
-                                        }]) %}
-                                    {% endif %}
+                                    {% set items = items|merge([{
+                                        href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
+                                        label: 'Filtrer',
+                                        linkAttr: {
+                                            class: 'row-action text--blue--dark link--no-decor',
+                                        },
+                                    }]) %}
 
                                     {% if message.isSynchronized %}
                                         {% set items = items|merge([
@@ -172,12 +158,4 @@
             pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {}),
         }) }}
     {% endif %}
-{% endblock %}
-
-{% block javascripts %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            App.runMessageList('adherent-message-statistics-button');
-        });
-    </script>
 {% endblock %}

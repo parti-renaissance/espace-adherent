@@ -68,7 +68,7 @@ export default class AddressForm {
             ((placeData.route && placeData.route.long_name) || ''),
         ].join(' ').trim();
 
-        if (addressValue.length === 0) {
+        if (0 === addressValue.length) {
             addressValue = [
                 ((placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name) || ''),
                 ((placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name) || ''),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Modal from '../components/Modal';
 
 export default () => {
@@ -14,13 +14,13 @@ export default () => {
                 element.parentNode.insertBefore(modalWrapper, element);
             }
 
-            render(
+            const root = createRoot(modalWrapper);
+            root.render(
                 <Modal
                     side={element.dataset.modalSide || null}
                     content={dom(element.dataset.contentElement).innerHTML}
-                    closeCallback={() => unmountComponentAtNode(modalWrapper)}
-                />,
-                modalWrapper
+                    closeCallback={() => root.unmount()}
+                />
             );
         });
     });

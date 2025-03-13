@@ -31,6 +31,7 @@ function initializeTimer(element, refreshPage) {
             let h;
             let m;
             let s;
+            // eslint-disable-next-line no-multi-assign
             s = h = m = d = 0;
 
             diffTime -= interval;

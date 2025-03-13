@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
-use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,17 +14,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/adherent-message', name: 'app_message_common_')]
 class CommonMessageController extends AbstractController
 {
-    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
-    #[Route(path: '/{uuid}/statistics', requirements: ['uuid' => '%pattern_uuid%'], condition: 'request.isXmlHttpRequest()', name: 'statistics', methods: ['GET'])]
-    public function getStatisticsAction(AbstractAdherentMessage $message, StatisticsAggregator $aggregator): Response
-    {
-        if (!$message->isMailchimp()) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->json($aggregator->aggregateData($message));
-    }
-
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     #[Route(path: '/{uuid}/content', requirements: ['uuid' => '%pattern_uuid%'], name: 'content', methods: ['GET'])]
     public function getMessageTemplateAction(

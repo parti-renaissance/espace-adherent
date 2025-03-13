@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Measure from './Measure';
 import ReactDOM from 'react-dom';
+import Measure from './Measure';
 
 export default class SubApproach extends React.Component {
     render() {
@@ -27,7 +27,7 @@ export default class SubApproach extends React.Component {
 
                     <div className="programmatic-foundation__children programmatic-foundation__measures">
                         <div className="programmatic-foundation__items-type">Mesures</div>
-                        {this.props.subApproach.measures.map(measure => <Measure
+                        {this.props.subApproach.measures.map((measure) => <Measure
                             key={measure.position + measure.uuid}
                             measure={measure}
                         />)}
@@ -48,7 +48,7 @@ export default class SubApproach extends React.Component {
             const items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__sub-approach');
 
-            for (let i = 0; i < items.length; ++i) {
+            for (let i = 0; i < items.length; i += 1) {
                 if (hasClass(items[i], 'expanded')) {
                     removeClass(items[i], 'expanded');
                 }

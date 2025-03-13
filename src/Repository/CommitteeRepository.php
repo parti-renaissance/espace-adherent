@@ -84,16 +84,6 @@ class CommitteeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Finds approved Committee instances.
-     *
-     * @return Committee[]
-     */
-    public function findApprovedCommittees(): array
-    {
-        return $this->findBy(['status' => Committee::APPROVED]);
-    }
-
-    /**
      * Returns the most recent created Committee.
      */
     public function findMostRecentCommittee(): ?Committee

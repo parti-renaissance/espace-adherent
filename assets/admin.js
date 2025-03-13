@@ -27,6 +27,7 @@ const TOOLS = [
     {
         onPress: (editor) => () => {
             const previousUrl = editor.getAttributes('link').href;
+            // eslint-disable-next-line no-alert
             const url = window.prompt('URL', previousUrl);
 
             // cancelled

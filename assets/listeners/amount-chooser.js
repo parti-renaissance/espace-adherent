@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import AmountChooser from '../components/AmountChooser';
 
 const defaultAmounts = [
@@ -19,7 +19,7 @@ export default () => {
         insertAfter(element, chooser);
         remove(element);
 
-        render(
+        createRoot(chooser).render(
             <AmountChooser
                 name={name}
                 value={value}
@@ -32,8 +32,7 @@ export default () => {
                             (item) => ({ ...item, label: `${item.label}  <sup class="text-red-500">(2)</sup>` })
                         )
                 }
-            />,
-            chooser
+            />
         );
     });
 };

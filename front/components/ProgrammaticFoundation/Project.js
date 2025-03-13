@@ -7,7 +7,7 @@ export default class Project extends React.Component {
             <div className={`programmatic-foundation__project child ${
                 this.props.project.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''
             }`}>
-                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
+                <div className="head" onClick={(event) => toggleClass(event.currentTarget.parentNode, 'expanded')}>
                     <span className="title">{this.props.project.title}</span>
                     <span className="toggle" />
                 </div>

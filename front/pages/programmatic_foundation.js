@@ -1,10 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ProgrammaticFoundation from '../components/ProgrammaticFoundation/ProgrammaticFoundation';
 
-export default (wrapperSelector, api) => {
-    render(
-        <ProgrammaticFoundation api={api}/>,
-        dom(wrapperSelector)
-    );
-};
+export default (wrapperSelector, api) => createRoot(dom(wrapperSelector)).render(<ProgrammaticFoundation api={api}/>);
