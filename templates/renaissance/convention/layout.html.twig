@@ -13,8 +13,8 @@
             <div class=" flex-col gap-8 w-full">
                 <div class="flex gap-8 flex-col sm:p-5 flex-1 justify-center items-center">
                     <twig:Atoms:ReCard class="max-w-[800px] h-screen sm:h-auto !p-0 !gap-4 !border-0 !rounded-none !bg-transparent relative">
-                        <a href="{{ path('renaissance_site') }}" class="text-[#212B36] flex w-fit items-center gap-4 absolute top-4 left-4 sm:static">
-                            <span class="w-9 h-9 flex items-center justify-center rounded-full bg-white">
+                        <a href="{{ path('vox_app') }}" class="text-[#212B36] hover:text-[#BF8C2A] flex w-fit items-center gap-4 absolute top-4 left-4 sm:static">
+                            <span class="w-9 h-9 flex items-center justify-center rounded-full bg-white hover:border hover:border-[#BF8C2A]">
                                 <img src="{{ asset('images/icons/icn_go-back-left-arrow.svg') }}" class="w-4 fon" alt="retour"/>
                             </span>
                             <span class="hidden sm:block font-medium">Retour</span>
@@ -29,12 +29,12 @@
 
                                 <div class="mt-5 flex gap-6 items-center">
                                     {% if not app.user %}
-                                        <a href="{{ login_path_for_anonymous_follower('app_convention', {slug: slug}) }}" class="font-medium text-[#212B36]">Me connecter</a>
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Adhérer</a>
+                                        <a href="{{ login_path_for_anonymous_follower('app_convention', {slug: slug}) }}" class="font-medium text-[#212B36] hover:text-[#4b85be]">Me connecter</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer</a>
                                     {% elseif app.user.isRenaissanceSympathizer() %}
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Adhérer pour participer</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer pour participer</a>
                                     {% else %}
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A]">Me mettre à jour pour partiriper</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Me mettre à jour pour participer</a>
                                     {% endif %}
                                 </div>
                             </div>
