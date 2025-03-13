@@ -80,8 +80,6 @@ class EventInscriptionController extends AbstractController
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
             $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
 
-            $this->addFlash('success', 'Votre inscription est bien enregistrée');
-
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }
 

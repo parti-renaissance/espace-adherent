@@ -3,7 +3,7 @@
 namespace App\NationalEvent\Listener;
 
 use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
-use App\NationalEvent\NewNationalEventInscriptionEvent;
+use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 

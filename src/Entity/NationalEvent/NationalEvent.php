@@ -84,6 +84,9 @@ class NationalEvent
     #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*'])]
     public ?UploadedFile $intoImageFile = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $inscriptionEditDeadline = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -101,5 +104,10 @@ class NationalEvent
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function allowEditInscription(): bool
+    {
+        return $this->inscriptionEditDeadline && $this->inscriptionEditDeadline > new \DateTime();
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\NationalEvent;
+namespace App\NationalEvent\Event;
 
 use App\Entity\NationalEvent\EventInscription;
 
-class NewNationalEventInscriptionEvent
+abstract class AbstractNationalEventInscriptionEvent implements NationalEventInscriptionEventInterface
 {
     public function __construct(public readonly EventInscription $eventInscription)
     {

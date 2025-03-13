@@ -3,6 +3,7 @@
 namespace App\Event\Request;
 
 use App\Entity\Adherent;
+use App\Entity\NationalEvent\EventInscription;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -82,6 +83,29 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         public readonly string $sessionId,
         public readonly string $clientIp,
     ) {
+    }
+
+    public static function fromInscription(EventInscription $inscription): self
+    {
+        $request = new self($inscription->sessionId ?? '', $inscription->clientIp ?? '');
+        $request->email = $inscription->addressEmail;
+        $request->civility = $inscription->gender;
+        $request->firstName = $inscription->firstName;
+        $request->lastName = $inscription->lastName;
+        $request->birthdate = $inscription->birthdate;
+        $request->birthPlace = $inscription->birthPlace;
+        $request->phone = $inscription->phone;
+        $request->postalCode = $inscription->postalCode;
+        $request->transportNeeds = $inscription->transportNeeds;
+        $request->volunteer = $inscription->volunteer;
+        $request->withChildren = null !== $inscription->children;
+        $request->isResponsibilityWaived = $inscription->isResponsibilityWaived;
+        $request->children = $inscription->children;
+        $request->qualities = $inscription->qualities;
+        $request->accessibility = $inscription->accessibility;
+        $request->allowNotifications = $inscription->joinNewsletter;
+
+        return $request;
     }
 
     public function updateFromAdherent(Adherent $user): void

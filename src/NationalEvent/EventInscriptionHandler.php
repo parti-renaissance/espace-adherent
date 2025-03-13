@@ -5,6 +5,8 @@ namespace App\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
+use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
+use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -18,9 +20,9 @@ class EventInscriptionHandler
     ) {
     }
 
-    public function handle(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest): void
+    public function handle(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest, ?EventInscription $existingInscription = null): void
     {
-        $eventInscription = new EventInscription($nationalEvent);
+        $eventInscription = $existingInscription ?? new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
 
         if ($adherent = $this->adherentRepository->findOneByEmail($eventInscription->addressEmail)) {
@@ -29,15 +31,19 @@ class EventInscriptionHandler
 
         if (
             $eventInscription->referrerCode
-            && $referrer = $this->adherentRepository->findOneBy(['publicId' => $eventInscription->referrerCode])
+            && !$eventInscription->referrer
+            && $referrer = $this->adherentRepository->findByPublicId($eventInscription->referrerCode, true)
         ) {
             $eventInscription->referrer = $referrer;
         }
 
         $this->entityManager->persist($eventInscription);
-
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(new NewNationalEventInscriptionEvent($eventInscription));
+        if ($existingInscription) {
+            $this->eventDispatcher->dispatch(new UpdateNationalEventInscriptionEvent($eventInscription));
+        } else {
+            $this->eventDispatcher->dispatch(new NewNationalEventInscriptionEvent($eventInscription));
+        }
     }
 }

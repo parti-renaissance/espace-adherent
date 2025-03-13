@@ -140,7 +140,7 @@
                     <twig:ReButton
                             class="w-full"
                             color="black"
-                    >Je réserve ma place</twig:ReButton>
+                    >{{ is_edit is defined ? 'Modifier mon inscription' : 'Je réserve ma place' }}</twig:ReButton>
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[1px] ">
