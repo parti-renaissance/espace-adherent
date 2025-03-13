@@ -69,7 +69,12 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
                 ])
                 ->add('date', DatePickerType::class, [
                     'label' => 'Date',
-                    'dp_max_date' => new \DateTime(),
+                    'datepicker_options' => [
+                        'useCurrent' => false,
+                        'restrictions' => [
+                            'maxDate' => new \DateTime(),
+                        ],
+                    ],
                 ])
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => ['name', 'code'],
