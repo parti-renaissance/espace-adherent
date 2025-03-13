@@ -25,7 +25,7 @@ class ConventionController extends AbstractController
         ],
         'transition-ecologique' => [
             'title' => 'Transition écologique',
-            'url' => 'wav9EZ',
+            'id' => 'wav9EZ',
         ],
     ];
 
