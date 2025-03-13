@@ -29,13 +29,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    getCountryConsulates(country, callback) {
-        this._createRequest(callback, {
-            url: `/api/vote-offices/${country}`,
-            type: 'json',
-        });
-    }
-
     getCommitteeTimelineFeed(committeeSlug, offset, callback) {
         this._createRequest(callback, {
             url: `/comites/${committeeSlug}/timeline?offset=${offset}`,
@@ -68,23 +61,9 @@ export default class ReqwestApiClient {
         });
     }
 
-    getReferents(callback) {
-        this._createRequest(callback, {
-            url: '/api/referents',
-            type: 'json',
-        });
-    }
-
     getApproaches(callback) {
         this._createRequest(callback, {
             url: '/api/programmatic-foundation/approaches',
-            type: 'json',
-        });
-    }
-
-    getCommittees(callback) {
-        this._createRequest(callback, {
-            url: '/api/committees',
             type: 'json',
         });
     }
@@ -93,27 +72,6 @@ export default class ReqwestApiClient {
         this._createRequest(callback, {
             url: '/api/candidates',
             type: 'json',
-        });
-    }
-
-    getUpcomingEvents(callback) {
-        let url = '/api/upcoming-events';
-        const type = dom('#map-config').getAttribute('data-event-type');
-
-        if ('' !== type) {
-            url = `${url}?type=${type}`;
-        }
-
-        this._createRequest(callback, {
-            url,
-            type: 'json',
-        });
-    }
-
-    getFacebookPicture(url, callback) {
-        this._createRequest(callback, {
-            url,
-            type: 'text',
         });
     }
 
@@ -186,40 +144,6 @@ export default class ReqwestApiClient {
             url: `/espace-responsable-assesseur/vote-places/plus?page=${page}&${queryString}`,
             type: 'html',
         });
-    }
-
-    getMessageStatistics(uuid, callback) {
-        this._createRequest(callback, {
-            url: `/adherent-message/${uuid}/statistics`,
-            type: 'json',
-        });
-    }
-
-    createUserSegmentList(data, callback) {
-        this._createRequest(callback, {
-            method: 'post',
-            contentType: 'application/json',
-            url: '/api/adherent-segments',
-            type: 'json',
-            data: JSON.stringify(data),
-            processData: false,
-        });
-    }
-
-    getAdherentCommittees(uuid, callback) {
-        this._createRequest(callback, {
-            url: `/api/adherents/${uuid}/committees`,
-            type: 'json',
-        });
-    }
-
-    toggleCommitteeVoteStatus(slug, token, enabled, callback) {
-        this._reqwest({
-            method: 'post',
-            type: 'json',
-            url: `/comites/${slug}/${enabled ? '' : 'ne-plus-'}voter`,
-            data: { token },
-        }).then(callback).fail((response) => callback(JSON.parse(response.responseText)));
     }
 
     getCommitteeCandidacies(uuid, callback) {

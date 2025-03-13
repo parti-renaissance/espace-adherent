@@ -22,7 +22,7 @@ export default class Sharer {
             `width=${dialog.getWidth()}, height=${dialog.getHeight()}, top=${top}, left=${left}`
         );
 
-        if ('object' === typeof popup && typeof 'undefined' !== popup.opener && null !== popup.opener) {
+        if ('object' === typeof popup && typeof 'undefined' !== typeof popup.opener && null !== popup.opener) {
             popup.opener = null;
 
             if (window.focus) {

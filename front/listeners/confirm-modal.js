@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Modal from '../components/Modal';
 
-let modal;
+const modalRef = React.createRef();
 
 function cancelCallback(event) {
     event.preventDefault();
-    modal.hideModal();
+    modalRef.current.hideModal();
 }
 
 function contentCallback(element) {
@@ -48,12 +48,13 @@ export default () => {
             element.parentNode.insertBefore(modalWrapper, element);
         }
 
-        modal = render(
+        const root = createRoot(modalWrapper);
+        root.render(
             <Modal
+                ref={modalRef}
                 contentCallback={() => contentCallback(element)}
-                closeCallback={() => { unmountComponentAtNode(modalWrapper); }}
-            />,
-            modalWrapper
+                closeCallback={() => { root.unmount(); }}
+            />
         );
     });
 };

@@ -96,6 +96,7 @@ export default class AddressForm {
             return;
         }
 
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const inseeCode in this._state.cities) {
             const value = `${this._state.postalCode}-${inseeCode}`;
             const option = this.createOption(value, this._state.cities[inseeCode]);

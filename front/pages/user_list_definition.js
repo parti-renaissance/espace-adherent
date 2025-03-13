@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import UserListDefinitionWidget from '../components/UserListDefinitionWidget';
 
 export default (memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector, api, postApplyCallback) => {
-    render(
+    createRoot(dom(wrapperSelector)).render(
         <UserListDefinitionWidget
             memberType={memberType}
             type={type}
@@ -11,7 +11,6 @@ export default (memberType, type, wrapperSelector, checkboxSelector, mainCheckbo
             mainCheckboxSelector={mainCheckboxSelector}
             api={api}
             postApplyCallback={postApplyCallback}
-        />,
-        dom(wrapperSelector)
+        />
     );
 };

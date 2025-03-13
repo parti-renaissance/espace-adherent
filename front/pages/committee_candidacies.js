@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import CandidaciesListWidget from '../components/CandidaciesListWidget';
 
 let nbClick = 0;
@@ -10,13 +10,8 @@ export default (triggerSelector, api) => {
             event.preventDefault();
             nbClick += 1;
 
-            render(
-                <CandidaciesListWidget
-                    api={api}
-                    committeeUuid={element.dataset.uuid}
-                    key={`modal-${nbClick}`}
-                />,
-                dom('#modal-wrapper')
+            createRoot(dom('#modal-wrapper')).render(
+                <CandidaciesListWidget api={api} committeeUuid={element.dataset.uuid} key={`modal-${nbClick}`}/>
             );
         });
     });

@@ -108,7 +108,7 @@ class App {
 
     runManagedList(columns, items) {
         import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('slugifier'), columns, items);
+            module.default(columns, items);
         });
     }
 
@@ -148,12 +148,6 @@ class App {
     runMessageFilters(messageId, synchronized, recipientCount, sendLocked) {
         import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), messageId, synchronized, recipientCount, sendLocked);
-        });
-    }
-
-    runMessageList(buttonClass) {
-        import('pages/message_list').catch((error) => { throw error; }).then((module) => {
-            module.default(buttonClass, this.get('api'));
         });
     }
 

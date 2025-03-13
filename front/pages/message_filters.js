@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import MessageStatusLoader from '../components/MessageStatusLoader';
 
 export default (api, messageId, synchronized, recipientCount, sendLocked) => {
-    render(
+    createRoot(dom('#message-actions-block')).render(
         <MessageStatusLoader
             api={api}
             messageId={messageId}
@@ -11,7 +11,6 @@ export default (api, messageId, synchronized, recipientCount, sendLocked) => {
             recipientCount={recipientCount}
             withResetButton={!!dom('.btn-filter--reset')}
             sendLocked={sendLocked}
-        />,
-        dom('#message-actions-block')
+        />
     );
 };

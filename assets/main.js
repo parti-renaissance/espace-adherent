@@ -3,7 +3,6 @@ import registerServices from './services';
 
 import amountChooser from './listeners/amount-chooser';
 import addressAutocomplete from './listeners/address-autocomplete';
-import carousel from './listeners/carousel';
 import confirmModal from './listeners/confirm-modal';
 
 import alpine from './listeners/alpine';
@@ -14,7 +13,6 @@ class Main {
         this._listeners = [
             amountChooser,
             addressAutocomplete,
-            carousel,
             confirmModal,
             alpine,
         ];

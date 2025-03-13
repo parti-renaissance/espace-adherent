@@ -65,10 +65,6 @@ module.exports = {
             path.resolve('./assets'),
             'node_modules',
         ],
-        alias: {
-            react: path.resolve(__dirname, 'node_modules/react'),
-            'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
-        },
     },
     plugins: [
         new WebpackManifestPlugin({}),

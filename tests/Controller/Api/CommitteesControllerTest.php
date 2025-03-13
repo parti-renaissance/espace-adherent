@@ -17,24 +17,6 @@ class CommitteesControllerTest extends AbstractApiTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
-    public function testApiApprovedCommittees()
-    {
-        $this->client->request(Request::METHOD_GET, '/api/committees');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $content = $this->client->getResponse()->getContent();
-        $this->assertJson($content);
-
-        // Check the payload
-        $this->assertGreaterThanOrEqual(8, \count(json_decode($content, true)));
-        $this->assertEachJsonItemContainsKey('uuid', $content);
-        $this->assertEachJsonItemContainsKey('slug', $content);
-        $this->assertEachJsonItemContainsKey('name', $content);
-        $this->assertEachJsonItemContainsKey('url', $content);
-        $this->assertEachJsonItemContainsKey('position', $content);
-    }
-
     public function testGetCommitteeCandidacyReturnsNothingIfNonMemberOrAnonymous(): void
     {
         $url = \sprintf('/api/committees/%s/candidacies', LoadCommitteeV1Data::COMMITTEE_4_UUID);

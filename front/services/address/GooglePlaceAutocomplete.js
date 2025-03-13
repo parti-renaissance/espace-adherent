@@ -55,7 +55,8 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                         return;
                     }
 
-                    if (2 >= ++countOfCheck) {
+                    countOfCheck += 1;
+                    if (2 >= countOfCheck) {
                         return;
                     }
 

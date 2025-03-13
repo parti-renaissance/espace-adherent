@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import DataGrid from '../../components/DataGrid';
 
 export default class DataGridFactory {
