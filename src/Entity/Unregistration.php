@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Adherent\Unregistration\TypeEnum;
 use App\Repository\UnregistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -62,6 +63,12 @@ class Unregistration
     #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
+    #[ORM\Column(nullable: true, enumType: TypeEnum::class)]
+    private ?TypeEnum $type;
+
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    private ?array $tags;
+
     #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
     #[ORM\Column(type: 'json', nullable: true)]
     private $reasons;
@@ -98,6 +105,8 @@ class Unregistration
         ?string $comment,
         \DateTime $registeredAt,
         ?string $postalCode,
+        ?TypeEnum $type,
+        ?array $tags,
         bool $isAdherent,
         bool $isRenaissance,
         ?Administrator $admin = null,
@@ -105,6 +114,8 @@ class Unregistration
         $this->uuid = $uuid;
         $this->adherentUuid = $adherentUuid;
         $this->postalCode = $postalCode;
+        $this->type = $type;
+        $this->tags = $tags;
         $this->reasons = $reasons;
         $this->comment = $comment;
         $this->registeredAt = $registeredAt;
@@ -127,6 +138,16 @@ class Unregistration
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
+    }
+
+    public function getType(): ?TypeEnum
+    {
+        return $this->type;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
     }
 
     public function getReasons(): array

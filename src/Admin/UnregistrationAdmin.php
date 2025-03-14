@@ -50,9 +50,13 @@ class UnregistrationAdmin extends AbstractAdmin
             ->add('comment', null, [
                 'label' => 'Commentaire',
             ])
-            ->add('adherent', null, [
+            ->add('type', null, [
                 'label' => 'Type',
-                'template' => 'admin/unregistration/user_type.html.twig',
+                'template' => 'admin/unregistration/list_type.html.twig',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags',
+                'template' => 'admin/unregistration/list_tags.html.twig',
             ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'inscription',
@@ -131,6 +135,9 @@ class UnregistrationAdmin extends AbstractAdmin
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags',
             ])
             ->add('reasons', null, [
                 'label' => 'Raisons',
