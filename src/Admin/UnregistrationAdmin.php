@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Adherent\Unregistration\TypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -13,9 +14,11 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UnregistrationAdmin extends AbstractAdmin
@@ -123,6 +126,18 @@ class UnregistrationAdmin extends AbstractAdmin
             ->add('excludedBy', null, [
                 'label' => 'Exclu(e) par',
                 'show_filter' => true,
+            ])
+            ->add('type', ChoiceFilter::class, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => EnumType::class,
+                'field_options' => [
+                    'class' => TypeEnum::class,
+                    'choice_label' => static function (TypeEnum $type): string {
+                        return 'unregistration.type.'.$type->value;
+                    },
+                    'multiple' => true,
+                ],
             ])
         ;
     }
