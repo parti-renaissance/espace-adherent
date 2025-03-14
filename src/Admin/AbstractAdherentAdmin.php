@@ -477,6 +477,11 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'class' => 'col-md-12',
                     'box_class' => 'box box-info',
                 ])
+                    ->add('forcedMembership', null, [
+                        'label' => 'Toujours à jour de cotisation',
+                        'required' => false,
+                        'disabled' => !$this->isGranted('ROLE_SUPER_ADMIN'),
+                    ])
                     ->add('donations', HiddenType::class, [
                         'label' => false,
                         'required' => false,
