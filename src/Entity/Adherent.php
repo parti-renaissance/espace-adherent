@@ -522,6 +522,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $v2 = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $forcedMembership = false;
+
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $finishedAdhesionSteps = [];
 
