@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Administrator;
 use App\Entity\AdministratorRole;
+use App\Repository\AdministratorRoleRepository;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -98,6 +99,12 @@ class AdministratorAdmin extends AbstractAdmin
                 ->add('administratorRoles', null, [
                     'label' => false,
                     'expanded' => true,
+                    'query_builder' => function (AdministratorRoleRepository $repository) {
+                        return $repository
+                            ->createQueryBuilder('role')
+                            ->andWhere('role.enabled = 1')
+                        ;
+                    },
                     'group_by' => static function (AdministratorRole $role): string {
                         return $role->groupCode->value;
                     },
