@@ -173,6 +173,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des desadhésions',
             AdministratorRoleGroupEnum::ADHERENTS
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_ADHERENT_ADHERENT_REQUEST',
+            'Administrateur des demandes d\'adhesion',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
         // Politique
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES',

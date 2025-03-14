@@ -100,6 +100,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.adherent_request" class="App\Admin\AdherentRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Demandes d'adhésion" group="Adhérents" />
+
+            <argument />
+            <argument>App\Entity\Renaissance\Adhesion\AdherentRequest</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Communication
