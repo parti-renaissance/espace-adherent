@@ -1,0 +1,5 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
+{% endblock %}

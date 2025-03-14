@@ -18,6 +18,10 @@ class UnregistrationFactory
             $command->getComment(),
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
+            $adherent->isRenaissanceAdherent()
+                ? TypeEnum::ADHERENT
+                : TypeEnum::SYMPATHIZER,
+            $adherent->tags,
             $adherent->isRenaissanceAdherent(),
             $adherent->isRenaissanceUser(),
             $command->getExcludedBy()
@@ -33,6 +37,10 @@ class UnregistrationFactory
             $comment,
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
+            $adherent->isRenaissanceAdherent()
+                ? TypeEnum::ADHERENT
+                : TypeEnum::SYMPATHIZER,
+            $adherent->tags,
             $adherent->isRenaissanceAdherent(),
             $adherent->isRenaissanceUser(),
         );

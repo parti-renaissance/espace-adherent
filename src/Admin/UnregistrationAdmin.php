@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Adherent\Unregistration\TypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -13,9 +14,11 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UnregistrationAdmin extends AbstractAdmin
@@ -50,9 +53,13 @@ class UnregistrationAdmin extends AbstractAdmin
             ->add('comment', null, [
                 'label' => 'Commentaire',
             ])
-            ->add('adherent', null, [
+            ->add('type', null, [
                 'label' => 'Type',
-                'template' => 'admin/unregistration/user_type.html.twig',
+                'template' => 'admin/unregistration/list_type.html.twig',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags',
+                'template' => 'admin/unregistration/list_tags.html.twig',
             ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'inscription',
@@ -120,6 +127,18 @@ class UnregistrationAdmin extends AbstractAdmin
                 'label' => 'Exclu(e) par',
                 'show_filter' => true,
             ])
+            ->add('type', ChoiceFilter::class, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => EnumType::class,
+                'field_options' => [
+                    'class' => TypeEnum::class,
+                    'choice_label' => static function (TypeEnum $type): string {
+                        return 'unregistration.type.'.$type->value;
+                    },
+                    'multiple' => true,
+                ],
+            ])
         ;
     }
 
@@ -131,6 +150,9 @@ class UnregistrationAdmin extends AbstractAdmin
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags',
             ])
             ->add('reasons', null, [
                 'label' => 'Raisons',
