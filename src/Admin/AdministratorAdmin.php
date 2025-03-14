@@ -102,7 +102,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'query_builder' => function (AdministratorRoleRepository $repository) {
                         return $repository
                             ->createQueryBuilder('role')
-                            ->andWhere('role.enabled IS TRUE')
+                            ->andWhere('role.enabled = 1')
                         ;
                     },
                     'group_by' => static function (AdministratorRole $role): string {
