@@ -27,6 +27,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         private readonly DataSurveyRepository $dataSurveyRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly ClientRepository $clientRepository,
+        private readonly string $referralHost,
     ) {
     }
 
@@ -60,6 +61,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
                 ];
             }
 
+            $data['referral_link'] = $object->getPublicId() ? rtrim($this->referralHost, '/').'/'.$object->getPublicId() : null;
             $data['interests'] = $interests;
 
             $data['change_email_token'] = $this->normalizer->normalize(

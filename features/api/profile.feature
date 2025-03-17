@@ -17,7 +17,7 @@ Feature:
             """
             {
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "email_address": "carl999@example.fr",
                 "first_name": "Carl",
                 "last_name": "Mirabeau",
@@ -96,7 +96,8 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "image_url": null,
-                "change_email_token": null
+                "change_email_token": null,
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
 
@@ -736,7 +737,7 @@ Feature:
             """
             {
                 "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9699",
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "first_name": "Simple",
                 "last_name": "User",
                 "certified": false,
@@ -770,7 +771,8 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "image_url": null,
-                "change_email_token": null
+                "change_email_token": null,
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
 
@@ -1287,7 +1289,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {
@@ -1302,7 +1304,8 @@ Feature:
                 "certified": false,
                 "interests": [],
                 "image_url": null,
-                "change_email_token": null
+                "change_email_token": null,
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
         When I send a "GET" request to "/api/v3/profile/committees"
@@ -1404,7 +1407,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {
@@ -1419,7 +1422,8 @@ Feature:
                 "certified": false,
                 "interests": [],
                 "image_url": null,
-                "change_email_token": null
+                "change_email_token": null,
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
 
@@ -1495,7 +1499,7 @@ Feature:
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
                 "committee_membership": {
@@ -1510,7 +1514,8 @@ Feature:
                 "certified": false,
                 "interests": [],
                 "image_url": null,
-                "change_email_token": null
+                "change_email_token": null,
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
         When I send a "POST" request to "/api/v3/profile/b4219d47-3138-5efd-9762-2ef9f9495084/image" with body:
