@@ -16,7 +16,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                 "email_address": "carl999@example.fr",
                 "email_subscribed": true,
@@ -56,7 +56,8 @@ Feature:
                         "message": null,
                         "uuid": "@uuid@"
                     }
-                }
+                },
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
 
@@ -67,7 +68,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "@string@",
+                "id": "@string@-@string@",
                 "nickname": "kikouslove",
                 "email_address": "jacques.picard@en-marche.fr",
                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -112,7 +113,8 @@ Feature:
                         "message": null,
                         "uuid": "@uuid@"
                     }
-                }
+                },
+                "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
             """
 

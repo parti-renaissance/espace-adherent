@@ -61,7 +61,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
                 ];
             }
 
-            $data['referral_link'] = $object->getPublicId() ? rtrim($this->referralHost, '/').'/'.$object->getPublicId() : null;
             $data['interests'] = $interests;
 
             $data['change_email_token'] = $this->normalizer->normalize(
@@ -88,6 +87,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
         if (\in_array('user_profile', $groups)) {
             $data['instances'] = $this->adherentInstances->generate($object);
+            $data['referral_link'] = $object->getPublicId() ? rtrim($this->referralHost, '/').'/'.$object->getPublicId() : null;
         }
 
         if (\in_array('jemarche_user_profile', $groups)) {
