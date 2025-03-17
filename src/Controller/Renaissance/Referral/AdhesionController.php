@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/invitation/adhesion/{identifier}', name: self::ROUTE_NAME, requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
+#[Route('/invitation/adhesion/{identifier}', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
     public const ROUTE_NAME = 'app_referral_adhesion';

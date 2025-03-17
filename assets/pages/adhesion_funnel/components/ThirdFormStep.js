@@ -5,10 +5,16 @@ import { handlePostAccountResponse, postAccount } from '../shared/utils';
 
 /**
  * First Step component for funnel
+ *
+ * @param {{
+ *   pid?: string | null,
+ * }} props
+ *
  * @return {AlpineComponent}
  */
-const ThirdForm = () => ({
+const ThirdForm = (props) => ({
     ...CommonFormStep(),
+    pid: props.pid,
     nextStepId: 'step_4',
     defaultNextStepId: 'step_4',
     id: 'step_3',
@@ -51,7 +57,7 @@ const ThirdForm = () => ({
 
     createAccount(data) {
         this.loading = true;
-        return postAccount(data);
+        return postAccount({...data, referrer: this.pid ? this.pid : null});
     },
 
     async handleOnSubmit(e) {

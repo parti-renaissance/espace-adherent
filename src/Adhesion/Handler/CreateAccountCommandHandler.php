@@ -77,7 +77,7 @@ class CreateAccountCommandHandler
 
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
+        $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications, referrerPublicId: $membershipRequest->referrer), UserEvents::USER_CREATED);
 
         if (!$currentUser->isEligibleForMembershipPayment()) {
             return CreateAdherentResult::createActivation()->withAdherent($currentUser);

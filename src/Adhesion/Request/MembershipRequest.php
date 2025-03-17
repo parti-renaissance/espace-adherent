@@ -58,6 +58,8 @@ class MembershipRequest implements DonationRequestInterface
 
     public ?bool $allowNotifications = null;
 
+    public ?string $referrer = null;
+
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
 

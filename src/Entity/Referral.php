@@ -88,7 +88,7 @@ class Referral
     public ?Adherent $referred = null;
 
     #[Groups(['referral_read'])]
-    #[ORM\Column(length: 6, unique: true)]
+    #[ORM\Column(length: 6, unique: true, nullable: true)]
     public ?string $identifier = null;
 
     #[Groups(['referral_read'])]
@@ -96,7 +96,7 @@ class Referral
     public ?TypeEnum $type = null;
 
     #[Groups(['referral_read'])]
-    #[ORM\Column(enumType: ModeEnum::class)]
+    #[ORM\Column(nullable: true, enumType: ModeEnum::class)]
     public ?ModeEnum $mode = null;
 
     #[Groups(['referral_read'])]
@@ -108,9 +108,24 @@ class Referral
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public function __toString()
+    public static function createForReferred(Adherent $adherent): self
     {
-        return $this->emailAddress;
+        $referral = new self();
+        $referral->referred = $adherent;
+        $referral->emailAddress = $adherent->getEmailAddress();
+        $referral->firstName = $adherent->getFirstName();
+        $referral->lastName = $adherent->getLastName();
+        $referral->civility = $adherent->getCivility();
+        $referral->nationality = $adherent->getNationality();
+        $referral->phone = $adherent->getPhone();
+        $referral->birthdate = $adherent->getBirthdate();
+
+        return $referral;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->emailAddress;
     }
 
     public function hasFullInformations(): bool
