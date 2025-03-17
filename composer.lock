@@ -315,16 +315,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.1.0",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "ee0ce442f263206256762b11404d7b7e13e4e977"
+                "reference": "ba5cea729eb8f80be4e56857c80c7f94ca210ade"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/ee0ce442f263206256762b11404d7b7e13e4e977",
-                "reference": "ee0ce442f263206256762b11404d7b7e13e4e977",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/ba5cea729eb8f80be4e56857c80c7f94ca210ade",
+                "reference": "ba5cea729eb8f80be4e56857c80c7f94ca210ade",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +339,7 @@
                 "symfony/property-info": "^6.4 || ^7.1",
                 "symfony/serializer": "^6.4 || ^7.0",
                 "symfony/translation-contracts": "^3.3",
-                "symfony/web-link": "^6.4 || ^7.0",
+                "symfony/web-link": "^6.4 || ^7.1",
                 "willdurand/negotiation": "^3.1"
             },
             "conflict": {
@@ -391,16 +391,16 @@
                 "friends-of-behat/mink-extension": "^2.2",
                 "friends-of-behat/symfony-extension": "^2.1",
                 "guzzlehttp/guzzle": "^6.0 || ^7.0",
-                "illuminate/config": "^11.0",
-                "illuminate/contracts": "^11.0",
-                "illuminate/database": "^11.0",
-                "illuminate/http": "^11.0",
-                "illuminate/pagination": "^11.0",
-                "illuminate/routing": "^11.0",
-                "illuminate/support": "^11.0",
+                "illuminate/config": "^11.0 || ^12.0",
+                "illuminate/contracts": "^11.0 || ^12.0",
+                "illuminate/database": "^11.0 || ^12.0",
+                "illuminate/http": "^11.0 || ^12.0",
+                "illuminate/pagination": "^11.0 || ^12.0",
+                "illuminate/routing": "^11.0 || ^12.0",
+                "illuminate/support": "^11.0 || ^12.0",
                 "jangregor/phpstan-prophecy": "^1.0",
                 "justinrainbow/json-schema": "^5.2.11",
-                "laravel/framework": "^11.0",
+                "laravel/framework": "^11.0 || ^12.0",
                 "orchestra/testbench": "^9.1",
                 "phpspec/prophecy-phpunit": "^2.2",
                 "phpstan/extension-installer": "^1.1",
@@ -523,9 +523,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.1.0"
+                "source": "https://github.com/api-platform/core/tree/v4.1.1"
             },
-            "time": "2025-02-28T10:10:15+00:00"
+            "time": "2025-03-14T15:06:05+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
