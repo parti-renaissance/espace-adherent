@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
+#[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => '%pattern_pid%'], methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
     public const ROUTE_NAME = 'app_adhesion_index';
@@ -31,20 +32,20 @@ class AdhesionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, ?string $pid = null): Response
     {
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
         }
 
         if (($currentUser = $this->getUser()) instanceof Adherent && $currentUser->hasActiveMembership()) {
-            $this->addFlash('success', 'Vous êtes déjà à jour de cotisation.');
-
             return $this->redirectToRoute('vox_app_profile');
         }
 
-        /** @var MembershipRequest $membershipRequest */
-        /** @var Adherent $adherent */
+        /**
+         * @var MembershipRequest $membershipRequest
+         * @var Adherent          $adherent
+         */
         [$membershipRequest, $adherent] = $this->getMembershipRequest($request, $currentUser);
 
         $form = $this
@@ -72,6 +73,7 @@ class AdhesionController extends AbstractController
             'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->step,
+            'pid' => $pid,
         ]);
     }
 

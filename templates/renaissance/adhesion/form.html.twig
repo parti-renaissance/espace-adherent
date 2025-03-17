@@ -114,7 +114,7 @@
                                         >Suivant</twig:ReButton>
                                     </twig:Atoms:ReCard>
 
-                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
+                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep({pid: '{{ pid }}'})">
                                         <template x-if="generalNotification">
                                             <twig:ReParagraphStatus
                                                     x-bind:data-status="generalNotification.status"

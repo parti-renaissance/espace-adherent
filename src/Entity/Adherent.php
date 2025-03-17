@@ -39,6 +39,7 @@ use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\Team\Member;
+use App\Enum\CivilityEnum;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -848,6 +849,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getGenderName(): ?string
     {
         return array_search($this->gender, Genders::CHOICES);
+    }
+
+    public function getCivility(): ?CivilityEnum
+    {
+        return match ($this->gender) {
+            Genders::FEMALE => CivilityEnum::Madame,
+            Genders::MALE => CivilityEnum::Monsieur,
+            default => null,
+        };
     }
 
     public function getCustomGender(): ?string
