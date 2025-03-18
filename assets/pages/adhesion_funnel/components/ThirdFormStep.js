@@ -8,13 +8,15 @@ import { handlePostAccountResponse, postAccount } from '../shared/utils';
  *
  * @param {{
  *   pid?: string | null,
+ *   referral?: string | null,
  * }} props
  *
  * @return {AlpineComponent}
  */
 const ThirdForm = (props) => ({
     ...CommonFormStep(),
-    pid: props.pid,
+    pid: props.pid ? props.pid : null,
+    referral: props.referral ? props.referral : null,
     nextStepId: 'step_4',
     defaultNextStepId: 'step_4',
     id: 'step_3',
@@ -57,7 +59,7 @@ const ThirdForm = (props) => ({
 
     createAccount(data) {
         this.loading = true;
-        return postAccount({...data, referrer: this.pid ? this.pid : null});
+        return postAccount({...data, referrer: this.pid, referral: this.referral});
     },
 
     async handleOnSubmit(e) {

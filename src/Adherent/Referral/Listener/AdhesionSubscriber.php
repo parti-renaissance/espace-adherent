@@ -28,8 +28,8 @@ class AdhesionSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if ($event->referrerPublicId) {
-            $this->bus->dispatch(new LinkReferrerWithNewAdherentCommand($adherent->getUuid(), $event->referrerPublicId));
+        if ($event->referrerPublicId || $event->referralIdentifier) {
+            $this->bus->dispatch(new LinkReferrerWithNewAdherentCommand($adherent->getUuid(), $event->referrerPublicId, $event->referralIdentifier));
 
             return;
         }
