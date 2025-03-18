@@ -18,14 +18,17 @@ use App\Entity\Geo\Zone;
 use App\Entity\TaxReceipt;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Membership\AdherentChangePasswordHandler;
+use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
+use App\Membership\UserEvents;
 use App\Normalizer\ImageExposeNormalizer;
 use App\OAuth\TokenRevocationAuthority;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use App\Repository\TaxReceiptRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\Subscription\SubscriptionHandler;
 use App\Utils\HttpUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
@@ -42,6 +45,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route(path: '/v3/profile', name: 'app_api_user_profile')]
 class ProfileController extends AbstractController
@@ -312,5 +316,19 @@ class ProfileController extends AbstractController
         $tokenRevocationAuthority->revokeUserTokens($user);
 
         return $this->json('OK');
+    }
+
+    #[Route('/unsubscribe', methods: ['POST'])]
+    public function unsubscribe(UserInterface $adherent, SubscriptionHandler $subscriptionHandler, EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent->markAsUnsubscribe();
+        $subscriptionHandler->handleUpdateSubscription($adherent, []);
+
+        $entityManager->flush();
+
+        $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
+
+        return $this->json(['message' => 'OK', 'status' => 'success'], Response::HTTP_OK);
     }
 }
