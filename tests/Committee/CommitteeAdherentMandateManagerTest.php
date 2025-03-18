@@ -403,7 +403,6 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
             $this->createPostAddress('50 Rue de la Villette', '69003-69383'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon',
-            Committee::APPROVED
         );
     }
 

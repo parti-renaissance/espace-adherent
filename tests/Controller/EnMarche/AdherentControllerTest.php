@@ -301,10 +301,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     public static function provideCommitteesHostsAdherentsCredentials(): array
     {
         return [
-            'Benjamin Duroc is a provisional supervisor of a pending committee' => [
-                'benjyd@aol.com',
-                'Vous avez déjà un comité en attente de validation.',
-            ],
             'Jacques Picard is already the owner of an existing committee' => [
                 'jacques.picard@en-marche.fr',
                 'Les parlementaires et les animateurs ne peuvent pas créer de comité.',
@@ -379,7 +375,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
-        $this->assertTrue($committee->isWaitingForApproval());
+        $this->assertTrue($committee->isApproved());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emailAddress));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

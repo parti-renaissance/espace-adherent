@@ -21,7 +21,6 @@ use App\Entity\Geo\Zone;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
-use App\Exception\CommitteeAlreadyApprovedException;
 use App\Exception\CoordinatorAreaAlreadyTreatedException;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
@@ -217,7 +216,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         ?AddressInterface $address = null,
         ?PhoneNumber $phone = null,
         ?string $slug = null,
-        string $status = self::PENDING,
         ?string $approvedAt = null,
         string $createdAt = 'now',
         int $membersCount = 0,
@@ -237,7 +235,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         }
         $this->slug = $slug;
         $this->phone = $phone;
-        $this->status = $status;
         $this->membersCount = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
@@ -356,7 +353,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function approved(string $timestamp = 'now'): void
     {
         if ($this->isApproved()) {
-            throw new CommitteeAlreadyApprovedException($this->uuid);
+            return;
         }
 
         $this->status = self::APPROVED;
@@ -609,7 +606,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
 
     public function isApproved(): bool
     {
-        return self::APPROVED === $this->status && $this->approvedAt;
+        return self::APPROVED === $this->status;
     }
 
     public function isPending(): bool
@@ -742,6 +739,11 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 
     public function allowMembershipsMoving(): bool
