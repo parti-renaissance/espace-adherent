@@ -60,7 +60,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $batchSize = $input->getOption('batch-size');
+        $batchSize = (int) $input->getOption('batch-size');
         $limit = (int) $input->getOption('limit');
 
         $paginator = $this->getQueryBuilder(

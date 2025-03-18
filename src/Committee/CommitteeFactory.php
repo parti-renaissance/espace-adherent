@@ -39,9 +39,7 @@ class CommitteeFactory
             $phone = PhoneNumberUtils::create($data['phone']);
         }
 
-        $uuid = isset($data['uuid'])
-            ? Uuid::fromString($data['uuid'])
-            : Committee::createUuid($data['name']);
+        $uuid = isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Committee::createUuid($data['name']);
 
         $committee = Committee::createSimple(
             $uuid,
@@ -61,6 +59,10 @@ class CommitteeFactory
 
         if (isset($data['slug'])) {
             $committee->updateSlug($data['slug']);
+        }
+
+        if (isset($data['status'])) {
+            $committee->setStatus($data['status']);
         }
 
         $zones = $this->zoneMatcher->match($committee->getPostAddress());

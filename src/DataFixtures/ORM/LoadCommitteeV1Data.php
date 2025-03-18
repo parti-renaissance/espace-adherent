@@ -68,6 +68,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'description' => "En Marche ! C'est aussi à Marseille !",
             'address' => $this->createNullablePostAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
             'phone' => '+33673643424',
+            'status' => Committee::PENDING,
         ]);
         $this->addReference('committee-2', $committee2);
 
@@ -250,6 +251,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'description' => 'Nouveau dans l\'année 2021',
             'address' => $this->createNullablePostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '+33673654349',
+            'status' => Committee::PENDING,
         ]);
         $this->addReference('committee-16', $committee16);
 
