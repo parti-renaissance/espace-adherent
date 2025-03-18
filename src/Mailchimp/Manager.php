@@ -70,7 +70,7 @@ class Manager implements LoggerAwareInterface
         $listId = $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource());
 
         if ($adherentStatus = $this->driver->getMemberStatus($adherent->getEmailAddress(), $listId)) {
-            if (\in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED]) && $adherentStatus !== $adherent->getMailchimpStatus()) {
+            if (!$adherent->unsubscribeRequestedAt && \in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED]) && $adherentStatus !== $adherent->getMailchimpStatus()) {
                 $adherent->setEmailUnsubscribed(ContactStatusEnum::UNSUBSCRIBED === $adherentStatus);
             } elseif (ContactStatusEnum::CLEANED === $adherentStatus) {
                 $adherent->clean();
@@ -92,6 +92,8 @@ class Manager implements LoggerAwareInterface
                 true
             );
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
+            // Reset unsubscription request date
+            $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
             $adherent->emailStatusComment = 'Email invalid';
         } catch (RemovedContactStatusException $e) {

@@ -356,6 +356,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $emailUnsubscribedAt;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $unsubscribeRequestedAt = null;
+
     /**
      * @var CandidateManagedArea|null
      */
@@ -1455,6 +1458,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $this->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
             $this->emailStatusComment = null;
         }
+    }
+
+    public function markAsUnsubscribe(): void
+    {
+        $this->setEmailUnsubscribed(true);
+        $this->unsubscribeRequestedAt = new \DateTime();
     }
 
     private function isAdherentMessageRedactor(array $roles): bool
