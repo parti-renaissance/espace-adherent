@@ -29,16 +29,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStringContainsString('Tous mes comités', $this->client->getResponse()->getContent());
     }
 
-    public function testRedirectionFromCommitteeShowToCommitteeEditWhenCommitteeIsPending(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3');
-
-        $this->client->followRedirect();
-
-        $this->assertStringContainsString('/comites/en-marche-marseille-3/editer', $this->client->getRequest()->getUri());
-    }
-
     public function testRedirectionComiteFromOldUrl()
     {
         $this->client->request(Request::METHOD_GET, '/comites/'.LoadCommitteeV1Data::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');

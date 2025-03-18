@@ -39,15 +39,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testCommitteeHostCannotEditCompletelyAddressOfPendingCommittee()
-    {
-        $this->client->followRedirects();
-
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3');
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
-    }
-
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');

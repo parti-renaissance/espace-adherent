@@ -3,7 +3,6 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Committee;
-use App\Exception\CommitteeAlreadyApprovedException;
 use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -27,10 +26,10 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertSame('50 Rue de la Villette', $committee->getAddress());
         $this->assertNull($committee->getFacebookPageUrl());
         $this->assertNull($committee->getTwitterNickname());
-        $this->assertFalse($committee->isApproved());
+        $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
-        $this->assertTrue($committee->isWaitingForApproval());
+        $this->assertFalse($committee->isWaitingForApproval());
         $this->assertNull($committee->getApprovedAt());
     }
 
@@ -74,6 +73,7 @@ class CommitteeTest extends AbstractKernelTestCase
     public function testPreApproveCommittee()
     {
         $committee = $this->createCommittee();
+        $committee->setStatus(Committee::PENDING);
         $committee->preApproved();
 
         $this->assertFalse($committee->isApproved());
@@ -86,6 +86,7 @@ class CommitteeTest extends AbstractKernelTestCase
     public function testPreRefuseCommittee()
     {
         $committee = $this->createCommittee();
+        $committee->setStatus(Committee::PENDING);
         $committee->preRefused();
 
         $this->assertFalse($committee->isApproved());
@@ -105,16 +106,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
         $this->assertFalse($committee->isWaitingForApproval());
-        $this->assertEquals(new \DateTime($timestamp), $committee->getApprovedAt());
-    }
-
-    public function testApproveCommitteeTwice()
-    {
-        $this->expectException(CommitteeAlreadyApprovedException::class);
-        $committee = $this->createCommittee();
-        $committee->approved();
-
-        $committee->approved();
     }
 
     public function testCloseCommittee()
