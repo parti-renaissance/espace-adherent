@@ -1,5 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ ('unregistration.type.' ~ object.type.value)|trans }}
+    {% if object.type %}
+        {{ ('unregistration.type.' ~ object.type.value)|trans }}
+    {% endif %}
 {% endblock %}

@@ -1324,7 +1324,7 @@ general_convention.participant_quality.adherent_before: Anciens adhérents
 #
 # Referral
 #
-referral.type.link: Lien
+referral.type.link: Lien de parrainage
 referral.type.invitation: Invitation
 referral.type.preregistration: Pré-inscription
 
@@ -1333,8 +1333,8 @@ referral.mode.email: Email
 
 referral.status.invitation_sent: Invitation envoyée
 referral.status.account_created: Compte créé
-referral.status.adhesion_finished: Adhésion effectuée
-referral.status.adhesion_via_other_link: Adhésion via une autre invitation
+referral.status.adhesion_finished: Adhésion finalisée
+referral.status.adhesion_via_other_link: Adhésion via un autre moyen
 referral.status.reported: Signalé
 
 #
