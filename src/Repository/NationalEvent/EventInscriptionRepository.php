@@ -6,6 +6,7 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -146,6 +147,30 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->andWhere('ei.event = :event')
             ->setParameter('adherent', $adherent)
             ->setParameter('event', $event)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findDuplicate(EventInscription $eventInscription): ?EventInscription
+    {
+        return $this->createQueryBuilder('ei')
+            ->where('ei.id != :event_inscription_id')
+            ->andWhere('ei.event = :event')
+            ->andWhere('ei.addressEmail = :email')
+            ->andWhere('ei.firstName = :firstName')
+            ->andWhere('ei.lastName = :lastName')
+            ->andWhere('ei.status != :status')
+            ->orderBy('ei.createdAt', 'ASC')
+            ->setParameters([
+                'event_inscription_id' => $eventInscription->getId(),
+                'event' => $eventInscription->event,
+                'email' => $eventInscription->addressEmail,
+                'firstName' => $eventInscription->firstName,
+                'lastName' => $eventInscription->lastName,
+                'status' => InscriptionStatusEnum::DUPLICATE,
+            ])
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
