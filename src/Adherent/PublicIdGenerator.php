@@ -6,6 +6,8 @@ use App\Repository\AdherentRepository;
 
 class PublicIdGenerator
 {
+    private array $cachedIds = [];
+
     public function __construct(public readonly AdherentRepository $adherentRepository)
     {
     }
@@ -14,9 +16,13 @@ class PublicIdGenerator
     {
         $publicId = self::build();
 
-        return !$this->checkIfAlreadyExists($publicId)
-            ? $publicId
-            : $this->generate();
+        if ($this->checkIfAlreadyExists($publicId)) {
+            return $this->generate();
+        }
+
+        $this->cachedIds[] = $publicId;
+
+        return $publicId;
     }
 
     public static function build(): string
@@ -37,6 +43,7 @@ class PublicIdGenerator
 
     private function checkIfAlreadyExists(string $publicId): bool
     {
-        return $this->adherentRepository->count(['publicId' => $publicId]) > 0;
+        return \in_array($publicId, $this->cachedIds, true)
+            || $this->adherentRepository->count(['publicId' => $publicId]) > 0;
     }
 }
