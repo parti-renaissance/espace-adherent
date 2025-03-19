@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Adherent\Referral\Listener;
+namespace App\Adhesion\Listener;
 
+use App\Entity\Adherent;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -26,7 +27,7 @@ class AdherentRequestListener implements EventSubscriberInterface
 
         foreach ($adherentRequests as $adherentRequest) {
             $adherentRequest->email = null;
-            $adherentRequest->uuid = $adherent->getUuid();
+            $adherentRequest->adherentUuid = Adherent::createUuid($adherent->getEmailAddress());
             $adherentRequest->adherent = $adherent;
         }
 

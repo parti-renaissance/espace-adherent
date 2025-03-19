@@ -53,10 +53,10 @@ class AdherentRequest
     public bool $allowMobileNotifications = false;
 
     #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?UuidInterface $adherentUuid = null;
+    public ?UuidInterface $adherentUuid = null;
 
-    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)
