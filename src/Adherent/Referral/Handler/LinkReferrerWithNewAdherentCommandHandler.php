@@ -27,8 +27,24 @@ class LinkReferrerWithNewAdherentCommandHandler
             return;
         }
 
-        if (!$referrer = $this->adherentRepository->findByPublicId($command->referrerPublicId, true)) {
+        $referral = null;
+        if ($command->referrerPublicId) {
+            $referral = $this->createNewReferral($adherent, $command->referrerPublicId);
+        } elseif ($command->referralIdentifier) {
+            $referral = $this->updateExistingReferral($adherent, $command->referralIdentifier);
+        }
+
+        if (!$referral) {
             return;
+        }
+
+        // update other existing referrals
+    }
+
+    private function createNewReferral(Adherent $adherent, string $referrerPublicId): ?Referral
+    {
+        if (!$referrer = $this->adherentRepository->findByPublicId($referrerPublicId, true)) {
+            return null;
         }
 
         $this->entityManager->persist($referral = Referral::createForReferred($adherent));
@@ -37,5 +53,12 @@ class LinkReferrerWithNewAdherentCommandHandler
         $referral->referrer = $referrer;
 
         $this->entityManager->flush();
+
+        return $referral;
+    }
+
+    private function updateExistingReferral(Adherent $adherent, ?string $referralIdentifier): Referral
+    {
+
     }
 }
