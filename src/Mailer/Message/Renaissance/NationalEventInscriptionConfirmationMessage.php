@@ -30,7 +30,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
                 'department' => self::escape($department),
                 'birthdate' => self::escape($eventInscription->birthdate->format('d/m/Y')),
                 'birth_place' => self::escape($eventInscription->birthPlace),
-                'inscription_uuid' => $eventInscription->uuid->toString(),
+                'inscription_uuid' => $eventInscription->getUuid()->toString(),
             ]
         );
     }
