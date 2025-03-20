@@ -463,17 +463,24 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllDepartmentsIndexByCode(): array
+    public function findAllDepartmentsIndexByCode(array $codes = []): array
     {
-        return $this->createQueryBuilder('z', 'z.code')
+        $qb = $this->createQueryBuilder('z', 'z.code')
             ->select('z.name', 'z.code')
             ->addSelect('p.name AS region_name', 'p.code AS region_code')
             ->leftJoin('z.parents', 'p', Join::WITH, 'p.type = :region')
             ->where('z.type = :type')
             ->setParameter('type', Zone::DEPARTMENT)
             ->setParameter('region', Zone::REGION)
-            ->getQuery()
-            ->getResult()
         ;
+
+        if (!empty($codes)) {
+            $qb
+                ->andWhere('z.code IN (:codes)')
+                ->setParameter('codes', $codes)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
