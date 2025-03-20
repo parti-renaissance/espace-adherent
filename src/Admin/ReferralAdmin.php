@@ -7,6 +7,7 @@ use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
 use App\Entity\Adherent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -17,6 +18,14 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class ReferralAdmin extends AbstractAdmin
 {
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list']);
@@ -56,6 +65,12 @@ class ReferralAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/referral/list_status.html.twig',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créé le',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Modifié le',
             ])
         ;
     }

@@ -41,8 +41,13 @@ Feature:
                         "phone": null,
                         "referred": null,
                         "type": "invitation",
+                        "type_label": "Invitation",
                         "mode": "email",
-                        "status": "invitation_sent"
+                        "mode_label": "Email",
+                        "status": "invitation_sent",
+                        "status_label": "Invitation envoyée",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
                     },
                     {
                         "uuid": "2055b072-73f4-46c3-a9ab-1fb617c464f1",
@@ -65,8 +70,13 @@ Feature:
                         "phone": null,
                         "referred": null,
                         "type": "invitation",
+                        "type_label": "Invitation",
                         "mode": "email",
-                        "status": "invitation_sent"
+                        "mode_label": "Email",
+                        "status": "invitation_sent",
+                        "status_label": "Invitation envoyée",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
                     },
                     {
                         "uuid": "34abd1e0-46e3-4c02-a4ad-8f632e03f7ce",
@@ -89,8 +99,13 @@ Feature:
                         "phone": null,
                         "referred": null,
                         "type": "invitation",
+                        "type_label": "Invitation",
                         "mode": "email",
-                        "status": "reported"
+                        "mode_label": "Email",
+                        "status": "reported",
+                        "status_label": "Signalé",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
                     }
                 ]
             }
@@ -130,8 +145,13 @@ Feature:
                 "phone": null,
                 "referred": null,
                 "type": "invitation",
+                "type_label": "Invitation",
                 "mode": "email",
-                "status": "invitation_sent"
+                "mode_label": "Email",
+                "status": "invitation_sent",
+                "status_label": "Invitation envoyée",
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()"
             }
             """
         And I should have 1 email "ReferralAdhesionCreatedMessage" for "new-email@dev.test" with payload:
@@ -223,8 +243,13 @@ Feature:
                 "phone": "+33 6 01 23 45 67",
                 "referred": null,
                 "type": "preregistration",
+                "type_label": "Pré-inscription",
                 "mode": "email",
-                "status": "invitation_sent"
+                "mode_label": "Email",
+                "status": "invitation_sent",
+                "status_label": "Invitation envoyée",
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()"
             }
             """
 
