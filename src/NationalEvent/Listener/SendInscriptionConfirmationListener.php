@@ -5,8 +5,11 @@ namespace App\NationalEvent\Listener;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
+use App\Repository\Geo\ZoneRepository;
+use App\ValueObject\Genders;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SendInscriptionConfirmationListener implements EventSubscriberInterface
 {
@@ -14,6 +17,8 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly string $secret,
+        private readonly TranslatorInterface $translator,
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
@@ -24,9 +29,22 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
     public function sendConfirmationEmail(NewNationalEventInscriptionEvent $event): void
     {
+        $eventInscription = $event->eventInscription;
+
+        $departmentCode = $eventInscription->postalCode ? substr($eventInscription->postalCode, 0, 2) : null;
+
+        $zone = [];
+        if ($departmentCode) {
+            $departments = $this->zoneRepository->findAllDepartmentsIndexByCode([$departmentCode]);
+            $zone = $departments[$departmentCode] ?? [];
+        }
+
         $this->transactionalMailer->sendMessage(NationalEventInscriptionConfirmationMessage::create(
-            $event->eventInscription,
-            $this->urlGenerator->generate('app_national_event_edit_inscription', ['uuid' => $uuid = $event->eventInscription->getUuid()->toString(), 'token' => hash_hmac('sha256', $uuid, $this->secret)], UrlGeneratorInterface::ABSOLUTE_URL)
+            $eventInscription,
+            $this->urlGenerator->generate('app_national_event_edit_inscription', ['uuid' => $uuid = $event->eventInscription->getUuid()->toString(), 'token' => hash_hmac('sha256', $uuid, $this->secret)], UrlGeneratorInterface::ABSOLUTE_URL),
+            civility: $eventInscription->gender ? $this->translator->trans(array_search($eventInscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
+            region: $zone['region_name'] ?? null,
+            department: $zone['name'] ?? null
         ));
     }
 }
