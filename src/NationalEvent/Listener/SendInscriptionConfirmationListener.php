@@ -31,9 +31,13 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
     {
         $eventInscription = $event->eventInscription;
 
-        $departmentCode = substr($eventInscription->postalCode, 0, 2);
-        $departments = $this->zoneRepository->findAllDepartmentsIndexByCode([$departmentCode]);
-        $zone = $departments[$departmentCode] ?? null;
+        $departmentCode = $eventInscription->postalCode ? substr($eventInscription->postalCode, 0, 2) : null;
+
+        $zone = [];
+        if ($departmentCode) {
+            $departments = $this->zoneRepository->findAllDepartmentsIndexByCode([$departmentCode]);
+            $zone = $departments[$departmentCode] ?? null;
+        }
 
         $this->transactionalMailer->sendMessage(NationalEventInscriptionConfirmationMessage::create(
             $eventInscription,
