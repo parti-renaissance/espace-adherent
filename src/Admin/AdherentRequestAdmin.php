@@ -2,13 +2,18 @@
 
 namespace App\Admin;
 
+use App\Entity\Adherent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdherentRequestAdmin extends AbstractAdmin
 {
@@ -26,9 +31,28 @@ class AdherentRequestAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('email', null, [
+            ->add('email', CallbackFilter::class, [
                 'label' => 'Email',
                 'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $uuid = Adherent::createUuid($value->getValue());
+                    $qb->andWhere(
+                        $qb
+                            ->expr()
+                            ->orX()
+                            ->add("$alias.adherentUuid = :adherent_uuid")
+                            ->add("$alias.email = :email")
+                    );
+                    $qb->setParameter('adherent_uuid', $uuid->toString());
+                    $qb->setParameter('email', $value->getValue());
+
+                    return true;
+                },
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
@@ -60,6 +84,9 @@ class AdherentRequestAdmin extends AbstractAdmin
             ])
             ->add('utmCampaign', null, [
                 'label' => 'UTM Campagne',
+            ])
+            ->add('adherent', null, [
+                'label' => 'Compte',
             ])
         ;
     }
