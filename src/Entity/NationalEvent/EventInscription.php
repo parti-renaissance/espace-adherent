@@ -134,6 +134,26 @@ class EventInscription
         $this->event = $event;
     }
 
+    public function update(EventInscription $eventInscription): void
+    {
+        $this->addressEmail = $eventInscription->addressEmail;
+        $this->needSendNewsletterConfirmation = $eventInscription->needSendNewsletterConfirmation;
+        $this->joinNewsletter = $eventInscription->joinNewsletter;
+        $this->firstName = $eventInscription->firstName;
+        $this->lastName = $eventInscription->lastName;
+        $this->gender = $eventInscription->gender;
+        $this->phone = $eventInscription->phone;
+        $this->postalCode = $eventInscription->postalCode;
+        $this->qualities = $eventInscription->qualities;
+        $this->birthPlace = $eventInscription->birthPlace;
+        $this->accessibility = $eventInscription->accessibility;
+        $this->transportNeeds = $eventInscription->transportNeeds;
+        $this->volunteer = $eventInscription->volunteer;
+        $this->birthdate = $eventInscription->birthdate;
+        $this->children = $eventInscription->children;
+        $this->isResponsibilityWaived = $eventInscription->isResponsibilityWaived;
+    }
+
     public function updateFromRequest(EventInscriptionRequest $inscriptionRequest): void
     {
         $this->addressEmail = $inscriptionRequest->email;
