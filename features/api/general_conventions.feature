@@ -1,22 +1,23 @@
 @api
 Feature:
     In order to display general conventions informations
-    As an anonymous user
+    As an adherent
     I should be able to list and read general conventions
 
-    Scenario: As an anonymous user, I can list general conventions
-        And I send a "GET" request to "/api/general_conventions?page_size=10"
+    Scenario: As an adherent, I can list general conventions
+        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/general_conventions?page_size=3"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
             """
             {
                 "metadata": {
-                    "total_items": 3,
-                    "items_per_page": 10,
+                    "total_items": 13,
+                    "items_per_page": 3,
                     "count": 3,
                     "current_page": 1,
-                    "last_page": 1
+                    "last_page": 5
                 },
                 "items": [
                     {
@@ -33,6 +34,7 @@ Feature:
                         "meeting_type": "on_site",
                         "members_count": 0,
                         "participant_quality": "adherent",
+                        "general_summary": null,
                         "uuid": "c5317499-7130-4255-a7f8-418e72f5dfa5"
                     },
                     {
@@ -52,6 +54,7 @@ Feature:
                         "reported_at": "@string@.isDateTime()",
                         "meeting_type": "remote",
                         "members_count": 20,
+                        "general_summary": "@string@",
                         "participant_quality": "sympathizer",
                         "uuid": "b3a2b082-01fc-4306-9fdb-6559ebe765b1"
                     },
@@ -73,6 +76,7 @@ Feature:
                         "reported_at": "@string@.isDateTime()",
                         "meeting_type": "remote",
                         "members_count": 10,
+                        "general_summary": "@string@",
                         "participant_quality": "adherent_before",
                         "uuid": "54c9ae4c-3e2d-475d-8993-54639ec58ea1"
                     }
@@ -80,8 +84,9 @@ Feature:
             }
             """
 
-    Scenario: As an anonymous user, I can get informations of a general convention
-        And I send a "GET" request to "/api/general_conventions/c5317499-7130-4255-a7f8-418e72f5dfa5"
+    Scenario: As an adherent, I can get informations of a general convention
+        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/general_conventions/c5317499-7130-4255-a7f8-418e72f5dfa5"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
