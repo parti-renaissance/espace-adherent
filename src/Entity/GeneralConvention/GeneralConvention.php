@@ -32,12 +32,16 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => ['general_convention_read']],
         ),
         new Post(
-            uriTemplate: '/v3/general_conventions',
-            normalizationContext: ['groups' => ['general_convention_read']],
-            denormalizationContext: ['groups' => ['general_convention_write']],
+            uriTemplate: '/general_conventions',
             security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:GENERAL_CONVENTIONS')",
         ),
     ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['general_convention_read']],
+    denormalizationContext: ['groups' => ['general_convention_write']],
+    order: ['reportedAt' => 'DESC'],
+    paginationClientEnabled: true,
+    security: "is_granted('RENAISSANCE_ADHERENT')"
 )]
 #[ORM\Entity]
 class GeneralConvention
@@ -93,7 +97,7 @@ class GeneralConvention
     #[ORM\Column(enumType: ParticipantQuality::class)]
     public ?ParticipantQuality $participantQuality = null;
 
-    #[Groups(['general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $generalSummary = null;
 

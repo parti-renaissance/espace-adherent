@@ -34,23 +34,23 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
     {
         $manager->persist($this->createGeneralConvention(
             Uuid::fromString(self::UUID_1),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            $dpt = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             OrganizerEnum::ASSEMBLY,
             MeetingTypeEnum::ON_SITE,
             ParticipantQuality::ADHERENT,
-            $this->getReference('adherent-3', Adherent::class),
+            $reporter = $this->getReference('adherent-3', Adherent::class),
             new \DateTime('now'),
         ));
 
         $manager->persist($this->createGeneralConvention(
             Uuid::fromString(self::UUID_2),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            $dpt,
             OrganizerEnum::COMMITTEE,
             MeetingTypeEnum::REMOTE,
             ParticipantQuality::SYMPATHIZER,
-            $this->getReference('adherent-3', Adherent::class),
+            $reporter,
             new \DateTime('now'),
-            $this->getReference('committee-v2-1', Committee::class),
+            $committee = $this->getReference('committee-v2-1', Committee::class),
             null,
             20,
             $this->faker->text(),
@@ -72,11 +72,11 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
 
         $manager->persist($this->createGeneralConvention(
             Uuid::fromString(self::UUID_3),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            $dpt,
             OrganizerEnum::DISTRICT,
             MeetingTypeEnum::REMOTE,
             ParticipantQuality::ADHERENT_BEFORE,
-            $this->getReference('adherent-3', Adherent::class),
+            $reporter,
             new \DateTime('now'),
             null,
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'),
@@ -97,6 +97,36 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
             $this->faker->text(),
             $this->faker->text(),
         ));
+
+        for ($i = 0; $i < 10; ++$i) {
+            $manager->persist($this->createGeneralConvention(
+                Uuid::uuid4(),
+                $dpt,
+                0 === $i % 2 ? OrganizerEnum::ASSEMBLY : OrganizerEnum::DISTRICT,
+                0 === $i % 2 ? MeetingTypeEnum::REMOTE : MeetingTypeEnum::ON_SITE,
+                0 === $i % 2 ? ParticipantQuality::ADHERENT : ParticipantQuality::SYMPATHIZER,
+                $reporter,
+                new \DateTime('now'),
+                $committee,
+                null,
+                20,
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+                $this->faker->text(),
+            ));
+        }
 
         $manager->flush();
     }
