@@ -1,5 +1,5 @@
 exercise_html_purifier:
-    default_cache_serializer_path: '%kernel.cache_dir%/htmlpurifier'
+    default_cache_serializer_path: '%kernel.cache_dir%/htmlpurifier_bundle_cache'
     html_profiles:
         default:
             config:

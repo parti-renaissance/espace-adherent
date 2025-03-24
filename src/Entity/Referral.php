@@ -139,10 +139,12 @@ class Referral
 
     public function isAdhesion(): bool
     {
-        return \in_array($this->type, [
-            TypeEnum::INVITATION,
-            TypeEnum::PREREGISTRATION,
-        ], true);
+        return \in_array($this->type, [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION], true);
+    }
+
+    public function isInProgress(): bool
+    {
+        return \in_array($this->status, [StatusEnum::INVITATION_SENT, StatusEnum::ACCOUNT_CREATED], true);
     }
 
     public function isReported(): bool
@@ -153,5 +155,10 @@ class Referral
     public function report(): void
     {
         $this->status = StatusEnum::REPORTED;
+    }
+
+    public function isInvitation(): bool
+    {
+        return TypeEnum::INVITATION === $this->type;
     }
 }
