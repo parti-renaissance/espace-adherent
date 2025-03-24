@@ -2,14 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Api\Serializer\PrivatePublicContextBuilder;
-use App\Entity\Action\Action;
-use App\Entity\Adherent;
 use App\Entity\GeneralConvention\GeneralConvention;
-use App\Repository\Action\ActionParticipantRepository;
-use App\Security\Voter\CanManageActionVoter;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
