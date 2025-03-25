@@ -10,7 +10,6 @@ abstract class AbstractIndexerNormalizer implements NormalizerInterface
     final public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             $this->getClassName() => true,
         ];
     }

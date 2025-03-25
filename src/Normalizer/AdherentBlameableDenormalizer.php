@@ -37,7 +37,6 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             EntityAdherentBlameableInterface::class => false,
         ];
     }

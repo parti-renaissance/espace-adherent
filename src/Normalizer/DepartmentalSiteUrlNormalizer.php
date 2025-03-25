@@ -33,7 +33,6 @@ class DepartmentalSiteUrlNormalizer implements NormalizerInterface, NormalizerAw
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             DepartmentSite::class => false,
         ];
     }

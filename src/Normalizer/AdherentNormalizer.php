@@ -108,7 +108,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Adherent::class => false,
         ];
     }

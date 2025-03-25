@@ -30,7 +30,6 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface, Normalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             ElectedRepresentative::class => false,
         ];
     }

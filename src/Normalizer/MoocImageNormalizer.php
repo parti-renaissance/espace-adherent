@@ -30,7 +30,6 @@ class MoocImageNormalizer implements NormalizerInterface, NormalizerAwareInterfa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Mooc::class => false,
         ];
     }

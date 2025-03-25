@@ -21,7 +21,6 @@ class LimitedProxyDataNormalizer implements NormalizerInterface, NormalizerAware
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Proxy::class => false,
         ];
     }

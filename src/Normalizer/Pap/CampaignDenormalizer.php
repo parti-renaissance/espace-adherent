@@ -37,7 +37,6 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Campaign::class => false,
         ];
     }

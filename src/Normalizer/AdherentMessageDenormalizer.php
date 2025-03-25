@@ -68,7 +68,6 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AbstractAdherentMessage::class => false,
         ];
     }

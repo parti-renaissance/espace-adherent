@@ -24,7 +24,6 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Device::class => false,
         ];
     }

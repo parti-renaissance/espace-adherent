@@ -50,7 +50,6 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AddressInterface::class => false,
         ];
     }

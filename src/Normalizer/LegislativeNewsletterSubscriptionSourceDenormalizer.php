@@ -47,7 +47,6 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             LegislativeNewsletterSubscription::class => false,
         ];
     }

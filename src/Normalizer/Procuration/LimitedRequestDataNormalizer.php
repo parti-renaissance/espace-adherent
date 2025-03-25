@@ -21,7 +21,6 @@ class LimitedRequestDataNormalizer implements NormalizerInterface, NormalizerAwa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Request::class => false,
         ];
     }

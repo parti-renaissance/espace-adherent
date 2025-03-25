@@ -54,7 +54,6 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Floor::class => false,
         ];
     }

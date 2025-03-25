@@ -35,7 +35,6 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Team::class => false,
         ];
     }

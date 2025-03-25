@@ -32,7 +32,6 @@ class EventNormalizer implements NormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Event::class => true,
         ];
     }

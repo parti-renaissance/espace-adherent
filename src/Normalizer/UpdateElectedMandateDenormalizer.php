@@ -57,7 +57,6 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Mandate::class => false,
         ];
     }

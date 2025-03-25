@@ -38,7 +38,6 @@ class ElectedRepresentativeAdherentMandateNormalizer implements NormalizerInterf
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             ElectedRepresentativeAdherentMandate::class => false,
         ];
     }

@@ -50,7 +50,6 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Designation::class => false,
         ];
     }

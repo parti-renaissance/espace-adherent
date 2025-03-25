@@ -26,7 +26,6 @@ class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Choice::class => true,
         ];
     }

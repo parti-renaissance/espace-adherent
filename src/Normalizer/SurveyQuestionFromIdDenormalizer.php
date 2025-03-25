@@ -26,7 +26,6 @@ class SurveyQuestionFromIdDenormalizer implements DenormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             SurveyQuestion::class => true,
         ];
     }

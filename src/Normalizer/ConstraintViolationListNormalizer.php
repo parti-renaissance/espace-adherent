@@ -41,7 +41,6 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             ConstraintViolationListInterface::class => true,
             ConstraintViolationListAwareExceptionInterface::class => true,
         ];

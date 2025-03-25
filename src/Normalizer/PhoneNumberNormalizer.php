@@ -72,7 +72,6 @@ class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterfac
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             PhoneNumber::class => true,
         ];
     }

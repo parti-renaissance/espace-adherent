@@ -40,7 +40,6 @@ class MoocNormalizer implements NormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Mooc::class => true,
         ];
     }

@@ -31,7 +31,6 @@ class GeneralConventionDenormalizer implements DenormalizerInterface, Denormaliz
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             GeneralConvention::class => false,
         ];
     }

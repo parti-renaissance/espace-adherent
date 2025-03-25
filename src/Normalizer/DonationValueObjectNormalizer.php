@@ -36,7 +36,6 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             DonationValueObject::class => false,
         ];
     }

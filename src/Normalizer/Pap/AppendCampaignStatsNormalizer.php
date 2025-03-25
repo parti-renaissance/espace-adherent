@@ -64,7 +64,6 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Campaign::class => false,
         ];
     }

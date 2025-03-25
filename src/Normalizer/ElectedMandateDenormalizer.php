@@ -45,7 +45,6 @@ class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerA
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Mandate::class => false,
         ];
     }

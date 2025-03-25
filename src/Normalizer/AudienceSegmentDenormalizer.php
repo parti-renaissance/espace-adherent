@@ -26,7 +26,6 @@ class AudienceSegmentDenormalizer implements DenormalizerInterface, Denormalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AudienceSegment::class => false,
         ];
     }

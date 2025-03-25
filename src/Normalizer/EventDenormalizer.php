@@ -51,7 +51,6 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Event::class => false,
         ];
     }

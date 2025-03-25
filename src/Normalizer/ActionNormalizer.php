@@ -49,7 +49,6 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Action::class => false,
         ];
     }
