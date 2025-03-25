@@ -138,7 +138,9 @@ class EventInscription
     {
         $this->addressEmail = $eventInscription->addressEmail ?? $this->addressEmail;
         $this->needSendNewsletterConfirmation = $eventInscription->needSendNewsletterConfirmation ?? $this->needSendNewsletterConfirmation;
-        $this->joinNewsletter = $eventInscription->joinNewsletter ?? $this->joinNewsletter;
+        if (true === $this->joinNewsletter) {
+            $this->joinNewsletter = $eventInscription->joinNewsletter;
+        }
         $this->firstName = $eventInscription->firstName ?? $this->firstName;
         $this->lastName = $eventInscription->lastName ?? $this->lastName;
         $this->gender = $eventInscription->gender ?? $this->gender;
