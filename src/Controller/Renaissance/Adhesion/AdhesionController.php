@@ -8,6 +8,7 @@ use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
+use App\Entity\Referral;
 use App\Form\MembershipRequestType;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Utils\UtmParams;
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 #[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => '%pattern_pid%'], methods: ['GET', 'POST'])]
+#[Route('/adhesion/{identifier}', name: 'app_adhesion_with_invitation', requirements: ['identifier' => 'P[A-Z0-9]{5}'], methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
     public const ROUTE_NAME = 'app_adhesion_index';
@@ -32,7 +34,7 @@ class AdhesionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, ?string $pid = null): Response
+    public function __invoke(Request $request, ?string $pid = null, ?Referral $referral = null): Response
     {
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
@@ -42,11 +44,7 @@ class AdhesionController extends AbstractController
             return $this->redirectToRoute('vox_app_profile');
         }
 
-        /**
-         * @var MembershipRequest $membershipRequest
-         * @var Adherent          $adherent
-         */
-        [$membershipRequest, $adherent] = $this->getMembershipRequest($request, $currentUser);
+        $membershipRequest = $this->getMembershipRequest($request, $currentUser, $referral);
 
         $form = $this
             ->createForm(MembershipRequestType::class, $membershipRequest, [
@@ -58,10 +56,10 @@ class AdhesionController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $donationRequest = DonationRequest::create($request, $membershipRequest->amount, PayboxPaymentSubscription::NONE, $adherent);
+            $donationRequest = DonationRequest::create($request, $membershipRequest->amount, PayboxPaymentSubscription::NONE, $currentUser);
             $donationRequest->forMembership();
 
-            $donation = $this->donationRequestHandler->handle($donationRequest, $adherent, $adherent->isRenaissanceAdherent());
+            $donation = $this->donationRequestHandler->handle($donationRequest, $currentUser, (bool) $currentUser?->isRenaissanceAdherent());
 
             return $this->redirectToRoute(
                 'app_payment',
@@ -74,10 +72,11 @@ class AdhesionController extends AbstractController
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->step,
             'pid' => $pid,
+            'referral' => $referral,
         ]);
     }
 
-    private function getMembershipRequest(Request $request, ?Adherent $currentUser): array
+    private function getMembershipRequest(Request $request, ?Adherent $currentUser, ?Referral $referral): MembershipRequest
     {
         if ($currentUser) {
             // Create membership from connected user (like a sympathizer or an adherent who wants to renew)
@@ -87,12 +86,14 @@ class AdhesionController extends AbstractController
         } else {
             // Create empty membership request otherwise
             $membershipRequest = new MembershipRequest();
+            $membershipRequest->email = $request->query->get('email');
 
-            if ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
+            if ($referral) {
+                $membershipRequest->email = $referral->emailAddress;
+                $this->step = 1;
+            } elseif ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
                 $membershipRequest->email = $emailIdentifier;
                 $this->step = 1;
-            } else {
-                $membershipRequest->email = $request->query->get('email');
             }
         }
 
@@ -103,6 +104,6 @@ class AdhesionController extends AbstractController
             $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
-        return [$membershipRequest, $currentUser];
+        return $membershipRequest;
     }
 }

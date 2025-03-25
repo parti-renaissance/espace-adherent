@@ -17,6 +17,7 @@ class UserEvent extends Event implements GeocodableEntityEventInterface
         private readonly ?bool $allowEmailNotifications = null,
         private readonly ?bool $allowMobileNotifications = null,
         public readonly ?string $referrerPublicId = null,
+        public readonly ?string $referralIdentifier = null,
     ) {
     }
 
