@@ -131,7 +131,6 @@ trait EntityIdentityTrait
         'event_registration_list',
         'zone_based_role_read',
         'zone_based_role_write',
-        'general_convention_list',
         'general_convention_read',
         'general_convention_write',
         'referral_read',

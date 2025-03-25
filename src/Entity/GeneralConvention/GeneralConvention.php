@@ -23,14 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new GetCollection(
-            uriTemplate: '/general_conventions',
-            normalizationContext: ['groups' => ['general_convention_list']],
-        ),
-        new Get(
-            uriTemplate: '/general_conventions/{uuid}',
-            normalizationContext: ['groups' => ['general_convention_read']],
-        ),
+        new GetCollection(uriTemplate: '/general_conventions'),
+        new Get(uriTemplate: '/general_conventions/{uuid}'),
         new Post(
             uriTemplate: '/general_conventions',
             security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:GENERAL_CONVENTIONS')",
@@ -51,23 +45,23 @@ class GeneralConvention
     use EntityAdministratorBlameableTrait;
 
     #[Assert\NotBlank]
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $departmentZone = null;
 
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
     public ?Committee $committee = null;
 
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $districtZone = null;
 
     #[Assert\NotBlank]
     #[Assert\Type(type: OrganizerEnum::class)]
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(enumType: OrganizerEnum::class)]
     public ?OrganizerEnum $organizer = null;
 
@@ -77,27 +71,27 @@ class GeneralConvention
     public ?Adherent $reporter = null;
 
     #[Assert\NotBlank]
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $reportedAt = null;
 
     #[Assert\NotBlank]
     #[Assert\Type(type: MeetingTypeEnum::class)]
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(enumType: MeetingTypeEnum::class)]
     public ?MeetingTypeEnum $meetingType = null;
 
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     public int $membersCount = 0;
 
     #[Assert\NotBlank]
     #[Assert\Type(type: ParticipantQuality::class)]
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(enumType: ParticipantQuality::class)]
     public ?ParticipantQuality $participantQuality = null;
 
-    #[Groups(['general_convention_list', 'general_convention_read', 'general_convention_write'])]
+    #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $generalSummary = null;
 

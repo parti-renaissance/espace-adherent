@@ -35,7 +35,22 @@ Feature:
                         "members_count": 0,
                         "participant_quality": "adherent",
                         "general_summary": null,
-                        "uuid": "c5317499-7130-4255-a7f8-418e72f5dfa5"
+                        "uuid": "c5317499-7130-4255-a7f8-418e72f5dfa5",
+                        "general_summary": null,
+                        "party_definition_summary": null,
+                        "unique_party_summary": null,
+                        "progress_since2016": null,
+                        "party_objectives": null,
+                        "governance": null,
+                        "communication": null,
+                        "militant_training": null,
+                        "member_journey": null,
+                        "mobilization": null,
+                        "talent_detection": null,
+                        "election_preparation": null,
+                        "relationship_with_supporters": null,
+                        "work_with_partners": null,
+                        "additional_comments": null
                     },
                     {
                         "department_zone": {
@@ -56,7 +71,21 @@ Feature:
                         "members_count": 20,
                         "general_summary": "@string@",
                         "participant_quality": "sympathizer",
-                        "uuid": "b3a2b082-01fc-4306-9fdb-6559ebe765b1"
+                        "uuid": "b3a2b082-01fc-4306-9fdb-6559ebe765b1",
+                        "party_definition_summary": "@string@",
+                        "unique_party_summary": "@string@",
+                        "progress_since2016": "@string@",
+                        "party_objectives": "@string@",
+                        "governance": "@string@",
+                        "communication": "@string@",
+                        "militant_training": "@string@",
+                        "member_journey": "@string@",
+                        "mobilization": "@string@",
+                        "talent_detection": "@string@",
+                        "election_preparation": "@string@",
+                        "relationship_with_supporters": "@string@",
+                        "work_with_partners": "@string@",
+                        "additional_comments": "@string@"
                     },
                     {
                         "department_zone": {
@@ -78,7 +107,21 @@ Feature:
                         "members_count": 10,
                         "general_summary": "@string@",
                         "participant_quality": "adherent_before",
-                        "uuid": "54c9ae4c-3e2d-475d-8993-54639ec58ea1"
+                        "uuid": "54c9ae4c-3e2d-475d-8993-54639ec58ea1",
+                        "party_definition_summary": "@string@",
+                        "unique_party_summary": "@string@",
+                        "progress_since2016": "@string@",
+                        "party_objectives": "@string@",
+                        "governance": "@string@",
+                        "communication": "@string@",
+                        "militant_training": "@string@",
+                        "member_journey": "@string@",
+                        "mobilization": "@string@",
+                        "talent_detection": "@string@",
+                        "election_preparation": "@string@",
+                        "relationship_with_supporters": "@string@",
+                        "work_with_partners": "@string@",
+                        "additional_comments": "@string@"
                     }
                 ]
             }
