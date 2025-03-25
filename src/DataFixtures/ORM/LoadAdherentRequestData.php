@@ -17,6 +17,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
     public const ADHERENT_REQUEST_1_UUID = 'b03cee7b-6ace-4acd-96ff-a3f1037cf9f7';
     public const ADHERENT_REQUEST_2_UUID = '3edb2e0a-f0d7-4fb5-aa75-b8b965beb3cb';
     public const ADHERENT_REQUEST_3_UUID = '37aa3e2a-0928-41d0-a6f1-af06c3facac1';
+    public const ADHERENT_REQUEST_4_UUID = '20ee41c3-f81b-4a7d-ad5e-5c2c3789b2b1';
 
     private PasswordHasherInterface $hasher;
 
@@ -59,9 +60,22 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
         );
 
+        $adherentRequest4 = $this->createAdherentRequest(
+            self::ADHERENT_REQUEST_4_UUID,
+            'michelle.dufour@example.ch',
+            'Michelle',
+            'Dufour',
+            20,
+            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            true,
+            true,
+            $this->getReference('adherent-1', Adherent::class)
+        );
+
         $manager->persist($adherentRequest1);
         $manager->persist($adherentRequest2);
         $manager->persist($adherentRequest3);
+        $manager->persist($adherentRequest4);
 
         $manager->flush();
     }
@@ -82,6 +96,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         PostAddress $address,
         $allowEmailNotifications = false,
         $allowMobileNotifications = false,
+        ?Adherent $adherent = null,
     ): AdherentRequest {
         $adherentRequest = new AdherentRequest(Uuid::fromString($uuid));
         $adherentRequest->firstName = $firstName;
@@ -92,6 +107,12 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest->password = $this->hasher->hash(LoadAdherentData::DEFAULT_PASSWORD);
         $adherentRequest->allowEmailNotifications = $allowEmailNotifications;
         $adherentRequest->allowMobileNotifications = $allowMobileNotifications;
+
+        if ($adherent) {
+            $adherentRequest->email = null;
+            $adherentRequest->adherentUuid = Adherent::createUuid($adherent->getEmailAddress());
+            $adherentRequest->adherent = $adherent;
+        }
 
         return $adherentRequest;
     }

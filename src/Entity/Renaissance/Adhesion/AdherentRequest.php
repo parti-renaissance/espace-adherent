@@ -2,16 +2,18 @@
 
 namespace App\Entity\Renaissance\Adhesion;
 
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
+use App\Repository\Renaissance\Adhesion\AdherentRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AdherentRequestRepository::class)]
 class AdherentRequest
 {
     use EntityIdentityTrait;
@@ -28,7 +30,7 @@ class AdherentRequest
     public ?string $lastName = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     public ?string $email = null;
 
     #[Assert\NotBlank]
@@ -49,6 +51,13 @@ class AdherentRequest
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $allowMobileNotifications = false;
+
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    public ?UuidInterface $adherentUuid = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {
