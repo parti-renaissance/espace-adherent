@@ -141,6 +141,25 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
+    /** @return Event[] */
+    public function findEventsToRemindByEmail(
+        \DateTimeInterface $startAfter,
+        \DateTimeInterface $startBefore,
+    ): array {
+        return $this->createQueryBuilder('event')
+            ->andWhere('event.beginAt >= :start_after')
+            ->andWhere('event.beginAt < :start_before')
+            ->andWhere('event.emailReminded = :false')
+            ->setParameters([
+                'start_after' => $startAfter,
+                'start_before' => $startBefore,
+                'false' => false,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findAllByFilter(ListFilter $filter, int $limit = 50): array
     {
         $qb = $this->createQueryBuilder('event');
