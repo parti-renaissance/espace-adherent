@@ -43,6 +43,8 @@ class Referral
     use EntityTimestampableTrait;
     use EntityNullablePostAddressTrait;
 
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     #[Assert\NotBlank]
     #[Groups(['referral_read', 'referral_write'])]
     #[ORM\Column]
