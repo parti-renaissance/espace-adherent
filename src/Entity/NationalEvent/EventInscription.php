@@ -136,22 +136,22 @@ class EventInscription
 
     public function update(EventInscription $eventInscription): void
     {
-        $this->addressEmail = $eventInscription->addressEmail;
-        $this->needSendNewsletterConfirmation = $eventInscription->needSendNewsletterConfirmation;
-        $this->joinNewsletter = $eventInscription->joinNewsletter;
-        $this->firstName = $eventInscription->firstName;
-        $this->lastName = $eventInscription->lastName;
-        $this->gender = $eventInscription->gender;
-        $this->phone = $eventInscription->phone;
-        $this->postalCode = $eventInscription->postalCode;
-        $this->qualities = $eventInscription->qualities;
-        $this->birthPlace = $eventInscription->birthPlace;
-        $this->accessibility = $eventInscription->accessibility;
-        $this->transportNeeds = $eventInscription->transportNeeds;
-        $this->volunteer = $eventInscription->volunteer;
-        $this->birthdate = $eventInscription->birthdate;
-        $this->children = $eventInscription->children;
-        $this->isResponsibilityWaived = $eventInscription->isResponsibilityWaived;
+        $this->addressEmail = $eventInscription->addressEmail ?? $this->addressEmail;
+        $this->needSendNewsletterConfirmation = $eventInscription->needSendNewsletterConfirmation ?? $this->needSendNewsletterConfirmation;
+        $this->joinNewsletter = $eventInscription->joinNewsletter ?? $this->joinNewsletter;
+        $this->firstName = $eventInscription->firstName ?? $this->firstName;
+        $this->lastName = $eventInscription->lastName ?? $this->lastName;
+        $this->gender = $eventInscription->gender ?? $this->gender;
+        $this->phone = $eventInscription->phone ?? $this->phone;
+        $this->postalCode = $eventInscription->postalCode ?? $this->postalCode;
+        $this->qualities = $eventInscription->qualities ?? $this->qualities;
+        $this->birthPlace = $eventInscription->birthPlace ?? $this->birthPlace;
+        $this->accessibility = $eventInscription->accessibility ?? $this->accessibility;
+        $this->transportNeeds = $eventInscription->transportNeeds ?? $this->transportNeeds;
+        $this->volunteer = $eventInscription->volunteer ?? $this->volunteer;
+        $this->birthdate = $eventInscription->birthdate ?? $this->birthdate;
+        $this->children = $eventInscription->children ?? $this->children;
+        $this->isResponsibilityWaived = $eventInscription->isResponsibilityWaived ?? $this->isResponsibilityWaived;
     }
 
     public function updateFromRequest(EventInscriptionRequest $inscriptionRequest): void
