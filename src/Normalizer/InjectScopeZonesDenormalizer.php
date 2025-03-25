@@ -31,7 +31,6 @@ class InjectScopeZonesDenormalizer implements DenormalizerInterface, Denormalize
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             InjectScopeZonesInterface::class => false,
         ];
     }

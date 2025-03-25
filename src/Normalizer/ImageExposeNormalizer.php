@@ -46,7 +46,6 @@ class ImageExposeNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             ImageExposeInterface::class => false,
         ];
     }

@@ -46,7 +46,6 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AuthorInterface::class => false,
         ];
     }

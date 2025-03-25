@@ -34,7 +34,6 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             PaginatorInterface::class => false,
         ];
     }

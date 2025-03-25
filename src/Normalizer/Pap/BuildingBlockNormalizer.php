@@ -48,7 +48,6 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             BuildingBlock::class => false,
         ];
     }

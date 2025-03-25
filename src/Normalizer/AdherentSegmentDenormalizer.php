@@ -27,7 +27,6 @@ class AdherentSegmentDenormalizer implements DenormalizerInterface, Denormalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AdherentSegment::class => false,
         ];
     }

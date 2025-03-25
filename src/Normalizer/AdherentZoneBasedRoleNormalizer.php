@@ -31,7 +31,6 @@ class AdherentZoneBasedRoleNormalizer implements NormalizerInterface, Normalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Adherent::class => false,
         ];
     }

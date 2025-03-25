@@ -40,7 +40,6 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AbstractAdherentMessage::class => false,
         ];
     }

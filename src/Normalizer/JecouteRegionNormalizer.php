@@ -34,7 +34,6 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Region::class => false,
         ];
     }

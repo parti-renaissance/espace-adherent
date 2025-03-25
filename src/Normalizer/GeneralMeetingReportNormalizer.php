@@ -39,7 +39,6 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             GeneralMeetingReport::class => false,
         ];
     }

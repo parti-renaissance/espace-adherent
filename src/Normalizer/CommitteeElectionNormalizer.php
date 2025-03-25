@@ -41,7 +41,6 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             CommitteeElection::class => false,
         ];
     }

@@ -43,7 +43,6 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             CommitteeCandidacy::class => true,
         ];
     }

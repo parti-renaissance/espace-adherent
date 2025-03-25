@@ -96,7 +96,6 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             ManagedUser::class => false,
         ];
     }

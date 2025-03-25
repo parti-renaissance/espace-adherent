@@ -115,7 +115,6 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             DataSurvey::class => false,
         ];
     }

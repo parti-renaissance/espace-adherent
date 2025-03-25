@@ -39,7 +39,6 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Formation::class => false,
         ];
     }

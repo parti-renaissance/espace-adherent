@@ -37,7 +37,6 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             GeoPointInterface::class => false,
         ];
     }

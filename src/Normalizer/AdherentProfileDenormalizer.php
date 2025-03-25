@@ -33,7 +33,6 @@ class AdherentProfileDenormalizer implements DenormalizerInterface, Denormalizer
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AdherentProfile::class => false,
         ];
     }

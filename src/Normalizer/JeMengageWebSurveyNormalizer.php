@@ -28,7 +28,6 @@ class JeMengageWebSurveyNormalizer implements NormalizerInterface, NormalizerAwa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Survey::class => false,
         ];
     }

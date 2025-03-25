@@ -48,7 +48,6 @@ class JecouteSurveyNormalizer implements NormalizerInterface, NormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Survey::class => false,
             LocalSurvey::class => false,
             NationalSurvey::class => false,

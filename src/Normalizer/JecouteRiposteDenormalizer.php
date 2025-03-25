@@ -29,7 +29,6 @@ final class JecouteRiposteDenormalizer implements DenormalizerInterface, Denorma
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Riposte::class => false,
         ];
     }

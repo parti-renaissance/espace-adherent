@@ -41,7 +41,6 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Document::class => false,
         ];
     }

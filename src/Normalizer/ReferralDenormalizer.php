@@ -48,7 +48,6 @@ final class ReferralDenormalizer implements DenormalizerInterface, DenormalizerA
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Referral::class => false,
         ];
     }

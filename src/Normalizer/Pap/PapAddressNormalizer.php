@@ -28,7 +28,6 @@ class PapAddressNormalizer implements NormalizerInterface, NormalizerAwareInterf
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Voter::class => false,
         ];
     }

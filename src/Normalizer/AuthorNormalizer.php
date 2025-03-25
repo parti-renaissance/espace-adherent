@@ -62,7 +62,6 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AuthorInstanceInterface::class => false,
         ];
     }

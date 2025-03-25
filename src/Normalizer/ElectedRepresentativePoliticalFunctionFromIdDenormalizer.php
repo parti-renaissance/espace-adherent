@@ -25,7 +25,6 @@ class ElectedRepresentativePoliticalFunctionFromIdDenormalizer implements Denorm
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             PoliticalFunction::class => true,
         ];
     }

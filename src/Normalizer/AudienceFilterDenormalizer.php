@@ -49,7 +49,6 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             AudienceFilter::class => false,
         ];
     }

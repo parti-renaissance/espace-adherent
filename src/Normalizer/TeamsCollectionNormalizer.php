@@ -35,7 +35,6 @@ class TeamsCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             PaginatorInterface::class => false,
         ];
     }

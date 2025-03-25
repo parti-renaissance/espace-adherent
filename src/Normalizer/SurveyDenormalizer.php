@@ -60,7 +60,6 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Survey::class => false,
             LocalSurvey::class => false,
             NationalSurvey::class => false,

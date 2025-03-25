@@ -46,7 +46,6 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Survey::class => false,
         ];
     }

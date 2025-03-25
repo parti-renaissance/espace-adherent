@@ -33,7 +33,6 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Event::class => false,
             Riposte::class => false,
         ];

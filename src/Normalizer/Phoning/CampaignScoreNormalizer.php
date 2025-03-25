@@ -53,7 +53,6 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => null,
             Campaign::class => false,
         ];
     }
