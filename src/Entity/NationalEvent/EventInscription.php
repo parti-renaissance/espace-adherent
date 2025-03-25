@@ -134,13 +134,11 @@ class EventInscription
         $this->event = $event;
     }
 
-    public function update(EventInscription $eventInscription): void
+    public function updateFromDuplicate(EventInscription $eventInscription): void
     {
         $this->addressEmail = $eventInscription->addressEmail ?? $this->addressEmail;
-        $this->needSendNewsletterConfirmation = $eventInscription->needSendNewsletterConfirmation ?? $this->needSendNewsletterConfirmation;
-        if (true === $this->joinNewsletter) {
-            $this->joinNewsletter = $eventInscription->joinNewsletter;
-        }
+        $this->needSendNewsletterConfirmation = !$this->joinNewsletter && $eventInscription->joinNewsletter;
+        $this->joinNewsletter = $this->joinNewsletter ?: $eventInscription->joinNewsletter;
         $this->firstName = $eventInscription->firstName ?? $this->firstName;
         $this->lastName = $eventInscription->lastName ?? $this->lastName;
         $this->gender = $eventInscription->gender ?? $this->gender;

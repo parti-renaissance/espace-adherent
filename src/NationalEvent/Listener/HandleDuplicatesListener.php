@@ -33,7 +33,7 @@ class HandleDuplicatesListener implements EventSubscriberInterface
 
         $newEventInscription->status = InscriptionStatusEnum::DUPLICATE;
 
-        $oldEventInscription->update($newEventInscription);
+        $oldEventInscription->updateFromDuplicate($newEventInscription);
 
         $this->entityManager->flush();
     }
