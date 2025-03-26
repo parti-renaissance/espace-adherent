@@ -128,9 +128,13 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
                 ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                 ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
+                ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
                 ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
-                ->add('ticketSentAt', null, ['label' => 'Date d\'envoi du billet', 'widget' => 'single_text', 'disabled' => true])
+            ->end()
+            ->with('Billet', ['class' => 'col-md-6'])
+                ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
+                ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
             ->end()
         ;
     }
@@ -198,8 +202,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Lieu de naissance' => $inscription->birthPlace,
                 'Téléphone' => PhoneNumberUtils::format($inscription->phone),
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
+                'Date de confirmation' => $inscription->confirmedAt?->format('d/m/Y H:i:s'),
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
+                'Billet champ libre' => $inscription->ticketCustomDetail,
                 'Code postal' => $inscription->postalCode,
                 'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
                 'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',

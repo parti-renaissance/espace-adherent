@@ -1,0 +1,41 @@
+{% extends 'renaissance/national_event/_layout.html.twig' %}
+
+{% block page_title 'Confirmation' %}
+
+{% block content_section %}
+    <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative">
+        <div class="flex gap-8 flex-col mt-[90px] pt-[150px] md:pt-[50px] p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
+            <twig:Atoms:ReCard class="max-w-[500px] re-step gap-0 !border-black !border-[2px]">
+                <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
+                    {% if is_confirmed %}
+                        <h1 class="font-bold text-2xl text-ui_gray-80">Merci d'avoir confirmé votre présence, <span class="text-ui_blue-50">{{ inscription.firstName }} !</span></h1>
+
+                        <p class="text-ui_gray-80">On a hâte de vous retrouver le {{ event.startDate|date('d F')|lower }} !</p>
+
+                        <div class="h-[2px] bg-black w-full"></div>
+
+                        <p class="text-ui_gray-80">Suivez nos réseaux sociaux :</p>
+
+                        <div class="flex items-center justify-center gap-[40px]">
+                            {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
+                        </div>
+
+                            <twig:ReButton class="w-full" color="black" tag="a" href="{{ path('renaissance_site') }}">Retourner sur le site</twig:ReButton>
+                    {% else %}
+                        <div class="relative flex h-6 w-6 items-center justify-center self-center">
+                            <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
+                            <div class="relative inline-flex rounded-full h-5 w-5 bg-sky-500"></div>
+                        </div>
+
+                        <div class="hidden">
+                            {{ form(form, {attr: {
+                                'x-data': '',
+                                'x-init': '$nextTick(function () {setTimeout(function () {$el.submit()}, 1000)})',
+                            }}) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </twig:Atoms:ReCard>
+        </div>
+    </div>
+{% endblock %}
