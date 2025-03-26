@@ -52,4 +52,21 @@ class NationalEventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findUpcoming(
+        \DateTimeInterface $startAfter,
+        \DateTimeInterface $startBefore,
+    ): array {
+        return $this
+            ->createQueryBuilder('event')
+            ->andWhere('event.startDate >= :start_after')
+            ->andWhere('event.startDate < :start_before')
+            ->setParameters([
+                'start_after' => $startAfter,
+                'start_before' => $startBefore,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
