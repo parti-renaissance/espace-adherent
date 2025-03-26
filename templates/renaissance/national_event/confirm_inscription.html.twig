@@ -10,7 +10,7 @@
                     {% if is_confirmed %}
                         <h1 class="font-bold text-2xl text-ui_gray-80">Merci d'avoir confirmé votre présence, <span class="text-ui_blue-50">{{ inscription.firstName }} !</span></h1>
 
-                        <p class="text-ui_gray-80">On a hâte de vous retrouver le {{ event.startDate|date('d F')|lower }} !</p>
+                        <p class="text-ui_gray-80">On a hâte de vous retrouver le {{ event.startDate|format_datetime('none', 'none', 'd MMMM') }} !</p>
 
                         <div class="h-[2px] bg-black w-full"></div>
 
