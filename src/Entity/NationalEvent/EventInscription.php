@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(requirements: ['uuid' => '%pattern_uuid%']),
     ],
     normalizationContext: ['groups' => ['event_inscription_read']],
-    denormalizationContext: ['groups' => ['event_inscription_update_status']]
+    denormalizationContext: ['groups' => ['event_inscription_update']]
 )]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Table('national_event_inscription')]
@@ -38,7 +38,7 @@ class EventInscription
     public NationalEvent $event;
 
     #[Assert\Choice(callback: [InscriptionStatusEnum::class, 'toArray'])]
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_update_status'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_update'])]
     #[ORM\Column(options: ['default' => 'pending'])]
     public string $status = InscriptionStatusEnum::PENDING;
 
@@ -113,8 +113,12 @@ class EventInscription
     public $emailCheck;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $confirmedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
+    #[Groups(['event_inscription_update'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;
 
