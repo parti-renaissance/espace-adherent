@@ -30,7 +30,7 @@ class GenerateTicketQRCodeCommandHandler
 
         // generate QR code
         $this->nationalEventStorage->write(
-            $fileName = ($eventInscription->event->getSlug().'/'.$eventInscription->getUuid().'.png'),
+            $fileName = $eventInscription->getUuid().'.png',
             $this->qrCodeResponseFactory->getQrContent($eventInscription->getUuid()->toString())->getString()
         );
 
