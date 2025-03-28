@@ -7,11 +7,13 @@
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% set isReContribution = app.user and app.user.isRenaissanceAdherent() %}
-{% set stepsStepper = isReContribution ? ['Informations', 'Cotisation'] : ['Email', 'Informations', 'Autorisation', 'Cotisation'] %}
+{% set reduced_flow = isReContribution or referral %}
+
+{% set stepsStepper = reduced_flow ? ['Informations', 'Cotisation'] : ['Email', 'Informations', 'Autorisation', 'Cotisation'] %}
 
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
-        <section x-data="xFunnelPage({initStep: {{ step }}, isReContribution: {{ isReContribution ? '1' : '0' }} })" @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
+        <section x-data="xFunnelPage({initStep: {{ step }}, isReContribution: {{ reduced_flow ? '1' : '0' }} })" @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto xs:p-6 md:p-0 md:grid md:grid-cols-4 md:h-20 lg:grid-cols-3">
                 <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
                     <a href="{{ path('renaissance_site') }}"><img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/></a>
@@ -275,7 +277,7 @@
                                             </twig:Molecules:ReCheckboxField>
                                         </template>
 
-                                        {% if isReContribution %}
+                                        {% if reduced_flow %}
                                             <hr>
 
                                             <ul class="font-medium leading-loose">

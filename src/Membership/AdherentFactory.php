@@ -94,6 +94,8 @@ class AdherentFactory
             gender: $membershipRequest->civility,
             firstName: $membershipRequest->firstName,
             lastName: $membershipRequest->lastName,
+            birthDate: $membershipRequest->birthdate,
+            phone: $membershipRequest->phone,
             status: Adherent::ENABLED,
             nationality: $membershipRequest->nationality,
         );

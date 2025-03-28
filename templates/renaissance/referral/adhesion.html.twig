@@ -1,5 +1,51 @@
-Bonjour {{ referral.firstName }}!
-<br />
-<a href="{{ path('app_adhesion_index') }}">
-    Cliquez ici pour adhérer
-</a>
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Adhérez à Renaissance en 1 minute' %}
+{% block flash_message '' %}
+{% block body_classes 'bg-ui_gray-5' %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block content %}
+    <main class="flex flex-col h-screen items-center py-10 pb-10">
+        <twig:Atoms:ReCard class="gap-6 max-w-lg pb-10">
+            {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+
+            <h1 class="font-maax font-medium text-ui_gray-80">Adhérez à Renaissance en 1 minute</h1>
+
+            <div class="flex flex-col gap-6 border rounded-2xl p-6 max-w-md">
+                {% if referral.referrer %}
+                    <p>{{ referral.referrer.firstName }} a pré-rempli ces informations pour vous :</p>
+                {% endif %}
+
+                <div class="gap-2">
+                    <p><span class="font-bold">Prénom Nom :</span> {{ referral.getCivilityAlias() }} {{ referral.firstName }} {{ referral.lastName }}</p>
+                    <p><span class="font-bold">Email :</span> {{ referral.emailAddress }}</p>
+
+                    {% if referral.phone %}
+                        <p><span class="font-bold">Téléphone :</span> {{ referral.phone|phone_number_format }}</p>
+                    {% endif %}
+
+                    <p><span class="font-bold">Nationalité :</span> {{ referral.nationality }}</p>
+                    <p><span class="font-bold">Adresse postale :</span> {{ referral.getInlineFormattedAddress() }}</p>
+
+                    {% if referral.birthdate %}
+                        <p><span class="font-bold">Date de naissance :</span> {{ referral.birthdate|date('d/m/Y') }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <p>En confirmant votre inscription, vous certifiez sur l’honneur être une personne physique d’au moins 16 ans et que le règlement de ma cotisation ne provient pas du compte d’une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel.</p>
+                <p>Vous certifiez être de nationalité française ou résident fiscal Français.</p>
+                <p>Vous adhérez aux <a href="https://utilisateur.parti-renaissance.fr/assets/static/Statuts-Renaissance.pdf" class="text-ui_blue-50">Statuts</a> et au <a href="https://utilisateur.parti-renaissance.fr/assets/corpus-des-valeurs-parti-renaissance.pdf" class="text-ui_blue-50">Corpus des valeurs</a> de Renaissance.</p>
+                <p>Vous acceptez les <a href="https://parti-renaissance.fr/cgu" class="text-ui_blue-50">CGU du site</a> Renaissance et déclare avoir lu la <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees" class="text-ui_blue-50">Politique de protection des données personnelles</a> et les mentions d’information relatives au traitement de mes données ci-dessous.</p>
+                <p>Dans le cadre de votre adhésion, vous acceptez de recevoir nos communications politiques par e-mail.</p>
+            </div>
+
+            {{ form_start(form) }}
+                {{ form_widget(form.allow, {label: 'Je confirme mon inscription', attr: {class: 'w-full'}}) }}
+            {{ form_end(form) }}
+        </twig:Atoms:ReCard>
+    </main>
+{% endblock %}

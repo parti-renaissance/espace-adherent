@@ -7,13 +7,13 @@ use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Referral;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Enum\CivilityEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class LoadReferralData extends Fixture implements DependentFixtureInterface
+class LoadReferralData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const UUID_1 = 'abeb6804-a88b-478a-8859-0c5e2f549d17';
     public const UUID_2 = '2055b072-73f4-46c3-a9ab-1fb617c464f1';
@@ -29,13 +29,20 @@ class LoadReferralData extends Fixture implements DependentFixtureInterface
             'PAB123'
         ));
 
-        $manager->persist($this->createReferral(
+        $manager->persist($referral = $this->createReferral(
             Uuid::fromString(self::UUID_2),
             'john.doe@dev.test',
             'John',
             $this->getReference('adherent-1', Adherent::class),
             'P789YZ'
         ));
+        $referral->firstName = 'John';
+        $referral->lastName = 'Doe';
+        $referral->civility = CivilityEnum::Monsieur;
+        $referral->nationality = 'FR';
+        $referral->birthdate = new \DateTimeImmutable('1990-01-01');
+        $referral->type = TypeEnum::PREREGISTRATION;
+        $referral->setPostAddress($this->createNullablePostAddress('68 rue du Rocher', '75008-75108'));
 
         $manager->persist($this->createReferral(
             Uuid::fromString(self::UUID_3),
