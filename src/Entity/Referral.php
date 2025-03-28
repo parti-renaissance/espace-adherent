@@ -131,6 +131,15 @@ class Referral
         return (string) $this->emailAddress;
     }
 
+    public function getCivilityAlias(): string
+    {
+        return match ($this->civility) {
+            CivilityEnum::Monsieur => 'M',
+            CivilityEnum::Madame => 'Mme',
+            default => '',
+        };
+    }
+
     public function hasFullInformations(): bool
     {
         return null !== $this->lastName
@@ -146,7 +155,7 @@ class Referral
 
     public function isInProgress(): bool
     {
-        return \in_array($this->status, [StatusEnum::INVITATION_SENT, StatusEnum::ACCOUNT_CREATED], true);
+        return \in_array($this->status, [StatusEnum::INVITATION_SENT], true);
     }
 
     public function isReported(): bool

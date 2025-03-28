@@ -2,6 +2,8 @@
 
 namespace App\ValueObject;
 
+use App\Enum\CivilityEnum;
+
 final class Genders
 {
     public const MALE = 'male';
@@ -49,5 +51,13 @@ final class Genders
     public static function all(): array
     {
         return self::ALL;
+    }
+
+    public static function fromCivility(?CivilityEnum $civility): string
+    {
+        return match ($civility) {
+            CivilityEnum::Monsieur => self::MALE,
+            CivilityEnum::Madame => self::MALE_FEMALE,
+        };
     }
 }

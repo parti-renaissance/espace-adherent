@@ -5,10 +5,12 @@ namespace App\Adhesion\Request;
 use App\Address\Address;
 use App\Donation\Request\DonationRequestInterface;
 use App\Entity\Adherent;
+use App\Entity\Referral;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MaxFiscalYearDonation(path: 'amount', groups: ['adhesion:amount'])]
@@ -40,6 +42,9 @@ class MembershipRequest implements DonationRequestInterface
     #[Assert\Country(message: 'common.nationality.invalid')]
     #[Assert\NotBlank]
     public ?string $nationality = null;
+
+    public ?PhoneNumber $phone = null;
+    public ?\DateTimeInterface $birthdate = null;
 
     public ?bool $exclusiveMembership = null;
 
@@ -80,6 +85,24 @@ class MembershipRequest implements DonationRequestInterface
         $request->exclusiveMembership = $adherent->isExclusiveMembership();
         $request->partyMembership = $adherent->isTerritoireProgresMembership() ? 1 : ($adherent->isAgirMembership() ? 2 : ($adherent->isOtherPartyMembership() ? 3 : null));
         $request->allowNotifications = $adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL);
+
+        return $request;
+    }
+
+    public static function createFromReferral(Referral $referral): self
+    {
+        $request = new self();
+        $request->firstName = $referral->firstName;
+        $request->lastName = $referral->lastName;
+        $request->civility = Genders::fromCivility($referral->civility);
+        $request->email = $referral->emailAddress;
+        $request->address = Address::createFromAddress($referral->getPostAddress());
+        $request->nationality = $referral->nationality;
+        $request->phone = $referral->phone;
+        $request->birthdate = $referral->birthdate;
+        $request->referral = $referral->identifier;
+        $request->allowNotifications = true;
+        $request->exclusiveMembership = true;
 
         return $request;
     }
