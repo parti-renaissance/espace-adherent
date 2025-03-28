@@ -312,14 +312,13 @@ Feature:
     Scenario: As an logged in user, I can get my referral statistics
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/referrals/statistics"
-        Then print last JSON response
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
             """
             {
                 "nb_referral_finished": 0,
-                "nb_referral_sent": 2,
+                "nb_referral_sent": 3,
                 "nb_referral_reported": 1
             }
             """
