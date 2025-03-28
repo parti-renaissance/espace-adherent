@@ -22,6 +22,7 @@ class NationalEventTicketMessage extends AbstractRenaissanceMessage
                 'qr_code_img' => $eventInscription->ticketQRCodeFile,
                 'header_ticket_image' => $event->imageTicketEmail,
                 'event_mail_details' => $eventInscription->event->textTicketEmail,
+                'ticket_custom_detail' => $eventInscription->ticketCustomDetail,
             ],
         );
     }
