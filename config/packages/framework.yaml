@@ -19,3 +19,4 @@ framework:
             app.cache.redirection: ~
             app.cache.france_cities: ~
             app.cache.geocoder: ~
+            app.cache.event_notifications: ~

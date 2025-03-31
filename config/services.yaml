@@ -414,6 +414,14 @@ services:
                 arguments:
                     - '@app.cache.france_cities'
 
+    App\Event\Handler\EventLiveBeginEmailChunkNotificationCommandHandler:
+        arguments:
+            $cache: '@app.cache.event_notifications'
+
+    App\Event\Handler\EventLiveBeginPushChunkNotificationCommandHandler:
+        arguments:
+            $cache: '@app.cache.event_notifications'
+
     # SonataAdmin requests public `logger` service
     logger:
         alias: 'monolog.logger'
