@@ -39,6 +39,28 @@ class EventInscriptionRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return EventInscription[]
+     */
+    public function findAcceptedByEmail(string $email, ?NationalEvent $excludedEvent = null): array
+    {
+        $qb = $this->createQueryBuilder('ei')
+            ->where('ei.addressEmail = :email')
+            ->andWhere('ei.status = :status')
+            ->setParameter('email', $email)
+            ->setParameter('status', InscriptionStatusEnum::ACCEPTED)
+        ;
+
+        if ($excludedEvent) {
+            $qb
+                ->andWhere('ei.event != :excluded_event')
+                ->setParameter('excluded_event', $excludedEvent)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findAllForEventPaginated(NationalEvent $event, ?string $searchTerm, array $statuses, int $page = 1, $limit = 30): PaginatorInterface
     {
         $queryBuilder = $this->createQueryBuilder('ei')
