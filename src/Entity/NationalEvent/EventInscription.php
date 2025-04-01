@@ -67,18 +67,23 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $postalCode = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $birthPlace = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $accessibility = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $transportNeeds = false;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $volunteer = false;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
@@ -90,14 +95,17 @@ class EventInscription
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $joinNewsletter = false;
 
     public bool $needSendNewsletterConfirmation = false;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $children = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isResponsibilityWaived = false;
 
@@ -112,9 +120,11 @@ class EventInscription
     #[ORM\Column(type: 'json', nullable: true)]
     public $emailCheck;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $confirmedAt = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
@@ -122,9 +132,11 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketQRCodeFile = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(length: 7, nullable: true)]
     public ?string $referrerCode = null;
 
