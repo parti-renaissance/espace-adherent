@@ -19,7 +19,7 @@ class BirthdateType extends AbstractType
 
         $resolver->setDefaults([
             'widget' => 'choice',
-            'years' => array_combine($years, $years),
+            'years' => $years,
             'placeholder' => [
                 'year' => 'AAAA',
                 'month' => 'MM',

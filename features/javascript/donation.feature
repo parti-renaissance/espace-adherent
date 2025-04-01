@@ -18,7 +18,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         When I click the "donation_request_localDestination" element
         And I press "Suivant"
         And I click the "donation_request_gender_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "donation_request_nationality_select_widget" element
         And I click the "#donation_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
@@ -64,7 +64,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         When I click the "donation_request_localDestination" element
         And I press "Suivant"
         And I click the "donation_request_gender_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "donation_request_nationality_select_widget" element
         And I click the "#donation_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
@@ -105,7 +105,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I click the "donation_request_localDestination" element
         And I press "Suivant"
         And I click the "donation_request_gender_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "donation_request_nationality_select_widget" element
         And I click the "#donation_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
@@ -130,7 +130,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         When I click the "donation_request_localDestination" element
         And I press "Suivant"
         And I click the "donation_request_gender_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "donation_request_nationality_select_widget" element
         And I click the "#donation_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
