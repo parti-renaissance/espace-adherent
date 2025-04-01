@@ -2012,33 +2012,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/pm@npm:^2.11.5":
-  version: 2.11.5
-  resolution: "@tiptap/pm@npm:2.11.5"
-  dependencies:
-    prosemirror-changeset: "npm:^2.2.1"
-    prosemirror-collab: "npm:^1.3.1"
-    prosemirror-commands: "npm:^1.6.2"
-    prosemirror-dropcursor: "npm:^1.8.1"
-    prosemirror-gapcursor: "npm:^1.3.2"
-    prosemirror-history: "npm:^1.4.1"
-    prosemirror-inputrules: "npm:^1.4.0"
-    prosemirror-keymap: "npm:^1.2.2"
-    prosemirror-markdown: "npm:^1.13.1"
-    prosemirror-menu: "npm:^1.2.4"
-    prosemirror-model: "npm:^1.23.0"
-    prosemirror-schema-basic: "npm:^1.2.3"
-    prosemirror-schema-list: "npm:^1.4.1"
-    prosemirror-state: "npm:^1.4.3"
-    prosemirror-tables: "npm:^1.6.3"
-    prosemirror-trailing-node: "npm:^3.0.0"
-    prosemirror-transform: "npm:^1.10.2"
-    prosemirror-view: "npm:^1.37.0"
-  checksum: 10c0/31f21f1c58873e32fa76a7dc5d9a5b2315f12989194a08a2a97c65ece299967c26790d57ae8ebe07902a5e2b8a73434fb9961837e08895faa59b5ab98b283ae8
-  languageName: node
-  linkType: hard
-
-"@tiptap/pm@npm:^2.11.7":
+"@tiptap/pm@npm:^2.11.5, @tiptap/pm@npm:^2.11.7":
   version: 2.11.7
   resolution: "@tiptap/pm@npm:2.11.7"
   dependencies:
@@ -7372,7 +7346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prosemirror-tables@npm:^1.6.3, prosemirror-tables@npm:^1.6.4":
+"prosemirror-tables@npm:^1.6.4":
   version: 1.6.4
   resolution: "prosemirror-tables@npm:1.6.4"
   dependencies:
