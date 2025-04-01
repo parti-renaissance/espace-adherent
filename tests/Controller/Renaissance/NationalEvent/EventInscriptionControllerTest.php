@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -51,6 +52,103 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertInstanceOf(EventInscription::class, $eventInscription);
         $this->assertEquals($referrerCode, $eventInscription->referrerCode);
         $this->assertEquals($referrerEmail, $eventInscription->referrer?->getEmailAddress());
+    }
+
+    public function testAutoAcceptedStatus(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['event_inscription[acceptCgu]']->tick();
+        $form['event_inscription[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'event_inscription' => [
+                'email' => $email = 'gisele-berthoux@caramail.com',
+                'civility' => 'female',
+                'firstName' => 'Gisele',
+                'lastName' => 'Berthoux',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/event-national-1/confirmation', $this->client);
+
+        $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $eventInscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+        $this->assertInstanceOf(EventInscription::class, $eventInscription);
+        self::assertSame(InscriptionStatusEnum::ACCEPTED, $eventInscription->status);
+    }
+
+    public function testAutoDuplicateStatus(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['event_inscription[acceptCgu]']->tick();
+        $form['event_inscription[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'event_inscription' => [
+                'email' => $email = 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/event-national-1/confirmation', $this->client);
+
+        $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $eventInscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+        $this->assertInstanceOf(EventInscription::class, $eventInscription);
+        self::assertSame(InscriptionStatusEnum::PENDING, $eventInscription->status);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['event_inscription[acceptCgu]']->tick();
+        $form['event_inscription[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'event_inscription' => [
+                'email' => $email,
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/event-national-1/confirmation', $this->client);
+
+        $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $eventInscriptions = $this->eventInscriptionRepository->findBy(['addressEmail' => $email]);
+        $this->assertCount(2, $eventInscriptions);
+
+        self::assertSame(InscriptionStatusEnum::PENDING, $eventInscriptions[0]->status);
+        self::assertSame(InscriptionStatusEnum::DUPLICATE, $eventInscriptions[1]->status);
     }
 
     public static function provideReferrerCodes(): iterable
