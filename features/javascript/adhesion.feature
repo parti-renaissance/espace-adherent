@@ -18,7 +18,7 @@ Feature:
         And I press "J'adhère"
         And I wait 3 seconds
         And I click the "membership_request_civility_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
@@ -195,7 +195,7 @@ Feature:
         # Step 9 : member card
         Then I should be on "/adhesion/carte-adherent" wait otherwise
         And I should see "Carte d'adhérent"
-        When I click the ".aucomplete-fields-toggle" selector
+        When I click the ".autocomplete-fields-toggle" selector
         And I fill in the following:
             | member_card[address][address]           | 92 bld Victor Hugo |
             | member_card[address][additionalAddress] |                    |
@@ -238,7 +238,7 @@ Feature:
         And I press "J'adhère"
         And I wait 3 seconds
         And I click the "membership_request_civility_0_label" element
-        And I click the ".aucomplete-fields-toggle" selector
+        And I click the ".autocomplete-fields-toggle" selector
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
@@ -415,7 +415,7 @@ Feature:
             """
         When I click on the email link "cotisation_link"
         Then I should be on "/adhesion" wait otherwise
-        When I click the ".aucomplete-fields-toggle" selector
+        When I click the ".autocomplete-fields-toggle" selector
         And I fill in the following:
             | membership_request[address][address]    | 44 rue des courcelles |
             | membership_request[address][postalCode] | 75008                 |
@@ -521,7 +521,7 @@ Feature:
             """
         When I click on the email link "magic_link"
         Then I should be on "/adhesion" wait otherwise
-        When I click the ".aucomplete-fields-toggle" selector
+        When I click the ".autocomplete-fields-toggle" selector
         And I fill in the following:
             | membership_request[address][address]    | 44 rue des courcelles |
             | membership_request[address][postalCode] | 75008                 |
@@ -587,7 +587,7 @@ Feature:
             }
             """
         And I should see "Carte d'adhérent"
-        When I click the ".aucomplete-fields-toggle" selector
+        When I click the ".autocomplete-fields-toggle" selector
         And I fill in the following:
             | member_card[address][address]           | 92 bld Victor Hugo |
             | member_card[address][additionalAddress] |                    |

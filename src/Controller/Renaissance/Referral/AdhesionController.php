@@ -6,7 +6,7 @@ use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
 use App\Entity\Referral;
-use App\Form\ConfirmActionType;
+use App\Form\MembershipFromReferralType;
 use App\Security\AdherentLogin;
 use App\Utils\UtmParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class AdhesionController extends AbstractController
 {
     use HandleTrait;
+
     public const ROUTE_NAME = 'app_referral_adhesion';
 
     public function __construct(
@@ -39,20 +40,20 @@ class AdhesionController extends AbstractController
             return $this->redirectToRoute('app_adhesion_with_invitation', array_merge($request->query->all(), ['identifier' => $referral->identifier]));
         }
 
+        $membershipRequest = MembershipRequest::createFromReferral($referral);
+        if ($request->query->has(UtmParams::UTM_SOURCE)) {
+            $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+        }
+        if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
+            $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
+        }
+
         $form = $this
-            ->createForm(ConfirmActionType::class, null, ['with_deny' => false])
+            ->createForm(MembershipFromReferralType::class, $membershipRequest)
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted()) {
-            $membershipRequest = MembershipRequest::createFromReferral($referral);
-            if ($request->query->has(UtmParams::UTM_SOURCE)) {
-                $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
-            }
-            if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
-                $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
-            }
-
+        if ($form->isSubmitted() && $isValid = $form->isValid()) {
             $result = $this->handle(new CreateAccountCommand($membershipRequest));
 
             if ($result instanceof CreateAdherentResult && $result->getAdherent()) {
@@ -69,6 +70,7 @@ class AdhesionController extends AbstractController
         return $this->render('renaissance/referral/adhesion.html.twig', [
             'referral' => $referral,
             'form' => $form->createView(),
+            'is_valid' => $isValid ?? null,
         ]);
     }
 }

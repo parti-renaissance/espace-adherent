@@ -171,9 +171,7 @@
 {% endblock %}
 
 {% block autocomplete_address_row %}
-    <div class="flex flex-col {% if not valid %}has-error{% endif %}"
-         data-form="{{ name }}"
-    >
+    <div class="flex flex-col {% if not valid %}has-error{% endif %}" data-form="{{ name }}">
         {{ form_label(form) }}
 
         {% if errors.count() %}
@@ -195,7 +193,7 @@
                 },
             }) }}
 
-            <div class="text-gray-700 cursor-pointer text-center aucomplete-fields-toggle" @click="showAutoComplete = false">
+            <div class="text-gray-700 cursor-pointer text-center autocomplete-fields-toggle" @click="showAutoComplete = false">
                 Un problème ? <br/> <span class="text-ui_blue-50"> Cliquez ici</span> pour saisir manuellement votre
                 adresse.
             </div>
@@ -214,7 +212,7 @@
 
             {{ form_row(form.country, {label: false, attr: {validate: "['required']", onCheck: "setFieldValid('country')", blocked: 'blocked'}}) }}
 
-            <div class="text-gray-700 cursor-pointer text-center aucomplete-fields-toggle" @click="showAutoComplete = true">
+            <div class="text-gray-700 cursor-pointer text-center autocomplete-fields-toggle" @click="showAutoComplete = true">
                 <span class="text-ui_blue-50">Revenir</span> à la saisie d’adresse simplifiée
             </div>
         </div>
