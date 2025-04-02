@@ -54,8 +54,6 @@ class NationalEventInscriptionSendWebhookCommand extends Command
         $this->io->progressStart($count);
         $offset = 0;
 
-        $isForTicket = (bool) $input->getOption('ticket');
-
         do {
             foreach ($paginator as $eventInscription) {
                 $this->bus->dispatch(new SendWebhookCommand($eventInscription->getUuid()));
