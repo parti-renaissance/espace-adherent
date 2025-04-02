@@ -4,6 +4,21 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
+{% block header_inner %}
+    {% if not is_open %}
+        <div class="fixed top-0 left-0 bottom-0 right-0 bg-black bg-opacity-40 flex flex-col items-center">
+            <div class="flex flex-col md:flex-row md:gap-12 gap-8 bg-white justify-center p-8 w-full">
+                <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux</p>
+                <div class="flex gap-8">
+                    {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
+                </div>
+            </div>
+
+            <h1 class="font-bold mt-25 md:p-12 w-fit transform rotate-12 text-center rounded-lg bg-[#FF005C] bg-opacity-75 text-2xl md:text-9xl text-white">COMPLET</h1>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
 
