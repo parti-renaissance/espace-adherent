@@ -1322,10 +1322,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     /**
      * @return Adherent[]
      */
-    public function findInAssembly(Zone $zone, string $tagPattern, ?string $subscriptionTypeCode = null): array
+    public function findInZones(array $zones, string $tagPattern, ?string $subscriptionTypeCode = null): array
     {
-        if (!$zone->isAssemblyZone()) {
-            throw new \InvalidArgumentException('Zone must be an assembly zone, got '.$zone->getNameCode());
+        if (!$zones) {
+            return [];
         }
 
         $qb = $this
@@ -1346,7 +1346,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $this->withGeoZones(
-            [$zone],
+            $zones,
             $qb,
             'a',
             Adherent::class,

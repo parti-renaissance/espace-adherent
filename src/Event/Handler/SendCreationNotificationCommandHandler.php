@@ -3,7 +3,6 @@
 namespace App\Event\Handler;
 
 use App\Adherent\Tag\TagEnum;
-use App\Committee\CommitteeManager;
 use App\Event\Command\SendCreationNotificationCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
@@ -18,7 +17,6 @@ class SendCreationNotificationCommandHandler
 {
     public function __construct(
         private readonly EventRepository $eventRepository,
-        private readonly CommitteeManager $committeeManager,
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly AdherentRepository $adherentRepository,
@@ -46,8 +44,8 @@ class SendCreationNotificationCommandHandler
         $recipients = [];
         if ($committee = $event->getCommittee()) {
             $recipients = $this->adherentRepository->findInCommittee($committee, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
-        } elseif ($zone = $event->getAssemblyZone()) {
-            $recipients = $this->adherentRepository->findInAssembly($zone, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
+        } elseif ($zones = $event->getZones()->toArray()) {
+            $recipients = $this->adherentRepository->findInZones($zones, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         }
 
         if (!$recipients) {

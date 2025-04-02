@@ -95,6 +95,14 @@ trait TestHelperTrait
         $this->assertCount($count, $mail->getRecipients());
     }
 
+    /**
+     * @return EmailLog[]
+     */
+    public function getMailMessages(string $type): array
+    {
+        return $this->getEmailRepository()->findMessages($type);
+    }
+
     public function assertCountMails(int $count, string $type, ?string $recipient = null): void
     {
         $repository = $this->getEmailRepository();

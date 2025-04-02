@@ -7,6 +7,7 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Event\Event;
 use App\Mailer\Message\Renaissance\EventUpdateMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
@@ -48,7 +49,7 @@ class EventControllerTest extends AbstractApiTestCase
             'mode' => Event::MODE_ONLINE,
         ]));
 
-        $this->assertResponseStatusCodeSame(201);
+        self::assertResponseStatusCodeSame(201);
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
@@ -56,6 +57,9 @@ class EventControllerTest extends AbstractApiTestCase
         self::assertSame('online', $response['mode']);
 
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration($response['uuid'], $response['organizer']['uuid']);
+
+        $this->assertCountMails(1, RenaissanceEventNotificationMessage::class);
+        $this->assertCount(3, $this->getMailMessages(RenaissanceEventNotificationMessage::class)[0]->getRecipients());
 
         self::assertSame(AppCodeEnum::JEMENGAGE_WEB, $registration->getSource());
 
@@ -67,7 +71,7 @@ class EventControllerTest extends AbstractApiTestCase
             'begin_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 11:30:00',
         ]));
 
-        $this->assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(200);
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
