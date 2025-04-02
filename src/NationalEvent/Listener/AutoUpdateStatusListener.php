@@ -41,7 +41,7 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
 
         // Accepted
         if (
-            ($adherent->isRenaissanceAdherent() && $adherent->getFirstMembershipDonation() && $adherent->getFirstMembershipDonation() < new \DateTime('first day of this year'))
+            ($adherent->isRenaissanceAdherent() && $adherent->getFirstMembershipDonation() && $adherent->getFirstMembershipDonation() < new \DateTime(date('Y-01-01')))
             || ($adherent->isRenaissanceSympathizer() && \count($this->eventInscriptionRepository->findAcceptedByEmail($newEventInscription->addressEmail, $newEventInscription->event)))
             || ($adherent->isRenaissanceAdherent() && (
                 \count($adherent->getZoneBasedRoles())
