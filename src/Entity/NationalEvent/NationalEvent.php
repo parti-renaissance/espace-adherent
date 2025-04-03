@@ -81,6 +81,10 @@ class NationalEvent
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $ogImage = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $logoImage = null;
+
     #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*'])]
     public ?UploadedFile $intoImageFile = null;
 

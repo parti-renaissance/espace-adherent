@@ -18,6 +18,7 @@ Feature:
                     "cta_label": "Je réserve ma place",
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
                     "image_url": null,
+                    "data": null,
                     "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/event-national-1/@string@"
                 },
                 {
@@ -28,6 +29,7 @@ Feature:
                     "cta_label": "Consulter",
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
                     "image_url": null,
+                    "data": null,
                     "share_url": null
                 },
                 {
@@ -38,6 +40,7 @@ Feature:
                     "cta_label": "Voir",
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
                     "image_url": null,
+                    "data": null,
                     "share_url": null
                 }
             ]

@@ -4,11 +4,11 @@ namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\NationalEvent\NationalEvent;
+use App\Form\Admin\UploadableFileType;
 use App\Form\CkEditorType;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -76,14 +76,12 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('alertEnabled', null, ['label' => 'Alerte activée', 'required' => false])
                     ->add('alertTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('alertDescription', TextType::class, ['label' => 'Description', 'required' => false])
+                    ->add('logoImage', UploadableFileType::class, ['label' => 'Image Logo'])
                 ->end()
                 ->with('Open Graph', ['class' => 'col-md-6'])
                     ->add('ogTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('ogDescription', TextType::class, ['label' => 'Description', 'required' => false])
-                    ->add('ogImage', AdminType::class, [
-                        'label' => 'Image Open Graph & Alerte',
-                        'required' => false,
-                    ])
+                    ->add('ogImage', UploadableFileType::class, ['label' => 'Image Open Graph & Alerte'])
                 ->end()
             ->end()
             ->tab('Ticket')
