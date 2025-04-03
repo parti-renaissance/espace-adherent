@@ -3,7 +3,9 @@
 namespace App\JeMengage\Alert\Provider;
 
 use App\Entity\Adherent;
+use App\Entity\NationalEvent\EventInscription;
 use App\JeMengage\Alert\Alert;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -30,50 +32,59 @@ class MeetingProvider implements AlertProviderInterface
         $alerts = [];
 
         foreach ($events as $event) {
-            $ctaLabel = 'Inscrit';
-            $ctaUrl = '';
-            $imageUrl = null;
+            $imageUrl = $data = null;
             $currentUser = $this->getCurrentUser();
-            $shareUrl = $currentUser
-                ? $this->urlGenerator->generate(
-                    'app_national_event_by_slug_with_referrer',
-                    [
-                        'slug' => $event->getSlug(),
-                        'referrerCode' => $currentUser->getPublicId(),
-                    ],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                )
-                : $this->urlGenerator->generate(
-                    'app_national_event_by_slug',
-                    [
-                        'slug' => $event->getSlug(),
-                    ],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                );
+            $shareUrl = $currentUser ? $this->generateUrl('app_national_event_by_slug_with_referrer', [
+                'slug' => $event->getSlug(),
+                'referrerCode' => $currentUser->getPublicId(),
+            ]) : $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]);
 
             if ($event->ogImage) {
-                $imageUrl = $this->urlGenerator->generate('asset_url', ['path' => $event->ogImage->getPath()], UrlGeneratorInterface::ABSOLUTE_URL);
+                $imageUrl = $this->generateUrl('asset_url', ['path' => $event->ogImage->getPath()]);
             }
 
-            if (!$this->eventInscriptionRepository->findOneForAdherent($adherent, $event)) {
+            if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event, InscriptionStatusEnum::REFUSED)) {
+                if ($event->logoImage) {
+                    $imageUrl = $this->generateUrl('asset_url', ['path' => $event->logoImage->getPath()]);
+                }
+                $ctaLabel = 'Billet bientôt disponible';
+                $ctaUrl = null;
+
+                $data = [
+                    'first_name' => null,
+                    'last_name' => null,
+                    'ticket_custom_detail' => null,
+                    'ticket_url' => null,
+                    'info_url' => null,
+                ];
+
+                $ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->ticketSentAt));
+
+                if ($ticketSent instanceof EventInscription && $ticketSent->ticketQRCodeFile) {
+                    $ctaLabel = 'Mon billet';
+                    $ctaUrl = $this->generateUrl('app_national_event_ticket', ['file' => $ticketSent->ticketQRCodeFile]);
+
+                    $data = [
+                        'first_name' => $ticketSent->firstName,
+                        'last_name' => $ticketSent->lastName,
+                        'ticket_custom_detail' => $ticketSent->ticketCustomDetail,
+                        'ticket_url' => $ctaUrl,
+                        'info_url' => 'https://parti.re/LP4T',
+                    ];
+                }
+            } else {
                 $ctaLabel = 'Je réserve ma place';
                 $ctaUrl = $this->loginLinkHandler->createLoginLink(
                     $adherent,
                     lifetime: 3600,
                     targetPath: parse_url(
-                        $this->urlGenerator->generate(
-                            'app_national_event_by_slug',
-                            [
-                                'slug' => $event->getSlug(),
-                            ],
-                            UrlGeneratorInterface::ABSOLUTE_URL
-                        ),
+                        $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]),
                         \PHP_URL_PATH
                     ),
                 )->getUrl();
             }
 
-            $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $shareUrl);
+            $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $shareUrl, $data);
             $alert->date = $event->startDate;
         }
 
@@ -85,5 +96,10 @@ class MeetingProvider implements AlertProviderInterface
         $user = $this->security->getUser();
 
         return $user instanceof Adherent ? $user : null;
+    }
+
+    private function generateUrl(string $route, array $params): string
+    {
+        return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

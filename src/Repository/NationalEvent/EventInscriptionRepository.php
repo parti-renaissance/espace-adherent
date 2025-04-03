@@ -25,7 +25,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
     /**
      * @return EventInscription[]
      */
-    public function findAllByAdherent(Adherent $adherent): array
+    public function findAllForTags(Adherent $adherent): array
     {
         return $this->createQueryBuilder('ei')
             ->addSelect('e')
@@ -34,6 +34,32 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->andWhere('e.startDate >= :start_date')
             ->setParameter('adherent', $adherent)
             ->setParameter('start_date', new \DateTime('-6 months'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return EventInscription[]
+     */
+    public function findAllForAdherentAndEvent(Adherent $adherent, NationalEvent $event, string $excludedStatus): array
+    {
+        return $this->createQueryBuilder('ei')
+            ->addSelect('CASE WHEN ei.status = :status_accepted THEN 1
+                WHEN ei.status = :status_inconclusive THEN 2
+                ELSE 3 END AS HIDDEN score')
+            ->where('ei.adherent = :adherent')
+            ->andWhere('ei.event = :event')
+            ->andWhere('ei.status != :excluded_status')
+            ->setParameters([
+                'adherent' => $adherent,
+                'event' => $event,
+                'excluded_status' => $excludedStatus,
+                'status_accepted' => InscriptionStatusEnum::ACCEPTED,
+                'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
+            ])
+            ->orderBy('score', 'ASC')
+            ->addOrderBy('ei.createdAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;

@@ -28,6 +28,7 @@ parameters:
     router.request_context.scheme: '%env(APP_SCHEME)%'
     router.request_context.host: '%app_host%'
     image_max_length: 450px
+    national_event_ticket_host: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'
     webhook.email_subscriptions_secret: '%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%'
     adherent_message_referent_limit: 1000
     adherent_message_committee_limit: 1000

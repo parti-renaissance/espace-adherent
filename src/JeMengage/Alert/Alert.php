@@ -26,6 +26,7 @@ class Alert
         public readonly ?string $ctaUrl = null,
         public readonly ?string $imageUrl = null,
         public readonly ?string $shareUrl = null,
+        public readonly ?array $data = null,
     ) {
     }
 
@@ -59,7 +60,7 @@ class Alert
         );
     }
 
-    public static function createMeeting(NationalEvent $event, string $ctaLabel, string $ctaUrl, ?string $imageUrl = null, ?string $shareUrl = null): self
+    public static function createMeeting(NationalEvent $event, string $ctaLabel, ?string $ctaUrl, ?string $imageUrl = null, ?string $shareUrl = null, ?array $data = null): self
     {
         return new self(
             self::TYPE_MEETING,
@@ -69,7 +70,8 @@ class Alert
             $ctaLabel,
             $ctaUrl,
             $imageUrl,
-            $shareUrl
+            $shareUrl,
+            $data,
         );
     }
 }

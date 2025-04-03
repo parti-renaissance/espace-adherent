@@ -119,9 +119,10 @@
                                         {% for row in event_inscriptions %}
                                             <tr>
                                                 <td>
-                                                    {% set image_url = 'https://' ~ ticket_besoindeurope_host ~ '/' ~ row.ticketQRCodeFile %}
-                                                    <a href="{{ image_url }}" target="_blank">
-                                                        <img height="40" src="{{ image_url }}" /> {{ row.uuid }}
+                                                    {% set image_url = url('app_national_event_ticket', {file: row.ticketQRCodeFile}) %}
+                                                    <a href="{{ image_url }}" target="_blank" style="display: flex;align-items:center;gap:8px;white-space: nowrap;">
+                                                        <img src="{{ image_url }}" style="height: 40px;width: auto;" />
+                                                        {{ row.uuid }}
                                                     </a>
                                                 </td>
                                                 <td>

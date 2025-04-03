@@ -19,7 +19,7 @@ class EventTagGenerator extends AbstractTagGenerator
     {
         return array_map(
             fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event),
-            $this->eventInscriptionRepository->findAllByAdherent($adherent)
+            $this->eventInscriptionRepository->findAllForTags($adherent)
         );
     }
 }

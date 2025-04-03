@@ -81,4 +81,9 @@ class EmbeddedFile
     {
         return $this->dimensions[1] ?? null;
     }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->name) && empty($this->size);
+    }
 }

@@ -176,6 +176,10 @@ app_national_event:
     requirements:
         app_domain: '%national_event_host%|%user_vox_host%'
 
+app_national_event_ticket:
+    path: '/{file}'
+    host: '%national_event_ticket_host%'
+
 renaissance_site:
     host: '%renaissance_host%'
     path: '/'
