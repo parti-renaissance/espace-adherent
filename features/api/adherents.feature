@@ -1071,7 +1071,7 @@ Feature:
                         "last_name": "Picard",
                         "image_url": null,
                         "birthdate": "1953-04-03T00:00:00+01:00",
-                        "age": 71,
+                        "age": "@number@",
                         "phone": "+33 1 87 26 42 36",
                         "nationality": "FR",
                         "tags": [
@@ -1145,7 +1145,7 @@ Feature:
                         "last_name": "Picard",
                         "image_url": null,
                         "birthdate": "1953-04-03T00:00:00+01:00",
-                        "age": 71,
+                        "age": "@number@",
                         "phone": "+33 1 87 26 42 36",
                         "nationality": "FR",
                         "tags": [
