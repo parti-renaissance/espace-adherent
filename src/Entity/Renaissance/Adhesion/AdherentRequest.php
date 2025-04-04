@@ -7,6 +7,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
+use App\Entity\PostAddress;
 use App\Repository\Renaissance\Adhesion\AdherentRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -59,6 +60,9 @@ class AdherentRequest
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $cleaned = false;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -86,5 +90,15 @@ class AdherentRequest
     public function activate(): void
     {
         $this->tokenUsedAt = new \DateTime();
+    }
+
+    public function clean(): void
+    {
+        $this->firstName = '';
+        $this->lastName = '';
+        $this->password = '';
+        $this->email = '';
+        $this->postAddress = PostAddress::createEmptyAddress();
+        $this->cleaned = true;
     }
 }
