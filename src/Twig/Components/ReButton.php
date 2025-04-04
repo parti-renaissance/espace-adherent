@@ -56,6 +56,13 @@ class ReButton extends AbstractComponentsLogic
                 active:not(:disabled):bg-ui_gray-70
                 disabled:bg-ui_gray-30 disabled:text-white
                 TW,
+            'red' => <<<TW
+                bg-ui_red-50 text-white
+                border border-ui_red-50
+                hover:bg-ui_red-70
+                active:not(:disabled):bg-ui_red-90
+                disabled:bg-ui_gray-30 disabled:text-white
+                TW,
             default => throw new \LogicException(\sprintf('Unknown button type "%s"', $this->color)),
         };
     }

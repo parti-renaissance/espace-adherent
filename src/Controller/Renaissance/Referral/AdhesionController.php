@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/invitation/adhesion/{identifier}', name: self::ROUTE_NAME, requirements: ['identifier' => 'P[A-Z0-9]{5}'], methods: ['GET', 'POST'])]
+#[Route('/invitation/{identifier}', name: self::ROUTE_NAME, requirements: ['identifier' => 'P[A-Z0-9]{5}'], methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
     use HandleTrait;

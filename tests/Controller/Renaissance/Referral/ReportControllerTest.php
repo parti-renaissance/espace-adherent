@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\Renaissance\Referral\Report;
+namespace Controller\Renaissance\Referral;
 
 use App\Adherent\Referral\StatusEnum;
 use App\Entity\Referral;
@@ -14,7 +14,7 @@ use Tests\App\AbstractWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class FormControllerTest extends AbstractWebTestCase
+class ReportControllerTest extends AbstractWebTestCase
 {
     use ControllerTestTrait;
 
@@ -28,25 +28,34 @@ class FormControllerTest extends AbstractWebTestCase
         $this->assertNotEquals(StatusEnum::REPORTED, $referral->status);
         $this->assertCountMails(0, ReferralReportedMessage::class, $referrerEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$identifier/signaler");
+        $uuid = $referral->getUuid();
+        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$uuid/signaler");
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Voulez-vous vraiment signaler ce parrainage ?',
+            'Signaler cette invitation ?',
             $crawler->text()
         );
 
-        $this->client->submitForm('Oui');
-        $this->assertClientIsRedirectedTo('/referral/report/confirmation', $this->client);
+        $this->client->submitForm('Signaler');
+        $this->assertClientIsRedirectedTo("/invitation/$uuid/signaler", $this->client);
 
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Votre signalement a bien été pris en compte.',
+            'Votre invitation a été signalée',
             $crawler->text()
         );
 
         $referral = $this->referralRepository->findOneBy(['identifier' => $identifier]);
         $this->assertEquals(StatusEnum::REPORTED, $referral->status);
+        $this->assertEmpty($referral->firstName);
+        $this->assertEmpty($referral->lastName);
+        $this->assertEmpty($referral->emailAddress);
+        $this->assertEmpty($referral->civility);
+        $this->assertEmpty($referral->getPostAddress()->getInlineFormattedAddress());
+        $this->assertEmpty($referral->nationality);
+        $this->assertEmpty($referral->phone);
+        $this->assertEmpty($referral->birthdate);
         $this->assertCountMails(1, ReferralReportedMessage::class, $referrerEmail);
     }
 
@@ -57,10 +66,11 @@ class FormControllerTest extends AbstractWebTestCase
         $this->assertInstanceOf(Referral::class, $referral);
         $this->assertEquals(StatusEnum::REPORTED, $referral->status);
 
-        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$referralIdentifier/signaler");
+        $uuid = $referral->getUuid();
+        $crawler = $this->client->request(Request::METHOD_GET, "/invitation/$uuid/signaler");
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Vous avez déjà signalé cette adresse email.',
+            'Votre invitation a été signalée',
             $crawler->text()
         );
     }
