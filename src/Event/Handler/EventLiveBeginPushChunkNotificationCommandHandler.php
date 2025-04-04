@@ -6,6 +6,7 @@ use App\Event\Command\EventLiveBeginPushChunkNotificationCommand;
 use App\Firebase\JeMarcheMessaging;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
 use App\Repository\Event\EventRepository;
+use App\Repository\PushTokenRepository;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -14,6 +15,7 @@ class EventLiveBeginPushChunkNotificationCommandHandler
 {
     public function __construct(
         private readonly EventRepository $eventRepository,
+        private readonly PushTokenRepository $pushTokenRepository,
         private readonly JeMarcheMessaging $messaging,
         private readonly CacheInterface $cache,
     ) {
@@ -29,9 +31,22 @@ class EventLiveBeginPushChunkNotificationCommandHandler
             return;
         }
 
+        $tokens = $this->pushTokenRepository
+            ->createQueryBuilder('t')
+            ->select('PARTIAL t.identifier')
+            ->where('t.id IN (:ids)')
+            ->setParameter('ids', $command->tokens)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        if (empty($tokens)) {
+            return;
+        }
+
         $notification = EventLiveBeginNotification::create($event);
 
-        $notification->setTokens($command->tokens);
+        $notification->setTokens($tokens);
 
         $this->messaging->send($notification);
 

@@ -414,13 +414,18 @@ services:
                 arguments:
                     - '@app.cache.france_cities'
 
+    app.simple_cache.event_notifications:
+        class: Symfony\Component\Cache\Psr16Cache
+        arguments:
+            - '@app.cache.event_notifications'
+
     App\Event\Handler\EventLiveBeginEmailChunkNotificationCommandHandler:
         arguments:
-            $cache: '@app.cache.event_notifications'
+            $cache: '@app.simple_cache.event_notifications'
 
     App\Event\Handler\EventLiveBeginPushChunkNotificationCommandHandler:
         arguments:
-            $cache: '@app.cache.event_notifications'
+            $cache: '@app.simple_cache.event_notifications'
 
     # SonataAdmin requests public `logger` service
     logger:
