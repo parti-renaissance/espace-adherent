@@ -97,6 +97,17 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllIdsForNational(): array
+    {
+        $result = $this->createIdentifierQueryBuilder('t')
+            ->select('DISTINCT t.id')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_column($result, 'id');
+    }
+
     private function createIdentifierQueryBuilder(string $alias): QueryBuilder
     {
         return $this->createQueryBuilder($alias)
