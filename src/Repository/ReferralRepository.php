@@ -98,12 +98,11 @@ class ReferralRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('referral')
             ->select('COUNT(IF(referral.status = :status_finished, referral.id, null)) AS nb_referral_finished')
-            ->addSelect('COUNT(IF(referral.status = :status_sent, referral.id, null)) AS nb_referral_sent')
+            ->addSelect('COUNT(DISTINCT referral.id) AS nb_referral_sent')
             ->addSelect('COUNT(IF(referral.status = :status_reported, referral.id, null)) AS nb_referral_reported')
             ->where('referral.referrer = :referrer')
             ->setParameters([
                 'status_finished' => StatusEnum::ADHESION_FINISHED->value,
-                'status_sent' => StatusEnum::INVITATION_SENT->value,
                 'status_reported' => StatusEnum::REPORTED->value,
                 'referrer' => $referrer,
             ])
