@@ -176,7 +176,7 @@ Feature:
                                     "name": "referred_first_name"
                                 },
                                 {
-                                    "content": "http://test.renaissance.code/invitation/adhesion/@string@",
+                                    "content": "http://test.renaissance.code/invitation/@string@",
                                     "name": "adhesion_link"
                                 },
                                 {

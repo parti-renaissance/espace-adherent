@@ -3,7 +3,7 @@
 namespace App\Adherent\Referral;
 
 use App\Controller\Renaissance\Referral\AdhesionController;
-use App\Controller\Renaissance\Referral\Report\FormController;
+use App\Controller\Renaissance\Referral\ReportController;
 use App\Entity\Referral;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\Referral\ReferralAdhesionCreatedMessage;
@@ -26,18 +26,8 @@ class Notifier
                 $referral->referrer->getFirstName(),
                 $referral->emailAddress,
                 $referral->firstName,
-                $this->generateUrl(
-                    AdhesionController::ROUTE_NAME,
-                    [
-                        'identifier' => $referral->identifier,
-                    ]
-                ),
-                $this->generateUrl(
-                    FormController::ROUTE_NAME,
-                    [
-                        'identifier' => $referral->identifier,
-                    ]
-                )
+                $this->generateUrl(AdhesionController::ROUTE_NAME, ['identifier' => $referral->identifier]),
+                $this->generateUrl(ReportController::ROUTE_NAME, ['uuid' => $referral->getUuid()])
             )
         );
     }

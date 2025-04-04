@@ -106,6 +106,9 @@ class Referral
     #[ORM\Column(enumType: StatusEnum::class)]
     public ?StatusEnum $status = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $reportedAt = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -155,7 +158,7 @@ class Referral
 
     public function isInProgress(): bool
     {
-        return \in_array($this->status, [StatusEnum::INVITATION_SENT], true);
+        return StatusEnum::INVITATION_SENT === $this->status;
     }
 
     public function isReported(): bool
@@ -165,11 +168,27 @@ class Referral
 
     public function report(): void
     {
+        $this->firstName =
+        $this->emailAddress = '';
+
+        $this->lastName =
+        $this->civility =
+        $this->nationality =
+        $this->phone =
+        $this->postAddress =
+        $this->birthdate = null;
+
         $this->status = StatusEnum::REPORTED;
+        $this->reportedAt = new \DateTime();
     }
 
     public function isInvitation(): bool
     {
         return TypeEnum::INVITATION === $this->type;
+    }
+
+    public function isReportable(): bool
+    {
+        return TypeEnum::INVITATION === $this->type || TypeEnum::PREREGISTRATION === $this->type;
     }
 }
