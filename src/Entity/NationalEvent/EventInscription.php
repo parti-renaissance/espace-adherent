@@ -128,6 +128,10 @@ class EventInscription
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
+    #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $pushSentAt = null;
+
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;

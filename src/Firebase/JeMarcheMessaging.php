@@ -22,33 +22,27 @@ class JeMarcheMessaging
 
     public function send(NotificationInterface $notification): void
     {
-        $notificationEntity = NotificationEntity::create($notification);
-
-        $this->entityManager->persist($notificationEntity);
-        $this->entityManager->flush();
+        $notificationEntityTemplate = NotificationEntity::create($notification);
 
         if ($notification instanceof MulticastNotificationInterface) {
-            $this->sendToDevices($notification);
+            $message = $this
+                ->createMessage()
+                ->withNotification($this->createNotification($notification))
+                ->withWebPushConfig($this->getPushConfig($notification))
+                ->withData($this->getData($notification))
+            ;
+
+            foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {
+                $this->entityManager->persist($notificationEntity = $notificationEntityTemplate->withTokens($chunk));
+                $this->entityManager->flush();
+
+                $this->messaging->sendMulticast($message, $chunk);
+
+                $notificationEntity->setDelivered();
+                $this->entityManager->flush();
+            }
         } else {
             throw new \InvalidArgumentException(\sprintf('%s" is neither a topic nor a multicast notification.', $notification::class));
-        }
-
-        $notificationEntity->setDelivered();
-
-        $this->entityManager->flush();
-    }
-
-    private function sendToDevices(MulticastNotificationInterface $notification): void
-    {
-        $message = $this
-            ->createMessage()
-            ->withNotification($this->createNotification($notification))
-            ->withWebPushConfig($this->getPushConfig($notification))
-            ->withData($this->getData($notification))
-        ;
-
-        foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {
-            $this->messaging->sendMulticast($message, $chunk);
         }
     }
 
@@ -78,7 +72,8 @@ class JeMarcheMessaging
     {
         $data = $notification->getData();
 
-        if (!empty($link = $data['link'])) {
+        if (!empty($data['link'])) {
+            $link = $data['link'];
             $data['link'] = parse_url($link, \PHP_URL_PATH);
             $queryParams = parse_url($link, \PHP_URL_QUERY);
             $data['link'] .= $queryParams ? '?'.$queryParams : '';

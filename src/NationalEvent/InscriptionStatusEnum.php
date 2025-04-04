@@ -11,4 +11,9 @@ class InscriptionStatusEnum extends Enum
     public const INCONCLUSIVE = 'inconclusive';
     public const REFUSED = 'refused';
     public const DUPLICATE = 'duplicate';
+
+    public const APPROVED_STATUSES = [
+        self::ACCEPTED,
+        self::INCONCLUSIVE,
+    ];
 }

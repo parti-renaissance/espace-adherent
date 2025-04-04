@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\NationalEvent\NationalEvent;
+use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
 use App\NationalEvent\Command\SendTicketCommand;
 use App\NationalEvent\InscriptionStatusEnum;
@@ -22,14 +23,17 @@ class AdminNationalEventCRUDController extends CRUDController
             'event_inscriptions' => $eventInscriptionRepository->findAllForEventPaginated(
                 $event,
                 $request->query->get('q'),
-                $statuses = [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE],
+                $statuses = InscriptionStatusEnum::APPROVED_STATUSES,
                 $request->query->getInt('page', 1),
                 100
             ),
-            'count_without_qrcodes' => $eventInscriptionRepository->countWithoutTicketQRCodes($event),
+            'count_without_qrcodes' => $countWithoutQRCodes = $eventInscriptionRepository->countWithoutTicketQRCodes($event),
+            'notification_disabled' => $countWithoutQRCodes > 0,
             'count_without_ticket' => $eventInscriptionRepository->countTickets($event, true, $statuses),
             'count_with_ticket' => $eventInscriptionRepository->countTickets($event, false, $statuses),
             'count_by_status' => $eventInscriptionRepository->countByStatus($event),
+            'count_available_for_push' => $eventInscriptionRepository->countForPush($event),
+            'count_available_for_push_missing' => $eventInscriptionRepository->countForPush($event, true),
         ]);
     }
 
@@ -38,9 +42,9 @@ class AdminNationalEventCRUDController extends CRUDController
         $inscriptions = [];
 
         if ($request->query->has('all')) {
-            $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE]);
+            $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event);
         } elseif ($request->query->has('only_missing')) {
-            $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE], true);
+            $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event, false);
         } elseif (($uuid = $request->query->get('uuid')) && $inscription = $eventInscriptionRepository->findOneByUuid($uuid)) {
             $inscriptions = [$inscription];
         }
@@ -54,6 +58,22 @@ class AdminNationalEventCRUDController extends CRUDController
         } else {
             $this->addFlash('sonata_flash_error', 'Aucun billet à envoyer.');
         }
+
+        return $this->redirect($this->admin->generateObjectUrl('inscriptions', $event));
+    }
+
+    public function sendPushAction(Request $request, NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
+    {
+        $type = 'only_missing';
+        if ($request->query->has('all')) {
+            $type = 'all';
+        } elseif ($uuid = $request->query->get('uuid')) {
+            $type = $uuid;
+        }
+
+        $messageBus->dispatch(new NationalEventTicketAvailableNotificationCommand($event->getUuid(), $type));
+
+        $this->addFlash('sonata_flash_success', 'Les notifications sont en cours d\'envoi.');
 
         return $this->redirect($this->admin->generateObjectUrl('inscriptions', $event));
     }

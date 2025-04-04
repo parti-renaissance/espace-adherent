@@ -83,7 +83,7 @@ class SendNationalEventTicketsCommand extends Command
             $queryBuilder
                 ->andWhere('event_inscription.status IN (:status)')
                 ->andWhere('event_inscription.ticketSentAt IS NULL')
-                ->setParameter('status', [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE])
+                ->setParameter('status', InscriptionStatusEnum::APPROVED_STATUSES)
             ;
         }
 

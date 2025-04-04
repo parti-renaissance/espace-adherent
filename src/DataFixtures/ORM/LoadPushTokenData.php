@@ -12,35 +12,30 @@ use Ramsey\Uuid\Uuid;
 
 class LoadPushTokenData extends Fixture implements DependentFixtureInterface
 {
-    public const PUSH_TOKEN_1_UUID = '5a650f97-2100-4800-913e-17d82f69b7a3';
-    public const PUSH_TOKEN_2_UUID = 'aa429e50-f55a-4da7-b1e6-3c12a55e031a';
-    public const PUSH_TOKEN_3_UUID = '611bd38d-3150-4843-ad6a-51732b308e36';
-    public const PUSH_TOKEN_4_UUID = 'c523cdd0-c4ad-4692-aa77-619c95a36414';
-
     public function load(ObjectManager $manager): void
     {
+        foreach ($manager->getRepository(Adherent::class)->findAll() as $adherent) {
+            $manager->persist($this->createPushTokenForAdherent($adherent, bin2hex(random_bytes(16))));
+        }
+
         $adherent77 = $this->getReference('adherent-7', Adherent::class);
 
         $pushToken1 = $this->createPushTokenForAdherent(
-            self::PUSH_TOKEN_1_UUID,
             $adherent77,
             'token-francis-jemarche-1',
         );
 
         $pushToken2 = $this->createPushTokenForAdherent(
-            self::PUSH_TOKEN_2_UUID,
             $adherent77,
             'token-francis-jemarche-2',
         );
 
         $pushToken3 = $this->createPushTokenForDevice(
-            self::PUSH_TOKEN_3_UUID,
             $this->getReference('device-1', Device::class),
             'token-device-1-jemarche',
         );
 
         $pushToken4 = $this->createPushTokenForDevice(
-            self::PUSH_TOKEN_4_UUID,
             $this->getReference('device-2', Device::class),
             'token-device-2-jemarche',
         );
@@ -53,28 +48,14 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function createPushTokenForAdherent(
-        string $uuid,
-        Adherent $adherent,
-        string $identifier,
-    ): PushToken {
-        return PushToken::createForAdherent(
-            Uuid::fromString($uuid),
-            $adherent,
-            $identifier,
-        );
+    public function createPushTokenForAdherent(Adherent $adherent, string $identifier): PushToken
+    {
+        return PushToken::createForAdherent(Uuid::uuid4(), $adherent, $identifier);
     }
 
-    public function createPushTokenForDevice(
-        string $uuid,
-        Device $device,
-        string $identifier,
-    ): PushToken {
-        return PushToken::createForDevice(
-            Uuid::fromString($uuid),
-            $device,
-            $identifier,
-        );
+    public function createPushTokenForDevice(Device $device, string $identifier): PushToken
+    {
+        return PushToken::createForDevice(Uuid::uuid4(), $device, $identifier);
     }
 
     public function getDependencies(): array

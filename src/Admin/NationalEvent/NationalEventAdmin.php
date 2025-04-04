@@ -24,6 +24,7 @@ class NationalEventAdmin extends AbstractAdmin
         $collection
             ->add('inscriptions', $this->getRouterIdParameter().'/inscriptions')
             ->add('sendTickets', $this->getRouterIdParameter().'/send-tickets')
+            ->add('sendPush', $this->getRouterIdParameter().'/send-push')
             ->add('generateTicketQRCodes', $this->getRouterIdParameter().'/generate-ticket-qrcodes')
         ;
     }

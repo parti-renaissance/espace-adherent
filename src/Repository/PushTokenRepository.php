@@ -10,12 +10,17 @@ use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
+use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\PushToken;
+use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Uuid;
 
 class PushTokenRepository extends ServiceEntityRepository
 {
@@ -48,7 +53,7 @@ class PushTokenRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getSingleColumnResult();
     }
 
-    public function findAllForNotificationObject(NotificationObjectInterface $object): array
+    public function findAllForNotificationObject(NotificationObjectInterface $object, SendNotificationCommandInterface $command): array
     {
         $queryBuilder = $this->createIdentifierQueryBuilder('t');
 
@@ -58,7 +63,7 @@ class PushTokenRepository extends ServiceEntityRepository
             $filterEnabled = true;
 
             $queryBuilder
-                ->innerJoin(EventRegistration::class, 'er', Join::WITH, 'er.adherentUuid = a.uuid')
+                ->innerJoin(EventRegistration::class, 'er', Join::WITH, 'er.adherent = a')
                 ->andWhere('er.event = :event')
                 ->setParameter('event', $object)
             ;
@@ -80,6 +85,25 @@ class PushTokenRepository extends ServiceEntityRepository
                 ->andWhere('ap.action = :action')
                 ->setParameter('action', $object)
             ;
+        } elseif ($object instanceof NationalEvent) {
+            $filterEnabled = true;
+
+            $queryBuilder
+                ->innerJoin(EventInscription::class, 'ie', Join::WITH, 'ie.adherent = a')
+                ->andWhere('ie.event = :event')
+                ->setParameter('event', $object)
+            ;
+
+            if ($command instanceof NationalEventTicketAvailableNotificationCommand && 'all' !== $command->destinationType) {
+                if (Uuid::isValid($command->destinationType)) {
+                    $queryBuilder
+                        ->andWhere('ie.uuid = :inscription_uuid')
+                        ->setParameter('inscription_uuid', $command->destinationType)
+                    ;
+                } else {
+                    $queryBuilder->andWhere('ie.pushSentAt IS NULL');
+                }
+            }
         }
 
         if (!$filterEnabled) {

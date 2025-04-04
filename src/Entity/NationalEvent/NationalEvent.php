@@ -5,7 +5,9 @@ namespace App\Entity\NationalEvent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\UploadableFile;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
-class NationalEvent
+class NationalEvent implements NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;
@@ -113,5 +115,14 @@ class NationalEvent
     public function allowEditInscription(): bool
     {
         return $this->inscriptionEditDeadline && $this->inscriptionEditDeadline > new \DateTime();
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return true;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
     }
 }

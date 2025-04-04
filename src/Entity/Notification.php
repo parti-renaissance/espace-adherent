@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
 use App\Repository\NotificationRepository;
@@ -94,9 +93,6 @@ class Notification
             $notification instanceof TopicNotificationInterface
                 ? $notification->getTopic()
                 : null,
-            $notification instanceof MulticastNotificationInterface
-                ? $notification->getTokens()
-                : null
         );
     }
 
@@ -153,5 +149,13 @@ class Notification
     public function setDelivered(): void
     {
         $this->deliveredAt = new \DateTime();
+    }
+
+    public function withTokens(array $tokens): self
+    {
+        $copy = clone $this;
+        $copy->tokens = $tokens;
+
+        return $copy;
     }
 }
