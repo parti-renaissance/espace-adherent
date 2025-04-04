@@ -315,16 +315,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.1.4",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "c636d980a70de9fd274fafcbfe9ea3cfbb8d4e9a"
+                "reference": "2a765275d5df404def9fdb630f61d6fd035185b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/c636d980a70de9fd274fafcbfe9ea3cfbb8d4e9a",
-                "reference": "c636d980a70de9fd274fafcbfe9ea3cfbb8d4e9a",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/2a765275d5df404def9fdb630f61d6fd035185b1",
+                "reference": "2a765275d5df404def9fdb630f61d6fd035185b1",
                 "shasum": ""
             },
             "require": {
@@ -523,9 +523,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.1.4"
+                "source": "https://github.com/api-platform/core/tree/v4.1.5"
             },
-            "time": "2025-03-28T15:08:19+00:00"
+            "time": "2025-04-03T18:00:35+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
