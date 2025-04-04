@@ -1385,10 +1385,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
-    public function findAdherentsWithSubscriptionTypes(array $subscriptionTypeCodes): array
+    public function findAdherentIdsWithSubscriptionTypes(array $subscriptionTypeCodes): array
     {
-        return $this->createQueryBuilder('a')
-            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
+        $result = $this->createQueryBuilder('a')
+            ->select('a.id')
             ->innerJoin('a.subscriptionTypes', 'subscription_type')
             ->andWhere('subscription_type.code IN (:subscription_type_codes)')
             ->andWhere('a.status = :status')
@@ -1399,8 +1399,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'subscription_type_codes' => $subscriptionTypeCodes,
             ])
             ->getQuery()
-            ->getResult()
+            ->getArrayResult()
         ;
+
+        return array_column($result, 'id');
     }
 
     public function findByPublicId(string $publicId, bool $partial = false): ?Adherent

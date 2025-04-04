@@ -12,7 +12,7 @@ use Kreait\Firebase\Messaging\Notification;
 
 class JeMarcheMessaging
 {
-    private const MULTICAST_MAX_TOKENS = 500;
+    public const MULTICAST_MAX_TOKENS = 500;
 
     public function __construct(
         private readonly BaseMessaging $messaging,
