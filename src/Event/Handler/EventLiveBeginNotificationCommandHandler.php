@@ -6,6 +6,7 @@ use App\Entity\Event\Event;
 use App\Event\Command\EventLiveBeginEmailChunkNotificationCommand;
 use App\Event\Command\EventLiveBeginNotificationCommand;
 use App\Event\Command\EventLiveBeginPushChunkNotificationCommand;
+use App\Firebase\JeMarcheMessaging;
 use App\Mailer\MailerService;
 use App\Repository\AdherentRepository;
 use App\Repository\Event\EventRepository;
@@ -37,14 +38,14 @@ class EventLiveBeginNotificationCommandHandler
 
     private function dispatchPushNotifications(Event $event): void
     {
-        $tokens = $this->pushTokenRepository->findAllForNational();
+        $pushTokenIds = $this->pushTokenRepository->findAllIdsForNational();
 
-        if (!$tokens) {
+        if (empty($pushTokenIds)) {
             return;
         }
 
         $loop = 1;
-        foreach (array_chunk($tokens, 1000) as $chunk) {
+        foreach (array_chunk($pushTokenIds, JeMarcheMessaging::MULTICAST_MAX_TOKENS) as $chunk) {
             $this->bus->dispatch(new EventLiveBeginPushChunkNotificationCommand(
                 $event->getUuid(),
                 $chunk,
@@ -57,14 +58,14 @@ class EventLiveBeginNotificationCommandHandler
 
     private function dispatchEmailNotifications(Event $event): void
     {
-        $recipients = $this->adherentRepository->findAdherentsWithSubscriptionTypes([SubscriptionTypeEnum::EVENT_EMAIL]);
+        $recipientIds = $this->adherentRepository->findAdherentIdsWithSubscriptionTypes([SubscriptionTypeEnum::EVENT_EMAIL]);
 
-        if (!$recipients) {
+        if (empty($recipientIds)) {
             return;
         }
 
         $loop = 1;
-        foreach (array_chunk($recipients, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
+        foreach (array_chunk($recipientIds, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
             $this->bus->dispatch(new EventLiveBeginEmailChunkNotificationCommand(
                 $event->getUuid(),
                 $chunk,
