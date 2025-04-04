@@ -2079,9 +2079,9 @@ Feature:
                 "mode": "online",
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "post_address": {
-                    "address": "226 Rue de Rivoli",
-                    "postal_code": "75001",
-                    "city_name": "Paris 1er",
+                    "address": "68 rue du Rocher",
+                    "postal_code": "75008",
+                    "city_name": "Paris 8er",
                     "country": "FR"
                 },
                 "time_zone": "Europe/Paris",
@@ -2129,13 +2129,13 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": 100,
                 "post_address": {
-                    "address": "226 Rue de Rivoli",
-                    "postal_code": "75001",
-                    "city": "75001-75101",
-                    "city_name": "Paris 1er",
+                    "address": "68 rue du Rocher",
+                    "postal_code": "75008",
+                    "city": null,
+                    "city_name": "Paris 8er",
                     "country": "FR",
-                    "latitude": 48.8596,
-                    "longitude": 2.344967
+                    "latitude": 48.879089,
+                    "longitude": 2.316518
                 },
                 "visio_url": "https://en-marche.fr/reunions/123",
                 "is_national": false,
@@ -2149,11 +2149,11 @@ Feature:
             }
             """
         And I should have 1 notification "EventCreatedNotification" with data:
-            | key   | value                                                                                     |
-            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                        |
-            | scope | zone:75                                                                                   |
-            | title | Paris, nouvel événement                                                                   |
-            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30 • 226 Rue de Rivoli, 75001 Paris 1er |
+            | key   | value                                                                                            |
+            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                               |
+            | scope | zone:75                                                                                          |
+            | title | Paris, nouvel événement                                                                          |
+            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30 • 68 rue du Rocher, 75008 Paris 8er, France |
 
         Examples:
             | user                                  | uuid                                 | scope                                          | first_name    | last_name | role                      |

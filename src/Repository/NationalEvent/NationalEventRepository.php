@@ -3,11 +3,14 @@
 namespace App\Repository\NationalEvent;
 
 use App\Entity\NationalEvent\NationalEvent;
+use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class NationalEventRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NationalEvent::class);

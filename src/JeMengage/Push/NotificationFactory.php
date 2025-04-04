@@ -55,6 +55,10 @@ class NotificationFactory
             return Notification\NewsCreatedNotification::create($object);
         }
 
+        if ($command instanceof Command\NationalEventTicketAvailableNotificationCommand) {
+            return Notification\NationalEventTicketNotification::create($object);
+        }
+
         throw new \RuntimeException('[Notification] Command not supported');
     }
 }

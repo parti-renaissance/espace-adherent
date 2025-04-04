@@ -6,10 +6,12 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
+use App\Entity\PushToken;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class EventInscriptionRepository extends ServiceEntityRepository
@@ -117,18 +119,26 @@ class EventInscriptionRepository extends ServiceEntityRepository
     /**
      * @return EventInscription[]
      */
-    public function findAllPartialForEvent(NationalEvent $event, array $statuses, bool $withoutTicket = false): array
+    public function findAllPartialForEvent(NationalEvent $event, ?bool $emailAlreadySent = null, ?bool $pushAlreadySent = null): array
     {
         $qb = $this->createQueryBuilder('ei')
             ->select('PARTIAL ei.{id, uuid}')
              ->where('ei.event = :event')
              ->andWhere('ei.status IN (:statuses)')
              ->setParameter('event', $event)
-             ->setParameter('statuses', $statuses)
+             ->setParameter('statuses', InscriptionStatusEnum::APPROVED_STATUSES)
         ;
 
-        if ($withoutTicket) {
-            $qb->andWhere('ei.ticketSentAt IS NULL');
+        if (null !== $emailAlreadySent) {
+            $qb->andWhere('ei.ticketSentAt IS '.(true === $emailAlreadySent ? 'NOT' : '').' NULL');
+        }
+
+        if (null !== $pushAlreadySent) {
+            $qb
+                ->innerJoin('ei.adherent', 'adherent')
+                ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
+                ->andWhere('ei.pushSentAt IS '.(true === $pushAlreadySent ? 'NOT' : '').' NULL')
+            ;
         }
 
         return $qb->getQuery()->getResult();
@@ -149,12 +159,34 @@ class EventInscriptionRepository extends ServiceEntityRepository
     public function countTickets(NationalEvent $event, bool $withoutTicket, array $statuses): int
     {
         return $this->createQueryBuilder('ei')
-            ->select('COUNT(ei)')
+            ->select('COUNT(DISTINCT ei.id)')
             ->where('ei.event = :event')
             ->andWhere('ei.ticketSentAt IS '.($withoutTicket ? '' : 'NOT').' NULL')
             ->andWhere('ei.status IN (:statuses)')
             ->setParameter('event', $event)
             ->setParameter('statuses', $statuses)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countForPush(NationalEvent $event, bool $firstNotification = false): int
+    {
+        $queryBuilder = $this->createQueryBuilder('ei')
+            ->select('COUNT(DISTINCT adherent.id)')
+            ->innerJoin('ei.adherent', 'adherent')
+            ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
+            ->where('ei.event = :event')
+            ->andWhere('ei.status IN (:statuses)')
+            ->setParameter('event', $event)
+            ->setParameter('statuses', InscriptionStatusEnum::APPROVED_STATUSES)
+        ;
+
+        if ($firstNotification) {
+            $queryBuilder->andWhere('ei.pushSentAt IS NULL');
+        }
+
+        return $queryBuilder
             ->getQuery()
             ->getSingleScalarResult()
         ;

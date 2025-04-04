@@ -4,7 +4,6 @@ namespace App\JeMengage;
 
 use App\Entity\Action\Action;
 use App\Entity\Event\Event;
-use App\Entity\Jecoute\News;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Router
@@ -32,10 +31,6 @@ class Router
             return '/evenements/'.$object->getSlug();
         }
 
-        if ($object instanceof News) {
-            return '/';
-        }
-
-        return null;
+        return '/';
     }
 }

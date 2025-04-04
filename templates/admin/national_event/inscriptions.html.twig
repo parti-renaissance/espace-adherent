@@ -35,67 +35,134 @@
                             <form method="get" class="input-group input-group-sm">
                                 <input type="search" class="form-control" name="q" value="{{ app.request.query.get('q') }}" placeholder="Rechercher par nom, prénom, email ou uuid" />
                                 <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-info btn-flat">Rechercher</button>
+                                    <button type="submit" class="btn btn-default">Rechercher</button>
                                 </span>
                             </form>
                         </div>
-                        <div class="col-sm-12 text-right">
-                            {% if count_without_qrcodes %}
-                                <span class="text-danger">{{ count_without_qrcodes }} inscrits n'ont pas de QR code</span>
+                        <div class="col-sm-12">
+                            <div class="btn-group btn-group-sm">
+                                {% if count_without_ticket + count_with_ticket > 0 %}
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-default dropdown-toggle {{ notification_disabled ? 'disabled' }}" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa {{ notification_disabled ? 'fa-ban' : 'fa-envelope' }}" aria-hidden="true"></i> Emails <span class="caret"></span>
+                                        </button>
 
-                                <a href="{{ path('admin_app_nationalevent_nationalevent_generateTicketQRCodes', {id: national_event.id}) }}" class="btn btn-warning">
-                                    Générer les QR codes
-                                </a>
-                            {% endif %}
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" data-toggle="modal" data-target="#confirm-send-all">
+                                                🔴 Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
+                                            </a></li>
+                                            {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
+                                                <li><a href="#" data-toggle="modal" data-target="#confirm-send-only-missing">
+                                                    ⚠️ Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
+                                                </a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
 
-                            {% if count_without_ticket + count_with_ticket > 0 %}
-                                <a href="#" class="btn btn-danger {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-all">
-                                    Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
-                                </a>
+                                    {% if count_available_for_push %}
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-default dropdown-toggle {{ notification_disabled ? 'disabled' }}" data-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa {{ notification_disabled ? 'fa-ban' : 'fa-mobile' }}" aria-hidden="true"></i> Push <span class="caret"></span>
+                                            </button>
 
-                                {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
-                                    <a href="#" class="btn btn-info {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-only-missing">
-                                        Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" data-toggle="modal" data-target="#confirm-send-push-all">
+                                                    🔴 Envoyer à tous ({{ count_available_for_push }} militant{{ count_available_for_push > 1 ? 's' }})
+                                                </a></li>
+                                                {% if count_available_for_push != count_available_for_push_missing %}
+                                                    <li><a href="#" data-toggle="modal" data-target="#confirm-send-push-only-missing">
+                                                        ⚠️ Envoyer à ceux pas reçus ({{ count_available_for_push_missing }} militant{{ count_available_for_push_missing > 1 ? 's' }})
+                                                    </a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if count_without_qrcodes %}
+                                    <a href="{{ path('admin_app_nationalevent_nationalevent_generateTicketQRCodes', {id: national_event.id}) }}" class="btn btn-default">
+                                        <i class="fa fa-qrcode" aria-hidden="true"></i> Générer les QR codes
                                     </a>
                                 {% endif %}
+                            </div>
+
+                            {% if count_without_qrcodes %}
+                                <span class="text-danger">{{ count_without_qrcodes }} inscrits n'ont pas de QR code</span>
                             {% endif %}
 
-                            <div class="text-left">
-                                <div class="modal fade" id="confirm-send-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
+                            {% if not notification_disabled %}
+                                <div class="text-left">
+                                    <div class="modal fade" id="confirm-send-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Êtes-vous sûr de vouloir envoyer les billets à tous les inscrits ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal">Annuler</a>
+                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, all: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                                </div>
                                             </div>
-                                            <div class="modal-body">
-                                                <p>Êtes-vous sûr de vouloir envoyer les billets à tous les inscrits ?</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="confirm-send-only-missing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Êtes-vous sûr de vouloir envoyer les billets à tous ceux qui ne l'ont pas reçu ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal">Annuler</a>
+                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, only_missing: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                                </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <a href="#" data-dismiss="modal">Annuler</a>
-                                                <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, all: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="confirm-send-push-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Notification PUSH</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Êtes-vous sûr de vouloir envoyer la notification PUSH à tous les inscrits ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal">Annuler</a>
+                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendPush', {id: national_event.id, all: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="confirm-send-push-only-missing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Notification PUSH</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Êtes-vous sûr de vouloir envoyer la notification PUSH à <u>tous ceux qui ne l'ont pas reçu</u> ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" data-dismiss="modal">Annuler</a>
+                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendPush', {id: national_event.id, only_missing: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="confirm-send-only-missing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Êtes-vous sûr de vouloir envoyer les billets à tous ceux qui ne l'ont pas reçu ?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a href="#" data-dismiss="modal">Annuler</a>
-                                                <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, only_missing: true}) }}" class="btn btn-danger">Envoyer à tous</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -119,7 +186,7 @@
                                         {% for row in event_inscriptions %}
                                             <tr>
                                                 <td>
-                                                    {% set image_url = url('app_national_event_ticket', {file: row.ticketQRCodeFile}) %}
+                                                    {% set image_url = row.ticketQRCodeFile ? url('app_national_event_ticket', {file: row.ticketQRCodeFile}) %}
                                                     <a href="{{ image_url }}" target="_blank" style="display: flex;align-items:center;gap:8px;white-space: nowrap;">
                                                         <img src="{{ image_url }}" style="height: 40px;width: auto;" />
                                                         {{ row.uuid }}

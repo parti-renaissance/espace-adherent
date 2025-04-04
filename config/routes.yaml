@@ -178,6 +178,8 @@ app_national_event:
 
 app_national_event_ticket:
     path: '/{file}'
+    requirements:
+        file: '%pattern_uuid%\..+'
     host: '%national_event_ticket_host%'
 
 renaissance_site:
