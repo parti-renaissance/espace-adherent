@@ -16,9 +16,15 @@ class ReferralNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     {
     }
 
+    /** @param Referral $object */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
+
+        if ($object->isAdhesionFinished()) {
+            $data['email_address'] = null;
+            $data['phone'] = null;
+        }
 
         $data['type_label'] = $data['type'] ? $this->translator->trans('referral.type.'.$data['type']) : null;
         $data['mode_label'] = $data['mode'] ? $this->translator->trans('referral.mode.'.$data['mode']) : null;
