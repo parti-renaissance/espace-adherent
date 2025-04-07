@@ -131,7 +131,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
 
     private function transformAdherentToArray(Adherent $adherent): array
     {
-        return $this->normalizer->normalize(
+        $data = $this->normalizer->normalize(
             $adherent,
             'array',
             [
@@ -140,5 +140,13 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
                 ],
             ]
         );
+
+        if (isset($data['zones']) && \is_array($data['zones'])) {
+            usort($data['zones'], function ($a, $b) {
+                return $a['code'] <=> $b['code'];
+            });
+        }
+
+        return $data;
     }
 }
