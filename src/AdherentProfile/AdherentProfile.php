@@ -93,8 +93,12 @@ class AdherentProfile implements MembershipInterface
      * @var \DateTime|null
      */
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
-    #[Assert\Range(minMessage: 'adherent.birthdate.maximum_required_age', min: '-120 years', groups: ['Default', 'api_put_validation'])]
-    #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['Default', 'api_put_validation'])]
+    #[Assert\Range(
+        notInRangeMessage: 'common.birthdate.not_in_range',
+        min: '-120 years',
+        max: '-15 years',
+        groups: ['Default', 'api_put_validation']
+    )]
     #[Groups(['uncertified_profile_write', 'empty_profile_data'])]
     private $birthdate;
 

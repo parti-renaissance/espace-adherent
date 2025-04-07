@@ -47,7 +47,12 @@ class AdherentCreateCommand implements MembershipInterface
     public ?PhoneNumber $phone = null;
 
     #[Assert\NotBlank(message: 'admin.common.birthdate.not_blank', groups: ['admin_adherent_renaissance_create'])]
-    #[Assert\Range(maxMessage: 'admin.common.birthdate.minimum_required_age', max: '-15 years', groups: ['admin_adherent_renaissance_create'])]
+    #[Assert\Range(
+        notInRangeMessage: 'common.birthdate.not_in_range',
+        min: '-120 years',
+        max: '-15 years',
+        groups: ['admin_adherent_renaissance_create']
+    )]
     public ?\DateTimeInterface $birthdate = null;
 
     #[Assert\Choice(choices: MembershipTypeEnum::CHOICES, message: 'admin.adherent.renaissance.membership_type.invalid_choice', groups: ['admin_adherent_renaissance_create'])]

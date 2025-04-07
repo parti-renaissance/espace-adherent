@@ -78,6 +78,11 @@ class Referral
     public ?PhoneNumber $phone = null;
 
     #[Groups(['referral_read', 'referral_write'])]
+    #[Assert\Range(
+        notInRangeMessage: 'common.birthdate.not_in_range',
+        min: '-120 years',
+        max: '-15 years',
+    )]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTimeInterface $birthdate = null;
 

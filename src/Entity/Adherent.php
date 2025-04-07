@@ -169,7 +169,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private ?\DateTime $phoneVerifiedAt = null;
 
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['additional_info', 'adhesion:further_information'])]
-    #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['additional_info', 'adhesion:further_information'])]
+    #[Assert\Range(
+        notInRangeMessage: 'common.birthdate.not_in_range',
+        min: '-120 years',
+        max: '-15 years',
+        groups: ['additional_info', 'adhesion:further_information']
+    )]
     #[Groups(['profile_read', 'national_event_inscription:webhook', 'profile_update'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;

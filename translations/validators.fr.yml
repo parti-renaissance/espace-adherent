@@ -108,7 +108,6 @@ adherent.unknown_id: Il n'existe aucun adhérent correspondant à cet ID.
 adherent.elect.exempt_invalid_status: Vous ne pouvez pas activer l'option exonération de cotisation pour cet élu
 adherent_formation.zone_title.unique_entity: Il existe déjà une formation portant ce titre dans cette zone.
 
-
 #
 # Adherent profile
 #
@@ -166,9 +165,9 @@ donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
 donation.amount.invalid: Le don unique doit être compris entre 10€ et 7500€. Le don mensuel doit être compris entre 5€ et 625€.
 donation.code.invalid: Le code doit être composé de 6 chiffres.
 donation.french_address_or_nationality_donation: |
-  Nous sommes désolés mais votre don ne peut pas être finalisé, nous ne pouvons accepter que les dons des personnes ayant <b>la nationalité française</b> ou <b>le foyer fiscal en France</b>.
-  <br><br>
-  L’article 11-4 de la loi N° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique énonce qu’ « Une personne physique peut verser un don à un parti ou groupement politique si elle est de nationalité française ou si elle réside en France ».
+    Nous sommes désolés mais votre don ne peut pas être finalisé, nous ne pouvons accepter que les dons des personnes ayant <b>la nationalité française</b> ou <b>le foyer fiscal en France</b>.
+    <br><br>
+    L’article 11-4 de la loi N° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique énonce qu’ « Une personne physique peut verser un don à un parti ou groupement politique si elle est de nationalité française ou si elle réside en France ».
 
 #
 # Newsletter
@@ -423,7 +422,6 @@ file.validation.filename_length: Le nom du document (avec l'extension) ne peut p
 file.validation.file_or_link: Vous pouvez ajouter soit un fichier, soit un lien.
 file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.
 
-
 The value {{ value }} is not valid.: Cette valeur n'est pas valide.
 
 #
@@ -543,7 +541,9 @@ admin.common.last_name.max_length: Le nom ne peut pas dépasser {{ limit }} cara
 admin.common.address.not_geocodable: L'adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.
 
 admin.common.birthdate.not_blank: Veuillez spécifier une date de naissance.
-admin.common.birthdate.minimum_required_age: L'âge minimum requis pour adhérer est de 15ans.
+common.birthdate.minimum_required_age: L'âge minimum requis pour adhérer est de 15 ans.
+common.birthdate.maximum_required_age: L’âge maximum autorisé pour adhérer est de 120 ans.
+common.birthdate.out_of_range: L’âge requis pour adhérer doit être compris entre 15 et 120 ans.
 
 admin.adherent.renaissance.membership_type.not_blank: Veuillez spécifier au moins un type d'adhésion.
 admin.adherent.renaissance.membership_type.invalid_choice: Ce type d'adhésion n'est pas valide.
