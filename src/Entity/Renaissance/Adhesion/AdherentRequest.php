@@ -4,10 +4,8 @@ namespace App\Entity\Renaissance\Adhesion;
 
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
-use App\Entity\PostAddress;
 use App\Repository\Renaissance\Adhesion\AdherentRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -19,16 +17,7 @@ class AdherentRequest
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntityPostAddressTrait;
     use EntityUTMTrait;
-
-    #[Assert\NotBlank]
-    #[ORM\Column]
-    public ?string $firstName = null;
-
-    #[Assert\NotBlank]
-    #[ORM\Column]
-    public ?string $lastName = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(nullable: true)]
@@ -43,9 +32,6 @@ class AdherentRequest
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $tokenUsedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    public ?string $password = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $allowEmailNotifications = false;
@@ -73,18 +59,10 @@ class AdherentRequest
     {
         $object = new self();
 
-        $object->firstName = '';
-        $object->lastName = '';
-        $object->password = '';
         $object->email = $email;
         $object->amount = 0;
 
         return $object;
-    }
-
-    public function getFullName(): string
-    {
-        return \sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function activate(): void
@@ -94,11 +72,7 @@ class AdherentRequest
 
     public function clean(): void
     {
-        $this->firstName = '';
-        $this->lastName = '';
-        $this->password = '';
         $this->email = '';
-        $this->postAddress = PostAddress::createEmptyAddress();
         $this->cleaned = true;
     }
 }
