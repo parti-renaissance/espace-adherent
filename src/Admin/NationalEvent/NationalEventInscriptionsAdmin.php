@@ -31,6 +31,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -76,12 +77,14 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 },
             ])
             ->add('event', null, ['label' => 'Event', 'show_filter' => true])
+            ->add('ticketScannedAt', NullFilter::class, ['label' => 'Présent', 'inverse' => true, 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_combine(InscriptionStatusEnum::toArray(), InscriptionStatusEnum::toArray()),
+                    'multiple' => true,
+                    'choices' => array_combine(InscriptionStatusEnum::STATUSES, InscriptionStatusEnum::STATUSES),
                 ],
             ])
         ;
@@ -108,7 +111,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     {
         $form
             ->with('Général', ['class' => 'col-md-6'])
-                ->add('status', ChoiceType::class, ['label' => 'Statut', 'choices' => array_combine(InscriptionStatusEnum::toArray(), InscriptionStatusEnum::toArray())])
+                ->add('status', ChoiceType::class, ['label' => 'Statut', 'choices' => array_combine(InscriptionStatusEnum::STATUSES, InscriptionStatusEnum::STATUSES)])
                 ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
                 ->add('firstName', null, ['label' => 'Prénom'])
                 ->add('lastName', null, ['label' => 'Nom'])
@@ -135,6 +138,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->with('Billet', ['class' => 'col-md-6'])
                 ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
                 ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('ticketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
             ->end()
         ;
     }
@@ -206,6 +210,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Billet champ libre' => $inscription->ticketCustomDetail,
+                'Billet scanné le' => $inscription->ticketScannedAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
                 'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',

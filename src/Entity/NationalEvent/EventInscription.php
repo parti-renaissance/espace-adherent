@@ -37,7 +37,7 @@ class EventInscription
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
     public NationalEvent $event;
 
-    #[Assert\Choice(callback: [InscriptionStatusEnum::class, 'toArray'])]
+    #[Assert\Choice(InscriptionStatusEnum::STATUSES)]
     #[Groups(['national_event_inscription:webhook', 'event_inscription_update'])]
     #[ORM\Column(options: ['default' => 'pending'])]
     public string $status = InscriptionStatusEnum::PENDING;
@@ -127,6 +127,9 @@ class EventInscription
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $ticketScannedAt = null;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
