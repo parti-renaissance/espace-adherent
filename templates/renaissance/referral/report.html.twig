@@ -13,9 +13,9 @@
                 <h1 class="text-3xl font-maax font-medium text-ui_gray-80">Signaler cette invitation ?</h1>
 
                 <p>En la signalant, nous effacerons immédiatement vos données personnelles
-                    {% if referral.referrer %}
+                    {%- if referral.referrer %}
                         et préviendrons <span class="font-bold">{{ referral.referrer.firstName }}</span> que son invitation n’était pas sollicitée
-                    {% endif %}
+                    {%- endif -%}
                 .</p>
                 {{ form_start(form) }}
                     {{ form_row(form.allow, {label: 'Signaler', attr: {class: 'w-full', color: 'red'}}) }}
