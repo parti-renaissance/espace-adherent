@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\PostAddress;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -33,10 +32,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest1 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_1_UUID,
             'renaissance-user-1@en-marche-dev.fr',
-            'Laure',
-            'Fenix',
             30.25,
-            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             true,
             true
         );
@@ -44,29 +40,20 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest2 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_2_UUID,
             'future-renaissance-user-2@en-marche-dev.fr',
-            'Daniel',
-            'Dumas',
             10.50,
-            $this->createPostAddress('44 rue des courcelles', '75008-75108'),
             true,
         );
 
         $adherentRequest3 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_3_UUID,
             'future-renaissance-user-3@en-marche-dev.fr',
-            'Amelie',
-            'Moulin',
             30.75,
-            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
         );
 
         $adherentRequest4 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_4_UUID,
             'michelle.dufour@example.ch',
-            'Michelle',
-            'Dufour',
             20,
-            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             true,
             true,
             $this->getReference('adherent-1', Adherent::class)
@@ -90,21 +77,14 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
     private function createAdherentRequest(
         string $uuid,
         string $email,
-        string $firstName,
-        string $lastName,
         int $amount,
-        PostAddress $address,
         $allowEmailNotifications = false,
         $allowMobileNotifications = false,
         ?Adherent $adherent = null,
     ): AdherentRequest {
         $adherentRequest = new AdherentRequest(Uuid::fromString($uuid));
-        $adherentRequest->firstName = $firstName;
-        $adherentRequest->lastName = $lastName;
         $adherentRequest->email = $email;
         $adherentRequest->amount = $amount;
-        $adherentRequest->setPostAddress($address);
-        $adherentRequest->password = $this->hasher->hash(LoadAdherentData::DEFAULT_PASSWORD);
         $adherentRequest->allowEmailNotifications = $allowEmailNotifications;
         $adherentRequest->allowMobileNotifications = $allowMobileNotifications;
 
