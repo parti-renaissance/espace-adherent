@@ -57,7 +57,7 @@ final class Genders
     {
         return match ($civility) {
             CivilityEnum::Monsieur => self::MALE,
-            CivilityEnum::Madame => self::MALE_FEMALE,
+            CivilityEnum::Madame => self::FEMALE,
         };
     }
 }
