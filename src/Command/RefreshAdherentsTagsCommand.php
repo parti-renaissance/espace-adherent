@@ -42,6 +42,7 @@ class RefreshAdherentsTagsCommand extends Command
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('procuration-only', null, InputOption::VALUE_NONE, 'Only refresh adherents linked to procurations')
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
+            ->addOption('with-static-labels', null, InputOption::VALUE_NONE)
             ->addOption('dry-run', null, InputOption::VALUE_NONE)
         ;
     }
@@ -61,10 +62,15 @@ class RefreshAdherentsTagsCommand extends Command
             $input->getOption('tag'),
             $input->getOption('tag-pattern'),
             $input->getOption('source'),
-            $input->getOption('procuration-only')
+            $input->getOption('procuration-only'),
+            $input->getOption('with-static-labels'),
         );
 
-        $total = $paginator->count();
+        if (!$total = $paginator->count()) {
+            $this->io->success('No adherent to refresh.');
+
+            return self::SUCCESS;
+        }
 
         if (!$this->io->isQuiet() && false === $this->io->confirm(\sprintf('Are you sure to sync %d adherents?', $total), false)) {
             return self::FAILURE;
@@ -98,7 +104,7 @@ class RefreshAdherentsTagsCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $ids, array $emails, array $tags, ?string $tagPattern, ?string $source, bool $procurationsOnly): Paginator
+    private function getQueryBuilder(array $ids, array $emails, array $tags, ?string $tagPattern, ?string $source, bool $procurationsOnly, bool $withStaticLabels): Paginator
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -152,6 +158,10 @@ class RefreshAdherentsTagsCommand extends Command
                 ->leftJoin(Request::class, 'procuration_request', Join::WITH, 'adherent = procuration_request.adherent')
                 ->andWhere('procuration_proxy IS NOT NULL OR procuration_request IS NOT NULL')
             ;
+        }
+
+        if ($withStaticLabels) {
+            $queryBuilder->innerJoin('adherent.staticLabels', 'static_labels');
         }
 
         return new Paginator($queryBuilder->getQuery());
