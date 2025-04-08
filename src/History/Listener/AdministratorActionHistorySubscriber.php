@@ -118,7 +118,8 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         $diff = array_keys(
             ArrayUtils::arrayDiffRecursive(
                 $this->userBeforeUpdate,
-                $this->transformAdherentToArray($adherent)
+                $this->transformAdherentToArray($adherent),
+                true
             )
         );
 

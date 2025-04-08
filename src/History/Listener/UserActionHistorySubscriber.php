@@ -95,7 +95,8 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $diff = array_keys(
             ArrayUtils::arrayDiffRecursive(
                 $this->userBeforeUpdate,
-                $this->transformToArray($event->getAdherent())
+                $this->transformToArray($event->getAdherent()),
+                true
             )
         );
 
