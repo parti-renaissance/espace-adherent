@@ -149,7 +149,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.859599,
             'longitude' => 2.344967,
         ],
-        '68 rue du rocher, 75008 paris 8er, france' => [
+        '68 rue du rocher, 75008 paris 8ème, france' => [
             'latitude' => 48.879091,
             'longitude' => 2.316518,
         ],

@@ -11,6 +11,7 @@ use App\Validator\MaxFiscalYearDonation;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MaxFiscalYearDonation(path: 'amount', groups: ['adhesion:amount'])]
@@ -43,7 +44,14 @@ class MembershipRequest implements DonationRequestInterface
     #[Assert\NotBlank]
     public ?string $nationality = null;
 
+    #[AssertPhoneNumber]
     public ?PhoneNumber $phone = null;
+
+    #[Assert\Range(
+        notInRangeMessage: 'common.birthdate.out_of_range',
+        min: '-120 years',
+        max: '-16 years',
+    )]
     public ?\DateTimeInterface $birthdate = null;
 
     public ?bool $exclusiveMembership = null;

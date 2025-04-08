@@ -2081,7 +2081,7 @@ Feature:
                 "post_address": {
                     "address": "68 rue du Rocher",
                     "postal_code": "75008",
-                    "city_name": "Paris 8er",
+                    "city_name": "Paris 8ème",
                     "country": "FR"
                 },
                 "time_zone": "Europe/Paris",
@@ -2131,8 +2131,8 @@ Feature:
                 "post_address": {
                     "address": "68 rue du Rocher",
                     "postal_code": "75008",
-                    "city": null,
-                    "city_name": "Paris 8er",
+                    "city": "75008-75108",
+                    "city_name": "Paris 8ème",
                     "country": "FR",
                     "latitude": 48.879089,
                     "longitude": 2.316518
@@ -2149,11 +2149,11 @@ Feature:
             }
             """
         And I should have 1 notification "EventCreatedNotification" with data:
-            | key   | value                                                                                            |
-            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                               |
-            | scope | zone:75                                                                                          |
-            | title | Paris, nouvel événement                                                                          |
-            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30 • 68 rue du Rocher, 75008 Paris 8er, France |
+            | key   | value                                                                                     |
+            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                        |
+            | scope | zone:75                                                                                   |
+            | title | Paris, nouvel événement                                                                   |
+            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30 • 68 rue du Rocher, 75008 Paris 8ème |
 
         Examples:
             | user                                  | uuid                                 | scope                                          | first_name    | last_name | role                      |

@@ -3,6 +3,7 @@
 namespace App\Adherent\Referral\Handler;
 
 use App\Adherent\Referral\Command\LinkReferrerWithNewAdherentCommand;
+use App\Adherent\Referral\Notifier;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
 use App\Entity\Adherent;
@@ -19,6 +20,7 @@ class LinkReferrerWithNewAdherentCommandHandler
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly ReferralRepository $referralRepository,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -31,6 +33,10 @@ class LinkReferrerWithNewAdherentCommandHandler
 
         if ($command->fromCotisation) {
             $this->referralRepository->finishReferralAdhesionStatus($adherent);
+
+            if ($referral = $this->referralRepository->findFinishedForAdherent($adherent)) {
+                $this->notifier->sendAdhesionFinishedMessage($referral);
+            }
 
             return;
         }

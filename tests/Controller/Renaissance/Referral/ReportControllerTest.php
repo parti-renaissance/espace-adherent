@@ -48,7 +48,6 @@ class ReportControllerTest extends AbstractWebTestCase
 
         $referral = $this->referralRepository->findOneBy(['identifier' => $identifier]);
         $this->assertEquals(StatusEnum::REPORTED, $referral->status);
-        $this->assertEmpty($referral->firstName);
         $this->assertEmpty($referral->lastName);
         $this->assertEmpty($referral->emailAddress);
         $this->assertEmpty($referral->civility);

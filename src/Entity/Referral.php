@@ -168,7 +168,6 @@ class Referral
 
     public function report(): void
     {
-        $this->firstName =
         $this->emailAddress = '';
 
         $this->lastName =
