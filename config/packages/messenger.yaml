@@ -107,6 +107,19 @@ framework:
                         }
                     queues:
                         chatbot: { binding_keys: ['chatbot'] }
+            event:
+                dsn: '%env(RABBITMQ_DSN)%'
+                retry_strategy:
+                    delay: 10000
+                options:
+                    exchange:
+                        {
+                            name: 'event-topic',
+                            type: 'topic',
+                            default_publish_routing_key: 'async.event',
+                        }
+                    queues:
+                        event: { binding_keys: ['async.event'] }
         routing:
             App\Chatbot\Command\RefreshThreadCommand: chatbot
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
@@ -115,3 +128,4 @@ framework:
             App\Mailer\Command\AsyncSendMessageCommand: notification
             App\Messenger\Message\AsynchronousMessageInterface: default
             App\Notifier\AsyncNotificationInterface: notification
+            App\Event\Command\EventNotificationCommandInterface: event

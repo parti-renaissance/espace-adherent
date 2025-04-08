@@ -5,7 +5,7 @@ namespace App\Event\Command;
 use App\Messenger\Message\UuidDefaultAsyncMessage;
 use Ramsey\Uuid\UuidInterface;
 
-class EventLiveBeginEmailChunkNotificationCommand extends UuidDefaultAsyncMessage
+class EventLiveBeginEmailChunkNotificationCommand extends UuidDefaultAsyncMessage implements EventNotificationCommandInterface
 {
     public function __construct(
         UuidInterface $uuid,
