@@ -118,7 +118,8 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         $diff = array_keys(
             ArrayUtils::arrayDiffRecursive(
                 $this->userBeforeUpdate,
-                $this->transformAdherentToArray($adherent)
+                $this->transformAdherentToArray($adherent),
+                true
             )
         );
 
@@ -131,7 +132,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
 
     private function transformAdherentToArray(Adherent $adherent): array
     {
-        $data = $this->normalizer->normalize(
+        return $this->normalizer->normalize(
             $adherent,
             'array',
             [
@@ -140,13 +141,5 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
                 ],
             ]
         );
-
-        if (isset($data['zones']) && \is_array($data['zones'])) {
-            usort($data['zones'], function ($a, $b) {
-                return $a['code'] <=> $b['code'];
-            });
-        }
-
-        return $data;
     }
 }

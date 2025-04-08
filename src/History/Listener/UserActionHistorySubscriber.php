@@ -95,7 +95,8 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $diff = array_keys(
             ArrayUtils::arrayDiffRecursive(
                 $this->userBeforeUpdate,
-                $this->transformToArray($event->getAdherent())
+                $this->transformToArray($event->getAdherent()),
+                true
             )
         );
 
@@ -128,7 +129,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
 
     private function transformToArray(Adherent $adherent): array
     {
-        $data = $this->normalizer->normalize(
+        return $this->normalizer->normalize(
             $adherent,
             'array',
             [
@@ -137,13 +138,5 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
                 ],
             ]
         );
-
-        if (isset($data['zones']) && \is_array($data['zones'])) {
-            usort($data['zones'], function ($a, $b) {
-                return $a['code'] <=> $b['code'];
-            });
-        }
-
-        return $data;
     }
 }
