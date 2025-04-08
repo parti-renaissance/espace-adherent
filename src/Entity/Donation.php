@@ -242,6 +242,11 @@ class Donation implements GeoPointInterface
         return $this->type;
     }
 
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
     public function isCB(): bool
     {
         return self::TYPE_CB === $this->type;
@@ -352,6 +357,11 @@ class Donation implements GeoPointInterface
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 
     public function hasError(): bool
