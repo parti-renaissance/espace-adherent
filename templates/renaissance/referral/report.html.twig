@@ -21,7 +21,7 @@
                     {{ form_row(form.allow, {label: 'Signaler', attr: {class: 'w-full', color: 'red'}}) }}
                 {{ form_end(form) }}
 
-                <p>Si vous avez cliqué ici par erreur, vous pouvez toujours adhérer rapidement via cette <a class="text-ui_blue-50" href="{{ path('app_adhesion_with_invitation', {identifier: referral.identifier}) }}">invitation</a>.</p>
+                <p>Si vous avez cliqué ici par erreur, vous pouvez toujours adhérer rapidement via cette <a class="text-ui_blue-50" href="{{ path('app_referral_adhesion', {identifier: referral.identifier}) }}">invitation</a>.</p>
             {% else %}
                 {% if referral.isReported() %}
                     <h1 class="text-3xl font-maax font-medium text-ui_gray-80">Votre invitation a été signalée</h1>

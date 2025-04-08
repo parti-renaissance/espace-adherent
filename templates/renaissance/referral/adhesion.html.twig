@@ -43,7 +43,7 @@
 
                             {{ form_row(form.address, {label: 'Adresse postale'}) }}
 
-                            <fieldset class="relative h-[100px]">
+                            <fieldset class="relative">
                                 <twig:Atoms:ReLabel class="mb-6">Date de naissance</twig:Atoms:ReLabel>
 
                                 <fieldset class="flex gap-2.5 relative">
@@ -64,6 +64,7 @@
                                         searchBoxProps: {'x-numberonly': ''},
                                     }}) }}
                                 </fieldset>
+                                {{ form_errors(form.birthdate) }}
                             </fieldset>
 
                             {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}
@@ -82,7 +83,7 @@
                                     <p><span class="font-bold">Téléphone :</span> {{ referral.phone|phone_number_format }}</p>
                                 {% endif %}
 
-                                <p><span class="font-bold">Nationalité :</span> {{ referral.nationality }}</p>
+                                <p><span class="font-bold">Nationalité :</span> {{ referral.nationality|countryName }}</p>
                                 <p><span class="font-bold">Adresse postale :</span> {{ referral.getInlineFormattedAddress() }}</p>
 
                                 {% if referral.birthdate %}

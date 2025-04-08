@@ -37,13 +37,13 @@ class ReferralRepository extends ServiceEntityRepository
             ->set('r.status', ':new_status')
             ->set('r.updatedAt', ':date')
             ->andWhere('r.status IN (:status_to_update)')
+            ->andWhere('r.referred = :referred')
             ->setParameters([
                 'new_status' => StatusEnum::ADHESION_FINISHED,
                 'date' => new \DateTimeImmutable(),
                 'status_to_update' => [StatusEnum::ACCOUNT_CREATED, StatusEnum::INVITATION_SENT],
+                'referred' => $adherent,
             ])
-            ->andWhere('r.referred = :referred')
-            ->setParameter('referred', $adherent)
             ->getQuery()
             ->execute()
         ;
@@ -108,6 +108,21 @@ class ReferralRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getSingleResult()
+        ;
+    }
+
+    public function findFinishedForAdherent(Adherent $adherent): ?Referral
+    {
+        return $this->createQueryBuilder('referral')
+            ->where('referral.status = :status_finished')
+            ->andWhere('referral.referred = :referred')
+            ->setParameters([
+                'status_finished' => StatusEnum::ADHESION_FINISHED,
+                'referred' => $adherent,
+            ])
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
         ;
     }
 }
