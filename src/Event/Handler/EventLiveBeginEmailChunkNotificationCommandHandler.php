@@ -51,7 +51,7 @@ class EventLiveBeginEmailChunkNotificationCommandHandler
             $event->getAuthor(),
             $event,
             $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'evenements/'.$event->getSlug(),
-        ));
+        ), false);
 
         $this->cache->set($command->key, true, 900);
     }
