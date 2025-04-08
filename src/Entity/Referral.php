@@ -191,4 +191,12 @@ class Referral
     {
         return TypeEnum::INVITATION === $this->type || TypeEnum::PREREGISTRATION === $this->type;
     }
+
+    public function isAdhesionFinished(): bool
+    {
+        return \in_array($this->status, [
+            StatusEnum::ADHESION_FINISHED,
+            StatusEnum::ADHESION_VIA_OTHER_LINK,
+        ], true);
+    }
 }
