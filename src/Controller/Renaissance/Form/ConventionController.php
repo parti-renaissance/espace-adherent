@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\Form;
 
-use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,15 +38,8 @@ class ConventionController extends AbstractController
             return $response;
         }
 
-        $currentYear = date('Y');
-
-        $accessGranted = $user instanceof Adherent && (
-            $user->hasTag(TagEnum::getAdherentYearTag($currentYear - 1))
-            || $user->hasTag(TagEnum::getAdherentYearTag($currentYear))
-        );
-
         return $this->render('renaissance/convention/form.html.twig', [
-            'adherent_access_granted' => $accessGranted,
+            'adherent_access_granted' => $user instanceof Adherent && $user->hasActiveMembership(),
             'convention' => self::CONVENTION[$slug],
             'slug' => $slug,
         ]);
