@@ -8,19 +8,19 @@ use App\Entity\AdherentMessage\CampaignAdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\CampaignAdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdherentMessageChangeSubscriber implements EventSubscriber
 {
-    private MessageBusInterface $bus;
     private array $objects = [];
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->bus = $bus;
     }
 
     public function getSubscribedEvents(): array
@@ -34,7 +34,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         ];
     }
 
-    public function postRemove(LifecycleEventArgs $args): void
+    public function postRemove(PostRemoveEventArgs $args): void
     {
         $object = $args->getObject();
 
@@ -43,7 +43,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         }
     }
 
-    public function postPersist(LifecycleEventArgs $args): void
+    public function postPersist(PostPersistEventArgs $args): void
     {
         $object = $args->getObject();
 
@@ -52,7 +52,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         }
     }
 
-    public function postUpdate(LifecycleEventArgs $args): void
+    public function postUpdate(PostUpdateEventArgs $args): void
     {
         $object = $args->getObject();
 
@@ -65,7 +65,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $object) {

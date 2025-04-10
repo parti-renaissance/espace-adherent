@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance;
 
 use App\AppCodeEnum;
+use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
@@ -43,7 +44,7 @@ class MagicLinkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData();
 
-            if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
+            if ($adherent = $adherentRepository->findOneByEmailAndStatus($email, [Adherent::PENDING, Adherent::ENABLED])) {
                 $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, appCode: AppCodeEnum::VOX);
 
                 $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));

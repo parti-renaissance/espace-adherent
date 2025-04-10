@@ -27,7 +27,7 @@ class SendActivationCodeListener implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if (!$adherent->isV2() || $adherent->getActivatedAt()) {
+        if (!$adherent->isPending()) {
             return;
         }
 

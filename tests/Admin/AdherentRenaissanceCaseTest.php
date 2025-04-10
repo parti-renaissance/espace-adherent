@@ -367,7 +367,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         $adherent = $this->adherentRepository->findOneByEmail($submittedValues['email']);
 
         self::assertInstanceOf(Adherent::class, $adherent);
-        self::assertSame('DISABLED', $adherent->getStatus());
+        self::assertSame('PENDING', $adherent->getStatus());
         self::assertSame('renaissance', $adherent->getSource());
         self::assertSame($submittedValues['gender'], $adherent->getGender());
         self::assertSame($submittedValues['firstName'], $adherent->getFirstName());

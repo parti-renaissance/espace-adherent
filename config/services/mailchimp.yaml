@@ -50,12 +50,6 @@ services:
         arguments:
             $builders: !tagged_iterator 'app.mailchimp.campaign.content_builder'
 
-    App\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
-        tags:
-            - { name: 'monolog.logger', channel: 'mailchimp_sync' }
-        calls:
-            - ['setLogger', ['@logger']]
-
     App\Mailchimp\Synchronisation\Handler\AdherentChangeEmailCommandHandler:
         tags:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }

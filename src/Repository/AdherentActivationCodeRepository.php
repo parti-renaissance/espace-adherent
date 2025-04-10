@@ -28,13 +28,13 @@ class AdherentActivationCodeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function deleteForAdherent(Adherent $user): void
+    public function invalidateForAdherent(Adherent $user): void
     {
         $this->createQueryBuilder('code')
             ->update()
             ->where('code.adherent = :adherent')
-            ->andWhere('code.usedAt IS NULL')
-            ->set('code.usedAt', ':now')
+            ->andWhere('code.usedAt IS NULL AND code.revokedAt IS NULL')
+            ->set('code.revokedAt', ':now')
             ->setParameters([
                 'adherent' => $user,
                 'now' => new \DateTime(),

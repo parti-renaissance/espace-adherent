@@ -2,7 +2,11 @@
 
 {% block field %}
     <div style="width: 160px; margin-top: 5px;">
-        {% if object.enabled %}
+        {% if not object.isDisabled() %}
+            {% if object.isPending() %}
+                <span class="label label-warning">Compte en attente</span>
+            {% endif %}
+
             {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
                 <div class="btn-group">
                     {% set client = get_vox_client() %}

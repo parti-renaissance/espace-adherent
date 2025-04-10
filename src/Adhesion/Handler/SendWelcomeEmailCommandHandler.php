@@ -24,7 +24,7 @@ class SendWelcomeEmailCommandHandler
             return;
         }
 
-        if (!$adherent->isEnabled()) {
+        if ($adherent->isDisabled()) {
             return;
         }
 

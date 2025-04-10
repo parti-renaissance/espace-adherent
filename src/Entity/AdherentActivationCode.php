@@ -31,6 +31,9 @@ class AdherentActivationCode
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $usedAt = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $revokedAt = null;
+
     public static function create(Adherent $adherent, int $codeTtl): self
     {
         $code = new self();
@@ -53,5 +56,10 @@ class AdherentActivationCode
     public function isExpired(): bool
     {
         return $this->expiredAt < new \DateTime();
+    }
+
+    public function isRevoked(): bool
+    {
+        return null !== $this->revokedAt;
     }
 }

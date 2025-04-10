@@ -2,38 +2,41 @@
 
 namespace App\Security\Listener;
 
-use App\Adhesion\AdhesionStepEnum;
+use App\Controller\Renaissance\MagicLinkController;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Http\Authenticator\LoginLinkAuthenticator;
-use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
 class MagicLinkAuthenticationListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
     {
-        return [LoginSuccessEvent::class => ['onAuthenticationSuccess', 4096]];
+        return [AuthenticationSuccessEvent::class => ['onAuthenticationSuccess', 4096]];
     }
 
-    public function onAuthenticationSuccess(LoginSuccessEvent $event): void
+    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        if (!$event->getAuthenticator() instanceof LoginLinkAuthenticator) {
+        $request = $this->requestStack->getMainRequest();
+
+        if (MagicLinkController::ROUTE_NAME !== $request?->attributes->get('_route')) {
             return;
         }
 
-        $adherent = $event->getUser();
+        $adherent = $event->getAuthenticationToken()->getUser();
 
-        if (!$adherent instanceof Adherent || $adherent->getActivatedAt()) {
+        if (!$adherent instanceof Adherent || !$adherent->isPending()) {
             return;
         }
 
         $adherent->enable();
-        $adherent->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
 
         $this->entityManager->flush();
     }

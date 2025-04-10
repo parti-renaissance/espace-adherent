@@ -3,7 +3,6 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
@@ -43,12 +42,10 @@ class AdherentResetPasswordHandler
         $adherent->resetPassword($token);
 
         $hasBeenActivated = false;
-        if ($adherent->getSource()) {
-            // activate account if necessary
-            if (!$adherent->getActivatedAt()) {
-                $adherent->activate(AdherentActivationToken::generate($adherent));
-                $hasBeenActivated = true;
-            }
+        // activate account if necessary
+        if ($adherent->isPending()) {
+            $adherent->enable();
+            $hasBeenActivated = true;
         }
 
         $this->manager->flush();

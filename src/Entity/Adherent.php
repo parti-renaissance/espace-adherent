@@ -128,6 +128,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use ImageTrait;
     use PublicIdTrait;
 
+    public const PENDING = 'PENDING';
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
     public const DISABLED = 'DISABLED';
@@ -179,8 +180,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $position;
 
     #[Groups(['profile_update'])]
-    #[ORM\Column(length: 10, options: ['default' => 'DISABLED'])]
-    private string $status = self::DISABLED;
+    #[ORM\Column(length: 10, options: ['default' => self::PENDING])]
+    private string $status = self::PENDING;
 
     #[Groups(['adherent_autocomplete', 'national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime')]
@@ -605,7 +606,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?PhoneNumber $phone = null,
         ?string $nickname = null,
         bool $nicknameUsed = false,
-        string $status = self::DISABLED,
+        string $status = self::PENDING,
         string $registeredAt = 'now',
         ?array $mandates = [],
         ?string $nationality = null,
@@ -933,6 +934,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->nickname;
     }
 
+    public function isPending(): bool
+    {
+        return self::PENDING === $this->status;
+    }
+
+    public function isDisabled(): bool
+    {
+        return self::DISABLED === $this->status;
+    }
+
     public function isEnabled(): bool
     {
         return self::ENABLED === $this->status;
@@ -1009,8 +1020,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function enable(string $timestamp = 'now'): void
     {
+        if (self::PENDING !== $this->status) {
+            throw new AdherentAlreadyEnabledException($this->uuid);
+        }
+
         $this->status = self::ENABLED;
-        $this->activatedAt = new \DateTime($timestamp);
+        $this->activatedAt ??= new \DateTime($timestamp);
+        $this->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
     }
 
     /**
@@ -1029,6 +1045,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $token->consume($this);
 
         $this->password = $newPassword;
+        $this->finishAdhesionStep(AdhesionStepEnum::PASSWORD);
     }
 
     public function changeEmail(AdherentChangeEmailToken $token): void

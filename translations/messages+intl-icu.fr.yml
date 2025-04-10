@@ -90,6 +90,9 @@ Gender: Civilité
 #
 # Adherent
 #
+PENDING: En attente
+ENABLED: Activé
+DISABLED: Désactivé
 Invalid credentials.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
 Invalid or expired login link.: Le lien de connexion n'est plus actif ou invalide
 Username could not be found.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
