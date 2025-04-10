@@ -375,6 +375,10 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@.inner']
 
+    App\Api\Serializer\EventGroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@.inner']
+
     Symfony\Bridge\Monolog\Processor\TokenProcessor:
         tags: ['monolog.processor']
     Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor:

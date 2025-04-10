@@ -205,7 +205,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         new Assert\NotBlank(),
         new Assert\Length(min: 5, max: 100),
     ])]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(length: 100)]
     protected $name;
 
@@ -237,7 +237,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'text')]
     protected $description;
 
-    #[Groups(['event_read', 'event_write', 'event_write_creation'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_write_creation'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $jsonDescription = null;
 
@@ -251,7 +251,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
      */
     #[Assert\NotBlank]
     #[Assert\Timezone]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(length: 50)]
     protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
 
@@ -315,17 +315,17 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
      * @var int|null
      */
     #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $capacity;
 
     #[Assert\Url]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private $visioUrl;
 
     #[AdherentInterestsConstraint]
-    #[Groups(['event_write'])]
+    #[Groups(['event_write', 'event_write_limited'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];
 
@@ -333,14 +333,14 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
      * @var string|null
      */
     #[Assert\Choice(choices: self::MODES)]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(nullable: true)]
     private $mode;
 
     /**
      * @var EventCategoryInterface|EventCategory|null
      */
-    #[Groups(['event_read', 'event_list_read', 'event_write', 'event_write_creation'])]
+    #[Groups(['event_read', 'event_list_read', 'event_write', 'event_write_limited', 'event_write_creation'])]
     #[ORM\ManyToOne(targetEntity: EventCategory::class)]
     protected $category;
 
@@ -348,16 +348,16 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
      * @var NullablePostAddress
      */
     #[Assert\Valid]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
 
     #[Assert\Url]
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $liveUrl = null;
 
