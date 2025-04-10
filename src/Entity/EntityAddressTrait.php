@@ -17,7 +17,7 @@ trait EntityAddressTrait
      * The address street.
      */
     #[Assert\Length(max: 255)]
-    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['event_write', 'event_write_limited', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
     #[ORM\Column(nullable: true)]
     protected ?string $address = null;
 
@@ -29,21 +29,21 @@ trait EntityAddressTrait
     /**
      * The address zip code.
      */
-    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['event_write', 'event_write_limited', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
     #[ORM\Column(nullable: true)]
     protected ?string $postalCode = null;
 
     /**
      * The address city code (postal code + INSEE code).
      */
-    #[Groups(['profil_read', 'event_write', 'event_read', 'event_list_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['profil_read', 'event_write', 'event_write_limited', 'event_read', 'event_list_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
     #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
     protected ?string $city = null;
 
     /**
      * The address city name.
      */
-    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['event_write', 'event_write_limited', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
     #[ORM\Column(nullable: true)]
     protected ?string $cityName = null;
 
@@ -51,11 +51,11 @@ trait EntityAddressTrait
      * The address country code (ISO2).
      */
     #[Assert\Country]
-    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
+    #[Groups(['event_write', 'event_write_limited', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'referral_read', 'referral_write'])]
     #[ORM\Column(length: 2, nullable: true)]
     protected ?string $country = null;
 
-    #[Groups(['event_write', 'profile_read', 'contact_read_after_write', 'contact_update', 'referral_read', 'referral_write'])]
+    #[Groups(['event_write', 'event_write_limited', 'profile_read', 'contact_read_after_write', 'contact_update', 'referral_read', 'referral_write'])]
     #[ORM\Column(nullable: true)]
     protected ?string $region = null;
 
