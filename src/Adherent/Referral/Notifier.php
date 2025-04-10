@@ -55,8 +55,8 @@ class Notifier
 
         $this->transactionalMailer->sendMessage(
             ReferralAdhesionFinishedMessage::create(
-                $referral->referrer->getEmailAddress(),
                 $referral->referrer->getFirstName(),
+                $referral->referrer->getEmailAddress(),
                 $referral->firstName
             )
         );
