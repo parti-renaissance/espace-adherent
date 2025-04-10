@@ -1,7 +1,7 @@
-{% if object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
-    <span class="label" style="background-color:#61E9D5;">Abonné{{ object.isFemale() ? 'e' }}</span>
-{% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
+{% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
     <span class="label" style="background-color:#FFEC00;color:#293845;">Désabonné{{ object.isFemale() ? 'e' }}</span>
+{% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
+    <span class="label" style="background-color:#61E9D5;">Abonné{{ object.isFemale() ? 'e' }}</span>
 {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
     <span class="label" style="background-color:#4B5C6B;">Cleaned</span>
 {% endif %}

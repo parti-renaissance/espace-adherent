@@ -50,7 +50,7 @@ class MembershipRequest implements DonationRequestInterface
     #[Assert\Range(
         notInRangeMessage: 'common.birthdate.out_of_range',
         min: '-120 years',
-        max: '-16 years',
+        max: '-15 years',
     )]
     public ?\DateTimeInterface $birthdate = null;
 

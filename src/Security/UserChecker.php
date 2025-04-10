@@ -27,7 +27,7 @@ class UserChecker implements UserCheckerInterface
                 throw new CustomUserMessageAuthenticationException('Invalid credentials.');
             }
 
-            if ($user->getActivatedAt()) {
+            if ($user->isDisabled()) {
                 $ex = new DisabledException();
                 $ex->setUser($user);
                 throw $ex;

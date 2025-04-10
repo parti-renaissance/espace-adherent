@@ -96,7 +96,6 @@ class AdherentFactory
             lastName: $membershipRequest->lastName,
             birthDate: $membershipRequest->birthdate,
             phone: $membershipRequest->phone,
-            status: Adherent::ENABLED,
             nationality: $membershipRequest->nationality,
         );
 
@@ -177,7 +176,7 @@ class AdherentFactory
             $phone,
             $data['nickname'] ?? null,
             $data['nickname_used'] ?? false,
-            Adherent::DISABLED,
+            Adherent::PENDING,
             $data['registered_at'] ?? 'now',
             null,
             $data['nationality'] ?? null,

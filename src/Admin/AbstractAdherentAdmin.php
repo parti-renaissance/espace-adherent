@@ -201,8 +201,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 ->add('postAddress.longitude', null, ['label' => 'Longitude'])
             ->end()
             ->with('Information de compte', ['class' => 'col-md-3'])
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
+                ->add('status', 'trans', [
+                    'label' => 'État du compte',
                 ])
                 ->add('registeredAt', null, [
                     'label' => 'Créé le',
@@ -324,8 +324,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     ->end()
                     ->with('Information de compte', ['class' => 'col-md-6'])
                         ->add('status', ChoiceType::class, [
-                            'label' => 'Etat du compte',
+                            'label' => 'État du compte',
                             'choices' => [
+                                'En attente' => Adherent::PENDING,
                                 'Activé' => Adherent::ENABLED,
                                 'Désactivé' => Adherent::DISABLED,
                             ],
@@ -516,10 +517,11 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     {
         $filter
             ->add('status', ChoiceFilter::class, [
-                'label' => 'Etat du compte',
+                'label' => 'État du compte',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
+                        'En attente' => Adherent::PENDING,
                         'Activé' => Adherent::ENABLED,
                         'Désactivé' => Adherent::DISABLED,
                     ],

@@ -6,6 +6,7 @@ use App\Adhesion\Exception\ActivationCodeExpiredException;
 use App\Adhesion\Exception\ActivationCodeLimitReachedException;
 use App\Adhesion\Exception\ActivationCodeNotFoundException;
 use App\Adhesion\Exception\ActivationCodeRetryLimitReachedException;
+use App\Adhesion\Exception\ActivationCodeRevokedException;
 use App\Adhesion\Exception\ActivationCodeUsedException;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
@@ -54,6 +55,10 @@ class ActivationCodeManager
             throw new ActivationCodeNotFoundException();
         }
 
+        if ($code->isRevoked()) {
+            throw new ActivationCodeRevokedException();
+        }
+
         if ($code->isExpired()) {
             throw new ActivationCodeExpiredException();
         }
@@ -62,9 +67,10 @@ class ActivationCodeManager
             throw new ActivationCodeUsedException();
         }
 
-        $adherent->enable();
-        $adherent->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
-        $code->usedAt = new \DateTime();
+        if ($adherent->isPending()) {
+            $adherent->enable();
+            $code->usedAt = new \DateTime();
+        }
 
         $this->entityManager->flush();
 
@@ -73,7 +79,7 @@ class ActivationCodeManager
 
     public function invalidateForAdherent(Adherent $adherent): void
     {
-        $this->activationCodeRepository->deleteForAdherent($adherent);
+        $this->activationCodeRepository->invalidateForAdherent($adherent);
     }
 
     private function checkAbuse(Adherent $adherent): void

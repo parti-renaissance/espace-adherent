@@ -39,7 +39,6 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
         return $this->urlGenerator->generate(
             'app_adherent_reset_password',
             array_merge($urlParams, [
-                'app_domain' => $this->getAppHost(),
                 'adherent_uuid' => (string) $adherent->getUuid(),
                 'reset_password_token' => (string) $token->getValue(),
             ]),
