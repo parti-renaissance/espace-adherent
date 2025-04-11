@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20250411125539 extends AbstractMigration
+final class Version20250411134834 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -19,6 +19,8 @@ final class Version20250411125539 extends AbstractMigration
           allow_email_notifications,
         DROP
           allow_mobile_notifications,
+        DROP
+          cleaned,
         DROP
           token_used_at,
         CHANGE
@@ -39,11 +41,13 @@ final class Version20250411125539 extends AbstractMigration
           allow_email_notifications TINYINT(1) DEFAULT 0 NOT NULL,
         ADD
           allow_mobile_notifications TINYINT(1) DEFAULT 0 NOT NULL,
-        DROP
-          account_created_at,
+        ADD
+          cleaned TINYINT(1) DEFAULT 0 NOT NULL,
         ADD
           token_used_at DATETIME DEFAULT NULL,
         CHANGE
-          email_hash adherent_uuid CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:uuid)\'');
+          email_hash adherent_uuid CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:uuid)\',
+        DROP
+          account_created_at');
     }
 }

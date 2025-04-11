@@ -59,7 +59,7 @@ class AdherentRequestCleanupCommand extends Command
         $adherentRequests = $this->adherentRequestRepository
             ->createQueryBuilder('ar')
             ->where('ar.createdAt <= :from')
-            ->andWhere('ar.cleaned = false')
+            ->andWhere('ar.email IS NOT NULL')
             ->setParameter('from', $from)
             ->getQuery()
             ->toIterable()
@@ -67,7 +67,8 @@ class AdherentRequestCleanupCommand extends Command
 
         $count = 0;
         foreach ($adherentRequests as $adherentRequest) {
-            $adherentRequest->clean();
+            $adherentRequest->email = null;
+
             ++$count;
 
             if (0 === $count % self::FLUSH_BATCH_SIZE) {

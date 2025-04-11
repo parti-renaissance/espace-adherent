@@ -30,9 +30,6 @@ class AdherentRequest
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    public bool $cleaned = false;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $accountCreatedAt = null;
 
@@ -49,12 +46,6 @@ class AdherentRequest
         $object->emailHash = Adherent::createUuid($email);
 
         return $object;
-    }
-
-    public function clean(): void
-    {
-        $this->email = '';
-        $this->cleaned = true;
     }
 
     public function handleAccountCreated(Adherent $adherent): void
