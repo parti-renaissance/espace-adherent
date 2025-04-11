@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'app:events:live-notifications',
+    name: 'app:national-events:live-notifications',
     description: 'This command finds upcoming live events and send notifications',
 )]
 class EventLiveNotificationCommand extends Command

@@ -2,9 +2,10 @@
 
 namespace App\Event\Handler;
 
+use App\Entity\Adherent;
 use App\Event\Command\EventLiveBeginEmailChunkNotificationCommand;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
+use App\Mailer\Message\Renaissance\EventLiveBeginMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\Event\EventRepository;
 use Psr\SimpleCache\CacheInterface;
@@ -33,26 +34,29 @@ class EventLiveBeginEmailChunkNotificationCommandHandler
             return;
         }
 
-        $adherents = $this->adherentRepository
+        $adherents = $this->findAdherents($command->chunk);
+
+        if (!empty($adherents)) {
+            $this->transactionalMailer->sendMessage(EventLiveBeginMessage::create(
+                $adherents,
+                $event,
+                $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'evenements/'.$event->getSlug(),
+            ), false);
+        }
+
+        $this->cache->set($command->key, true, 900);
+    }
+
+    /** @return Adherent[] */
+    private function findAdherents(array $ids): array
+    {
+        return $this->adherentRepository
             ->createQueryBuilder('a')
             ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
             ->where('a.id IN (:ids)')
-            ->setParameter('ids', $command->chunk)
+            ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult()
         ;
-
-        if (empty($adherents)) {
-            return;
-        }
-
-        $this->transactionalMailer->sendMessage(RenaissanceEventNotificationMessage::create(
-            $adherents,
-            $event->getAuthor(),
-            $event,
-            $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'evenements/'.$event->getSlug(),
-        ), false);
-
-        $this->cache->set($command->key, true, 900);
     }
 }
