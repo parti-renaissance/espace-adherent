@@ -49,41 +49,30 @@ class ReferralRepository extends ServiceEntityRepository
         ;
     }
 
-    public function updateReferralsStatus(Adherent $adherent, ?Referral $referral, StatusEnum $status): void
+    public function updateReferralsStatus(Adherent $adherent, ?Referral $excludeReferral, StatusEnum $status): void
     {
         $qb = $this->createQueryBuilder('r')
             ->update()
             ->set('r.status', ':new_status')
             ->set('r.updatedAt', ':date')
-            ->andWhere('r.status = :status_to_update')
+            ->where('r.status = :status_to_update')
+            ->andWhere('r.emailAddress = :email')
+            ->setParameters([
+                'new_status' => $status,
+                'date' => new \DateTimeImmutable(),
+                'status_to_update' => StatusEnum::INVITATION_SENT,
+                'email' => $adherent->getEmailAddress(),
+            ])
         ;
 
-        $condition = $qb->expr()->orX($qb->expr()->andX(
-            $qb->expr()->eq('r.firstName', ':firstName'),
-            $qb->expr()->eq('r.lastName', ':lastName'),
-            $qb->expr()->eq('r.emailAddress', ':email')
-        ));
-
-        $qb->setParameters([
-            'firstName' => $adherent->getFirstName(),
-            'lastName' => $adherent->getLastName(),
-            'email' => $adherent->getEmailAddress(),
-            'new_status' => $status,
-            'date' => new \DateTimeImmutable(),
-            'status_to_update' => StatusEnum::INVITATION_SENT,
-        ]);
-
-        if ($referral) {
-            $condition->add('r.referred = :referred');
+        if ($excludeReferral) {
             $qb
                 ->andWhere('r.id != :id')
-                ->setParameter('id', $referral->getId())
-                ->setParameter('referred', $adherent)
+                ->setParameter('id', $excludeReferral->getId())
             ;
         }
 
         $qb
-            ->andWhere($condition)
             ->getQuery()
             ->execute()
         ;
