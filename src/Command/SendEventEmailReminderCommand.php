@@ -77,7 +77,6 @@ class SendEventEmailReminderCommand extends Command
             ->leftJoin('r.adherent', 'a')
             ->leftJoin('a.subscriptionTypes', 'subscription_type')
             ->where('r.event = :event')
-            ->andWhere('adherent IS NULL OR subscription_type.code = :subscription_type_code')
             ->andWhere(
                 $qb->expr()->orX()
                     ->add('r.adherent IS NULL')
