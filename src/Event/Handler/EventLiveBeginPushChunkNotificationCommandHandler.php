@@ -2,6 +2,7 @@
 
 namespace App\Event\Handler;
 
+use App\Entity\PushToken;
 use App\Event\Command\EventLiveBeginPushChunkNotificationCommand;
 use App\Firebase\JeMarcheMessaging;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
@@ -31,25 +32,29 @@ class EventLiveBeginPushChunkNotificationCommandHandler
             return;
         }
 
-        $tokens = $this->pushTokenRepository
+        $tokens = $this->findPushTokens($command->tokens);
+
+        if (!empty($tokens)) {
+            $notification = EventLiveBeginNotification::create($event);
+
+            $notification->setTokens($tokens);
+
+            $this->messaging->send($notification);
+        }
+
+        $this->cache->set($command->key, true, 900);
+    }
+
+    /** @return PushToken[] */
+    private function findPushTokens(array $ids): array
+    {
+        return $this->pushTokenRepository
             ->createQueryBuilder('t')
-            ->select('PARTIAL t.identifier')
+            ->select('PARTIAL t.{id, identifier}')
             ->where('t.id IN (:ids)')
-            ->setParameter('ids', $command->tokens)
+            ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult()
         ;
-
-        if (empty($tokens)) {
-            return;
-        }
-
-        $notification = EventLiveBeginNotification::create($event);
-
-        $notification->setTokens($tokens);
-
-        $this->messaging->send($notification);
-
-        $this->cache->set($command->key, true, 900);
     }
 }
