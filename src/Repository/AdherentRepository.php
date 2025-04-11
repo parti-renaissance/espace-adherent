@@ -1385,6 +1385,26 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
+    public function findAdherentIdsWithSubscriptionTypes(array $subscriptionTypeCodes): array
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('a.id')
+            ->innerJoin('a.subscriptionTypes', 'subscription_type')
+            ->andWhere('subscription_type.code IN (:subscription_type_codes)')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.tags LIKE :adherent_tag')
+            ->setParameters([
+                'status' => Adherent::ENABLED,
+                'adherent_tag' => TagEnum::ADHERENT.'%',
+                'subscription_type_codes' => $subscriptionTypeCodes,
+            ])
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_column($result, 'id');
+    }
+
     public function findByPublicId(string $publicId, bool $partial = false): ?Adherent
     {
         return $this->createQueryBuilder('a')
