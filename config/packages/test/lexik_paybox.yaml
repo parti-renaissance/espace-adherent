@@ -1,2 +1,2 @@
 lexik_paybox:
-    public_key: '%env(SSL_PUBLIC_KEY)%'
+    public_key: '%env(OAUTH_PUBLIC_KEY)%'

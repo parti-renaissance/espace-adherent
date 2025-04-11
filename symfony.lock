@@ -151,6 +151,19 @@
             "var/storage/.gitignore"
         ]
     },
+    "league/oauth2-server-bundle": {
+        "version": "0.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.4",
+            "ref": "7f26963037fce3b69c1b3f6a75a3265edb1e1caa"
+        },
+        "files": [
+            "config/packages/league_oauth2_server.yaml",
+            "config/routes/league_oauth2_server.yaml"
+        ]
+    },
     "lexik/paybox-bundle": {
         "version": "v2.1.3"
     },

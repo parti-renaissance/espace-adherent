@@ -17,6 +17,7 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
+# TODO: remove
 class AuthorizationServerFactory
 {
     private $accessTokenRepository;
@@ -74,14 +75,14 @@ class AuthorizationServerFactory
         $refreshTokenTtl = new \DateInterval($this->refreshTokenTtlInterval);
 
         $server->enableGrantType($this->createAuthCodeGrant(), $accessTokenTtl);
-        $server->enableGrantType($this->createClientCredetialsGrant(), $accessTokenTtl);
+        $server->enableGrantType($this->createClientCredentialsGrant(), $accessTokenTtl);
         $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
         $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
 
         return $server;
     }
 
-    private function createClientCredetialsGrant(): GrantTypeInterface
+    private function createClientCredentialsGrant(): GrantTypeInterface
     {
         $grant = new ClientCredentialsGrant();
         $grant->setDeviceRepository($this->deviceRepository);

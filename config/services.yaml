@@ -197,28 +197,28 @@ services:
                 },
             ]
 
-    app.ssl_private_key:
-        class: League\OAuth2\Server\CryptKey
-        arguments:
-            $keyPath: '%env(SSL_PRIVATE_KEY)%'
-            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
-
-    app.ssl_public_key:
-        class: League\OAuth2\Server\CryptKey
-        arguments:
-            $keyPath: '%env(SSL_PUBLIC_KEY)%'
-            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
+    #    app.ssl_private_key:
+    #        class: League\OAuth2\Server\CryptKey
+    #        arguments:
+    #            $keyPath: '%env(SSL_PRIVATE_KEY)%'
+    #            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
+    #
+    #    app.ssl_public_key:
+    #        class: League\OAuth2\Server\CryptKey
+    #        arguments:
+    #            $keyPath: '%env(SSL_PUBLIC_KEY)%'
+    #            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
 
     App\OAuth\Repository\OAuthUserRepository:
         arguments:
             $userProvider: '@security.user.provider.concrete.users_db'
 
-    App\OAuth\AuthorizationServerFactory:
-        arguments:
-            $privateKey: '@app.ssl_private_key'
-            $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
-            $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
-            $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
+    #    App\OAuth\AuthorizationServerFactory:
+    #        arguments:
+    #            $privateKey: '@app.ssl_private_key'
+    #            $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
+    #            $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
+    #            $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
 
     App\AdherentMessage\MessageLimiter:
         arguments:
@@ -304,12 +304,12 @@ services:
     League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface: '@App\OAuth\Store\RefreshTokenStore'
     League\OAuth2\Server\Repositories\ScopeRepositoryInterface: '@App\OAuth\Store\ScopeStore'
 
-    League\OAuth2\Server\AuthorizationServer:
-        factory: ['@App\OAuth\AuthorizationServerFactory', 'createServer']
+    #    League\OAuth2\Server\AuthorizationServer:
+    #        factory: ['@App\OAuth\AuthorizationServerFactory', 'createServer']
 
-    League\OAuth2\Server\ResourceServer:
-        arguments:
-            $publicKey: '@app.ssl_public_key'
+    #    League\OAuth2\Server\ResourceServer:
+    #        arguments:
+    #            $publicKey: '@app.ssl_public_key'
 
     Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
     Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
