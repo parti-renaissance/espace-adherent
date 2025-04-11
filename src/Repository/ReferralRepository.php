@@ -19,10 +19,10 @@ class ReferralRepository extends ServiceEntityRepository
     {
         return 0 < $this->createQueryBuilder('referral')
             ->select('COUNT(referral.id)')
-            ->where('referral.emailAddress = :email')
+            ->where('referral.emailHash = :hash')
             ->andWhere('referral.status = :status_reported')
             ->setParameters([
-                'email' => $email,
+                'hash' => Referral::createHash($email),
                 'status_reported' => StatusEnum::REPORTED,
             ])
             ->getQuery()
