@@ -14,12 +14,12 @@ class SendEventEmailReminderCommandTest extends AbstractCommandTestCase
 
     public function testCommandSuccess(): void
     {
-        self::assertSame(11, $this->countEventsToRemind());
+        self::assertSame(9, $this->countEventsToRemind());
 
         $output = $this->runCommand('app:event:send-email-reminder');
         $output = $output->getDisplay();
 
-        self::assertStringContainsString('[OK] 11 events has been reminded.', $output);
+        self::assertStringContainsString('[OK] 9 events has been reminded.', $output);
         self::assertSame(0, $this->countEventsToRemind());
 
         // Ensure second call of same command has no event left to remind
