@@ -49,7 +49,7 @@ class ReferralRepository extends ServiceEntityRepository
         ;
     }
 
-    public function updateReferralsStatus(Adherent $adherent, ?Referral $referral, StatusEnum $status): void
+    public function updateReferralsStatus(Adherent $adherent, ?Referral $excludeReferral, StatusEnum $status): void
     {
         $qb = $this->createQueryBuilder('r')
             ->update()
@@ -65,10 +65,10 @@ class ReferralRepository extends ServiceEntityRepository
             ])
         ;
 
-        if ($referral) {
+        if ($excludeReferral) {
             $qb
                 ->andWhere('r.id != :id')
-                ->setParameter('id', $referral->getId())
+                ->setParameter('id', $excludeReferral->getId())
             ;
         }
 
