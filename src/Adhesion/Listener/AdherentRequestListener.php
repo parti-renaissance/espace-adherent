@@ -2,7 +2,6 @@
 
 namespace App\Adhesion\Listener;
 
-use App\Entity\Adherent;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -26,9 +25,7 @@ class AdherentRequestListener implements EventSubscriberInterface
         $adherentRequests = $this->adherentRequestRepository->findBy(['email' => $adherent->getEmailAddress()]);
 
         foreach ($adherentRequests as $adherentRequest) {
-            $adherentRequest->email = null;
-            $adherentRequest->adherentUuid = Adherent::createUuid($adherent->getEmailAddress());
-            $adherentRequest->adherent = $adherent;
+            $adherentRequest->handleAccountCreated($adherent);
         }
 
         $this->em->flush();

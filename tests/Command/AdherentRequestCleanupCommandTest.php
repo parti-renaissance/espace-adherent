@@ -14,19 +14,30 @@ class AdherentRequestCleanupCommandTest extends AbstractCommandTestCase
 
     public function testCommandSuccess(): void
     {
-        self::assertCount(4, $this->adherentRequestRepository->findBy(['cleaned' => false]));
+        self::assertSame(3, $this->countNotCleaned());
 
         $output = $this->runCommand('app:adherent-request:cleanup', ['days' => 0]);
         $output = $output->getDisplay();
 
-        self::assertStringContainsString('[OK] 4 adherent requests cleaned.', $output);
-        self::assertCount(0, $this->adherentRequestRepository->findBy(['cleaned' => false]));
+        self::assertStringContainsString('[OK] 3 adherent requests cleaned.', $output);
+        self::assertSame(0, $this->countNotCleaned());
 
         // Ensure second call of same command has nothing left to cleanup
         $output = $this->runCommand('app:adherent-request:cleanup', ['days' => 0]);
         $output = $output->getDisplay();
 
         self::assertStringContainsString('[OK] 0 adherent requests cleaned.', $output);
+    }
+
+    private function countNotCleaned(): int
+    {
+        return $this->adherentRequestRepository
+            ->createQueryBuilder('ar')
+            ->select('COUNT(ar.id)')
+            ->where('ar.email IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     protected function setUp(): void

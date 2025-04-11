@@ -645,7 +645,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public static function createUuid(string $email): UuidInterface
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
+        return Uuid::uuid5(Uuid::NAMESPACE_OID, mb_strtolower($email));
     }
 
     public function getUuidAsString(): string
