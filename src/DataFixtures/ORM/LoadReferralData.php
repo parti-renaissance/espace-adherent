@@ -64,9 +64,8 @@ class LoadReferralData extends AbstractLoadPostAddressData implements DependentF
         string $identifier,
         StatusEnum $status = StatusEnum::INVITATION_SENT,
     ): Referral {
-        $referral = new Referral($uuid);
+        $referral = new Referral($emailAddress, $uuid);
 
-        $referral->emailAddress = $emailAddress;
         $referral->firstName = $firstName;
         $referral->referrer = $referrer;
 

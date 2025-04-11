@@ -47,9 +47,12 @@ class Referral
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     #[Assert\NotBlank]
     #[Groups(['referral_read', 'referral_write'])]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[ReferralEmail]
     public ?string $emailAddress = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $emailHash = null;
 
     #[Assert\Length(max: 50)]
     #[Assert\NotBlank]
@@ -109,16 +112,18 @@ class Referral
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $reportedAt = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(string $emailAddress, ?UuidInterface $uuid = null)
     {
+        $this->emailAddress = mb_strtolower($emailAddress);
+        $this->emailHash = self::createHash($this->emailAddress);
+
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
     public static function createForReferred(Adherent $adherent): self
     {
-        $referral = new self();
+        $referral = new self($adherent->getEmailAddress());
         $referral->referred = $adherent;
-        $referral->emailAddress = $adherent->getEmailAddress();
         $referral->firstName = $adherent->getFirstName();
         $referral->lastName = $adherent->getLastName();
         $referral->civility = $adherent->getCivility();
@@ -129,9 +134,14 @@ class Referral
         return $referral;
     }
 
+    public static function createHash(string $email): UuidInterface
+    {
+        return Uuid::uuid5(Uuid::NAMESPACE_OID, mb_strtolower($email));
+    }
+
     public function __toString(): string
     {
-        return (string) $this->emailAddress;
+        return (string) ($this->emailAddress ?? $this->firstName);
     }
 
     public function getCivilityAlias(): string
@@ -168,8 +178,7 @@ class Referral
 
     public function report(): void
     {
-        $this->emailAddress = '';
-
+        $this->emailAddress =
         $this->lastName =
         $this->civility =
         $this->nationality =
