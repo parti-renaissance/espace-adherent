@@ -90,7 +90,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
 
         if ($adherent) {
             $adherentRequest->email = null;
-            $adherentRequest->adherentUuid = Adherent::createUuid($adherent->getEmailAddress());
+            $adherentRequest->emailHash = Adherent::createUuid($adherent->getEmailAddress());
             $adherentRequest->adherent = $adherent;
         }
 

@@ -23,24 +23,8 @@ class AdherentRequest
     #[ORM\Column(nullable: true)]
     public ?string $email = null;
 
-    #[Assert\NotBlank]
-    #[ORM\Column(type: 'float')]
-    public ?float $amount = null;
-
-    #[ORM\Column(type: 'uuid')]
-    public UuidInterface $token;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $tokenUsedAt = null;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    public bool $allowEmailNotifications = false;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    public bool $allowMobileNotifications = false;
-
     #[ORM\Column(type: 'uuid', nullable: true)]
-    public ?UuidInterface $adherentUuid = null;
+    public ?UuidInterface $emailHash = null;
 
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -49,10 +33,12 @@ class AdherentRequest
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $cleaned = false;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $accountCreatedAt = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-        $this->token = Uuid::uuid4();
     }
 
     public static function createForEmail(string $email): self
@@ -60,19 +46,21 @@ class AdherentRequest
         $object = new self();
 
         $object->email = $email;
-        $object->amount = 0;
+        $object->emailHash = Adherent::createUuid($email);
 
         return $object;
-    }
-
-    public function activate(): void
-    {
-        $this->tokenUsedAt = new \DateTime();
     }
 
     public function clean(): void
     {
         $this->email = '';
         $this->cleaned = true;
+    }
+
+    public function handleAccountCreated(Adherent $adherent): void
+    {
+        $this->email = null;
+        $this->adherent = $adherent;
+        $this->accountCreatedAt = new \DateTime();
     }
 }
