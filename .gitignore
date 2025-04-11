@@ -28,3 +28,7 @@ node_modules
 /.env.*.local
 *.DS_Store
 .yarn
+
+###> league/oauth2-server-bundle ###
+/config/jwt/*.pem
+###< league/oauth2-server-bundle ###

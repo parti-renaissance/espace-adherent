@@ -13,6 +13,8 @@ use App\OAuth\SecretGenerator;
 use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use League\Bundle\OAuth2ServerBundle\Model\AbstractClient;
+use League\Bundle\OAuth2ServerBundle\ValueObject\RedirectUri;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,15 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'oauth_clients')]
-class Client implements EntitySoftDeletedInterface
+class Client extends AbstractClient implements EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
     use EntitySoftDeletableTrait;
     use EntityTimestampableTrait;
-
-    #[Assert\Length(max: 32, maxMessage: 'client.name.constraint.length.max')]
-    #[ORM\Column]
-    private $name;
 
     #[Assert\Choice(callback: [AppCodeEnum::class, 'toArray'])]
     #[ORM\Column(nullable: true)]
@@ -37,13 +35,6 @@ class Client implements EntitySoftDeletedInterface
     #[Assert\Length(min: 10, max: 200, minMessage: 'La description doit faire au moins {{ limit }} caractères.', maxMessage: 'La description ne doit pas dépasser {{ limit }} caractères.')]
     #[ORM\Column]
     private $description;
-
-    #[Assert\Count(min: 1, minMessage: 'Veuillez spécifier au moins une adresse de redirection.')]
-    #[ORM\Column(type: 'json')]
-    private $redirectUris;
-
-    #[ORM\Column]
-    private $secret;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'simple_array')]
@@ -69,27 +60,17 @@ class Client implements EntitySoftDeletedInterface
         array $allowedGrantTypes = [],
         array $redirectUris = [],
     ) {
+        parent::__construct($name, $uuid ? $uuid->toString() : Uuid::uuid4()->toString(), $secret ?: SecretGenerator::generate());
+
         $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->name = $name;
         $this->description = $description;
-        $this->secret = $secret ?: SecretGenerator::generate();
         $this->setAllowedGrantTypes($allowedGrantTypes);
-        $this->redirectUris = $redirectUris;
+        $this->setRedirectUris(...array_map(static fn (string $redirectUri) => new RedirectUri($redirectUri), $redirectUris));
     }
 
     public function __toString(): string
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
+        return $this->getName();
     }
 
     public function setDescription(string $description): void
@@ -124,11 +105,6 @@ class Client implements EntitySoftDeletedInterface
     public function hasRedirectUri(string $uri): bool
     {
         return \in_array($uri, $this->redirectUris, true);
-    }
-
-    public function getSecret(): string
-    {
-        return $this->secret;
     }
 
     public function setAllowedGrantTypes(array $allowedGrantTypes): void
@@ -186,7 +162,7 @@ class Client implements EntitySoftDeletedInterface
 
     public function verifySecret(string $secret): bool
     {
-        return $this->secret === $secret;
+        return $this->getSecret() === $secret;
     }
 
     public function isAskUserForAuthorization(): bool

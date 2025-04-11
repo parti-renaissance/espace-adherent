@@ -1,9 +1,9 @@
 imports:
     - { resource: services_dev.yaml }
 
-parameters:
-    ssl_encryption_key: '%env(SSL_ENCRYPTION_KEY)%'
-    ssl_private_key: '%env(SSL_PRIVATE_KEY)%'
+#parameters:
+#    ssl_encryption_key: '%env(SSL_ENCRYPTION_KEY)%'
+#    ssl_private_key: '%env(SSL_PRIVATE_KEY)%'
 
 services:
     _defaults:
@@ -38,4 +38,4 @@ services:
 
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
-            - '%env(SSL_PRIVATE_KEY)%'
+            - '%env(OAUTH_PRIVATE_KEY)%'
