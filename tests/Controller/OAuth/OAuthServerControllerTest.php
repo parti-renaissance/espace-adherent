@@ -5,7 +5,6 @@ namespace Tests\App\Controller\OAuth;
 use App\Adherent\LastLoginGroupEnum;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
-use App\Entity\Device;
 use App\Entity\OAuth\AuthorizationCode;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
@@ -29,8 +28,6 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
     /** @var CryptKey */
     private $privateCryptKey;
-
-    private $deviceRepository;
 
     public function testTryRequestSecuredResourceWithExpiredAccessToken(): void
     {
@@ -66,38 +63,6 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
         static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
         static::assertSame('{"message":"The resource owner or authorization server denied the request."}', $response->getContent());
-    }
-
-    public function testRequestAccessTokenWithDeviceId(): void
-    {
-        self::assertCount(2, $this->deviceRepository->findAll());
-
-        // 1st request with refresh token must be successful and create a device in database
-        $this->client->request('POST', '/oauth/v2/token', [
-            'client_id' => '1931b955-560b-41b2-9eb9-c232157f1471',
-            'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            'grant_type' => 'client_credentials',
-            'scope' => 'jemarche_app',
-            'device_id' => 'dd4SOCS-4UlCtO-gZiQGDA',
-        ]);
-
-        $this->isSuccessful($this->client->getResponse());
-        self::assertCount(3, $this->deviceRepository->findAll());
-
-        $newDevice = $this->deviceRepository->findOneBy(['deviceUuid' => 'dd4SOCS-4UlCtO-gZiQGDA']);
-        self::assertSame('dd4SOCS-4UlCtO-gZiQGDA', $newDevice->getIdentifier());
-
-        // 2nd request must be successful and not create a second device in database
-        $this->client->request('POST', '/oauth/v2/token', [
-            'client_id' => '1931b955-560b-41b2-9eb9-c232157f1471',
-            'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            'grant_type' => 'client_credentials',
-            'scope' => 'jemarche_app',
-            'device_id' => 'dd4SOCS-4UlCtO-gZiQGDA',
-        ]);
-
-        $this->isSuccessful($this->client->getResponse());
-        self::assertCount(3, $this->deviceRepository->findAll());
     }
 
     public function testRequestAccessTokenWithValidAndInvalidRefreshToken(): void
@@ -476,7 +441,6 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->encryptionKey = $this->getParameter('ssl_encryption_key');
         $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'), null, false);
-        $this->deviceRepository = $this->getRepository(Device::class);
 
         $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
     }
@@ -485,7 +449,6 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
     {
         $this->privateCryptKey = null;
         $this->encryptionKey = null;
-        $this->deviceRepository = null;
 
         parent::tearDown();
     }

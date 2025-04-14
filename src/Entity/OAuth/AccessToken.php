@@ -2,6 +2,7 @@
 
 namespace App\Entity\OAuth;
 
+use App\Entity\AppSession;
 use App\Repository\OAuth\AccessTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,4 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'oauth_access_tokens')]
 class AccessToken extends AbstractGrantToken
 {
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'accessTokens')]
+    public ?AppSession $appSession = null;
 }
