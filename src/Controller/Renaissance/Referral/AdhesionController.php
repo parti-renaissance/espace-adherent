@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\Referral;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
+use App\Controller\Renaissance\Adhesion\Api\PersistEmailController;
 use App\Entity\Referral;
 use App\Form\MembershipFromReferralType;
 use App\Security\AdherentLogin;
@@ -37,6 +38,8 @@ class AdhesionController extends AbstractController
         }
 
         if ($referral->isInvitation()) {
+            $request->getSession()->set(PersistEmailController::SESSION_KEY, $referral->emailAddress);
+
             return $this->redirectToRoute('app_adhesion_with_invitation', array_merge($request->query->all(), ['identifier' => $referral->identifier]));
         }
 
@@ -56,13 +59,17 @@ class AdhesionController extends AbstractController
         if ($form->isSubmitted() && $isValid = $form->isValid()) {
             $result = $this->handle(new CreateAccountCommand($membershipRequest));
 
-            if ($result instanceof CreateAdherentResult && $result->getAdherent()) {
-                $this->adherentLogin->login($result->getAdherent());
+            if ($result instanceof CreateAdherentResult) {
+                if ($result->getAdherent()) {
+                    $this->adherentLogin->login($result->getAdherent());
 
-                return $this->redirectToRoute('app_adhesion_with_invitation', array_merge($request->query->all(), ['identifier' => $referral->identifier]));
+                    return $this->redirectToRoute('app_adhesion_with_invitation', array_merge($request->query->all(), ['identifier' => $referral->identifier]));
+                }
+
+                $this->addFlash('info', 'Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion.');
+            } else {
+                $this->addFlash('error', 'Une erreur est survenue lors de la création de votre compte. Veuillez réessayer plus tard.');
             }
-
-            $this->addFlash('error', 'Une erreur est survenue lors de la création de votre compte. Veuillez réessayer plus tard.');
 
             return $this->redirectToRoute(self::ROUTE_NAME, array_merge($request->query->all(), ['identifier' => $referral->identifier]));
         }

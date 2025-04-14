@@ -44,7 +44,9 @@ class CreateAccountCommandHandler
                 $currentUser->finishAdhesionStep(AdhesionStepEnum::PASSWORD);
             }
         } elseif ($adherent = $this->adherentRepository->findOneByEmail($membershipRequest->email)) {
-            $this->membershipNotifier->sendConnexionDetailsMessage($adherent);
+            if ($adherent->isEnabled()) {
+                $this->membershipNotifier->sendConnexionDetailsMessage($adherent);
+            }
 
             return CreateAdherentResult::createAlreadyExists();
         } else {

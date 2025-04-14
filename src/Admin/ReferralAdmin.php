@@ -58,7 +58,7 @@ class ReferralAdmin extends AbstractAdmin
                 'label' => 'Type',
                 'template' => 'admin/referral/list_type.html.twig',
             ])
-            ->add('mode', 'null', [
+            ->add('mode', null, [
                 'label' => 'Mode',
                 'template' => 'admin/referral/list_mode.html.twig',
             ])

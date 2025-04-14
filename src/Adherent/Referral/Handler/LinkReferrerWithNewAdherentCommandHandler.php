@@ -3,6 +3,7 @@
 namespace App\Adherent\Referral\Handler;
 
 use App\Adherent\Referral\Command\LinkReferrerWithNewAdherentCommand;
+use App\Adherent\Referral\IdentifierGenerator;
 use App\Adherent\Referral\Notifier;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
@@ -21,6 +22,7 @@ class LinkReferrerWithNewAdherentCommandHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly ReferralRepository $referralRepository,
         private readonly Notifier $notifier,
+        private readonly IdentifierGenerator $identifierGenerator,
     ) {
     }
 
@@ -58,6 +60,7 @@ class LinkReferrerWithNewAdherentCommandHandler
         }
 
         $this->entityManager->persist($referral = Referral::createForReferred($adherent));
+        $referral->identifier = $this->identifierGenerator->generate();
         $referral->status = StatusEnum::ACCOUNT_CREATED;
         $referral->type = TypeEnum::LINK;
         $referral->referrer = $referrer;
