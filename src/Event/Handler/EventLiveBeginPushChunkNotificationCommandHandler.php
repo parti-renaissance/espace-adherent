@@ -32,7 +32,8 @@ class EventLiveBeginPushChunkNotificationCommandHandler
             return;
         }
 
-        $tokens = $this->findPushTokens($command->tokens);
+        /** @var $tokens PushToken[] */
+        $tokens = $this->pushTokenRepository->findAllByIds($command->tokens);
 
         if (!empty($tokens)) {
             $notification = EventLiveBeginNotification::create($event);
@@ -43,18 +44,5 @@ class EventLiveBeginPushChunkNotificationCommandHandler
         }
 
         $this->cache->set($command->key, true, 900);
-    }
-
-    /** @return PushToken[] */
-    private function findPushTokens(array $ids): array
-    {
-        return $this->pushTokenRepository
-            ->createQueryBuilder('t')
-            ->select('PARTIAL t.{id, identifier}')
-            ->where('t.id IN (:ids)')
-            ->setParameter('ids', $ids)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }

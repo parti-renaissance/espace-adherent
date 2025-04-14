@@ -20,7 +20,7 @@ final class EventLiveBeginMessage extends AbstractRenaissanceMessage
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
-            $recipient->getFirstName().' '.$recipient->getLastName(),
+            $recipient->getFullName(),
             'Début de live',
             static::getTemplateVars($event, $eventLink),
             self::getRecipientVars($recipient)
@@ -29,7 +29,7 @@ final class EventLiveBeginMessage extends AbstractRenaissanceMessage
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFirstName().' '.$recipient->getLastName(),
+                $recipient->getFullName(),
                 self::getRecipientVars($recipient)
             );
         }

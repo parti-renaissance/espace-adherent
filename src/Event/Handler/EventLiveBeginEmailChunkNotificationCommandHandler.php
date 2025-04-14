@@ -34,7 +34,8 @@ class EventLiveBeginEmailChunkNotificationCommandHandler
             return;
         }
 
-        $adherents = $this->findAdherents($command->chunk);
+        /** @var $adherents Adherent[] */
+        $adherents = $this->adherentRepository->findAllByIds($command->chunk, true);
 
         if (!empty($adherents)) {
             $this->transactionalMailer->sendMessage(EventLiveBeginMessage::create(
@@ -45,18 +46,5 @@ class EventLiveBeginEmailChunkNotificationCommandHandler
         }
 
         $this->cache->set($command->key, true, 900);
-    }
-
-    /** @return Adherent[] */
-    private function findAdherents(array $ids): array
-    {
-        return $this->adherentRepository
-            ->createQueryBuilder('a')
-            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
-            ->where('a.id IN (:ids)')
-            ->setParameter('ids', $ids)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }

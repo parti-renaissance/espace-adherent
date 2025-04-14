@@ -44,15 +44,12 @@ class EventLiveBeginNotificationCommandHandler
             return;
         }
 
-        $loop = 1;
-        foreach (array_chunk($pushTokenIds, JeMarcheMessaging::MULTICAST_MAX_TOKENS) as $chunk) {
+        foreach (array_chunk($pushTokenIds, JeMarcheMessaging::MULTICAST_MAX_TOKENS) as $index => $chunk) {
             $this->bus->dispatch(new EventLiveBeginPushChunkNotificationCommand(
                 $event->getUuid(),
                 $chunk,
-                \sprintf('event_live:%s:batch_push:%s', $event->getId(), $loop)
+                \sprintf('event_live:%s:batch_push:%s', $event->getId(), $index)
             ));
-
-            ++$loop;
         }
     }
 
@@ -64,15 +61,12 @@ class EventLiveBeginNotificationCommandHandler
             return;
         }
 
-        $loop = 1;
-        foreach (array_chunk($recipientIds, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
+        foreach (array_chunk($recipientIds, MailerService::PAYLOAD_MAXSIZE) as $index => $chunk) {
             $this->bus->dispatch(new EventLiveBeginEmailChunkNotificationCommand(
                 $event->getUuid(),
                 $chunk,
-                \sprintf('event_live:%s:batch_email:%s', $event->getId(), $loop)
+                \sprintf('event_live:%s:batch_email:%s', $event->getId(), $index)
             ));
-
-            ++$loop;
         }
     }
 }

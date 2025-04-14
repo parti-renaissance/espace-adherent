@@ -1415,4 +1415,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getOneOrNullResult()
         ;
     }
+
+    public function findAllByIds(array $ids, bool $partial = false): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select($partial ? 'PARTIAL a.{id, uuid, emailAddress, firstName, lastName}' : 'a')
+            ->where('a.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
