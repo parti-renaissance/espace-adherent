@@ -7,7 +7,6 @@ use App\Entity\Event\EventRegistration;
 use App\Event\Command\SendEmailReminderCommand;
 use App\Repository\Event\EventRepository;
 use App\Repository\EventRegistrationRepository;
-use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -74,18 +73,8 @@ class SendEventEmailReminderCommand extends Command
 
         return $qb
             ->select('PARTIAL r.{id,uuid}')
-            ->leftJoin('r.adherent', 'a')
-            ->leftJoin('a.subscriptionTypes', 'subscription_type')
             ->where('r.event = :event')
-            ->andWhere(
-                $qb->expr()->orX()
-                    ->add('r.adherent IS NULL')
-                    ->add('subscription_type.code = :subscription_type_code')
-            )
-            ->setParameters([
-                'event' => $event,
-                'subscription_type_code' => SubscriptionTypeEnum::EVENT_EMAIL,
-            ])
+            ->setParameter('event', $event)
             ->getQuery()
             ->getResult()
         ;
