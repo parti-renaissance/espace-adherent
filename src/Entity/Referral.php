@@ -124,13 +124,8 @@ class Referral
     public static function createForReferred(Adherent $adherent): self
     {
         $referral = new self($adherent->getEmailAddress());
-        $referral->referred = $adherent;
-        $referral->firstName = $adherent->getFirstName();
-        $referral->lastName = $adherent->getLastName();
-        $referral->civility = $adherent->getCivility();
-        $referral->nationality = $adherent->getNationality();
-        $referral->phone = $adherent->getPhone();
-        $referral->birthdate = $adherent->getBirthdate();
+
+        $referral->updateFromAdherent($adherent);
 
         return $referral;
     }
@@ -143,6 +138,18 @@ class Referral
     public function __toString(): string
     {
         return (string) ($this->emailAddress ?? $this->firstName);
+    }
+
+    public function updateFromAdherent(Adherent $adherent): void
+    {
+        $this->referred = $adherent;
+        $this->emailAddress = $adherent->getEmailAddress();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->civility = $adherent->getCivility();
+        $this->nationality = $adherent->getNationality();
+        $this->phone = $adherent->getPhone();
+        $this->birthdate = $adherent->getBirthdate();
     }
 
     public function getCivilityAlias(): string
