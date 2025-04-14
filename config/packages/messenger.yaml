@@ -120,7 +120,21 @@ framework:
                         }
                     queues:
                         event: { binding_keys: ['async.event'] }
+            cronjob:
+                dsn: '%env(RABBITMQ_DSN)%'
+                retry_strategy:
+                    delay: 10000
+                options:
+                    exchange:
+                        {
+                            name: 'cronjob-topic',
+                            type: 'topic',
+                            default_publish_routing_key: 'async.cronjob',
+                        }
+                    queues:
+                        cronjob: { binding_keys: ['async.cronjob'] }
         routing:
+            App\Messenger\Message\CronjobMessageInterface: cronjob
             App\Chatbot\Command\RefreshThreadCommand: chatbot
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
