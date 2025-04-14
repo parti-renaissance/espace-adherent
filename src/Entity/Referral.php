@@ -112,11 +112,12 @@ class Referral
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $reportedAt = null;
 
-    public function __construct(string $emailAddress, ?UuidInterface $uuid = null)
+    public function __construct(?string $emailAddress, ?UuidInterface $uuid = null)
     {
-        $this->emailAddress = mb_strtolower($emailAddress);
-        $this->emailHash = self::createHash($this->emailAddress);
-
+        if ($emailAddress) {
+            $this->emailAddress = mb_strtolower($emailAddress);
+            $this->emailHash = self::createHash($this->emailAddress);
+        }
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
@@ -136,7 +137,7 @@ class Referral
 
     public static function createHash(string $email): UuidInterface
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, mb_strtolower($email));
+        return Adherent::createUuid($email);
     }
 
     public function __toString(): string
