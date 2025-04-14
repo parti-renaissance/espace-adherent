@@ -89,7 +89,7 @@ class AdherentFactory
         $adherent = Adherent::create(
             uuid: Uuid::uuid4(),
             publicId: $this->generatePublicId(),
-            emailAddress: $membershipRequest->email,
+            emailAddress: mb_strtolower($membershipRequest->email),
             password: null,
             gender: $membershipRequest->civility,
             firstName: $membershipRequest->firstName,
@@ -101,6 +101,10 @@ class AdherentFactory
 
         $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->setPapUserRole(true);
+
+        if ($membershipRequest->originalEmail && $membershipRequest->originalEmail === $adherent->getEmailAddress()) {
+            $adherent->enable();
+        }
 
         return $adherent;
     }

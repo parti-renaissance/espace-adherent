@@ -21,6 +21,8 @@ class MembershipRequest implements DonationRequestInterface
     #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
+    public ?string $originalEmail = null;
+
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]
     #[Assert\NotBlank]
     public ?string $civility = null;
@@ -103,7 +105,7 @@ class MembershipRequest implements DonationRequestInterface
         $request->firstName = $referral->firstName;
         $request->lastName = $referral->lastName;
         $request->civility = Genders::fromCivility($referral->civility);
-        $request->email = $referral->emailAddress;
+        $request->originalEmail = $request->email = mb_strtolower($referral->emailAddress);
         $request->address = Address::createFromAddress($referral->getPostAddress());
         $request->nationality = $referral->nationality;
         $request->phone = $referral->phone;
