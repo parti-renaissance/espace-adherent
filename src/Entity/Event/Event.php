@@ -309,6 +309,12 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
      * @var bool
      */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    protected $emailReminded = false;
+
+    /**
+     * @var bool
+     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $electoral = false;
 
     /**
@@ -689,6 +695,16 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function setReminded(bool $reminded): void
     {
         $this->reminded = $reminded;
+    }
+
+    public function isEmailReminded(): bool
+    {
+        return $this->emailReminded;
+    }
+
+    public function setEmailReminded(bool $emailReminded): void
+    {
+        $this->emailReminded = $emailReminded;
     }
 
     public function isPrivate(): bool
