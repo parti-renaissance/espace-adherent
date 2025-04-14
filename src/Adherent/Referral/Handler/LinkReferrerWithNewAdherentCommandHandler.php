@@ -85,7 +85,7 @@ class LinkReferrerWithNewAdherentCommandHandler
             $referral = $newReferral;
         }
 
-        $referral->referred = $adherent;
+        $referral->updateFromAdherent($adherent);
 
         if (!$referral->status || StatusEnum::INVITATION_SENT === $referral->status) {
             $referral->status = StatusEnum::ACCOUNT_CREATED;
