@@ -121,6 +121,17 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllIdsForNational(): array
+    {
+        $result = $this->createIdentifierQueryBuilder('t')
+            ->select('DISTINCT t.id')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_column($result, 'id');
+    }
+
     private function createIdentifierQueryBuilder(string $alias): QueryBuilder
     {
         return $this->createQueryBuilder($alias)
@@ -128,6 +139,17 @@ class PushTokenRepository extends ServiceEntityRepository
             ->innerJoin($alias.'.adherent', 'a')
             ->andWhere('a.status = :enabled')
             ->setParameter('enabled', Adherent::ENABLED)
+        ;
+    }
+
+    public function findAllByIds(array $ids, bool $partial = false): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select($partial ? 'PARTIAL t.{id, identifier}' : 't')
+            ->where('t.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
         ;
     }
 }
