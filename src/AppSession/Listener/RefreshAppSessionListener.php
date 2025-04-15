@@ -7,7 +7,7 @@ use League\OAuth2\Server\RequestAccessTokenEvent;
 use League\OAuth2\Server\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CreateSessionListener implements EventSubscriberInterface
+class RefreshAppSessionListener implements EventSubscriberInterface
 {
     public function __construct(private readonly Manager $manager)
     {

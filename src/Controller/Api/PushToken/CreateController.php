@@ -39,6 +39,10 @@ class CreateController extends AbstractController
             $this->entityManager->persist($token = $data);
         }
 
+        if ($user instanceof Adherent && $user->currentAppSession && (!$token->appSession || $token->appSession !== $user->currentAppSession)) {
+            $token->appSession = $user->currentAppSession;
+        }
+
         $token->lastActiveDate = new \DateTime();
         $this->entityManager->flush();
 
