@@ -7,6 +7,7 @@ use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
+use App\Repository\OAuth\AccessTokenRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;
@@ -29,6 +30,7 @@ class OAuthAuthenticator extends AbstractAuthenticator
         private readonly HttpMessageFactoryInterface $httpMessageFactory,
         private readonly AdherentRepository $adherentRepository,
         private readonly DeviceRepository $deviceRepository,
+        private readonly AccessTokenRepository $accessTokenRepository,
     ) {
     }
 
@@ -81,6 +83,10 @@ class OAuthAuthenticator extends AbstractAuthenticator
 
         $user->addRoles($roles);
         $user->setAuthAppCode($credentials['oauth_client_code'] ?? null);
+
+        if (($accessToken = $this->accessTokenRepository->findAccessTokenByIdentifier($credentials['oauth_access_token_id'])) && $accessToken->appSession) {
+            $user->currentAppSession = $accessToken->appSession;
+        }
 
         return $user;
     }

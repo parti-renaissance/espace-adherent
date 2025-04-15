@@ -478,6 +478,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     private ?string $authAppCode = null;
     private ?string $authAppVersion = null;
+    public ?AppSession $currentAppSession = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $emailStatusComment = null;

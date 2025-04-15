@@ -61,6 +61,10 @@ class PushToken
     #[ORM\ManyToOne(targetEntity: Device::class)]
     private $device;
 
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne]
+    public ?AppSession $appSession = null;
+
     /**
      * @var string|null
      */
