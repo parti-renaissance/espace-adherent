@@ -67,6 +67,10 @@ class CreateAccountController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
+        if ($membershipRequest->referral) {
+            $membershipRequest->originalEmail = $emailIdentifier;
+        }
+
         $result = $this->handle(new CreateAccountCommand($membershipRequest, $currentUser));
 
         if ($result instanceof CreateAdherentResult && $result->getAdherent()) {

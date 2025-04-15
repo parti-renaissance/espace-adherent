@@ -7,11 +7,14 @@ import reScrollTo from '../../../utils/scrollTo';
  * @param {{
  *   initStep?: number | null,
  *   isReContribution: boolean,
+ *   steps: Object,
  * }} props
  * @returns {AlpineComponent}
  */
 const Page = (props) => ({
     isReContribution: props.isReContribution,
+    enabledSteps: props.steps,
+    allSteps: ['step_1', 'step_2', 'step_3', 'step_4', 'legal-mention'],
     currentStep: props.initStep ?? 0,
     stepToFill: props.initStep ?? 0,
     setCurrentStep(step) {
@@ -80,11 +83,13 @@ const Page = (props) => ({
     },
 
     init() {
-        if (this.isReContribution) {
-            ['step_1', 'step_3', 'legal-mention'].forEach((stepId) => {
-                dom(`#${stepId}`).style.display = 'none';
-            });
-        }
+        this.allSteps.forEach((stepId) => {
+            if (this.enabledSteps[stepId]) {
+                return;
+            }
+
+            dom(`#${stepId}`).style.display = 'none';
+        });
         this.retrieveLocalStorage();
         this.blockStep(this.stepToFill);
         this.$nextTick(() => reScrollTo(`step_${this.stepToFill + 1}`));

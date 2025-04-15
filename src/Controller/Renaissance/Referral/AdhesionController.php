@@ -5,7 +5,6 @@ namespace App\Controller\Renaissance\Referral;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
-use App\Controller\Renaissance\Adhesion\Api\PersistEmailController;
 use App\Entity\Referral;
 use App\Form\MembershipFromReferralType;
 use App\Security\AdherentLogin;
@@ -38,8 +37,6 @@ class AdhesionController extends AbstractController
         }
 
         if ($referral->isInvitation()) {
-            $request->getSession()->set(PersistEmailController::SESSION_KEY, $referral->emailAddress);
-
             return $this->redirectToRoute('app_adhesion_with_invitation', array_merge($request->query->all(), ['identifier' => $referral->identifier]));
         }
 

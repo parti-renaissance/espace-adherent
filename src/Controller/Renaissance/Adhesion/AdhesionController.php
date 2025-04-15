@@ -44,6 +44,10 @@ class AdhesionController extends AbstractController
             return $this->redirectToRoute('vox_app_profile');
         }
 
+        if ($referral) {
+            $request->getSession()->set(PersistEmailController::SESSION_KEY, $referral->emailAddress);
+        }
+
         $membershipRequest = $this->getMembershipRequest($request, $currentUser, $referral);
 
         $form = $this
@@ -90,6 +94,7 @@ class AdhesionController extends AbstractController
 
             if ($referral) {
                 $membershipRequest->email = $referral->emailAddress;
+                $membershipRequest->firstName = $referral->firstName;
                 $this->step = 1;
             } elseif ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
                 $membershipRequest->email = $emailIdentifier;
