@@ -2,14 +2,13 @@
 
 namespace App\OAuth;
 
-use App\OAuth\Grant\ClientCredentialsGrant;
-use App\OAuth\Grant\PasswordGrant;
-use App\Repository\DeviceRepository;
+use App\OAuth\Grant\RefreshTokenGrant;
+use App\OAuth\Listener\SymfonyLeagueEventListener;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -21,7 +20,6 @@ class AuthorizationServerFactory
 {
     private $accessTokenRepository;
     private $userRepository;
-    private $deviceRepository;
     private $clientRepository;
     private $scopeRepository;
     private $privateKey;
@@ -31,15 +29,16 @@ class AuthorizationServerFactory
     private $accessTokenTtlInterval;
     private $refreshTokenTtlInterval;
     private $authCodeTtlInterval;
+    private SymfonyLeagueEventListener $symfonyLeagueEventListener;
 
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
         UserRepositoryInterface $userRepository,
-        DeviceRepository $deviceRepository,
         AuthCodeRepositoryInterface $authCodeRepository,
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         ScopeRepositoryInterface $scopeRepository,
+        SymfonyLeagueEventListener $symfonyLeagueEventListener,
         CryptKey $privateKey,
         string $encryptionKey,
         string $accessTokenTtlInterval,
@@ -48,7 +47,6 @@ class AuthorizationServerFactory
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->userRepository = $userRepository;
-        $this->deviceRepository = $deviceRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
         $this->privateKey = $privateKey;
@@ -58,6 +56,7 @@ class AuthorizationServerFactory
         $this->accessTokenTtlInterval = $accessTokenTtlInterval;
         $this->refreshTokenTtlInterval = $refreshTokenTtlInterval;
         $this->authCodeTtlInterval = $authCodeTtlInterval;
+        $this->symfonyLeagueEventListener = $symfonyLeagueEventListener;
     }
 
     public function createServer(): AuthorizationServer
@@ -70,29 +69,21 @@ class AuthorizationServerFactory
             $this->encryptionKey
         );
 
+        $server->getEmitter()->useListenerProvider($this->symfonyLeagueEventListener);
+
         $accessTokenTtl = new \DateInterval($this->accessTokenTtlInterval);
         $refreshTokenTtl = new \DateInterval($this->refreshTokenTtlInterval);
 
         $server->enableGrantType($this->createAuthCodeGrant(), $accessTokenTtl);
-        $server->enableGrantType($this->createClientCredetialsGrant(), $accessTokenTtl);
         $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
         $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
 
         return $server;
     }
 
-    private function createClientCredetialsGrant(): GrantTypeInterface
-    {
-        $grant = new ClientCredentialsGrant();
-        $grant->setDeviceRepository($this->deviceRepository);
-
-        return $grant;
-    }
-
     private function createPasswordGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
     {
         $grant = new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
-        $grant->setDeviceRepository($this->deviceRepository);
         $grant->setRefreshTokenTTL($refreshTokenTtl);
 
         return $grant;

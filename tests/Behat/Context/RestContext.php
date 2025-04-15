@@ -271,7 +271,6 @@ class RestContext extends BehatchRestContext
         $token->setIdentifier($accessToken->getIdentifier());
         $token->setExpiryDateTime($accessToken->getExpiryDateTime());
         $token->setUserIdentifier($accessToken->getUserIdentifier());
-        $token->setDeviceIdentifier($accessToken->getDeviceIdentifier());
         $token->setPrivateKey($this->privateCryptKey);
 
         foreach ($accessToken->getScopes() as $scope) {

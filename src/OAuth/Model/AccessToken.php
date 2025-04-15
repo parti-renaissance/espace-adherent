@@ -2,24 +2,16 @@
 
 namespace App\OAuth\Model;
 
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
-final class AccessToken extends AbstractGrantToken implements DeviceAccessTokenInterface
+final class AccessToken implements AccessTokenEntityInterface
 {
+    use TokenEntityTrait;
     use AccessTokenTrait;
+    use EntityTrait;
 
-    /**
-     * @var string|null
-     */
-    private $deviceIdentifier;
-
-    public function getDeviceIdentifier(): ?string
-    {
-        return $this->deviceIdentifier;
-    }
-
-    public function setDeviceIdentifier(?string $deviceIdentifier): void
-    {
-        $this->deviceIdentifier = $deviceIdentifier;
-    }
+    public ?string $oldAccessTokenId = null;
 }

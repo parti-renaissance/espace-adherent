@@ -56,7 +56,7 @@ class LoadClientData extends Fixture
             'En-Marche API !',
             'Plateforme Citoyenne de la République En-Marche !',
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            [GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::PASSWORD],
             ['https://en-marche.fr/callback']
         );
         $client3->addSupportedScope(Scope::READ_USERS);
