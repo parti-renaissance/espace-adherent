@@ -23,7 +23,7 @@ class DelegatedAccessManager
 
     public function createDelegatedAccessForMember(Member $member): void
     {
-        if (!$delegatedAccess = $this->findDelegatedAccess($member)) {
+        if ($newMember = !($delegatedAccess = $this->findDelegatedAccess($member))) {
             $delegatedAccess = new DelegatedAccess();
             $delegatedAccess->setDelegator($member->getTeam()->getOwner());
             $delegatedAccess->setDelegated($member->getAdherent());
@@ -37,9 +37,10 @@ class DelegatedAccessManager
 
         $this->entityManager->flush();
 
-        $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
-
-        $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
+        if ($newMember) {
+            $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
+            $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
+        }
     }
 
     public function updateDelegatedAccessForMember(Member $member, ?Member $fromMember = null): void
