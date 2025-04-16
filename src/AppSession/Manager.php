@@ -22,12 +22,11 @@ class Manager
             return;
         }
 
-        $session = new AppSession($user = $tokenEntity->getUser(), $tokenEntity->getClient());
+        $session = new AppSession($tokenEntity->getUser(), $tokenEntity->getClient());
         if ($token->oldAccessTokenId && ($oldTokenEntity = $this->accessTokenRepository->findAccessTokenByIdentifier($token->oldAccessTokenId))) {
-            $session = $oldTokenEntity->appSession ?? $session;
+            $session = $oldTokenEntity->appSession && $oldTokenEntity->appSession->isActive() ? $oldTokenEntity->appSession : $session;
         }
 
-        $user->addAppSession($session);
         $session->refresh($request->getHeaderLine('User-Agent') ?: null, $request->getHeaderLine('X-App-Version') ?: null);
 
         $tokenEntity->appSession = $session;
