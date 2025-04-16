@@ -40,6 +40,7 @@ Feature:
                     }
                 ],
                 "cadre_access": false,
+                "canary_tester": false,
                 "instances": {
                     "assembly": {
                         "type": "assembly",
@@ -92,6 +93,7 @@ Feature:
                     }
                 ],
                 "cadre_access": true,
+                "canary_tester": false,
                 "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth",
                 "instances": {
                     "assembly": {

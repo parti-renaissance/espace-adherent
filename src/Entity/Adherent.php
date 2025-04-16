@@ -338,6 +338,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
+    #[Groups(['user_profile'])]
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     public bool $canaryTester = false;
 
