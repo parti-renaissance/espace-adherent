@@ -71,10 +71,13 @@ class AccessTokenRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    private function revokeToken(AccessToken $token): void
+    public function revokeToken(AccessToken $token, bool $flush = false): void
     {
         if (!$token->isRevoked()) {
             $token->revoke();
+            if ($flush) {
+                $this->_em->flush();
+            }
         }
     }
 }

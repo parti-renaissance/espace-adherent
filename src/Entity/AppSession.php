@@ -53,4 +53,17 @@ class AppSession
         $this->userAgent = $userAgent ?: $this->userAgent;
         $this->appVersion = $appVersion ?: $this->appVersion;
     }
+
+    public function terminate(): void
+    {
+        if ($this->isActive()) {
+            $this->status = SessionStatusEnum::TERMINATED;
+            $this->lastActivityDate = new \DateTime();
+        }
+    }
+
+    public function isActive(): bool
+    {
+        return SessionStatusEnum::ACTIVE === $this->status;
+    }
 }

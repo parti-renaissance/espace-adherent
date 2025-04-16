@@ -542,9 +542,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\ManyToMany(targetEntity: AdherentStaticLabel::class, fetch: 'EXTRA_LAZY')]
     private Collection $staticLabels;
 
-    #[ORM\ManyToMany(targetEntity: AppSession::class, fetch: 'EXTRA_LAZY')]
-    private Collection $appSessions;
-
     public function __construct()
     {
         $this->animatorCommittees = new ArrayCollection();
@@ -562,7 +559,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->payments = new ArrayCollection();
         $this->revenueDeclarations = new ArrayCollection();
         $this->staticLabels = new ArrayCollection();
-        $this->appSessions = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -2516,12 +2512,5 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function removeStaticLabel(AdherentStaticLabel $adherentStaticLabel): void
     {
         $this->staticLabels->removeElement($adherentStaticLabel);
-    }
-
-    public function addAppSession(AppSession $appSession): void
-    {
-        if (!$this->appSessions->contains($appSession)) {
-            $this->appSessions->add($appSession);
-        }
     }
 }

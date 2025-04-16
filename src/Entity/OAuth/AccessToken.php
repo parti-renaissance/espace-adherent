@@ -13,4 +13,13 @@ class AccessToken extends AbstractGrantToken
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'accessTokens')]
     public ?AppSession $appSession = null;
+
+    public function revoke(string $datetime = 'now'): void
+    {
+        parent::revoke($datetime);
+
+        if ($this->appSession) {
+            $this->appSession->terminate();
+        }
+    }
 }
