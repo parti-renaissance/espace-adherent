@@ -144,12 +144,11 @@ class PushTokenRepository extends ServiceEntityRepository
 
     public function findAllByIds(array $ids, bool $partial = false): array
     {
-        return $this->createQueryBuilder('t')
-            ->select($partial ? 'PARTIAL t.{id, identifier}' : 't')
+        return $this->createIdentifierQueryBuilder('t')
             ->where('t.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
-            ->getResult()
+            ->getSingleColumnResult()
         ;
     }
 }
