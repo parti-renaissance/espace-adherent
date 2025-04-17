@@ -142,6 +142,9 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return string[]
+     */
     public function findAllByIds(array $ids, bool $partial = false): array
     {
         return $this->createIdentifierQueryBuilder('t')
