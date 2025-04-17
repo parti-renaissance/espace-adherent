@@ -80,7 +80,6 @@ class Referral
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone = null;
 
-    #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
     #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years')]
     #[Groups(['referral_read', 'referral_write'])]
     #[ORM\Column(type: 'date', nullable: true)]
