@@ -9,8 +9,8 @@
         </div>
 
         <div style="margin-left: 10px">
-            {% if admin.hasAccess('edit') %}
-                <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
+            {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+                <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
                     {{ object.fullName }}
                 </a>
             {% else %}
