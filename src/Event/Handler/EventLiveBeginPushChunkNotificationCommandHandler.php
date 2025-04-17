@@ -33,7 +33,7 @@ class EventLiveBeginPushChunkNotificationCommandHandler
         }
 
         /** @var $tokens PushToken[] */
-        $tokens = $this->pushTokenRepository->findAllByIds($command->tokens);
+        $tokens = $this->pushTokenRepository->findAllIdentifiersByIds($command->tokens);
 
         if (!empty($tokens)) {
             $notification = EventLiveBeginNotification::create($event);
