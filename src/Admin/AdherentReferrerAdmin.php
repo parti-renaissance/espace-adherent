@@ -4,11 +4,19 @@ namespace App\Admin;
 
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\Referral;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\ReferralRepository;
+use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Query\Expr;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,20 +27,29 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentReferrerAdmin extends AbstractAdmin
 {
+    use IterableCallbackDataSourceTrait;
+
     protected $baseRoutePattern = 'adherents-parrains';
     protected $baseRouteName = 'adherents-parrains';
 
-    public function __construct(?string $code, ?string $class, ?string $baseControllerName, private readonly ReferralRepository $referralRepository)
-    {
+    public function __construct(
+        ?string $code,
+        ?string $class,
+        ?string $baseControllerName,
+        private readonly ReferralRepository $referralRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly LoggerInterface $logger,
+    ) {
         parent::__construct($code, $class, $baseControllerName);
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept(['list']);
+        $collection->clearExcept(['list', 'export']);
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -53,14 +70,19 @@ class AdherentReferrerAdmin extends AbstractAdmin
                 Expr\Join::WITH,
                 \sprintf('%s.id = referral.referrer', $rootAlias)
             )
-            ->addSelect('COUNT(DISTINCT IF(referral.status = :status_adhesion_finished, referral.id, NULL)) AS referralsCountAdhesionFinished')
-            ->addSelect('COUNT(DISTINCT IF(referral.status = :status_reported, referral.id, NULL)) AS referralsCountReported')
-            ->addSelect('COUNT(DISTINCT IF(referral.type IN (:types_invitation), referral.id, NULL)) AS referralsCountInvitation')
-            ->setParameter('status_adhesion_finished', StatusEnum::ADHESION_FINISHED)
-            ->setParameter('status_reported', StatusEnum::REPORTED)
-            ->setParameter('types_invitation', [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION])
-            ->groupBy($rootAlias.'.id')
         ;
+
+        if ($this->isCurrentRoute('list')) {
+            $query
+                ->addSelect('COUNT(DISTINCT IF(referral.status = :status_adhesion_finished, referral.id, NULL)) AS referralsCountAdhesionFinished')
+                ->addSelect('COUNT(DISTINCT IF(referral.status = :status_reported, referral.id, NULL)) AS referralsCountReported')
+                ->addSelect('COUNT(DISTINCT IF(referral.type IN (:types_invitation), referral.id, NULL)) AS referralsCountInvitation')
+                ->setParameter('status_adhesion_finished', StatusEnum::ADHESION_FINISHED)
+                ->setParameter('status_reported', StatusEnum::REPORTED)
+                ->setParameter('types_invitation', [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION])
+                ->groupBy($rootAlias.'.id')
+            ;
+        }
 
         return $query;
     }
@@ -160,5 +182,46 @@ class AdherentReferrerAdmin extends AbstractAdmin
                 'sort_parent_association_mappings' => [],
             ])
         ;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) {
+            /** @var Adherent $adherent */
+            $adherent = $adherent[0];
+
+            try {
+                return [
+                    'Région' => implode(', ', array_map(function (Zone $zone): string {
+                        return $zone->getCode().' - '.$zone->getName();
+                    }, $adherent->getParentZonesOfType(Zone::REGION))),
+                    'Département' => implode(', ', array_map(function (Zone $zone): string {
+                        return $zone->getCode().' - '.$zone->getName();
+                    }, $adherent->getParentZonesOfType(Zone::DEPARTMENT))),
+                    'PID' => $adherent->getPublicId(),
+                    'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
+                    'Prénom' => $adherent->getFirstName(),
+                    'Nom' => $adherent->getLastName(),
+                    'Email' => $adherent->getEmailAddress(),
+                    'Téléphone' => PhoneNumberUtils::format($adherent->getPhone()),
+                    'Nombre d\'adhésions' => $this->referralRepository->countForReferrer($adherent, [StatusEnum::ADHESION_FINISHED]),
+                    'Nombre d\'invitations' => $this->referralRepository->countForReferrer($adherent, [], [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION]),
+                    'Nombre de signalements' => $this->referralRepository->countForReferrer($adherent, [StatusEnum::REPORTED]),
+                ];
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    \sprintf('Error exporting Adherent Referrer with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
+                    ['exception' => $e]
+                );
+
+                return [
+                    'ID' => $adherent->getId(),
+                    'UUID' => $adherent->getUuid()->toString(),
+                    'Email' => $adherent->getEmailAddress(),
+                ];
+            }
+        }];
     }
 }
