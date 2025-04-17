@@ -27,7 +27,10 @@ class Manager
             $session = $oldTokenEntity->appSession && $oldTokenEntity->appSession->isActive() ? $oldTokenEntity->appSession : $session;
         }
 
-        $session->refresh($request->getHeaderLine('User-Agent') ?: null, $request->getHeaderLine('X-App-Version') ?: $request->getQueryParams()['app-version'] ?? null);
+        $session->refresh(
+            $request->getQueryParams()['user-agent'] ?? $request->getHeaderLine('User-Agent') ?: null,
+            $request->getHeaderLine('X-App-Version') ?: $request->getQueryParams()['app-version'] ?? null
+        );
 
         $tokenEntity->appSession = $session;
 
