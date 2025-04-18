@@ -3,31 +3,50 @@
 {% endif %}
 
 <div class="row" style="display: flex;">
-    <div class="avatar" style="background-image: url('{{ object.hasImageName() ? path('asset_url', {path: object.getImagePath()}) }}')">
+    {% set image_url = object.hasImageName() ? path('asset_url', {path: object.getImagePath()}) : null %}
+    <a class="avatar" data-toggle="modal" data-target="#adherent-profile-photo-{{ object.id }}" style="background-image: url('{{ image_url }}')">
         {% if not object.hasImageName() %}
             <div>{{ object.initials }}</div>
         {% endif %}
-    </div>
+    </a>
 
-    <div style="margin-left: 10px">
-        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-            <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+    <div style="margin-left: 10px;display: flex;flex-direction: column;align-items: flex-start;gap: 4px;">
+        <span style="display: flex;align-items: center;gap: 5px;">
+            {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+                <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+                    {{ object.fullName }}
+                </a>
+            {% else %}
                 {{ object.fullName }}
-            </a>
-        {% else %}
-            {{ object.fullName }}
-        {% endif %}
+            {% endif %}
 
-        {% if object.isCertified %}
-            {{ include(('components/_certification_logo.html.twig')) }}
-        {% endif %}
+            {% if object.isCertified %}
+                {{ include(('components/_certification_logo.html.twig')) }}
+            {% endif %}
+        </span>
 
-        <br>
-        {{ object.emailAddress }}
+        <span>{{ object.emailAddress }}</span>
 
         {% if object.phone %}
-            <br>
-            {{ object.phone|phone_number_format }}
+            <span>{{ object.phone|phone_number_format }}</span>
         {% endif %}
     </div>
+
+    {% if object.hasImageName() %}
+        <div class="modal fade" id="adherent-profile-photo-{{ object.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ object.getFullName() }}</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ image_url }}" alt="photo">
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
