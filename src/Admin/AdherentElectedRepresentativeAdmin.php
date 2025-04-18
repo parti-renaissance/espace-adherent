@@ -105,7 +105,7 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
         ;
 
         $list->reorder([
-            'id',
+            'publicId',
             'lastName',
             'registeredAt',
             'lastMembershipDonation',

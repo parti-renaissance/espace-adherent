@@ -227,7 +227,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'associated_property' => 'label',
                 ])
             ->end()
-            ->with('Responsabilités locales', ['class' => 'col-md-3'])
+            ->with('Responsabilités locales', ['class' => 'col-md-6'])
                 ->add('type', null, [
                     'label' => 'Rôles',
                     'template' => 'admin/adherent/show_statuses.html.twig',
@@ -569,9 +569,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
                     return true;
                 },
-            ])
-            ->add('id', null, [
-                'label' => 'ID',
             ])
             ->add('lastName', null, [
                 'label' => 'Nom',
@@ -996,10 +993,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id', null, [
-                'label' => 'ID',
-                'template' => 'admin/adherent/list_identifier.html.twig',
-            ])
+            ->add('publicId', null, ['label' => 'PID'])
             ->add('lastName', null, [
                 'label' => 'Prénom Nom',
                 'template' => 'admin/adherent/list_fullname_certified.html.twig',

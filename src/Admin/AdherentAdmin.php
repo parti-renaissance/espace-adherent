@@ -133,7 +133,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
         ;
 
         $list->reorder([
-            'id',
+            'publicId',
             'lastName',
             'postAddress',
             'committee',
