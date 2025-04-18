@@ -114,4 +114,32 @@ class ReferralRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function countForReferrer(Adherent $adherent, array $statuses = [], array $types = []): int
+    {
+        $qb = $this->createQueryBuilder('referral')
+            ->select('COUNT(DISTINCT referral.id)')
+            ->where('referral.referrer = :referrer')
+            ->setParameter('referrer', $adherent)
+        ;
+
+        if (!empty($statuses)) {
+            $qb
+                ->andWhere('referral.status IN (:statuses)')
+                ->setParameter('statuses', $statuses)
+            ;
+        }
+
+        if (!empty($types)) {
+            $qb
+                ->andWhere('referral.type IN (:types)')
+                ->setParameter('types', $types)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }

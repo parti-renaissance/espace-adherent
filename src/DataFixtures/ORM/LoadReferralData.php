@@ -18,6 +18,7 @@ class LoadReferralData extends AbstractLoadPostAddressData implements DependentF
     public const UUID_1 = 'abeb6804-a88b-478a-8859-0c5e2f549d17';
     public const UUID_2 = '2055b072-73f4-46c3-a9ab-1fb617c464f1';
     public const UUID_3 = '34abd1e0-46e3-4c02-a4ad-8f632e03f7ce';
+    public const UUID_4 = 'e12d55f2-2a27-49c9-92e5-818320f99749';
 
     public function load(ObjectManager $manager): void
     {
@@ -51,6 +52,15 @@ class LoadReferralData extends AbstractLoadPostAddressData implements DependentF
             $this->getReference('adherent-1', Adherent::class),
             'PCD678',
             StatusEnum::REPORTED
+        ));
+
+        $manager->persist($this->createReferral(
+            Uuid::fromString(self::UUID_4),
+            'jean.dupont@dev.test',
+            'Jean',
+            $this->getReference('adherent-3', Adherent::class),
+            'PAC123',
+            StatusEnum::ADHESION_FINISHED
         ));
 
         $manager->flush();

@@ -183,6 +183,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des parrainages',
             AdministratorRoleGroupEnum::ADHERENTS
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_ADHERENT_REFERRERS',
+            'Administrateur des parrains',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
         // Politique
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES',
