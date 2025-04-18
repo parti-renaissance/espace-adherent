@@ -18,14 +18,16 @@ class MultiColumnsSearchHelper
         preg_match('/(?<first>[^\s]*)[\s]*(?<last>.*)/', $searchTerm, $tokens);
 
         if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
+            $useSecondColumn = !empty($tokens['last']);
+
             foreach ($mainColumns as $coupleColumn) {
-                $conditions->add("$coupleColumn[0] LIKE :search_first_token AND $coupleColumn[1] LIKE :search_last_token");
+                $conditions->add(\sprintf('%s LIKE :search_first_token %s', $coupleColumn[0], $useSecondColumn ? "AND $coupleColumn[1] LIKE :search_last_token" : ''));
             }
 
-            $queryBuilder
-                ->setParameter('search_first_token', '%'.$tokens['first'].'%')
-                ->setParameter('search_last_token', '%'.$tokens['last'].'%')
-            ;
+            $queryBuilder->setParameter('search_first_token', '%'.$tokens['first'].'%');
+            if ($useSecondColumn) {
+                $queryBuilder->setParameter('search_last_token', '%'.$tokens['last'].'%');
+            }
         } else {
             foreach ($mainColumns as $coupleColumn) {
                 $conditions->add("$coupleColumn[0] LIKE :slug_search");

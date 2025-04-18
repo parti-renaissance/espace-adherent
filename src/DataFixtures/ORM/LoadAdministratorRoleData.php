@@ -114,6 +114,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS
         );
         yield $this->createRole(
+            'ROLE_APP_ADMIN_APP_SESSION_ALL',
+            'Administrateur des sessions',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_STATS',
             'Statistiques des adhérents',
             AdministratorRoleGroupEnum::ADHERENTS
