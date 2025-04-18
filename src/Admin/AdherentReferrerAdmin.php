@@ -152,10 +152,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id', null, [
-                'label' => 'ID',
-                'template' => 'admin/adherent/list_identifier.html.twig',
-            ])
+            ->add('publicId', null, ['label' => 'PID'])
             ->add('lastName', null, [
                 'label' => 'Prénom Nom',
                 'template' => 'admin/adherent/list_fullname_certified.html.twig',

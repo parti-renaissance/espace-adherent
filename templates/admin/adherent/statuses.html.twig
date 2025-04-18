@@ -1,5 +1,5 @@
 {% macro label(label, bgColor = '#3C8DBC') %}
-    <span class="label" style="background-color: {{ bgColor }}; padding: 2px;">
+    <span class="label" style="background-color: {{ bgColor }};">
         {{ label }}
     </span>
 {% endmacro %}
@@ -84,30 +84,26 @@
     {% set labels = labels|merge(['Responsable National PAP']) %}
 {% endif %}
 
-{% for label in labels %}
-    {{ _self.label(label) }}
-    {% if not loop.last %}
-        <br/>
-    {% endif %}
-{% endfor %}
-
-{{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
-
-{% if object.staticLabels is not empty %}
-    {% for staticLabel in object.staticLabels %}
-        {% if not object.hasTag(staticLabel.category.code ~ ':' ~ staticLabel.code) %}
-            <br>
-            {{ _self.label(staticLabel.label, 'grey') }}
-        {% endif %}
+<div style="display: flex;flex-direction: column;align-items: flex-start;gap: 1px;">
+    {% for label in labels %}
+        {{ _self.label(label) }}
     {% endfor %}
-{% endif %}
 
-{% if object.isTerritoireProgresMembership %}
-    <br>
-    {{ _self.label('Militant TDP') }}
-{% endif %}
+    {{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
 
-{% if object.isAgirMembership %}
-    <br>
-    {{ _self.label('Militant AGIR') }}
-{% endif %}
+    {% if object.staticLabels is not empty %}
+        {% for staticLabel in object.staticLabels %}
+            {% if not object.hasTag(staticLabel.category.code ~ ':' ~ staticLabel.code) %}
+                {{ _self.label(staticLabel.label, 'grey') }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if object.isTerritoireProgresMembership %}
+        {{ _self.label('Militant TDP') }}
+    {% endif %}
+
+    {% if object.isAgirMembership %}
+        {{ _self.label('Militant AGIR') }}
+    {% endif %}
+</div>

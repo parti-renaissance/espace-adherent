@@ -1,7 +1,0 @@
-{% if object is not instanceof('App\\Entity\\Adherent') %}
-    {% set object = object.adherent %}
-{% endif %}
-
-{{ object.id }}
-<br />
-<span class="text-nowrap text-bold">{{ object.publicId }}</span>

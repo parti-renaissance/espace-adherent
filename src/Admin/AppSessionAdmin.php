@@ -4,6 +4,10 @@ namespace App\Admin;
 
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
+use App\Entity\AppSession;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -58,6 +62,7 @@ class AppSessionAdmin extends AbstractAdmin
                 'field_options' => [
                     'minimum_input_length' => 0,
                     'property' => ['name'],
+                    'callback' => [$this, 'prepareClientFilterCallback'],
                 ],
             ])
             ->add('appSystem', ChoiceFilter::class, [
@@ -88,10 +93,7 @@ class AppSessionAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('adherent.id', null, [
-                'label' => 'ID',
-                'template' => 'admin/adherent/list_identifier.html.twig',
-            ])
+            ->add('adherent.publicId', null, ['label' => 'PID'])
             ->add('adherent', null, [
                 'label' => 'Prénom Nom',
                 'template' => 'admin/adherent/list_fullname_certified.html.twig',
@@ -116,10 +118,7 @@ class AppSessionAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('adherent.id', null, [
-                'label' => 'ID',
-                'template' => 'admin/adherent/show_identifier.html.twig',
-            ])
+            ->add('adherent.publicId', null, ['label' => 'PID'])
             ->add('adherent', null, [
                 'label' => 'Prénom Nom',
                 'template' => 'admin/adherent/show_fullname_certified.html.twig',
@@ -140,6 +139,18 @@ class AppSessionAdmin extends AbstractAdmin
             ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
             ->add('uuid', null, ['label' => 'UUID'])
             ->add('userAgent', null, ['label' => 'User-Agent'])
+        ;
+    }
+
+    public function prepareClientFilterCallback(AbstractAdmin $admin): void
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb
+            ->innerJoin(AppSession::class, 'session', Join::WITH, 'session.client = '.$alias)
+            ->groupBy($alias.'.id')
         ;
     }
 }
