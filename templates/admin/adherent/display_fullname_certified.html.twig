@@ -1,0 +1,33 @@
+{% if object is not instanceof('App\\Entity\\Adherent') %}
+    {% set object = object.adherent %}
+{% endif %}
+
+<div class="row" style="display: flex;">
+    <div class="avatar" style="background-image: url('{{ object.hasImageName() ? path('asset_url', {path: object.getImagePath()}) }}')">
+        {% if not object.hasImageName() %}
+            <div>{{ object.initials }}</div>
+        {% endif %}
+    </div>
+
+    <div style="margin-left: 10px">
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+                {{ object.fullName }}
+            </a>
+        {% else %}
+            {{ object.fullName }}
+        {% endif %}
+
+        {% if object.isCertified %}
+            {{ include(('components/_certification_logo.html.twig')) }}
+        {% endif %}
+
+        <br>
+        {{ object.emailAddress }}
+
+        {% if object.phone %}
+            <br>
+            {{ object.phone|phone_number_format }}
+        {% endif %}
+    </div>
+</div>

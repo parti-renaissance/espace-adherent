@@ -1344,3 +1344,8 @@ referral.status.reported: Signalé
 #
 unregistration.type.sympathizer: Sympathisant
 unregistration.type.adherent: Adhérent
+
+active: Active
+terminated: Terminée
+
+AppSession_list: Liste des sessions

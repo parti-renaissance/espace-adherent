@@ -7,6 +7,7 @@ use App\AppCodeEnum;
 use App\OAuth\Form\GrantTypesType;
 use App\OAuth\Form\ScopesType;
 use App\OAuth\TokenRevocationAuthority;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -20,6 +21,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 class ClientAdmin extends AbstractAdmin
 {
     private ?TokenRevocationAuthority $tokenRevocationAuthority = null;
+
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
+        $filter->add('name', null, ['label' => 'Nom']);
+    }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {

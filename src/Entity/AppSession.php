@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\AppSession\SessionStatusEnum;
+use App\AppSession\SystemEnum;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,6 +33,9 @@ class AppSession
     #[ORM\Column(nullable: true)]
     public ?string $userAgent = null;
 
+    #[ORM\Column(nullable: true, enumType: SystemEnum::class)]
+    public ?SystemEnum $appSystem = null;
+
     #[ORM\Column(nullable: true)]
     public ?string $appVersion = null;
 
@@ -47,11 +51,12 @@ class AppSession
         $this->accessTokens = new ArrayCollection();
     }
 
-    public function refresh(?string $userAgent, ?string $appVersion): void
+    public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null): void
     {
         $this->lastActivityDate = new \DateTime();
         $this->userAgent = $userAgent ?: $this->userAgent;
         $this->appVersion = $appVersion ?: $this->appVersion;
+        $this->appSystem = $system ?: $this->appSystem;
     }
 
     public function terminate(): void
@@ -65,5 +70,13 @@ class AppSession
     public function isActive(): bool
     {
         return SessionStatusEnum::ACTIVE === $this->status;
+    }
+
+    public function __toString(): string
+    {
+        return implode(' - ', array_filter([
+            $this->adherent?->getFullName(),
+            $this->client?->getName(),
+        ]));
     }
 }
