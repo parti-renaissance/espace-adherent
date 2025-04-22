@@ -30,7 +30,7 @@ class AppSession
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $lastActivityDate = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $userAgent = null;
 
     #[ORM\Column(nullable: true, enumType: SystemEnum::class)]
