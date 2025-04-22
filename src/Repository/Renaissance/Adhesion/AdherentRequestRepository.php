@@ -25,9 +25,9 @@ class AdherentRequestRepository extends ServiceEntityRepository
     public function findToRemind(
         AdherentRequestReminderTypeEnum $type,
         \DateTimeInterface $createdBefore,
-        \DateTimeInterface $createdAfter,
+        ?\DateTimeInterface $createdAfter = null,
     ): array {
-        return $this->createQueryBuilder('adherent_request')
+        $qb = $this->createQueryBuilder('adherent_request')
             ->select('PARTIAL adherent_request.{id, uuid}')
             ->leftJoin(
                 AdherentRequestReminder::class,
@@ -37,7 +37,6 @@ class AdherentRequestRepository extends ServiceEntityRepository
             )
             ->andWhere('reminder.id IS NULL')
             ->andWhere('adherent_request.createdAt <= :created_before')
-            ->andWhere('adherent_request.createdAt >= :created_after')
             ->andWhere('adherent_request.adherent IS NULL')
             ->andWhere('adherent_request.accountCreatedAt IS NULL')
             ->andWhere('adherent_request.email IS NOT NULL')
@@ -45,10 +44,16 @@ class AdherentRequestRepository extends ServiceEntityRepository
             ->setParameters([
                 'reminder_type' => AdherentRequestReminderTypeEnum::AFTER_ONE_HOUR,
                 'created_before' => $createdBefore,
-                'created_after' => $createdAfter,
             ])
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($createdAfter) {
+            $qb
+                ->andWhere('adherent_request.createdAt >= :created_after')
+                ->setParameter('created_after', $createdAfter)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

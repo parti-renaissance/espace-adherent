@@ -41,7 +41,7 @@ class SendAdherentRequestReminderCommand extends Command
                 ]))
             )
             ->addArgument('beforeMinutes', InputArgument::REQUIRED, 'Created before (in minutes ago)')
-            ->addArgument('afterMinutes', InputArgument::REQUIRED, 'Created after (in minutes ago)')
+            ->addArgument('afterMinutes', InputArgument::OPTIONAL, 'Created after (in minutes ago)')
         ;
     }
 
@@ -64,7 +64,10 @@ class SendAdherentRequestReminderCommand extends Command
         $type = AdherentRequestReminderTypeEnum::from($typeValue);
 
         $createdBefore = (new \DateTime())->modify(\sprintf('-%d minutes', (int) $input->getArgument('beforeMinutes')));
-        $createdAfter = (new \DateTime())->modify(\sprintf('-%d minutes', (int) $input->getArgument('afterMinutes')));
+        $createdAfter = null !== $input->getArgument('afterMinutes')
+            ? (new \DateTime())->modify(sprintf('-%d minutes', (int) $input->getArgument('afterMinutes')))
+            : null
+        ;
 
         $adherentRequests = $this->adherentRequestRepository->findToRemind($type, $createdBefore, $createdAfter);
 
