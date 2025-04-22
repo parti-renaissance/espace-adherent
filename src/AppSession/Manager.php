@@ -29,8 +29,8 @@ class Manager
 
         $session->refresh(
             $request->getQueryParams()['user-agent'] ?? $request->getHeaderLine('User-Agent') ?: null,
-            $request->getHeaderLine('X-App-Version') ?: $request->getQueryParams()['app-version'] ?? null,
-            SystemEnum::fromString($request->getQueryParams()['system'] ?? null),
+            $request->getHeaderLine('X-App-Version') ?: ($request->getQueryParams()['app-version'] ?? null),
+            ($system = $request->getQueryParams()['system'] ?? null) ? SystemEnum::fromString($system) : null,
         );
 
         $tokenEntity->appSession = $session;

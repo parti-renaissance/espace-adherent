@@ -57,7 +57,7 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 
         $this->checkIfTokenIsAlreadyRevoked($token);
 
-        $token->revoke();
+        $token->revoke(terminateSession: false);
         $this->store($token);
     }
 
