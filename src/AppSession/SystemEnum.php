@@ -5,12 +5,12 @@ namespace App\AppSession;
 enum SystemEnum: string
 {
     case WEB = 'web';
-    case IOS = 'iOS';
-    case ANDROID = 'Android';
+    case IOS = 'ios';
+    case ANDROID = 'android';
 
-    public static function fromString(?string $system): self
+    public static function fromString(?string $system): ?self
     {
-        return self::tryFrom($system) ?? self::WEB;
+        return self::tryFrom(mb_strtolower($system));
     }
 
     public static function all(): array
