@@ -33,6 +33,12 @@ class AdherentReferrerAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
+    private const SORTABLE_VIRTUAL_FIELDS = [
+        'referralsCountAdhesionFinished',
+        'referralsCountReported',
+        'referralsCountInvitation',
+    ];
+
     protected $baseRoutePattern = 'adherents-parrains';
     protected $baseRouteName = 'adherents-parrains';
 
@@ -82,6 +88,18 @@ class AdherentReferrerAdmin extends AbstractAdmin
                 ->setParameter('types_invitation', [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION])
                 ->groupBy($rootAlias.'.id')
             ;
+        }
+
+        if ($this->isCurrentRoute('list')) {
+            $filter = $this->getRequest()->query->all('filter');
+            $sortBy = $filter['_sort_by'] ?? null;
+            $sortOrder = $filter['_sort_order'] ?? 'ASC';
+
+            if (\in_array($sortBy, self::SORTABLE_VIRTUAL_FIELDS, true)) {
+                $query->getQueryBuilder()->resetDQLPart('orderBy');
+
+                $query->orderBy($sortBy, $sortOrder);
+            }
         }
 
         return $query;
