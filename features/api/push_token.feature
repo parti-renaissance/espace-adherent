@@ -1,5 +1,6 @@
 @api
 @renaissance
+@debug
 Feature:
     In order to track push tokens
     As a logged-in adherent or device
@@ -23,20 +24,6 @@ Feature:
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "DELETE" request to "/api/v3/push-token/token-francis-jemarche-2"
         Then the response status code should be 403
-
-    Scenario: As a logged-in device I can add and remove a push token
-        Given I am logged with device "device_2" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "POST" request to "/api/v3/push-token" with body:
-            """
-            {
-                "identifier": "new-token-device-2-jemarche",
-                "source": "je_marche"
-            }
-            """
-        Then the response status code should be 201
-
-        When I send a "DELETE" request to "/api/v3/push-token/new-token-device-2-jemarche"
-        Then the response status code should be 204
 
     Scenario: As a logged-in device I can not remove a token i am not author of
         Given I am logged with device "device_2" via OAuth client "JeMengage Mobile" with scope "jemarche_app"

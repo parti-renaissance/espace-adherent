@@ -42,6 +42,9 @@ class AppSession
     #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AccessToken::class)]
     private Collection $accessTokens;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $unsubscribedAt = null;
+
     public function __construct(Adherent $adherent, Client $client)
     {
         $this->uuid = Uuid::uuid4();
@@ -78,5 +81,15 @@ class AppSession
             $this->adherent?->getFullName(),
             $this->client?->getName(),
         ]));
+    }
+
+    public function subscribe(): void
+    {
+        $this->unsubscribedAt = null;
+    }
+
+    public function unsubscribe(): void
+    {
+        $this->unsubscribedAt = new \DateTime();
     }
 }

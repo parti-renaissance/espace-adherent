@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Api\PushToken\CreateController;
+use App\Controller\Api\PushToken\UnsubscribeController;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -29,6 +30,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         new Post(
             uriTemplate: '/v3/push-token',
             controller: CreateController::class
+        ),
+        new Post(
+            uriTemplate: '/v3/push-token/unsubscribe',
+            controller: UnsubscribeController::class,
+            deserialize: false,
         ),
     ],
     normalizationContext: ['groups' => ['push_token_read']],
