@@ -42,6 +42,9 @@ class AppSession
     #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AccessToken::class)]
     private Collection $accessTokens;
 
+    #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'])]
+    private Collection $pushTokenLinks;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $unsubscribedAt = null;
 
@@ -52,6 +55,7 @@ class AppSession
         $this->client = $client;
         $this->lastActivityDate = new \DateTime();
         $this->accessTokens = new ArrayCollection();
+        $this->pushTokenLinks = new ArrayCollection();
     }
 
     public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null): void
@@ -83,13 +87,31 @@ class AppSession
         ]));
     }
 
-    public function subscribe(): void
-    {
-        $this->unsubscribedAt = null;
-    }
-
     public function unsubscribe(): void
     {
         $this->unsubscribedAt = new \DateTime();
+        array_map(fn (AppSessionPushTokenLink $link) => $link->unsubscribe($this->unsubscribedAt), $this->findSubscribedPushTokenLinks());
+    }
+
+    public function findSubscribedPushTokenLinks(): array
+    {
+        $links = $this->pushTokenLinks->filter(fn (AppSessionPushTokenLink $link) => $link->pushToken?->isSubscribed())->toArray();
+        usort($links, fn (AppSessionPushTokenLink $a, AppSessionPushTokenLink $b) => $a->createdAt <=> $b->createdAt);
+
+        return $links;
+    }
+
+    public function addPushToken(PushToken $token): void
+    {
+        if (!$existingSubscribedLink = current(array_filter($this->findSubscribedPushTokenLinks(), fn (AppSessionPushTokenLink $link) => $link->pushToken->identifier === $token->identifier))) {
+            $existingSubscribedLink = new AppSessionPushTokenLink($this, $token);
+            $this->pushTokenLinks->add($existingSubscribedLink);
+        }
+
+        $this->lastActivityDate =
+        $token->lastActiveDate =
+        $existingSubscribedLink->lastActivityDate = new \DateTime();
+
+        $this->unsubscribedAt = null;
     }
 }

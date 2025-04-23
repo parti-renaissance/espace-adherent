@@ -145,6 +145,7 @@
         "twig/string-extra": "^3.3",
         "ueberdosis/tiptap-php": "^1.4",
         "vich/uploader-bundle": "^2.5",
+        "whichbrowser/parser": "^2.1",
         "willdurand/geocoder-bundle": "^5.12"
     },
     "require-dev": {
