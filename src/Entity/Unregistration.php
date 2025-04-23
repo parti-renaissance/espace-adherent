@@ -55,7 +55,7 @@ class Unregistration
     private $uuid;
 
     #[ORM\Column(type: 'uuid')]
-    public ?UuidInterface $adherentUuid = null;
+    public ?UuidInterface $emailHash = null;
 
     /**
      * @var string|null
@@ -100,7 +100,7 @@ class Unregistration
 
     public function __construct(
         UuidInterface $uuid,
-        UuidInterface $adherentUuid,
+        UuidInterface $emailHash,
         array $reasons,
         ?string $comment,
         \DateTime $registeredAt,
@@ -112,7 +112,7 @@ class Unregistration
         ?Administrator $admin = null,
     ) {
         $this->uuid = $uuid;
-        $this->adherentUuid = $adherentUuid;
+        $this->emailHash = $emailHash;
         $this->postalCode = $postalCode;
         $this->type = $type;
         $this->tags = $tags;

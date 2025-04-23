@@ -103,7 +103,7 @@ class UnregistrationAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('adherentUuid', CallbackFilter::class, [
+            ->add('emailHash', CallbackFilter::class, [
                 'label' => 'Email',
                 'show_filter' => true,
                 'field_type' => TextType::class,
@@ -113,8 +113,8 @@ class UnregistrationAdmin extends AbstractAdmin
                     }
 
                     $uuid = Adherent::createUuid($value->getValue());
-                    $qb->andWhere(\sprintf('%s.adherentUuid = :adherent_uuid', $alias));
-                    $qb->setParameter('adherent_uuid', $uuid->toString());
+                    $qb->andWhere(\sprintf('%s.emailHash = :email_hash', $alias));
+                    $qb->setParameter('email_hash', $uuid->toString());
 
                     return true;
                 },
