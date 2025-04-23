@@ -5,6 +5,7 @@ namespace App\Controller\Api\PushToken;
 use App\Entity\Adherent;
 use App\Entity\PushToken;
 use App\Repository\PushTokenRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +27,12 @@ class CreateController extends AbstractController
 
         $user->currentAppSession?->addPushToken($token);
 
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException) {
+            return $this->json('', Response::HTTP_NO_CONTENT);
+        }
 
-        return $this->json([], Response::HTTP_CREATED);
+        return $this->json('', Response::HTTP_CREATED);
     }
 }
