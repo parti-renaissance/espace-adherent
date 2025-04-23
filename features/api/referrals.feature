@@ -331,32 +331,36 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "national": [
+                "global": [
                     {
-                        "nb_referral": 2,
-                        "firstName": "Lucie",
-                        "lastNameInitial": "O.",
+                        "referrals_count": 2,
+                        "first_name": "Lucie",
+                        "last_name": "O.",
+                        "assembly": "Paris (75)",
                         "position": 1
                     },
                     {
-                        "nb_referral": 1,
-                        "firstName": "Jacques",
-                        "lastNameInitial": "P.",
+                        "referrals_count": 1,
+                        "first_name": "Jacques",
+                        "last_name": "P.",
+                        "assembly": "Paris (75)",
                         "position": 2
                     }
                 ],
-                "national_rank": 2,
+                "global_rank": 2,
                 "assembly": [
                     {
-                        "nb_referral": 2,
-                        "firstName": "Lucie",
-                        "lastNameInitial": "O.",
+                        "referrals_count": 2,
+                        "first_name": "Lucie",
+                        "last_name": "O.",
+                        "assembly": "Paris (75)",
                         "position": 1
                     },
                     {
-                        "nb_referral": 1,
-                        "firstName": "Jacques",
-                        "lastNameInitial": "P.",
+                        "referrals_count": 1,
+                        "first_name": "Jacques",
+                        "last_name": "P.",
+                        "assembly": "Paris (75)",
                         "position": 2
                     }
                 ],

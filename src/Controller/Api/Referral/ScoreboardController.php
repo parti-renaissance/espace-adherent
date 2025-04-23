@@ -21,8 +21,8 @@ class ScoreboardController extends AbstractController
         $assembly = $user->getAssemblyZone();
 
         return $this->json([
-            'national' => $referralRepository->getScoreboard(),
-            'national_rank' => $referralRepository->getReferrerRank($user),
+            'global' => $referralRepository->getScoreboard(),
+            'global_rank' => $referralRepository->getReferrerRank($user),
             'assembly' => $referralRepository->getScoreboard($assembly),
             'assembly_rank' => $referralRepository->getReferrerRank($user, $assembly),
         ]);
