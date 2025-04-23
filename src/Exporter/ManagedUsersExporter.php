@@ -69,7 +69,7 @@ class ManagedUsersExporter
                         'Code postal' => $managedUser->getPostalCode(),
                         'Code INSEE' => $managedUser->getCityCode(),
                         'Ville' => $managedUser->getCity(),
-                        'Pays' => Countries::getName($managedUser->getCountry()),
+                        'Pays' => $managedUser->getCountry() ? Countries::getName($managedUser->getCountry()) : null,
                         'Abonné email' => $managedUser->isEmailSubscribed() && (
                             !$emailSubscriptionType
                             || \in_array($emailSubscriptionType, $managedUser->getSubscriptionTypes(), true)
