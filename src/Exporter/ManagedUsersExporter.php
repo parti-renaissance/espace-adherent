@@ -34,7 +34,11 @@ class ManagedUsersExporter
         PhpConfigurator::disableMemoryLimit();
 
         $scope = $this->scopeGeneratorResolver->generate();
-        $emailSubscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null;
+        $scopeCode = $scope?->getCode();
+
+        $emailSubscriptionType = $scopeCode && \array_key_exists($scopeCode, SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES)
+            ? SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeCode]
+            : null;
 
         return $this->exporter->getResponse(
             $format,
