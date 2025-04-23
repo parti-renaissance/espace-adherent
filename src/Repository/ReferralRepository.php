@@ -144,9 +144,9 @@ class ReferralRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getScoreboard(?Zone $zone = null, bool $withAssembly = true, int $limit = 10): array
+    public function getScoreboard(?Zone $zone = null, int $limit = 10): array
     {
-        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, $withAssembly);
+        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, true);
 
         $sql = <<<SQL
                 SELECT
