@@ -9,9 +9,12 @@ use App\Entity\Donator;
 use App\Repository\DonationRepository;
 use App\Repository\TaxReceiptRepository;
 use Twig\Extension\RuntimeExtensionInterface;
+use WhichBrowser\Parser;
 
 class AdherentAdminRuntime implements RuntimeExtensionInterface
 {
+    private ?Parser $browserParser = null;
+
     public function __construct(
         private readonly DonationManager $donationManager,
         private readonly DonationRepository $donationRepository,
@@ -48,5 +51,20 @@ class AdherentAdminRuntime implements RuntimeExtensionInterface
     public function getLastSubscriptionEnded(Adherent $adherent): ?Donation
     {
         return $this->donationRepository->findLastSubscriptionEndedDonationByEmail($adherent->getEmailAddress());
+    }
+
+    public function getSystemDetailFromUserAgent(?string $userAgent): ?string
+    {
+        if (!$userAgent) {
+            return null;
+        }
+
+        if (!$this->browserParser) {
+            $this->browserParser = new Parser();
+        }
+
+        $this->browserParser->analyse($userAgent);
+
+        return $this->browserParser->toString();
     }
 }

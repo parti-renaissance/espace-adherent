@@ -109,6 +109,11 @@ class AppSessionAdmin extends AbstractAdmin
                 'use_value' => true,
             ])
             ->add('appVersion', null, ['label' => 'Version'])
+            ->add('userAgent', null, [
+                'label' => 'Détail système',
+                'template' => 'admin/app_session/list_system_detail.html.twig',
+                'sortable' => false,
+            ])
             ->add('createdAt', null, ['label' => 'Date de création'])
             ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['show' => []]])
@@ -139,6 +144,11 @@ class AppSessionAdmin extends AbstractAdmin
             ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
             ->add('uuid', null, ['label' => 'UUID'])
             ->add('userAgent', null, ['label' => 'User-Agent'])
+            ->add('systemDetail', null, [
+                'label' => 'Détail système',
+                'template' => 'admin/app_session/show_system_detail.html.twig',
+                'virtual_field' => true,
+            ])
         ;
     }
 

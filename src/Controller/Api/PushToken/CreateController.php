@@ -20,18 +20,12 @@ class CreateController extends AbstractController
 
     public function __invoke(PushToken $data, #[CurrentUser] Adherent $user): Response
     {
-        $data->setAdherent($user);
-
-        if (!$token = $this->pushTokenRepository->findByIdentifier($data->getIdentifier())) {
+        if (!$token = $this->pushTokenRepository->findByIdentifier($data->identifier)) {
             $this->entityManager->persist($token = $data);
         }
 
-        if ($user->currentAppSession && (!$token->appSession || $token->appSession !== $user->currentAppSession)) {
-            $token->appSession = $user->currentAppSession;
-        }
+        $user->currentAppSession?->addPushToken($token);
 
-        $token->appSession?->subscribe();
-        $token->lastActiveDate = new \DateTime();
         $this->entityManager->flush();
 
         return $this->json([], Response::HTTP_CREATED);
