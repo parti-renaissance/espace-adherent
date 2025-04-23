@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Adherent\Referral\StatusEnum;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\Referral;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -141,5 +142,88 @@ class ReferralRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function getScoreboard(?Zone $zone = null, int $limit = 10): array
+    {
+        [$zoneJoins, $zoneFilter, $parameters] = $this->buildZoneSqlParts($zone);
+
+        $sql = <<<SQL
+                SELECT
+                    COUNT(DISTINCT referral.id) AS nb_referral,
+                    referrer.first_name AS firstName,
+                    CONCAT(UPPER(SUBSTRING(referrer.last_name, 1, 1)), '.') AS lastNameInitial,
+                    RANK() OVER (ORDER BY COUNT(DISTINCT referral.id) DESC) AS position
+                FROM referral AS referral
+                INNER JOIN adherents AS referrer
+                    ON referral.referrer_id = referrer.id
+                {$zoneJoins}
+                WHERE referral.status = :status
+                {$zoneFilter}
+                GROUP BY referrer.id, referrer.first_name, referrer.last_name
+                ORDER BY nb_referral DESC
+                LIMIT {$limit}
+            SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $result = $stmt->executeQuery($parameters);
+
+        return $result->fetchAllAssociative();
+    }
+
+    public function getReferrerRank(Adherent $referrer, ?Zone $zone = null): ?int
+    {
+        [$zoneJoins, $zoneFilter, $parameters] = $this->buildZoneSqlParts($zone);
+        $parameters['referrer_id'] = $referrer->getId();
+
+        $sql = <<<SQL
+                SELECT position FROM (
+                    SELECT
+                        referrer.id AS referrer_id,
+                        RANK() OVER (ORDER BY COUNT(DISTINCT referral.id) DESC) AS position
+                    FROM referral AS referral
+                    INNER JOIN adherents AS referrer
+                        ON referral.referrer_id = referrer.id
+                    {$zoneJoins}
+                    WHERE referral.status = :status
+                    {$zoneFilter}
+                    GROUP BY referrer.id
+                ) AS ranked
+                WHERE referrer_id = :referrer_id
+            SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $result = $stmt->executeQuery($parameters)->fetchOne();
+
+        return false !== $result ? (int) $result : null;
+    }
+
+    private function buildZoneSqlParts(?Zone $zone): array
+    {
+        $joins = '';
+        $filter = '';
+        $params = [
+            'status' => StatusEnum::ADHESION_FINISHED->value,
+        ];
+
+        if ($zone) {
+            $joins = <<<SQL
+                    INNER JOIN adherent_zone AS adherent_zone
+                        ON adherent_zone.adherent_id = referrer.id
+                    INNER JOIN geo_zone_parent AS adherent_zone_parent
+                        ON adherent_zone_parent.child_id = adherent_zone.zone_id
+                SQL;
+
+            $filter = <<<SQL
+                    AND (
+                        adherent_zone.zone_id = :zone_id
+                        OR adherent_zone_parent.parent_id = :zone_id
+                    )
+                SQL;
+
+            $params['zone_id'] = $zone->getId();
+        }
+
+        return [$joins, $filter, $params];
     }
 }
