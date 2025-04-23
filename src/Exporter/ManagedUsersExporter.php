@@ -8,11 +8,14 @@ use App\Entity\Geo\Zone;
 use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
+use App\Scope\ScopeGeneratorResolver;
+use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Intl\Countries;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ManagedUsersExporter
@@ -22,6 +25,7 @@ class ManagedUsersExporter
         private readonly ManagedUserRepository $repository,
         private readonly TagTranslator $tagTranslator,
         private readonly TranslatorInterface $translator,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 
@@ -29,12 +33,15 @@ class ManagedUsersExporter
     {
         PhpConfigurator::disableMemoryLimit();
 
+        $scope = $this->scopeGeneratorResolver->generate();
+        $emailSubscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null;
+
         return $this->exporter->getResponse(
             $format,
             \sprintf('adherents--%s.%s', date('d-m-Y--H-i'), $format),
             new IteratorCallbackSourceIterator(
                 new \ArrayIterator($this->repository->getExportQueryBuilder($filter)->getResult()),
-                function (ManagedUser $managedUser) {
+                function (ManagedUser $managedUser) use ($emailSubscriptionType) {
                     return [
                         'PID' => $managedUser->publicId,
                         'Civilité' => $managedUser->getCivilityLabel(),
@@ -54,6 +61,16 @@ class ManagedUsersExporter
                         'Date de première cotisation' => $managedUser->firstMembershipDonation?->format(\DateTimeInterface::RFC1123),
                         'Date de dernière cotisation' => $managedUser->lastMembershipDonation?->format(\DateTimeInterface::RFC1123),
                         'Date de dernière connexion' => $managedUser->lastLoggedAt?->format(\DateTimeInterface::RFC1123),
+                        'Adresse postale' => $managedUser->getAddress(),
+                        'Code postal' => $managedUser->getPostalCode(),
+                        'Code INSEE' => $managedUser->getCityCode(),
+                        'Ville' => $managedUser->getCity(),
+                        'Pays' => Countries::getName($managedUser->getCountry()),
+                        'Abonné email' => $managedUser->isEmailSubscribed() && (
+                            !$emailSubscriptionType
+                            || \in_array($emailSubscriptionType, $managedUser->getSubscriptionTypes(), true)
+                        ),
+                        'Abonné SMS' => $managedUser->hasSmsSubscriptionType(),
                     ];
                 }
             )
