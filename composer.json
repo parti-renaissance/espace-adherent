@@ -143,9 +143,9 @@
         "twig/intl-extra": "^3.3",
         "twig/markdown-extra": "^3.10",
         "twig/string-extra": "^3.3",
+        "ua-parser/uap-php": "^3.9",
         "ueberdosis/tiptap-php": "^1.4",
         "vich/uploader-bundle": "^2.5",
-        "whichbrowser/parser": "^2.1",
         "willdurand/geocoder-bundle": "^5.12"
     },
     "require-dev": {
