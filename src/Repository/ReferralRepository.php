@@ -165,8 +165,12 @@ class ReferralRepository extends ServiceEntityRepository
                 LIMIT {$limit}
             SQL;
 
+        $parameters = array_merge($parameters, [
+            'status' => StatusEnum::ADHESION_FINISHED->value,
+        ]);
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $result = $stmt->executeQuery($parameters);
+
 
         return $result->fetchAllAssociative();
     }
@@ -174,7 +178,6 @@ class ReferralRepository extends ServiceEntityRepository
     public function getReferrerRank(Adherent $referrer, ?Zone $zone = null): ?int
     {
         [$zoneJoins, $zoneFilter, $parameters] = $this->buildZoneSqlParts($zone);
-        $parameters['referrer_id'] = $referrer->getId();
 
         $sql = <<<SQL
                 SELECT position FROM (
@@ -192,6 +195,10 @@ class ReferralRepository extends ServiceEntityRepository
                 WHERE referrer_id = :referrer_id
             SQL;
 
+        $parameters = array_merge($parameters, [
+            'referrer_id' => $referrer->getId(),
+            'status' => StatusEnum::ADHESION_FINISHED->value,
+        ]);
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $result = $stmt->executeQuery($parameters)->fetchOne();
 
@@ -202,9 +209,7 @@ class ReferralRepository extends ServiceEntityRepository
     {
         $joins = '';
         $filter = '';
-        $params = [
-            'status' => StatusEnum::ADHESION_FINISHED->value,
-        ];
+        $parameters = [];
 
         if ($zone) {
             $joins = <<<SQL
@@ -221,9 +226,9 @@ class ReferralRepository extends ServiceEntityRepository
                     )
                 SQL;
 
-            $params['zone_id'] = $zone->getId();
+            $parameters['zone_id'] = $zone->getId();
         }
 
-        return [$joins, $filter, $params];
+        return [$joins, $filter, $parameters];
     }
 }
