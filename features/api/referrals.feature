@@ -322,3 +322,48 @@ Feature:
                 "nb_referral_reported": 1
             }
             """
+
+    Scenario: As an logged in user, I can get my referral scoreboard
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/referrals/scoreboard"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "global": [
+                    {
+                        "referrals_count": 2,
+                        "first_name": "Lucie",
+                        "last_name": "O.",
+                        "assembly": "Paris (75)",
+                        "position": 1
+                    },
+                    {
+                        "referrals_count": 1,
+                        "first_name": "Jacques",
+                        "last_name": "P.",
+                        "assembly": "Paris (75)",
+                        "position": 2
+                    }
+                ],
+                "global_rank": 2,
+                "assembly": [
+                    {
+                        "referrals_count": 2,
+                        "first_name": "Lucie",
+                        "last_name": "O.",
+                        "assembly": "Paris (75)",
+                        "position": 1
+                    },
+                    {
+                        "referrals_count": 1,
+                        "first_name": "Jacques",
+                        "last_name": "P.",
+                        "assembly": "Paris (75)",
+                        "position": 2
+                    }
+                ],
+                "assembly_rank": 2
+            }
+            """
