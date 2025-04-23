@@ -9,7 +9,7 @@ use App\Entity\Donator;
 use App\Repository\DonationRepository;
 use App\Repository\TaxReceiptRepository;
 use Twig\Extension\RuntimeExtensionInterface;
-use WhichBrowser\Parser;
+use UAParser\Parser;
 
 class AdherentAdminRuntime implements RuntimeExtensionInterface
 {
@@ -60,11 +60,9 @@ class AdherentAdminRuntime implements RuntimeExtensionInterface
         }
 
         if (!$this->browserParser) {
-            $this->browserParser = new Parser();
+            $this->browserParser = Parser::create();
         }
 
-        $this->browserParser->analyse($userAgent);
-
-        return $this->browserParser->toString();
+        return $this->browserParser->parse($userAgent)->toString();
     }
 }
