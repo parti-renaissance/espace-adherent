@@ -37,7 +37,7 @@ class SendCreationNotificationCommandHandler
             return;
         }
 
-        if (!$event->sendInvitationEmail) {
+        if (!$event->sendInvitationEmail || $event->isNational()) {
             return;
         }
 
