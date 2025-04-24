@@ -96,7 +96,7 @@ class AppSession
     public function findSubscribedPushTokenLinks(): array
     {
         $links = $this->pushTokenLinks->filter(fn (AppSessionPushTokenLink $link) => $link->pushToken?->isSubscribed())->toArray();
-        usort($links, fn (AppSessionPushTokenLink $a, AppSessionPushTokenLink $b) => $a->createdAt <=> $b->createdAt);
+        usort($links, fn (AppSessionPushTokenLink $a, AppSessionPushTokenLink $b) => $a->getCreatedAt() <=> $b->getCreatedAt());
 
         return $links;
     }
