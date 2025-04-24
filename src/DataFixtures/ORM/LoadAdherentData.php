@@ -102,6 +102,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'uuid' => self::ADHERENT_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'carl999@example.fr',
+            'public_id' => '123-789',
             'gender' => 'male',
             'nickname' => 'pont',
             'nationality' => AddressInterface::FRANCE,
