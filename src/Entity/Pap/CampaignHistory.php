@@ -41,15 +41,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/v3/pap_campaign_histories/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and object.getQuestioner() == user'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and object.getQuestioner() == user"
         ),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/pap_campaign_histories/{uuid}/reply',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CampaignHistoryReplyController::class,
-            normalizationContext: ['groups' => ['data_survey_read']]
+            normalizationContext: ['groups' => ['data_survey_read']],
+            deserialize: false
         ),
         new GetCollection(
             uriTemplate: '/v3/pap_campaign_histories',
@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['iri' => true, 'groups' => ['pap_campaign_history_read']],
     denormalizationContext: ['groups' => ['pap_campaign_history_write']],
     filters: [PapCampaignHistoryScopeFilter::class],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"
 )]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 #[ORM\Table(name: 'pap_campaign_history')]

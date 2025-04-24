@@ -5,6 +5,7 @@ namespace App\OAuth;
 use App\Entity\Adherent;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
+use App\OAuth\Model\Scope;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
 use App\Repository\OAuth\AccessTokenRepository;
@@ -56,10 +57,7 @@ class OAuthAuthenticator extends AbstractAuthenticator
 
     public function getUser($credentials): Adherent|DeviceApiUser|ClientApiUser
     {
-        $roles = array_map(
-            function ($scope) {return 'ROLE_OAUTH_SCOPE_'.mb_strtoupper($scope); },
-            $credentials['oauth_scopes']
-        );
+        $roles = array_map([Scope::class, 'generateRole'], $credentials['oauth_scopes']);
 
         // If user identifier is empty, it just means that the token is associated to an OAuth Client for
         // machine-to-machine communication only

@@ -184,6 +184,11 @@ class Client implements EntitySoftDeletedInterface
         return $this->supportedScopes;
     }
 
+    public function getUserScopes(): array
+    {
+        return array_diff($this->supportedScopes, [Scope::IMPERSONATOR]);
+    }
+
     public function verifySecret(string $secret): bool
     {
         return $this->secret === $secret;

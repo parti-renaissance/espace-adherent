@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentFormation\Formation;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -20,7 +21,7 @@ abstract class AbstractFormationContentController extends AbstractController
 
         if (
             !$adherent instanceof Adherent
-            || $this->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
+            || $this->isGranted(Scope::generateRole(Scope::JEMENGAGE_ADMIN))
         ) {
             return;
         }

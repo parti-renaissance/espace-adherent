@@ -36,6 +36,13 @@ final class Scope extends Enum implements ScopeEntityInterface
 
     public const WRITE_GENERAL_CONVENTIONS = 'write:general_conventions';
 
+    public const IMPERSONATOR = 'impersonator';
+
+    public static function generateRole(string $scope): string
+    {
+        return 'ROLE_OAUTH_SCOPE_'.mb_strtoupper($scope);
+    }
+
     public function __toString()
     {
         return (string) $this->getIdentifier();

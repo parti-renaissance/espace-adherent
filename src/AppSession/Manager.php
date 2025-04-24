@@ -3,6 +3,7 @@
 namespace App\AppSession;
 
 use App\Entity\AppSession;
+use App\OAuth\Model\Scope;
 use App\Repository\OAuth\AccessTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -19,6 +20,10 @@ class Manager
     public function refreshSession(AccessTokenEntityInterface $token, ServerRequestInterface $request): void
     {
         if (!$tokenEntity = $this->accessTokenRepository->findAccessTokenByIdentifier($token->getIdentifier())) {
+            return;
+        }
+
+        if ($tokenEntity->hasScope(Scope::IMPERSONATOR)) {
             return;
         }
 

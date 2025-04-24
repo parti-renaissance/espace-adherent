@@ -20,18 +20,18 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/audiences/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Put(
             uriTemplate: '/v3/audiences/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)',
+            security: "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
             validationContext: ['groups' => ['Default', 'api_scope_context']]
         ),
         new Delete(
             uriTemplate: '/v3/audiences/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+            security: "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new GetCollection(
             uriTemplate: '/v3/audiences',
@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['audience_read']],
     denormalizationContext: ['groups' => ['audience_write']],
-    security: 'is_granted(\'ROLE_AUDIENCE\')'
+    security: "is_granted('ROLE_AUDIENCE')"
 )]
 #[ManagedZone(path: 'zone', message: 'common.zone.not_managed_zone')]
 #[ORM\Entity(repositoryClass: AudienceRepository::class)]

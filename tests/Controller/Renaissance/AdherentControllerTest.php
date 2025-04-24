@@ -4,7 +4,6 @@ namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Repository\Email\EmailLogRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +15,6 @@ use Tests\App\Controller\ControllerTestTrait;
 class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
-
-    /* @var EmailLogRepository */
-    private $emailRepository;
 
     public function testProfileActionIsAccessibleForAdherent(): void
     {
@@ -42,10 +38,10 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $adherent = $this->getAdherentRepository()->findOneByEmail('renaissance-user-1@en-marche-dev.fr');
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
+        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
 
         $this->assertCount(0, $histories77Subscriptions);
         $this->assertCount(0, $histories77Unsubscriptions);
@@ -63,7 +59,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame('2 avenue Jean Jaurès', $crawler->filter(\sprintf($inputPattern, 'postAddress][address'))->attr('value'));
         self::assertSame('77000', $crawler->filter(\sprintf($inputPattern, 'postAddress][postalCode'))->attr('value'));
         self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'postAddress][country'))->text());
-        self::assertSame(null, $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
+        self::assertNull($crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('En activité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
         self::assertSame('1942-01-10', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
         self::assertAdherentHasZone($adherent, '77');
@@ -227,19 +223,5 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->emailRepository = null;
-
-        parent::tearDown();
     }
 }

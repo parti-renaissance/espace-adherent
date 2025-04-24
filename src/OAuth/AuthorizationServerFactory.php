@@ -41,6 +41,7 @@ class AuthorizationServerFactory
         SymfonyLeagueEventListener $symfonyLeagueEventListener,
         CryptKey $privateKey,
         string $encryptionKey,
+        private readonly int $maxIdleTime,
         string $accessTokenTtlInterval,
         string $refreshTokenTtlInterval,
         string $authCodeTtlInterval = 'PT10M',
@@ -93,6 +94,7 @@ class AuthorizationServerFactory
     {
         $grant = new RefreshTokenGrant($this->refreshTokenRepository);
         $grant->setRefreshTokenTTL($refreshTokenTtl);
+        $grant->adminSessionTtl = $this->maxIdleTime;
 
         return $grant;
     }

@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new Get(
             uriTemplate: '/v3/jecoute/news/{uuid}',
@@ -65,7 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/jecoute/news',
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new GetCollection(
             uriTemplate: '/v3/jecoute/news',

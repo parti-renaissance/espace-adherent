@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Jecoute\News;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -29,7 +30,7 @@ class JecouteNewsExtension implements QueryCollectionExtensionInterface
             return;
         }
 
-        if ($this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
+        if ($this->security->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))) {
             $alias = $queryBuilder->getRootAliases()[0];
             $queryBuilder
                 ->andWhere(\sprintf('%1$s.published = 1 AND %1$s.createdAt >= :date', $alias))

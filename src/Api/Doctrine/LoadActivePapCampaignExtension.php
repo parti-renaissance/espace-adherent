@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Pap\Campaign;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -42,7 +43,7 @@ class LoadActivePapCampaignExtension implements QueryItemExtensionInterface, Que
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Campaign::class !== $resourceClass || !$this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
+        if (Campaign::class !== $resourceClass || !$this->security->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))) {
             return;
         }
 

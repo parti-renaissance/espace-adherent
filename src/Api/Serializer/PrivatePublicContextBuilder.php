@@ -3,6 +3,7 @@
 namespace App\Api\Serializer;
 
 use ApiPlatform\State\SerializerContextBuilderInterface;
+use App\OAuth\Model\Scope;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -26,9 +27,9 @@ class PrivatePublicContextBuilder implements SerializerContextBuilderInterface
 
         $context[self::CONTEXT_KEY] = self::CONTEXT_PUBLIC_ANONYMOUS;
 
-        if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
+        if ($this->authorizationChecker->isGranted(Scope::generateRole(Scope::JEMENGAGE_ADMIN))) {
             $context[self::CONTEXT_KEY] = self::CONTEXT_PRIVATE;
-        } elseif ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
+        } elseif ($this->authorizationChecker->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))) {
             $context[self::CONTEXT_KEY] = self::CONTEXT_PUBLIC_CONNECTED_USER;
         }
 

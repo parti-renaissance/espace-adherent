@@ -180,6 +180,7 @@ class LoadClientData extends Fixture
         $client12->setAskUserForAuthorization(false);
         $client12->setRequestedRoles([DataCornerVoter::DATA_CORNER]);
         $client12->addSupportedScope(Scope::JEMENGAGE_ADMIN);
+        $client12->addSupportedScope(Scope::IMPERSONATOR);
 
         $manager->persist($client12);
 
@@ -196,6 +197,7 @@ class LoadClientData extends Fixture
         $client13->addSupportedScope(Scope::JEMARCHE_APP);
         $client13->addSupportedScope(Scope::READ_PROFILE);
         $client13->addSupportedScope(Scope::WRITE_PROFILE);
+        $client13->addSupportedScope(Scope::IMPERSONATOR);
 
         $manager->persist($client13);
 

@@ -62,13 +62,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/formations/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: FormationDownloadFileController::class,
-            security: 'is_granted(\'ROLE_USER\')'
+            security: "is_granted('ROLE_USER')"
         ),
         new Get(
             uriTemplate: '/formations/{uuid}/link',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: FormationLinkController::class,
-            security: 'is_granted(\'ROLE_USER\')'
+            security: "is_granted('ROLE_USER')"
         ),
         new Delete(
             uriTemplate: '/formations/{uuid}',
@@ -80,7 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             paginationMaximumItemsPerPage: 1000,
             paginationClientEnabled: true,
             normalizationContext: ['groups' => ['formation_list_read']],
-            security: 'is_granted(\'ROLE_USER\')'
+            security: "is_granted('ROLE_USER')"
         ),
         new Post(uriTemplate: '/formations'),
     ],

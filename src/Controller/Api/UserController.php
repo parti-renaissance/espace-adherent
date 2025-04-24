@@ -13,6 +13,7 @@ use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
+use App\OAuth\Model\Scope;
 use App\OAuth\OAuthTokenGenerator;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Response as PsrResponse;
@@ -51,7 +52,7 @@ class UserController extends AbstractController
     {
         $context = ['groups' => ['legacy']];
 
-        if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
+        if ($this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))) {
             $context['groups'] = ['jemarche_user_profile'];
             $context[TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR] = true;
             $context[TranslateAdherentTagNormalizer::NO_STATIC_TAGS] = true;
