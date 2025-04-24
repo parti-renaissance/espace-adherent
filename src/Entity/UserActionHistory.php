@@ -47,4 +47,21 @@ class UserActionHistory
         $this->data = $data;
         $this->impersonator = $impersonator;
     }
+
+    public function isRoleType(): bool
+    {
+        return \in_array($this->type, [
+            UserActionHistoryTypeEnum::ROLE_ADD,
+            UserActionHistoryTypeEnum::ROLE_REMOVE,
+        ], true);
+    }
+
+    public function isTeamMemberType(): bool
+    {
+        return \in_array($this->type, [
+            UserActionHistoryTypeEnum::TEAM_MEMBER_ADD,
+            UserActionHistoryTypeEnum::TEAM_MEMBER_EDIT,
+            UserActionHistoryTypeEnum::TEAM_MEMBER_REMOVE,
+        ], true);
+    }
 }

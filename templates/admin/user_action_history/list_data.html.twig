@@ -4,31 +4,63 @@
     {% if object.data %}
         <ul>
             {% for key, value in object.data %}
-                <li>
-                    {% if key is same as('adherent_uuid') %}
-                        {% set adherent = get_adherent_by_uuid(value) %}
+                {% if key not in ['event_id'] %}
+                    <li>
+                        {% if key in ['adherent_uuid', 'delegator_uuid', 'author_uuid'] %}
+                            <b>{{ ('action_history.data.key.' ~ key)|trans }}:</b>
 
-                        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-                            <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}">
+                            {% set adherent = get_adherent_by_uuid(value) %}
+
+                            {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+                                <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}">
+                                    {{ adherent.fullName }}
+                                </a>
+                            {% else %}
                                 {{ adherent.fullName }}
-                            </a>
+                            {% endif %}
                         {% else %}
-                            {{ adherent.fullName }}
-                        {% endif %}
-                    {% else %}
-                        {% if not (key matches '/^\\d+$/') %}
-                            <b>{{ key }}:</b>
-                        {% endif %}
+                            {% if not (key matches '/^\\d+$/') %}
+                                <b>{{ ('action_history.data.key.' ~ key)|trans }}:</b>
+                            {% endif %}
 
-                        {% if key is same as('role') %}
-                            {{ ('role.' ~ value)|trans }}
-                        {% elseif key is same as('zones') %}
-                            {{ value|join(', ') }}
-                        {% else %}
-                            {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+                            {% if object.isRoleType() and key is same as('role') %}
+                                {{ ('role.' ~ value)|trans }}
+                            {% elseif object.isTeamMemberType() and key is same as ('role') %}
+                                {{ constant('App\\MyTeam\\RoleEnum::LABELS')[value] }}
+                            {% elseif key is same as('scope') %}
+                                {{ ('role.' ~ value)|trans }}
+                            {% elseif key is same as('zones') %}
+                                <ul>
+                                    {% for zone in value %}
+                                        <li>{{ zone }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% elseif key is same as('features') %}
+                                <ul>
+                                    {% for feature in value %}
+                                        <li>
+                                            {{ ('scope.feature.' ~ feature)|trans }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% elseif key is same as ('event') %}
+                                {% if object.data.event_id is defined and is_granted('ROLE_APP_ADMIN_EVENT_EDIT') %}
+                                    <a href="{{ path('admin_app_event_event_edit', {id: object.data.event_id}) }}">
+                                        {{ value }}
+                                    </a>
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            {% else %}
+                                {% if value is iterable %}
+                                    {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </li>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}

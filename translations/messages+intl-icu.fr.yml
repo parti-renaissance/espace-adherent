@@ -1296,6 +1296,10 @@ user_action_history.type.email_change_request: Changement d'adresse email (deman
 user_action_history.type.email_change_validate: Changement d'adresse email (validation)
 user_action_history.type.role_add: Ajout de rôle
 user_action_history.type.role_remove: Suppression de rôle
+user_action_history.type.team_member_add: Création d'accès délégué
+user_action_history.type.team_member_edit: Modification d'accès délégué
+user_action_history.type.team_member_remove: Suppression d'accès délégué
+user_action_history.type.live_view: Vue d'un événement live
 
 #
 # AdministratorActionHistory
@@ -1308,6 +1312,18 @@ administrator_action_history.type.export: Export
 administrator_action_history.type.adherent_profile_update: Mise à jour du profil adhérent
 administrator_action_history.type.adherent_role_add: Ajout de rôle adhérent
 administrator_action_history.type.adherent_role_remove: Suppression de rôle adhérent
+
+#
+# Common action history
+#
+action_history.data.key.zones: Zone(s)
+action_history.data.key.scope: Scope
+action_history.data.key.features: Feature(s)
+action_history.data.key.role: Rôle
+action_history.data.key.adherent_uuid: Adhérent
+action_history.data.key.delegator_uuid: Délégateur
+action_history.data.key.author_uuid: Auteur
+action_history.data.key.event: Événement
 
 #
 # GeneralConvention

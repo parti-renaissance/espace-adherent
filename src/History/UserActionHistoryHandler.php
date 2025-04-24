@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\Member;
 use App\History\Command\UserActionHistoryCommand;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -141,6 +142,45 @@ class UserActionHistoryHandler
         );
     }
 
+    public function createTeamMemberAdd(Member $member): void
+    {
+        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_ADD, $member);
+    }
+
+    public function createTeamMemberEdit(Member $member): void
+    {
+        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_EDIT, $member);
+    }
+
+    public function createTeamMemberRemove(Member $member): void
+    {
+        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_REMOVE, $member);
+    }
+
+    private function addTeamMemberHistory(UserActionHistoryTypeEnum $type, Member $member): void
+    {
+        $team = $member->getTeam();
+        $delegator = $team->getOwner();
+        $scope = $team->getScope();
+        $zoneBasedRole = $delegator->findZoneBasedRole($scope);
+
+        $data = [
+            'delegator_uuid' => $delegator->getUuid()->toString(),
+            'scope' => $scope,
+            'features' => $member->getScopeFeatures(),
+            'role' => $member->getRole(),
+            'zones' => $zoneBasedRole ? $this->getZoneNames($zoneBasedRole->getZones()->toArray()) : null,
+        ];
+
+        $author = $this->getCurrentUser();
+
+        if (!$author->equals($delegator)) {
+            $data['author_uuid'] = $author->getUuid()->toString();
+        }
+
+        $this->dispatch($member->getAdherent(), $type, $data);
+    }
+
     private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();
@@ -152,6 +192,13 @@ class UserActionHistoryHandler
         $administrator = $token->getOriginalToken()->getUser();
 
         return $administrator instanceof Administrator ? $administrator : null;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        $user = $this->security->getUser();
+
+        return $user instanceof Adherent ? $user : null;
     }
 
     private function dispatch(

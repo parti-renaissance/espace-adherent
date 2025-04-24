@@ -95,6 +95,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event4->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+        $this->setReference('event-4', $event4);
 
         $event5 = new Event(Uuid::fromString(self::EVENT_5_UUID));
         $event5->setName('Un événement de l\'assemblée départementale annulé');
