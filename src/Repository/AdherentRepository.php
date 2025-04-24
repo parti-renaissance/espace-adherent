@@ -793,7 +793,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
      */
     public function findAdherentByAutocompletion(AdherentAutocompleteFilter $filter, int $limit = 10): array
     {
-        if (!$filter->q) {
+        $search = trim($filter->q);
+
+        if (!$search) {
             return [];
         }
 
@@ -802,15 +804,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
         ;
 
-        if (filter_var($filter->q, \FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($search, \FILTER_VALIDATE_EMAIL)) {
             $qb
                 ->andWhere('a.emailAddress = :email')
-                ->setParameter('email', $filter->q)
+                ->setParameter('email', $search)
             ;
         } else {
             $qb
-                ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
-                ->setParameter('name', '%'.trim($filter->q).'%')
+                ->andWhere('CONCAT(a.firstName, \' \', a.lastName, \' \', a.emailAddress) LIKE :name OR a.publicId = :public_id')
+                ->setParameter('name', '%'.$search.'%')
+                ->setParameter('public_id', $search)
             ;
         }
 

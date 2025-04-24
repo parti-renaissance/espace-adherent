@@ -16,6 +16,9 @@ class RoleEnum extends Enum
     public const HEAD_OF_EUROPEAN_AFFAIRS = 'head_of_european_affairs';
     public const HEAD_OF_GENDER_EQUALITY = 'head_of_gender_equality';
     public const HEAD_OF_RELATIONS_AND_TRAINING_OF_ELECTED_OFFICIALS = 'head_of_relations_and_training_of_elected_officials';
+    public const NEW_MEMBERS_MANAGER = 'new_members_manager';
+    public const TRAINING_MANAGER = 'training_manager';
+    public const MANAGER = 'manager';
 
     public const LABELS = [
         self::GENERAL_SECRETARY => 'Secrétaire général',
@@ -28,6 +31,9 @@ class RoleEnum extends Enum
         self::HEAD_OF_GENDER_EQUALITY => 'Responsable Égalité Femme / Homme',
         self::HEAD_OF_EUROPEAN_AFFAIRS => 'Responsable des questions européennes',
         self::HEAD_OF_RELATIONS_AND_TRAINING_OF_ELECTED_OFFICIALS => 'Responsable des relations et formation élus',
+        self::NEW_MEMBERS_MANAGER => 'Responsable nouveaux adhérents',
+        self::TRAINING_MANAGER => 'Responsable formation',
+        self::MANAGER => 'Responsable',
     ];
 
     public static function getAll(): array

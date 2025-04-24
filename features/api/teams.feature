@@ -43,6 +43,7 @@ Feature:
                 {
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
+                    "id": "@string@-@string@",
                     "first_name": "Adrien",
                     "last_name": "Petit",
                     "postal_code": "77000",
@@ -51,6 +52,7 @@ Feature:
                 {
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
+                    "id": "@string@-@string@",
                     "first_name": "Agathe",
                     "last_name": "Petit",
                     "postal_code": "77000",
@@ -59,6 +61,7 @@ Feature:
                 {
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
+                    "id": "@string@-@string@",
                     "first_name": "Étienne",
                     "last_name": "Petit",
                     "postal_code": "77000",
@@ -74,6 +77,7 @@ Feature:
                 {
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
+                    "id": "@string@-@string@",
                     "first_name": "Élodie",
                     "last_name": "Dutemps",
                     "postal_code": "368645",
@@ -92,6 +96,7 @@ Feature:
                 {
                     "first_name": "Gisele",
                     "last_name": "Berthoux",
+                    "id": "@string@-@string@",
                     "postal_code": "92110",
                     "registered_at": "2017-01-08T05:55:43+01:00",
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
@@ -107,6 +112,7 @@ Feature:
                 {
                     "first_name": "Jacques",
                     "last_name": "Picard",
+                    "id": "@string@-@string@",
                     "postal_code": "75008",
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
@@ -873,8 +879,8 @@ Feature:
             """
 
     Scenario: As a logged-in animator I can search an adherent with autocomplete search
-        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/autocomplete?q=adherent%2056&scope=animator"
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "GET" request to "/api/v3/adherents/autocomplete?q=adherent%2056%20&scope=president_departmental_assembly"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -882,10 +888,27 @@ Feature:
                 {
                     "registered_at": "@string@.isDateTime()",
                     "uuid": "@uuid@",
+                    "id": "@string@-@string@",
                     "first_name": "Adherent 56",
                     "last_name": "Fa56ke",
                     "postal_code": "77000",
                     "email_address": "adherent-female-56@en-marche-dev.fr"
+                }
+            ]
+            """
+        When I send a "GET" request to "/api/v3/adherents/autocomplete?q=123-789%20&scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "registered_at": "@string@.isDateTime()",
+                    "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+                    "id": "123-789",
+                    "first_name": "Carl",
+                    "last_name": "Mirabeau",
+                    "postal_code": "77190",
+                    "email_address": "carl999@example.fr"
                 }
             ]
             """
