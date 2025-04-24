@@ -35,15 +35,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_CAMPAIGN_HISTORY_CALLER\', object)'
+            security: "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)"
         ),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}/reply',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CampaignHistoryReplyController::class,
-            normalizationContext: ['groups' => ['data_survey_read']]
+            normalizationContext: ['groups' => ['data_survey_read']],
+            deserialize: false
         ),
         new GetCollection(
             uriTemplate: '/v3/phoning_campaign_histories',

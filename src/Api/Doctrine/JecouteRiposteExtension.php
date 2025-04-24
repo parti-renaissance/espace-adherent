@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Jecoute\Riposte;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -43,7 +44,7 @@ class JecouteRiposteExtension implements QueryItemExtensionInterface, QueryColle
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
         if (Riposte::class !== $resourceClass
-            || !$this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
+            || !$this->security->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))) {
             return;
         }
 

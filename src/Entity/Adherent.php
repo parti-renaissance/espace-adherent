@@ -103,7 +103,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             method: 'POST|DELETE',
             uriTemplate: '/profile/{uuid}/image',
             controller: UpdateImageController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_WRITE:PROFILE\') and object === user',
+            security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and object === user",
             deserialize: false,
         ),
     ],

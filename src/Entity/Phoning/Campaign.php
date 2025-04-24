@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/phoning_campaigns/{uuid}/scores',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['phoning_campaign_read_with_score']],
-            security: 'is_granted(\'CAN_MANAGE_PHONING_CAMPAIGN\', object)'
+            security: "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)"
         ),
         new Get(
             uriTemplate: '/v3/phoning_campaigns/{uuid}/callers',

@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/events/{uuid}/subscribe',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SubscribeAsAdherentController::class,
-            security: 'is_granted(\'ROLE_USER\')',
+            security: "is_granted('ROLE_USER')",
             deserialize: false
         ),
         new HttpOperation(

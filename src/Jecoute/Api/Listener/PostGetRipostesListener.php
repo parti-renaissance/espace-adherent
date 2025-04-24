@@ -4,6 +4,7 @@ namespace App\Jecoute\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Jecoute\Riposte;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,7 +32,7 @@ class PostGetRipostesListener implements EventSubscriberInterface
         $attributes = $event->getRequest()->attributes;
         if ('_api_/v3/ripostes_get_collection' !== $attributes->get('_route')
             || Riposte::class !== $attributes->get('_api_resource_class')
-            || !$this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
+            || !$this->security->isGranted(Scope::generateRole(Scope::JEMARCHE_APP))
         ) {
             return;
         }
