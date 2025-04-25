@@ -33,26 +33,26 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'event' => $liveEvent1->getName(),
             'event_id' => $liveEvent1->getId(),
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::TEAM_MEMBER_ADD, new \DateTime('-15 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTime('-15 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS, FeatureEnum::ELECTED_REPRESENTATIVE],
-            'role' => RoleEnum::MOBILIZATION_MANAGER,
+            'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::TEAM_MEMBER_EDIT, new \DateTime('-14 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, new \DateTime('-14 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'author_uuid' => $adherent3->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
-            'role' => RoleEnum::MOBILIZATION_MANAGER,
+            'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::TEAM_MEMBER_REMOVE, new \DateTime('-13 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, new \DateTime('-13 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
-            'role' => RoleEnum::MOBILIZATION_MANAGER,
+            'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTime('-10 minutes')));

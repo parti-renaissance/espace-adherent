@@ -5,6 +5,7 @@ namespace App\MyTeam;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
+use App\History\UserActionHistoryHandler;
 use App\OAuth\TokenRevocationAuthority;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -18,6 +19,7 @@ class DelegatedAccessManager
         private readonly TokenRevocationAuthority $tokenRevocationAuthority,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly DelegatedAccessNotifier $delegatedAccessNotifier,
+        private readonly UserActionHistoryHandler $userActionHistoryHandler,
     ) {
     }
 
@@ -40,6 +42,7 @@ class DelegatedAccessManager
         if ($newMember) {
             $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
             $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
+            $this->userActionHistoryHandler->createDelegatedAccessAdd($delegatedAccess);
         }
     }
 
@@ -53,6 +56,8 @@ class DelegatedAccessManager
             if ($member->getScopeFeatures()) {
                 $delegatedAccess->setScopeFeatures($this->calculateFeatures($member->getScopeFeatures()));
                 $this->entityManager->flush();
+
+                $this->userActionHistoryHandler->createDelegatedAccessEdit($delegatedAccess);
 
                 return;
             }
@@ -84,6 +89,7 @@ class DelegatedAccessManager
 
         $this->entityManager->flush();
 
+        $this->userActionHistoryHandler->createDelegatedAccessRemove($delegatedAccess);
         $this->tokenRevocationAuthority->revokeUserTokens($delegatedAccess->getDelegated());
     }
 

@@ -25,8 +25,6 @@
 
                             {% if object.isRoleType() and key is same as('role') %}
                                 {{ ('role.' ~ value)|trans }}
-                            {% elseif object.isTeamMemberType() and key is same as ('role') %}
-                                {{ constant('App\\MyTeam\\RoleEnum::LABELS')[value] }}
                             {% elseif key is same as('scope') %}
                                 {{ ('role.' ~ value)|trans }}
                             {% elseif key is same as('zones') %}

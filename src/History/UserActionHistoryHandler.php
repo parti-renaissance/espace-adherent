@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
-use App\Entity\MyTeam\Member;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\History\Command\UserActionHistoryCommand;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -142,43 +142,41 @@ class UserActionHistoryHandler
         );
     }
 
-    public function createTeamMemberAdd(Member $member): void
+    public function createDelegatedAccessAdd(DelegatedAccess $delegatedAccess): void
     {
-        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_ADD, $member);
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, $delegatedAccess);
     }
 
-    public function createTeamMemberEdit(Member $member): void
+    public function createDelegatedAccessEdit(DelegatedAccess $delegatedAccess): void
     {
-        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_EDIT, $member);
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, $delegatedAccess);
     }
 
-    public function createTeamMemberRemove(Member $member): void
+    public function createDelegatedAccessRemove(DelegatedAccess $delegatedAccess): void
     {
-        $this->addTeamMemberHistory(UserActionHistoryTypeEnum::TEAM_MEMBER_REMOVE, $member);
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, $delegatedAccess);
     }
 
-    private function addTeamMemberHistory(UserActionHistoryTypeEnum $type, Member $member): void
+    private function addDelegatedAccessHistory(UserActionHistoryTypeEnum $type, DelegatedAccess $delegatedAccess): void
     {
-        $team = $member->getTeam();
-        $delegator = $team->getOwner();
-        $scope = $team->getScope();
-        $zoneBasedRole = $delegator->findZoneBasedRole($scope);
+        $delegator = $delegatedAccess->getDelegator();
+        $zoneBasedRole = $delegator->findZoneBasedRole($delegatedAccess->getType());
 
         $data = [
             'delegator_uuid' => $delegator->getUuid()->toString(),
-            'scope' => $scope,
-            'features' => $member->getScopeFeatures(),
-            'role' => $member->getRole(),
+            'scope' => $delegatedAccess->getType(),
+            'features' => $delegatedAccess->getScopeFeatures(),
+            'role' => $delegatedAccess->getRole(),
             'zones' => $zoneBasedRole ? $this->getZoneNames($zoneBasedRole->getZones()->toArray()) : null,
         ];
 
         $author = $this->getCurrentUser();
 
-        if (!$author->equals($delegator)) {
+        if ($author && !$author->equals($delegator)) {
             $data['author_uuid'] = $author->getUuid()->toString();
         }
 
-        $this->dispatch($member->getAdherent(), $type, $data);
+        $this->dispatch($delegatedAccess->getDelegated(), $type, $data);
     }
 
     private function getImpersonator(): ?Administrator
