@@ -23,7 +23,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
     use ApiControllerTestTrait;
 
     private const AUTH_TOKEN_URI_REGEX = '#^http://client-oauth\.docker:8000/client/receive_authcode\?code=(?P<code>[a-f0-9]+)\&state=bds1775p6f3ks29h2vla20ng5n$#';
-    private const ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX = '#\{"token_type":"Bearer","expires_in":(\d{4}),"access_token":"(?P<access_token>[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)","refresh_token":"(?P<refresh_token>[a-f0-9]+)"\}#';
+    private const ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX = '#\{"id_token":"[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}","token_type":"Bearer","expires_in":(\d{4}),"access_token":"(?P<access_token>[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)","refresh_token":"(?P<refresh_token>[a-f0-9]+)"\}#';
     private $encryptionKey;
 
     /** @var CryptKey */

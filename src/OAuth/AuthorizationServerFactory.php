@@ -4,6 +4,7 @@ namespace App\OAuth;
 
 use App\OAuth\Grant\RefreshTokenGrant;
 use App\OAuth\Listener\SymfonyLeagueEventListener;
+use App\OAuth\ResponseType\SessionBearerResponse;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -40,6 +41,7 @@ class AuthorizationServerFactory
         ScopeRepositoryInterface $scopeRepository,
         SymfonyLeagueEventListener $symfonyLeagueEventListener,
         CryptKey $privateKey,
+        private readonly SessionBearerResponse $sessionBearerResponse,
         string $encryptionKey,
         private readonly int $maxIdleTime,
         string $accessTokenTtlInterval,
@@ -67,7 +69,8 @@ class AuthorizationServerFactory
             $this->accessTokenRepository,
             $this->scopeRepository,
             $this->privateKey,
-            $this->encryptionKey
+            $this->encryptionKey,
+            $this->sessionBearerResponse,
         );
 
         $server->getEmitter()->useListenerProvider($this->symfonyLeagueEventListener);
