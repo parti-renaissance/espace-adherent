@@ -6,12 +6,13 @@ use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
+use App\Repository\AppSessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AppSessionRepository::class)]
 class AppSession
 {
     use EntityIdentityTrait;

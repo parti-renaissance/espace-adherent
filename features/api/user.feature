@@ -224,6 +224,7 @@ Feature:
                 "token_type": "Bearer",
                 "expires_in": "@integer@.lowerThan(3601).greaterThan(3595)",
                 "access_token": "@string@",
+                "id_token": "@uuid@",
                 "refresh_token": "@string@"
             }
             """
