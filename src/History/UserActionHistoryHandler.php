@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\History\Command\UserActionHistoryCommand;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -141,6 +142,43 @@ class UserActionHistoryHandler
         );
     }
 
+    public function createDelegatedAccessAdd(DelegatedAccess $delegatedAccess): void
+    {
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, $delegatedAccess);
+    }
+
+    public function createDelegatedAccessEdit(DelegatedAccess $delegatedAccess): void
+    {
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, $delegatedAccess);
+    }
+
+    public function createDelegatedAccessRemove(DelegatedAccess $delegatedAccess): void
+    {
+        $this->addDelegatedAccessHistory(UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, $delegatedAccess);
+    }
+
+    private function addDelegatedAccessHistory(UserActionHistoryTypeEnum $type, DelegatedAccess $delegatedAccess): void
+    {
+        $delegator = $delegatedAccess->getDelegator();
+        $zoneBasedRole = $delegator->findZoneBasedRole($delegatedAccess->getType());
+
+        $data = [
+            'delegator_uuid' => $delegator->getUuid()->toString(),
+            'scope' => $delegatedAccess->getType(),
+            'features' => $delegatedAccess->getScopeFeatures(),
+            'role' => $delegatedAccess->getRole(),
+            'zones' => $zoneBasedRole ? $this->getZoneNames($zoneBasedRole->getZones()->toArray()) : null,
+        ];
+
+        $author = $this->getCurrentUser();
+
+        if ($author && !$author->equals($delegator)) {
+            $data['author_uuid'] = $author->getUuid()->toString();
+        }
+
+        $this->dispatch($delegatedAccess->getDelegated(), $type, $data);
+    }
+
     private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();
@@ -152,6 +190,13 @@ class UserActionHistoryHandler
         $administrator = $token->getOriginalToken()->getUser();
 
         return $administrator instanceof Administrator ? $administrator : null;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        $user = $this->security->getUser();
+
+        return $user instanceof Adherent ? $user : null;
     }
 
     private function dispatch(

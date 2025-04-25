@@ -47,4 +47,12 @@ class UserActionHistory
         $this->data = $data;
         $this->impersonator = $impersonator;
     }
+
+    public function isRoleType(): bool
+    {
+        return \in_array($this->type, [
+            UserActionHistoryTypeEnum::ROLE_ADD,
+            UserActionHistoryTypeEnum::ROLE_REMOVE,
+        ], true);
+    }
 }

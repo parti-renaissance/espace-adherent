@@ -53,6 +53,8 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         if ('_api_/v3/my_team_members_post' === $request->get('_api_operation_name')
             && $member->getScopeFeatures()) {
             $this->delegatedAccessManager->createDelegatedAccessForMember($member);
+
+            return;
         }
 
         // modification

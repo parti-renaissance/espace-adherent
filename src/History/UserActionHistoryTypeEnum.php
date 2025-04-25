@@ -16,4 +16,7 @@ enum UserActionHistoryTypeEnum: string
     case ROLE_ADD = 'role_add';
     case ROLE_REMOVE = 'role_remove';
     case LIVE_VIEW = 'live_view';
+    case DELEGATED_ACCESS_ADD = 'delegated_access_add';
+    case DELEGATED_ACCESS_EDIT = 'delegated_access_edit';
+    case DELEGATED_ACCESS_REMOVE = 'delegated_access_remove';
 }
