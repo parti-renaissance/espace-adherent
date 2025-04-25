@@ -40,9 +40,8 @@ class AdherentRequestRepository extends ServiceEntityRepository
             ->andWhere('adherent_request.adherent IS NULL')
             ->andWhere('adherent_request.accountCreatedAt IS NULL')
             ->andWhere('adherent_request.email IS NOT NULL')
-            ->setParameter('reminder_type', $type)
             ->setParameters([
-                'reminder_type' => AdherentRequestReminderTypeEnum::AFTER_ONE_HOUR,
+                'reminder_type' => $type,
                 'created_before' => $createdBefore,
             ])
         ;
