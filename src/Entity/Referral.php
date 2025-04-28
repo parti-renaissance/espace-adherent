@@ -23,22 +23,19 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(
-            uriTemplate: '/v3/referrals',
-        ),
-        new Post(
-            uriTemplate: '/v3/referrals',
-        ),
-        new GetCollection(
-            uriTemplate: '/v3/cadre-referrals',
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'referrals')"
-        )
+        new GetCollection(uriTemplate: '/v3/referrals', security: new Expression('(request.query.has("scope") AND is_granted("REQUEST_SCOPE_GRANTED", "referrals")) OR is_granted("ROLE_ADHERENT")')),
+        new Post(uriTemplate: '/v3/referrals'),
+//        new GetCollection(
+//            uriTemplate: '/v3/referrals',
+//            security: "is_granted('REQUEST_SCOPE_GRANTED', 'referrals')"
+//        )
     ],
     normalizationContext: ['groups' => ['referral_read']],
     denormalizationContext: ['groups' => ['referral_write']],

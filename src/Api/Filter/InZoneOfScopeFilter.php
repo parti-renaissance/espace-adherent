@@ -25,6 +25,10 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         string $resourceClass,
         array $context,
     ): void {
+        if ($context[API_context] !== 'private') {
+            return;
+        }
+
         $alias = $queryBuilder->getRootAliases()[0];
 
         $this
