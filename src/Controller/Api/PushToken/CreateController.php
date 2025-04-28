@@ -5,6 +5,7 @@ namespace App\Controller\Api\PushToken;
 use App\Entity\Adherent;
 use App\Entity\PushToken;
 use App\Repository\PushTokenRepository;
+use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,7 @@ class CreateController extends AbstractController
 
         try {
             $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException) {
+        } catch (UniqueConstraintViolationException|DeadlockException) {
             return $this->json('', Response::HTTP_NO_CONTENT);
         }
 
