@@ -6,7 +6,7 @@ Feature:
 
     Scenario: As an logged in user, I can list referrals
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/referrals?page_size=10&only-mine=true"
+        And I send a "GET" request to "/api/v3/referrals?page_size=10"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -371,7 +371,7 @@ Feature:
     @debug
     Scenario Outline: As a user with (delegated) referent role I can get referrals of my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/cadre-referrals?scope=<scope>"
+        When I send a "GET" request to "/api/v3/referrals?scope=<scope>"
         Then print last JSON response
         Then the response status code should be 200
         And the JSON should be equal to:
