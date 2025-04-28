@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 
 interface ZoneableEntityInterface
 {
@@ -19,4 +20,6 @@ interface ZoneableEntityInterface
     public function clearZones(): void;
 
     public static function getZonesPropertyName(): string;
+
+    public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void;
 }

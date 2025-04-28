@@ -24,6 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\QueryBuilder;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -628,6 +629,10 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public static function getZonesPropertyName(): string
     {
         return '';
+    }
+
+    public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
+    {
     }
 
     public function getAuthor(): ?Adherent
