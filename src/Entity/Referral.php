@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/referrals',
-            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("ROLE_ADHERENT")'),
+            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("RENAISSANCE_ADHERENT")'),
         ),
         new Post(uriTemplate: '/v3/referrals'),
     ],
@@ -92,6 +92,7 @@ class Referral implements ZoneableEntityInterface
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTimeInterface $birthdate = null;
 
+    #[Groups(['referral_read_with_referrer'])]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referrer = null;

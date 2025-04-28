@@ -134,6 +134,7 @@ trait EntityIdentityTrait
         'general_convention_read',
         'general_convention_write',
         'referral_read',
+        'referral_read_with_referrer',
         'profile_update',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]

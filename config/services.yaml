@@ -351,6 +351,10 @@ services:
     App\RepublicanSilence\ZoneExtractorFactory:
         arguments: [!tagged_iterator 'app.republican_silence.zone_extractor']
 
+    App\Api\Serializer\ReferralGroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@.inner']
+
     App\Api\Serializer\RiposteGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@.inner']
