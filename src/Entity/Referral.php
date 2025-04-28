@@ -30,12 +30,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(uriTemplate: '/v3/referrals', security: new Expression('(request.query.has("scope") AND is_granted("REQUEST_SCOPE_GRANTED", "referrals")) OR is_granted("ROLE_ADHERENT")')),
+        new GetCollection(
+            uriTemplate: '/v3/referrals',
+            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("ROLE_ADHERENT")'),
+        ),
         new Post(uriTemplate: '/v3/referrals'),
-//        new GetCollection(
-//            uriTemplate: '/v3/referrals',
-//            security: "is_granted('REQUEST_SCOPE_GRANTED', 'referrals')"
-//        )
     ],
     normalizationContext: ['groups' => ['referral_read']],
     denormalizationContext: ['groups' => ['referral_write']],
@@ -225,8 +224,6 @@ class Referral implements ZoneableEntityInterface
         ], true);
     }
 
-
-
     public function getZones(): Collection
     {
         if (!$this->referrer) {
@@ -250,13 +247,13 @@ class Referral implements ZoneableEntityInterface
 
     public static function getZonesPropertyName(): string
     {
-        return 'ref.zones';
+        return 'referrer.zones';
     }
 
     public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
     {
         $queryBuilder
-            ->innerJoin("$rootAlias.referrer", 'ref')
+            ->innerJoin("$rootAlias.referrer", 'referrer')
         ;
     }
 }

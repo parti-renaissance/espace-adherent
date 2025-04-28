@@ -7,7 +7,6 @@ use App\Entity\Geo\Zone;
 use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;

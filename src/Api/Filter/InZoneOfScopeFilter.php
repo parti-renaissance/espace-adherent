@@ -2,6 +2,7 @@
 
 namespace App\Api\Filter;
 
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\ZoneableEntityInterface;
 use App\Scope\Generator\ScopeGeneratorInterface;
@@ -25,7 +26,7 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         string $resourceClass,
         array $context,
     ): void {
-        if ($context[API_context] !== 'private') {
+        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE !== $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             return;
         }
 

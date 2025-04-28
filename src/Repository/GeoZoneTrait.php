@@ -59,7 +59,8 @@ trait GeoZoneTrait
             ->getEntityManager()
             ->createQueryBuilder()
             ->select($select = \sprintf('%s.id', $entityClassAlias))
-            ->from($entityClass, $entityClassAlias);
+            ->from($entityClass, $entityClassAlias)
+        ;
 
         if ($queryModifier) {
             $queryModifier($zoneQueryBuilder, $entityClassAlias);
