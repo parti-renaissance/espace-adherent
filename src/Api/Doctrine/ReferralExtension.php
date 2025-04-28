@@ -26,13 +26,17 @@ class ReferralExtension implements QueryCollectionExtensionInterface
             return;
         }
 
+        if ($context[API_context] !== 'public') {
+            return;
+        }
+
         $user = $this->security->getUser();
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        $queryBuilder
-            ->andWhere("$alias.referrer = :referrer")
-            ->setParameter('referrer', $user)
-        ;
+//        $queryBuilder
+//            ->andWhere("$alias.referrer = :referrer")
+//            ->setParameter('referrer', $user)
+//        ;
     }
 }

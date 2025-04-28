@@ -59,15 +59,16 @@ trait GeoZoneTrait
             ->getEntityManager()
             ->createQueryBuilder()
             ->select($select = \sprintf('%s.id', $entityClassAlias))
-            ->from($entityClass, $entityClassAlias)
-            ->innerJoin(str_contains($zoneRelation, '.') ? $zoneRelation : \sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
-            ->groupBy($select)
-        ;
-
+            ->from($entityClass, $entityClassAlias);
 
         if ($queryModifier) {
             $queryModifier($zoneQueryBuilder, $entityClassAlias);
         }
+
+        $zoneQueryBuilder
+            ->innerJoin(str_contains($zoneRelation, '.') ? $zoneRelation : \sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+            ->groupBy($select)
+        ;
 
         $orX = $queryBuilder->expr()->orX();
         $orX->add(\sprintf('%s IN (:%s_zone_ids)', $zoneRelationAlias, $zoneRelationAlias));
