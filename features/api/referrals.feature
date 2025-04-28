@@ -367,3 +367,17 @@ Feature:
                 "assembly_rank": 2
             }
             """
+@debug
+    Scenario Outline: As a user with (delegated) referent role I can get referrals of my zones
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/cadre-referrals?scope=<scope>"
+        Then print last JSON response
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+        }
+        """
+        Examples:
+            | user                      | scope                                          |
+            | referent-75-77@en-marche-dev.fr | president_departmental_assembly          |

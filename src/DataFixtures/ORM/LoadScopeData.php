@@ -25,6 +25,7 @@ class LoadScopeData extends Fixture
         FeatureEnum::ADHERENT_FORMATIONS,
         FeatureEnum::GENERAL_MEETING_REPORTS,
         FeatureEnum::DOCUMENTS,
+        FeatureEnum::REFERRALS,
     ];
 
     public function __construct(private readonly TranslatorInterface $translator)
