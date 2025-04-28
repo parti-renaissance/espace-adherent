@@ -316,10 +316,12 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('postAddress.latitude', NumberType::class, [
                             'label' => 'Latitude',
                             'html5' => true,
+                            'scale' => 6,
                         ])
                         ->add('postAddress.longitude', NumberType::class, [
                             'label' => 'Longitude',
                             'html5' => true,
+                            'scale' => 6,
                         ])
                     ->end()
                     ->with('Information de compte', ['class' => 'col-md-6'])
