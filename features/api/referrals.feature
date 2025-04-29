@@ -461,3 +461,43 @@ Feature:
             | user                            | scope                                          |
             | referent-75-77@en-marche-dev.fr | president_departmental_assembly                |
             | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77 |
+
+    Scenario Outline: As a user with (delegated) referent role I can get referral scoreboards of my zones
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/referrals/manager-scoreboard?scope=<scope>"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "75": [
+                    {
+                        "referrer_pid": 87,
+                        "referrer_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                        "referrer_first_name": "Lucie",
+                        "referrer_last_name": "Olivera",
+                        "count_adhesion_finished": 2,
+                        "count_account_created": 0,
+                        "count_reported": 0,
+                        "local_rank": 1,
+                        "national_rank": 1
+                    },
+                    {
+                        "referrer_pid": 86,
+                        "referrer_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                        "referrer_first_name": "Jacques",
+                        "referrer_last_name": "Picard",
+                        "count_adhesion_finished": 1,
+                        "count_account_created": 0,
+                        "count_reported": 0,
+                        "local_rank": 2,
+                        "national_rank": 2
+                    }
+                ],
+                "77": []
+            }
+            """
+
+        Examples:
+            | user                            | scope                                          |
+            | referent-75-77@en-marche-dev.fr | president_departmental_assembly                |
+            | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77 |

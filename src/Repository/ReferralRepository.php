@@ -176,7 +176,7 @@ class ReferralRepository extends ServiceEntityRepository
         return $result->fetchAllAssociative();
     }
 
-    public function getReferrerRank(Adherent $referrer, ?Zone $zone = null): ?int
+    public function getReferrerRank(int $referrerId, ?Zone $zone = null): ?int
     {
         [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, false);
 
@@ -196,13 +196,54 @@ class ReferralRepository extends ServiceEntityRepository
                 WHERE referrer_id = :referrer_id
             SQL;
 
-        $parameters['referrer_id'] = $referrer->getId();
+        $parameters['referrer_id'] = $referrerId;
         $parameters['status'] = StatusEnum::ADHESION_FINISHED->value;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $result = $stmt->executeQuery($parameters)->fetchOne();
 
         return false !== $result ? (int) $result : null;
+    }
+
+    public function getManagerScoreboard(Zone $zone, int $limit = 10): array
+    {
+        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, false);
+
+        $sql = <<<SQL
+                SELECT
+                    adherent.id AS referrer_pid,
+                    adherent.uuid AS referrer_uuid,
+                    adherent.first_name AS referrer_first_name,
+                    adherent.last_name AS referrer_last_name,
+                    COUNT(DISTINCT CASE WHEN referral.status = :status_finished THEN referral.id END) AS count_adhesion_finished,
+                    COUNT(DISTINCT CASE WHEN referral.status = :status_account_created THEN referral.id END) AS count_account_created,
+                    COUNT(DISTINCT CASE WHEN referral.status = :status_reported THEN referral.id END) AS count_reported,
+                    RANK() OVER (ORDER BY COUNT(DISTINCT CASE WHEN referral.status = :status_finished THEN referral.id END) DESC) AS local_rank
+                FROM referral
+                INNER JOIN adherents AS adherent
+                    ON referral.referrer_id = adherent.id
+                {$joins}
+                WHERE referral.status IN (:status_finished, :status_account_created, :status_reported)
+                {$filter}
+                GROUP BY adherent.id, adherent.uuid, adherent.first_name, adherent.last_name
+                ORDER BY count_adhesion_finished DESC
+                LIMIT {$limit}
+            SQL;
+
+        $parameters += [
+            'status_finished' => StatusEnum::ADHESION_FINISHED->value,
+            'status_account_created' => StatusEnum::ACCOUNT_CREATED->value,
+            'status_reported' => StatusEnum::REPORTED->value,
+        ];
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $localResults = $stmt->executeQuery($parameters)->fetchAllAssociative();
+
+        foreach ($localResults as &$row) {
+            $row['national_rank'] = $this->getReferrerRank((int) $row['referrer_pid']);
+        }
+
+        return $localResults;
     }
 
     private function buildZoneJoinsAndFilter(?Zone $zone, bool $withAssembly = false): array
