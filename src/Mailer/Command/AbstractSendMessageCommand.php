@@ -7,12 +7,13 @@ use Ramsey\Uuid\UuidInterface;
 
 abstract class AbstractSendMessageCommand extends AbstractUuidMessage implements SendMessageCommandInterface
 {
-    public bool $resend;
-
-    public function __construct(UuidInterface $uuid, bool $resend = false)
+    public function __construct(UuidInterface $uuid, private readonly bool $resend = false)
     {
         parent::__construct($uuid);
+    }
 
-        $this->resend = $resend;
+    public function isResend(): bool
+    {
+        return $this->resend;
     }
 }

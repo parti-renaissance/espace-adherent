@@ -134,7 +134,7 @@ class AdminEmailCRUDController extends CRUDController
     {
         $this->admin->checkAccess('preview_content', $template);
 
-        return new Response($templateManager->getTemplateContent($template));
+        return new Response($templateManager->getTemplateContent($template, true));
     }
 
     public function duplicateAction(TransactionalEmailTemplate $template, EntityManagerInterface $entityManager): Response
