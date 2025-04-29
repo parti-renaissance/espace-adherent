@@ -143,6 +143,26 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    public function find($id, $lockMode = null, $lockVersion = null): ?Adherent
+    {
+        return $this->createQueryBuilderForAdherentWithRoles('a')
+            ->addSelect('st')
+            ->addSelect('sl')
+            ->addSelect('tm')
+            ->addSelect('ac')
+            ->addSelect('slc')
+            ->leftJoin('a.subscriptionTypes', 'st')
+            ->leftJoin('a.staticLabels', 'sl')
+            ->leftJoin('sl.category', 'slc')
+            ->leftJoin('a.teamMemberships', 'tm')
+            ->leftJoin('a.animatorCommittees', 'ac')
+            ->andWhere('a.id = :id')
+            ->setParameters(\is_array($id) ? $id : ['id' => $id])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
@@ -171,7 +191,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->loadUserByIdentifier($username);
     }
 
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return Adherent::class === $class;
     }
@@ -1012,12 +1032,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('rda')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
+            ->addSelect('az')
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
             ->leftJoin($alias.'.committeeMembership', 'cm')
             ->leftJoin('cm.committee', 'c')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
+            ->leftJoin($alias.'.zones', 'az')
         ;
     }
 

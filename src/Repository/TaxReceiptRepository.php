@@ -21,6 +21,7 @@ class TaxReceiptRepository extends ServiceEntityRepository
     public function findAllByAdherent(Adherent $adherent): array
     {
         return $this->createQueryBuilder('tr')
+            ->addSelect('donator')
             ->innerJoin('tr.donator', 'donator')
             ->andWhere('donator.adherent = :adherent')
             ->setParameter('adherent', $adherent)

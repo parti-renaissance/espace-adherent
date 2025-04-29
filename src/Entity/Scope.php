@@ -33,7 +33,7 @@ class Scope
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
     private $name;

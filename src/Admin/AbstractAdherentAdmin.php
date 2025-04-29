@@ -48,7 +48,6 @@ use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -99,7 +98,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     private TagTranslator $tagTranslator;
     private CommitteeMembershipManager $committeeMembershipManager;
     private Security $security;
-    private EntityManagerInterface $entityManager;
 
     /**
      * State of adherent data before update
@@ -907,9 +905,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'choice_label' => function (string $choice) {
                         if ('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $choice) {
                             return 'territorial_council.membership.quality.elected_candidate_adherent';
-                        } else {
-                            return 'political_committee.membership.quality.'.$choice;
                         }
+
+                        return 'political_committee.membership.quality.'.$choice;
                     },
                     'multiple' => true,
                 ],
@@ -1184,12 +1182,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
-    }
-
-    #[Required]
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
     }
 
     private function getAdministrator(): Administrator
