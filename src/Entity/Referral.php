@@ -2,32 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Adherent\Referral\ModeEnum;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
+use App\Api\Filter\InZoneOfScopeFilter;
+use App\Entity\Geo\Zone;
 use App\Enum\CivilityEnum;
 use App\Repository\ReferralRepository;
 use App\Validator\ReferralEmail;
 use App\Validator\ReferralInformations;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\QueryBuilder;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiResource(
     operations: [
         new GetCollection(
             uriTemplate: '/v3/referrals',
+            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("RENAISSANCE_ADHERENT")'),
         ),
-        new Post(
-            uriTemplate: '/v3/referrals',
-        ),
+        new Post(uriTemplate: '/v3/referrals'),
     ],
     normalizationContext: ['groups' => ['referral_read']],
     denormalizationContext: ['groups' => ['referral_write']],
@@ -37,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: ReferralRepository::class)]
 #[ReferralInformations]
-class Referral
+class Referral implements ZoneableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -85,6 +92,7 @@ class Referral
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTimeInterface $birthdate = null;
 
+    #[Groups(['referral_read_with_referrer'])]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referrer = null;
@@ -215,5 +223,38 @@ class Referral
             StatusEnum::ADHESION_FINISHED,
             StatusEnum::ADHESION_VIA_OTHER_LINK,
         ], true);
+    }
+
+    public function getZones(): Collection
+    {
+        if (!$this->referrer) {
+            return new ArrayCollection();
+        }
+
+        return $this->referrer->getZones();
+    }
+
+    public function addZone(Zone $zone): void
+    {
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+    }
+
+    public function clearZones(): void
+    {
+    }
+
+    public static function getZonesPropertyName(): string
+    {
+        return 'referrer.zones';
+    }
+
+    public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
+    {
+        $queryBuilder
+            ->innerJoin("$rootAlias.referrer", 'referrer')
+        ;
     }
 }

@@ -36,7 +36,8 @@ Feature:
                         "elected_representative",
                         "adherent_formations",
                         "general_meeting_reports",
-                        "documents"
+                        "documents",
+                        "referrals"
                     ]
                 },
                 {
@@ -90,7 +91,8 @@ Feature:
                         "procurations",
                         "actions",
                         "featurebase",
-                        "circonscriptions"
+                        "circonscriptions",
+                        "referrals"
                     ]
                 },
                 {
@@ -173,7 +175,8 @@ Feature:
                     "elected_representative",
                     "adherent_formations",
                     "general_meeting_reports",
-                    "documents"
+                    "documents",
+                    "referrals"
                 ],
                 "attributes": null,
                 "delegated_access": null
@@ -226,7 +229,8 @@ Feature:
                     "procurations",
                     "actions",
                     "featurebase",
-                    "circonscriptions"
+                    "circonscriptions",
+                    "referrals"
                 ],
                 "attributes": null,
                 "delegated_access": null
@@ -476,7 +480,8 @@ Feature:
                     "procurations",
                     "actions",
                     "featurebase",
-                    "circonscriptions"
+                    "circonscriptions",
+                    "referrals"
                 ],
                 "delegated_access": {
                     "delegator": {
@@ -531,7 +536,8 @@ Feature:
                     "procurations",
                     "actions",
                     "featurebase",
-                    "circonscriptions"
+                    "circonscriptions",
+                    "referrals"
                 ],
                 "attributes": {
                     "committees": [{ "name": "Comité des 3 communes", "uuid": "@uuid@" }],

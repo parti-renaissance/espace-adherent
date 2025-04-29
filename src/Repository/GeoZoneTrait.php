@@ -60,7 +60,14 @@ trait GeoZoneTrait
             ->createQueryBuilder()
             ->select($select = \sprintf('%s.id', $entityClassAlias))
             ->from($entityClass, $entityClassAlias)
-            ->innerJoin(\sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+        ;
+
+        if ($queryModifier) {
+            $queryModifier($zoneQueryBuilder, $entityClassAlias);
+        }
+
+        $zoneQueryBuilder
+            ->innerJoin(str_contains($zoneRelation, '.') ? $zoneRelation : \sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
             ->groupBy($select)
         ;
 
@@ -87,10 +94,6 @@ trait GeoZoneTrait
         }
 
         $zoneQueryBuilder->where($orX);
-
-        if ($queryModifier) {
-            $queryModifier($zoneQueryBuilder, $entityClassAlias);
-        }
 
         return $zoneQueryBuilder;
     }

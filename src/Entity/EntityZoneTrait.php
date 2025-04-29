@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -164,5 +165,9 @@ trait EntityZoneTrait
         $departments = $this->getParentZonesOfType(Zone::DEPARTMENT);
 
         return \count($departments) ? current($departments) : null;
+    }
+
+    public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
+    {
     }
 }

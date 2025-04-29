@@ -2,6 +2,7 @@
 
 namespace App\Api\Filter;
 
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\ZoneableEntityInterface;
 use App\Scope\Generator\ScopeGeneratorInterface;
@@ -25,6 +26,10 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         string $resourceClass,
         array $context,
     ): void {
+        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE !== $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
+            return;
+        }
+
         $alias = $queryBuilder->getRootAliases()[0];
 
         $this
@@ -37,7 +42,8 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
                 $resourceClass,
                 'api_zone_filter_resource_alias',
                 $resourceClass::getZonesPropertyName(),
-                'api_zone_filter_zone_alias'
+                'api_zone_filter_zone_alias',
+                [$resourceClass, 'alterQueryBuilderForZones']
             )
         ;
     }

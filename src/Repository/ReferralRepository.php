@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ReferralRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Referral::class);

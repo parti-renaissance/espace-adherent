@@ -367,3 +367,97 @@ Feature:
                 "assembly_rank": 2
             }
             """
+
+    Scenario Outline: As a user with (delegated) referent role I can get referrals of my zones
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/referrals?scope=<scope>"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 3,
+                    "items_per_page": 2,
+                    "count": 2,
+                    "current_page": 1,
+                    "last_page": 2
+                },
+                "items": [
+                    {
+                        "email_address": null,
+                        "first_name": "Jean",
+                        "last_name": null,
+                        "civility": null,
+                        "nationality": null,
+                        "phone": null,
+                        "birthdate": null,
+                        "referred": null,
+                        "referrer": {
+                            "id": "@string@",
+                            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                            "first_name": "Jacques",
+                            "last_name": "Picard"
+                        },
+                        "identifier": "PAC123",
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "adhesion_finished",
+                        "uuid": "e12d55f2-2a27-49c9-92e5-818320f99749",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()",
+                        "post_address": {
+                            "address": null,
+                            "additional_address": null,
+                            "postal_code": null,
+                            "city": null,
+                            "city_name": null,
+                            "country": null,
+                            "region": null
+                        },
+                        "type_label": "Invitation",
+                        "mode_label": "Email",
+                        "status_label": "Adhésion finalisée"
+                    },
+                    {
+                        "email_address": null,
+                        "first_name": "Jane",
+                        "last_name": null,
+                        "civility": null,
+                        "nationality": null,
+                        "phone": null,
+                        "birthdate": null,
+                        "referred": null,
+                        "referrer": {
+                            "id": "@string@",
+                            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "first_name": "Lucie",
+                            "last_name": "Olivera"
+                        },
+                        "identifier": "PAC124",
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "adhesion_finished",
+                        "uuid": "680a34aa-8f03-4efc-a294-8e6c2bb669ab",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()",
+                        "post_address": {
+                            "address": null,
+                            "additional_address": null,
+                            "postal_code": null,
+                            "city": null,
+                            "city_name": null,
+                            "country": null,
+                            "region": null
+                        },
+                        "type_label": "Invitation",
+                        "mode_label": "Email",
+                        "status_label": "Adhésion finalisée"
+                    }
+                ]
+            }
+            """
+
+        Examples:
+            | user                            | scope                                          |
+            | referent-75-77@en-marche-dev.fr | president_departmental_assembly                |
+            | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77 |
