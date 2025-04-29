@@ -43,6 +43,14 @@ class Manager
                 },
                 $content
             );
+
+            // Inject style block for .hidden
+            $content = preg_replace(
+                '/<\/head>/i',
+                "<style>.hidden { display: none !important; mso-hide: all !important; max-height: 0px !important; overflow: hidden !important; font-size: 0 !important; line-height: 0 !important; opacity: 0 !important; visibility: hidden !important; }</style>\n</head>",
+                $content,
+                1
+            );
         }
 
         return $content;
