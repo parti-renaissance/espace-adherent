@@ -34,7 +34,8 @@ class EmailTemplateFactory
         );
 
         foreach ($message->getRecipients() as $recipient) {
-            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $templateVars += $recipient->getVars());
+            $templateVars += $recipient->getVars();
+            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
         }
 
         $email->setPreserveRecipients($message->getPreserveRecipients());
