@@ -10,6 +10,7 @@ use App\Adherent\Referral\ModeEnum;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Controller\Api\Referral\ManagerScoreboardController;
 use App\Controller\Api\Referral\ScoreboardController;
 use App\Entity\Geo\Zone;
 use App\Enum\CivilityEnum;
@@ -33,10 +34,17 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/referrals',
+            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("RENAISSANCE_ADHERENT")'),
         ),
         new GetCollection(
             uriTemplate: '/v3/referrals/scoreboard',
             controller: ScoreboardController::class,
+            security: 'is_granted("RENAISSANCE_ADHERENT")',
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/referrals/manager-scoreboard',
+            controller: ManagerScoreboardController::class,
+            security: 'request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")'
         ),
         new Post(
             uriTemplate: '/v3/referrals',
@@ -47,7 +55,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['referral_write']],
     validationContext: ['groups' => ['Default', 'referral_write']],
     order: ['createdAt' => 'DESC'],
-    security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("RENAISSANCE_ADHERENT")'),
 )]
 #[ORM\Entity(repositoryClass: ReferralRepository::class)]
 #[ReferralInformations]

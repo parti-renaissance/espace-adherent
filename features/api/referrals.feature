@@ -464,7 +464,7 @@ Feature:
 
     Scenario Outline: As a user with (delegated) referent role I can get referral scoreboards of my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        And I send a "GET" request to "/api/v3/referrals/scoreboard?scope=<scope>"
+        And I send a "GET" request to "/api/v3/referrals/manager-scoreboard?scope=<scope>"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
