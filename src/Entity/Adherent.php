@@ -342,6 +342,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     public bool $canaryTester = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $sandboxMode = false;
+
     /**
      * Mailchimp unsubscribed status
      *
