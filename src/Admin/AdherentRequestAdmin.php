@@ -45,10 +45,10 @@ class AdherentRequestAdmin extends AbstractAdmin
                         $qb
                             ->expr()
                             ->orX()
-                            ->add("$alias.adherentUuid = :adherent_uuid")
+                            ->add("$alias.emailHash = :email_hash")
                             ->add("$alias.email = :email")
                     );
-                    $qb->setParameter('adherent_uuid', $uuid->toString());
+                    $qb->setParameter('email_hash', $uuid->toString());
                     $qb->setParameter('email', $value->getValue());
 
                     return true;
