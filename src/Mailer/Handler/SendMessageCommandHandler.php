@@ -22,10 +22,9 @@ class SendMessageCommandHandler
             return;
         }
 
-        if (
-            ($delivered = $this->client->sendEmail($email->getRequestPayloadJson(), $command->resend, $email->useTemplateEndpoint))
-            && false === $command->resend
-        ) {
+        $delivered = $this->client->sendEmail($email->getRequestPayloadJson(), $command->isResend(), $email->useTemplateEndpoint);
+
+        if ($delivered && false === $command->isResend()) {
             $this->emailRepository->setDelivered($email, $delivered);
         }
     }

@@ -29,18 +29,18 @@ class EmailTemplateFactory
             $message->getReplyTo(),
             $message->getCC(),
             $message->getBCC(),
-            $message->getVars(),
+            $templateVars = $message->getVars(),
             $message->getTemplateContent()
         );
 
         foreach ($message->getRecipients() as $recipient) {
-            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
+            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $templateVars += $recipient->getVars());
         }
 
         $email->setPreserveRecipients($message->getPreserveRecipients());
 
         if ($templateObject) {
-            $email->setMessageHtmlContent($this->templateManager->getTemplateContent($templateObject, $message instanceof EmailTemplateMessage));
+            $email->setMessageHtmlContent($this->templateManager->getTemplateContent($templateObject, $message instanceof EmailTemplateMessage, $templateVars));
         }
 
         return $email;

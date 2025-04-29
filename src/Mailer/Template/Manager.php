@@ -12,7 +12,7 @@ class Manager
     {
     }
 
-    public function getTemplateContent(TransactionalEmailTemplate $template, bool $fillVariables = false): string
+    public function getTemplateContent(TransactionalEmailTemplate $template, bool $fillVariables = false, array $templateVars = []): string
     {
         $content = $template->getContent();
 
@@ -23,7 +23,29 @@ class Manager
             $content = preg_replace('/(<table\s+[^>]*class="template-email-block"[^>]*>)([\s\S]*?<div[^>]*>)[\s\S]*?(<\/div>[\s\S]*?<\/table>)/i', '$1$2'.$childContent.'$3', $template->parent->getContent());
         }
 
-        return $fillVariables ? preg_replace_callback('/\{{2,3}\s*([a-zA-Z0-9_]+)\s*}{2,3}/', fn ($matches) => $matches[1], $content) : $content;
+        if ($fillVariables) {
+            $content = preg_replace_callback('/\{{2,3}\s*(\w+)\s*}{2,3}/', fn ($matches) => $matches[1], $content);
+        }
+
+        if ($templateVars) {
+            $content = preg_replace_callback(
+                '/class="([^"]*?\bshow_if:(\w+)\b[^"]*?)"/',
+                static function ($matches) use ($templateVars) {
+                    [, $fullClass, $key] = $matches;
+
+                    if (!isset($templateVars[$key]) || !$templateVars[$key]) {
+                        $newClass = preg_replace('/\bshow_if:'.preg_quote($key, '/').'\b/', 'hidden', $fullClass);
+
+                        return 'class="'.$newClass.'"';
+                    }
+
+                    return $matches[0];
+                },
+                $content
+            );
+        }
+
+        return $content;
     }
 
     public function findTemplateForMessage(Message $message): ?TransactionalEmailTemplate
