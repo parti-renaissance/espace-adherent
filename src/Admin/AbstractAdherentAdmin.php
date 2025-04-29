@@ -387,6 +387,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         'box_class' => 'box box-warning',
                     ])
                         ->add('canaryTester')
+                        ->add('sandboxMode')
                     ->end()
                 ->end()
                 ->tab('Responsabilités internes')

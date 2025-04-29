@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 
 class AdherentAdmin extends AbstractAdherentAdmin
@@ -87,6 +88,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
         parent::configureDatagridFilters($filter);
 
         $filter
+            ->add('sandboxMode', BooleanFilter::class)
             ->add('committeeMembership.committee', CallbackFilter::class, [
                 'label' => 'Comité',
                 'field_type' => ModelAutocompleteType::class,
