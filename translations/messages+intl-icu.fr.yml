@@ -1164,6 +1164,7 @@ scope.feature.designation: Désignation
 scope.feature.actions: Actions
 scope.feature.featurebase: 🗣 Featurebase ️
 scope.feature.circonscriptions: Gestion des circonscriptions
+scope.feature.referrals: Parrainages
 
 scope.app.data_corner: DataCorner
 scope.app.jemarche: Je m'engage
