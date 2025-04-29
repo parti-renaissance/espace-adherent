@@ -211,7 +211,8 @@ class ReferralRepository extends ServiceEntityRepository
 
         $sql = <<<SQL
                 SELECT
-                    adherent.id AS referrer_pid,
+                    adherent.id AS referrer_id,
+                    adherent.public_id AS referrer_pid,
                     adherent.uuid AS referrer_uuid,
                     adherent.first_name AS referrer_first_name,
                     adherent.last_name AS referrer_last_name,
@@ -240,7 +241,8 @@ class ReferralRepository extends ServiceEntityRepository
         $localResults = $stmt->executeQuery($parameters)->fetchAllAssociative();
 
         foreach ($localResults as &$row) {
-            $row['national_rank'] = $this->getReferrerRank((int) $row['referrer_pid']);
+            $row['national_rank'] = $this->getReferrerRank((int) $row['referrer_id']);
+            unset($row['referrer_id']);
         }
 
         return $localResults;
