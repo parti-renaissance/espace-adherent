@@ -2,7 +2,6 @@
 
 namespace App\Event\Handler;
 
-use App\Entity\PushToken;
 use App\Event\Command\EventLiveBeginPushChunkNotificationCommand;
 use App\Firebase\JeMarcheMessaging;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
@@ -32,7 +31,6 @@ class EventLiveBeginPushChunkNotificationCommandHandler
             return;
         }
 
-        /** @var $tokens PushToken[] */
         $tokens = $this->pushTokenRepository->findAllIdentifiersByIds($command->tokens);
 
         if (!empty($tokens)) {

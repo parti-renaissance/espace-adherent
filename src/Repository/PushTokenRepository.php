@@ -148,7 +148,7 @@ class PushTokenRepository extends ServiceEntityRepository
     public function findAllIdentifiersByIds(array $ids): array
     {
         return $this->createIdentifierQueryBuilder('t')
-            ->where('t.id IN (:ids)')
+            ->andWhere('t.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
             ->getSingleColumnResult()
