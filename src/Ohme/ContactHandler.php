@@ -24,6 +24,11 @@ class ContactHandler
             return;
         }
 
-        $this->paymentImporter->importPayments($contact);
+        $options = [];
+        if ($contact->ohmeIdentifier) {
+            $options['contact_id'] = $contact->ohmeIdentifier;
+        }
+
+        $this->paymentImporter->importPayments(100, 0, $options);
     }
 }
