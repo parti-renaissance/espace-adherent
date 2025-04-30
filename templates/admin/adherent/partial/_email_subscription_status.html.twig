@@ -1,7 +1,51 @@
-{% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
-    <span class="label" style="background-color:#FFEC00;color:#293845;">Désabonné{{ object.isFemale() ? 'e' }}</span>
-{% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
-    <span class="label" style="background-color:#61E9D5;">Abonné{{ object.isFemale() ? 'e' }}</span>
-{% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
-    <span class="label" style="background-color:#4B5C6B;">Cleaned</span>
-{% endif %}
+{% macro display_row(icon, label) %}
+    <span class="text-nowrap" style="display: flex;gap: 0.5rem;">
+        <span>{{ icon }}</span>
+        <span>{{ label|raw }}</span>
+    </span>
+{% endmacro %}
+
+<div style="display: flex;flex-direction: column;">
+    {% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
+        {% set label = 'Désabonné' %}
+    {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
+        {% set label = 'Abonné' %}
+    {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
+        {% set label = '<span class="label label-danger">Cleaned</span>' %}
+    {% endif %}
+
+    {{ _self.display_row('✉️', label) }}
+
+    {% if not object.getPhone() %}
+        {% set label = 'Pas de numéro' %}
+    {% elseif object.hasSmsSubscriptionType() %}
+        {% set label = 'Abonné' %}
+    {% else %}
+        {% set label = 'Désabonné' %}
+    {% endif %}
+
+    {{ _self.display_row('📞', label) }}
+
+    {% set system_enum = enum('App\\AppSession\\SystemEnum') %}
+    {% set active_web_session = object.findAppSessions(get_vox_client(), true, [system_enum.WEB])|first %}
+    {% if active_web_session %}
+        {% if active_web_session.findSubscribedPushTokenLinks()|length %}
+            {% set label = 'Abonné' %}
+        {% else %}
+            {% set label = 'Désabonné' %}
+        {% endif %}
+
+        {{ _self.display_row('💻', label) }}
+    {% endif %}
+
+    {% set active_mobile_session = object.findAppSessions(get_vox_client(), true, [system_enum.IOS, system_enum.ANDROID])|first %}
+    {% if active_mobile_session %}
+        {% if active_mobile_session.findSubscribedPushTokenLinks()|length %}
+            {% set label = 'Désabonné' %}
+        {% else %}
+            {% set label = 'Abonné' %}
+        {% endif %}
+
+        {{ _self.display_row('📱', label) }}
+    {% endif %}
+</div>
