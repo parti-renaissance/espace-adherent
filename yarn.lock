@@ -2004,8 +2004,8 @@ __metadata:
   linkType: hard
 
 "@tiptap/pm@npm:^2.11.5, @tiptap/pm@npm:^2.11.7":
-  version: 2.11.7
-  resolution: "@tiptap/pm@npm:2.11.7"
+  version: 2.11.9
+  resolution: "@tiptap/pm@npm:2.11.9"
   dependencies:
     prosemirror-changeset: "npm:^2.2.1"
     prosemirror-collab: "npm:^1.3.1"
@@ -2025,7 +2025,7 @@ __metadata:
     prosemirror-trailing-node: "npm:^3.0.0"
     prosemirror-transform: "npm:^1.10.2"
     prosemirror-view: "npm:^1.37.0"
-  checksum: 10c0/e983dbfac604354f12123d92b3b203ccb09de6272c31cdb0b54766f147d7e4fb643d1ea4cc83f1d5973fd971bc1a36f7f971f6b9734c1b26cc815934f793276d
+  checksum: 10c0/e6fa3be230177f1086f3d2cf66daf9aea4c039b285c019656bde181360befeac063f7236ed7a58b5473c27cd0afa00773ed11a22e06d39c8b6af6df60dce3918
   languageName: node
   linkType: hard
 
