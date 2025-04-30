@@ -1022,6 +1022,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('mailchimpStatus', null, [
                 'label' => 'Abonnement',
+                'sortable' => false,
                 'template' => 'admin/adherent/list_email_subscription_status.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [

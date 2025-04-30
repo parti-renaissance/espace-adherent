@@ -17,6 +17,7 @@ use App\Adherent\Tag\TranslatedTagInterface;
 use App\AdherentProfile\AdherentProfile;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
+use App\AppSession\SessionStatusEnum;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\ZoneCollection;
@@ -38,6 +39,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
+use App\Entity\OAuth\Client;
 use App\Entity\Team\Member;
 use App\Enum\CivilityEnum;
 use App\Exception\AdherentAlreadyEnabledException;
@@ -63,6 +65,7 @@ use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use League\OAuth2\Server\Entities\UserEntityInterface;
@@ -545,6 +548,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\ManyToMany(targetEntity: AdherentStaticLabel::class, fetch: 'EXTRA_LAZY')]
     private Collection $staticLabels;
 
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AppSession::class, fetch: 'EXTRA_LAZY')]
+    private Collection $appSessions;
+
     public function __construct()
     {
         $this->animatorCommittees = new ArrayCollection();
@@ -562,6 +568,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->payments = new ArrayCollection();
         $this->revenueDeclarations = new ArrayCollection();
         $this->staticLabels = new ArrayCollection();
+        $this->appSessions = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -1005,6 +1012,24 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasSmsSubscriptionType(): bool
     {
         return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+    }
+
+    public function findAppSessions(Client $client, bool $activeOnly, array $systems): array
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('client', $client))
+            ->orderBy(['unsubscribedAt' => Order::Descending])
+        ;
+
+        if ($activeOnly) {
+            $criteria->andWhere($criteria::expr()->eq('status', SessionStatusEnum::ACTIVE));
+        }
+
+        if ($systems) {
+            $criteria->andWhere($criteria::expr()->in('appSystem', $systems));
+        }
+
+        return $this->appSessions->matching($criteria)->toArray();
     }
 
     /**

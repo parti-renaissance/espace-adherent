@@ -19,7 +19,7 @@ class AppSession
     use EntityTimestampableTrait;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'appSessions')]
     public ?Adherent $adherent = null;
 
     #[ORM\ManyToOne]
@@ -46,7 +46,7 @@ class AppSession
     #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AccessToken::class)]
     private Collection $accessTokens;
 
-    #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'], fetch: 'EAGER')]
     private Collection $pushTokenLinks;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
