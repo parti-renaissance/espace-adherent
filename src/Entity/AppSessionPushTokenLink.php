@@ -37,4 +37,9 @@ class AppSessionPushTokenLink
     {
         $this->pushToken->unsubscribedAt = $this->unsubscribedAt = $dateTime;
     }
+
+    public function isSubscribed(): bool
+    {
+        return null === $this->unsubscribedAt;
+    }
 }
