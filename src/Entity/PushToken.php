@@ -61,7 +61,7 @@ class PushToken
     public ?string $identifier = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $lastActiveDate = null;
+    public ?\DateTime $lastActivityDate = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $unsubscribedAt = null;

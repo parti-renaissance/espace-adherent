@@ -20,7 +20,7 @@ class AppSessionPushTokenLink
     public ?PushToken $pushToken = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $lastActiveDate = null;
+    public ?\DateTime $lastActivityDate = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $unsubscribedAt = null;
@@ -30,7 +30,7 @@ class AppSessionPushTokenLink
         $this->uuid = Uuid::uuid4();
         $this->appSession = $appSession;
         $this->pushToken = $pushToken;
-        $this->lastActiveDate = new \DateTime();
+        $this->lastActivityDate = new \DateTime();
     }
 
     public function unsubscribe(\DateTime $dateTime): void

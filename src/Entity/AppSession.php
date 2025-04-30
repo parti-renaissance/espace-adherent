@@ -34,6 +34,9 @@ class AppSession
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $userAgent = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $ip = null;
+
     #[ORM\Column(nullable: true, enumType: SystemEnum::class)]
     public ?SystemEnum $appSystem = null;
 
@@ -59,12 +62,13 @@ class AppSession
         $this->pushTokenLinks = new ArrayCollection();
     }
 
-    public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null): void
+    public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null, ?string $ip = null): void
     {
         $this->lastActivityDate = new \DateTime();
         $this->userAgent = $userAgent ?: $this->userAgent;
         $this->appVersion = $appVersion ?: $this->appVersion;
         $this->appSystem = $system ?: $this->appSystem;
+        $this->ip = $ip ?: $this->ip;
     }
 
     public function terminate(): void
@@ -110,9 +114,17 @@ class AppSession
         }
 
         $this->lastActivityDate =
-        $token->lastActiveDate =
+        $token->lastActivityDate =
         $existingSubscribedLink->lastActivityDate = new \DateTime();
 
         $this->unsubscribedAt = null;
+    }
+
+    /**
+     * @return AppSessionPushTokenLink[]
+     */
+    public function getPushTokenLinks(): array
+    {
+        return $this->pushTokenLinks->toArray();
     }
 }
