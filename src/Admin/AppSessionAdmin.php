@@ -15,9 +15,9 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Form\Type\DateRangePickerType;
+use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AppSessionAdmin extends AbstractAdmin
@@ -79,13 +79,17 @@ class AppSessionAdmin extends AbstractAdmin
                 'label' => 'Version',
                 'show_filter' => true,
             ])
-            ->add('lastActivityDate', DateRangeFilter::class, [
-                'label' => 'Dernière activité',
-                'field_type' => DateRangePickerType::class,
+            ->add('pushTokenLinks.pushToken.identifier', null, [
+                'label' => 'Push token',
+                'show_filter' => true,
             ])
-            ->add('createdAt', DateRangeFilter::class, [
+            ->add('lastActivityDate', DateTimeRangeFilter::class, [
+                'label' => 'Dernière activité',
+                'field_type' => DateTimeRangePickerType::class,
+            ])
+            ->add('createdAt', DateTimeRangeFilter::class, [
                 'label' => 'Créée le',
-                'field_type' => DateRangePickerType::class,
+                'field_type' => DateTimeRangePickerType::class,
             ])
         ;
     }
@@ -123,32 +127,44 @@ class AppSessionAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('adherent.publicId', null, ['label' => 'PID'])
-            ->add('adherent', null, [
-                'label' => 'Prénom Nom',
-                'template' => 'admin/adherent/show_fullname_certified.html.twig',
-            ])
-            ->add('status', 'enum', [
-                'label' => 'Statut',
-                'use_value' => true,
-                'enum_translation_domain' => 'messages',
-            ])
-            ->add('client', null, ['label' => 'App'])
-            ->add('appSystem', 'enum', [
-                'label' => 'Système',
-                'use_value' => true,
-            ])
-            ->add('appVersion', null, ['label' => 'Version'])
-            ->add('createdAt', null, ['label' => 'Créée le'])
-            ->add('updatedAt', null, ['label' => 'Modifiée le'])
-            ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
-            ->add('uuid', null, ['label' => 'UUID'])
-            ->add('userAgent', null, ['label' => 'User-Agent'])
-            ->add('systemDetail', null, [
-                'label' => 'Détail système',
-                'template' => 'admin/app_session/show_system_detail.html.twig',
-                'virtual_field' => true,
-            ])
+            ->with('Session', ['class' => 'col-md-8'])
+                ->add('adherent.publicId', null, ['label' => 'PID'])
+                ->add('adherent', null, [
+                    'label' => 'Prénom Nom',
+                    'template' => 'admin/adherent/show_fullname_certified.html.twig',
+                ])
+                ->add('status', 'enum', [
+                    'label' => 'Statut',
+                    'use_value' => true,
+                    'enum_translation_domain' => 'messages',
+                ])
+                ->add('client', null, ['label' => 'App'])
+                ->add('appSystem', 'enum', [
+                    'label' => 'Système',
+                    'use_value' => true,
+                ])
+                ->add('appVersion', null, ['label' => 'Version'])
+                ->add('uuid', null, ['label' => 'UUID'])
+                ->add('userAgent', null, ['label' => 'User-Agent'])
+                ->add('systemDetail', null, [
+                    'label' => 'Détail système',
+                    'template' => 'admin/app_session/show_system_detail.html.twig',
+                    'virtual_field' => true,
+                ])
+                ->add('ip')
+            ->end()
+            ->with('Dates', ['class' => 'col-md-4'])
+                ->add('createdAt', null, ['label' => 'Créée le'])
+                ->add('updatedAt', null, ['label' => 'Modifiée le'])
+                ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
+            ->end()
+            ->with('Push tokens')
+                ->add('pushTokenLinks', null, [
+                    'label' => false,
+                    'associated_property' => 'pushToken.identifier',
+                    'template' => 'admin/app_session/show_push_tokens.html.twig',
+                ])
+            ->end()
         ;
     }
 

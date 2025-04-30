@@ -1,0 +1,13 @@
+<tr>
+    <th>Push Token</th>
+    <th class="text-nowrap">Dernière activité</th>
+    <th class="text-nowrap">Désabonné le</th>
+</tr>
+
+{% for token_link in value|sort((a, b) => b.lastActivityDate <=> a.lastActivityDate) %}
+    <tr>
+        <td>{{ token_link.pushToken.identifier }}</td>
+        <td class="text-nowrap">{{ token_link.lastActivityDate|format_datetime('none', 'none', 'd MMM yyyy HH:mm') }}</td>
+        <td class="text-nowrap">{{ token_link.unsubscribedAt ? token_link.unsubscribedAt|format_datetime('none', 'none', 'd MMM yyyy HH:mm') }}</td>
+    </tr>
+{% endfor %}

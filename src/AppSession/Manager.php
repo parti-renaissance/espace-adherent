@@ -3,13 +3,15 @@
 namespace App\AppSession;
 
 use App\Entity\AppSession;
-use App\OAuth\Model\AccessToken;
+use App\Entity\OAuth\AccessToken as AccessTokenEntity;
+use App\OAuth\Model\AccessToken as AccessTokenModel;
 use App\OAuth\Model\Scope;
 use App\Repository\AppSessionRepository;
 use App\Repository\OAuth\AccessTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use UAParser\Parser;
 
 class Manager
@@ -18,6 +20,7 @@ class Manager
         private readonly EntityManagerInterface $entityManager,
         private readonly AccessTokenRepository $accessTokenRepository,
         private readonly AppSessionRepository $appSessionRepository,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -31,12 +34,21 @@ class Manager
             return;
         }
 
+        $tokenEntity->appSession = $session = $this->getAppSession($tokenEntity, $token, $request);
+
+        $this->entityManager->flush();
+        $token->currentSessionUuid = $session->getUuid();
+    }
+
+    private function getAppSession(AccessTokenEntity $tokenEntity, AccessTokenEntityInterface $token, ServerRequestInterface $request): AppSession
+    {
         $session = new AppSession($tokenEntity->getUser(), $tokenEntity->getClient());
+
         $appSystem = ($system = $request->getQueryParams()['system'] ?? null) ? SystemEnum::fromString($system) : null;
         $userAgent = $request->getQueryParams()['user-agent'] ?? $request->getHeaderLine('User-Agent') ?: null;
 
         // if refresh flow is used, we need to take the old session linked to the old access token
-        if ($token instanceof AccessToken && $token->oldAccessTokenId && ($oldTokenEntity = $this->accessTokenRepository->findAccessTokenByIdentifier($token->oldAccessTokenId))) {
+        if ($token instanceof AccessTokenModel && $token->oldAccessTokenId && ($oldTokenEntity = $this->accessTokenRepository->findAccessTokenByIdentifier($token->oldAccessTokenId))) {
             $session = $oldTokenEntity->appSession && $oldTokenEntity->appSession->isActive() ? $oldTokenEntity->appSession : $session;
         } elseif (($previousSessionId = $request->getParsedBody()['session_id'] ?? null) && $previousSession = $this->appSessionRepository->findOneByUuid($previousSessionId)) {
             // if previous session id is provided, we can try to find the session and use it
@@ -50,12 +62,10 @@ class Manager
             $userAgent,
             $request->getHeaderLine('X-App-Version') ?: ($request->getQueryParams()['app-version'] ?? null),
             $appSystem,
+            $session->ip ?? $this->requestStack->getMainRequest()?->getClientIp(),
         );
 
-        $tokenEntity->appSession = $session;
-
-        $this->entityManager->flush();
-        $token->currentSessionUuid = $session->getUuid();
+        return $session;
     }
 
     private function isSimilarSessions(AppSession $previousSession, AppSession $session, ?string $userAgent, ?SystemEnum $appSystem): bool
