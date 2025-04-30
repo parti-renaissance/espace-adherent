@@ -1807,11 +1807,11 @@ __metadata:
   linkType: hard
 
 "@tiptap/core@npm:^2.11.5, @tiptap/core@npm:^2.11.7":
-  version: 2.11.7
-  resolution: "@tiptap/core@npm:2.11.7"
+  version: 2.11.9
+  resolution: "@tiptap/core@npm:2.11.9"
   peerDependencies:
     "@tiptap/pm": ^2.7.0
-  checksum: 10c0/75d857405a1cfcc699fb1c8aff3f6288a79592ab0f917f1f90c8e9843844ec22b2e83f18e2addade11f6c24d54f45cb1821d068911bd7afd26c714860f5b07b2
+  checksum: 10c0/a912b212a2fee7054ac2f9238f93e2ec3e84a0e5d483e59ee81da5a91d25504584401765d6269a427276af8068acf98ea5ec0c4cadf7dbc87e42d136cb290f70
   languageName: node
   linkType: hard
 
