@@ -27,7 +27,7 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (!$event->isMainRequest() || 'vox_app_redirect' !== $request->attributes->get('_route')) {
+        if (!$event->isMainRequest() || !\in_array($request->attributes->get('_route'), ['vox_app_redirect', 'app_front_oauth_authorize'])) {
             return;
         }
 
