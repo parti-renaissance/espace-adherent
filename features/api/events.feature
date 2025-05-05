@@ -1340,6 +1340,14 @@ Feature:
                         {
                             "content": null,
                             "name": "committee_name"
+                        },
+                        {
+                            "content": "https://en-marche.fr/reunions/123",
+                            "name": "visio_url"
+                        },
+                        {
+                            "content": null,
+                            "name": "live_url"
                         }
                     ],
                     "from_name": "Renaissance",
@@ -1527,6 +1535,14 @@ Feature:
                         {
                             "name": "committee_name",
                             "content": "Comité des 3 communes"
+                        },
+                        {
+                            "content": "https://en-marche.fr/reunions/123",
+                            "name": "visio_url"
+                        },
+                        {
+                            "content": null,
+                            "name": "live_url"
                         }
                     ],
                     "merge_vars": [
@@ -1819,6 +1835,14 @@ Feature:
                         {
                             "name": "event_address",
                             "content": "dammarie-les-lys, 77190 dammarie-les-lys"
+                        },
+                        {
+                            "content": "http://visio.fr",
+                            "name": "visio_url"
+                        },
+                        {
+                            "content": null,
+                            "name": "live_url"
                         }
                     ],
                     "merge_vars": [

@@ -24,20 +24,19 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
             throw new \RuntimeException('First recipient must be an Adherent instance.');
         }
 
-        $vars = static::getTemplateVars(
-            $host->getFirstName(),
-            $event->getName(),
-            static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
-            \sprintf(
-                '%sh%s',
-                static::formatDate($event->getLocalBeginAt(), 'HH'),
-                static::formatDate($event->getLocalBeginAt(), 'mm')
-            ),
-            $event->getInlineFormattedAddress(),
-            $eventLink,
-            $event->getDescription(),
-            $event->getCommittee()?->getName()
-        );
+        $vars = [
+            // Global common variables
+            'animator_firstname' => self::escape($host->getFirstName()),
+            'event_name' => self::escape($event->getName()),
+            'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
+            'event_hour' => static::formatDate($event->getLocalBeginAt(), 'HH\'h\'mm'),
+            'event_address' => self::escape($event->getInlineFormattedAddress()),
+            'event_slug' => $eventLink,
+            'event_description' => $event->getDescription(),
+            'committee_name' => $event->getCommittee()?->getName(),
+            'visio_url' => $event->getVisioUrl(),
+            'live_url' => $event->liveUrl,
+        ];
 
         $message = new static(
             Uuid::uuid4(),
@@ -64,29 +63,6 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
         }
 
         return $message;
-    }
-
-    private static function getTemplateVars(
-        string $hostFirstName,
-        string $eventName,
-        string $eventDate,
-        string $eventHour,
-        string $eventAddress,
-        string $eventLink,
-        string $eventDescription,
-        ?string $committeeName,
-    ): array {
-        return [
-            // Global common variables
-            'animator_firstname' => self::escape($hostFirstName),
-            'event_name' => self::escape($eventName),
-            'event_date' => $eventDate,
-            'event_hour' => $eventHour,
-            'event_address' => self::escape($eventAddress),
-            'event_slug' => $eventLink,
-            'event_description' => $eventDescription,
-            'committee_name' => $committeeName,
-        ];
     }
 
     public static function getRecipientVars(string $firstName): array

@@ -34,7 +34,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
         $this->assertSame('renaissance-event-notification', $message->generateTemplateName());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('1 février - 15h30 : Nouvel événement de EM Lyon : En Marche Lyon', $message->getSubject());
-        $this->assertCount(8, $message->getVars());
+        $this->assertCount(10, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
@@ -45,6 +45,8 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
                 'event_slug' => self::SHOW_EVENT_URL,
                 'event_description' => 'Donec non dolor a sapien luctus lacinia id auctor orci',
                 'committee_name' => 'EM Lyon',
+                'visio_url' => null,
+                'live_url' => null,
             ],
             $message->getVars()
         );
@@ -60,12 +62,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
         $this->assertSame('ez@example.com', $recipient->getEmailAddress());
         $this->assertSame('Éric Zitrone', $recipient->getFullName());
-        $this->assertSame(
-            [
-                'target_firstname' => 'Éric',
-            ],
-            $recipient->getVars()
-        );
+        $this->assertSame(['target_firstname' => 'Éric'], $recipient->getVars());
     }
 
     public function testCreateEventNotificationMessageTimeZone(): void
@@ -80,7 +77,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
 
         $this->assertCount(1, $message->getRecipients());
         $this->assertSame('14 février - 08h00 : Nouvel événement de EM Lyon : petit-dejeuner', $message->getSubject());
-        $this->assertCount(8, $message->getVars());
+        $this->assertCount(10, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
@@ -91,6 +88,8 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
                 'event_slug' => self::SHOW_EVENT_URL,
                 'event_description' => '',
                 'committee_name' => 'EM Lyon',
+                'visio_url' => null,
+                'live_url' => null,
             ],
             $message->getVars()
         );

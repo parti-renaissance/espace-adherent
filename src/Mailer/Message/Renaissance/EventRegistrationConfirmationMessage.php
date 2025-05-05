@@ -17,22 +17,15 @@ class EventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
             $registration->getEmailAddress(),
             $firstName,
             'Inscription confirmée',
-            static::getTemplateVars(
-                $event->getName(),
-                $event->getOrganizerName(),
-                $eventLink
-            ),
+            [
+                'event_name' => self::escape($event->getName()),
+                'event_organiser' => self::escape($event->getOrganizerName()),
+                'event_link' => $eventLink,
+                'visio_url' => $event->getVisioUrl(),
+                'live_url' => $event->liveUrl,
+            ],
             static::getRecipientVars($firstName)
         );
-    }
-
-    private static function getTemplateVars(string $eventName, string $organizerName, string $eventLink): array
-    {
-        return [
-            'event_name' => self::escape($eventName),
-            'event_organiser' => self::escape($organizerName),
-            'event_link' => $eventLink,
-        ];
     }
 
     private static function getRecipientVars(string $firstName): array

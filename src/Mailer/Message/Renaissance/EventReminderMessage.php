@@ -24,6 +24,8 @@ class EventReminderMessage extends AbstractRenaissanceMessage
                 'event_description' => $event->getDescription(),
                 'animator_firstname' => $event->getAuthor()?->getFirstName(),
                 'event_slug' => $eventLink,
+                'visio_url' => $event->getVisioUrl(),
+                'live_url' => $event->liveUrl,
             ],
         );
     }
