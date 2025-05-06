@@ -33,7 +33,11 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
 
         $adherent = $this->security->getUser();
 
-        if (!$adherent instanceof Adherent || $adherent->isFullyCompletedAdhesion()) {
+        if (
+            !$adherent instanceof Adherent
+            || $adherent->isFullyCompletedAdhesion()
+            || $this->security->isGranted('IS_IMPERSONATOR')
+        ) {
             return;
         }
 
