@@ -250,13 +250,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var Agora[]|Collection
      */
     #[ORM\OneToMany(mappedBy: 'president', targetEntity: Agora::class, fetch: 'EXTRA_LAZY')]
-    private Collection $presidentOfAgoras;
+    public Collection $presidentOfAgoras;
 
     /**
      * @var Agora[]|Collection
      */
     #[ORM\ManyToMany(mappedBy: 'generalSecretaries', targetEntity: Agora::class, fetch: 'EXTRA_LAZY')]
-    private Collection $generalSecretaryOfAgoras;
+    public Collection $generalSecretaryOfAgoras;
+
+    /**
+     * @var AgoraMembership[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AgoraMembership::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    public Collection $agoraMemberships;
 
     /**
      * @var InMemoryOAuthUser|null
@@ -568,6 +574,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->animatorCommittees = new ArrayCollection();
         $this->presidentOfAgoras = new ArrayCollection();
         $this->generalSecretaryOfAgoras = new ArrayCollection();
+        $this->agoraMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->zones = new ZoneCollection();
         $this->charters = new AdherentCharterCollection();
