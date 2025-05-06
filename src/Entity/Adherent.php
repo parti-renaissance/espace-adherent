@@ -1018,7 +1018,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('client', $client))
-            ->orderBy(['unsubscribedAt' => Order::Descending])
+            ->orderBy(['unsubscribedAt' => Order::Ascending])
         ;
 
         if ($activeOnly) {
