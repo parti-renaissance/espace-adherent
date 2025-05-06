@@ -84,6 +84,11 @@ class AppSession
         return SessionStatusEnum::ACTIVE === $this->status;
     }
 
+    public function isSubscribed(): bool
+    {
+        return $this->isActive() && \count($this->findSubscribedPushTokenLinks()) > 0;
+    }
+
     public function __toString(): string
     {
         return implode(' - ', array_filter([
