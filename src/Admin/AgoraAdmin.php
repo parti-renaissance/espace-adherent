@@ -196,6 +196,7 @@ class AgoraAdmin extends AbstractAdmin
                     'label' => false,
                     'by_reference' => false,
                     'required' => false,
+                    'error_bubbling' => false,
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',

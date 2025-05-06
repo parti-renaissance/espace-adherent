@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\UniqueConstraint(columns: ['agora_id', 'adherent_id'])]
-#[UniqueEntity(fields: ['agora', 'adherent'], message: 'Cet adhérent est déjà membre de cette agora.')]
+#[UniqueEntity(fields: ['adherent', 'agora'], message: 'Cet adhérent est déjà membre de cette agora.')]
 class AgoraMembership
 {
     use EntityIdentityTrait;
