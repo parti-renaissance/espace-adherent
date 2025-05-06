@@ -4,8 +4,6 @@ namespace App\Admin;
 
 use App\Entity\Adherent;
 use App\Form\Admin\SimpleMDEContent;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,14 +15,6 @@ use Sonata\Form\Type\DateRangePickerType;
 
 class AgoraAdmin extends AbstractAdmin
 {
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -102,7 +92,6 @@ class AgoraAdmin extends AbstractAdmin
                     },
                 ],
             ])
-
             ->add('generalSecretaries', ModelFilter::class, [
                 'label' => 'Secrétaire général',
                 'show_filter' => true,
@@ -133,11 +122,6 @@ class AgoraAdmin extends AbstractAdmin
                 'field_type' => DateRangePickerType::class,
             ])
         ;
-    }
-
-    protected function configureFormOptions(array &$formOptions): void
-    {
-        $formOptions['validation_groups'] = ['Default', 'agora_write'];
     }
 
     protected function configureFormFields(FormMapper $form): void
