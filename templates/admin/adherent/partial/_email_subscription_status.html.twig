@@ -1,51 +1,49 @@
-{% macro display_row(icon, label) %}
-    <span class="text-nowrap" style="display: flex;gap: 0.5rem;">
-        <span>{{ icon }}</span>
-        <span>{{ label|raw }}</span>
+{% macro display_row(icon, label, bgColor, textColor = '#333333') %}
+    <span class="label" style="display: flex;font-weight:normal;align-items: center;color: {{ textColor }};width: fit-content;background-color: {{ bgColor }};border-radius: 4px;padding: 2px 4px;gap: 4px;">
+        <i data-lucide="{{ icon }}"></i>
+        {{ label }}
     </span>
 {% endmacro %}
 
-<div style="display: flex;flex-direction: column;">
+{% set colors = {
+    green: '#61e9d5',
+    yellow: '#ffec00',
+    grey: '#4b5c6b',
+} %}
+
+<div style="display: flex;flex-direction: column;gap: 4px;">
     {% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
-        {% set label = 'Désabonné' %}
+        {{ _self.display_row('mail', 'Désabonné', colors.grey, 'white') }}
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
-        {% set label = 'Abonné' %}
+        {{ _self.display_row('mail', 'Abonné', colors.green) }}
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
-        {% set label = '<span class="label label-danger">Cleaned</span>' %}
+        {{ _self.display_row('mail', 'Cleaned', colors.yellow) }}
     {% endif %}
 
-    {{ _self.display_row('✉️', label) }}
-
-    {% if not object.getPhone() %}
-        {% set label = 'Pas de numéro' %}
-    {% elseif object.hasSmsSubscriptionType() %}
-        {% set label = 'Abonné' %}
-    {% else %}
-        {% set label = 'Désabonné' %}
+    {% if object.getPhone() %}
+        {% if object.hasSmsSubscriptionType() %}
+            {{ _self.display_row('phone', 'Abonné', colors.green) }}
+        {% else %}
+            {{ _self.display_row('phone', 'Désabonné', colors.grey, 'white') }}
+        {% endif %}
     {% endif %}
-
-    {{ _self.display_row('📞', label) }}
 
     {% set system_enum = enum('App\\AppSession\\SystemEnum') %}
     {% set active_web_session = object.findAppSessions(get_vox_client(), true, [system_enum.WEB])|first %}
     {% if active_web_session %}
         {% if active_web_session.findSubscribedPushTokenLinks()|length %}
-            {% set label = 'Abonné' %}
+            {{ _self.display_row('laptop', 'Abonné', colors.green) }}
         {% else %}
-            {% set label = 'Désabonné' %}
+            {{ _self.display_row('laptop', 'Désabonné', colors.grey, 'white') }}
         {% endif %}
-
-        {{ _self.display_row('💻', label) }}
     {% endif %}
 
     {% set active_mobile_session = object.findAppSessions(get_vox_client(), true, [system_enum.IOS, system_enum.ANDROID])|first %}
     {% if active_mobile_session %}
         {% if active_mobile_session.findSubscribedPushTokenLinks()|length %}
-            {% set label = 'Désabonné' %}
+            {{ _self.display_row('smartphone', 'Désabonné', colors.grey, 'white') }}
         {% else %}
-            {% set label = 'Abonné' %}
+            {{ _self.display_row('smartphone', 'Abonné', colors.green) }}
         {% endif %}
-
-        {{ _self.display_row('📱', label) }}
     {% endif %}
 </div>

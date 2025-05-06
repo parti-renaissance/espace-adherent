@@ -40,11 +40,7 @@ class AppSessionAdmin extends AbstractAdmin
                 'label' => 'Militant',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
-                'field_options' => [
-                    'property' => [
-                        'search',
-                    ],
-                ],
+                'field_options' => ['property' => ['search']],
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
@@ -118,6 +114,7 @@ class AppSessionAdmin extends AbstractAdmin
                 'template' => 'admin/app_session/list_system_detail.html.twig',
                 'sortable' => false,
             ])
+            ->add('isSubscribed', 'boolean', ['label' => 'Abonné'])
             ->add('createdAt', null, ['label' => 'Date de création'])
             ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['show' => []]])
@@ -138,6 +135,7 @@ class AppSessionAdmin extends AbstractAdmin
                     'use_value' => true,
                     'enum_translation_domain' => 'messages',
                 ])
+                ->add('isSubscribed', 'boolean', ['label' => 'Abonné'])
                 ->add('client', null, ['label' => 'App'])
                 ->add('appSystem', 'enum', [
                     'label' => 'Système',
