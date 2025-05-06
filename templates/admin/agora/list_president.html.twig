@@ -2,6 +2,6 @@
 
 {% block field %}
     {% if object.president %}
-        {{ include(('admin/adherent/_summary.html.twig'), {adherent: object.president}) }}
+        {{ include(('admin/adherent/display_fullname_certified.html.twig'), {object: object.president}) }}
     {% endif %}
 {% endblock %}
