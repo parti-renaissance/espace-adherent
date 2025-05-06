@@ -30,6 +30,8 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestC
                 'event_name' => 'Grand Meeting de Paris',
                 'event_organiser' => 'Michelle',
                 'event_link' => self::EVENT_LINK,
+                'visio_url' => null,
+                'live_url' => null,
             ],
             $message->getVars()
         );

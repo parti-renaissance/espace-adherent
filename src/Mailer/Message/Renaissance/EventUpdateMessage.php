@@ -49,6 +49,8 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
                 static::formatDate($event->getLocalBeginAt(), 'mm')
             ),
             'event_address' => $event->getInlineFormattedAddress(),
+            'visio_url' => $event->getVisioUrl(),
+            'live_url' => $event->liveUrl,
         ];
     }
 
