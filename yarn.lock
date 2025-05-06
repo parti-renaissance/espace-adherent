@@ -2063,10 +2063,10 @@ __metadata:
   linkType: hard
 
 "@tiptap/pm@npm:^2.11.5, @tiptap/pm@npm:^2.11.9":
-  version: 2.11.9
-  resolution: "@tiptap/pm@npm:2.11.9"
+  version: 2.12.0
+  resolution: "@tiptap/pm@npm:2.12.0"
   dependencies:
-    prosemirror-changeset: "npm:^2.2.1"
+    prosemirror-changeset: "npm:^2.3.0"
     prosemirror-collab: "npm:^1.3.1"
     prosemirror-commands: "npm:^1.6.2"
     prosemirror-dropcursor: "npm:^1.8.1"
@@ -2084,7 +2084,7 @@ __metadata:
     prosemirror-trailing-node: "npm:^3.0.0"
     prosemirror-transform: "npm:^1.10.2"
     prosemirror-view: "npm:^1.37.0"
-  checksum: 10c0/e6fa3be230177f1086f3d2cf66daf9aea4c039b285c019656bde181360befeac063f7236ed7a58b5473c27cd0afa00773ed11a22e06d39c8b6af6df60dce3918
+  checksum: 10c0/b64b19a627a74901c5c397d36c04162b8e223835f4d8ea1ce71be4b222337434e6553699189d1e0ae856ba60a06c8b28bb30ff9e21cfc05dac8a3ec2f6376fde
   languageName: node
   linkType: hard
 
@@ -7318,12 +7318,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prosemirror-changeset@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "prosemirror-changeset@npm:2.2.1"
+"prosemirror-changeset@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "prosemirror-changeset@npm:2.3.0"
   dependencies:
     prosemirror-transform: "npm:^1.0.0"
-  checksum: 10c0/0a16092149ca0021a44ab5eb6a0c6dc425525507bde9e3772fbd3944b6cfa601d38492198b5410f2637694aedf7478d121b0744f430a8b7a5eb1d0fb9fbd49d1
+  checksum: 10c0/afa5b4e6d29f3ea9d14d1d8e6fd396150a2cc21ac13f0befe9ae946a8b70d54f58907f5a2136be93d88dc2734851ed9461c6da8b47cc9ee005d37ae1fcb010a1
   languageName: node
   linkType: hard
 
