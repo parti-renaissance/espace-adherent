@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AgoraRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: AgoraRepository::class)]
+#[ORM\Entity]
 #[ORM\UniqueConstraint(columns: ['agora_id', 'adherent_id'])]
 #[UniqueEntity(fields: ['agora', 'adherent'], message: 'Cet adhérent est déjà membre de cette agora.')]
 class AgoraMembership
