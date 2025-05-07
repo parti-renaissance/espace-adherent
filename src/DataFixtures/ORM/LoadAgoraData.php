@@ -15,6 +15,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
 {
     public const UUID_1 = '82ad6422-cb82-4c04-b478-bfb421c740e0';
     public const UUID_2 = '75d47004-db80-4586-8fc5-e97cec58e5b4';
+    public const UUID_3 = 'c3d0fb57-1ce9-441a-9978-8445fc01fa5c';
 
     public function load(ObjectManager $manager): void
     {
@@ -24,12 +25,14 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
         $adherent1 = $this->getReference('adherent-1', Adherent::class);
         /** @var Adherent $adherent3 */
         $adherent3 = $this->getReference('adherent-3', Adherent::class);
+        /** @var Adherent $adherent4 */
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
 
         $manager->persist($agora1 = $this->createAgora(
             Uuid::fromString(self::UUID_1),
             'Première Agora',
             'Description première Agora',
-            50,
+            2,
             true,
             $adherent1,
             [$adherent3],
@@ -45,6 +48,17 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             true,
             $adherent3,
             [$adherent1],
+            $admin2
+        ));
+
+        $manager->persist($this->createAgora(
+            Uuid::fromString(self::UUID_3),
+            'Agora non publiée',
+            'Description Agora non publiée',
+            30,
+            false,
+            $adherent4,
+            [],
             $admin2
         ));
 
