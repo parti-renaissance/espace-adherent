@@ -83,6 +83,7 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'ROLE_ADMIN_TERRITOIRES_ELUS_NOTIFICATION',
             'ROLE_ADMIN_IDEES_GENERAL_CONVENTIONS',
             'ROLE_ADMIN_PETITION',
+            'ROLE_ADMIN_TERRITOIRES_AGORAS',
         ]);
 
         $writerRoles = $this->getRoles([

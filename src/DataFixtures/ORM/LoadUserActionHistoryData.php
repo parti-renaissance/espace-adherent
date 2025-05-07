@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Agora;
 use App\Entity\Event\Event;
 use App\Entity\UserActionHistory;
 use App\History\UserActionHistoryTypeEnum;
@@ -28,7 +29,17 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         $administrator1 = $this->getReference('administrator-2', Administrator::class);
         /** @var Event $liveEvent1 */
         $liveEvent1 = $this->getReference('event-4', Event::class);
+        /** @var Agora $agora1 */
+        $agora1 = $this->getReference('agora-1', Agora::class);
 
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, new \DateTime('-25 minutes'), [
+            'agora' => $agora1->getName(),
+            'agora_id' => $agora1->getId(),
+        ]));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, new \DateTime('-22 minutes'), [
+            'agora' => $agora1->getName(),
+            'agora_id' => $agora1->getId(),
+        ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LIVE_VIEW, new \DateTime('-20 minutes'), [
             'event' => $liveEvent1->getName(),
             'event_id' => $liveEvent1->getId(),

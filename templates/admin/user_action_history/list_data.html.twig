@@ -4,7 +4,7 @@
     {% if object.data %}
         <ul>
             {% for key, value in object.data %}
-                {% if key not in ['event_id'] %}
+                {% if key not in ['event_id', 'agora_id'] %}
                     <li>
                         {% if key in ['adherent_uuid', 'delegator_uuid', 'author_uuid'] %}
                             <b>{{ ('action_history.data.key.' ~ key)|trans }}:</b>
@@ -44,6 +44,14 @@
                             {% elseif key is same as ('event') %}
                                 {% if object.data.event_id is defined and is_granted('ROLE_APP_ADMIN_EVENT_EDIT') %}
                                     <a href="{{ path('admin_app_event_event_edit', {id: object.data.event_id}) }}">
+                                        {{ value }}
+                                    </a>
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            {% elseif key is same as ('agora') %}
+                                {% if object.data.agora_id is defined and is_granted('ROLE_ADMIN_TERRITOIRES_AGORAS') %}
+                                    <a href="{{ path('admin_app_agora_edit', {id: object.data.agora_id}) }}">
                                         {{ value }}
                                     </a>
                                 {% else %}

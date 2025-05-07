@@ -4,6 +4,7 @@ namespace App\History;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Agora;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
@@ -177,6 +178,33 @@ class UserActionHistoryHandler
         }
 
         $this->dispatch($delegatedAccess->getDelegated(), $type, $data);
+    }
+
+    public function createAgoraMembershipAdd(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraMembershipHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, $adherent, $agora, $administrator);
+    }
+
+    public function createAgoraMembershipRemove(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraMembershipHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, $adherent, $agora, $administrator);
+    }
+
+    private function createAgoraMembershipHistory(
+        UserActionHistoryTypeEnum $type,
+        Adherent $adherent,
+        Agora $agora,
+        ?Administrator $administrator = null,
+    ): void {
+        $this->dispatch(
+            $adherent,
+            $type,
+            [
+                'agora' => $agora->getName(),
+                'agora_id' => $agora->getId(),
+            ],
+            $administrator
+        );
     }
 
     private function getImpersonator(): ?Administrator
