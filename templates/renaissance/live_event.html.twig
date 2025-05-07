@@ -3,8 +3,8 @@
 {% block page_title event.name %}
 {% block flash_message '' %}
 
-{% block body_classes 'h-screen' %}
+{% block body_classes 'h-screen bg-black' %}
 
 {% block content %}
-    <div style="height:100%;position:relative;"><iframe src="{{ event.liveUrl }}/embed/interaction" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+    <div style="height:100%;position:relative;"><iframe src="{{ event.liveUrl }}{{ event.liveUrl|u.containsAny('event') ? '/embed/interaction' }}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
 {% endblock %}
