@@ -2,6 +2,11 @@
 
 namespace App\Admin;
 
+use App\AppSession\SessionStatusEnum;
+use App\AppSession\SystemEnum;
+use App\Mailchimp\Contact\ContactStatusEnum;
+use App\Subscription\SubscriptionTypeEnum;
+use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
@@ -10,6 +15,8 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AdherentAdmin extends AbstractAdherentAdmin
 {
@@ -113,6 +120,96 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
                     return true;
                 },
+            ])
+            ->add('activeSession', CallbackFilter::class, [
+                'label' => 'Session active',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_merge(array_map(fn (SystemEnum $system) => $system->value, SystemEnum::all()), [0 => 'aucune']),
+                    'choice_label' => fn (string $system) => $system,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.appSessions", 'session', Join::WITH, 'session.status = :status')
+                        ->setParameter('status', SessionStatusEnum::ACTIVE)
+                    ;
+
+                    if (\in_array('aucune', $value->getValue())) {
+                        $qb->andWhere('session IS NULL');
+                    } else {
+                        $qb
+                            ->andWhere('session.appSystem IN(:systems)')
+                            ->setParameter('systems', $value->getValue())
+                        ;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('subscriptionPush', CallbackFilter::class, [
+                'label' => 'Abonnement Push',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => ['Abonné' => 1, 'Désabonné' => 0],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :status AND session_push_subscription.unsubscribedAt IS NULL')
+                        ->leftJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
+                        ->setParameter('status', SessionStatusEnum::ACTIVE)
+                    ;
+
+                    if ($value->getValue()) {
+                        $qb->andWhere('session_push_subscription IS NOT NULL AND push_token_link IS NOT NULL');
+                    } else {
+                        $qb->andWhere('session_push_subscription IS NULL OR push_token_link IS NULL');
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('subscriptionSMS', CallbackFilter::class, [
+                'label' => 'Abonnement SMS',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => ['Abonné' => 1, 'Désabonné' => 0, 'Sans téléphone' => 2],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    if (2 === $value->getValue()) {
+                        $qb->andWhere("$alias.phone IS NULL");
+                    } else {
+                        $qb
+                            ->leftJoin("$alias.subscriptionTypes", 'subscription_type', Join::WITH, 'subscription_type.code = :sms_st_code')
+                            ->setParameter('sms_st_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+                            ->andWhere('subscription_type '.($value->getValue() ? 'IS NOT' : 'IS').' NULL')
+                        ;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('mailchimpStatus', ChoiceFilter::class, [
+                'label' => 'Abonnement email',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => ContactStatusEnum::values(),
+                    'choice_label' => function (string $label) {
+                        return 'mailchimp_contact.status.'.$label;
+                    },
+                ],
             ])
         ;
     }

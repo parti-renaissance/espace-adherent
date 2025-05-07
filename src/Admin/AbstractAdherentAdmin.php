@@ -39,7 +39,6 @@ use App\FranceCities\FranceCities;
 use App\History\AdministratorActionEvent;
 use App\History\AdministratorActionEvents;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Query\Utils\MultiColumnsSearchHelper;
@@ -639,17 +638,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
                 'field_type' => ReCountryType::class,
-            ])
-            ->add('mailchimpStatus', ChoiceFilter::class, [
-                'label' => 'Abonnement email',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => ContactStatusEnum::values(),
-                    'choice_label' => function (string $label) {
-                        return 'mailchimp_contact.status.'.$label;
-                    },
-                ],
             ])
             ->add('role', AdherentRoleFilter::class, [
                 'label' => 'common.role',
