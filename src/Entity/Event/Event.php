@@ -769,6 +769,6 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
 
     public function isLivePlayerEnabled(): bool
     {
-        return str_starts_with($this->liveUrl ?? '', 'https://vimeo.com/');
+        return str_starts_with($this->liveUrl ?? '', 'https://vimeo.com/') || str_starts_with($this->liveUrl ?? '', 'https://player.vimeo.com/');
     }
 }
