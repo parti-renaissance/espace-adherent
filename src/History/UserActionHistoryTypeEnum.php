@@ -19,4 +19,6 @@ enum UserActionHistoryTypeEnum: string
     case DELEGATED_ACCESS_ADD = 'delegated_access_add';
     case DELEGATED_ACCESS_EDIT = 'delegated_access_edit';
     case DELEGATED_ACCESS_REMOVE = 'delegated_access_remove';
+    case AGORA_MEMBERSHIP_ADD = 'agora_membership_add';
+    case AGORA_MEMBERSHIP_REMOVE = 'agora_membership_remove';
 }

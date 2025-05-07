@@ -3,7 +3,10 @@
 namespace App\Admin;
 
 use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\Agora;
 use App\Form\Admin\SimpleMDEContent;
+use App\History\UserActionHistoryHandler;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,9 +16,17 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AgoraAdmin extends AbstractAdmin
 {
+    private ?UserActionHistoryHandler $historyHandler = null;
+    private ?Security $security = null;
+
+    /** @var Adherent[] */
+    private array $adherentsMembersBeforeUpdate = [];
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -203,5 +214,78 @@ class AgoraAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+    }
+
+    protected function alterObject(object $object): void
+    {
+        if (!$object instanceof Agora) {
+            return;
+        }
+
+        $this->adherentsMembersBeforeUpdate = [];
+
+        foreach ($object->memberships as $membership) {
+            if ($membership->adherent) {
+                $this->adherentsMembersBeforeUpdate[$membership->adherent->getId()] = $membership->adherent;
+            }
+        }
+    }
+
+    protected function postPersist(object $object): void
+    {
+        if (!$object instanceof Agora) {
+            return;
+        }
+
+        foreach ($object->memberships as $membership) {
+            if ($membership->adherent) {
+                $this->historyHandler->createAgoraMembershipAdd($membership->adherent, $object, $this->getAdministrator());
+            }
+        }
+    }
+
+    protected function postUpdate(object $object): void
+    {
+        if (!$object instanceof Agora) {
+            return;
+        }
+
+        $after = [];
+        foreach ($object->memberships as $membership) {
+            if ($membership->adherent) {
+                $after[$membership->adherent->getId()] = $membership->adherent;
+            }
+        }
+
+        // Detect removed membership
+        foreach ($this->adherentsMembersBeforeUpdate as $id => $adherent) {
+            if (!isset($after[$id])) {
+                $this->historyHandler->createAgoraMembershipRemove($adherent, $object, $this->getAdministrator());
+            }
+        }
+
+        // Detect added membership
+        foreach ($after as $id => $adherent) {
+            if (!isset($this->adherentsMembersBeforeUpdate[$id])) {
+                $this->historyHandler->createAgoraMembershipAdd($adherent, $object, $this->getAdministrator());
+            }
+        }
+    }
+
+    #[Required]
+    public function setContactHandler(UserActionHistoryHandler $historyHandler): void
+    {
+        $this->historyHandler = $historyHandler;
+    }
+
+    #[Required]
+    public function setSecurity(Security $security): void
+    {
+        $this->security = $security;
+    }
+
+    private function getAdministrator(): Administrator
+    {
+        return $this->security->getUser();
     }
 }
