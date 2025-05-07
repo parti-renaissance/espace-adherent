@@ -332,6 +332,10 @@
         </service>
         <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
 
+        <service id="app.admin.agora" class="App\Admin\AgoraAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Agoras" model_class="App\Entity\Agora" group="Territoires" />
+        </service>
+
         <!--
         ######################################################
         # Idées
@@ -1278,6 +1282,7 @@
             <tag name="sonata.admin.extension" target="app.admin.transactional_email_template" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute.news" />
             <tag name="sonata.admin.extension" target="app.admin.live_stream" />
+            <tag name="sonata.admin.extension" target="app.admin.agora" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

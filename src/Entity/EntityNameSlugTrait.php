@@ -12,7 +12,7 @@ trait EntityNameSlugTrait
     /**
      * @var string
      */
-    #[Assert\NotBlank(groups: ['api_committee_edition'])]
+    #[Assert\NotBlank(groups: ['api_committee_edition', 'Admin'])]
     #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'cause_write', 'event_read', 'committee:list', 'committee:write', 'committee:write_limited', 'national_event_inscription:webhook', 'profile_read', 'general_convention_read', 'profile_update'])]
     #[ORM\Column]
     protected $name;
