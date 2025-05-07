@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateRangePickerType;
 
 class AgoraAdmin extends AbstractAdmin
@@ -188,6 +189,17 @@ class AgoraAdmin extends AbstractAdmin
                         );
                     },
                     'btn_add' => false,
+                ])
+            ->end()
+            ->with('Membres 👥', ['class' => 'col-md-12'])
+                ->add('memberships', CollectionType::class, [
+                    'label' => false,
+                    'by_reference' => false,
+                    'required' => false,
+                    'error_bubbling' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
                 ])
             ->end()
         ;

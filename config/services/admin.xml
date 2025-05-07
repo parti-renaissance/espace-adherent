@@ -336,6 +336,10 @@
             <tag name="sonata.admin" manager-type="orm" label="Agoras" model_class="App\Entity\Agora" group="Territoires" />
         </service>
 
+        <service id="app.admin.agora_membership" class="App\Admin\AgoraMembershipAdmin">
+            <tag name="sonata.admin" manager-type="orm" model_class="App\Entity\AgoraMembership" show_in_dashboard="false" />
+        </service>
+
         <!--
         ######################################################
         # Idées

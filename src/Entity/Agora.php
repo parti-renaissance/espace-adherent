@@ -37,14 +37,33 @@ class Agora
     #[ORM\ManyToMany(targetEntity: Adherent::class, inversedBy: 'generalSecretaryOfAgoras')]
     public Collection $generalSecretaries;
 
+    #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'agora', targetEntity: AgoraMembership::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    public Collection $memberships;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->generalSecretaries = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function addMembership(AgoraMembership $membership): void
+    {
+        if (!$this->memberships->contains($membership)) {
+            $membership->agora = $this;
+
+            $this->memberships->add($membership);
+        }
+    }
+
+    public function removeMembership(AgoraMembership $membership): void
+    {
+        $this->memberships->removeElement($membership);
     }
 }
