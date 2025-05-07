@@ -1,0 +1,31 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% macro display_agora(agora) %}
+    {% if is_granted('ROLE_ADMIN_TERRITOIRES_AGORAS') %}
+        <a href="{{ path('admin_app_agora_edit', {id: agora.id}) }}" class="sonata-action-element">
+            {{ agora }}
+        </a>
+    {% else %}
+        {{ agora }}
+    {% endif %}
+{% endmacro %}
+
+{% block field %}
+    {% set agora_memberships = object.agoraMemberships %}
+
+    {% if agora_memberships.count == 1 %}
+        {% set agora = agora_memberships.first.agora %}
+
+        {{ _self.display_agora(agora) }}
+    {% else %}
+        <ul>
+            {% for agora_membership in agora_memberships %}
+                {% set agora = agora_membership.agora %}
+
+                <li>
+                    {{ _self.display_agora(agora) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

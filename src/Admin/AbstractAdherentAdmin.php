@@ -21,6 +21,7 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentStaticLabel;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Administrator;
+use App\Entity\AgoraMembership;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\SubscriptionType;
@@ -1044,6 +1045,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'Ville' => $adherent->getCityName(),
                     'Pays' => Countries::getName($adherent->getCountry()),
                     'Comité' => (string) $adherent->getCommitteeMembership()?->getCommittee(),
+                    'Agora' => implode(', ', array_map(function (AgoraMembership $agoraMembership): string {
+                        return $agoraMembership->agora->getName();
+                    }, $adherent->agoraMemberships->toArray())),
                     'Circonscription' => implode(', ', array_map(function (Zone $zone): string {
                         return $zone->getCode().' - '.$zone->getName();
                     }, $adherent->getZonesOfType(Zone::DISTRICT))),
@@ -1053,19 +1057,28 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'Région' => implode(', ', array_map(function (Zone $zone): string {
                         return $zone->getCode().' - '.$zone->getName();
                     }, $adherent->getParentZonesOfType(Zone::REGION))),
-                    'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role): string {
-                        return \sprintf(
-                            '%s [%s]',
-                            $this->translator->trans('role.'.$role->getType()),
-                            implode(', ', array_map(function (Zone $zone): string {
+                    'Rôles' => implode(
+                        ', ',
+                        array_merge(
+                            array_map(function (AdherentZoneBasedRole $role): string {
                                 return \sprintf(
-                                    '%s (%s)',
-                                    $zone->getName(),
-                                    $zone->getCode()
+                                    '%s [%s]',
+                                    $this->translator->trans('role.'.$role->getType()),
+                                    implode(', ', array_map(function (Zone $zone): string {
+                                        return \sprintf(
+                                            '%s (%s)',
+                                            $zone->getName(),
+                                            $zone->getCode()
+                                        );
+                                    }, $role->getZones()->toArray()))
                                 );
-                            }, $role->getZones()->toArray()))
-                        );
-                    }, $adherent->getZoneBasedRoles())),
+                            }, $adherent->getZoneBasedRoles()),
+                            array_filter([
+                                $adherent->isPresidentOfAgora() ? $this->translator->trans('role.agora_president') : null,
+                                $adherent->isGeneralSecretaryOfAgora() ? $this->translator->trans('role.agora_general_secretary') : null,
+                            ])
+                        )
+                    ),
                     'Labels militants' => implode(', ', array_filter(array_map(function (string $tag): ?string {
                         if (!\in_array($tag, TagEnum::getAdherentTags(), true)) {
                             return null;
