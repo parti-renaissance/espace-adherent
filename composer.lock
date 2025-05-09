@@ -315,16 +315,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "83d005a2b355bbac2d90eb3a8fb3ca5152fb9284"
+                "reference": "4ddce1f534a8b5cee198e593b456664fe4c04bab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/83d005a2b355bbac2d90eb3a8fb3ca5152fb9284",
-                "reference": "83d005a2b355bbac2d90eb3a8fb3ca5152fb9284",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/4ddce1f534a8b5cee198e593b456664fe4c04bab",
+                "reference": "4ddce1f534a8b5cee198e593b456664fe4c04bab",
                 "shasum": ""
             },
             "require": {
@@ -409,12 +409,12 @@
                 "phpstan/phpstan-doctrine": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-symfony": "^1.0",
-                "phpunit/phpunit": "^11.2",
+                "phpunit/phpunit": "11.5.x-dev",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7",
                 "ramsey/uuid-doctrine": "^2.0",
                 "soyuka/contexts": "^3.3.10",
-                "soyuka/pmu": "^0.0.15",
+                "soyuka/pmu": "^0.1.0",
                 "soyuka/stubs-mongodb": "^1.0",
                 "symfony/asset": "^6.4 || ^7.0",
                 "symfony/browser-kit": "^6.4 || ^7.0",
@@ -523,9 +523,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.1.7"
+                "source": "https://github.com/api-platform/core/tree/v4.1.8"
             },
-            "time": "2025-04-11T09:53:03+00:00"
+            "time": "2025-05-09T06:04:56+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -17433,30 +17433,30 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v6.4.13",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94"
+                "reference": "f537556a885e14a1d28f6c759d41e57e93d0a532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94",
-                "reference": "4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/f537556a885e14a1d28f6c759d41e57e93d0a532",
+                "reference": "f537556a885e14a1d28f6c759d41e57e93d0a532",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "psr/link": "^1.1|^2.0"
             },
             "conflict": {
-                "symfony/http-kernel": "<5.4"
+                "symfony/http-kernel": "<6.4"
             },
             "provide": {
                 "psr/link-implementation": "1.0|2.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "^5.4|^6.0|^7.0"
+                "symfony/http-kernel": "^6.4|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -17496,7 +17496,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v6.4.13"
+                "source": "https://github.com/symfony/web-link/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -17512,7 +17512,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:18:03+00:00"
+            "time": "2024-09-25T14:21:43+00:00"
         },
         {
             "name": "symfony/workflow",
