@@ -49,10 +49,6 @@ runs:
               CONTAINERS: app
           run: make up-no-deps
 
-        - name: Install composer dependencies
-          shell: bash
-          run: make vendor
-
         - name: Create private & public key
           if: inputs.keys == 'true'
           shell: bash
