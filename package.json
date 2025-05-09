@@ -42,7 +42,7 @@
     "interactjs": "^1.10.27",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
-    "lucide": "^0.507.0",
+    "lucide": "^0.509.0",
     "mini-css-extract-plugin": "^2.9.0",
     "postcss": "^8.4.38",
     "postcss-loader": "^8.1.1",
