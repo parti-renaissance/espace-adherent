@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7c30d149b3117b8a6c35accdfdc1b43",
+    "content-hash": "10ed18ec5e0330b083b43040a8986d78",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -17676,21 +17676,21 @@
         },
         {
             "name": "tales-from-a-dev/twig-tailwind-extra",
-            "version": "v0.3.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tales-from-a-dev/twig-tailwind-extra.git",
-                "reference": "a3cb86414dd5810740cf91966bc1cf10047ce8ef"
+                "reference": "b72445f4b7801181cfb972c0c17089b82e10a923"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/a3cb86414dd5810740cf91966bc1cf10047ce8ef",
-                "reference": "a3cb86414dd5810740cf91966bc1cf10047ce8ef",
+                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/b72445f4b7801181cfb972c0c17089b82e10a923",
+                "reference": "b72445f4b7801181cfb972c0c17089b82e10a923",
                 "shasum": ""
             },
             "require": {
                 "gehrisandro/tailwind-merge-php": "^1.0",
-                "php": ">=8.2",
+                "php": ">=8.1",
                 "symfony/cache": "^6.4 || ^7.0",
                 "symfony/framework-bundle": "^6.4 || ^7.0",
                 "twig/twig": "^3.0"
@@ -17725,9 +17725,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tales-from-a-dev/twig-tailwind-extra/issues",
-                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.3.0"
+                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.4.0"
             },
-            "time": "2024-08-07T23:27:08+00:00"
+            "time": "2025-05-08T14:04:53+00:00"
         },
         {
             "name": "telegram-bot/api",
