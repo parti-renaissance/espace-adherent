@@ -136,7 +136,7 @@
         "symfony/validator": "^6.4",
         "symfony/workflow": "^6.4",
         "symfony/yaml": "^6.4",
-        "tales-from-a-dev/twig-tailwind-extra": "^0.3.0",
+        "tales-from-a-dev/twig-tailwind-extra": "^0.4.0",
         "telegram-bot/api": "^2.5",
         "twig/extra-bundle": "^3.10",
         "twig/html-extra": "^3.13",
