@@ -211,6 +211,31 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     },
                 ],
             ])
+            ->add('agoraMemberships.agora', CallbackFilter::class, [
+                'label' => 'Agora',
+                'field_type' => ModelAutocompleteType::class,
+                'show_filter' => true,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => 'name',
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $agora = $value->getValue();
+
+                    $qb
+                        ->andWhere("$alias.agora = :agora")
+                        ->setParameter('agora', $agora)
+                    ;
+
+                    return true;
+                },
+            ])
         ;
     }
 
@@ -229,6 +254,11 @@ class AdherentAdmin extends AbstractAdherentAdmin
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_committee.html.twig',
             ])
+            ->add('agoraMemberships', null, [
+                'label' => 'Agora',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_agora_memberships.html.twig',
+            ])
         ;
 
         $list->reorder([
@@ -236,6 +266,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'lastName',
             'postAddress',
             'committee',
+            'agoraMemberships',
             'type',
             'allMandates',
             'mailchimpStatus',

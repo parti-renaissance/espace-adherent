@@ -72,6 +72,15 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $qb->setParameter('papUserRole', true);
                 }
 
+                // Agora roles Role
+                if (\in_array(AdherentRoleEnum::AGORA_PRESIDENT, $value, true)) {
+                    $qb->innerJoin("$alias.presidentOfAgoras", 'agora_president');
+                }
+
+                if (\in_array(AdherentRoleEnum::AGORA_GENERAL_SECRETARY, $value, true)) {
+                    $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'agora_general_secretary');
+                }
+
                 // Delegated accesses
                 if ($delegatedTypes = array_intersect(
                     [

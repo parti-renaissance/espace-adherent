@@ -173,6 +173,8 @@ role.procurations_manager: Responsable procurations
 role.fde_coordinator: Coordinateur FDE
 role.pap: Porte-à-porteur
 role.phoning: Appelant
+role.agora_president: Président d'Agora
+role.agora_general_secretary: Secrétaire Général d'Agora
 
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local

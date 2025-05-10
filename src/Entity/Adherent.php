@@ -2565,4 +2565,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->staticLabels->removeElement($adherentStaticLabel);
     }
+
+    public function isPresidentOfAgora(): bool
+    {
+        return $this->presidentOfAgoras->count() > 0;
+    }
+
+    public function isGeneralSecretaryOfAgora(): bool
+    {
+        return $this->generalSecretaryOfAgoras->count() > 0;
+    }
 }

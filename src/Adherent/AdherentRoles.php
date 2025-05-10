@@ -21,6 +21,8 @@ class AdherentRoles
             AdherentRoleEnum::DELEGATED_DEPUTY,
             AdherentRoleEnum::ANIMATOR,
             AdherentRoleEnum::DELEGATED_ANIMATOR,
+            AdherentRoleEnum::AGORA_PRESIDENT,
+            AdherentRoleEnum::AGORA_GENERAL_SECRETARY,
         ],
         self::GROUP_ELECTIONS => [
             ScopeEnum::CORRESPONDENT,
