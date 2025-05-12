@@ -33,7 +33,7 @@ Feature:
                         "published": true,
                         "president": {
                             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                            "id": "123-456",
+                            "id": "@string@",
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null
@@ -41,7 +41,7 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                                "id": "977-527",
+                                "id": "@string@",
                                 "first_name": "Jacques",
                                 "last_name": "Picard",
                                 "image_url": null
@@ -60,7 +60,7 @@ Feature:
                         "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                            "id": "977-527",
+                            "id": "@string@",
                             "first_name": "Jacques",
                             "last_name": "Picard",
                             "image_url": null
@@ -68,14 +68,14 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                                "id": "123-456",
+                                "id": "@string@",
                                 "first_name": "Michelle",
                                 "last_name": "Dufour",
                                 "image_url": null
                             },
                             {
                                 "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                                "id": "706-388",
+                                "id": "@string@",
                                 "first_name": "Lucie",
                                 "image_url": null,
                                 "last_name": "Olivera"
@@ -113,7 +113,7 @@ Feature:
                         "published": true,
                         "president": {
                             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                            "id": "123-456",
+                            "id": "@string@",
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null
@@ -121,7 +121,7 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                                "id": "977-527",
+                                "id": "@string@",
                                 "first_name": "Jacques",
                                 "last_name": "Picard",
                                 "image_url": null
@@ -223,7 +223,7 @@ Feature:
                         "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                            "id": "977-527",
+                            "id": "@string@",
                             "first_name": "Jacques",
                             "last_name": "Picard",
                             "image_url": null
@@ -231,14 +231,14 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                                "id": "123-456",
+                                "id": "@string@",
                                 "first_name": "Michelle",
                                 "last_name": "Dufour",
                                 "image_url": null
                             },
                             {
                                 "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                                "id": "706-388",
+                                "id": "@string@",
                                 "first_name": "Lucie",
                                 "last_name": "Olivera",
                                 "image_url": null
@@ -257,7 +257,7 @@ Feature:
                         "published": false,
                         "president": {
                             "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                            "id": "706-388",
+                            "id": "@string@",
                             "first_name": "Lucie",
                             "last_name": "Olivera",
                             "image_url": null
