@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\AppCodeEnum;
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Mailchimp\Contact\ContactStatusEnum;
@@ -135,15 +136,17 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     }
 
                     $qb
-                        ->leftJoin("$alias.appSessions", 'session', Join::WITH, 'session.status = :active_session_filter_status')
+                        ->leftJoin("$alias.appSessions", 'active_session_filter', Join::WITH, 'active_session_filter.status = :active_session_filter_status')
+                        ->leftJoin('active_session_filter.client', 'active_session_filter_client', Join::WITH, 'active_session_filter_client.code = :active_session_filter_client_code')
                         ->setParameter('active_session_filter_status', SessionStatusEnum::ACTIVE)
+                        ->setParameter('active_session_filter_client_code', AppCodeEnum::BESOIN_D_EUROPE)
                     ;
 
-                    if (\in_array('aucune', $value->getValue())) {
-                        $qb->andWhere('session IS NULL');
+                    if (\in_array('aucune', $value->getValue(), true)) {
+                        $qb->andWhere('active_session_filter IS NULL OR active_session_filter_client IS NULL');
                     } else {
                         $qb
-                            ->andWhere('session.appSystem IN (:active_session_filter_systems)')
+                            ->andWhere('active_session_filter.appSystem IN (:active_session_filter_systems) AND active_session_filter_client IS NOT NULL')
                             ->setParameter('active_session_filter_systems', $value->getValue())
                         ;
                     }
