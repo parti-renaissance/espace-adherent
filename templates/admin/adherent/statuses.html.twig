@@ -84,6 +84,14 @@
     {% set labels = labels|merge(['Responsable National PAP']) %}
 {% endif %}
 
+{% if object.isPresidentOfAgora %}
+    {% set labels = labels|merge(['role.agora_president'|trans]) %}
+{% endif %}
+
+{% if object.isGeneralSecretaryOfAgora %}
+    {% set labels = labels|merge(['role.agora_general_secretary'|trans]) %}
+{% endif %}
+
 <div style="display: flex;flex-direction: column;align-items: flex-start;gap: 1px;">
     {% for label in labels %}
         {{ _self.label(label) }}
