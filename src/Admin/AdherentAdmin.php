@@ -135,16 +135,16 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     }
 
                     $qb
-                        ->leftJoin("$alias.appSessions", 'session', Join::WITH, 'session.status = :status')
-                        ->setParameter('status', SessionStatusEnum::ACTIVE)
+                        ->leftJoin("$alias.appSessions", 'session', Join::WITH, 'session.status = :active_session_filter_status')
+                        ->setParameter('active_session_filter_status', SessionStatusEnum::ACTIVE)
                     ;
 
                     if (\in_array('aucune', $value->getValue())) {
                         $qb->andWhere('session IS NULL');
                     } else {
                         $qb
-                            ->andWhere('session.appSystem IN(:systems)')
-                            ->setParameter('systems', $value->getValue())
+                            ->andWhere('session.appSystem IN (:active_session_filter_systems)')
+                            ->setParameter('active_session_filter_systems', $value->getValue())
                         ;
                     }
 
@@ -163,16 +163,11 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     }
 
                     $qb
-                        ->leftJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :status AND session_push_subscription.unsubscribedAt IS NULL')
+                        ->innerJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :subscription_push_filter_status')
                         ->leftJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
-                        ->setParameter('status', SessionStatusEnum::ACTIVE)
+                        ->setParameter('subscription_push_filter_status', SessionStatusEnum::ACTIVE)
+                        ->andWhere('push_token_link '.($value->getValue() ? 'IS NOT NULL' : 'IS NULL'))
                     ;
-
-                    if ($value->getValue()) {
-                        $qb->andWhere('session_push_subscription IS NOT NULL AND push_token_link IS NOT NULL');
-                    } else {
-                        $qb->andWhere('session_push_subscription IS NULL OR push_token_link IS NULL');
-                    }
 
                     return true;
                 },
@@ -269,7 +264,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'agoraMemberships',
             'type',
             'allMandates',
-            'mailchimpStatus',
+            'subscriptionStatus',
             ListMapper::NAME_ACTIONS,
             'registeredAt',
             'firstMembershipDonation',

@@ -15,7 +15,7 @@
     {% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
         {{ _self.display_row('mail', 'Désabonné', colors.grey, 'white') }}
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
-        {{ _self.display_row('mail', 'Abonné', colors.green) }}
+        <a href="#" data-toggle="modal" data-target="#adherent-subscription-{{ object.id }}">{{ _self.display_row('mail', 'Abonné', colors.green) }}</a>
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
         {{ _self.display_row('mail', 'Cleaned', colors.yellow) }}
     {% endif %}
@@ -46,4 +46,29 @@
             {{ _self.display_row('smartphone', 'Abonné', colors.green) }}
         {% endif %}
     {% endif %}
+</div>
+
+<div class="modal fade" id="adherent-subscription-{{ object.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><strong>{{ object.getFullName() }}</strong> : préférences de notification Email & SMS</h4>
+            </div>
+            <div class="modal-body">
+                {% set subscription_types = object.subscriptionTypes %}
+
+                {% if subscription_types|length %}
+                    <ul>
+                        {% for subscription_type in object.subscriptionTypes %}
+                            <li>{{ subscription_type.label }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucune préférence de notification</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
 </div>
