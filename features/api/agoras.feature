@@ -30,8 +30,10 @@ Feature:
                         "description": "Description première Agora",
                         "max_members_count": 2,
                         "members_count": 2,
+                        "published": true,
                         "president": {
                             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                            "id": "123-456",
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null
@@ -39,6 +41,7 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                                "id": "977-527",
                                 "first_name": "Jacques",
                                 "last_name": "Picard",
                                 "image_url": null
@@ -54,8 +57,10 @@ Feature:
                         "description": "Description deuxième Agora",
                         "max_members_count": 40,
                         "members_count": 0,
+                        "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                            "id": "977-527",
                             "first_name": "Jacques",
                             "last_name": "Picard",
                             "image_url": null
@@ -63,9 +68,17 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                                "id": "123-456",
                                 "first_name": "Michelle",
                                 "last_name": "Dufour",
                                 "image_url": null
+                            },
+                            {
+                                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                                "id": "706-388",
+                                "first_name": "Lucie",
+                                "image_url": null,
+                                "last_name": "Olivera"
                             }
                         ],
                         "created_at": "@string@.isDateTime()",
@@ -97,8 +110,10 @@ Feature:
                         "description": "Description première Agora",
                         "max_members_count": 2,
                         "members_count": 2,
+                        "published": true,
                         "president": {
                             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                            "id": "123-456",
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null
@@ -106,6 +121,7 @@ Feature:
                         "general_secretaries": [
                             {
                                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                                "id": "977-527",
                                 "first_name": "Jacques",
                                 "last_name": "Picard",
                                 "image_url": null
@@ -180,4 +196,92 @@ Feature:
         And the JSON should be equal to:
             """
             "OK"
+            """
+
+    Scenario: As a logged-in Agora Manager I can see the Agoras I am manager of
+        Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/agoras?scope=agora_manager"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 2,
+                    "items_per_page": 2,
+                    "count": 2,
+                    "current_page": 1,
+                    "last_page": 1
+                },
+                "items": [
+                    {
+                        "uuid": "75d47004-db80-4586-8fc5-e97cec58e5b4",
+                        "name": "Deuxième Agora",
+                        "slug": "deuxieme-agora",
+                        "description": "Description deuxième Agora",
+                        "max_members_count": 40,
+                        "members_count": 0,
+                        "published": true,
+                        "president": {
+                            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                            "id": "977-527",
+                            "first_name": "Jacques",
+                            "last_name": "Picard",
+                            "image_url": null
+                        },
+                        "general_secretaries": [
+                            {
+                                "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                                "id": "123-456",
+                                "first_name": "Michelle",
+                                "last_name": "Dufour",
+                                "image_url": null
+                            },
+                            {
+                                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                                "id": "706-388",
+                                "first_name": "Lucie",
+                                "last_name": "Olivera",
+                                "image_url": null
+                            }
+                        ],
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    },
+                    {
+                        "uuid": "c3d0fb57-1ce9-441a-9978-8445fc01fa5c",
+                        "name": "Agora non publiée",
+                        "slug": "agora-non-publiee",
+                        "description": "Description Agora non publiée",
+                        "max_members_count": 30,
+                        "members_count": 0,
+                        "published": false,
+                        "president": {
+                            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "id": "706-388",
+                            "first_name": "Lucie",
+                            "last_name": "Olivera",
+                            "image_url": null
+                        },
+                        "general_secretaries": [],
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a logged-in Agora Manager I can see the members of an Agora
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents?scope=agora_manager&agora_uuids[]=82ad6422-cb82-4c04-b478-bfb421c740e0"
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+            """
+            {
+                "items": [
+                    {
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+                    }
+                ]
+            }
             """

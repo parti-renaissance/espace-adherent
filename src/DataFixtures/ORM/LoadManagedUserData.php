@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Address\AddressInterface;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\Agora;
 use App\Entity\Committee;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
@@ -27,6 +28,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $committee5 = $this->getReference('committee-5', Committee::class);
         $committee10 = $this->getReference('committee-10', Committee::class);
         $committee11 = $this->getReference('committee-v2-2', Committee::class);
+
+        $agora1 = $this->getReference('agora-1', Agora::class);
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('adherent-1', Adherent::class);
@@ -134,6 +137,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'certified_at' => '2018-06-02 10:20:45',
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
+            'agora' => $agora1->getName(),
+            'agora_uuid' => $agora1->getUuid(),
             'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'tags' => $adherent->tags,

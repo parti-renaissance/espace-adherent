@@ -113,6 +113,12 @@ class ManagedUsersFilter
     /**
      * @var string[]
      */
+    #[Groups(['filter_write'])]
+    public array $agoraUuids;
+
+    /**
+     * @var string[]
+     */
     public array $cities;
 
     public ?bool $voteInCommittee = null;
@@ -145,17 +151,19 @@ class ManagedUsersFilter
         ?string $subscriptionType = null,
         array $managedZones = [],
         array $committeeUuids = [],
+        array $agoraUuids = [],
         array $cities = [],
         array $zones = [],
     ) {
-        if (empty($managedZones) && empty($zones) && empty($committeeUuids)) {
-            throw new \InvalidArgumentException('ManagedUser filter should have managed zones or selected zones or committee');
+        if (empty($managedZones) && empty($zones) && empty($committeeUuids) && empty($agoraUuids)) {
+            throw new \InvalidArgumentException('ManagedUser filter should have managed zones or selected zones or committee or agora');
         }
 
         $this->subscriptionType = $subscriptionType;
         $this->managedZones = $managedZones;
         $this->zones = $zones;
         $this->committeeUuids = $committeeUuids;
+        $this->agoraUuids = $agoraUuids;
         $this->cities = $cities;
     }
 

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AgoraMembershipRepository::class)]
@@ -24,6 +25,7 @@ class AgoraMembership
     public ?Agora $agora = null;
 
     #[Assert\NotBlank]
+    #[Groups(['agora_membership_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'agoraMemberships')]
     public ?Adherent $adherent = null;

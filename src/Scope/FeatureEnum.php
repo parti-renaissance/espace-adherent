@@ -35,6 +35,7 @@ class FeatureEnum extends Enum
     public const FEATUREBASE = 'featurebase';
     public const CIRCONSCRIPTIONS = 'circonscriptions';
     public const REFERRALS = 'referrals';
+    public const AGORAS = 'agoras';
 
     public const ALL = [
         self::DASHBOARD,

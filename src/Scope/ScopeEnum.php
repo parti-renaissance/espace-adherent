@@ -23,6 +23,7 @@ class ScopeEnum extends Enum
     public const ANIMATOR = 'animator';
     public const PROCURATIONS_MANAGER = 'procurations_manager';
     public const FDE_COORDINATOR = 'fde_coordinator';
+    public const AGORA_MANAGER = 'agora_manager';
 
     public const ALL = [
         self::DEPUTY,
@@ -42,6 +43,7 @@ class ScopeEnum extends Enum
         self::REGIONAL_DELEGATE,
         self::PROCURATIONS_MANAGER,
         self::FDE_COORDINATOR,
+        self::AGORA_MANAGER,
     ];
 
     public const NATIONAL_SCOPES = [
@@ -60,6 +62,7 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR => 'Coordinateur',
         self::REGIONAL_COORDINATOR => 'Coordinateur',
         self::LEGISLATIVE_CANDIDATE => 'Candidat',
+        self::AGORA_MANAGER => 'Manager d\'Agora',
     ];
 
     public const SCOPE_INSTANCES = [

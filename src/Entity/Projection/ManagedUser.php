@@ -324,6 +324,14 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private ?UuidInterface $committeeUuid;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(nullable: true)]
+    private ?string $agora;
+
+    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?UuidInterface $agoraUuid;
+
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $mandates;
 
@@ -386,6 +394,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?\DateTime $firstMembershipDonation = null,
         ?string $committee = null,
         ?UuidInterface $committeeUuid = null,
+        ?string $agora = null,
+        ?UuidInterface $agoraUuid = null,
         array $interests = [],
         array $mandates = [],
         array $declaredMandates = [],
@@ -432,6 +442,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         $this->interests = $interests;
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
+        $this->agora = $agora;
+        $this->agoraUuid = $agoraUuid;
         $this->mandates = $mandates;
         $this->declaredMandates = $declaredMandates;
         $this->cotisationDates = $cotisationDates;
@@ -675,6 +687,16 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function getCommitteeUuid(): ?UuidInterface
     {
         return $this->committeeUuid;
+    }
+
+    public function getAgora(): ?string
+    {
+        return $this->agora;
+    }
+
+    public function getAgoraUuid(): ?UuidInterface
+    {
+        return $this->agoraUuid;
     }
 
     public function getMandates(): ?array

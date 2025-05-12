@@ -50,7 +50,8 @@ class AdherentListController extends AbstractController
         $filter = ManagedUsersFilterFactory::createForZones(
             $scopeGenerator->getCode(),
             $scope->getZones(),
-            $scope->getCommitteeUuids()
+            $scope->getCommitteeUuids(),
+            $scope->getAgoraUuids(),
         );
 
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [

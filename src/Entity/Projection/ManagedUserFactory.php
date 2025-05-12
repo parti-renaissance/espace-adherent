@@ -44,6 +44,8 @@ class ManagedUserFactory
             isset($data['first_membership_donation']) ? new \DateTime($data['first_membership_donation']) : null,
             $data['committee'] ?? null,
             $data['committee_uuid'] ?? null,
+            $data['agora'] ?? null,
+            $data['agora_uuid'] ?? null,
             $data['interests'] ?? [],
             $data['mandates'] ?? [],
             $data['declared_mandates'] ?? [],

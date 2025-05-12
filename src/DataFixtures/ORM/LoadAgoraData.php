@@ -47,7 +47,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             40,
             true,
             $adherent3,
-            [$adherent1],
+            [$adherent1, $adherent4],
             $admin2
         ));
 

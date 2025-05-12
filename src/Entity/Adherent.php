@@ -159,7 +159,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(length: 80, nullable: true)]
     private $customGender;
 
-    #[Groups(['user_profile', 'profile_read', 'elected_representative_read', 'adherent_autocomplete', 'my_team_read_list', 'message_read', 'profile_update', 'referral_read_with_referrer'])]
+    #[Groups(['user_profile', 'profile_read', 'elected_representative_read', 'adherent_autocomplete', 'my_team_read_list', 'message_read', 'profile_update', 'referral_read_with_referrer', 'agora_membership_read'])]
     #[ORM\Column(unique: true)]
     private $emailAddress;
 
