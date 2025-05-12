@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
@@ -10,8 +11,10 @@ use App\Adherent\Referral\ModeEnum;
 use App\Adherent\Referral\StatusEnum;
 use App\Adherent\Referral\TypeEnum;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Api\Filter\ReferralFilter;
 use App\Controller\Api\Referral\ManagerScoreboardController;
 use App\Controller\Api\Referral\ScoreboardController;
+use App\Doctrine\Utils\QueryChecker;
 use App\Entity\Geo\Zone;
 use App\Enum\CivilityEnum;
 use App\Repository\ReferralRepository;
@@ -30,6 +33,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
+#[ApiFilter(ReferralFilter::class, properties: ['referrer'])]
+#[ApiFilter(ReferralFilter::class, properties: ['referred'])]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'type' => 'exact'])]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -267,8 +273,8 @@ class Referral implements ZoneableEntityInterface
 
     public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
     {
-        $queryBuilder
-            ->innerJoin("$rootAlias.referrer", 'referrer')
-        ;
+        if (!QueryChecker::hasJoin($queryBuilder, $rootAlias, 'referrer')) {
+            $queryBuilder->innerJoin("$rootAlias.referrer", 'referrer');
+        }
     }
 }
