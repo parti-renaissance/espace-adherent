@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
+use App\Entity\Adherent;
 use App\Entity\AppSession;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -41,6 +42,14 @@ class AppSessionAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => ['property' => ['search']],
+                'to_string_callback' => static function (Adherent $adherent): string {
+                    return \sprintf(
+                        '%s (%s) [%s]',
+                        $adherent->getFullName(),
+                        $adherent->getEmailAddress(),
+                        $adherent->getPublicId()
+                    );
+                },
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',

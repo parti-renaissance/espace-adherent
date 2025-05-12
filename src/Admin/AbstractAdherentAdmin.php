@@ -581,7 +581,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Adresse email',
             ])
             ->add('subscriptionTypes', ModelFilter::class, [
-                'label' => 'Types de souscriptions',
+                'label' => 'Préférences de notification',
                 'field_options' => [
                     'class' => SubscriptionType::class,
                     'multiple' => true,
@@ -1009,10 +1009,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_mandates.html.twig',
             ])
-            ->add('mailchimpStatus', null, [
+            ->add('subscriptionStatus', null, [
                 'label' => 'Abonnement',
-                'sortable' => false,
-                'template' => 'admin/adherent/list_email_subscription_status.html.twig',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_subscription_status.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
