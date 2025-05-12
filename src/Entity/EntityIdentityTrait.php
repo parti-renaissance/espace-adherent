@@ -136,6 +136,7 @@ trait EntityIdentityTrait
         'referral_read',
         'referral_read_with_referrer',
         'profile_update',
+        'agora_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
