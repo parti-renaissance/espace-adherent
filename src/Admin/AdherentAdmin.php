@@ -137,9 +137,9 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
                     $qb
                         ->leftJoin("$alias.appSessions", 'active_session_filter', Join::WITH, 'active_session_filter.status = :active_session_filter_status')
-                        ->leftJoin('active_session_filter.client', 'active_session_filter_client', Join::WITH, 'active_session_filter_client.code = :active_session_filter_client_code')
+                        ->leftJoin('active_session_filter.client', 'active_session_filter_client', Join::WITH, 'active_session_filter_client.code = :session_client_code')
                         ->setParameter('active_session_filter_status', SessionStatusEnum::ACTIVE)
-                        ->setParameter('active_session_filter_client_code', AppCodeEnum::BESOIN_D_EUROPE)
+                        ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
                     ;
 
                     if (\in_array('aucune', $value->getValue(), true)) {
@@ -167,8 +167,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
                     $qb
                         ->innerJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :subscription_push_filter_status')
+                        ->innerJoin('session_push_subscription.client', 'session_push_subscription_client', Join::WITH, 'session_push_subscription_client.code = :session_client_code')
                         ->leftJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
                         ->setParameter('subscription_push_filter_status', SessionStatusEnum::ACTIVE)
+                        ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
                         ->andWhere('push_token_link '.($value->getValue() ? 'IS NOT NULL' : 'IS NULL'))
                     ;
 
