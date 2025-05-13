@@ -41,9 +41,9 @@
     {% set active_mobile_session = object.findAppSessions(get_vox_client(), true, [system_enum.IOS, system_enum.ANDROID])|first %}
     {% if active_mobile_session %}
         {% if active_mobile_session.findSubscribedPushTokenLinks()|length %}
-            {{ _self.display_row('smartphone', 'Désabonné', colors.grey, 'white') }}
-        {% else %}
             {{ _self.display_row('smartphone', 'Abonné', colors.green) }}
+        {% else %}
+            {{ _self.display_row('smartphone', 'Désabonné', colors.grey, 'white') }}
         {% endif %}
     {% endif %}
 </div>
