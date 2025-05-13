@@ -52,6 +52,8 @@ class AgoraExtension implements QueryItemExtensionInterface, QueryCollectionExte
                 ->andWhere("$alias.published = :true")
                 ->setParameter('true', true)
             ;
+
+            return;
         }
 
         $adherent = $this->getCurrentUser();
