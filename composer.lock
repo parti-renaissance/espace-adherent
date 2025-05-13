@@ -18518,16 +18518,16 @@
         },
         {
             "name": "willdurand/geocoder-bundle",
-            "version": "5.22.0",
+            "version": "5.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/BazingaGeocoderBundle.git",
-                "reference": "8826cfe6d4cd6eda0288dcde3b5443e481f7797d"
+                "reference": "e9d698bbef2c9ceee819a0020d1bf093c5a84d18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/8826cfe6d4cd6eda0288dcde3b5443e481f7797d",
-                "reference": "8826cfe6d4cd6eda0288dcde3b5443e481f7797d",
+                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/e9d698bbef2c9ceee819a0020d1bf093c5a84d18",
+                "reference": "e9d698bbef2c9ceee819a0020d1bf093c5a84d18",
                 "shasum": ""
             },
             "require": {
@@ -18622,9 +18622,9 @@
             ],
             "support": {
                 "issues": "https://github.com/geocoder-php/BazingaGeocoderBundle/issues",
-                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.22.0"
+                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.23.0"
             },
-            "time": "2025-04-30T18:37:49+00:00"
+            "time": "2025-05-13T06:25:38+00:00"
         },
         {
             "name": "willdurand/negotiation",
