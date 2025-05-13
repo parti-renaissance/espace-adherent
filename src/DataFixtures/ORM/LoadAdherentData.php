@@ -25,6 +25,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadAdherentData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -166,6 +167,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33727363643',
             'registered_at' => '2017-01-18 13:15:28',
         ]);
+        $adherent4->setImageName(new UploadedFile(
+            __DIR__.'/../../../app/data/images/profile/example.jpg',
+            'example.jpg',
+            'image/jpg',
+        ));
         $adherent4->setPosition(ActivityPositionsEnum::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->setSubscriptionTypes($subscriptionTypes);

@@ -5,8 +5,10 @@ namespace App\Repository;
 use App\Adherent\Referral\StatusEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\Geo\ZoneTagEnum;
 use App\Entity\Referral;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ReferralRepository extends ServiceEntityRepository
@@ -148,7 +150,7 @@ class ReferralRepository extends ServiceEntityRepository
 
     public function getScoreboard(?Zone $zone = null, int $limit = 10): array
     {
-        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, true);
+        [$joins, $filter, $parameters, $types] = $this->buildZoneJoinsAndFilter($zone ? [$zone] : [], true);
 
         $sql = <<<SQL
                 SELECT
@@ -170,15 +172,12 @@ class ReferralRepository extends ServiceEntityRepository
 
         $parameters['status'] = StatusEnum::ADHESION_FINISHED->value;
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $result = $stmt->executeQuery($parameters);
-
-        return $result->fetchAllAssociative();
+        return $this->getEntityManager()->getConnection()->executeQuery($sql, $parameters, $types)->fetchAllAssociative();
     }
 
     public function getReferrerRank(int $referrerId, ?Zone $zone = null): ?int
     {
-        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, false);
+        [$joins, $filter, $parameters, $types] = $this->buildZoneJoinsAndFilter($zone ? [$zone] : []);
 
         $sql = <<<SQL
                 SELECT position FROM (
@@ -199,27 +198,29 @@ class ReferralRepository extends ServiceEntityRepository
         $parameters['referrer_id'] = $referrerId;
         $parameters['status'] = StatusEnum::ADHESION_FINISHED->value;
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $result = $stmt->executeQuery($parameters)->fetchOne();
+        $result = $this->getEntityManager()->getConnection()->executeQuery($sql, $parameters, $types)->fetchOne();
 
         return false !== $result ? (int) $result : null;
     }
 
-    public function getManagerScoreboard(Zone $zone, int $limit = 10): array
+    public function getManagerScoreboard(array $zones): array
     {
-        [$joins, $filter, $parameters] = $this->buildZoneJoinsAndFilter($zone, false);
+        if (empty($zones)) {
+            return [];
+        }
+
+        [$joins, $filter, $parameters, $types] = $this->buildZoneJoinsAndFilter($zones);
 
         $sql = <<<SQL
                 SELECT
-                    adherent.id AS referrer_id,
-                    adherent.public_id AS referrer_pid,
-                    adherent.uuid AS referrer_uuid,
-                    adherent.first_name AS referrer_first_name,
-                    adherent.last_name AS referrer_last_name,
+                    adherent.public_id AS pid,
+                    adherent.uuid AS uuid,
+                    adherent.first_name AS first_name,
+                    adherent.last_name AS last_name,
+                    adherent.image_name AS profile_image,
                     COUNT(DISTINCT CASE WHEN referral.status = :status_finished THEN referral.id END) AS count_adhesion_finished,
                     COUNT(DISTINCT CASE WHEN referral.status = :status_account_created THEN referral.id END) AS count_account_created,
-                    COUNT(DISTINCT CASE WHEN referral.status = :status_reported THEN referral.id END) AS count_reported,
-                    RANK() OVER (ORDER BY COUNT(DISTINCT CASE WHEN referral.status = :status_finished THEN referral.id END) DESC) AS local_rank
+                    COUNT(DISTINCT CASE WHEN referral.status = :status_reported THEN referral.id END) AS count_reported
                 FROM referral
                 INNER JOIN adherents AS adherent
                     ON referral.referrer_id = adherent.id
@@ -228,7 +229,6 @@ class ReferralRepository extends ServiceEntityRepository
                 {$filter}
                 GROUP BY adherent.id, adherent.uuid, adherent.first_name, adherent.last_name
                 ORDER BY count_adhesion_finished DESC
-                LIMIT {$limit}
             SQL;
 
         $parameters += [
@@ -237,47 +237,33 @@ class ReferralRepository extends ServiceEntityRepository
             'status_reported' => StatusEnum::REPORTED->value,
         ];
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $localResults = $stmt->executeQuery($parameters)->fetchAllAssociative();
-
-        foreach ($localResults as &$row) {
-            $row['national_rank'] = $this->getReferrerRank((int) $row['referrer_id']);
-            unset($row['referrer_id']);
-        }
-
-        return $localResults;
+        return $this->getEntityManager()->getConnection()->executeQuery($sql, $parameters, $types)->fetchAllAssociative();
     }
 
-    private function buildZoneJoinsAndFilter(?Zone $zone, bool $withAssembly = false): array
+    private function buildZoneJoinsAndFilter(array $zones, bool $withAssembly = false): array
     {
+        $parameters = [];
+
         $joins = <<<SQL
-                INNER JOIN adherent_zone AS adherent_zone
-                    ON adherent_zone.adherent_id = adherent.id
-                INNER JOIN geo_zone_parent AS zone_parent
-                    ON zone_parent.child_id = adherent_zone.zone_id
+                INNER JOIN adherent_zone AS adherent_zone ON adherent_zone.adherent_id = adherent.id
+                INNER JOIN geo_zone_parent AS zone_parent ON zone_parent.child_id = adherent_zone.zone_id
             SQL;
 
         if ($withAssembly) {
             $joins .= <<<SQL
-                    INNER JOIN geo_zone AS zone_assembly
-                        ON zone_parent.parent_id = zone_assembly.id
-                        AND zone_assembly.tags LIKE '%assembly%'
+                    INNER JOIN geo_zone AS zone_assembly ON zone_parent.parent_id = zone_assembly.id AND zone_assembly.tags LIKE :zone_tag
                 SQL;
+            $parameters['zone_tag'] = \sprintf('%%%s%%', ZoneTagEnum::ASSEMBLY);
         }
 
-        $filter = '';
-        $parameters = [];
-
-        if ($zone) {
+        if (!empty($zones)) {
             $filter = <<<SQL
-                    AND (
-                        adherent_zone.zone_id = :zone_id
-                        OR zone_parent.parent_id = :zone_id
-                    )
+                    AND (adherent_zone.zone_id IN (:zone_ids) OR zone_parent.parent_id IN (:zone_ids))
                 SQL;
-            $parameters['zone_id'] = $zone->getId();
+            $parameters['zone_ids'] = array_map(static fn (Zone $zone) => $zone->getId(), $zones);
+            $types = ['zone_ids' => ArrayParameterType::INTEGER];
         }
 
-        return [$joins, $filter, $parameters];
+        return [$joins, $filter ?? '', $parameters, $types ?? []];
     }
 }

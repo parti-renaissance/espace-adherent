@@ -1356,7 +1356,7 @@ referral.mode.sms: SMS
 referral.mode.email: Email
 
 referral.status.invitation_sent: Invitation envoyée
-referral.status.account_created: Compte créé
+referral.status.account_created: Adhésion incomplète
 referral.status.adhesion_finished: Adhésion finalisée
 referral.status.adhesion_via_other_link: Adhésion via un autre moyen
 referral.status.reported: Signalé
