@@ -74,6 +74,6 @@ class AdministratorRepository extends ServiceEntityRepository implements UserLoa
 
     public function supportsClass(string $class): bool
     {
-        return Administrator::class === $class;
+        return is_a($class, Administrator::class, true);
     }
 }

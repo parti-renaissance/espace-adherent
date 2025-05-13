@@ -193,7 +193,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function supportsClass(string $class): bool
     {
-        return Adherent::class === $class;
+        return is_a($class, Adherent::class, true);
     }
 
     /**
