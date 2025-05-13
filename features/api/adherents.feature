@@ -144,6 +144,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1962-01-07T00:00:00+01:00",
                         "age": @integer@,
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -197,6 +199,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": 41,
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
@@ -299,6 +303,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1942-01-10T00:00:00+02:00",
                         "age": 83,
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -376,6 +382,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": 41,
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
@@ -485,6 +493,8 @@ Feature:
                 "image_url": null,
                 "birthdate": "1962-01-07T00:00:00+01:00",
                 "age": @integer@,
+                "agora": null,
+                "agora_uuid": null,
                 "phone": null,
                 "nationality": null,
                 "tags": [
@@ -559,6 +569,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": 41,
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
@@ -661,6 +673,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1942-01-10T00:00:00+02:00",
                         "age": 83,
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -1014,6 +1028,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1982-06-02T00:00:00+02:00",
                         "age": 42,
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -1072,6 +1088,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1953-04-03T00:00:00+01:00",
                         "age": "@number@",
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": "+33 1 87 26 42 36",
                         "nationality": "FR",
                         "tags": [
@@ -1146,6 +1164,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1953-04-03T00:00:00+01:00",
                         "age": "@number@",
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": "+33 1 87 26 42 36",
                         "nationality": "FR",
                         "tags": [

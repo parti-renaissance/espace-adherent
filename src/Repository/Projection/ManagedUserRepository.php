@@ -239,6 +239,17 @@ class ManagedUserRepository extends ServiceEntityRepository
             $restrictionsExpression->add($committeesExpression);
         }
 
+        if ($agoras = $filter->agoraUuids) {
+            $agoraExpression = $qb->expr()->orX();
+
+            foreach ($agoras as $key => $uuid) {
+                $agoraExpression->add("u.agoraUuid = :agora_uuid_$key");
+                $qb->setParameter("agora_uuid_$key", $uuid);
+            }
+
+            $restrictionsExpression->add($agoraExpression);
+        }
+
         if ($cities = $filter->cities) {
             $citiesExpression = $qb->expr()->orX();
 

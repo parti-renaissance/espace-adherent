@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/agoras',
-            security: "is_granted('ROLE_USER')",
+            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
         ),
         new HttpOperation(
             method: 'POST',
@@ -62,6 +63,7 @@ class Agora
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 50])]
     public int $maxMembersCount = 50;
 
+    #[Groups(['agora_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $published = true;
 

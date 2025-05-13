@@ -10,11 +10,13 @@ class ManagedUsersFilterFactory
         string $scopeCode,
         array $zones,
         array $committeeUuids = [],
+        array $agoraUuids = [],
     ): ?ManagedUsersFilter {
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeCode] ?? null,
             $zones,
-            $committeeUuids
+            $committeeUuids,
+            $agoraUuids
         );
     }
 }

@@ -137,6 +137,11 @@ class Scope
         return array_column($this->attributes['committees'] ?? [], 'uuid');
     }
 
+    public function getAgoraUuids(): array
+    {
+        return array_column($this->attributes['agoras'] ?? [], 'uuid');
+    }
+
     public function getRoleName(): string
     {
         return $this->delegatedAccess?->getRole() ?? ScopeEnum::ROLE_NAMES[$this->code] ?? $this->getName();
