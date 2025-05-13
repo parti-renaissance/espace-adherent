@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/agoras',
-            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "agoras")) or is_granted("ROLE_USER")'),
+            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
         ),
         new HttpOperation(
             method: 'POST',

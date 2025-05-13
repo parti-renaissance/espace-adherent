@@ -35,10 +35,10 @@ class AgoraManagerScopeGenerator extends AbstractScopeGenerator
                     'name' => $agora->getName(),
                     'uuid' => $agora->getUuid()->toString(),
                 ],
-                array_filter(array_merge(
+                array_merge(
                     $adherent->presidentOfAgoras->toArray(),
                     $adherent->generalSecretaryOfAgoras->toArray(),
-                ))
+                )
             )
         );
 
