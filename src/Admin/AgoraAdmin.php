@@ -7,6 +7,7 @@ use App\Entity\Administrator;
 use App\Entity\Agora;
 use App\Form\Admin\SimpleMDEContent;
 use App\History\UserActionHistoryHandler;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -98,6 +99,7 @@ class AgoraAdmin extends AbstractAdmin
                     'property' => [
                         'search',
                     ],
+                    'callback' => [$this, 'prepareAdherentPresidentCallback'],
                     'to_string_callback' => static function (Adherent $adherent): string {
                         return \sprintf(
                             '%s (%s) [%s]',
@@ -119,6 +121,7 @@ class AgoraAdmin extends AbstractAdmin
                     'property' => [
                         'search',
                     ],
+                    'callback' => [$this, 'prepareAdherentGeneralSecretaryCallback'],
                     'to_string_callback' => static function (Adherent $adherent): string {
                         return \sprintf(
                             '%s (%s) [%s]',
@@ -310,6 +313,24 @@ class AgoraAdmin extends AbstractAdmin
                 $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $this->getAdministrator());
             }
         }
+    }
+
+    public function prepareAdherentPresidentCallback(AbstractAdmin $admin): void
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->innerJoin("$alias.presidentOfAgoras", 'a');
+    }
+
+    public function prepareAdherentGeneralSecretaryCallback(AbstractAdmin $admin): void
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'a');
     }
 
     #[Required]
