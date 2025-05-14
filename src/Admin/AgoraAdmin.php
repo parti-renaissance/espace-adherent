@@ -27,6 +27,10 @@ class AgoraAdmin extends AbstractAdmin
     /** @var Adherent[] */
     private array $adherentsMembersBeforeUpdate = [];
 
+    private ?Adherent $presidentBeforeUpdate = null;
+    /** @var Adherent[] */
+    private array $generalSecretariesBeforeUpdate = [];
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -229,6 +233,13 @@ class AgoraAdmin extends AbstractAdmin
                 $this->adherentsMembersBeforeUpdate[$membership->adherent->getId()] = $membership->adherent;
             }
         }
+
+        $this->presidentBeforeUpdate = $object->president;
+
+        $this->generalSecretariesBeforeUpdate = [];
+        foreach ($object->generalSecretaries as $adherent) {
+            $this->generalSecretariesBeforeUpdate[$adherent->getId()] = $adherent;
+        }
     }
 
     protected function postPersist(object $object): void
@@ -268,6 +279,35 @@ class AgoraAdmin extends AbstractAdmin
         foreach ($after as $id => $adherent) {
             if (!isset($this->adherentsMembersBeforeUpdate[$id])) {
                 $this->historyHandler->createAgoraMembershipAdd($adherent, $object, $this->getAdministrator());
+            }
+        }
+
+        // Detect president changes
+        $newPresident = $object->president;
+        if ($this->presidentBeforeUpdate !== $newPresident) {
+            if (null !== $this->presidentBeforeUpdate) {
+                $this->historyHandler->createAgoraPresidentRemove($this->presidentBeforeUpdate, $object, $this->getAdministrator());
+            }
+            if (null !== $newPresident) {
+                $this->historyHandler->createAgoraPresidentAdd($newPresident, $object, $this->getAdministrator());
+            }
+        }
+
+        // Detect general secretaries changes
+        $afterGeneralSecretaries = [];
+        foreach ($object->generalSecretaries as $adherent) {
+            $afterGeneralSecretaries[$adherent->getId()] = $adherent;
+        }
+
+        foreach ($this->generalSecretariesBeforeUpdate as $id => $adherent) {
+            if (!isset($afterGeneralSecretaries[$id])) {
+                $this->historyHandler->createAgoraGeneralSecretaryRemove($adherent, $object, $this->getAdministrator());
+            }
+        }
+
+        foreach ($afterGeneralSecretaries as $id => $adherent) {
+            if (!isset($this->generalSecretariesBeforeUpdate[$id])) {
+                $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $this->getAdministrator());
             }
         }
     }

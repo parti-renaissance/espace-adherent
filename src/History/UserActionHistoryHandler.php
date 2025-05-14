@@ -182,15 +182,35 @@ class UserActionHistoryHandler
 
     public function createAgoraMembershipAdd(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
     {
-        $this->createAgoraMembershipHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, $adherent, $agora, $administrator);
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, $adherent, $agora, $administrator);
     }
 
     public function createAgoraMembershipRemove(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
     {
-        $this->createAgoraMembershipHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, $adherent, $agora, $administrator);
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, $adherent, $agora, $administrator);
     }
 
-    private function createAgoraMembershipHistory(
+    public function createAgoraPresidentAdd(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_PRESIDENT_ADD, $adherent, $agora, $administrator);
+    }
+
+    public function createAgoraPresidentRemove(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_PRESIDENT_REMOVE, $adherent, $agora, $administrator);
+    }
+
+    public function createAgoraGeneralSecretaryAdd(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_GENERAL_SECRETARY_ADD, $adherent, $agora, $administrator);
+    }
+
+    public function createAgoraGeneralSecretaryRemove(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void
+    {
+        $this->createAgoraHistory(UserActionHistoryTypeEnum::AGORA_GENERAL_SECRETARY_REMOVE, $adherent, $agora, $administrator);
+    }
+
+    private function createAgoraHistory(
         UserActionHistoryTypeEnum $type,
         Adherent $adherent,
         Agora $agora,
