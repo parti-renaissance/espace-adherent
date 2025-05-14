@@ -77,7 +77,7 @@ Feature:
                                 "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                                 "id": "@string@",
                                 "first_name": "Lucie",
-                                "image_url": null,
+                                "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                                 "last_name": "Olivera"
                             }
                         ],
@@ -241,7 +241,7 @@ Feature:
                                 "id": "@string@",
                                 "first_name": "Lucie",
                                 "last_name": "Olivera",
-                                "image_url": null
+                                "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg"
                             }
                         ],
                         "created_at": "@string@.isDateTime()",
@@ -260,7 +260,7 @@ Feature:
                             "id": "@string@",
                             "first_name": "Lucie",
                             "last_name": "Olivera",
-                            "image_url": null
+                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg"
                         },
                         "general_secretaries": [],
                         "created_at": "@string@.isDateTime()",
