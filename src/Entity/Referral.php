@@ -17,6 +17,7 @@ use App\Controller\Api\Referral\ScoreboardController;
 use App\Doctrine\Utils\QueryChecker;
 use App\Entity\Geo\Zone;
 use App\Enum\CivilityEnum;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\ReferralRepository;
 use App\Validator\ReferralEmail;
 use App\Validator\ReferralInformations;
@@ -40,7 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/referrals',
-            security: new Expression(expression: '(request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")) or is_granted("RENAISSANCE_ADHERENT")'),
+            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "referrals") or is_granted("RENAISSANCE_ADHERENT")'),
         ),
         new GetCollection(
             uriTemplate: '/v3/referrals/scoreboard',
@@ -50,14 +51,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/referrals/manager-scoreboard',
             controller: ManagerScoreboardController::class,
-            security: 'request.query.has("scope") and is_granted("REQUEST_SCOPE_GRANTED", "referrals")'
+            security: 'is_granted("REQUEST_SCOPE_GRANTED", "referrals")'
         ),
         new Post(
             uriTemplate: '/v3/referrals',
             security: "is_granted('RENAISSANCE_ADHERENT')"
         ),
     ],
-    normalizationContext: ['groups' => ['referral_read']],
+    normalizationContext: ['groups' => ['referral_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['referral_write']],
     validationContext: ['groups' => ['Default', 'referral_write']],
     order: ['createdAt' => 'DESC'],

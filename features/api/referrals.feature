@@ -396,6 +396,8 @@ Feature:
                             "id": "@string@",
                             "email_address": "@string@",
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                            "gender": "male",
+                            "image_url": null,
                             "first_name": "Jacques",
                             "last_name": "Picard"
                         },
@@ -432,6 +434,8 @@ Feature:
                             "id": "@string@",
                             "email_address": "@string@",
                             "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "gender": "female",
+                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                             "first_name": "Lucie",
                             "last_name": "Olivera"
                         },
@@ -484,6 +488,8 @@ Feature:
                             "id": "@string@",
                             "email_address": "@string@",
                             "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "gender": "female",
+                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                             "first_name": "Lucie",
                             "last_name": "Olivera"
                         },
@@ -520,6 +526,8 @@ Feature:
                             "id": "@string@",
                             "email_address": "@string@",
                             "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "gender": "female",
+                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                             "first_name": "Lucie",
                             "last_name": "Olivera"
                         },
@@ -558,33 +566,28 @@ Feature:
         Then the response status code should be 200
         And the JSON should be equal to:
             """
-            {
-                "75": [
-                    {
-                        "referrer_pid": "@string@",
-                        "referrer_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                        "referrer_first_name": "Lucie",
-                        "referrer_last_name": "Olivera",
-                        "count_adhesion_finished": 2,
-                        "count_account_created": 0,
-                        "count_reported": 0,
-                        "local_rank": 1,
-                        "national_rank": 1
-                    },
-                    {
-                        "referrer_pid": "@string@",
-                        "referrer_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                        "referrer_first_name": "Jacques",
-                        "referrer_last_name": "Picard",
-                        "count_adhesion_finished": 1,
-                        "count_account_created": 0,
-                        "count_reported": 0,
-                        "local_rank": 2,
-                        "national_rank": 2
-                    }
-                ],
-                "77": []
-            }
+            [
+                {
+                    "pid": "@string@",
+                    "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                    "first_name": "Lucie",
+                    "last_name": "Olivera",
+                    "profile_image": "@string@.isUrl()",
+                    "count_adhesion_finished": 2,
+                    "count_account_created": 0,
+                    "count_reported": 0
+                },
+                {
+                    "pid": "@string@",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "profile_image": null,
+                    "count_adhesion_finished": 1,
+                    "count_account_created": 0,
+                    "count_reported": 0
+                }
+            ]
             """
 
         Examples:
