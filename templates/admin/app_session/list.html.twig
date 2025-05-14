@@ -1,0 +1,111 @@
+{% extends '@SonataAdmin/CRUD/list.html.twig' %}
+
+{% block list_table %}
+    {% set stats = admin.getListStats() %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-box">
+                    <span class="info-box-icon bg-maroon"><i class="fa fa-bolt"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Vox</span>
+                        <span class="info-box-number">{{ stats.active_sessions_vox }}</span>
+
+                        <a href="#" style="display: block;padding: 0 10px" data-toggle="modal" data-target="#sessions-stats">
+                            <div class="progress" style="background: #ececec;height: 20px;">
+                                <div class="progress-bar bg-green" style="width: {{ stats.active_sessions_vox_web * 100.0 / stats.active_sessions_vox }}%">
+                                    <span>{{ stats.active_sessions_vox_web }} Web</span>
+                                </div>
+                                <div class="progress-bar bg-yellow" style="width: {{ stats.active_sessions_vox_ios * 100.0 / stats.active_sessions_vox }}%">
+                                    <span>{{ stats.active_sessions_vox_ios }} iOS</span>
+                                </div>
+                                <div class="progress-bar bg-blue" style="width: {{ stats.active_sessions_vox_android * 100.0 / stats.active_sessions_vox }}%">
+                                    <span>{{ stats.active_sessions_vox_android }} Android</span>
+                                </div>
+                                {% set other_session = stats.active_sessions_vox - stats.active_sessions_vox_web - stats.active_sessions_vox_ios - stats.active_sessions_vox_android %}
+                                {% if other_session > 0 %}
+                                    <div class="progress-bar bg-gray-active" style="width: {{ other_session * 100.0 / stats.active_sessions_vox }}%">
+                                        <span>{{ other_session }} Autres</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-orange"><i class="fa fa-bell"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Tokens actifs</span>
+                        <span class="info-box-number">{{ stats.active_push_token }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-laptop"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Cadres</span>
+                        <span class="info-box-number">{{ stats.active_sessions_cadre }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sessions-stats" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Sessions Vox <i class="fa fa-bolt"></i></h4>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <div class="progress" style="width: 100%; max-width: 300px; background: #ececec; height: 20px; margin: 0;">
+                            <div class="progress-bar bg-green" style="width: {{ stats.active_sessions_vox_web * 100.0 / stats.active_sessions_vox }}%;"></div>
+                        </div>
+                        <span style="min-width: 80px; text-align: left; margin-left: 10px; font-size: 12px; color: #333; font-weight: bold;">
+                            {{ stats.active_sessions_vox_web }} Web
+                        </span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <div class="progress" style="width: 100%; max-width: 300px; background: #ececec; height: 20px; margin: 0;">
+                            <div class="progress-bar bg-yellow" style="width: {{ stats.active_sessions_vox_ios * 100.0 / stats.active_sessions_vox }}%;"></div>
+                        </div>
+                        <span style="min-width: 80px; text-align: left; margin-left: 10px; font-size: 12px; color: #333; font-weight: bold;">
+                            {{ stats.active_sessions_vox_ios }} iOS
+                        </span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <div class="progress" style="width: 100%; max-width: 300px; background: #ececec; height: 20px; margin: 0;">
+                            <div class="progress-bar bg-blue" style="width: {{ stats.active_sessions_vox_android * 100.0 / stats.active_sessions_vox }}%;"></div>
+                        </div>
+                        <span style="min-width: 80px; text-align: left; margin-left: 10px; font-size: 12px; color: #333; font-weight: bold;">
+                            {{ stats.active_sessions_vox_android }} Android
+                        </span>
+                    </div>
+
+                    {% if other_session > 0 %}
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div class="progress" style="width: 100%; max-width: 300px; background: #ececec; height: 20px; margin: 0;">
+                                <div class="progress-bar bg-gray-active" style="width: {{ other_session * 100.0 / stats.active_sessions_vox }}%;"></div>
+                            </div>
+                            <span style="min-width: 80px; text-align: left; margin-left: 10px; font-size: 12px; color: #333; font-weight: bold;">
+                                {{ other_session }} Autres
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

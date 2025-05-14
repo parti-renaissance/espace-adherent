@@ -181,6 +181,7 @@ class LoadClientData extends Fixture
         $client12->setRequestedRoles([DataCornerVoter::DATA_CORNER]);
         $client12->addSupportedScope(Scope::JEMENGAGE_ADMIN);
         $client12->addSupportedScope(Scope::IMPERSONATOR);
+        $this->setReference('client-cadre', $client12);
 
         $manager->persist($client12);
 
@@ -198,6 +199,7 @@ class LoadClientData extends Fixture
         $client13->addSupportedScope(Scope::READ_PROFILE);
         $client13->addSupportedScope(Scope::WRITE_PROFILE);
         $client13->addSupportedScope(Scope::IMPERSONATOR);
+        $this->setReference('client-vox', $client13);
 
         $manager->persist($client13);
 
