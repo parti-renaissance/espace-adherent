@@ -37,6 +37,10 @@
 
         <service id="app.admin.app_session" class="App\Admin\AppSessionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Sessions" group="Adhérents" model_class="App\Entity\AppSession" />
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/app_session/list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.unregistration" class="App\Admin\UnregistrationAdmin">

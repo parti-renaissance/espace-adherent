@@ -6,6 +6,8 @@ use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\Adherent;
 use App\Entity\AppSession;
+use App\Repository\AppSessionRepository;
+use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -20,9 +22,13 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AppSessionAdmin extends AbstractAdmin
 {
+    private AppSessionRepository $appSessionRepository;
+    private ClientRepository $clientRepository;
+
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         $sortValues[DatagridInterface::SORT_BY] = 'lastActivityDate';
@@ -185,5 +191,32 @@ class AppSessionAdmin extends AbstractAdmin
             ->innerJoin(AppSession::class, 'session', Join::WITH, 'session.client = '.$alias)
             ->groupBy($alias.'.id')
         ;
+    }
+
+    public function getListStats(): array
+    {
+        $cadreClient = $this->clientRepository->getCadreClient();
+        $voxClient = $this->clientRepository->getVoxClient();
+
+        return [
+            'active_sessions_cadre' => $this->appSessionRepository->countActiveSessions($cadreClient),
+            'active_sessions_vox' => $this->appSessionRepository->countActiveSessions($voxClient),
+            'active_sessions_vox_web' => $this->appSessionRepository->countActiveSessions($voxClient, SystemEnum::WEB),
+            'active_sessions_vox_ios' => $this->appSessionRepository->countActiveSessions($voxClient, SystemEnum::IOS),
+            'active_sessions_vox_android' => $this->appSessionRepository->countActiveSessions($voxClient, SystemEnum::ANDROID),
+            'active_push_token' => $this->appSessionRepository->countActivePushTokens(),
+        ];
+    }
+
+    #[Required]
+    public function setAppSessionRepository(AppSessionRepository $appSessionRepository): void
+    {
+        $this->appSessionRepository = $appSessionRepository;
+    }
+
+    #[Required]
+    public function setClientRepository(ClientRepository $clientRepository): void
+    {
+        $this->clientRepository = $clientRepository;
     }
 }
