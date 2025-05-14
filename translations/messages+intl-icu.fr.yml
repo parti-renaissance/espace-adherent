@@ -1305,6 +1305,10 @@ user_action_history.type.delegated_access_remove: Suppression d'accès délégu�
 user_action_history.type.live_view: Vue d'un événement live
 user_action_history.type.agora_membership_add: Nouveau membre d'Agora
 user_action_history.type.agora_membership_remove: Suppression de membre d'Agora
+user_action_history.type.agora_president_add: Ajout du rôle de président d'Agora
+user_action_history.type.agora_president_remove: Retrait du rôle de président d'Agora
+user_action_history.type.agora_general_secretary_add: Ajout du rôle de Secrétaire Général d'Agora
+user_action_history.type.agora_general_secretary_remove: Retrait du rôle de Secrétaire Général d'Agora
 
 #
 # AdministratorActionHistory
