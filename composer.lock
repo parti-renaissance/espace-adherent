@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10ed18ec5e0330b083b43040a8986d78",
+    "content-hash": "9359130dd45e7d22d126be7e89572fef",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -8391,16 +8391,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.12.0",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "87cb05309dc1b3ba96725dfeb66186df83a2d489"
+                "reference": "399229860cea244843753bf1d9c28aee0e74c3a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/87cb05309dc1b3ba96725dfeb66186df83a2d489",
-                "reference": "87cb05309dc1b3ba96725dfeb66186df83a2d489",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/399229860cea244843753bf1d9c28aee0e74c3a6",
+                "reference": "399229860cea244843753bf1d9c28aee0e74c3a6",
                 "shasum": ""
             },
             "require": {
@@ -8462,7 +8462,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.12.0"
+                "source": "https://github.com/openai-php/client/tree/v0.13.0"
             },
             "funding": [
                 {
@@ -8478,7 +8478,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-04T13:34:48+00:00"
+            "time": "2025-05-14T21:43:59+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
