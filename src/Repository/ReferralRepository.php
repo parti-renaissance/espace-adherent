@@ -155,18 +155,18 @@ class ReferralRepository extends ServiceEntityRepository
 
         $sql = <<<SQL
                 SELECT
+                    adherent.id,
                     COUNT(DISTINCT referral.id) AS referrals_count,
-                    adherent.first_name AS first_name,
+                    adherent.first_name,
                     CONCAT(UPPER(SUBSTRING(adherent.last_name, 1, 1)), '.') AS last_name,
                     CONCAT(zone_assembly.name, ' (', zone_assembly.code, ')') AS assembly,
                     RANK() OVER (ORDER BY COUNT(DISTINCT referral.id) DESC) AS position
                 FROM referral
-                INNER JOIN adherents AS adherent
-                    ON referral.referrer_id = adherent.id
+                INNER JOIN adherents AS adherent ON referral.referrer_id = adherent.id
                 {$joins}
                 WHERE referral.status = :status
                 {$filter}
-                GROUP BY adherent.id, adherent.first_name, adherent.last_name, zone_assembly.name, zone_assembly.code
+                GROUP BY adherent.id, zone_assembly.code
                 ORDER BY referrals_count DESC
                 LIMIT {$limit}
             SQL;
@@ -186,8 +186,7 @@ class ReferralRepository extends ServiceEntityRepository
                         adherent.id AS referrer_id,
                         RANK() OVER (ORDER BY COUNT(DISTINCT referral.id) DESC) AS position
                     FROM referral
-                    INNER JOIN adherents AS adherent
-                        ON referral.referrer_id = adherent.id
+                    INNER JOIN adherents AS adherent ON referral.referrer_id = adherent.id
                     {$joins}
                     WHERE referral.status = :status
                     {$filter}
