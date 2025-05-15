@@ -178,9 +178,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
                         ;
                     } else {
                         $qb
-                            ->leftJoin("$alias.appSessions", 'session_push_subscription2', Join::WITH, 'session_push_subscription2.status = :subscription_push_filter_status AND session_push_subscription2.unsubscribedAt IS NULL')
+                            ->leftJoin("$alias.appSessions", 'session_push_subscription2', Join::WITH, 'session_push_subscription2.id != session_push_subscription.id AND session_push_subscription2.status = :subscription_push_filter_status AND session_push_subscription2.unsubscribedAt IS NULL')
+                            ->leftJoin('session_push_subscription2.client', 'session_push_subscription_client2', Join::WITH, 'session_push_subscription_client2.code = :session_client_code')
                             ->leftJoin('session_push_subscription2.pushTokenLinks', 'push_token_link2', Join::WITH, 'push_token_link2.unsubscribedAt IS NULL')
-                            ->andWhere('session_push_subscription2 IS NULL OR push_token_link2 IS NULL')
+                            ->andWhere('session_push_subscription_client2 IS NULL OR push_token_link2 IS NULL')
                         ;
                     }
 
