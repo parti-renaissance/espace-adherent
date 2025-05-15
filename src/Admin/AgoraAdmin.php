@@ -48,12 +48,6 @@ class AgoraAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('published', null, [
-                'label' => 'Publiée',
-            ])
-            ->add('maxMembersCount', null, [
-                'label' => 'Places',
-            ])
             ->add('president', null, [
                 'label' => 'Président',
                 'template' => 'admin/agora/list_president.html.twig',
@@ -62,17 +56,24 @@ class AgoraAdmin extends AbstractAdmin
                 'label' => 'Secrétaires Généraux',
                 'template' => 'admin/agora/list_general_secretaries.html.twig',
             ])
-            ->add('createdAt', null, [
-                'label' => 'Créée le',
-            ])
-            ->add('updatedAt', null, [
-                'label' => 'Modifiée le',
+            ->add('maxMembersCount', null, [
+                'label' => 'Membres',
+                'template' => 'admin/agora/list_members_count.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
                 ],
+            ])
+            ->add('published', null, [
+                'label' => 'Publiée',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créée le',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Modifiée le',
             ])
         ;
     }
@@ -105,7 +106,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                 ],
@@ -127,7 +128,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                 ],
@@ -184,7 +185,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                     'btn_add' => false,
@@ -203,7 +204,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                     'btn_add' => false,
@@ -255,6 +256,14 @@ class AgoraAdmin extends AbstractAdmin
             if ($membership->adherent) {
                 $this->historyHandler->createAgoraMembershipAdd($membership->adherent, $object, $this->getAdministrator());
             }
+        }
+
+        if ($object->president) {
+            $this->historyHandler->createAgoraPresidentAdd($object->president, $object, $this->getAdministrator());
+        }
+
+        foreach ($object->generalSecretaries as $generalSecretary) {
+            $this->historyHandler->createAgoraGeneralSecretaryAdd($generalSecretary, $object, $this->getAdministrator());
         }
     }
 
