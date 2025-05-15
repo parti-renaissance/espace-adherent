@@ -377,10 +377,10 @@ Feature:
             {
                 "metadata": {
                     "total_items": 3,
-                    "items_per_page": 2,
-                    "count": 2,
+                    "items_per_page": 50,
+                    "count": 3,
                     "current_page": 1,
-                    "last_page": 2
+                    "last_page": 1
                 },
                 "items": [
                     {
@@ -458,6 +458,44 @@ Feature:
                         "type_label": "Invitation",
                         "mode_label": "Email",
                         "status_label": "Adhésion finalisée"
+                    },
+                    {
+                        "email_address": null,
+                        "first_name": "Didier",
+                        "last_name": null,
+                        "civility": null,
+                        "nationality": null,
+                        "phone": null,
+                        "birthdate": null,
+                        "referred": null,
+                        "referrer": {
+                            "id": "@string@",
+                            "email_address": "@string@",
+                            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                            "gender": "female",
+                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
+                            "first_name": "Lucie",
+                            "last_name": "Olivera"
+                        },
+                        "identifier": "PAC125",
+                        "type": "invitation",
+                        "mode": "email",
+                        "status": "adhesion_finished",
+                        "uuid": "748e94b8-5316-4885-9f42-99b8aa037efa",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()",
+                        "post_address": {
+                            "address": null,
+                            "additional_address": null,
+                            "postal_code": null,
+                            "city": null,
+                            "city_name": null,
+                            "country": null,
+                            "region": null
+                        },
+                        "type_label": "Invitation",
+                        "mode_label": "Email",
+                        "status_label": "Adhésion finalisée"
                     }
                 ]
             }
@@ -469,7 +507,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 2,
-                    "items_per_page": 2,
+                    "items_per_page": 50,
                     "count": 2,
                     "current_page": 1,
                     "last_page": 1
@@ -572,9 +610,10 @@ Feature:
                     "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                     "first_name": "Lucie",
                     "last_name": "Olivera",
+                    "gender": "female",
                     "profile_image": "@string@.isUrl()",
                     "count_adhesion_finished": 2,
-                    "count_account_created": 0,
+                    "count_invitations": 2,
                     "count_reported": 0
                 },
                 {
@@ -582,9 +621,10 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
+                    "gender": "male",
                     "profile_image": null,
                     "count_adhesion_finished": 1,
-                    "count_account_created": 0,
+                    "count_invitations": 1,
                     "count_reported": 0
                 }
             ]

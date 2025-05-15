@@ -27,5 +27,5 @@ api_platform:
         extra_properties:
             standard_put: false
         pagination_items_per_page: 10
-        pagination_maximum_items_per_page: 30
+        pagination_maximum_items_per_page: 100
         pagination_client_items_per_page: true

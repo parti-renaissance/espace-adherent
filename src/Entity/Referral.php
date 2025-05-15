@@ -33,7 +33,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
+#[ApiFilter(InZoneOfScopeFilter::class)]
 #[ApiFilter(ReferralFilter::class, properties: ['referrer'])]
 #[ApiFilter(ReferralFilter::class, properties: ['referred'])]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'type' => 'exact'])]
@@ -41,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/referrals',
+            paginationItemsPerPage: 50,
             security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "referrals") or is_granted("RENAISSANCE_ADHERENT")'),
         ),
         new GetCollection(

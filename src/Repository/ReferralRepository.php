@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Adherent\Referral\StatusEnum;
+use App\Adherent\Referral\TypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneTagEnum;
@@ -214,20 +215,20 @@ class ReferralRepository extends ServiceEntityRepository
         $sql = <<<SQL
                 SELECT
                     adherent.public_id AS pid,
-                    adherent.uuid AS uuid,
-                    adherent.first_name AS first_name,
-                    adherent.last_name AS last_name,
+                    adherent.uuid,
+                    adherent.first_name,
+                    adherent.last_name,
+                    adherent.gender,
                     adherent.image_name AS profile_image,
                     COUNT(DISTINCT CASE WHEN referral.status = :status_finished THEN referral.id END) AS count_adhesion_finished,
-                    COUNT(DISTINCT CASE WHEN referral.status = :status_account_created THEN referral.id END) AS count_account_created,
+                    COUNT(DISTINCT CASE WHEN referral.type IN (:invitation_types) THEN referral.id END) AS count_invitations,
                     COUNT(DISTINCT CASE WHEN referral.status = :status_reported THEN referral.id END) AS count_reported
                 FROM referral
-                INNER JOIN adherents AS adherent
-                    ON referral.referrer_id = adherent.id
+                INNER JOIN adherents AS adherent ON referral.referrer_id = adherent.id
                 {$joins}
-                WHERE referral.status IN (:status_finished, :status_account_created, :status_reported)
+                WHERE adherent.id IS NOT NULL
                 {$filter}
-                GROUP BY adherent.id, adherent.uuid, adherent.first_name, adherent.last_name
+                GROUP BY adherent.id
                 ORDER BY count_adhesion_finished DESC
             SQL;
 
@@ -235,7 +236,10 @@ class ReferralRepository extends ServiceEntityRepository
             'status_finished' => StatusEnum::ADHESION_FINISHED->value,
             'status_account_created' => StatusEnum::ACCOUNT_CREATED->value,
             'status_reported' => StatusEnum::REPORTED->value,
+            'invitation_types' => [TypeEnum::INVITATION->value, TypeEnum::PREREGISTRATION->value],
         ];
+
+        $types['invitation_types'] = ArrayParameterType::STRING;
 
         return $this->getEntityManager()->getConnection()->executeQuery($sql, $parameters, $types)->fetchAllAssociative();
     }
