@@ -22,13 +22,22 @@ class AgoraMembershipAdmin extends AbstractAdmin
                     'search',
                 ],
                 'to_string_callback' => static function (Adherent $adherent): string {
-                    return \sprintf(
+                    $label = \sprintf(
                         '%s (%s) [%s]',
                         $adherent->getFullName(),
                         $adherent->getEmailAddress(),
-                        $adherent->getId()
+                        $adherent->getPublicId()
                     );
+
+                    if ($adherent->isRenaissanceAdherent()) {
+                        $label .= '<span class="label" style="background-color: #00205F;">Adhérent</span>';
+                    } else {
+                        $label .= '<span class="label" style="background-color: #73C0F1;">Sympathisant</span>';
+                    }
+
+                    return $label;
                 },
+                'safe_label' => true,
                 'model_manager' => $this->getModelManager(),
                 'btn_add' => false,
             ])
