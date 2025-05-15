@@ -5,18 +5,20 @@ namespace App\Admin;
 use App\AppCodeEnum;
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
+use App\Entity\Agora;
+use App\Entity\Committee;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AdherentAdmin extends AbstractAdherentAdmin
@@ -99,13 +101,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
             ->add('sandboxMode', BooleanFilter::class)
             ->add('committeeMembership.committee', CallbackFilter::class, [
                 'label' => 'Comité',
-                'field_type' => ModelAutocompleteType::class,
                 'show_filter' => true,
+                'field_type' => EntityType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => 'name',
+                    'class' => Committee::class,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
@@ -213,13 +212,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
             ])
             ->add('agoraMemberships.agora', CallbackFilter::class, [
                 'label' => 'Agora',
-                'field_type' => ModelAutocompleteType::class,
                 'show_filter' => true,
+                'field_type' => EntityType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => 'name',
+                    'class' => Agora::class,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {

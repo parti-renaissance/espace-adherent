@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Agora\AgoraMembershipHandler;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Agora;
@@ -22,6 +23,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class AgoraAdmin extends AbstractAdmin
 {
+    private ?AgoraMembershipHandler $agoraMembershipHandler = null;
     private ?UserActionHistoryHandler $historyHandler = null;
     private ?Security $security = null;
 
@@ -48,12 +50,6 @@ class AgoraAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('published', null, [
-                'label' => 'Publiée',
-            ])
-            ->add('maxMembersCount', null, [
-                'label' => 'Places',
-            ])
             ->add('president', null, [
                 'label' => 'Président',
                 'template' => 'admin/agora/list_president.html.twig',
@@ -62,17 +58,24 @@ class AgoraAdmin extends AbstractAdmin
                 'label' => 'Secrétaires Généraux',
                 'template' => 'admin/agora/list_general_secretaries.html.twig',
             ])
-            ->add('createdAt', null, [
-                'label' => 'Créée le',
-            ])
-            ->add('updatedAt', null, [
-                'label' => 'Modifiée le',
+            ->add('maxMembersCount', null, [
+                'label' => 'Membres',
+                'template' => 'admin/agora/list_members_count.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
                 ],
+            ])
+            ->add('published', null, [
+                'label' => 'Publiée',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créée le',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Modifiée le',
             ])
         ;
     }
@@ -105,7 +108,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                 ],
@@ -127,7 +130,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                 ],
@@ -184,7 +187,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                     'btn_add' => false,
@@ -203,7 +206,7 @@ class AgoraAdmin extends AbstractAdmin
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),
-                            $adherent->getId()
+                            $adherent->getPublicId()
                         );
                     },
                     'btn_add' => false,
@@ -256,6 +259,16 @@ class AgoraAdmin extends AbstractAdmin
                 $this->historyHandler->createAgoraMembershipAdd($membership->adherent, $object, $this->getAdministrator());
             }
         }
+
+        if ($object->president) {
+            $this->historyHandler->createAgoraPresidentAdd($object->president, $object, $this->getAdministrator());
+        }
+
+        foreach ($object->generalSecretaries as $generalSecretary) {
+            $this->historyHandler->createAgoraGeneralSecretaryAdd($generalSecretary, $object, $this->getAdministrator());
+        }
+
+        $this->handleManagersAsMembers($object);
     }
 
     protected function postUpdate(object $object): void
@@ -313,6 +326,22 @@ class AgoraAdmin extends AbstractAdmin
                 $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $this->getAdministrator());
             }
         }
+
+        $this->handleManagersAsMembers($object);
+    }
+
+    private function handleManagersAsMembers(Agora $agora): void
+    {
+        $president = $agora->president;
+        if ($president && !$this->agoraMembershipHandler->isMember($president, $agora)) {
+            $this->agoraMembershipHandler->add($president, $agora);
+        }
+
+        foreach ($agora->generalSecretaries as $generalSecretary) {
+            if (!$this->agoraMembershipHandler->isMember($generalSecretary, $agora)) {
+                $this->agoraMembershipHandler->add($generalSecretary, $agora);
+            }
+        }
     }
 
     public function prepareAdherentPresidentCallback(AbstractAdmin $admin): void
@@ -334,7 +363,13 @@ class AgoraAdmin extends AbstractAdmin
     }
 
     #[Required]
-    public function setContactHandler(UserActionHistoryHandler $historyHandler): void
+    public function setAgoraMembershipHandler(AgoraMembershipHandler $agoraMembershipHandler): void
+    {
+        $this->agoraMembershipHandler = $agoraMembershipHandler;
+    }
+
+    #[Required]
+    public function setUserActionHistoryHandler(UserActionHistoryHandler $historyHandler): void
     {
         $this->historyHandler = $historyHandler;
     }
