@@ -16,10 +16,19 @@ class ScoreboardController extends AbstractController
     ): Response {
         $assembly = $user->getAssemblyZone();
 
+        $prepareRowCallback = static function (array $row) use ($user) {
+            if ($row['id'] === $user->getId()) {
+                $row['is_current_user'] = true;
+            }
+            unset($row['id']);
+
+            return $row;
+        };
+
         return $this->json([
-            'global' => $referralRepository->getScoreboard(),
+            'global' => array_map($prepareRowCallback, $referralRepository->getScoreboard()),
             'global_rank' => $referralRepository->getReferrerRank($user->getId()),
-            'assembly' => $referralRepository->getScoreboard($assembly),
+            'assembly' => array_map($prepareRowCallback, $referralRepository->getScoreboard($assembly)),
             'assembly_rank' => $referralRepository->getReferrerRank($user->getId(), $assembly),
         ]);
     }

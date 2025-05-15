@@ -344,7 +344,8 @@ Feature:
                         "first_name": "Jacques",
                         "last_name": "P.",
                         "assembly": "Paris (75)",
-                        "position": 2
+                        "position": 2,
+                        "is_current_user": true
                     }
                 ],
                 "global_rank": 2,
@@ -361,7 +362,8 @@ Feature:
                         "first_name": "Jacques",
                         "last_name": "P.",
                         "assembly": "Paris (75)",
-                        "position": 2
+                        "position": 2,
+                        "is_current_user": true
                     }
                 ],
                 "assembly_rank": 2
