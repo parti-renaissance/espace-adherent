@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Agora\AgoraMembershipHandler;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Agora;
@@ -22,6 +23,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class AgoraAdmin extends AbstractAdmin
 {
+    private ?AgoraMembershipHandler $agoraMembershipHandler = null;
     private ?UserActionHistoryHandler $historyHandler = null;
     private ?Security $security = null;
 
@@ -265,6 +267,8 @@ class AgoraAdmin extends AbstractAdmin
         foreach ($object->generalSecretaries as $generalSecretary) {
             $this->historyHandler->createAgoraGeneralSecretaryAdd($generalSecretary, $object, $this->getAdministrator());
         }
+
+        $this->handleManagersAsMembers($object);
     }
 
     protected function postUpdate(object $object): void
@@ -322,6 +326,22 @@ class AgoraAdmin extends AbstractAdmin
                 $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $this->getAdministrator());
             }
         }
+
+        $this->handleManagersAsMembers($object);
+    }
+
+    private function handleManagersAsMembers(Agora $agora): void
+    {
+        $president = $agora->president;
+        if ($president && !$this->agoraMembershipHandler->isMember($president, $agora)) {
+            $this->agoraMembershipHandler->add($president, $agora);
+        }
+
+        foreach ($agora->generalSecretaries as $generalSecretary) {
+            if (!$this->agoraMembershipHandler->isMember($generalSecretary, $agora)) {
+                $this->agoraMembershipHandler->add($generalSecretary, $agora);
+            }
+        }
     }
 
     public function prepareAdherentPresidentCallback(AbstractAdmin $admin): void
@@ -343,7 +363,13 @@ class AgoraAdmin extends AbstractAdmin
     }
 
     #[Required]
-    public function setContactHandler(UserActionHistoryHandler $historyHandler): void
+    public function setAgoraMembershipHandler(AgoraMembershipHandler $agoraMembershipHandler): void
+    {
+        $this->agoraMembershipHandler = $agoraMembershipHandler;
+    }
+
+    #[Required]
+    public function setUserActionHistoryHandler(UserActionHistoryHandler $historyHandler): void
     {
         $this->historyHandler = $historyHandler;
     }
