@@ -31,8 +31,7 @@ class AgoraMembershipAdmin extends AbstractAdmin
 
                     if ($adherent->isRenaissanceAdherent()) {
                         $label .= '<span class="label" style="background-color: #00205F;">Adhérent</span>';
-                    }
-                    if ($adherent->isRenaissanceSympathizer()) {
+                    } else {
                         $label .= '<span class="label" style="background-color: #73C0F1;">Sympathisant</span>';
                     }
 
