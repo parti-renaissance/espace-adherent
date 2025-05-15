@@ -169,11 +169,19 @@ class AdherentAdmin extends AbstractAdherentAdmin
                         ->innerJoin('session_push_subscription.client', 'session_push_subscription_client', Join::WITH, 'session_push_subscription_client.code = :session_client_code')
                         ->setParameter('subscription_push_filter_status', SessionStatusEnum::ACTIVE)
                         ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
-                        ->andWhere('session_push_subscription.unsubscribedAt '.($value->getValue() ? 'IS NULL' : 'IS NOT NULL'))
                     ;
 
                     if ($value->getValue()) {
-                        $qb->innerJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL');
+                        $qb
+                            ->innerJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
+                            ->andWhere('session_push_subscription.unsubscribedAt IS NULL')
+                        ;
+                    } else {
+                        $qb
+                            ->leftJoin("$alias.appSessions", 'session_push_subscription2', Join::WITH, 'session_push_subscription2.status = :subscription_push_filter_status AND session_push_subscription2.unsubscribedAt IS NULL')
+                            ->leftJoin('session_push_subscription2.pushTokenLinks', 'push_token_link2', Join::WITH, 'push_token_link2.unsubscribedAt IS NULL')
+                            ->andWhere('session_push_subscription2 IS NULL OR push_token_link2 IS NULL')
+                        ;
                     }
 
                     return true;
