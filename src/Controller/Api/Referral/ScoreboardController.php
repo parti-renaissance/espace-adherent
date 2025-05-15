@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Repository\ReferralRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ScoreboardController extends AbstractController
@@ -16,7 +17,11 @@ class ScoreboardController extends AbstractController
     ): Response {
         $assembly = $user->getAssemblyZone();
 
-        $prepareRowCallback = static function (array $row) use ($user) {
+        $prepareRowCallback = function (array $row) use ($user) {
+            if (!empty($row['profile_image'])) {
+                $row['profile_image'] = $this->generateUrl('asset_url', ['path' => \sprintf('images/profile/%s', $row['profile_image'])], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
+
             if ($row['id'] === $user->getId()) {
                 $row['is_current_user'] = true;
             }

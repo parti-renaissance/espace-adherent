@@ -336,6 +336,7 @@ Feature:
                         "referrals_count": 2,
                         "first_name": "Lucie",
                         "last_name": "O.",
+                        "profile_image": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                         "assembly": "Paris (75)",
                         "position": 1
                     },
@@ -343,6 +344,7 @@ Feature:
                         "referrals_count": 1,
                         "first_name": "Jacques",
                         "last_name": "P.",
+                        "profile_image": null,
                         "assembly": "Paris (75)",
                         "position": 2,
                         "is_current_user": true
@@ -354,6 +356,7 @@ Feature:
                         "referrals_count": 2,
                         "first_name": "Lucie",
                         "last_name": "O.",
+                        "profile_image": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                         "assembly": "Paris (75)",
                         "position": 1
                     },
@@ -361,6 +364,7 @@ Feature:
                         "referrals_count": 1,
                         "first_name": "Jacques",
                         "last_name": "P.",
+                        "profile_image": null,
                         "assembly": "Paris (75)",
                         "position": 2,
                         "is_current_user": true
