@@ -86,7 +86,7 @@ class AppSession
 
     public function isSubscribed(): bool
     {
-        return $this->isActive() && \count($this->findSubscribedPushTokenLinks()) > 0;
+        return $this->isActive() && null === $this->unsubscribedAt && \count($this->findSubscribedPushTokenLinks()) > 0;
     }
 
     public function __toString(): string
