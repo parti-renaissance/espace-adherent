@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['committee' => CommitteeAdherentMandate::class, 'elected_representative' => ElectedRepresentativeAdherentMandate::class])]
 #[ORM\Entity(repositoryClass: AdherentMandateRepository::class)]
+#[ORM\Index(columns: ['type'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'adherent_mandate')]
 abstract class AbstractAdherentMandate implements AdherentMandateInterface

@@ -55,7 +55,9 @@ trait EntityPersonNameTrait
     #[Groups(['export', 'cause_read'])]
     public function getLastNameInitial(bool $padWithDot = true): string
     {
-        $normalized = self::normalize($this->lastName);
+        if (!$normalized = self::normalize($this->lastName)) {
+            return '';
+        }
 
         $initial = strtoupper($normalized[0]);
 

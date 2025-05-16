@@ -14,7 +14,6 @@ use App\Admin\Filter\AdherentTagFilter;
 use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\StaticAdherentTagFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Committee\CommitteeMembershipManager;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
@@ -22,7 +21,6 @@ use App\Entity\AdherentStaticLabel;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Administrator;
 use App\Entity\AgoraMembership;
-use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -31,7 +29,6 @@ use App\Form\AdherentMandateType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
-use App\Form\EventListener\CommitteeMembershipListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\Form\ReCountryType;
@@ -58,8 +55,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -96,7 +93,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     protected FranceCities $franceCities;
     private TranslatorInterface $translator;
     private TagTranslator $tagTranslator;
-    private CommitteeMembershipManager $committeeMembershipManager;
     private Security $security;
 
     /**
@@ -298,11 +294,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ])
                     ->end()
                     ->with('Comité local', ['class' => 'col-md-6'])
-                        ->add('committee', ModelType::class, [
-                            'label' => 'Comité',
-                            'class' => Committee::class,
+                        ->add('committeeMembership', AdminType::class, [
+                            'label' => false,
                             'required' => false,
-                            'mapped' => false,
                         ])
                     ->end()
                     ->with('Adresse', ['class' => 'col-md-6'])
@@ -495,7 +489,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
         if ($this->isGrantedAdherentAdminRole()) {
             $form->getFormBuilder()
-                ->addEventSubscriber(new CommitteeMembershipListener($this->committeeMembershipManager))
                 ->addEventSubscriber(new RevokeManagedAreaSubscriber())
                 ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                     /** @var Adherent $adherent */
@@ -939,11 +932,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         }
     }
 
-    protected function preUpdate(object $object): void
-    {
-        $this->dispatcher->dispatch(new UserEvent($this->beforeUpdate), UserEvents::USER_BEFORE_UPDATE);
-    }
-
     /**
      * @param Adherent $object
      */
@@ -1142,12 +1130,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         }];
     }
 
-    #[Required]
-    public function setCommitteeMembershipManager(CommitteeMembershipManager $committeeMembershipManager): void
-    {
-        $this->committeeMembershipManager = $committeeMembershipManager;
-    }
-
     protected function isGrantedAdherentAdminRole(): bool
     {
         return $this->isGranted('ROLE_ADMIN_ADHERENT_ADHERENTS');
@@ -1167,6 +1149,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 '_zone_based_role_zone',
                 '_animator_committees',
                 '_static_labels',
+                '_subscription_type',
             )
             ->leftJoin($alias.'.staticLabels', '_static_labels')
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
@@ -1175,6 +1158,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
             ->leftJoin($alias.'.animatorCommittees', '_animator_committees')
+            ->leftJoin($alias.'.subscriptionTypes', '_subscription_type')
         ;
 
         return $query;
