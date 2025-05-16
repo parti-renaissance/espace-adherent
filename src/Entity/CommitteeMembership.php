@@ -321,4 +321,9 @@ class CommitteeMembership implements UuidEntityInterface
             CommitteeMembershipTriggerEnum::ADMIN,
         ], true);
     }
+
+    public function setCommittee(Committee $committee): void
+    {
+        $this->committee = $committee;
+    }
 }

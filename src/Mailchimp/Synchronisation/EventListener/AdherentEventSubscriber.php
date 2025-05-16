@@ -4,6 +4,8 @@ namespace App\Mailchimp\Synchronisation\EventListener;
 
 use App\Adherent\Certification\Events as AdherentCertificationEvents;
 use App\Committee\Event\CommitteeMembershipEventInterface;
+use App\History\AdministratorActionEvent;
+use App\History\AdministratorActionEvents;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Membership\Event\UserEvent;
@@ -26,6 +28,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_VALIDATED => 'onUserValidated',
 
             UserEvents::USER_BEFORE_UPDATE => 'onBeforeUpdate',
+            AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE => 'onBeforeUpdateFromAdmin',
             UserEvents::USER_UPDATED => 'onAfterUpdate',
             UserEvents::USER_UPDATE_INTERESTS => 'onAfterUpdate',
             UserEvents::USER_DELETED => 'onDelete',
@@ -40,6 +43,11 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     public function onBeforeUpdate(UserEvent $event): void
     {
         $this->adherentEmail = $event->getAdherent()->getEmailAddress();
+    }
+
+    public function onBeforeUpdateFromAdmin(AdministratorActionEvent $event): void
+    {
+        $this->adherentEmail = $event->adherent->getEmailAddress();
     }
 
     public function onAfterUpdate(UserEvent $event): void

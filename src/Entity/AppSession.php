@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity(repositoryClass: AppSessionRepository::class)]
+#[ORM\Index(fields: ['status'])]
+#[ORM\Index(fields: ['appSystem'])]
 class AppSession
 {
     use EntityIdentityTrait;

@@ -5,6 +5,8 @@ namespace App\Adherent\Listener;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Reporting\DeclaredMandateHistory;
+use App\History\AdministratorActionEvent;
+use App\History\AdministratorActionEvents;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +24,7 @@ class DeclaredMandateChangeListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE => 'onBeforeUpdateFromAdmin',
             UserEvents::USER_BEFORE_UPDATE => 'beforeUpdate',
             UserEvents::USER_UPDATED => 'afterUpdate',
         ];
@@ -30,6 +33,11 @@ class DeclaredMandateChangeListener implements EventSubscriberInterface
     public function beforeUpdate(UserEvent $event): void
     {
         $this->oldDeclaredMandates = $event->getAdherent()->getMandates();
+    }
+
+    public function onBeforeUpdateFromAdmin(AdministratorActionEvent $event): void
+    {
+        $this->oldDeclaredMandates = $event->adherent->getMandates();
     }
 
     public function afterUpdate(UserEvent $event): void
