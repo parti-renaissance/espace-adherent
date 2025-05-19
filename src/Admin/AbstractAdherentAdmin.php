@@ -59,7 +59,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -298,12 +297,16 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ])
                     ->end()
                     ->with('Comité local', ['class' => 'col-md-6'])
-                        ->add('committee', ModelType::class, [
-                            'label' => 'Comité',
-                            'class' => Committee::class,
+                        ->add('committee', ModelAutocompleteType::class, [
+                            'label' => false,
                             'required' => false,
                             'mapped' => false,
-                        ])
+                            'minimum_input_length' => 1,
+                            'items_per_page' => 30,
+                            'property' => 'name',
+                            'class' => Committee::class,
+                            'req_params' => ['_sonata_admin' => 'app.admin.committee_membership'],
+                        ], ['admin_code' => 'app.admin.committee'])
                     ->end()
                     ->with('Adresse', ['class' => 'col-md-6'])
                         ->add('postAddress.address', TextType::class, ['label' => 'Rue'])
@@ -939,11 +942,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         }
     }
 
-    protected function preUpdate(object $object): void
-    {
-        $this->dispatcher->dispatch(new UserEvent($this->beforeUpdate), UserEvents::USER_BEFORE_UPDATE);
-    }
-
     /**
      * @param Adherent $object
      */
@@ -1160,23 +1158,27 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
         $query
             ->addSelect(
-                '_adherent_mandate',
-                '_committee_membership',
-                '_agora_membership',
+                '_static_labels',
                 '_delegated_access',
                 '_zone_based_role',
-                '_zone_based_role_zone',
+                '_agora_membership',
+                '_agora_president',
+                '_agora_general_secretary',
+                '_adherent_mandate',
+                '_committee_membership',
                 '_animator_committees',
-                '_static_labels',
+                '_subscription_type',
             )
             ->leftJoin($alias.'.staticLabels', '_static_labels')
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
             ->leftJoin($alias.'.committeeMembership', '_committee_membership')
             ->leftJoin($alias.'.agoraMemberships', '_agora_membership')
+            ->leftJoin($alias.'.presidentOfAgoras', '_agora_president')
+            ->leftJoin($alias.'.generalSecretaryOfAgoras', '_agora_general_secretary')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
-            ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
             ->leftJoin($alias.'.animatorCommittees', '_animator_committees')
+            ->leftJoin($alias.'.subscriptionTypes', '_subscription_type')
         ;
 
         return $query;

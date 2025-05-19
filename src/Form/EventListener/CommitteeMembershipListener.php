@@ -57,8 +57,12 @@ class CommitteeMembershipListener implements EventSubscriberInterface
         /** @var Committee|null $committee */
         $committee = $form->get('committee')->getData();
 
-        if ($committee && $committeeBefore !== $committee) {
-            $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::ADMIN);
+        if ($committee) {
+            if ($committeeBefore !== $committee) {
+                $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::ADMIN);
+            }
+        } elseif ($membershipBefore) {
+            $this->committeeMembershipManager->unfollowCommittee($membershipBefore);
         }
     }
 }

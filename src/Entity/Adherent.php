@@ -1035,7 +1035,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
     }
 
-    public function findAppSessions(Client $client, bool $activeOnly, array $systems): array
+    public function findAppSessions(Client $client, bool $activeOnly): array
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('client', $client))
@@ -1047,10 +1047,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($activeOnly) {
             $criteria->andWhere($criteria::expr()->eq('status', SessionStatusEnum::ACTIVE));
-        }
-
-        if ($systems) {
-            $criteria->andWhere($criteria::expr()->in('appSystem', $systems));
         }
 
         return $this->appSessions->matching($criteria)->toArray();
