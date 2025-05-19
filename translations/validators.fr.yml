@@ -479,6 +479,7 @@ adherent.zone_based_role.duplicate_type: Adhérent ne doit pas avoir plusieurs r
 adherent.zone_based_role.invalid_zone_type: Le type de zone "{{zone_type}}" avec le code "{{zone_code}}" n'est pas autorisé pour le rôle "{{role_type}}".
 adherent.zone_based_role.empty_zone: Aucune zone n'a été sélectionnée pour le rôle "{{role_type}}".
 adherent.zone_based_role.limit_zone: Vous ne pouvez assigner que {{limit}} zone(s) pour ce type de rôle.
+adherent.zone_based_role.zone_duplicate: L'adhérent <a href="{{adherent_edit_url}}">{{adherent_full_name}}</a> a déjà le rôle "{{role_type}}" pour la zone "{{zone_name}} ({{zone_code}})".
 
 news.link_label.required: Le label est obligatoire.
 

@@ -7,6 +7,7 @@ use App\Admin\AdherentZoneBasedRoleAdmin;
 use App\Entity\AdherentZoneBasedRole;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,6 +31,10 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'admin_code' => AdherentZoneBasedRoleAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/zone_based_role_autocomplete.html.twig',
                 'minimum_input_length' => 1,
+            ])
+            ->add('hidden', CheckboxType::class, [
+                'label' => 'Rôle caché',
+                'required' => false,
             ])
         ;
     }

@@ -4,18 +4,28 @@ namespace App\Validator;
 
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\AdherentZoneBasedRole;
+use App\Repository\AdherentZoneBasedRoleRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ZoneBasedRolesValidator extends ConstraintValidator
 {
     private const LIMITS = [
         ScopeEnum::LEGISLATIVE_CANDIDATE => 1,
     ];
+
+    public function __construct(
+        private readonly AdherentZoneBasedRoleRepository $adherentZoneBasedRoleRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
+    }
 
     public function validate($value, Constraint $constraint): void
     {
@@ -102,6 +112,26 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                         ->setParameter('{{zone_type}}', $zone->getType())
                         ->setParameter('{{zone_code}}', $zone->getCode())
                         ->setParameter('{{role_type}}', $role->getType())
+                        ->addViolation()
+                    ;
+
+                    return;
+                }
+
+                if (!$role->isHidden() && $zoneDuplicate = $this->adherentZoneBasedRoleRepository->findZoneDuplicate($role, $zone)) {
+                    $adherent = $zoneDuplicate->getAdherent();
+
+                    $this->context
+                        ->buildViolation($constraint->zoneDuplicateMessage)
+                        ->atPath('['.$key.'].zones')
+                        ->setParameter('{{zone_code}}', $zone->getCode())
+                        ->setParameter('{{zone_name}}', $zone->getName())
+                        ->setParameter('{{role_type}}', $this->translator->trans('role.'.$role->getType()))
+                        ->setParameter('{{adherent_full_name}}', $adherent->getFullName())
+                        ->setParameter('{{adherent_edit_url}}', $this->urlGenerator->generate(
+                            'admin_app_adherent_edit',
+                            ['id' => $adherent->getId()],
+                        ))
                         ->addViolation()
                     ;
 

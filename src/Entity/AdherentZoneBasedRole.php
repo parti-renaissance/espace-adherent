@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Put;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
+use App\Repository\AdherentZoneBasedRoleRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -38,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     validationContext: ['groups' => ['Default', 'zone_based_role_write']],
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'circonscriptions')"
 )]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AdherentZoneBasedRoleRepository::class)]
 class AdherentZoneBasedRole
 {
     use EntityIdentityTrait;
@@ -56,6 +57,9 @@ class AdherentZoneBasedRole
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'zoneBasedRoles')]
     private ?Adherent $adherent = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $hidden = false;
 
     public function __construct(?string $type = null)
     {
@@ -128,5 +132,15 @@ class AdherentZoneBasedRole
     public function setAdherent(Adherent $adherent): void
     {
         $this->adherent = $adherent;
+    }
+
+    public function setHidden(bool $hidden): void
+    {
+        $this->hidden = $hidden;
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->hidden;
     }
 }

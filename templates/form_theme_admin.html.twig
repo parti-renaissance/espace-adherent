@@ -954,3 +954,15 @@
         </div>
     </div>
 {% endblock %}
+
+{% block form_errors -%}
+    {% if errors|length > 0 %}
+        {% if not form.parent %}<div class="alert alert-danger">{% endif %}
+        <ul class="list-unstyled">
+            {% for error in errors %}
+                <li><i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ error.message|raw }}</li>
+            {% endfor %}
+        </ul>
+        {% if not form.parent %}</div>{% endif %}
+    {% endif %}
+{%- endblock form_errors %}
