@@ -1162,6 +1162,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->addSelect(
                 '_adherent_mandate',
                 '_committee_membership',
+                '_agora_membership',
                 '_delegated_access',
                 '_zone_based_role',
                 '_zone_based_role_zone',
@@ -1171,6 +1172,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->leftJoin($alias.'.staticLabels', '_static_labels')
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
             ->leftJoin($alias.'.committeeMembership', '_committee_membership')
+            ->leftJoin($alias.'.agoraMemberships', '_agora_membership')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')

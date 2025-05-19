@@ -1,0 +1,72 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% macro display_zone(zone) %}
+    {% if zone %}
+        <a href="{{ path('admin_app_adherent_list', {filter: {zones: {value: [zone.id]}}}) }}" class="sonata-action-element">
+            {{ zone }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
+{% macro display_committee(committee) %}
+    {% if committee %}
+        <a href="{{ path('admin_app_adherent_list', {filter: {committeeMembership__committee: {value: committee.id}}}) }}" class="sonata-action-element">
+            {{ committee }}
+        </a>
+
+        {% if is_granted('ROLE_APP_ADMIN_COMMITTEE_EDIT') %}
+            <a href="{{ path('admin_app_committee_edit', {id: committee.id}) }}" title="Comité">
+                <i class="fa fa-external-link"></i>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% macro display_agora(agora) %}
+    {% if agora %}
+        <a href="{{ path('admin_app_adherent_list', {filter: {agoraMemberships__agora: {value: agora.id}}}) }}" class="sonata-action-element">
+            {{ agora }}
+        </a>
+
+        {% if is_granted('ROLE_ADMIN_TERRITOIRES_AGORAS') %}
+            <a href="{{ path('admin_app_agora_edit', {id: agora.id}) }}" title="Agora">
+                <i class="fa fa-external-link"></i>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% block field %}
+    {% set zones = [
+        object.getAssemblyZone(),
+        object.getZonesOfType(constant('App\\Entity\\Geo\\Zone::DISTRICT'), true)|first,
+        object.isForeignResident()
+            ? object.getZonesOfType(constant('App\\Entity\\Geo\\Zone::COUNTRY'), true)|first
+            : object.getZonesOfType(constant('App\\Entity\\Geo\\Zone::CITY'), true)|first,
+    ]|filter(zone => zone is not null and zone is not same as(false)) %}
+
+    {% set committee_membership = object.getCommitteeMembership() %}
+    {% set committee = committee_membership ? committee_membership.getCommittee() : null %}
+
+    {% set agora_memberships = object.agoraMemberships %}
+
+    <ul style="padding-left: 10px;">
+        {% for zone in zones %}
+            <li style="white-space: nowrap;">
+                {{ _self.display_zone(zone) }}
+            </li>
+        {% endfor %}
+
+        {% if committee %}
+            <li>
+                {{ _self.display_committee(committee) }}
+            </li>
+        {% endif %}
+
+        {% for agora_membership in agora_memberships %}
+            <li>
+                {{ _self.display_agora(agora_membership.agora) }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

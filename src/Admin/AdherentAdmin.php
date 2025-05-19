@@ -252,29 +252,18 @@ class AdherentAdmin extends AbstractAdherentAdmin
         parent::configureListFields($list);
 
         $list
-            ->add('postAddress', null, [
-                'label' => 'Ville (CP) Pays',
-                'template' => 'admin/adherent/list_postaddress.html.twig',
-                'header_style' => 'min-width: 75px',
-            ])
-            ->add('committee', null, [
-                'label' => 'Comité',
+            ->add('_zones', null, [
+                'label' => 'Zone/Instance',
                 'virtual_field' => true,
-                'template' => 'admin/adherent/list_committee.html.twig',
-            ])
-            ->add('agoraMemberships', null, [
-                'label' => 'Agora',
-                'virtual_field' => true,
-                'template' => 'admin/adherent/list_agora_memberships.html.twig',
+                'template' => 'admin/adherent/list_zones.html.twig',
+                'header_style' => 'min-width: 125px',
             ])
         ;
 
         $list->reorder([
             'publicId',
             'lastName',
-            'postAddress',
-            'committee',
-            'agoraMemberships',
+            '_zones',
             'type',
             'allMandates',
             'subscriptionStatus',
