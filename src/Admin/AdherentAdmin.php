@@ -6,6 +6,7 @@ use App\AppCodeEnum;
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\Agora;
+use App\Entity\AppSession;
 use App\Entity\Committee;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -165,7 +166,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     }
 
                     $qb
-                        ->innerJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :subscription_push_filter_status')
+                        ->innerJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :subscription_push_filter_status AND session_push_subscription.appSystem IS NOT NULL')
                         ->innerJoin('session_push_subscription.client', 'session_push_subscription_client', Join::WITH, 'session_push_subscription_client.code = :session_client_code')
                         ->setParameter('subscription_push_filter_status', SessionStatusEnum::ACTIVE)
                         ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
@@ -177,12 +178,15 @@ class AdherentAdmin extends AbstractAdherentAdmin
                             ->andWhere('session_push_subscription.unsubscribedAt IS NULL')
                         ;
                     } else {
-                        $qb
-                            ->leftJoin("$alias.appSessions", 'session_push_subscription2', Join::WITH, 'session_push_subscription2.id != session_push_subscription.id AND session_push_subscription2.status = :subscription_push_filter_status AND session_push_subscription2.unsubscribedAt IS NULL')
-                            ->leftJoin('session_push_subscription2.client', 'session_push_subscription_client2', Join::WITH, 'session_push_subscription_client2.code = :session_client_code')
-                            ->leftJoin('session_push_subscription2.pushTokenLinks', 'push_token_link2', Join::WITH, 'push_token_link2.unsubscribedAt IS NULL')
-                            ->andWhere('session_push_subscription_client2 IS NULL OR push_token_link2 IS NULL')
-                        ;
+                        $qb->andWhere(\sprintf("NOT EXISTS (
+                            SELECT 1 FROM %s s
+                            JOIN s.client c
+                            JOIN s.pushTokenLinks p
+                            WHERE s.adherent = $alias
+                            AND s.status = :subscription_push_filter_status
+                            AND c.code = :session_client_code
+                            AND p.unsubscribedAt IS NULL
+                        )", AppSession::class));
                     }
 
                     return true;
