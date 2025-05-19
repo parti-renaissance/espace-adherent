@@ -7,6 +7,8 @@ use App\Committee\CommitteeManager;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\PostAddress;
+use App\History\AdministratorActionEvent;
+use App\History\AdministratorActionEvents;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -26,7 +28,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
     public static function getSubscribedEvents(): array
     {
         return [
-            UserEvents::USER_BEFORE_UPDATE => 'onBeforeUpdate',
+            AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE => 'onBeforeUpdateFromAdmin',
             UserEvents::USER_UPDATED => 'onAfterUpdate',
             UserEvents::USER_VALIDATED => 'onAfterUpdate',
         ];
@@ -35,6 +37,11 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
     public function onBeforeUpdate(UserEvent $event): void
     {
         $this->beforeAddress = clone $event->getAdherent()->getPostAddress();
+    }
+
+    public function onBeforeUpdateFromAdmin(AdministratorActionEvent $event): void
+    {
+        $this->beforeAddress = clone $event->adherent->getPostAddress();
     }
 
     public function onAfterUpdate(UserEvent $event): void

@@ -28,8 +28,10 @@
         {% endif %}
     {% endif %}
 
+    {% set active_sessions = object.findAppSessions(get_vox_client(), true) %}
+
     {% set system_enum = enum('App\\AppSession\\SystemEnum') %}
-    {% set active_web_session = object.findAppSessions(get_vox_client(), true, [system_enum.WEB])|first %}
+    {% set active_web_session = active_sessions|filter(session => session.appSystem == system_enum.WEB)|first %}
     {% if active_web_session %}
         {% if active_web_session.isSubscribed() %}
             {{ _self.display_row('laptop', 'Abonné', colors.green) }}
@@ -38,7 +40,7 @@
         {% endif %}
     {% endif %}
 
-    {% set active_mobile_session = object.findAppSessions(get_vox_client(), true, [system_enum.IOS, system_enum.ANDROID])|first %}
+    {% set active_mobile_session = active_sessions|filter(session => session.appSystem in [system_enum.IOS, system_enum.ANDROID])|first %}
     {% if active_mobile_session %}
         {% if active_mobile_session.isSubscribed() %}
             {{ _self.display_row('smartphone', 'Abonné', colors.green) }}
