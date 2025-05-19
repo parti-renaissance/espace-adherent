@@ -20,6 +20,11 @@ class ZoneBasedRolesValidator extends ConstraintValidator
         ScopeEnum::LEGISLATIVE_CANDIDATE => 1,
     ];
 
+    private const TYPES_DUPLICATES_ALLOWED = [
+        ScopeEnum::CORRESPONDENT,
+        ScopeEnum::PROCURATIONS_MANAGER,
+    ];
+
     public function __construct(
         private readonly AdherentZoneBasedRoleRepository $adherentZoneBasedRoleRepository,
         private readonly TranslatorInterface $translator,
@@ -118,7 +123,11 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                     return;
                 }
 
-                if (!$role->isHidden() && $zoneDuplicate = $this->adherentZoneBasedRoleRepository->findZoneDuplicate($role, $zone)) {
+                if (
+                    !$role->isHidden()
+                    && !\in_array($role->getType(), self::TYPES_DUPLICATES_ALLOWED, true)
+                    && $zoneDuplicate = $this->adherentZoneBasedRoleRepository->findZoneDuplicate($role, $zone)
+                ) {
                     $adherent = $zoneDuplicate->getAdherent();
 
                     $this->context
@@ -128,6 +137,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                         ->setParameter('{{zone_name}}', $zone->getName())
                         ->setParameter('{{role_type}}', $this->translator->trans('role.'.$role->getType()))
                         ->setParameter('{{adherent_full_name}}', $adherent->getFullName())
+                        ->setParameter('{{adherent_public_id}}', $adherent->getPublicId())
                         ->setParameter('{{adherent_edit_url}}', $this->urlGenerator->generate(
                             'admin_app_adherent_edit',
                             ['id' => $adherent->getId()],
