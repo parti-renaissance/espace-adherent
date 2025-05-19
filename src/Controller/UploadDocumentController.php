@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -110,11 +111,12 @@ class UploadDocumentController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/documents-partages/{uuid}/{filename}', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_download_user_document', methods: ['GET'])]
+    #[Route('/documents-partages/{uuid}/{filename}', name: 'app_download_user_document', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function downloadDocumentAction(
         UserDocument $document,
         string $filename,
         UserDocumentManager $manager,
+        MimeTypesInterface $mimeTypes,
     ): Response {
         if ($filename !== $document->getOriginalName()) {
             throw $this->createNotFoundException('Document not found');
@@ -126,14 +128,17 @@ class UploadDocumentController extends AbstractController
             throw $this->createNotFoundException('Document not found', $e);
         }
 
+        $mimeType = $mimeTypes->getMimeTypes($document->getExtension())[0] ?? 'application/octet-stream';
+
+        $dispositionType = \in_array($mimeType, ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml'], true)
+            ? HeaderUtils::DISPOSITION_INLINE
+            : HeaderUtils::DISPOSITION_ATTACHMENT;
+
         $response = new Response($documentContent);
+        $response->headers->set('Content-Type', $mimeType);
         $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_ATTACHMENT,
-            \sprintf(
-                '%s.%s',
-                Urlizer::urlize($document->getFilename()),
-                $document->getExtension()
-            )
+            $dispositionType,
+            \sprintf('%s.%s', Urlizer::urlize($document->getFilename()), $document->getExtension())
         ));
 
         return $response;
