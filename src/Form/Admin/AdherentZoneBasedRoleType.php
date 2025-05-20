@@ -35,6 +35,7 @@ class AdherentZoneBasedRoleType extends AbstractType
             ->add('hidden', CheckboxType::class, [
                 'label' => 'Rôle caché',
                 'required' => false,
+                'help' => "Les rôles cachés ne sont pas visibles sur l'espace militant et l'espace cadre et permettent de contourner la contrainte d'unicité rôle/zone attribuée.",
             ])
         ;
     }
