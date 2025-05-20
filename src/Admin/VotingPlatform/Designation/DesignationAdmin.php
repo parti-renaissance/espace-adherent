@@ -148,6 +148,7 @@ class DesignationAdmin extends AbstractAdmin
                         'required' => false,
                         'btn_add' => 'Créer',
                     ])
+                    ->add('enableVoteQuestionsPreview', null, ['label' => 'Afficher le questionnaire avant le vote'])
                 ->end()
             ->end()
             ->tab('Candidatures 🎎')

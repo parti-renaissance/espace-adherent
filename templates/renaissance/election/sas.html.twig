@@ -7,9 +7,11 @@
 {% endblock %}
 
 {% block sub_content %}
-    {% if designation.poll %}
-        {{ include('renaissance/election/partial/_poll.html.twig', {poll: designation.poll}) }}
-    {% elseif designation.getCandidacyPools()|length %}
-        {{ include('renaissance/election/partial/_candidacy_pools.html.twig', {pools: designation.getCandidacyPools()}) }}
+    {% if designation.votePeriodStarted() or designation.enableVoteQuestionsPreview %}
+        {% if designation.poll %}
+            {{ include('renaissance/election/partial/_poll.html.twig', {poll: designation.poll}) }}
+        {% elseif designation.getCandidacyPools()|length %}
+            {{ include('renaissance/election/partial/_candidacy_pools.html.twig', {pools: designation.getCandidacyPools()}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}

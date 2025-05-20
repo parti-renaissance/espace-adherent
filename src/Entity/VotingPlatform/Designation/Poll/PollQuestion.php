@@ -24,6 +24,9 @@ class PollQuestion
     #[ORM\Column(length: 500)]
     public ?string $content = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $description = null;
+
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'questions')]
     public ?Poll $poll = null;

@@ -798,6 +798,7 @@
             }
 
             window.simpleMdeInstances['{{ form.vars.id }}'] = new SimpleMDE({
+                forceSync: true,
                 element: document.querySelector('#{{ form.vars.id }}'),
                 spellChecker: false,
                 renderingConfig: {

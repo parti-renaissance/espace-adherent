@@ -304,7 +304,7 @@ class ConfigureCommand extends Command
         $election = $this->createNewElection($designation);
 
         foreach ($designation->poll->getQuestions() as $question) {
-            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content));
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content, $question->description));
             $election->addElectionPool($pool);
 
             foreach ($question->getChoices() as $choice) {
@@ -346,7 +346,7 @@ class ConfigureCommand extends Command
         $election = $this->createNewElection($designation);
 
         foreach ($designation->poll->getQuestions() as $question) {
-            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content));
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content, $question->description));
             $election->addElectionPool($pool);
 
             foreach ($question->getChoices() as $choice) {
