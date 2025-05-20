@@ -289,6 +289,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $alertBeginAt = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $enableVoteQuestionsPreview = true;
+
     public function __construct(?string $label = null, ?UuidInterface $uuid = null)
     {
         $this->label = $label;

@@ -1,5 +1,5 @@
 <div class="relative rounded-xl px-4 py-5 md:p-6 lg:p-8 transition shadow-[0_1px_3px_rgba(15,23,42,0.03),0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-slate-600/[0.04]">
-    <div class="prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
+    <div class="prose prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
         {% if designation.wordingWelcomePage %}
             {{ designation.wordingWelcomePage.content|markdown_to_html }}
         {% elseif designation.getDescription() %}
@@ -70,7 +70,7 @@
                                 {% if app.user.isRenaissanceSympathizer() %}
                                     <span class="mb-5 md:mb-0">Vous devez adhérer pour participer à la consultation.</span>
                                     <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}) }}" class="banner-btn">
-                                        Je cotise
+                                        J'adhère
                                     </a>
                                 {% else %}
                                     <span class="mb-5 md:mb-0">Seuls les adhérents à jour {{ 'now'|date('Y') }} peuvent participer.</span>

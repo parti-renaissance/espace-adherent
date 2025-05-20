@@ -23,6 +23,9 @@ class ElectionPool
     #[ORM\Column(length: 500)]
     private $code;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $description = null;
+
     /**
      * @var Election
      */
@@ -42,9 +45,10 @@ class ElectionPool
     #[ORM\ManyToMany(targetEntity: ElectionRound::class, mappedBy: 'electionPools', cascade: ['all'], orphanRemoval: true)]
     private $electionRounds;
 
-    public function __construct(string $code)
+    public function __construct(string $code, ?string $description = null)
     {
         $this->code = $code;
+        $this->description = $description;
         $this->candidateGroups = new ArrayCollection();
         $this->electionRounds = new ArrayCollection();
     }

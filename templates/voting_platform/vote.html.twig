@@ -10,6 +10,12 @@
             <h2 class="text--body text--black text--default-large b__nudge--bottom-larger l__wrapper--slim">{{ vote_step_pool_title|raw }}</h2>
         {% endif %}
 
+        {% if pool.description %}
+            <div class="text--body text--black text--smallest b__nudge--bottom-larger l__wrapper--slim">
+                {{ pool.description|markdown_to_html }}
+            </div>
+        {% endif %}
+
         {{ form_start(form) }}
             {{ form_errors(form.poolChoice) }}
 

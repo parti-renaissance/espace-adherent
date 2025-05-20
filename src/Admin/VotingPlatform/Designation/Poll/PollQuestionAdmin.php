@@ -3,6 +3,7 @@
 namespace App\Admin\VotingPlatform\Designation\Poll;
 
 use App\Admin\AbstractAdmin;
+use App\Form\Admin\SimpleMDEContent;
 use App\Form\Admin\VotingPlatform\Poll\QuestionChoiceType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
@@ -23,6 +24,7 @@ class PollQuestionAdmin extends AbstractAdmin
                 'entry_type' => QuestionChoiceType::class,
             ])
             ->add('position', IntegerType::class, ['label' => 'Position', 'attr' => ['min' => 1, 'step' => 1]])
+            ->add('description', SimpleMDEContent::class, ['label' => 'Description', 'required' => false])
         ;
     }
 }
