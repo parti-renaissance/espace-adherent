@@ -1043,6 +1043,32 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    public function findZoneManager(Zone $zone, string $roleType, bool $withHidden = false): ?Adherent
+    {
+        $qb = $this->createQueryBuilder('adherent')
+            ->innerJoin('adherent.zoneBasedRoles', 'zone_based_role')
+            ->andWhere('zone_based_role.type = :role_type')
+            ->andWhere(':zone MEMBER OF zone_based_role.zones')
+            ->setParameters([
+                'role_type' => $roleType,
+                'zone' => $zone,
+            ])
+        ;
+
+        if (!$withHidden) {
+            $qb
+                ->andWhere('zone_based_role.hidden = :hidden')
+                ->setParameter('hidden', false)
+            ;
+        }
+
+        return $qb
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findElectedRepresentativeManagersForDepartmentCodes(array $departmentCodes): array
     {
         return $this
