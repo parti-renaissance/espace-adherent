@@ -46,4 +46,18 @@ class AppSessionRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function terminateStaleSessions(): void
+    {
+        $this->createQueryBuilder('s')
+            ->update()
+            ->set('s.status', ':status')
+            ->where('s.status = :active_status AND s.lastActivityDate < :date')
+            ->setParameter('status', SessionStatusEnum::TERMINATED)
+            ->setParameter('active_status', SessionStatusEnum::ACTIVE)
+            ->setParameter('date', (new \DateTimeImmutable())->modify('-1 month'))
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }
