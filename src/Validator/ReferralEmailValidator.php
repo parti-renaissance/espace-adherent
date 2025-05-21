@@ -34,9 +34,12 @@ class ReferralEmailValidator extends ConstraintValidator
         }
 
         if (
-            $this->adherentRepository->findOneByEmail($value)
-            || $this->bannedAdherentRepository->countForEmail($value)
+            $this->bannedAdherentRepository->countForEmail($value)
             || $this->referralRepository->isEmailReported($value)
+            || (
+                ($adherent = $this->adherentRepository->findOneByEmail($value))
+                && ($adherent->isDisabled() || $adherent->isRenaissanceAdherent())
+            )
         ) {
             $this->context
                 ->buildViolation($constraint->message)
