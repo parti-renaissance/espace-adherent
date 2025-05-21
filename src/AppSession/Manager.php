@@ -2,6 +2,7 @@
 
 namespace App\AppSession;
 
+use App\AppSession\Command\TerminateStaleAppSessionCommand;
 use App\Entity\AppSession;
 use App\Entity\OAuth\AccessToken as AccessTokenEntity;
 use App\OAuth\Model\AccessToken as AccessTokenModel;
@@ -12,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Messenger\MessageBusInterface;
 use UAParser\Parser;
 
 class Manager
@@ -21,6 +23,7 @@ class Manager
         private readonly AccessTokenRepository $accessTokenRepository,
         private readonly AppSessionRepository $appSessionRepository,
         private readonly RequestStack $requestStack,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -38,6 +41,8 @@ class Manager
 
         $this->entityManager->flush();
         $token->currentSessionUuid = $session->getUuid();
+
+        $this->bus->dispatch(new TerminateStaleAppSessionCommand());
     }
 
     private function getAppSession(AccessTokenEntity $tokenEntity, AccessTokenEntityInterface $token, ServerRequestInterface $request): AppSession
