@@ -56,7 +56,18 @@ Feature:
                         "members_count": 0,
                         "message": null,
                         "uuid": "@uuid@"
-                    }
+                    },
+                    "agoras": [
+                        {
+                            "type": "agora",
+                            "uuid": "@uuid@",
+                            "name": "Première Agora",
+                            "slug": "premiere-agora",
+                            "description": "Description première Agora",
+                            "max_members_count": 2,
+                            "members_count": 2
+                        }
+                    ]
                 },
                 "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }
@@ -114,7 +125,8 @@ Feature:
                         "members_count": 0,
                         "message": null,
                         "uuid": "@uuid@"
-                    }
+                    },
+                    "agoras": []
                 },
                 "referral_link": "https://adhesion.renaissance.code/@string@-@string@"
             }

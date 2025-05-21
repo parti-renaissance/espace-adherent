@@ -1699,6 +1699,15 @@ Feature:
                     "assembly_committees_count": 2,
                     "can_change_committee": true,
                     "message": null
+                },
+                {
+                    "type": "agora",
+                    "uuid": "@uuid@",
+                    "name": "Deuxième Agora",
+                    "slug": "deuxieme-agora",
+                    "description": "Description deuxième Agora",
+                    "max_members_count": 40,
+                    "members_count": 1
                 }
             ]
             """

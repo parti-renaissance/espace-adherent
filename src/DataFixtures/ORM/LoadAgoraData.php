@@ -40,7 +40,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
         ));
         $this->setReference('agora-1', $agora1);
 
-        $manager->persist($this->createAgora(
+        $manager->persist($agora2 = $this->createAgora(
             Uuid::fromString(self::UUID_2),
             'Deuxième Agora',
             'Description deuxième Agora',
@@ -50,6 +50,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             [$adherent1, $adherent4],
             $admin2
         ));
+        $this->setReference('agora-2', $agora2);
 
         $manager->persist($this->createAgora(
             Uuid::fromString(self::UUID_3),

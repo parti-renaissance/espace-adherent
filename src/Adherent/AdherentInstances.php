@@ -3,6 +3,7 @@
 namespace App\Adherent;
 
 use App\Entity\Adherent;
+use App\Entity\AgoraMembership;
 use App\Entity\Geo\Zone;
 use App\Repository\CommitteeRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -21,6 +22,7 @@ class AdherentInstances
             'assembly' => $this->generateAssembly($adherent),
             'circonscription' => $this->generateCirconscription($adherent),
             'committee' => $this->generateCommittee($adherent),
+            'agoras' => $this->generateAgoras($adherent),
         ];
     }
 
@@ -84,5 +86,26 @@ class AdherentInstances
             'can_change_committee' => !$recentElectionParticipation,
             'message' => $recentElectionParticipation ? 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.' : null,
         ];
+    }
+
+    private function generateAgoras(Adherent $adherent): array
+    {
+        return array_filter(array_map(function (AgoraMembership $agoraMembership): ?array {
+            $agora = $agoraMembership->agora;
+
+            if (!$agora?->published) {
+                return null;
+            }
+
+            return [
+                'type' => 'agora',
+                'uuid' => $agora->getUuid(),
+                'name' => $agora->getName(),
+                'slug' => $agora->getSlug(),
+                'description' => $agora->description,
+                'max_members_count' => $agora->maxMembersCount,
+                'members_count' => $agora->getMembersCount(),
+            ];
+        }, $adherent->agoraMemberships->toArray()));
     }
 }
