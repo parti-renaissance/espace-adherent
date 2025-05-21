@@ -1,6 +1,13 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block page_title 'Adhésion' %}
+{% block meta_description 'Rejoignez le camp de l\'espoir.' %}
+
+{% block open_graph %}
+    <meta property="og:image" content="https://assets.parti-renaissance.fr/sharer/adhesion.webp" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+{% endblock %}
 
 {% block canonical_url url('app_adhesion_index') %}
 
