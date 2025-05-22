@@ -6,8 +6,8 @@
 
 {% block content %}
     <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500" x-data="xCommitteeForm({
-        committees: {{ committees|map(committee => {name: committee.name, uuid: committee.uuid, location: committee.getInlineFormattedAddress(), animator: committee.animator ? committee.animator.getFullName() : ''})|json_encode|e('html_attr') }},
-        defaultCommittee: {{ {name: default_committee.name, uuid: default_committee.uuid, location: default_committee.getInlineFormattedAddress(), animator: default_committee.animator ? default_committee.animator.getFullName() : ''}|json_encode|e('html_attr') }},
+        committees: {{ committees|map(committee => {name: committee.name, uuid: committee.uuid, location: committee.getInlineFormattedAddress(), animator: committee.animator ? committee.animator.getFullName() : ''})|json_encode }},
+        defaultCommittee: {{ {name: default_committee.name, uuid: default_committee.uuid, location: default_committee.getInlineFormattedAddress(), animator: default_committee.animator ? default_committee.animator.getFullName() : ''}|json_encode }},
     })">
         <twig:Atoms:ReCard class="max-w-[500px] w-full flex-1 flex">
             {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
