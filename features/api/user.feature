@@ -45,7 +45,15 @@ Feature:
                     "assembly": {
                         "type": "assembly",
                         "code": "77",
-                        "name": "Seine-et-Marne (77)"
+                        "name": "Seine-et-Marne (77)",
+                        "manager": {
+                            "uuid": "@uuid@",
+                            "public_id": "@string@",
+                            "first_name": "Referent",
+                            "last_name": "Referent",
+                            "image_url": null,
+                            "role": "Président assemblée départementale"
+                        }
                     },
                     "circonscription": null,
                     "committee": {
@@ -55,7 +63,8 @@ Feature:
                         "can_change_committee": true,
                         "members_count": 0,
                         "message": null,
-                        "uuid": "@uuid@"
+                        "uuid": "@uuid@",
+                        "manager": null
                     },
                     "agoras": [
                         {
@@ -65,7 +74,15 @@ Feature:
                             "slug": "premiere-agora",
                             "description": "Description première Agora",
                             "max_members_count": 2,
-                            "members_count": 2
+                            "members_count": 2,
+                            "manager": {
+                                "uuid": "@uuid@",
+                                "public_id": "@string@",
+                                "first_name": "Michelle",
+                                "last_name": "Dufour",
+                                "image_url": null,
+                                "role": "Président d'Agora"
+                            }
                         }
                     ]
                 },
@@ -110,12 +127,28 @@ Feature:
                     "assembly": {
                         "type": "assembly",
                         "code": "75",
-                        "name": "Paris (75)"
+                        "name": "Paris (75)",
+                        "manager": {
+                            "uuid": "@uuid@",
+                            "public_id": "@string@",
+                            "first_name": "Referent75and77",
+                            "last_name": "Referent75and77",
+                            "image_url": null,
+                            "role": "Président assemblée départementale"
+                        }
                     },
                     "circonscription": {
                         "type": "circonscription",
                         "code": "75-1",
-                        "name": "1ère circonscription • Paris (75-1)"
+                        "name": "1ère circonscription • Paris (75-1)",
+                        "manager": {
+                            "uuid": "@uuid@",
+                            "public_id": "@string@",
+                            "first_name": "Député",
+                            "last_name": "PARIS I",
+                            "image_url": null,
+                            "role": "Délégué de circonscription"
+                        }
                     },
                     "committee": {
                         "type": "committee",
@@ -124,7 +157,8 @@ Feature:
                         "can_change_committee": true,
                         "members_count": 0,
                         "message": null,
-                        "uuid": "@uuid@"
+                        "uuid": "@uuid@",
+                        "manager": null
                     },
                     "agoras": []
                 },
