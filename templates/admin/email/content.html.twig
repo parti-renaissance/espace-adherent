@@ -79,4 +79,27 @@
             </section>
         {{ form_end(form) }}
     </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Variables disponibles</h3>
+                    </div>
+                    <div class="box-body">
+                        {% if vars %}
+                            <ul>
+                                {% for var in vars %}
+                                    <li>{{ var }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="italic">Aucune variable</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
