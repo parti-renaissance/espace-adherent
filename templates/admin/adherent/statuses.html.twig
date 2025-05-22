@@ -1,8 +1,4 @@
-{% macro label(label, bgColor = '#3C8DBC') %}
-    <span class="label" style="background-color: {{ bgColor }};">
-        {{ label }}
-    </span>
-{% endmacro %}
+{% import 'admin/macros/labels.html.twig' as ui %}
 
 {% set labels = [] %}
 
@@ -94,7 +90,7 @@
 
 <div style="display: flex;flex-direction: column;align-items: flex-start;gap: 1px;">
     {% for label in labels %}
-        {{ _self.label(label) }}
+        {{ ui.label(label) }}
     {% endfor %}
 
     {{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
@@ -102,16 +98,16 @@
     {% if object.staticLabels is not empty %}
         {% for staticLabel in object.staticLabels %}
             {% if not object.hasTag(staticLabel.category.code ~ ':' ~ staticLabel.code) %}
-                {{ _self.label(staticLabel.label, 'grey') }}
+                {{ ui.label(staticLabel.label, 'grey') }}
             {% endif %}
         {% endfor %}
     {% endif %}
 
     {% if object.isTerritoireProgresMembership %}
-        {{ _self.label('Militant TDP') }}
+        {{ ui.label('Militant TDP') }}
     {% endif %}
 
     {% if object.isAgirMembership %}
-        {{ _self.label('Militant AGIR') }}
+        {{ ui.label('Militant AGIR') }}
     {% endif %}
 </div>

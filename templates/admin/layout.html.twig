@@ -385,6 +385,19 @@
          });
      });
     </script>
+
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script src="{{ asset('js/tippy-bundle.umd.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tippy('[data-tippy-content]', {
+                allowHTML: true,
+                placement(reference) {
+                    return reference.getAttribute('data-tippy-placement') || 'top';
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block sonata_sidebar_search '' %}
