@@ -56,7 +56,7 @@ Feature:
                         "slug": "deuxieme-agora",
                         "description": "Description deuxième Agora",
                         "max_members_count": 40,
-                        "members_count": 0,
+                        "members_count": 1,
                         "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -169,7 +169,7 @@ Feature:
             """
 
     Scenario: As a logged-in adherent I can join an Agora
-        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/agoras/75d47004-db80-4586-8fc5-e97cec58e5b4/join"
         Then the response status code should be 201
         And the JSON should be equal to:
@@ -219,7 +219,7 @@ Feature:
                         "slug": "deuxieme-agora",
                         "description": "Description deuxième Agora",
                         "max_members_count": 40,
-                        "members_count": 0,
+                        "members_count": 1,
                         "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",

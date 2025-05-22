@@ -223,7 +223,15 @@ class ProfileController extends AbstractController
     public function myInstances(UserInterface $adherent, AdherentInstances $adherentInstances): Response
     {
         /** @var Adherent $adherent */
-        return $this->json(array_values(array_filter($adherentInstances->generate($adherent))));
+        $instances = array_filter($adherentInstances->generate($adherent));
+
+        // Flatten array of Agoras with other instances
+        if (\array_key_exists('agoras', $instances) && is_iterable($instances['agoras'])) {
+            $instances = array_merge($instances, $instances['agoras']);
+            unset($instances['agoras']);
+        }
+
+        return $this->json(array_values($instances));
     }
 
     #[IsGranted(new Expression('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()'))]

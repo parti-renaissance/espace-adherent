@@ -1661,7 +1661,8 @@ Feature:
                 {
                     "type": "assembly",
                     "code": "FDE",
-                    "name": "Français de l'Étranger"
+                    "name": "Français de l'Étranger",
+                    "manager": null
                 },
                 {
                     "type": "committee",
@@ -1670,7 +1671,8 @@ Feature:
                     "members_count": null,
                     "assembly_committees_count": 8,
                     "can_change_committee": true,
-                    "message": null
+                    "message": null,
+                    "manager": null
                 }
             ]
             """
@@ -1684,12 +1686,21 @@ Feature:
                 {
                     "type": "assembly",
                     "code": "92",
-                    "name": "Hauts-de-Seine (92)"
+                    "name": "Hauts-de-Seine (92)",
+                    "manager": {
+                        "uuid": "@uuid@",
+                        "public_id": "@string@",
+                        "first_name": "Referent",
+                        "last_name": "Referent",
+                        "image_url": null,
+                        "role": "Président assemblée départementale"
+                    }
                 },
                 {
                     "type": "circonscription",
                     "code": "92-4",
-                    "name": "4ème circonscription • Hauts-de-Seine (92-4)"
+                    "name": "4ème circonscription • Hauts-de-Seine (92-4)",
+                    "manager": null
                 },
                 {
                     "type": "committee",
@@ -1698,7 +1709,32 @@ Feature:
                     "members_count": 3,
                     "assembly_committees_count": 2,
                     "can_change_committee": true,
-                    "message": null
+                    "message": null,
+                    "manager": {
+                        "uuid": "@uuid@",
+                        "public_id": "@string@",
+                        "first_name": "Adherent 56",
+                        "last_name": "Fa56ke",
+                        "image_url": null,
+                        "role": "Responsable comité local"
+                    }
+                },
+                {
+                    "type": "agora",
+                    "uuid": "@uuid@",
+                    "name": "Deuxième Agora",
+                    "slug": "deuxieme-agora",
+                    "description": "Description deuxième Agora",
+                    "max_members_count": 40,
+                    "members_count": 1,
+                    "manager": {
+                        "uuid": "@uuid@",
+                        "public_id": "@string@",
+                        "first_name": "Jacques",
+                        "last_name": "Picard",
+                        "image_url": null,
+                        "role": "Président d'Agora"
+                    }
                 }
             ]
             """
