@@ -5,6 +5,7 @@ namespace App\Mailer\Message\Renaissance\VotingPlatform;
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
+use App\Utils\StringCleaner;
 use Ramsey\Uuid\Uuid;
 
 abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
@@ -15,6 +16,8 @@ abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
     public static function create(Election $election, array $adherents, string $url): self
     {
         $first = array_shift($adherents);
+        $designation = $election->getDesignation();
+        $description = $designation->getDescription() ?? $designation->wordingWelcomePage?->getContent();
 
         $message = new static(
             Uuid::uuid4(),
@@ -25,12 +28,10 @@ abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
                 'vote_title' => $election->getTitle(),
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'd MMMM y'),
                 'vote_end_hour' => static::formatDate($election->getVoteEndDate(), 'HH\'h\'mm'),
-                'description' => nl2br($election->getDesignation()->getDescription() ?? ''),
+                'description' => StringCleaner::removeMarkdown(nl2br($description ?? '')),
                 'primary_link' => $url,
             ],
-            [
-                'first_name' => $first->getFirstName(),
-            ]
+            ['first_name' => $first->getFirstName()]
         );
 
         foreach ($adherents as $adherent) {

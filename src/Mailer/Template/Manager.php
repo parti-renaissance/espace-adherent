@@ -64,4 +64,21 @@ class Manager
 
         return $this->templateRepository->findOneBy(['identifier' => $message::class]);
     }
+
+    public function findTemplateVars(string $identifier): array
+    {
+        try {
+            $ref = new \ReflectionClass($identifier);
+        } catch (\ReflectionException $e) {
+            return [];
+        }
+
+        $parent = $ref->getParentClass();
+
+        $content = file_get_contents($ref->getFileName());
+        $matches = [];
+        preg_match_all("/'(?<key>[a-zA-Z0-9_.]+)'\s*=>/", $content, $matches);
+
+        return array_values(array_unique(array_merge($matches['key'] ?? [], $parent && Message::class !== $parent->getName() ? $this->findTemplateVars($parent->getName()) : [])));
+    }
 }
