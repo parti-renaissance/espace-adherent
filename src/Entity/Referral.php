@@ -143,6 +143,9 @@ class Referral implements ZoneableEntityInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $reportedAt = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $forSympathizer = false;
+
     public function __construct(?string $emailAddress, ?UuidInterface $uuid = null)
     {
         if ($emailAddress) {

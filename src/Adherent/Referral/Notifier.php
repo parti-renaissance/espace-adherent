@@ -8,7 +8,9 @@ use App\Entity\Referral;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\Referral\ReferralAdhesionCreatedMessage;
 use App\Mailer\Message\Renaissance\Referral\ReferralAdhesionFinishedMessage;
+use App\Mailer\Message\Renaissance\Referral\ReferralInviteSympathizerMessage;
 use App\Mailer\Message\Renaissance\Referral\ReferralReportedMessage;
+use App\Security\Http\LoginLink\LoginLinkHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Notifier
@@ -16,12 +18,21 @@ class Notifier
     public function __construct(
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandler $loginLinkHandler,
     ) {
     }
 
     public function sendAdhesionMessage(Referral $referral): void
     {
         $this->transactionalMailer->sendMessage(
+            $referral->forSympathizer ?
+                ReferralInviteSympathizerMessage::create(
+                    $referral->referrer->getFirstName(),
+                    $referral->referred->getEmailAddress(),
+                    $referral->referred->getFirstName(),
+                    $this->loginLinkHandler->createLoginLink($referral->referred, lifetime: 2592000, targetPath: parse_url($this->urlGenerator->generate('app_adhesion_with_invitation', ['identifier' => $referral->identifier]))['path'])->getUrl(),
+                    $this->generateUrl(ReportController::ROUTE_NAME, ['uuid' => $referral->getUuid()])
+                ) :
             ReferralAdhesionCreatedMessage::create(
                 $referral->referrer->getFirstName(),
                 $referral->emailAddress,

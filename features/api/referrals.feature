@@ -305,9 +305,63 @@ Feature:
             """
 
         Examples:
-            | email                   |
-            | carl999@example.fr      |
-            | disabled-email@test.com |
+            | email                       |
+            | jacques.picard@en-marche.fr |
+            | disabled-email@test.com     |
+
+    Scenario: As an logged in user, I can create a new referral with a sympathizer email address
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/referrals" with body:
+            """
+            {
+                "email_address": "carl999@example.fr",
+                "first_name": "David"
+            }
+            """
+        Then the response status code should be 201
+        And I should have 1 email "ReferralInviteSympathizerMessage" for "carl999@example.fr" with payload:
+            """
+            {
+                "template_name": "referral-invite-sympathizer",
+                "template_content": [],
+                "message": {
+                    "subject": "Nouveau parrainage",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "merge_vars": [
+                        {
+                            "rcpt": "carl999@example.fr",
+                            "vars": [
+                                {
+                                    "content": "Michelle",
+                                    "name": "referrer_first_name"
+                                },
+                                {
+                                    "content": "Carl",
+                                    "name": "referred_first_name"
+                                },
+                                {
+                                    "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&@string@&_failure_path=%2Fconnexion&_target_path=%2Fadhesion%2F@string@",
+                                    "name": "adhesion_link"
+                                },
+                                {
+                                    "content": "http://test.renaissance.code/invitation/@string@/signaler",
+                                    "name": "report_link"
+                                }
+                            ]
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "carl999@example.fr",
+                            "type": "to",
+                            "name": "Carl"
+                        }
+                    ]
+                }
+            }
+            """
 
     Scenario: As an logged in user, I can get my referral statistics
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
