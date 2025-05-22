@@ -52,7 +52,7 @@ class AdminEmailCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function contentAction(Request $request): Response
+    public function contentAction(Request $request, string $projectDir): Response
     {
         $template = $this->admin->getSubject();
 
@@ -79,10 +79,19 @@ class AdminEmailCRUDController extends CRUDController
             return $this->redirect($this->admin->generateObjectUrl('content', $template));
         }
 
+        $filePath = $projectDir.'/'.str_replace('\\', '/', str_replace('App\\', 'src/', $template->identifier)).'.php';
+
+        if (file_exists($filePath)) {
+            $content = file_get_contents($filePath);
+            $matches = [];
+            preg_match_all("/'(?<key>[a-zA-Z0-9_\.]+)'\s*=>/", $content, $matches);
+        }
+
         return $this->renderWithExtraParams('admin/email/content.html.twig', [
             'object' => $template,
             'form' => $form->createView(),
             'action' => 'content',
+            'vars' => $matches['key'] ?? [],
         ]);
     }
 
