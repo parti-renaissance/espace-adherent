@@ -31,10 +31,6 @@
                 <a href="{{ path('app_sas_election_index', {uuid: designation.getUuid()}) }}" class="link--no-decor text--logo b__nudge--right-large">
                     {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-5 w-auto text-white'}) }}
                 </a>
-
-                {% block header_actions %}
-                    <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="return-home text--body link--no-decor">Revenir à l'accueil</a>
-                {% endblock %}
             </div>
             <div class="anonymous l__row space--20-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">

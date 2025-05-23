@@ -152,6 +152,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $electionCreationDate = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $accountCreationDeadline = null;
+
     /**
      * @var \DateTime|null
      */

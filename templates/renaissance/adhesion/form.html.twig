@@ -17,7 +17,7 @@
 
 {% if isReContribution %}
     {% set stepsStepper = {step_2: 'Informations', step_4: 'Cotisation'} %}
-{% elseif referral %}
+{% elseif app.user or referral %}
     {% set stepsStepper = {step_2: 'Informations', step_3: 'Autorisation', step_4: 'Cotisation'} %}
 {% else %}
     {% set stepsStepper = {step_1: 'Email', step_2: 'Informations', step_3: 'Autorisation', step_4: 'Cotisation'} %}
