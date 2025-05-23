@@ -24,10 +24,6 @@
     </div>
 {% endblock %}
 
-{% block header_actions %}
-    <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="return-home text--body link--no-decor">Revenir à l'accueil</a>
-{% endblock %}
-
 {% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
 
 {% block voting_platform_result_tab_pool_title '' %}
@@ -100,6 +96,6 @@
 
     <div>
         <p class="text--muted">Les résultats sont disponibles en ligne aux adhérents jusqu’à J+{{ designation.getResultDisplayDelay() }} ({{ designation.getResultEndDate()|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}).</p>
-        <p class="text--muted">Une question, un problème ? <a href="https://parti-renaissance.fr/nos-departements">Contactez votre Assemblée départementale</a>.</p>
+        <p class="text--muted">Une question, un problème ? Contactez-nous par email <a href="mailto:contact@parti-renaissance.fr">contact@parti-renaissance.fr</a>.</p>
     </div>
 {% endblock %}

@@ -14,11 +14,6 @@ class VoteCommandProcessor
         $this->workflow = $votingProcessStateMachine;
     }
 
-    public function canStart(VoteCommand $voteCommand): bool
-    {
-        return $voteCommand->isStart() || $this->can($voteCommand, VoteCommandStateEnum::TO_START);
-    }
-
     public function canVote(VoteCommand $voteCommand): bool
     {
         return $voteCommand->isVote() || $this->can($voteCommand, VoteCommandStateEnum::TO_VOTE);
@@ -32,13 +27,6 @@ class VoteCommandProcessor
     public function canFinish(VoteCommand $voteCommand): bool
     {
         return $voteCommand->isFinish() || $this->can($voteCommand, VoteCommandStateEnum::TO_FINISH);
-    }
-
-    public function doStart(VoteCommand $command): void
-    {
-        if (!$command->isStart()) {
-            $this->apply($command, VoteCommandStateEnum::TO_START);
-        }
     }
 
     public function doVote(VoteCommand $command): void

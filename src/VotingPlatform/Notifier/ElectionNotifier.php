@@ -23,6 +23,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
+use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ElectionNotifier
@@ -33,6 +34,7 @@ class ElectionNotifier
         private readonly EntityManagerInterface $entityManager,
         private readonly VoterRepository $voterRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly CommonMarkConverter $markConverter,
     ) {
     }
 
@@ -40,18 +42,21 @@ class ElectionNotifier
     {
         $electionType = $election->getDesignationType();
         $url = $this->getUrl($election);
+        $description = $this->prepareDescription($election->getDesignation());
 
         $this->sendNotification(
             Designation::NOTIFICATION_VOTE_OPENED,
             $election,
-            function (array $recipients) use ($election, $electionType, $url) {
+            function (array $recipients) use ($election, $electionType, $url, $description) {
                 if (DesignationTypeEnum::CONSULTATION === $electionType) {
-                    return ConsultationIsOpenMessage::create($election, $recipients, $url);
-                } elseif (DesignationTypeEnum::VOTE === $electionType) {
-                    return VoteIsOpenMessage::create($election, $recipients, $url);
+                    return ConsultationIsOpenMessage::create($election, $recipients, $url, $description);
                 }
 
-                return ElectionIsOpenMessage::create($election, $recipients, $url);
+                if (DesignationTypeEnum::VOTE === $electionType) {
+                    return VoteIsOpenMessage::create($election, $recipients, $url, $description);
+                }
+
+                return ElectionIsOpenMessage::create($election, $recipients, $url, $description);
             },
             DesignationTypeEnum::CONGRESS_CN === $electionType ? function (int $offset, int $limit): array {
                 return $this->adherentRepository->findAllForCongressCNElection(false, $offset, $limit);
@@ -254,5 +259,14 @@ class ElectionNotifier
             !$election->isCanceled()
             && $election->getDesignation()->isNotificationEnabled($notificationBit)
             && !$election->isNotificationAlreadySent($notificationBit);
+    }
+
+    private function prepareDescription(Designation $designation): string
+    {
+        if (!$description = $designation->getDescription() ?? $designation->wordingWelcomePage?->getContent()) {
+            return '';
+        }
+
+        return $this->markConverter->convert($description)->getContent();
     }
 }

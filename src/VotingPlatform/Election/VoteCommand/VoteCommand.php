@@ -59,11 +59,6 @@ class VoteCommand
         $this->poolChoice = $poolChoice;
     }
 
-    public function isStart(): bool
-    {
-        return VoteCommandStateEnum::START === $this->state;
-    }
-
     public function isVote(): bool
     {
         return VoteCommandStateEnum::VOTE === $this->state;

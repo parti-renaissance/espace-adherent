@@ -17,7 +17,7 @@ class VoteController extends AbstractController
         $voteCommand = $this->storage->getVoteCommand($election);
 
         if (!$this->processor->canVote($voteCommand)) {
-            return $this->redirectToElectionRoute('app_voting_platform_index', $election);
+            return $this->redirectToRoute('vox_app');
         }
 
         $this->processor->doVote($voteCommand);
@@ -34,7 +34,7 @@ class VoteController extends AbstractController
         if ($request->query->has('back')) {
             // If `back` button was clicked, then need to redirect on the index page if 0 or 1 pool was already voted
             if (0 === array_search($currentPool, $pools)) {
-                return $this->redirectToElectionRoute('app_voting_platform_index', $election);
+                return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
             }
 
             $this->storage->save($voteCommand->removeLastChoice());

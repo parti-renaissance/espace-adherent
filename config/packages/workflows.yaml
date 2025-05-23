@@ -10,20 +10,13 @@ framework:
                 - App\VotingPlatform\Election\VoteCommand\VoteCommand
             places:
                 - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
-                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
                 - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
                 - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                 - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH
             transitions:
-                !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_START:
-                    from:
-                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
-                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
-                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                    to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
                 !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_VOTE:
                     from:
-                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
                         - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                     to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
                 !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_CONFIRM:

@@ -46,7 +46,14 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
                 return true;
             }
 
-            if ($adherent->getRegisteredAt() > $designation->getElectionCreationDate()) {
+            if (
+                ($designation->accountCreationDeadline && $adherent->getRegisteredAt() > $designation->accountCreationDeadline)
+                || (
+                    !$designation->accountCreationDeadline
+                    && $designation->getElectionCreationDate()
+                    && $adherent->getRegisteredAt() > $designation->getElectionCreationDate()
+                )
+            ) {
                 return false;
             }
 
@@ -62,7 +69,14 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
         }
 
         if ($designation->isConsultationType() || $designation->isVoteType()) {
-            if ($adherent->getRegisteredAt() > $designation->getElectionCreationDate()) {
+            if (
+                ($designation->accountCreationDeadline && $adherent->getRegisteredAt() > $designation->accountCreationDeadline)
+                || (
+                    !$designation->accountCreationDeadline
+                    && $designation->getElectionCreationDate()
+                    && $adherent->getRegisteredAt() > $designation->getElectionCreationDate()
+                )
+            ) {
                 return false;
             }
 

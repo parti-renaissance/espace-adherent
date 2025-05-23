@@ -90,6 +90,13 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => 'Collège électoral : Adhérent à jour à partir de :',
                         'choices' => array_combine($years = range(2022, date('Y')), $years),
                     ])
+                    ->add('accountCreationDeadline', DateTimeType::class, [
+                        'label' => 'Date limite de création de compte',
+                        'required' => false,
+                        'widget' => 'single_text',
+                        'with_seconds' => true,
+                        'attr' => ['step' => 30],
+                    ])
                 ->end()
                 ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
                     ->add('candidacyStartDate', DateTimeType::class, [

@@ -32,7 +32,7 @@
                     </div>
 
                     <p class="mt-6">
-                        <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}" class="button button--blue">
+                        <a href="{{ path('app_voting_platform_vote_step', {uuid: voting_platform_election.uuid}) }}" class="button button--blue">
                             J'accède au vote
                         </a>
                     </p>
@@ -62,19 +62,25 @@
                             <p>Vous ne pouvez pas voter lors de cette élection.<br/><br/>Seuls les adhérents au 4 novembre 2024, à jour de cotisation sont en capacité de participer à cette élection.<br/>
                             <a href="https://doc.parti.re/congres/circulaire-congres-et-cn-2024-et-annexes.pdf" target="_blank" class="text-blue-600">Voir la circulaire</a></p>
                         {% endif %}
-                    {% elseif (designation.isConsultationType() or designation.isVoteType()) and designation.getElectionCreationDate() and app.user.getRegisteredAt() > designation.getElectionCreationDate() %}
+                    {% elseif
+                        (designation.isConsultationType() or designation.isVoteType())
+                        and (
+                            (designation.accountCreationDeadline and app.user.getRegisteredAt() > designation.accountCreationDeadline)
+                            or (not designation.accountCreationDeadline and designation.getElectionCreationDate() and app.user.getRegisteredAt() > designation.getElectionCreationDate())
+                        )
+                    %}
                         <span>Vous ne pouvez pas participer.</span>
                     {% elseif app.user.isRenaissanceSympathizer() or not app.user.hasActiveMembership() %}
                         {% if app.user.isEligibleForMembershipPayment() %}
                             <div class="flex flex-col items-start md:flex-row md:justify-between md:items-center">
                                 {% if app.user.isRenaissanceSympathizer() %}
                                     <span class="mb-5 md:mb-0">Vous devez adhérer pour participer à la consultation.</span>
-                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}) }}" class="banner-btn">
+                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="banner-btn">
                                         J'adhère
                                     </a>
                                 {% else %}
                                     <span class="mb-5 md:mb-0">Seuls les adhérents à jour {{ 'now'|date('Y') }} peuvent participer.</span>
-                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}) }}" class="rounded-full px-4 py-2 bg-[#c89533] text-white">
+                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="rounded-full px-4 py-2 bg-[#c89533] text-white">
                                         Me mettre à jour
                                     </a>
                                 {% endif %}
