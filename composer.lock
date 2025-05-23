@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9359130dd45e7d22d126be7e89572fef",
+    "content-hash": "9446a78b2f5af5663538c1e4b5cf023d",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -315,16 +315,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.1.9",
+            "version": "v4.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "c3297c067e2cec3cdc00fe7c5b3006c55d9074d2"
+                "reference": "abb1fac0c6201764589a8f22cb3e1ffd7e02aa16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/c3297c067e2cec3cdc00fe7c5b3006c55d9074d2",
-                "reference": "c3297c067e2cec3cdc00fe7c5b3006c55d9074d2",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/abb1fac0c6201764589a8f22cb3e1ffd7e02aa16",
+                "reference": "abb1fac0c6201764589a8f22cb3e1ffd7e02aa16",
                 "shasum": ""
             },
             "require": {
@@ -415,7 +415,7 @@
                 "ramsey/uuid": "^4.7",
                 "ramsey/uuid-doctrine": "^2.0",
                 "soyuka/contexts": "^3.3.10",
-                "soyuka/pmu": "^0.1.0",
+                "soyuka/pmu": "^0.2.0",
                 "soyuka/stubs-mongodb": "^1.0",
                 "symfony/asset": "^6.4 || ^7.0",
                 "symfony/browser-kit": "^6.4 || ^7.0",
@@ -524,9 +524,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.1.9"
+                "source": "https://github.com/api-platform/core/tree/v4.1.12"
             },
-            "time": "2025-05-16T12:23:45+00:00"
+            "time": "2025-05-22T13:26:31+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1308,119 +1308,6 @@
             "time": "2024-11-12T16:29:46+00:00"
         },
         {
-            "name": "creof/geo-parser",
-            "version": "2.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/creof/geo-parser.git",
-                "reference": "b55553a54c7775576c9ee629847973d0b6d7cbed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/creof/geo-parser/zipball/b55553a54c7775576c9ee629847973d0b6d7cbed",
-                "reference": "b55553a54c7775576c9ee629847973d0b6d7cbed",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/lexer": ">=1.0",
-                "ext-spl": "*",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
-                "phpunit/phpunit": "~5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CrEOF\\Geo\\String": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Derek J. Lambert",
-                    "email": "dlambert@dereklambert.com"
-                }
-            ],
-            "description": "Parser for geography coordinate strings",
-            "keywords": [
-                "coordinate",
-                "geo",
-                "geography",
-                "geometry",
-                "lexer",
-                "parser",
-                "spatial",
-                "string",
-                "text"
-            ],
-            "support": {
-                "issues": "https://github.com/creof/geo-parser/issues",
-                "source": "https://github.com/creof/geo-parser/tree/master"
-            },
-            "time": "2019-08-07T17:45:01+00:00"
-        },
-        {
-            "name": "creof/wkb-parser",
-            "version": "v2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/creof/wkb-parser.git",
-                "reference": "97ac770f241adce3c46e3feb96e0e092531c833d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/creof/wkb-parser/zipball/97ac770f241adce3c46e3feb96e0e092531c833d",
-                "reference": "97ac770f241adce3c46e3feb96e0e092531c833d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-spl": "*",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
-                "phpunit/phpunit": ">=4.8",
-                "satooshi/php-coveralls": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CrEOF\\Geo\\WKB": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Derek J. Lambert",
-                    "email": "dlambert@dereklambert.com"
-                }
-            ],
-            "description": "Parser for well-known binary (WKB/EWKB) object data",
-            "keywords": [
-                "ewkb",
-                "geography",
-                "geometry",
-                "parser",
-                "spatial",
-                "string",
-                "text",
-                "wkb"
-            ],
-            "support": {
-                "issues": "https://github.com/creof/wkb-parser/issues",
-                "source": "https://github.com/creof/wkb-parser/tree/v2.4"
-            },
-            "time": "2022-02-15T22:46:31+00:00"
-        },
-        {
             "name": "dasprid/enum",
             "version": "1.0.6",
             "source": {
@@ -2043,61 +1930,64 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.11.1",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "4089f1424b724786c062aea50aae5f773449b94b"
+                "reference": "ca6a7350b421baf7fbdefbf9f4993292ed18effb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/4089f1424b724786c062aea50aae5f773449b94b",
-                "reference": "4089f1424b724786c062aea50aae5f773449b94b",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/ca6a7350b421baf7fbdefbf9f4993292ed18effb",
+                "reference": "ca6a7350b421baf7fbdefbf9f4993292ed18effb",
                 "shasum": ""
             },
             "require": {
-                "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/dbal": "^3.7.0 || ^4.0",
-                "doctrine/persistence": "^2.2 || ^3",
+                "doctrine/persistence": "^3.1 || ^4",
                 "doctrine/sql-formatter": "^1.0.1",
-                "php": "^7.4 || ^8.0",
-                "symfony/cache": "^5.4 || ^6.0 || ^7.0",
-                "symfony/config": "^5.4 || ^6.0 || ^7.0",
-                "symfony/console": "^5.4 || ^6.0 || ^7.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
+                "php": "^8.1",
+                "symfony/cache": "^6.4 || ^7.0",
+                "symfony/config": "^6.4 || ^7.0",
+                "symfony/console": "^6.4 || ^7.0",
+                "symfony/dependency-injection": "^6.4 || ^7.0",
                 "symfony/deprecation-contracts": "^2.1 || ^3",
-                "symfony/doctrine-bridge": "^5.4.19 || ^6.0.7 || ^7.0",
-                "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0",
-                "symfony/polyfill-php80": "^1.15",
-                "symfony/service-contracts": "^1.1.1 || ^2.0 || ^3"
+                "symfony/doctrine-bridge": "^6.4.3 || ^7.0.3",
+                "symfony/framework-bundle": "^6.4 || ^7.0",
+                "symfony/service-contracts": "^2.5 || ^3"
             },
             "conflict": {
                 "doctrine/annotations": ">=3.0",
-                "doctrine/orm": "<2.14 || >=4.0",
-                "twig/twig": "<1.34 || >=2.0 <2.4"
+                "doctrine/cache": "< 1.11",
+                "doctrine/orm": "<2.17 || >=4.0",
+                "symfony/var-exporter": "< 6.4.1 || 7.0.0",
+                "twig/twig": "<2.13 || >=3.0 <3.0.4"
             },
             "require-dev": {
                 "doctrine/annotations": "^1 || ^2",
+                "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/coding-standard": "^12",
                 "doctrine/deprecations": "^1.0",
-                "doctrine/orm": "^2.14 || ^3.0",
+                "doctrine/orm": "^2.17 || ^3.0",
                 "friendsofphp/proxy-manager-lts": "^1.0",
-                "phpunit/phpunit": "^9.5.26 || ^10.0",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "psalm/plugin-symfony": "^4",
+                "phpstan/phpstan": "2.1.1",
+                "phpstan/phpstan-phpunit": "2.0.3",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpunit/phpunit": "^9.6.22",
                 "psr/log": "^1.1.4 || ^2.0 || ^3.0",
-                "symfony/phpunit-bridge": "^6.1 || ^7.0",
-                "symfony/property-info": "^5.4 || ^6.0 || ^7.0",
-                "symfony/proxy-manager-bridge": "^5.4 || ^6.0 || ^7.0",
-                "symfony/security-bundle": "^5.4 || ^6.0 || ^7.0",
-                "symfony/string": "^5.4 || ^6.0 || ^7.0",
-                "symfony/twig-bridge": "^5.4 || ^6.0 || ^7.0",
-                "symfony/validator": "^5.4 || ^6.0 || ^7.0",
-                "symfony/var-exporter": "^5.4 || ^6.2 || ^7.0",
-                "symfony/web-profiler-bundle": "^5.4 || ^6.0 || ^7.0",
-                "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
-                "twig/twig": "^1.34 || ^2.12 || ^3.0",
-                "vimeo/psalm": "^4.30"
+                "symfony/doctrine-messenger": "^6.4 || ^7.0",
+                "symfony/messenger": "^6.4 || ^7.0",
+                "symfony/phpunit-bridge": "^7.2",
+                "symfony/property-info": "^6.4 || ^7.0",
+                "symfony/security-bundle": "^6.4 || ^7.0",
+                "symfony/stopwatch": "^6.4 || ^7.0",
+                "symfony/string": "^6.4 || ^7.0",
+                "symfony/twig-bridge": "^6.4 || ^7.0",
+                "symfony/validator": "^6.4 || ^7.0",
+                "symfony/var-exporter": "^6.4.1 || ^7.0.1",
+                "symfony/web-profiler-bundle": "^6.4 || ^7.0",
+                "symfony/yaml": "^6.4 || ^7.0",
+                "twig/twig": "^2.13 || ^3.0.4"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle.",
@@ -2107,7 +1997,7 @@
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Bundle\\DoctrineBundle\\": ""
+                    "Doctrine\\Bundle\\DoctrineBundle\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2142,7 +2032,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.11.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.14.0"
             },
             "funding": [
                 {
@@ -2158,7 +2048,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-15T20:01:50+00:00"
+            "time": "2025-03-22T17:28:21+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2681,16 +2571,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.15.5",
+            "version": "2.20.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "d2de4ec03c63ddd7bdfda0421e237e11343c75ee"
+                "reference": "17d28b5c4cac212ca92730d9a26e32a0b1516126"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/d2de4ec03c63ddd7bdfda0421e237e11343c75ee",
-                "reference": "d2de4ec03c63ddd7bdfda0421e237e11343c75ee",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/17d28b5c4cac212ca92730d9a26e32a0b1516126",
+                "reference": "17d28b5c4cac212ca92730d9a26e32a0b1516126",
                 "shasum": ""
             },
             "require": {
@@ -2703,12 +2593,12 @@
                 "doctrine/event-manager": "^1.2 || ^2",
                 "doctrine/inflector": "^1.4 || ^2.0",
                 "doctrine/instantiator": "^1.3 || ^2",
-                "doctrine/lexer": "^2",
+                "doctrine/lexer": "^2 || ^3",
                 "doctrine/persistence": "^2.4 || ^3",
                 "ext-ctype": "*",
                 "php": "^7.1 || ^8.0",
                 "psr/cache": "^1 || ^2 || ^3",
-                "symfony/console": "^4.2 || ^5.0 || ^6.0",
+                "symfony/console": "^4.2 || ^5.0 || ^6.0 || ^7.0",
                 "symfony/polyfill-php72": "^1.23",
                 "symfony/polyfill-php80": "^1.16"
             },
@@ -2717,16 +2607,17 @@
             },
             "require-dev": {
                 "doctrine/annotations": "^1.13 || ^2",
-                "doctrine/coding-standard": "^9.0.2 || ^12.0",
+                "doctrine/coding-standard": "^9.0.2 || ^13.0",
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
-                "phpstan/phpstan": "~1.4.10 || 1.10.25",
+                "phpstan/extension-installer": "~1.1.0 || ^1.4",
+                "phpstan/phpstan": "~1.4.10 || 2.0.3",
+                "phpstan/phpstan-deprecation-rules": "^1 || ^2",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6",
                 "psr/log": "^1 || ^2 || ^3",
-                "squizlabs/php_codesniffer": "3.7.2",
-                "symfony/cache": "^4.4 || ^5.4 || ^6.0",
-                "symfony/var-exporter": "^4.4 || ^5.4 || ^6.2",
-                "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0",
-                "vimeo/psalm": "4.30.0 || 5.13.1"
+                "squizlabs/php_codesniffer": "3.12.0",
+                "symfony/cache": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+                "symfony/var-exporter": "^4.4 || ^5.4 || ^6.2 || ^7.0",
+                "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "suggest": {
                 "ext-dom": "Provides support for XSD validation for XML mapping files",
@@ -2739,7 +2630,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\ORM\\": "lib/Doctrine/ORM"
+                    "Doctrine\\ORM\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2776,9 +2667,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.15.5"
+                "source": "https://github.com/doctrine/orm/tree/2.20.3"
             },
-            "time": "2023-07-28T14:08:17+00:00"
+            "time": "2025-05-02T17:07:53+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -7297,25 +7188,25 @@
         },
         {
             "name": "longitude-one/doctrine-spatial",
-            "version": "4.0.0",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/longitude-one/doctrine-spatial.git",
-                "reference": "ccb069b97359d811679491f68581f7164e077286"
+                "reference": "f240a3c7e017c9dfcfc3f0098a0b6d95dc8ddc31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/longitude-one/doctrine-spatial/zipball/ccb069b97359d811679491f68581f7164e077286",
-                "reference": "ccb069b97359d811679491f68581f7164e077286",
+                "url": "https://api.github.com/repos/longitude-one/doctrine-spatial/zipball/f240a3c7e017c9dfcfc3f0098a0b6d95dc8ddc31",
+                "reference": "f240a3c7e017c9dfcfc3f0098a0b6d95dc8ddc31",
                 "shasum": ""
             },
             "require": {
-                "creof/geo-parser": "~2.2",
-                "creof/wkb-parser": "~2.3",
-                "doctrine/orm": "^2.8.0",
+                "doctrine/orm": "^2.19|^3.1",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "longitude-one/wkt-parser": "~1.0",
+                "longitude-one/geo-parser": "^3.0.1",
+                "longitude-one/wkb-parser": "^3.0.0",
+                "longitude-one/wkt-parser": "^3.0.0",
                 "php": "^8.1"
             },
             "replace": {
@@ -7324,12 +7215,9 @@
             "require-dev": {
                 "cache/array-adapter": "^1.1",
                 "dg/bypass-finals": "^1.3",
-                "friendsofphp/php-cs-fixer": "^3.0",
-                "php-coveralls/php-coveralls": "^2.4",
-                "phpmd/phpmd": "^2.10",
-                "phpunit/phpcov": "^8.2",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.6"
+                "monolog/monolog": "^2.0",
+                "phpunit/phpcov": "^9",
+                "phpunit/phpunit": "^10.0"
             },
             "type": "library",
             "autoload": {
@@ -7352,13 +7240,14 @@
                     "email": "alexandre.tranchant@gmail.com"
                 }
             ],
-            "description": "Doctrine2 multi-platform support for spatial types and functions",
+            "description": "Doctrine multi-platform support for spatial types and functions, compliant with Doctrine 2.19, 3.1, and dev ones (3.2 and 4.0).",
             "keywords": [
                 "database",
                 "dbal",
                 "geography",
                 "geometry",
                 "gis",
+                "iso-13249",
                 "mysql",
                 "opengis",
                 "orm",
@@ -7368,34 +7257,149 @@
             ],
             "support": {
                 "issues": "https://github.com/longitude-one/doctrine-spatial/issues",
-                "source": "https://github.com/longitude-one/doctrine-spatial/tree/4.0.0"
+                "source": "https://github.com/longitude-one/doctrine-spatial/tree/5.0.3"
             },
-            "time": "2023-06-04T15:11:55+00:00"
+            "time": "2024-11-15T09:52:45+00:00"
         },
         {
-            "name": "longitude-one/wkt-parser",
-            "version": "v1.0.0",
+            "name": "longitude-one/geo-parser",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/longitude-one/wkt-parser.git",
-                "reference": "546dfadfc11f467739aec39d329d7fd5271b69eb"
+                "url": "https://github.com/longitude-one/geo-parser.git",
+                "reference": "39b17ba2810bc09b3a6f07176cf41d0b0caf5b6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/longitude-one/wkt-parser/zipball/546dfadfc11f467739aec39d329d7fd5271b69eb",
-                "reference": "546dfadfc11f467739aec39d329d7fd5271b69eb",
+                "url": "https://api.github.com/repos/longitude-one/geo-parser/zipball/39b17ba2810bc09b3a6f07176cf41d0b0caf5b6c",
+                "reference": "39b17ba2810bc09b3a6f07176cf41d0b0caf5b6c",
                 "shasum": ""
             },
             "require": {
-                "doctrine/lexer": "~1.0 || ^2.1",
-                "ext-spl": "*",
-                "php": ">=8.1"
+                "doctrine/lexer": "^2.1|^3.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LongitudeOne\\Geo\\String": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Tranchant",
+                    "email": "alexandre.tranchant@gmail.com"
+                },
+                {
+                    "name": "Derek J. Lambert",
+                    "email": "dlambert@dereklambert.com"
+                }
+            ],
+            "description": "Parser for geography coordinate strings",
+            "keywords": [
+                "coordinate",
+                "geo",
+                "geography",
+                "geometry",
+                "lexer",
+                "parser",
+                "spatial",
+                "string",
+                "text"
+            ],
+            "support": {
+                "issues": "https://github.com/longitude-one/geo-parser/issues",
+                "source": "https://github.com/longitude-one/geo-parser/tree/3.0.1"
+            },
+            "time": "2024-05-23T05:41:35+00:00"
+        },
+        {
+            "name": "longitude-one/wkb-parser",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/longitude-one/wkb-parser.git",
+                "reference": "389acdebe0551ae44c75df538e98cda6a30793e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/longitude-one/wkb-parser/zipball/389acdebe0551ae44c75df538e98cda6a30793e8",
+                "reference": "389acdebe0551ae44c75df538e98cda6a30793e8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LongitudeOne\\Geo\\WKB": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Derek J. Lambert",
+                    "email": "dlambert@dereklambert.com"
+                },
+                {
+                    "name": "Alexandre Tranchant",
+                    "email": "alexandre.tranchant@gmail.com"
+                }
+            ],
+            "description": "Parser for well-known binary (WKB/EWKB) object data",
+            "keywords": [
+                "ewkb",
+                "geography",
+                "geometry",
+                "parser",
+                "spatial",
+                "string",
+                "text",
+                "wkb"
+            ],
+            "support": {
+                "issues": "https://github.com/longitude-one/wkb-parser/issues",
+                "source": "https://github.com/longitude-one/wkb-parser/tree/3.0.0"
+            },
+            "time": "2024-04-10T11:59:36+00:00"
+        },
+        {
+            "name": "longitude-one/wkt-parser",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/longitude-one/wkt-parser.git",
+                "reference": "cb9ded868bfd0200e5134bf259b1e001b83ebaa2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/longitude-one/wkt-parser/zipball/cb9ded868bfd0200e5134bf259b1e001b83ebaa2",
+                "reference": "cb9ded868bfd0200e5134bf259b1e001b83ebaa2",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/lexer": "^2.1|^3.0",
+                "php": "^8.1"
             },
             "replace": {
                 "creof/wkt-parser": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=8.5"
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
@@ -7409,8 +7413,18 @@
             ],
             "authors": [
                 {
+                    "name": "Alexandre Tranchant",
+                    "email": "alexandre.tranchant@gmail.com"
+                },
+                {
+                    "name": "axi"
+                },
+                {
                     "name": "Derek J. Lambert",
                     "email": "dlambert@dereklambert.com"
+                },
+                {
+                    "name": "ellisgl"
                 }
             ],
             "description": "Parser for well-known text (WKT) object strings",
@@ -7427,9 +7441,9 @@
             ],
             "support": {
                 "issues": "https://github.com/longitude-one/wkt-parser/issues",
-                "source": "https://github.com/longitude-one/wkt-parser/tree/v1.0.0"
+                "source": "https://github.com/longitude-one/wkt-parser/tree/3.0.0"
             },
-            "time": "2023-04-04T18:21:29+00:00"
+            "time": "2024-04-27T07:44:31+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -15114,20 +15128,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.2.5",
+            "version": "v6.4.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "87b7c93e57df9d8e39a093d32587702380ff045d"
+                "reference": "e2a61c16af36c9a07e5c9906498b73e091949a20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/87b7c93e57df9d8e39a093d32587702380ff045d",
-                "reference": "87b7c93e57df9d8e39a093d32587702380ff045d",
+                "url": "https://api.github.com/repos/symfony/process/zipball/e2a61c16af36c9a07e5c9906498b73e091949a20",
+                "reference": "e2a61c16af36c9a07e5c9906498b73e091949a20",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2"
+                "php": ">=8.1"
             },
             "type": "library",
             "autoload": {
@@ -15155,7 +15169,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.2.5"
+                "source": "https://github.com/symfony/process/tree/v6.4.20"
             },
             "funding": [
                 {
@@ -15171,7 +15185,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-13T12:21:46+00:00"
+            "time": "2025-03-10T17:11:00+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -17510,30 +17524,30 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v7.2.0",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "f537556a885e14a1d28f6c759d41e57e93d0a532"
+                "reference": "4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/f537556a885e14a1d28f6c759d41e57e93d0a532",
-                "reference": "f537556a885e14a1d28f6c759d41e57e93d0a532",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94",
+                "reference": "4d188b64bb9a9c5e2e4d20c8d5fdce6bbbb32c94",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
+                "php": ">=8.1",
                 "psr/link": "^1.1|^2.0"
             },
             "conflict": {
-                "symfony/http-kernel": "<6.4"
+                "symfony/http-kernel": "<5.4"
             },
             "provide": {
                 "psr/link-implementation": "1.0|2.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "^6.4|^7.0"
+                "symfony/http-kernel": "^5.4|^6.0|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -17573,7 +17587,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v7.2.0"
+                "source": "https://github.com/symfony/web-link/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -17589,7 +17603,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:21:43+00:00"
+            "time": "2024-09-25T14:18:03+00:00"
         },
         {
             "name": "symfony/workflow",
