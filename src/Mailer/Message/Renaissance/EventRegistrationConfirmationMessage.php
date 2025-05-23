@@ -20,6 +20,9 @@ class EventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
             [
                 'event_name' => self::escape($event->getName()),
                 'event_organiser' => self::escape($event->getOrganizerName()),
+                'event_address' => self::escape($event->getInlineFormattedAddress()),
+                'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
+                'event_hour' => static::formatDate($event->getLocalBeginAt(), 'HH\'h\'mm'),
                 'event_link' => $eventLink,
                 'visio_url' => $event->getVisioUrl(),
                 'live_url' => $event->liveUrl,

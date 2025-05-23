@@ -43,12 +43,8 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
             'event_name' => self::escape($event->getName()),
             'event_url' => $eventUrl,
             'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
-            'event_hour' => \sprintf(
-                '%sh%s',
-                static::formatDate($event->getLocalBeginAt(), 'HH'),
-                static::formatDate($event->getLocalBeginAt(), 'mm')
-            ),
-            'event_address' => $event->getInlineFormattedAddress(),
+            'event_hour' => static::formatDate($event->getLocalBeginAt(), 'HH\'h\'mm'),
+            'event_address' => self::escape($event->getInlineFormattedAddress()),
             'visio_url' => $event->getVisioUrl(),
             'live_url' => $event->liveUrl,
         ];
