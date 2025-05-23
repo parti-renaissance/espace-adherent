@@ -1318,7 +1318,15 @@ Feature:
                     "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()",
-                    "name": "Comité des 3 communes"
+                    "name": "Comité des 3 communes",
+                    "animator": {
+                        "uuid": "@uuid@",
+                        "id": "@string@",
+                        "first_name": "Adherent 55",
+                        "last_name": "Fa55ke",
+                        "image_url": null,
+                        "role": "Responsable comité local"
+                    }
                 },
                 {
                     "members_count": 3,
@@ -1328,7 +1336,15 @@ Feature:
                     "uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()",
-                    "name": "Second Comité des 3 communes"
+                    "name": "Second Comité des 3 communes",
+                    "animator": {
+                        "uuid": "@uuid@",
+                        "id": "@string@",
+                        "first_name": "Adherent 56",
+                        "last_name": "Fa56ke",
+                        "image_url": null,
+                        "role": "Responsable comité local"
+                    }
                 }
             ]
             """

@@ -43,13 +43,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Put(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
             denormalizationContext: ['groups' => ['committee:write']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/committees/{uuid}/animator',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
             denormalizationContext: ['groups' => ['committee:update_animator']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
@@ -69,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(denormalizationContext: ['groups' => ['committee:write']]),
     ],
     routePrefix: '/v3',
-    normalizationContext: ['groups' => ['committee:list']],
+    normalizationContext: ['groups' => ['committee:list', 'image_owner_exposed']],
     validationContext: ['groups' => ['api_committee_edition']],
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee')"
 )]
@@ -203,7 +203,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     protected Collection $zones;
 
     #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
-    #[Groups(['committee:read', 'committee:update_animator'])]
+    #[Groups(['committee:list', 'committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER', inversedBy: 'animatorCommittees')]
     public ?Adherent $animator = null;
