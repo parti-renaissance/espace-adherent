@@ -29,6 +29,9 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestC
             [
                 'event_name' => 'Grand Meeting de Paris',
                 'event_organiser' => 'Michelle',
+                'event_address' => 'Palais des Congrés Porte Maillot, 75001 Paris 1er',
+                'event_date' => 'mercredi 1 février 2017',
+                'event_hour' => '15h30',
                 'event_link' => self::EVENT_LINK,
                 'visio_url' => null,
                 'live_url' => null,
