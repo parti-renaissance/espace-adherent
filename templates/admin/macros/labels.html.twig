@@ -1,0 +1,11 @@
+{% macro label(label, bgColor = '#3C8DBC', tooltip = null, placement = 'top') %}
+    <span class="label badge"
+        style="background-color: {{ bgColor }};"
+        {% if tooltip %}
+            data-tippy-content="{{ tooltip|e('html_attr') }}"
+            data-tippy-placement="{{ placement }}"
+        {% endif %}
+    >
+        {{ label }}
+    </span>
+{% endmacro %}
