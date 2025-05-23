@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Adherent\Tag\TagEnum;
+use App\AppSession\SessionStatusEnum;
 use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
+use App\Entity\AppSessionPushTokenLink;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
@@ -136,9 +138,12 @@ class PushTokenRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder($alias)
             ->select(\sprintf('DISTINCT %s.identifier', $alias))
-            ->innerJoin($alias.'.adherent', 'a')
+            ->innerJoin(AppSessionPushTokenLink::class, 'link', Join::WITH, 'link.pushToken = '.$alias)
+            ->innerJoin('link.appSession', 's', Join::WITH, 's.status = :session_status AND s.unsubscribedAt IS NULL')
+            ->innerJoin('s.adherent', 'a')
             ->andWhere('a.status = :enabled')
             ->setParameter('enabled', Adherent::ENABLED)
+            ->setParameter('session_status', SessionStatusEnum::ACTIVE)
         ;
     }
 
