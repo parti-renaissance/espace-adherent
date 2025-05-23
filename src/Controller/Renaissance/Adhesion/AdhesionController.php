@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
 use App\Controller\Renaissance\Adhesion\Api\PersistEmailController;
 use App\Donation\Handler\DonationRequestHandler;
@@ -62,6 +63,11 @@ class AdhesionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $donationRequest = DonationRequest::create($request, $membershipRequest->amount, PayboxPaymentSubscription::NONE, $currentUser);
             $donationRequest->forMembership();
+
+            if ($currentUser instanceof Adherent) {
+                $currentUser->setV2(true);
+                $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
+            }
 
             $donation = $this->donationRequestHandler->handle($donationRequest, $currentUser, (bool) $currentUser?->isRenaissanceAdherent());
 

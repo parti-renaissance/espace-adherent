@@ -2,6 +2,7 @@
 
 namespace App\Adhesion\Listener;
 
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Adhesion\Events\NewCotisationEvent;
 use App\Membership\Event\UserEvent;
@@ -27,7 +28,7 @@ class SendActivationCodeListener implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if (!$adherent->isPending()) {
+        if (!$adherent->isPending() && $adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
             return;
         }
 
