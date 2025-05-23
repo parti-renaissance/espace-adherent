@@ -1,113 +1,189 @@
 {% import 'admin/macros/labels.html.twig' as ui %}
 
-{% set labels = [] %}
+{# Init pour suivre les tags déjà affichés #}
+{% set displayed_tags = [] %}
 
-{% for zone_based_role in object.getZoneBasedRoles() %}
-    {% set labels = labels|merge([('role.' ~ zone_based_role.getType())|trans]) %}
-{% endfor %}
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px;">
 
-{% for delegated_role in object.getReceivedDelegatedAccesses() %}
-    {% if delegated_role.getType() in constant('App\\Adherent\\Authorization\\ZoneBasedRoleTypeEnum::ALL') %}
-        {% set labels = labels|merge([(('role.' ~ delegated_role.getType())|trans) ~ ' délégué']) %}
-    {% else %}
-        {% set labels = labels|merge([(delegated_role.getType()|trans)|capitalize ~ ' délégué']) %}
-    {% endif %}
-{% endfor %}
-
-{% if object.hasAdvancedPrivileges %}
-    {% if object.isAnimator %}
-        {% set labels = labels|merge(['Responsable comité local']) %}
-    {% endif %}
-
-    {% if object.isJecouteManager %}
-        {% set labels = labels|merge(['Responsable des questionnaires']) %}
-    {% endif %}
-
-    {% if object.isHost %}
-        {% set labels = labels|merge(['Co-Animateur']) %}
-    {% endif %}
-
-    {% if object.isSupervisor(false) %}
-        {% set labels = labels|merge(['Animateur']) %}
-    {% endif %}
-
-    {% if object.isSupervisor(true) %}
-        {% set labels = labels|merge(['Animateur provisiore']) %}
-    {% endif %}
-
-    {% if object.isHeadedRegionalCandidate %}
-        {% set labels = labels|merge(['Tête de liste aux régionales']) %}
-    {% endif %}
-
-    {% if object.isLeaderRegionalCandidate %}
-        {% set labels = labels|merge(['Chef de file aux régionales']) %}
-    {% endif %}
-
-    {% if object.isDepartmentalCandidate %}
-        {% set labels = labels|merge(['Candidat aux départementales']) %}
-    {% endif %}
-
-    {% if object.isDelegatedHeadedRegionalCandidate %}
-        {% set labels = labels|merge(['Tête de liste aux régionales délégué']) %}
-    {% endif %}
-
-    {% if object.isDelegatedLeaderRegionalCandidate %}
-        {% set labels = labels|merge(['Chef de file aux régionales délégué']) %}
-    {% endif %}
-
-    {% if object.isDelegatedDepartmentalCandidate %}
-        {% set labels = labels|merge(['Candidat aux départementales délégué']) %}
-    {% endif %}
-
-    {% if object.isElectionResultsReporter %}
-        {% set labels = labels|merge(['Rapporteur résultats']) %}
-    {% endif %}
-{% endif %}
-
-{% if object.hasNationalRole %}
-    {% set labels = labels|merge(['Rôle National']) %}
-{% endif %}
-
-{% if object.hasNationalCommunicationRole %}
-    {% set labels = labels|merge(['Rôle National communication']) %}
-{% endif %}
-
-{% if object.hasPhoningManagerRole %}
-    {% set labels = labels|merge(['Responsable équipe d\'appel']) %}
-{% endif %}
-
-{% if object.hasPapNationalManagerRole %}
-    {% set labels = labels|merge(['Responsable National PAP']) %}
-{% endif %}
-
-{% if object.isPresidentOfAgora %}
-    {% set labels = labels|merge(['role.agora_president'|trans]) %}
-{% endif %}
-
-{% if object.isGeneralSecretaryOfAgora %}
-    {% set labels = labels|merge(['role.agora_general_secretary'|trans]) %}
-{% endif %}
-
-<div style="display: flex;flex-direction: column;align-items: flex-start;gap: 1px;">
-    {% for label in labels %}
-        {{ ui.label(label) }}
+    {# 1. Tags "adherent:*" ou "sympathisant:*" #}
+    {% for tag in object.tags %}
+        {% if tag starts with 'adherent:' %}
+            {{ ui.label(
+                translate_tag(tag, false),
+                object.hasActiveMembership() ? '#ffeccc' : '#d6e7ff',
+                object.hasActiveMembership() ? '#8e681e' : '#0f72bd',
+            ) }}
+            {% set displayed_tags = displayed_tags|merge([tag]) %}
+        {% elseif tag starts with 'sympathisant:' %}
+            {{ ui.label(
+                translate_tag(tag, false),
+                '#e3f8ff',
+                '#4890a8',
+            ) }}
+            {% set displayed_tags = displayed_tags|merge([tag]) %}
+        {% endif %}
     {% endfor %}
 
-    {{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
+    {# 2. Tags "elu:*" #}
+    {% set bgColor = '#fcede7' %}
+    {% set textColor = '#fd6a3d' %}
 
-    {% if object.staticLabels is not empty %}
-        {% for staticLabel in object.staticLabels %}
-            {% if not object.hasTag(staticLabel.category.code ~ ':' ~ staticLabel.code) %}
-                {{ ui.label(staticLabel.label, 'grey') }}
+    {% for tag in object.tags %}
+        {% if tag starts with 'elu:' %}
+            {{ ui.label(translate_tag(tag, false), bgColor, textColor) }}
+            {% set displayed_tags = displayed_tags|merge([tag]) %}
+        {% endif %}
+    {% endfor %}
+
+    {# 3. Zone-based roles #}
+    {% set bgColor = '#ece2ff' %}
+    {% set textColor = '#714991' %}
+
+    {% for zone_based_role in object.getZoneBasedRoles() %}
+        {% set label %}
+            {{ ('role.' ~ zone_based_role.getType())|trans }}
+
+            {% if zone_based_role.zones is not empty %}
+                {% set codes = [] %}
+                {% for zone in zone_based_role.zones %}
+                    {% set codes = codes|merge([zone.code]) %}
+                {% endfor %}
+                ({{ codes|join(', ') }})
             {% endif %}
-        {% endfor %}
-    {% endif %}
+        {% endset %}
 
-    {% if object.isTerritoireProgresMembership %}
-        {{ ui.label('Militant TDP') }}
-    {% endif %}
+        {% set tooltip %}
+            {% if zone_based_role.zones is not empty %}
+                Zone(s):
+                <ul>
+                    {% for zone in zone_based_role.zones %}
+                        <li>
+                            {{ zone }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endset %}
 
-    {% if object.isAgirMembership %}
-        {{ ui.label('Militant AGIR') }}
-    {% endif %}
+        {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
+    {% endfor %}
+
+    {# 4. Délégués #}
+    {% for delegated_role in object.getReceivedDelegatedAccesses() %}
+        {% set role_type = delegated_role.getType() %}
+
+        {% if role_type in constant('App\\Adherent\\Authorization\\ZoneBasedRoleTypeEnum::ALL') %}
+            {% set zone_based_role = delegated_role.delegator.findZoneBasedRole(role_type) %}
+
+            {% set label %}
+                {{ ('role.' ~ role_type)|trans ~ ' délégué' }}
+
+                {% if zone_based_role and zone_based_role.zones is not empty %}
+                    {% set codes = [] %}
+                    {% for zone in zone_based_role.zones %}
+                        {% set codes = codes|merge([zone.code]) %}
+                    {% endfor %}
+                    ({{ codes|join(', ') }})
+                {% endif %}
+            {% endset %}
+
+            {% set tooltip %}
+                Rôle: {{ delegated_role.role }}
+                <br />
+                {% if zone_based_role and zone_based_role.zones is not empty %}
+                    Zone(s):
+                    <ul>
+                        {% for zone in zone_based_role.zones %}
+                            <li>
+                                {{ zone }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endset %}
+
+            {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
+        {% else %}
+            {{ ui.label((role_type|trans)|capitalize ~ ' délégué', bgColor, textColor) }}
+        {% endif %}
+    {% endfor %}
+
+    {# 5. Rôles / responsabilités divers #}
+    {% set bgColor = '#dfe3e8' %}
+    {% set textColor = '#58636f' %}
+
+    {% set customRoleLabels = [
+        object.isAnimator ? 'animator',
+        object.isJecouteManager ? 'jecoute_manager',
+        object.isHost ? 'committee_host',
+        object.isSupervisor(false) ? 'committee_supervisor',
+        object.isSupervisor(true) ? 'committee_provisional_supervisor',
+        object.isHeadedRegionalCandidate ? 'candidate_regional_headed',
+        object.isLeaderRegionalCandidate ? 'candidate_regional_leader',
+        object.isDepartmentalCandidate ? 'candidate_departmental',
+        object.isDelegatedHeadedRegionalCandidate ? 'delegated_candidate_regional_headed',
+        object.isDelegatedLeaderRegionalCandidate ? 'delegated_candidate_regional_leader',
+        object.isDelegatedDepartmentalCandidate ? 'delegated_candidate_departmental',
+        object.isElectionResultsReporter ? 'election_results_reporter',
+        object.hasNationalRole ? 'national',
+        object.hasNationalCommunicationRole ? 'national_communication',
+        object.hasPhoningManagerRole ? 'phoning_national_manager',
+        object.hasPapNationalManagerRole ? 'pap_national_manager',
+        object.isPresidentOfAgora ? 'agora_president',
+        object.isGeneralSecretaryOfAgora ? 'agora_general_secretary',
+        object.isTerritoireProgresMembership ? 'Militant TDP',
+        object.isAgirMembership ? 'Militant AGIR',
+    ]|filter(v => v) %}
+
+    {% for label in customRoleLabels %}
+        {% set tooltip = null %}
+        {% if label is same as ('animator') %}
+            {% set tooltip %}
+                {% for committee in object.animatorCommittees %}
+                    {{ committee.name }}
+                    {% if not loop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            {% endset %}
+        {% elseif label is same as ('agora_president') %}
+            {% set tooltip %}
+                {% for agora in object.presidentOfAgoras %}
+                    {{ agora.name }}
+                    {% if not loop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            {% endset %}
+        {% elseif label is same as ('agora_general_secretary') %}
+            {% set tooltip %}
+                {% for agora in object.generalSecretaryOfAgoras %}
+                    {{ agora.name }}
+                    {% if not loop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            {% endset %}
+        {% endif %}
+
+        {{ ui.label(('role.' ~ label)|trans, bgColor, textColor, tooltip, 'left') }}
+    {% endfor %}
+
+    {# 6. Other memberships #}
+    {% set otherMemberships = [
+        object.isTerritoireProgresMembership ? 'Militant TDP',
+        object.isAgirMembership ? 'Militant AGIR',
+    ]|filter(v => v) %}
+
+    {% for label in otherMemberships %}
+        {{ ui.label(label, bgColor, textColor) }}
+    {% endfor %}
+
+    {# 7. Static labels non encore affichés #}
+    {% for staticLabel in object.staticLabels %}
+        {% set tagCode = staticLabel.category.code ~ ':' ~ staticLabel.code %}
+        {% if tagCode not in displayed_tags %}
+            {{ ui.label(staticLabel.label, bgColor, textColor) }}
+        {% endif %}
+    {% endfor %}
 </div>

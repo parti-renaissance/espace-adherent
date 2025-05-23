@@ -1,16 +1,25 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
-{% block field %}
-    {% for mandate in object.activeAdherentMandates %}
-        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
-            <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span><br>
-        {% endif %}
-    {% endfor %}
+    {% import 'admin/macros/labels.html.twig' as ui %}
 
-    {% for mandate in object.findElectedRepresentativeMandates(true) %}
-        <span class="label label-success">
-            {{ ('adherent.mandate.type.' ~ mandate.mandateType)|trans }}
-        </span>
-        <br>
-    {% endfor %}
+{% block field %}
+    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px;">
+        {% for mandate in object.activeAdherentMandates %}
+            {% if mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
+                {{ ui.label(
+                    'territorial_council.membership.quality.elected_candidate_adherent'|trans,
+                    '#f39c12',
+                    '#fff',
+                ) }}
+            {% endif %}
+        {% endfor %}
+
+        {% for mandate in object.findElectedRepresentativeMandates(true) %}
+            {{ ui.label(
+                ('adherent.mandate.type.' ~ mandate.mandateType)|trans,
+                '#fcede7',
+                '#fd6a3d',
+            ) }}
+        {% endfor %}
+    </div>
 {% endblock %}
