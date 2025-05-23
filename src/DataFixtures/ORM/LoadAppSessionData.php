@@ -21,10 +21,24 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
         $clientCadre = $this->getReference('client-cadre', Client::class);
 
         $faker = Factory::create('fr_FR');
+        $pushTokenRepository = $manager->getRepository(PushToken::class);
 
-        foreach (range(1, 10) as $i) {
-            $user = $this->getReference('adherent-'.$i, Adherent::class);
-            $pushTokens = $manager->getRepository(PushToken::class)->findBy(['adherent' => $user]);
+        foreach ([
+            'adherent-1',
+            'adherent-2',
+            'adherent-3',
+            'adherent-4',
+            'adherent-5',
+            'adherent-6',
+            'adherent-7',
+            'adherent-8',
+            'adherent-9',
+            'adherent-10',
+            'adherent-55',
+            'president-ad-1',
+        ] as $i => $ref) {
+            $user = $this->getReference($ref, Adherent::class);
+            $pushTokens = $pushTokenRepository->findBy(['adherent' => $user]);
 
             $client = $clientVox;
             $appSystem = SystemEnum::all()[random_int(0, 2)];
