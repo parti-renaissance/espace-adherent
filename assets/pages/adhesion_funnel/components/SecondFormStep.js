@@ -50,7 +50,7 @@ const SecondForm = () => ({
 
     async handleOnSubmit(e) {
         if (!this.checkFormValidity(e)) return;
-        this.setStepData(['address']);
+        this.setStepData(['address', 'phone']);
         if (this.isReContribution) {
             this.loading = true;
             const bodyPayload = {

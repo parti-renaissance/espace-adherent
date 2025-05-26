@@ -2490,6 +2490,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $this->nationality = $membershipRequest->nationality;
             $this->gender = $membershipRequest->civility;
         }
+
+        $this->phone = $membershipRequest->phone ?? $this->phone;
     }
 
     public function isV2(): bool

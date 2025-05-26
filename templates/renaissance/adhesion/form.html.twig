@@ -112,6 +112,10 @@
                                             }) }}
                                         </div>
 
+                                        <fieldset>
+                                            {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}
+                                        </fieldset>
+
                                         {{ form_row(form.nationality, {
                                             label: 'Nationalité',
                                             attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"},
@@ -144,6 +148,7 @@
                                                 onCheck: 'setFieldValid("exclusiveMembership")',
                                             },
                                         }) }}
+
                                         <div x-show="notExclusiveMember" x-cloak class="flex flex-col gap-8">
                                             <hr>
                                             {{ form_row(form.partyMembership, {
@@ -158,24 +163,23 @@
 
                                         <hr>
 
-                                        <div class="flex flex-col gap-8">
-                                            <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
-                                                <twig:ReParagraphStatus status="warning" icon="warning">
-                                                    Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
-                                                </twig:ReParagraphStatus>
-                                                <twig:Atoms:ReLabel class="mb-6">En devenant sympathisant :</twig:Atoms:ReLabel>
-                                            </template>
+                                        <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
+                                            <twig:ReParagraphStatus status="warning" icon="warning">
+                                                Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
+                                            </twig:ReParagraphStatus>
+                                            <twig:Atoms:ReLabel class="mb-6">En devenant sympathisant :</twig:Atoms:ReLabel>
+                                        </template>
 
-                                            <div>
-                                                <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                                                    <twig:Atoms:ReLabel class="mb-6">En adhérant :</twig:Atoms:ReLabel>
-                                                </template>
+                                        <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                            <twig:Atoms:ReLabel>En adhérant :</twig:Atoms:ReLabel>
+                                        </template>
 
-                                                {{ form_row(form.allowNotifications, {
-                                                    label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email',
-                                                }) }}
-                                            </div>
-                                        </div>
+                                        {{ form_row(form.allowNotifications, {
+                                            label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email',
+                                        }) }}
+
+                                        {{ form_row(form.acceptSmsNotification, {label: "Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par SMS et téléphone"}) }}
+
                                         {{ form_row(form.isPhysicalPerson, {
                                             label: 'adhesion.physical_person.label', label_html: true,
                                             attr: {onCheck: "setFieldValid('isPhysicalPerson')", validate: "['required']"},

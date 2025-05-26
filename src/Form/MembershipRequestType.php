@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Adhesion\Request\MembershipRequest;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -44,6 +45,11 @@ class MembershipRequestType extends AbstractType
                 ],
                 'expanded' => true,
             ])
+            ->add('phone', TelNumberType::class, [
+                'required' => false,
+                'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
+            ])
+            ->add('acceptSmsNotification', CheckboxType::class, ['required' => false, 'mapped' => false])
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
             ->add('isPhysicalPerson', RequiredCheckboxType::class)
             ->add('amount', HiddenType::class, ['error_bubbling' => false])

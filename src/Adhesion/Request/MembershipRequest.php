@@ -72,6 +72,7 @@ class MembershipRequest implements DonationRequestInterface
     public ?int $amount = null;
 
     public ?bool $allowNotifications = null;
+    public ?bool $acceptSmsNotification = null;
 
     // Referrer public id (XXX-XXX)
     public ?string $referrer = null;
@@ -95,6 +96,7 @@ class MembershipRequest implements DonationRequestInterface
         $request->exclusiveMembership = $adherent->isExclusiveMembership();
         $request->partyMembership = $adherent->isTerritoireProgresMembership() ? 1 : ($adherent->isAgirMembership() ? 2 : ($adherent->isOtherPartyMembership() ? 3 : null));
         $request->allowNotifications = $adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL);
+        $request->acceptSmsNotification = $adherent->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
 
         return $request;
     }
@@ -112,6 +114,7 @@ class MembershipRequest implements DonationRequestInterface
         $request->birthdate = $referral->birthdate;
         $request->referral = $referral->identifier;
         $request->allowNotifications = true;
+        $request->acceptSmsNotification = true;
         $request->exclusiveMembership = true;
 
         return $request;
