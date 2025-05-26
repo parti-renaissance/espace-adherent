@@ -40,7 +40,15 @@ Feature:
                         "name": "Comité des 3 communes",
                         "members_count": 10,
                         "members_em_count": 0,
-                        "sympathizers_count": 0
+                        "sympathizers_count": 0,
+                        "animator": {
+                            "uuid": "@uuid@",
+                            "id": "@string@",
+                            "first_name": "Adherent 55",
+                            "last_name": "Fa55ke",
+                            "image_url": null,
+                            "role": "Responsable comité local"
+                        }
                     },
                     {
                         "description": "Un petit comité avec seulement 3 communes",
@@ -50,7 +58,15 @@ Feature:
                         "name": "Second Comité des 3 communes",
                         "members_count": 3,
                         "members_em_count": 0,
-                        "sympathizers_count": 0
+                        "sympathizers_count": 0,
+                        "animator": {
+                            "uuid": "@uuid@",
+                            "id": "@string@",
+                            "first_name": "Adherent 56",
+                            "last_name": "Fa56ke",
+                            "image_url": null,
+                            "role": "Responsable comité local"
+                        }
                     }
                 ]
             }
@@ -93,8 +109,11 @@ Feature:
                 ],
                 "animator": {
                     "uuid": "@uuid@",
+                    "id": "@string@",
                     "first_name": "Adherent 56",
-                    "last_name": "Fa56ke"
+                    "last_name": "Fa56ke",
+                    "image_url": null,
+                    "role": "Responsable comité local"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
@@ -147,8 +166,11 @@ Feature:
                 ],
                 "animator": {
                     "uuid": "@uuid@",
+                    "id": "@string@",
                     "first_name": "Adherent 56",
-                    "last_name": "Fa56ke"
+                    "last_name": "Fa56ke",
+                    "image_url": null,
+                    "role": "Responsable comité local"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
@@ -204,8 +226,11 @@ Feature:
                 ],
                 "animator": {
                     "uuid": "@uuid@",
+                    "id": "@string@",
                     "first_name": "Adherent 56",
-                    "last_name": "Fa56ke"
+                    "last_name": "Fa56ke",
+                    "image_url": null,
+                    "role": "Responsable comité local"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
@@ -260,8 +285,11 @@ Feature:
                 ],
                 "animator": {
                     "uuid": "@uuid@",
+                    "id": "@string@",
                     "first_name": "Referent75and77",
-                    "last_name": "Referent75and77"
+                    "last_name": "Referent75and77",
+                    "image_url": null,
+                    "role": "Responsable comité local"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
@@ -339,7 +367,8 @@ Feature:
                 "updated_at": "@string@.isDateTime()",
                 "members_count": 0,
                 "members_em_count": 0,
-                "sympathizers_count": 0
+                "sympathizers_count": 0,
+                "animator": null
             }
             """
         When I send a "GET" request to "/api/v3/zone/autocomplete?scope=<scope>&q=Fontenay-aux-Roses&types[]=city&availableForCommittee=true"

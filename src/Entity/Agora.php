@@ -73,7 +73,6 @@ class Agora
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'presidentOfAgoras')]
     public ?Adherent $president = null;
 
-    #[Groups(['agora_read'])]
     #[ORM\JoinTable(name: 'agora_general_secretaries')]
     #[ORM\ManyToMany(targetEntity: Adherent::class, inversedBy: 'generalSecretaryOfAgoras')]
     public Collection $generalSecretaries;
