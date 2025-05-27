@@ -161,6 +161,8 @@ class ReferralRepository extends ServiceEntityRepository
                     adherent.image_name AS profile_image,
                     CONCAT(UPPER(SUBSTRING(adherent.last_name, 1, 1)), '.') AS last_name,
                     CONCAT(zone_assembly.name, ' (', zone_assembly.code, ')') AS assembly,
+                    zone_assembly.name AS assembly_name,
+                    zone_assembly.code AS assembly_code,
                     RANK() OVER (ORDER BY COUNT(DISTINCT referral.id) DESC) AS position
                 FROM referral
                 INNER JOIN adherents AS adherent ON referral.referrer_id = adherent.id
