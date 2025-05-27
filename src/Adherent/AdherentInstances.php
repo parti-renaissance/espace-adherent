@@ -49,7 +49,7 @@ class AdherentInstances
                 $assemblyZone->getName(),
                 $assemblyZone->isDepartment() ? \sprintf(' (%s)', $assemblyZone->getCode()) : ''
             ),
-            'manager' => $pad ? $this->generateManager($pad, $this->trans('role.president_departmental_assembly')) : null,
+            'manager' => $pad ? $this->generateManager($pad, $this->trans('role.president_departmental_assembly', ['gender' => $pad->getGender()])) : null,
         ];
     }
 
@@ -76,7 +76,7 @@ class AdherentInstances
                 $name[0],
                 $districtZone->getCode()
             ),
-            'manager' => $deputy ? $this->generateManager($deputy, $this->trans('role.deputy')) : null,
+            'manager' => $deputy ? $this->generateManager($deputy, $this->trans('role.deputy', ['gender' => $deputy->getGender()])) : null,
         ];
     }
 
@@ -100,7 +100,7 @@ class AdherentInstances
             'assembly_committees_count' => \count($this->committeeRepository->findInAdherentZone($adherent)),
             'can_change_committee' => !$recentElectionParticipation,
             'message' => $recentElectionParticipation ? 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.' : null,
-            'manager' => $animator ? $this->generateManager($animator, $this->trans('role.animator')) : null,
+            'manager' => $animator ? $this->generateManager($animator, $this->trans('role.animator', ['gender' => $animator->getGender()])) : null,
         ];
     }
 
@@ -123,7 +123,7 @@ class AdherentInstances
                 'description' => $agora->description,
                 'max_members_count' => $agora->maxMembersCount,
                 'members_count' => $agora->getMembersCount(),
-                'manager' => $president ? $this->generateManager($president, $this->trans('role.agora_president')) : null,
+                'manager' => $president ? $this->generateManager($president, $this->trans('role.agora_president', ['gender' => $president->getGender()])) : null,
             ];
         }, $adherent->agoraMemberships->toArray()));
     }
@@ -144,8 +144,8 @@ class AdherentInstances
         ];
     }
 
-    private function trans(string $key): string
+    private function trans(string $key, array $parameters = []): string
     {
-        return $this->translator->trans($key);
+        return $this->translator->trans($key, $parameters);
     }
 }
