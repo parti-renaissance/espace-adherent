@@ -8978,16 +8978,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "13537148b14f6606f380a2b220b00fcd8b16887f"
+                "reference": "d0ac70d610fb62ccad38c2696569ae1ad42acc70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/13537148b14f6606f380a2b220b00fcd8b16887f",
-                "reference": "13537148b14f6606f380a2b220b00fcd8b16887f",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/d0ac70d610fb62ccad38c2696569ae1ad42acc70",
+                "reference": "d0ac70d610fb62ccad38c2696569ae1ad42acc70",
                 "shasum": ""
             },
             "require": {
@@ -9078,9 +9078,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.3.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.3.1"
             },
-            "time": "2025-05-26T03:42:48+00:00"
+            "time": "2025-05-26T18:51:08+00:00"
         },
         {
             "name": "psr/cache",
