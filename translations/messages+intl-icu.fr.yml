@@ -365,6 +365,17 @@ role_or_mandat.provisional_supervisor: Animateur local provisoire
 role_or_mandat.referent: Référent
 role_or_mandat.contact: Contact
 
+role.membership.agir: >-
+    {gender, select,
+      female {Militante AGIR}
+      other {Militant AGIR}
+    }
+role.membership.tdp: >-
+    {gender, select,
+      female {Militante TDP}
+      other {Militant TDP}
+    }
+
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
     Pour finaliser votre inscription et accéder à votre espace adhérent, vous devez

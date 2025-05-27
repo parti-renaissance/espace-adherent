@@ -23,7 +23,7 @@ final class CommitteeNormalizer implements NormalizerInterface, NormalizerAwareI
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\array_key_exists('animator', $data) && \is_array($data['animator']) && !empty($data['animator'])) {
-            $data['animator']['role'] = $this->translator->trans('role.animator');
+            $data['animator']['role'] = $this->translator->trans('role.animator', ['gender' => $object->animator?->getGender()]);
         }
 
         return $data;
