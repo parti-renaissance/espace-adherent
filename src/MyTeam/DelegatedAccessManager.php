@@ -2,6 +2,7 @@
 
 namespace App\MyTeam;
 
+use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
@@ -41,8 +42,11 @@ class DelegatedAccessManager
 
         if ($newMember) {
             $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
-            $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
             $this->userActionHistoryHandler->createDelegatedAccessAdd($delegatedAccess);
+
+            if ($this->shouldNotify($member)) {
+                $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
+            }
         }
     }
 
@@ -105,5 +109,21 @@ class DelegatedAccessManager
     public function getDelegatedScopes(Adherent $adherent): array
     {
         return $this->delegatedAccessRepository->findDelegatedScopes($adherent);
+    }
+
+    private function shouldNotify(Member $member): bool
+    {
+        $scope = $member->getTeam()->getScope();
+
+        if (\in_array($scope, ZoneBasedRoleTypeEnum::ALL, true)) {
+            $delegator = $member->getTeam()->getOwner();
+            $zoneBasedRole = $delegator->findZoneBasedRole($scope);
+
+            if ($zoneBasedRole && $zoneBasedRole->isHidden()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
