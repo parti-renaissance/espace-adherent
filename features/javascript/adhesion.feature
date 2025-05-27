@@ -28,6 +28,9 @@ Feature:
             | membership_request[address][additionalAddress] | app 9                 |
             | membership_request[address][postalCode]        | 75008                 |
             | membership_request[address][cityName]          | Paris                 |
+            | membership_request[phone][number]              | 0611223344            |
+        And I click the "membership_request_phone_country_select_widget" element
+        And I click the "#membership_request_phone_country_select_widget .re-input-option--selected" selector
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
         And I press "Suivant"
@@ -185,6 +188,9 @@ Feature:
         And I click the "adhesion_further_information_birthdate_year_select_widget" element
         And I click the "#adhesion_further_information_birthdate_year_select_widget .re-input-option" selector
         Then I should see "Vous avez moins de 35 ans"
+        And the "adhesion_further_information[phone][number]" field should contain "611223344"
+        When I fill in the following:
+            | adhesion_further_information[phone][number] |  |
         When I click the "input[name='adhesion_further_information[acceptSmsNotification]']" selector
         And I press "Continuer"
         Then I should see "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone."

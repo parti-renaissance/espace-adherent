@@ -82,7 +82,7 @@ class CreateAccountCommandHandler
         $this->eventDispatcher->dispatch(new UserEvent(
             $currentUser,
             $membershipRequest->allowNotifications,
-            null,
+            $membershipRequest->acceptSmsNotification,
             $membershipRequest->referrer,
             $membershipRequest->referral
         ), UserEvents::USER_CREATED);

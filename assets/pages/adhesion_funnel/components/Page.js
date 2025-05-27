@@ -36,16 +36,15 @@ const Page = (props) => ({
         if ('number' === typeof step) {
             const stepsEl = Array.from(document.querySelectorAll('.re-step'));
             const parseNumberId = (id) => Number(id.split('_')[1]) - 1;
+
             if ([1, 2].includes(step)) {
-                stepsEl.filter((el) => parseNumberId(el.id) > step)
-                    .forEach((el) => {
-                        el.classList.add('re-step--disabled');
-                    });
+                stepsEl
+                    .filter((el) => parseNumberId(el.id) > step)
+                    .forEach((el) => el.classList.add('re-step--disabled'));
             } else {
-                document.querySelectorAll(`.re-step:not(#step_${step + 1})`)
-                    .forEach((el) => {
-                        el.classList.add('re-step--disabled');
-                    });
+                document
+                    .querySelectorAll(`.re-step:not(#step_${step + 1})`)
+                    .forEach((el) => el.classList.add('re-step--disabled'));
             }
         }
     },
@@ -65,11 +64,11 @@ const Page = (props) => ({
                                 el.checked = value;
                             } else if (!el.value) {
                                 if ('membership_request_address_autocomplete' === el.id) {
-                                    const fulladress = parsedData['membership_request[address][address]'];
-                                    if (fulladress) {
+                                    const fullAddress = parsedData['membership_request[address][address]'];
+                                    if (fullAddress) {
                                         el.value = 'prefilled';
                                         window[`options_${el.id}`] = [{
-                                            label: fulladress,
+                                            label: fullAddress,
                                             value: 'prefilled',
                                         }];
                                     }
@@ -95,9 +94,7 @@ const Page = (props) => ({
         this.$nextTick(() => reScrollTo(`step_${this.stepToFill + 1}`));
         this.$watch('stepToFill', (value) => {
             this.blockStep(value);
-            this.$nextTick(() => {
-                reScrollTo(`step_${this.stepToFill + 1}`);
-            });
+            this.$nextTick(() => reScrollTo(`step_${this.stepToFill + 1}`));
         });
         const that = this;
         const observer = new IntersectionObserver(
@@ -126,7 +123,6 @@ const Page = (props) => ({
         const steps = document.querySelectorAll('.re-step');
         steps.forEach((step) => observer.observe(step));
     },
-
 });
 
 export default Page;
