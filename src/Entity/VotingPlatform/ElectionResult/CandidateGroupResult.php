@@ -76,10 +76,11 @@ class CandidateGroupResult
     }
 
     #[Groups(['election_result'])]
-    public function getRate(): float
+    public function getRate(bool $withBlank = false): float
     {
-        if ($this->electionPoolResult->getExpressed() > 0) {
-            return round($this->total * 100.0 / $this->electionPoolResult->getExpressed(), 2);
+        $totalExpressed = $this->electionPoolResult->getExpressed($withBlank);
+        if ($totalExpressed > 0) {
+            return round($this->total * 100.0 / $totalExpressed, 2);
         }
 
         return 0;

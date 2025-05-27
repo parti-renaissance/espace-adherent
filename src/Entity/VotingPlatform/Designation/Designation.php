@@ -188,6 +188,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
     private $resultScheduleDelay = 0;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $resultDisplayBlank = false;
+
     /**
      * Duration of the additional round in day
      *
@@ -761,6 +764,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isBlankVoteEnabled(): bool
     {
         return $this->isBlankVoteAvailable() && $this->isBlankVoteEnabled;
+    }
+
+    public function isResultBlankVoteEnabled(): bool
+    {
+        return $this->isBlankVoteEnabled() && $this->resultDisplayBlank;
     }
 
     public function setIsBlankVoteEnabled(bool $value): void

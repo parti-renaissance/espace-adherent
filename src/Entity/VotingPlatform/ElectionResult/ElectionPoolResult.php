@@ -123,14 +123,25 @@ class ElectionPoolResult
         $this->electionRoundResult = $electionRoundResult;
     }
 
-    public function getExpressed(): int
+    public function getExpressed(bool $withBlank = false): int
     {
-        return $this->expressed;
+        return $this->expressed + ($withBlank ? $this->blank : 0);
     }
 
     public function getBlank(): int
     {
         return $this->blank;
+    }
+
+    public function getBlankRate(): int
+    {
+        $total = $this->getExpressed(true);
+
+        if ($total > 0) {
+            return round($this->blank * 100.0 / $total, 2);
+        }
+
+        return 0;
     }
 
     #[Groups(['election_result'])]

@@ -61,6 +61,7 @@
 {% endblock %}
 
 {% block voting_platform_content %}
+    {% set display_blank_vote = designation.isResultBlankVoteEnabled() %}
     {% for pool_result in election_round_result.getElectionPoolResults %}
         <div>
             <h2 class="text-xl font-bold mb-2">{{ pool_result.getElectionPool().getCode() }}</h2>
@@ -84,9 +85,15 @@
                                 {% set candidate = candidate_group.getCandidates|first %}
                                 <tr>
                                     <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }}</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate() }} %</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate(display_blank_vote) }} %</td>
                                 </tr>
                             {% endfor %}
+                            {% if display_blank_vote %}
+                                <tr>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ vote_blanc_label }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBlankRate() }} %</td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -96,6 +103,6 @@
 
     <div>
         <p class="text--muted">Les résultats sont disponibles en ligne aux adhérents jusqu’à J+{{ designation.getResultDisplayDelay() }} ({{ designation.getResultEndDate()|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}).</p>
-        <p class="text--muted">Une question, un problème ? Contactez-nous par email <a href="mailto:contact@parti-renaissance.fr">contact@parti-renaissance.fr</a>.</p>
+        <p class="text--muted">Une question, un problème ? Contactez-nous par email <a href="mailto:contact@parti-renaissance.fr" class="text-ui_blue-50">contact@parti-renaissance.fr</a>.</p>
     </div>
 {% endblock %}

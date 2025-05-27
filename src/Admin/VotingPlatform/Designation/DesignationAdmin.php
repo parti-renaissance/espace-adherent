@@ -228,6 +228,11 @@ class DesignationAdmin extends AbstractAdmin
                         'html5' => true,
                         'required' => false,
                     ])
+                    ->add('resultDisplayBlank', null, [
+                        'label' => 'Afficher "Ne se prononce pas"',
+                        'required' => false,
+                        'help' => 'Si le vote blanc est activé',
+                    ])
                 ->end()
                 ->with('Scrutin proportionnel plurinominal', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-info'])
                     ->add('seats', NumberType::class, [
