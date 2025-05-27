@@ -61,6 +61,7 @@
 {% endblock %}
 
 {% block voting_platform_content %}
+    {% set display_blank_vote = designation.isResultBlankVoteEnabled() %}
     {% for pool_result in election_round_result.getElectionPoolResults %}
         <div>
             <h2 class="text-xl font-bold mb-2">{{ pool_result.getElectionPool().getCode() }}</h2>
@@ -84,9 +85,15 @@
                                 {% set candidate = candidate_group.getCandidates|first %}
                                 <tr>
                                     <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }}</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate() }} %</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate(display_blank_vote) }} %</td>
                                 </tr>
                             {% endfor %}
+                            {% if display_blank_vote %}
+                                <tr>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ vote_blanc_label }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBlankRate() }} %</td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
