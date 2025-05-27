@@ -117,7 +117,7 @@ class DelegatedAccessManager
 
         if (\in_array($scope, ZoneBasedRoleTypeEnum::ALL, true)) {
             $delegator = $member->getTeam()->getOwner();
-            $zoneBasedRole = $delegator->findZoneBasedRole($member->getTeam()->getScope());
+            $zoneBasedRole = $delegator->findZoneBasedRole($scope);
 
             if ($zoneBasedRole && $zoneBasedRole->isHidden()) {
                 return false;
