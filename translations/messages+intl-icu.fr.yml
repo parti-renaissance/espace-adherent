@@ -133,48 +133,231 @@ role.group.local: Local
 role.group.elections: Élections
 role.group.national: National
 role.group.other: Autres
+role.referent: >-
+    {gender, select,
+      female {Référente}
+      other {Référent}
+    }
 
-role.referent: Référent
-role.coreferent: Co-Référent
-role.delegated_referent: Référent délégué
-role.deputy: Délégué de circonscription
-role.delegated_deputy: Délégué de circonscription délégué
-role.senator: Sénateur
-role.delegated_senator: Sénateur délégué
-role.committee_supervisor: Animateur
+role.coreferent: >-
+    {gender, select,
+      female {Co-Référente}
+      other {Co-Référent}
+    }
+
+role.delegated_referent: >-
+    {gender, select,
+      female {Référente déléguée}
+      other {Référent délégué}
+    }
+
+role.deputy: >-
+    {gender, select,
+      female {Déléguée de circonscription}
+      other {Délégué de circonscription}
+    }
+
+role.delegated_deputy: >-
+    {gender, select,
+      female {Déléguée de circonscription déléguée}
+      other {Délégué de circonscription délégué}
+    }
+
+role.senator: >-
+    {gender, select,
+      female {Sénatrice}
+      other {Sénateur}
+    }
+
+role.delegated_senator: >-
+    {gender, select,
+      female {Sénatrice déléguée}
+      other {Sénateur délégué}
+    }
+
+role.committee_supervisor: >-
+    {gender, select,
+      female {Animatrice}
+      other {Animateur}
+    }
+
 role.animator: Responsable comité local
+
 role.delegated_animator: Responsable comité local délégué
-role.committee_provisional_supervisor: Animateur provisoire
-role.committee_host: Co-Animateur
-role.assessor_manager: Responsable assesseur
-role.assessor: Assesseur
+
+role.committee_provisional_supervisor: >-
+    {gender, select,
+      female {Animatrice provisoire}
+      other {Animateur provisoire}
+    }
+
+role.committee_host: >-
+    {gender, select,
+      female {Co-Animatrice}
+      other {Co-Animateur}
+    }
+
+role.assessor_manager: >-
+    {gender, select,
+      female {Responsable assesseure}
+      other {Responsable assesseur}
+    }
+
+role.assessor: >-
+    {gender, select,
+      female {Assesseure}
+      other {Assesseur}
+    }
+
 role.jecoute_manager: Responsable des questionnaires
-role.user: Utilisateur
+
+role.user: >-
+    {gender, select,
+      female {Utilisatrice}
+      other {Utilisateur}
+    }
+
 role.national: Rôle national
+
 role.national_communication: Rôle national communication
-role.election_results_reporter: Rapporteur résultats
-role.senatorial_candidate: Candidat Sénatoriales 2020
-role.candidate_regional_headed: Tête de liste aux régionales
-role.candidate_regional_leader: Chef de file aux régionales
-role.candidate_departmental: Candidat aux départementales
-role.delegated_candidate_regional_headed: Tête de liste aux régionales délégué
-role.delegated_candidate_regional_leader: Chef de file aux régionales délégué
-role.delegated_candidate_departmental: Candidat aux départementales
-role.phoning_national_manager: Responsable phoning
-role.pap_national_manager: Responsable National PAP
-role.pap_user: Utilisateur PAP app mobile
-role.correspondent: Responsable local
-role.candidate: Candidat
-role.legislative_candidate: Candidat aux législatives
-role.regional_coordinator: Coordinateur régional
-role.regional_delegate: Délégué régional
-role.president_departmental_assembly: Président assemblée départementale
-role.procurations_manager: Responsable procurations
-role.fde_coordinator: Coordinateur FDE
-role.pap: Porte-à-porteur
-role.phoning: Appelant
-role.agora_president: Président d'Agora
-role.agora_general_secretary: Secrétaire Général d'Agora
+
+role.election_results_reporter: >-
+    {gender, select,
+      female {Rapporteuse résultats}
+      other {Rapporteur résultats}
+    }
+
+role.senatorial_candidate: >-
+    {gender, select,
+      female {Candidate Sénatoriales 2020}
+      other {Candidat Sénatoriales 2020}
+    }
+
+role.candidate_regional_headed: >-
+    {gender, select,
+      female {Tête de liste aux régionales}
+      other {Tête de liste aux régionales}
+    }
+
+role.candidate_regional_leader: >-
+    {gender, select,
+      female {Cheffe de file aux régionales}
+      other {Chef de file aux régionales}
+    }
+
+role.candidate_departmental: >-
+    {gender, select,
+      female {Candidate aux départementales}
+      other {Candidat aux départementales}
+    }
+
+role.delegated_candidate_regional_headed: >-
+    {gender, select,
+      female {Tête de liste aux régionales déléguée}
+      other {Tête de liste aux régionales délégué}
+    }
+
+role.delegated_candidate_regional_leader: >-
+    {gender, select,
+      female {Cheffe de file aux régionales déléguée}
+      other {Chef de file aux régionales délégué}
+    }
+
+role.delegated_candidate_departmental: >-
+    {gender, select,
+      female {Candidate aux départementales}
+      other {Candidat aux départementales}
+    }
+
+role.phoning_national_manager: >-
+    {gender, select,
+      female {Responsable phoning}
+      other {Responsable phoning}
+    }
+
+role.pap_national_manager: >-
+    {gender, select,
+      female {Responsable nationale PAP}
+      other {Responsable national PAP}
+    }
+
+role.pap_user: >-
+    {gender, select,
+      female {Utilisatrice PAP app mobile}
+      other {Utilisateur PAP app mobile}
+    }
+
+role.correspondent: >-
+    {gender, select,
+      female {Responsable locale}
+      other {Responsable local}
+    }
+
+role.candidate: >-
+    {gender, select,
+      female {Candidate}
+      other {Candidat}
+    }
+
+role.legislative_candidate: >-
+    {gender, select,
+      female {Candidate aux législatives}
+      other {Candidat aux législatives}
+    }
+
+role.regional_coordinator: >-
+    {gender, select,
+      female {Coordinatrice régionale}
+      other {Coordinateur régional}
+    }
+
+role.regional_delegate: >-
+    {gender, select,
+      female {Déléguée régionale}
+      other {Délégué régional}
+    }
+
+role.president_departmental_assembly: >-
+    {gender, select,
+      female {Présidente assemblée départementale}
+      other {Président assemblée départementale}
+    }
+
+role.procurations_manager: >-
+    {gender, select,
+      female {Responsable procurations}
+      other {Responsable procurations}
+    }
+
+role.fde_coordinator: >-
+    {gender, select,
+      female {Coordinatrice FDE}
+      other {Coordinateur FDE}
+    }
+
+role.pap: >-
+    {gender, select,
+      female {Porte-à-porteuse}
+      other {Porte-à-porteur}
+    }
+
+role.phoning: >-
+    {gender, select,
+      female {Appelante}
+      other {Appelant}
+    }
+
+role.agora_president: >-
+    {gender, select,
+      female {Présidente d'Agora}
+      other {Président d'Agora}
+    }
+
+role.agora_general_secretary: >-
+    {gender, select,
+      female {Secrétaire Générale d'Agora}
+      other {Secrétaire Général d'Agora}
+    }
 
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local
