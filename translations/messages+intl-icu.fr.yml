@@ -273,8 +273,8 @@ role.phoning_national_manager: >-
 
 role.pap_national_manager: >-
     {gender, select,
-      female {Responsable nationale PAP}
-      other {Responsable national PAP}
+      female {Responsable Nationale PAP}
+      other {Responsable National PAP}
     }
 
 role.pap_user: >-

@@ -105,7 +105,7 @@ Feature:
                                             "first_name": "Lucie",
                                             "last_name": "Olivera"
                                         },
-                                        "author_scope": "Candidat aux législatives"
+                                        "author_scope": "Candidate aux législatives"
                                     },
                                     {
                                         "uuid": "@uuid@",
@@ -117,7 +117,7 @@ Feature:
                                             "first_name": "Lucie",
                                             "last_name": "Olivera"
                                         },
-                                        "author_scope": "Candidat aux législatives"
+                                        "author_scope": "Candidate aux législatives"
                                     }
                                 ]
                             }
@@ -151,7 +151,7 @@ Feature:
                                     "first_name": "Lucie",
                                     "last_name": "Olivera"
                                 },
-                                "author_scope": "Candidat aux législatives"
+                                "author_scope": "Candidate aux législatives"
                             }
                         ]
                     },
