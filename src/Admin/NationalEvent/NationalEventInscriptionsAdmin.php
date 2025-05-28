@@ -177,7 +177,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role) use ($translator): string {
                     return \sprintf(
                         '%s [%s]',
-                        $translator->trans('role.'.$role->getType()),
+                        $translator->trans('role.'.$role->getType(), ['gender' => $role->getAdherent()->getGender()]),
                         implode(', ', array_map(function (Zone $zone): string {
                             return \sprintf(
                                 '%s (%s)',

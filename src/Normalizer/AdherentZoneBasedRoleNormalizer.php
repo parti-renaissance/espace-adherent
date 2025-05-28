@@ -22,7 +22,7 @@ class AdherentZoneBasedRoleNormalizer implements NormalizerInterface, Normalizer
         /** @var Adherent $object */
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
-        $roles = array_map(fn (AdherentZoneBasedRole $role) => $this->translator->trans('role.'.$role->getType()), $object->getZoneBasedRoles());
+        $roles = array_map(fn (AdherentZoneBasedRole $role) => $this->translator->trans('role.'.$role->getType(), ['gender' => $role->getAdherent()->getGender()]), $object->getZoneBasedRoles());
         $data['roles'] = implode(',', $roles);
 
         return $data;

@@ -11,9 +11,14 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentZoneBasedRoleType extends AbstractType
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -21,7 +26,7 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'label' => 'Rôle national ou local',
                 'choices' => AdherentRoles::getZoneBasedRoles(),
                 'choice_label' => function (string $label): string {
-                    return 'role.'.$label;
+                    return $this->translator->trans("role.$label", ['gender' => 'male']);
                 },
             ])
             ->add('zones', AdminZoneAutocompleteType::class, [
