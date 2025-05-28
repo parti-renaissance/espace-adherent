@@ -54,14 +54,12 @@
 
         {% set tooltip %}
             {% if zone_based_role.zones is not empty %}
-                Zone(s):
-                <ul>
-                    {% for zone in zone_based_role.zones %}
-                        <li>
-                            {{ zone }}
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% set zones = [] %}
+                {% for zone in zone_based_role.zones %}
+                    {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
+                {% endfor %}
+
+                Zone: {{ zones|join(', ') }}
             {% endif %}
         {% endset %}
 
@@ -89,16 +87,14 @@
 
             {% set tooltip %}
                 Rôle: {{ delegated_role.role }}
-                <br />
                 {% if zone_based_role and zone_based_role.zones is not empty %}
-                    Zone(s):
-                    <ul>
-                        {% for zone in zone_based_role.zones %}
-                            <li>
-                                {{ zone }}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {% set zones = [] %}
+                    {% for zone in zone_based_role.zones %}
+                        {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
+                    {% endfor %}
+
+                    <br />
+                    Zone: {{ zones|join(', ') }}
                 {% endif %}
             {% endset %}
 

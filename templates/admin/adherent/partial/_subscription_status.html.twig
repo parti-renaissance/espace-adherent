@@ -1,9 +1,4 @@
-{% macro display_row(icon, label, bgColor, textColor = '#333333') %}
-    <span class="label" style="display: flex;font-weight:normal;align-items: center;color: {{ textColor }};width: fit-content;background-color: {{ bgColor }};border-radius: 4px;padding: 2px 4px;gap: 4px;">
-        <i data-lucide="{{ icon }}"></i>
-        {{ label }}
-    </span>
-{% endmacro %}
+{% import 'admin/macros/labels.html.twig' as ui %}
 
 {% set colors = {
     green: '#61e9d5',
@@ -11,20 +6,42 @@
     grey: '#4b5c6b',
 } %}
 
-<div style="display: flex;flex-direction: column;gap: 4px;">
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px;">
     {% if not object.isEnabled() or object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::UNSUBSCRIBED') %}
-        {{ _self.display_row('mail', 'Désabonné', colors.grey, 'white') }}
+        {% set label %}
+            <i data-lucide="mail"></i>
+            Désabonné
+        {% endset %}
+        {{ ui.label(label, colors.grey) }}
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::SUBSCRIBED') %}
-        <a href="#" data-toggle="modal" data-target="#adherent-subscription-{{ object.id }}">{{ _self.display_row('mail', 'Abonné', colors.green) }}</a>
+        <a href="#" data-toggle="modal" data-target="#adherent-subscription-{{ object.id }}">
+            {% set label %}
+                <i data-lucide="mail"></i>
+                Abonné
+            {% endset %}
+            {{ ui.label(label, colors.green, '#333333') }}
+        </a>
     {% elseif object.getMailchimpStatus() == constant('App\\Mailchimp\\Contact\\ContactStatusEnum::CLEANED') %}
-        {{ _self.display_row('mail', 'Cleaned', colors.yellow) }}
+        {% set label %}
+            <i data-lucide="mail"></i>
+            Cleaned
+        {% endset %}
+        {{ ui.label(label, colors.yellow, '#333333') }}
     {% endif %}
 
     {% if object.getPhone() %}
         {% if object.hasSmsSubscriptionType() %}
-            {{ _self.display_row('phone', 'Abonné', colors.green) }}
+            {% set label %}
+                <i data-lucide="phone"></i>
+                Abonné
+            {% endset %}
+            {{ ui.label(label, colors.green, '#333333') }}
         {% else %}
-            {{ _self.display_row('phone', 'Désabonné', colors.grey, 'white') }}
+            {% set label %}
+                <i data-lucide="phone"></i>
+                Désabonné
+            {% endset %}
+            {{ ui.label(label, colors.grey) }}
         {% endif %}
     {% endif %}
 
@@ -34,18 +51,34 @@
     {% set active_web_session = active_sessions|filter(session => session.appSystem == system_enum.WEB)|first %}
     {% if active_web_session %}
         {% if active_web_session.isSubscribed() %}
-            {{ _self.display_row('laptop', 'Abonné', colors.green) }}
+            {% set label %}
+                <i data-lucide="laptop"></i>
+                Abonné
+            {% endset %}
+            {{ ui.label(label, colors.green, '#333333') }}
         {% else %}
-            {{ _self.display_row('laptop', 'Désabonné', colors.grey, 'white') }}
+            {% set label %}
+                <i data-lucide="laptop"></i>
+                Désabonné
+            {% endset %}
+            {{ ui.label(label, colors.grey) }}
         {% endif %}
     {% endif %}
 
     {% set active_mobile_session = active_sessions|filter(session => session.appSystem in [system_enum.IOS, system_enum.ANDROID])|first %}
     {% if active_mobile_session %}
         {% if active_mobile_session.isSubscribed() %}
-            {{ _self.display_row('smartphone', 'Abonné', colors.green) }}
+            {% set label %}
+                <i data-lucide="smartphone"></i>
+                Abonné
+            {% endset %}
+            {{ ui.label(label, colors.green, '#333333') }}
         {% else %}
-            {{ _self.display_row('smartphone', 'Désabonné', colors.grey, 'white') }}
+            {% set label %}
+                <i data-lucide="smartphone"></i>
+                Désabonné
+            {% endset %}
+            {{ ui.label(label, colors.grey) }}
         {% endif %}
     {% endif %}
 </div>
