@@ -139,7 +139,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
 
     private function translateRole(string $role): string
     {
-        $label = $this->translator->trans("role.$role");
+        $label = $this->translator->trans("role.$role", ['gender' => 'male']);
         if (str_starts_with($label, 'role.')) {
             return $role;
         }

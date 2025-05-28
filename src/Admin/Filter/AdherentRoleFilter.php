@@ -10,10 +10,19 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
 {
+    public function __construct(
+        CallbackFilter $decorated,
+        private readonly TranslatorInterface $translator,
+    ) {
+        parent::__construct($decorated);
+    }
+
     protected function getInitialFilterOptions(): array
     {
         return [
@@ -22,7 +31,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
             'field_options' => [
                 'choices' => AdherentRoles::ALL,
                 'choice_label' => function (string $value) {
-                    return 'role.'.$value;
+                    return $this->translator->trans("role.$value", ['gender' => 'male']);
                 },
                 'multiple' => true,
             ],

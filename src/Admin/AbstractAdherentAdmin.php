@@ -1061,7 +1061,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                             array_map(function (AdherentZoneBasedRole $role): string {
                                 return \sprintf(
                                     '%s [%s]',
-                                    $this->translator->trans('role.'.$role->getType()),
+                                    $this->translator->trans('role.'.$role->getType(), ['gender' => $role->getAdherent()->getGender()]),
                                     implode(', ', array_map(function (Zone $zone): string {
                                         return \sprintf(
                                             '%s (%s)',
@@ -1072,8 +1072,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                                 );
                             }, $adherent->getZoneBasedRoles()),
                             array_filter([
-                                $adherent->isPresidentOfAgora() ? $this->translator->trans('role.agora_president') : null,
-                                $adherent->isGeneralSecretaryOfAgora() ? $this->translator->trans('role.agora_general_secretary') : null,
+                                $adherent->isPresidentOfAgora() ? $this->translator->trans('role.agora_president', ['gender' => $adherent->getGender()]) : null,
+                                $adherent->isGeneralSecretaryOfAgora() ? $this->translator->trans('role.agora_general_secretary', ['gender' => $adherent->getGender()]) : null,
                             ])
                         )
                     ),

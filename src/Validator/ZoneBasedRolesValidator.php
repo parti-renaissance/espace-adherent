@@ -135,7 +135,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                         ->atPath('['.$key.'].zones')
                         ->setParameter('{{zone_code}}', $zone->getCode())
                         ->setParameter('{{zone_name}}', $zone->getName())
-                        ->setParameter('{{role_type}}', $this->translator->trans('role.'.$role->getType()))
+                        ->setParameter('{{role_type}}', $this->translator->trans('role.'.$role->getType(), ['gender' => 'male']))
                         ->setParameter('{{adherent_full_name}}', $adherent->getFullName())
                         ->setParameter('{{adherent_public_id}}', $adherent->getPublicId())
                         ->setParameter('{{adherent_edit_url}}', $this->urlGenerator->generate(
