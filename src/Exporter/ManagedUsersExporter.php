@@ -55,7 +55,7 @@ class ManagedUsersExporter
                         'Téléphone' => PhoneNumberUtils::format($managedUser->getPhone()),
                         'Comité' => $managedUser->getCommittee(),
                         'Circonscription' => ($managedUser->getZonesOfType(Zone::DISTRICT)[0] ?? null)?->getNameCode(),
-                        'Rôles' => implode(', ', array_map(fn (array $role) => $this->translator->trans('role.'.$role['role']), $managedUser->getRolesAsArray())),
+                        'Rôles' => implode(', ', array_map(fn (array $role) => $this->translator->trans('role.'.$role['role'], ['gender' => $managedUser->getGender()]), $managedUser->getRolesAsArray())),
                         'Labels Adhérent' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($managedUser->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ADHERENT) || str_starts_with($tag, TagEnum::SYMPATHISANT)))),
                         'Labels Élu' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($managedUser->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ELU)))),
                         'Déclaration de mandats' => implode(', ', $managedUser->getDeclaredMandates()),

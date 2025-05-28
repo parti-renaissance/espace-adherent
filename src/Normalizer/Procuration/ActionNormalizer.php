@@ -16,13 +16,14 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
     }
 
+    /** @var AbstractAction */
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\array_key_exists('author_scope', $data)) {
             $translationKey = 'role.'.$data['author_scope'];
-            $translatedKey = $this->translator->trans('role.'.$data['author_scope']);
+            $translatedKey = $this->translator->trans('role.'.$data['author_scope'], ['gender' => $object->author?->getGender()]);
 
             $data['author_scope'] = $translatedKey !== $translationKey ? $translatedKey : $data['author_scope'];
         }

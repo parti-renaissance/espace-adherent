@@ -183,7 +183,11 @@ role.committee_supervisor: >-
 
 role.animator: Responsable comité local
 
-role.delegated_animator: Responsable comité local délégué
+role.delegated_animator: >-
+    {gender, select,
+        female {Responsable comité local déléguéé}
+        other {Responsable comité local délégué}
+    }
 
 role.committee_provisional_supervisor: >-
     {gender, select,
@@ -197,11 +201,7 @@ role.committee_host: >-
       other {Co-Animateur}
     }
 
-role.assessor_manager: >-
-    {gender, select,
-      female {Responsable assesseure}
-      other {Responsable assesseur}
-    }
+role.assessor_manager: Responsable assesseurs
 
 role.assessor: >-
     {gender, select,
@@ -223,8 +223,8 @@ role.national_communication: Rôle national communication
 
 role.election_results_reporter: >-
     {gender, select,
-      female {Rapporteuse résultats}
-      other {Rapporteur résultats}
+      female {Rapporteuse des résultats}
+      other {Rapporteur des résultats}
     }
 
 role.senatorial_candidate: >-
@@ -233,11 +233,7 @@ role.senatorial_candidate: >-
       other {Candidat Sénatoriales 2020}
     }
 
-role.candidate_regional_headed: >-
-    {gender, select,
-      female {Tête de liste aux régionales}
-      other {Tête de liste aux régionales}
-    }
+role.candidate_regional_headed: Tête de liste aux régionales
 
 role.candidate_regional_leader: >-
     {gender, select,
@@ -319,15 +315,11 @@ role.regional_delegate: >-
 
 role.president_departmental_assembly: >-
     {gender, select,
-      female {Présidente assemblée départementale}
-      other {Président assemblée départementale}
+      female {Présidente d'assemblée départementale}
+      other {Président d'assemblée départementale}
     }
 
-role.procurations_manager: >-
-    {gender, select,
-      female {Responsable procurations}
-      other {Responsable procurations}
-    }
+role.procurations_manager: Responsable procurations
 
 role.fde_coordinator: >-
     {gender, select,

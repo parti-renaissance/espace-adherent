@@ -26,7 +26,7 @@ class DelegatedAccessNotifier
             DelegatedAccessCreatedMessage::create(
                 $delegatedAccess,
                 implode(', ', $this->getZoneNames($delegatedAccess)),
-                $this->translator->trans('role.'.$delegatedAccess->getType()),
+                $this->translator->trans('role.'.$delegatedAccess->getType(), ['gender' => $delegatedAccess->getDelegator()->getGender()]),
                 $this->urlGenerator->generate('vox_app'),
             )
         );
