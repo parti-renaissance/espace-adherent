@@ -21,6 +21,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
     private const EVENT_5_UUID = 'f4c66254-f6d3-4c28-bcb1-6e254d0d329c';
     private const EVENT_6_UUID = 'e770cda4-b215-4ea2-85e5-03fc3e4423e3';
     private const EVENT_7_UUID = '06d88cb2-d254-4ba3-9e00-b9d4611d90fc';
+    private const EVENT_8_UUID = 'b4938d40-337b-4bdf-83ac-f84dd182eefb';
 
     public function loadEvents(ObjectManager $manager): void
     {
@@ -149,6 +150,20 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
         $event7->incrementParticipantsCount(3);
 
+        $event8 = new Event(Uuid::fromString(self::EVENT_8_UUID));
+        $event8->setName('Un événement de l\'Agora');
+        $event8->setDescription('Description de l\'événement de l\'Agora');
+        $event8->setPublished(true);
+        $event8->setBeginAt((new \DateTime('now'))->modify('-2 months'));
+        $event8->setFinishAt((new \DateTime('now'))->modify('-2 months'));
+        $event8->setStatus(Event::STATUS_SCHEDULED);
+        $event8->setMode(Event::MODE_ONLINE);
+        $event8->setVisioUrl('https://parti-renaissance.fr');
+        $event8->setTimeZone('Europe/Paris');
+        $event8->visibility = EventVisibilityEnum::INVITATION_AGORA;
+        $event8->setAuthor($adherent5);
+        $event8->incrementParticipantsCount(3);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -156,6 +171,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $manager->persist($event5);
         $manager->persist($event6);
         $manager->persist($event7);
+        $manager->persist($event8);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7', Adherent::class))));
@@ -166,6 +182,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event7, $adherent5)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event7, $adherentRe4)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event7, $pad92)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $pad92)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $adherent5)));
         $eventRegistration1 = new EventRegistrationCommand($event1);
         $eventRegistration1->setFirstName('Marie');
         $eventRegistration1->setLastName('CLAIRE');

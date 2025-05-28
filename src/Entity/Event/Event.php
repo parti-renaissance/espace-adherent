@@ -751,8 +751,17 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         return \in_array($this->visibility, [EventVisibilityEnum::ADHERENT, EventVisibilityEnum::ADHERENT_DUES], true);
     }
 
+    public function isInvitation(): bool
+    {
+        return \in_array($this->visibility, [EventVisibilityEnum::INVITATION_AGORA], true);
+    }
+
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
     {
+        if ($this->isInvitation()) {
+            return false;
+        }
+
         if ($command instanceof EventReminderNotificationCommand) {
             return $this->isPublished() && !$this->isReminded();
         }

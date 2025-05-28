@@ -2368,3 +2368,304 @@ Feature:
             """
             "OK"
             """
+
+    Scenario: As a President of Agora I can create an event
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events?scope=agora_manager" with body:
+            """
+            {
+                "name": "Nouvel event pour Agora",
+                "category": "kiosque",
+                "description": "Une description de l'événement",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://parti-renaissance.fr/reunions/123",
+                "time_zone": "Europe/Paris",
+                "visibility": "invitation_agora"
+            }
+            """
+        Then the JSON should be equal to:
+            """
+            {
+                "uuid": "@uuid@",
+                "name": "Nouvel event pour Agora",
+                "slug": "@string@-nouvel-event-pour-agora",
+                "description": "Une description de l'événement",
+                "json_description": null,
+                "time_zone": "Europe/Paris",
+                "committee": null,
+                "live_url": null,
+                "visibility": "private",
+                "created_at": "@string@.isDateTime()",
+                "user_registered_at": "@string@.isDateTime()",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "invitation_agora",
+                "organizer": {
+                    "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                    "first_name": "Michelle",
+                    "last_name": "Dufour",
+                    "scope": "agora_manager",
+                    "role": "Manager d'Agora",
+                    "instance": null,
+                    "image_url": null,
+                    "zone": ""
+                },
+                "participants_count": 1,
+                "status": "SCHEDULED",
+                "capacity": null,
+                "post_address": {
+                    "address": null,
+                    "postal_code": null,
+                    "city": null,
+                    "city_name": null,
+                    "country": null,
+                    "latitude": null,
+                    "longitude": null
+                },
+                "category": {
+                    "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                    "name": "Kiosque",
+                    "slug": "kiosque"
+                },
+                "visio_url": "https://parti-renaissance.fr/reunions/123",
+                "is_national": false,
+                "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "image": null,
+                "editable": false,
+                "object_state": "full"
+            }
+            """
+        And I should have 0 notification
+        And I should have 0 email
+        When I send a "GET" request to "/api/v3/events?scope=agora_manager"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 32,
+                    "items_per_page": 2,
+                    "count": 2,
+                    "current_page": 1,
+                    "last_page": 16
+                },
+                "items": [
+                    {
+                        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                        "name": "Nouvel événement online",
+                        "slug": "@string@-nouvel-evenement-online",
+                        "time_zone": "Europe/Paris",
+                        "live_url": null,
+                        "visibility": "public",
+                        "created_at": "@string@.isDateTime()",
+                        "begin_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "organizer": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent",
+                            "scope": null,
+                            "role": "Président",
+                            "instance": "Assemblée départementale",
+                            "image_url": null,
+                            "zone": null
+                        },
+                        "participants_count": 0,
+                        "status": "SCHEDULED",
+                        "capacity": 50,
+                        "post_address": {
+                            "address": "47 rue Martre",
+                            "postal_code": "92110",
+                            "city": "92110-92024",
+                            "city_name": "Clichy",
+                            "country": "FR",
+                            "latitude": 48.9016,
+                            "longitude": 2.305268
+                        },
+                        "created_at": "@string@.isDateTime()",
+                        "category": null,
+                        "visio_url": null,
+                        "is_national": false,
+                        "mode": "online",
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
+                        "image_url": null,
+                        "image": null,
+                        "editable": false,
+                        "user_registered_at": null,
+                        "object_state": "full"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "name": "Nouvel event pour Agora",
+                        "slug": "@string@-nouvel-event-pour-agora",
+                        "time_zone": "Europe/Paris",
+                        "live_url": null,
+                        "visibility": "private",
+                        "created_at": "@string@.isDateTime()",
+                        "user_registered_at": "@string@.isDateTime()",
+                        "begin_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "visibility": "invitation_agora",
+                        "organizer": {
+                            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                            "first_name": "Michelle",
+                            "last_name": "Dufour",
+                            "scope": "agora_manager",
+                            "role": "Manager d'Agora",
+                            "instance": null,
+                            "image_url": null,
+                            "zone": ""
+                        },
+                        "participants_count": 1,
+                        "status": "SCHEDULED",
+                        "capacity": null,
+                        "post_address": {
+                            "address": null,
+                            "postal_code": null,
+                            "city": null,
+                            "city_name": null,
+                            "country": null,
+                            "latitude": null,
+                            "longitude": null
+                        },
+                        "category": {
+                            "event_group_category": {
+                                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                                "name": "événement",
+                                "slug": "evenement"
+                            },
+                            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                            "name": "Kiosque",
+                            "slug": "kiosque"
+                        },
+                        "visio_url": "https://parti-renaissance.fr/reunions/123",
+                        "is_national": false,
+                        "mode": "online",
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
+                        "image_url": null,
+                        "image": null,
+                        "editable": false,
+                        "object_state": "full"
+                    }
+                ]
+            }
+            """
+        When I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/events?scope=agora_manager"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 31,
+                    "items_per_page": 2,
+                    "count": 2,
+                    "current_page": 1,
+                    "last_page": 16
+                },
+                "items": [
+                    {
+                        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                        "name": "Nouvel événement online",
+                        "slug": "@string@-nouvel-evenement-online",
+                        "time_zone": "Europe/Paris",
+                        "live_url": null,
+                        "visibility": "public",
+                        "created_at": "@string@.isDateTime()",
+                        "begin_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "organizer": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent",
+                            "scope": null,
+                            "role": "Président",
+                            "instance": "Assemblée départementale",
+                            "image_url": null,
+                            "zone": null
+                        },
+                        "participants_count": 0,
+                        "status": "SCHEDULED",
+                        "capacity": 50,
+                        "post_address": {
+                            "address": "47 rue Martre",
+                            "postal_code": "92110",
+                            "city": "92110-92024",
+                            "city_name": "Clichy",
+                            "country": "FR",
+                            "latitude": 48.9016,
+                            "longitude": 2.305268
+                        },
+                        "created_at": "@string@.isDateTime()",
+                        "category": null,
+                        "visio_url": null,
+                        "is_national": false,
+                        "mode": "online",
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
+                        "image_url": null,
+                        "image": null,
+                        "editable": false,
+                        "user_registered_at": null,
+                        "object_state": "full"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "name": "Event interne 5",
+                        "slug": "@string@-event-interne-5",
+                        "time_zone": "Europe/Paris",
+                        "live_url": null,
+                        "visibility": "private",
+                        "created_at": "@string@.isDateTime()",
+                        "user_registered_at": null,
+                        "begin_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "visibility": "private",
+                        "organizer": {
+                            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
+                            "first_name": "Jean-Baptiste",
+                            "last_name": "Fortin",
+                            "scope": null,
+                            "role": null,
+                            "instance": null,
+                            "image_url": null,
+                            "zone": null
+                        },
+                        "participants_count": 0,
+                        "status": "SCHEDULED",
+                        "capacity": 50,
+                        "post_address": {
+                            "address": "74 Avenue des Champs-Élysées, 75008 Paris",
+                            "postal_code": "75008",
+                            "city": "75008-75108",
+                            "city_name": "Paris 8ème",
+                            "country": "FR",
+                            "latitude": 48.862724,
+                            "longitude": 2.287592
+                        },
+                        "category": null,
+                        "visio_url": null,
+                        "is_national": false,
+                        "mode": "online",
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
+                        "image_url": null,
+                        "image": null,
+                        "editable": false,
+                        "object_state": "full"
+                    }
+                ]
+            }
+            """

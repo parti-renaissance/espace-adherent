@@ -549,6 +549,7 @@ event.visibility.public: Public
 event.visibility.private: Interne
 event.visibility.adherent: Adhérents
 event.visibility.adherent_dues: Adhérent à jour
+event.visibility.invitation_agora: Réservé aux membres d'Agora
 
 #
 # Interactive

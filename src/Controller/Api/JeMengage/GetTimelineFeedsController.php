@@ -26,7 +26,10 @@ class GetTimelineFeedsController extends AbstractController
             $page = 0;
         }
 
-        $filters = ['is_national:true'];
+        $filters = [
+            'is_national:true',
+            'adherent_ids:'.$user->getId(),
+        ];
 
         if ($assemblyZone = $user->getAssemblyZone()) {
             $filters[] = 'zone_codes:'.$assemblyZone->getTypeCode();
@@ -37,15 +40,6 @@ class GetTimelineFeedsController extends AbstractController
             TimelineFeedTypeEnum::EVENT,
             TimelineFeedTypeEnum::ACTION,
         ]];
-
-        if ($user instanceof DeviceApiUser) {
-            $tagFilters[] = [
-                TimelineFeedTypeEnum::NEWS,
-                TimelineFeedTypeEnum::SURVEY,
-            ];
-        } else {
-            $filters[] = 'adherent_ids:'.$user->getId();
-        }
 
         return $this->json($dataProvider->findItems($user, $page, $filters, $tagFilters));
     }

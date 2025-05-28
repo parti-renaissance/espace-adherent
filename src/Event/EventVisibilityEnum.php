@@ -11,6 +11,7 @@ enum EventVisibilityEnum: string implements TranslatableInterface
     case PRIVATE = 'private';
     case ADHERENT = 'adherent';
     case ADHERENT_DUES = 'adherent_dues';
+    case INVITATION_AGORA = 'invitation_agora';
 
     public static function isForAdherent(string $visibility): bool
     {
