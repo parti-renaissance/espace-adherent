@@ -288,7 +288,7 @@ Feature:
                 },
                 {
                     "code": "delegated_1d29b80c-a308-441c-9d7d-a333c366fdb1",
-                    "name": "Président assemblée départementale délégué",
+                    "name": "Président d'assemblée départementale délégué",
                     "zones": [
                         {
                             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
@@ -302,7 +302,7 @@ Feature:
                 },
                 {
                     "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
-                    "name": "Président assemblée départementale délégué",
+                    "name": "Président d'assemblée départementale délégué",
                     "zones": [
                         {
                             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -409,7 +409,7 @@ Feature:
             """
             {
                 "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
-                "name": "Président assemblée départementale délégué",
+                "name": "Président d'assemblée départementale délégué",
                 "zones": [
                     {
                         "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
