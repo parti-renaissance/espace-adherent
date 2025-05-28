@@ -151,7 +151,7 @@ Feature:
                         "tags": [
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -236,12 +236,12 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -419,12 +419,12 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -500,7 +500,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "Président assemblée départementale délégué",
+                        "label": "Président d'assemblée départementale délégué",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -606,12 +606,12 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -1040,7 +1040,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -1100,7 +1100,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
@@ -1176,7 +1176,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président assemblée départementale délégué",
+                                "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
