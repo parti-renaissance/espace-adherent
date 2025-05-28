@@ -50,7 +50,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                                 'label' => \sprintf(
                                     '%s%s',
                                     ($label = $this->translator->trans($key = 'role.'.$role['role'], ['gender' => $object->getGender()])) === $key ? $role['role'] : $label,
-                                    !empty($role['is_delegated']) ? ' délégué' : ''
+                                    !empty($role['is_delegated']) ? (' délégué' . (('female' === $object->getGender() ? 'e' : ''))) : ''
                                 ),
                                 'tooltip' => $role['function'] ?? null,
                             ];

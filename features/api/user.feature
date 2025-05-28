@@ -81,7 +81,7 @@ Feature:
                                 "first_name": "Michelle",
                                 "last_name": "Dufour",
                                 "image_url": null,
-                                "role": "Président d'Agora"
+                                "role": "Présidente d'Agora"
                             }
                         }
                     ]

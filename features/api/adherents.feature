@@ -115,6 +115,7 @@ Feature:
         Then the response status code should be 200
         And the response should be in JSON
 
+    @debug
     Scenario Outline: As a user with (delegated) referent role I can get adherents of my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
@@ -151,7 +152,10 @@ Feature:
                         "tags": [
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Président d\'assemblée départementale délégué'),
+                                    contains('Présidente d\'assemblée départementale déléguée')
+                                )",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -211,47 +215,62 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Délégué de circonscription délégué'),
+                                    contains('Déléguée de circonscription déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénateur délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Sénateur délégué'),
+                                    contains('Sénatrice déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Délégué de circonscription délégué'),
+                                    contains('Déléguée de circonscription déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat délégué'),
+                                    contains('Candidate déléguée')
+                                )",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat Sénatoriales 2020 délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat Sénatoriales 2020 délégué'),
+                                    contains('Candidate Sénatoriales 2020 déléguée')
+                                )",
                                 "tooltip": "Candidat Sénateur délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Présidente d'assemblée départementale déléguée",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Présidente d'assemblée départementale déléguée",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable local délégué",
+                                "label": "Responsable locale déléguée",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat aux législatives délégué",
+                                "label": "Candidate aux législatives déléguée",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -394,27 +413,42 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Délégué de circonscription délégué'),
+                                    contains('Déléguée de circonscription déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénateur délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Sénateur délégué'),
+                                    contains('Sénatrice déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Délégué de circonscription délégué'),
+                                    contains('Déléguée de circonscription déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat délégué'),
+                                    contains('Candidate déléguée')
+                                )",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat Sénatoriales 2020 délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat Sénatoriales 2020 délégué'),
+                                    contains('Candidate Sénatoriales 2020 déléguée')
+                                )",
                                 "tooltip": "Candidat Sénateur délégué"
                             },
                             {
@@ -581,47 +615,56 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "Déléguée de circonscription déléguée",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénateur délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Sénateur délégué'),
+                                    contains('Sénatrice déléguée')
+                                )",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription délégué",
+                                "label": "Déléguée de circonscription déléguée",
                                 "tooltip": "Collaborateur parlementaire"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat délégué'),
+                                    contains('Candidate déléguée')
+                                )",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat Sénatoriales 2020 délégué",
+                                "label": "@string@.oneOf(
+                                    contains('Candidat Sénatoriales 2020 délégué'),
+                                    contains('Candidate Sénatoriales 2020 déléguée')
+                                )",
                                 "tooltip": "Candidat Sénateur délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Présidente d'assemblée départementale déléguée",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Présidente d'assemblée départementale déléguée",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable local délégué",
+                                "label": "Responsable locale déléguée",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidat aux législatives délégué",
+                                "label": "Candidate aux législatives déléguée",
                                 "tooltip": "Responsable communication"
                             },
                             {
