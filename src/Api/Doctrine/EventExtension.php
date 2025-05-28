@@ -8,15 +8,19 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Event\Event;
+use App\Entity\Event\EventRegistration;
 use App\Event\EventVisibilityEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class EventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
-    public function __construct(private readonly ScopeGeneratorResolver $scopeResolver)
-    {
+    public function __construct(
+        private readonly Security $security,
+        private readonly ScopeGeneratorResolver $scopeResolver,
+    ) {
     }
 
     public function applyToItem(
@@ -76,6 +80,10 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         $queryBuilder
             ->addSelect("IF($alias.national = 1 AND $alias.beginAt >= NOW(), 2, IF($alias.beginAt >= NOW(), 1, 0)) AS HIDDEN priority")
             ->addSelect("ABS(TIMESTAMPDIFF(SECOND, NOW(), $alias.beginAt)) AS HIDDEN time_to_begin")
+            ->leftJoin(EventRegistration::class, 'er', Join::WITH, 'er.event = '.$alias.' AND er.adherent = :adherent')
+            ->andWhere('('.$alias.'.visibility NOT IN (:invitation_visibilities) OR er IS NOT NULL)')
+            ->setParameter('invitation_visibilities', [EventVisibilityEnum::INVITATION_AGORA])
+            ->setParameter('adherent', $this->security->getUser())
             ->addOrderBy('priority', 'DESC')
             ->addOrderBy('time_to_begin', 'ASC')
         ;
