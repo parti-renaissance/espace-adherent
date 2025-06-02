@@ -5,6 +5,7 @@ namespace App\Membership;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
+use App\History\UserActionHistoryHandler;
 use App\Mailer\MailerService;
 use App\Mailer\Message;
 use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
@@ -30,15 +31,18 @@ class MembershipNotifier implements LoggerAwareInterface
         private readonly LoginLinkHandlerInterface $linkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
+        private readonly UserActionHistoryHandler $userActionHistoryHandler,
     ) {
     }
 
-    public function sendMembershipAnniversaryReminder(Adherent $adherent): bool
+    public function sendMembershipAnniversaryReminder(Adherent $adherent): void
     {
-        return $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
             $adherent,
             $this->createMagicLink($adherent)
         ));
+
+        $this->userActionHistoryHandler->createMembershipAnniversaryReminded($adherent);
     }
 
     public function sendEmailReminder(Adherent $adherent): bool
