@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Address\GeoCoder;
+use App\Address\AddressInterface;
 use App\Entity\Event\Event;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
@@ -29,15 +29,15 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
             $object->setDescription($this->eventPurifier->purify($data['description']));
         }
 
-        if (GeoCoder::DEFAULT_TIME_ZONE !== $object->getTimeZone()) {
+        if (AddressInterface::DEFAULT_TIME_ZONE !== $object->getTimeZone()) {
             $timeZone = new \DateTimeZone($object->getTimeZone());
 
             if ($date = $object->getBeginAt()) {
-                $object->setBeginAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
+                $object->setBeginAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
             }
 
             if ($date = $object->getFinishAt()) {
-                $object->setFinishAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
+                $object->setFinishAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
             }
         }
 

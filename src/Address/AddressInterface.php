@@ -5,6 +5,7 @@ namespace App\Address;
 interface AddressInterface
 {
     public const FRANCE = 'FR';
+    public const DEFAULT_TIME_ZONE = 'Europe/Paris';
 
     public const FRENCH_CODES = [
         0 => 'FR', // FR

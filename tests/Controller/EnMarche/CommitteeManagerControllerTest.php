@@ -39,19 +39,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
-        $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->request('GET', \sprintf('%s/evenements/ajouter', $this->client->getRequest()->getPathInfo()));
-
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
-    }
-
     #[DataProvider('provideFollowerCredentials')]
     public function testAuthenticatedFollowerCannotSeeCommitteeMembers(string $username)
     {

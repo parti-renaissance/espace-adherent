@@ -3,11 +3,9 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadCommitteeEventData;
-use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\Event;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\Renaissance\EventCancellationMessage;
-use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
@@ -52,7 +50,6 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $slug = self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne';
 
         return [
-            ['/evenements/'.$slug.'/modifier'],
             ['/evenements/'.$slug.'/inscrits'],
         ];
     }
@@ -66,50 +63,6 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
             ['/evenements/'.$slug.'/inscription'],
             ['/evenements/'.$slug.'/annuler'],
         ];
-    }
-
-    public function testOrganizerCanEditEvent()
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        Chronos::setTestNow('2018-05-18');
-        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/modifier');
-        Chronos::setTestNow();
-
-        $this->isSuccessful($this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'event_command' => [
-                'name' => 'écologie, débatons-en !',
-                'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
-                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
-                'address' => [
-                    'address' => '6 rue Neyret',
-                    'country' => 'FR',
-                    'postalCode' => '69001',
-                    'city' => '69001-69381',
-                    'cityName' => '',
-                ],
-                'beginAt' => '2022-03-02 09:30',
-                'finishAt' => '2022-03-02 19:00',
-                'capacity' => '1500',
-                'timeZone' => 'Europe/Zurich',
-            ],
-        ]));
-
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        // Follow the redirect and check the adherent can see the committee page
-        $crawler = $this->client->followRedirect();
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->seeFlashMessage($crawler, 'L\'événement a bien été modifié.');
-        self::assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
-        self::assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022', $crawler->filter('.committee-event-name')->text());
-        self::assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
-        self::assertMatchesRegularExpression('#Mercredi 2 mars 2022, 9h30 UTC \+0(1|2):00#', $crawler->filter('.committee-event-date')->text());
-        self::assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
-        self::assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
     }
 
     public function testOrganizerCanCancelEvent()

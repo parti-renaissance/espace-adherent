@@ -321,10 +321,7 @@ participants_count: >-
         one {# inscrit}
         other {# inscrits}
     }
-committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
-event.update.success: L'événement a bien été modifié.
 event.cancel.success: L'événement a bien été annulé.
-
 committee.event.show.share.download_ical: Ajouter l'événement à votre agenda Apple
 committee.event.show.share.cal_google: Ajouter l'événement à votre agenda Google
 

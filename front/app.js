@@ -90,10 +90,6 @@ class App {
         autocompleteAddressForm.buildWidget();
     }
 
-    startDateFieldsSynchronisation(referenceDateFieldName, targetDateFieldName) {
-        this._di.get('form.date_synchronizer').sync(referenceDateFieldName, targetDateFieldName);
-    }
-
     runProgrammaticFoundation() {
         import('pages/programmatic_foundation').catch((error) => { throw error; }).then((module) => {
             module.default('.programmatic-foundation-widget-wrapper', this.get('api'));

@@ -2,28 +2,14 @@
 
 namespace App\Event;
 
-use App\Address\Address;
-use App\Address\AddressInterface;
-use App\Address\PostAddressFactory;
 use App\Entity\Event\Event;
 use App\Geo\ZoneMatcher;
-use App\Image\ImageManager;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
 {
-    private $addressFactory;
-    private $zoneMatcher;
-    private $imageManager;
-
-    public function __construct(
-        ImageManager $imageManager,
-        ZoneMatcher $zoneMatcher,
-        ?PostAddressFactory $addressFactory = null,
-    ) {
-        $this->addressFactory = $addressFactory ?: new PostAddressFactory();
-        $this->zoneMatcher = $zoneMatcher;
-        $this->imageManager = $imageManager;
+    public function __construct(private readonly ZoneMatcher $zoneMatcher)
+    {
     }
 
     public function createFromArray(array $data): Event
@@ -61,63 +47,5 @@ class EventFactory
         }
 
         return $event;
-    }
-
-    public function createFromEventCommand(EventCommand $command): Event
-    {
-        $event = new Event($command->getUuid());
-        $event->setCommittee($command->getCommittee());
-        $event->setMode($command->getMode());
-        $event->setAuthor($command->getAuthor());
-        $event->setName($command->getName());
-        $event->setCategory($command->getCategory());
-        $event->setDescription($command->getDescription());
-        $event->setPostAddress($this->createPostAddress($command->getAddress()));
-        $event->setBeginAt($command->getBeginAt());
-        $event->setFinishAt($command->getFinishAt());
-        $event->setCapacity($command->getCapacity());
-        $event->setTimeZone($command->getTimeZone());
-        $event->setVisioUrl($command->getVisioUrl());
-        $event->setImage($command->getImage());
-        $event->setPrivate($command->isPrivate());
-        $event->setElectoral($command->isElectoral());
-
-        if ($event->getImage()) {
-            $this->imageManager->saveImage($event);
-        }
-
-        return $event;
-    }
-
-    public function updateFromEventCommand(Event $event, EventCommand $command): void
-    {
-        $event->update(
-            $command->getName(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getTimeZone(),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->getVisioUrl(),
-            $command->getCapacity(),
-            $command->isPrivate(),
-            $command->isElectoral()
-        );
-
-        $event->setMode($command->getMode());
-        $event->setCategory($command->getCategory());
-        $event->setImage($command->getImage());
-        $event->setRemoveImage($command->isRemoveImage());
-
-        if ($event->isRemoveImage() && $event->hasImageName()) {
-            $this->imageManager->removeImage($event);
-        } elseif ($event->getImage()) {
-            $this->imageManager->saveImage($event);
-        }
-    }
-
-    private function createPostAddress(Address $address): AddressInterface
-    {
-        return $this->addressFactory->createFromAddress($address, true);
     }
 }

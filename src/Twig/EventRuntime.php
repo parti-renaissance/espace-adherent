@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use App\Address\GeoCoder;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Repository\EventRegistrationRepository;
@@ -11,11 +11,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class EventRuntime implements RuntimeExtensionInterface
 {
-    private $eventRegistrationRepository;
-
-    public function __construct(EventRegistrationRepository $eventRegistrationRepository)
+    public function __construct(private readonly EventRegistrationRepository $eventRegistrationRepository)
     {
-        $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
     public function isEventAlreadyParticipating(Event $event, ?UserInterface $user): bool
@@ -27,9 +24,9 @@ class EventRuntime implements RuntimeExtensionInterface
         return $this->eventRegistrationRepository->isAlreadyRegistered($user->getEmailAddress(), $event);
     }
 
-    public function offsetTimeZone(string $timeZone = GeoCoder::DEFAULT_TIME_ZONE): string
+    public function offsetTimeZone(string $timeZone = AddressInterface::DEFAULT_TIME_ZONE): string
     {
-        if (GeoCoder::DEFAULT_TIME_ZONE !== $timeZone) {
+        if (AddressInterface::DEFAULT_TIME_ZONE !== $timeZone) {
             $datetime = new \DateTime('now');
             $tz = new \DateTimeZone($timeZone);
             $datetime->setTimezone($tz);

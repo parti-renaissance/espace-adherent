@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Address\GeoCoder;
 use App\Committee\CommandHandler\CommitteeUpdateCommandHandler;
 use App\Committee\CommitteeManager;
 use App\Committee\DTO\CommitteeCommand;
@@ -10,12 +9,9 @@ use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Event\EventCommand;
-use App\Event\EventCommandHandler;
 use App\Exception\CommitteeMembershipException;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
-use App\Form\EventCommandType;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
 use Sonata\Exporter\Exporter;
@@ -66,39 +62,6 @@ class CommitteeManagerController extends AbstractController
             'form' => $form->createView(),
             'committee' => $committee,
             'committee_hosts' => $this->manager->getCommitteeHosts($committee),
-        ]);
-    }
-
-    #[IsGranted(new Expression('subject.isApproved()'), subject: 'committee')]
-    #[Route(path: '/evenements/ajouter', name: 'app_committee_manager_add_event', methods: ['GET', 'POST'])]
-    public function addEventAction(
-        Request $request,
-        Committee $committee,
-        GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler,
-    ): Response {
-        $command = new EventCommand($this->getUser(), $committee);
-        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-
-        $form = $this
-            ->createForm(EventCommandType::class, $command)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $event = $eventCommandHandler->handle($command);
-
-            $this->addFlash('info', 'committee.event.creation.success');
-
-            return $this->redirectToRoute('app_committee_event_show', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('committee_manager/add_event.html.twig', [
-            'committee' => $committee,
-            'committee_hosts' => $this->manager->getCommitteeHosts($committee),
-            'form' => $form->createView(),
         ]);
     }
 

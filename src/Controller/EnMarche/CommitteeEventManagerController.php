@@ -5,15 +5,12 @@ namespace App\Controller\EnMarche;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventCanceledHandler;
-use App\Event\EventCommand;
-use App\Event\EventCommandHandler;
 use App\Event\EventContactMembersCommand;
 use App\Event\EventContactMembersCommandHandler;
 use App\Event\EventRegistrationExporter;
 use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
 use App\Form\ContactMembersType;
-use App\Form\EventCommandType;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,43 +34,8 @@ class CommitteeEventManagerController extends AbstractController
         self::ACTION_EXPORT,
     ];
 
-    private $eventRegistrationRepository;
-
-    public function __construct(EventRegistrationRepository $eventRegistrationRepository)
+    public function __construct(private readonly EventRegistrationRepository $eventRegistrationRepository)
     {
-        $this->eventRegistrationRepository = $eventRegistrationRepository;
-    }
-
-    #[Route(path: '/modifier', name: 'app_committee_event_edit', methods: ['GET', 'POST'])]
-    public function editAction(
-        Request $request,
-        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
-        Event $event,
-        EventCommandHandler $handler,
-    ): Response {
-        $form = $this->createForm(
-            EventCommandType::class,
-            $command = EventCommand::createFromEvent($event),
-            [
-                'image_path' => $event->getImagePath(),
-            ]
-        );
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $handler->handleUpdate($event, $command);
-            $this->addFlash('info', 'event.update.success');
-
-            return $this->redirectToRoute('app_committee_event_show', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('events/edit.html.twig', [
-            'event' => $event,
-            'committee' => $event->getCommittee(),
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route(path: '/annuler', name: 'app_committee_event_cancel', methods: ['GET', 'POST'])]

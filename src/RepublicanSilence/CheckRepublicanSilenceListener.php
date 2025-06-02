@@ -27,7 +27,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Committee
         'app_committee_show' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_contact_members' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
-        'app_committee_manager_add_event' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_message_committee_*' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Deputy Space
