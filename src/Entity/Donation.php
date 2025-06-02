@@ -636,4 +636,18 @@ class Donation implements GeoPointInterface
     {
         return \in_array($this->status, [self::STATUS_FINISHED, self::STATUS_SUBSCRIPTION_IN_PROGRESS], true);
     }
+
+    public function isFirstSuccessfulTransaction(Transaction $transaction): bool
+    {
+        if (!$transaction->isSuccessful()) {
+            return false;
+        }
+
+        $successfulTransactions = array_filter(
+            $this->transactions->toArray(),
+            fn (Transaction $t) => $t->isSuccessful()
+        );
+
+        return 1 === \count($successfulTransactions) && current($successfulTransactions) === $transaction;
+    }
 }

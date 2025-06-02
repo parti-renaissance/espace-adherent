@@ -72,7 +72,12 @@ class ReceivePayboxIpnResponseCommandHandler
 
                 $this->eventDispatcher->dispatch(new NewCotisationEvent($adherent, $donation));
             } else {
-                $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
+                if (
+                    !$donation->hasSubscription()
+                    || $donation->isFirstSuccessfulTransaction($transaction)
+                ) {
+                    $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
+                }
             }
         }
     }
