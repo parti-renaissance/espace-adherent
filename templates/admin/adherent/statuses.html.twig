@@ -105,9 +105,6 @@
     {% endfor %}
 
     {# 5. Rôles / responsabilités divers #}
-    {% set bgColor = '#dfe3e8' %}
-    {% set textColor = '#58636f' %}
-
     {% set customRoleLabels = [
         object.isAnimator ? 'animator',
         object.isJecouteManager ? 'jecoute_manager',
@@ -165,7 +162,16 @@
         {{ ui.label(('role.' ~ label)|trans({gender: object.gender}), bgColor, textColor, tooltip, 'left') }}
     {% endfor %}
 
-    {# 6. Static labels non encore affichés #}
+    {# 6. Static labels & tags non encore affichés #}
+    {% set bgColor = '#dfe3e8' %}
+    {% set textColor = '#58636f' %}
+
+    {% for tag in object.tags %}
+        {% if tag not in displayed_tags %}
+            {{ ui.label(translate_tag(tag, false), bgColor, textColor) }}
+        {% endif %}
+    {% endfor %}
+
     {% for staticLabel in object.staticLabels %}
         {% set tagCode = staticLabel.category.code ~ ':' ~ staticLabel.code %}
         {% if tagCode not in displayed_tags %}
