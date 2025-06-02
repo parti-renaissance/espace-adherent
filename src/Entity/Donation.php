@@ -648,6 +648,6 @@ class Donation implements GeoPointInterface
             fn (Transaction $t) => $t->isSuccessful()
         );
 
-        return 1 === \count($successfulTransactions) && $this->transactions->first() === $transaction;
+        return 1 === \count($successfulTransactions) && current($successfulTransactions) === $transaction;
     }
 }
