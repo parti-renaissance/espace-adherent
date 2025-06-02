@@ -93,7 +93,7 @@ Feature:
                                             "first_name": "Referent",
                                             "last_name": "Referent"
                                         },
-                                        "author_scope": "Président assemblée départementale"
+                                        "author_scope": "Président d'assemblée départementale"
                                     },
                                     {
                                         "uuid": "@uuid@",
@@ -105,7 +105,7 @@ Feature:
                                             "first_name": "Lucie",
                                             "last_name": "Olivera"
                                         },
-                                        "author_scope": "Candidat aux législatives"
+                                        "author_scope": "Candidate aux législatives"
                                     },
                                     {
                                         "uuid": "@uuid@",
@@ -117,7 +117,7 @@ Feature:
                                             "first_name": "Lucie",
                                             "last_name": "Olivera"
                                         },
-                                        "author_scope": "Candidat aux législatives"
+                                        "author_scope": "Candidate aux législatives"
                                     }
                                 ]
                             }
@@ -136,7 +136,7 @@ Feature:
                                     "first_name": "Referent",
                                     "last_name": "Referent"
                                 },
-                                "author_scope": "Président assemblée départementale"
+                                "author_scope": "Président d'assemblée départementale"
                             },
                             {
                                 "uuid": "@uuid@",
@@ -151,7 +151,7 @@ Feature:
                                     "first_name": "Lucie",
                                     "last_name": "Olivera"
                                 },
-                                "author_scope": "Candidat aux législatives"
+                                "author_scope": "Candidate aux législatives"
                             }
                         ]
                     },
@@ -427,7 +427,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "manual"
@@ -458,7 +458,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "manual",
                             "new_status": "pending"
@@ -473,7 +473,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "manual"
@@ -512,7 +512,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "manual"
@@ -544,7 +544,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "manual",
                             "new_status": "pending"
@@ -559,7 +559,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "manual"
@@ -656,7 +656,7 @@ Feature:
                                     "first_name": "<first_name>",
                                     "last_name": "<last_name>"
                                 },
-                                "author_scope": "Président assemblée départementale",
+                                "author_scope": "Président d'assemblée départementale",
                                 "context": []
                             }
                         ]
@@ -697,7 +697,7 @@ Feature:
                                     "first_name": "<first_name>",
                                     "last_name": "<last_name>"
                                 },
-                                "author_scope": "Président assemblée départementale",
+                                "author_scope": "Président d'assemblée départementale",
                                 "context": []
                             },
                             {
@@ -708,7 +708,7 @@ Feature:
                                     "first_name": "<first_name>",
                                     "last_name": "<last_name>"
                                 },
-                                "author_scope": "Président assemblée départementale",
+                                "author_scope": "Président d'assemblée départementale",
                                 "context": []
                             }
                         ]
@@ -763,7 +763,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "excluded"
@@ -799,7 +799,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "excluded",
                             "new_status": "pending"
@@ -813,7 +813,7 @@ Feature:
                             "first_name": "<first_name>",
                             "last_name": "<last_name>"
                         },
-                        "author_scope": "Président assemblée départementale",
+                        "author_scope": "Président d'assemblée départementale",
                         "context": {
                             "old_status": "pending",
                             "new_status": "excluded"

@@ -41,7 +41,7 @@
 
     {% for zone_based_role in object.getZoneBasedRoles() %}
         {% set label %}
-            {{ ('role.' ~ zone_based_role.getType())|trans }}
+            {{ ('role.' ~ zone_based_role.getType())|trans({gender: object.gender}) }}
 
             {% if zone_based_role.zones is not empty %}
                 {% set codes = [] %}
@@ -59,7 +59,7 @@
                     {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
                 {% endfor %}
 
-                Zone: {{ zones|join(', ') }}
+                {{ zones|join(', ') }}
             {% endif %}
         {% endset %}
 
@@ -74,7 +74,7 @@
             {% set zone_based_role = delegated_role.delegator.findZoneBasedRole(role_type) %}
 
             {% set label %}
-                {{ ('role.' ~ role_type)|trans ~ ' délégué' }}
+                {{ delegated_role.role }}
 
                 {% if zone_based_role and zone_based_role.zones is not empty %}
                     {% set codes = [] %}
@@ -86,7 +86,7 @@
             {% endset %}
 
             {% set tooltip %}
-                Rôle: {{ delegated_role.role }}
+                {{ ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' }}
                 {% if zone_based_role and zone_based_role.zones is not empty %}
                     {% set zones = [] %}
                     {% for zone in zone_based_role.zones %}
@@ -94,20 +94,17 @@
                     {% endfor %}
 
                     <br />
-                    Zone: {{ zones|join(', ') }}
+                    {{ zones|join(', ') }}
                 {% endif %}
             {% endset %}
 
             {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
         {% else %}
-            {{ ui.label((role_type|trans)|capitalize ~ ' délégué', bgColor, textColor) }}
+            {{ ui.label(role_type|trans({gender: object.gender})|capitalize ~ ' délégué', bgColor, textColor) }}
         {% endif %}
     {% endfor %}
 
     {# 5. Rôles / responsabilités divers #}
-    {% set bgColor = '#dfe3e8' %}
-    {% set textColor = '#58636f' %}
-
     {% set customRoleLabels = [
         object.isAnimator ? 'animator',
         object.isJecouteManager ? 'jecoute_manager',
@@ -127,8 +124,8 @@
         object.hasPapNationalManagerRole ? 'pap_national_manager',
         object.isPresidentOfAgora ? 'agora_president',
         object.isGeneralSecretaryOfAgora ? 'agora_general_secretary',
-        object.isTerritoireProgresMembership ? 'Militant TDP',
-        object.isAgirMembership ? 'Militant AGIR',
+        object.isTerritoireProgresMembership ? 'membership.tdp',
+        object.isAgirMembership ? 'membership.agir',
     ]|filter(v => v) %}
 
     {% for label in customRoleLabels %}
@@ -162,20 +159,19 @@
             {% endset %}
         {% endif %}
 
-        {{ ui.label(('role.' ~ label)|trans, bgColor, textColor, tooltip, 'left') }}
+        {{ ui.label(('role.' ~ label)|trans({gender: object.gender}), bgColor, textColor, tooltip, 'left') }}
     {% endfor %}
 
-    {# 6. Other memberships #}
-    {% set otherMemberships = [
-        object.isTerritoireProgresMembership ? 'Militant TDP',
-        object.isAgirMembership ? 'Militant AGIR',
-    ]|filter(v => v) %}
+    {# 6. Static labels & tags non encore affichés #}
+    {% set bgColor = '#dfe3e8' %}
+    {% set textColor = '#58636f' %}
 
-    {% for label in otherMemberships %}
-        {{ ui.label(label, bgColor, textColor) }}
+    {% for tag in object.tags %}
+        {% if tag not in displayed_tags %}
+            {{ ui.label(translate_tag(tag, false), bgColor, textColor) }}
+        {% endif %}
     {% endfor %}
 
-    {# 7. Static labels non encore affichés #}
     {% for staticLabel in object.staticLabels %}
         {% set tagCode = staticLabel.category.code ~ ':' ~ staticLabel.code %}
         {% if tagCode not in displayed_tags %}

@@ -52,7 +52,7 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent",
                             "image_url": null,
-                            "role": "Président assemblée départementale"
+                            "role": "Président d'assemblée départementale"
                         }
                     },
                     "circonscription": null,
@@ -81,7 +81,7 @@ Feature:
                                 "first_name": "Michelle",
                                 "last_name": "Dufour",
                                 "image_url": null,
-                                "role": "Président d'Agora"
+                                "role": "Présidente d'Agora"
                             }
                         }
                     ]
@@ -134,7 +134,7 @@ Feature:
                             "first_name": "Referent75and77",
                             "last_name": "Referent75and77",
                             "image_url": null,
-                            "role": "Président assemblée départementale"
+                            "role": "Présidente d'assemblée départementale"
                         }
                     },
                     "circonscription": {

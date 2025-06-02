@@ -23,7 +23,7 @@ final class AgoraNormalizer implements NormalizerInterface, NormalizerAwareInter
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\array_key_exists('president', $data) && \is_array($data['president']) && !empty($data['president'])) {
-            $data['president']['role'] = $this->translator->trans('role.agora_president');
+            $data['president']['role'] = $this->translator->trans('role.agora_president', ['gender' => $object->president?->getGender()]);
         }
 
         return $data;

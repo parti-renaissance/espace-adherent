@@ -37,7 +37,7 @@ Feature:
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null,
-                            "role": "Président d'Agora"
+                            "role": "Présidente d'Agora"
                         },
                         "created_at": "@string@.isDateTime()",
                         "updated_at": "@string@.isDateTime()"
@@ -94,7 +94,7 @@ Feature:
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "image_url": null,
-                            "role": "Président d'Agora"
+                            "role": "Présidente d'Agora"
                         },
                         "created_at": "@string@.isDateTime()",
                         "updated_at": "@string@.isDateTime()"
@@ -215,7 +215,7 @@ Feature:
                             "first_name": "Lucie",
                             "last_name": "Olivera",
                             "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
-                            "role": "Président d'Agora"
+                            "role": "Présidente d'Agora"
                         },
                         "created_at": "@string@.isDateTime()",
                         "updated_at": "@string@.isDateTime()"

@@ -44,13 +44,13 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                 $data['tags'] = array_merge(
                     $data['tags'] ?? [],
                     array_map(
-                        function (array $role) {
+                        function (array $role) use ($object) {
                             return [
                                 'type' => 'role',
                                 'label' => \sprintf(
                                     '%s%s',
-                                    ($label = $this->translator->trans($key = 'role.'.$role['role'])) === $key ? $role['role'] : $label,
-                                    !empty($role['is_delegated']) ? ' délégué' : ''
+                                    ($label = $this->translator->trans($key = 'role.'.$role['role'], ['gender' => $object->getGender()])) === $key ? $role['role'] : $label,
+                                    !empty($role['is_delegated']) ? (' délégué'.('female' === $object->getGender() ? 'e' : '')) : ''
                                 ),
                                 'tooltip' => $role['function'] ?? null,
                             ];
