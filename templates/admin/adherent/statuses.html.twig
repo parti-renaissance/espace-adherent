@@ -59,7 +59,7 @@
                     {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
                 {% endfor %}
 
-                Zone: {{ zones|join(', ') }}
+                {{ zones|join(', ') }}
             {% endif %}
         {% endset %}
 
@@ -74,7 +74,7 @@
             {% set zone_based_role = delegated_role.delegator.findZoneBasedRole(role_type) %}
 
             {% set label %}
-                {{ ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' }}
+                {{ delegated_role.role }}
 
                 {% if zone_based_role and zone_based_role.zones is not empty %}
                     {% set codes = [] %}
@@ -86,7 +86,7 @@
             {% endset %}
 
             {% set tooltip %}
-                Rôle: {{ delegated_role.role }}
+                {{ ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' }}
                 {% if zone_based_role and zone_based_role.zones is not empty %}
                     {% set zones = [] %}
                     {% for zone in zone_based_role.zones %}
@@ -94,7 +94,7 @@
                     {% endfor %}
 
                     <br />
-                    Zone: {{ zones|join(', ') }}
+                    {{ zones|join(', ') }}
                 {% endif %}
             {% endset %}
 
