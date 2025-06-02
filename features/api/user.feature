@@ -134,7 +134,7 @@ Feature:
                             "first_name": "Referent75and77",
                             "last_name": "Referent75and77",
                             "image_url": null,
-                            "role": "Président d'assemblée départementale"
+                            "role": "Présidente d'assemblée départementale"
                         }
                     },
                     "circonscription": {
