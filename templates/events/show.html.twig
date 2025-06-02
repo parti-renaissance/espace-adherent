@@ -100,11 +100,6 @@
                 {% if is_granted('HOST_EVENT', event) %}
                     {% if event.getCommittee() and event.active %}
                         <a class="b__nudge--right-small link--newblue"
-                               href="{{ path('app_committee_event_edit', {slug: event.slug}) }}">
-                            {{ 'event.edit'|trans }}
-                        </a>
-
-                        <a class="b__nudge--right-small link--newblue"
                            href="{{ path('app_committee_event_cancel', {slug: event.slug}) }}">
                             {{ 'event.cancel'|trans }}
                         </a>

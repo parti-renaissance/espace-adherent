@@ -251,11 +251,6 @@ $(document).ready(function() {
     });
 {% endmacro %}
 
-{% macro init_event_cropperjs(form) %}
-    {% import _self as helper %}
-    {{ helper.init_cropperjs(form, 16 / 9, 960, 540) }}
-{% endmacro %}
-
 {% macro init_candidacy_cropperjs(form) %}
     {% import _self as helper %}
     {{ helper.init_cropperjs(form, 1, 500, 500) }}

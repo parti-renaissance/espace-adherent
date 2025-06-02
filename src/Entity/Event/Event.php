@@ -15,7 +15,6 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
-use App\Address\GeoCoder;
 use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
@@ -253,7 +252,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[Assert\Timezone]
     #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(length: 50)]
-    protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
+    protected $timeZone = AddressInterface::DEFAULT_TIME_ZONE;
 
     /**
      * @var \DateTimeInterface|null
@@ -521,7 +520,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     {
         $finishAt = new \DateTimeImmutable(
             $this->finishAt->format('Y-m-d H:i'),
-            $timezone = new \DateTimeZone($this->timeZone ?? GeoCoder::DEFAULT_TIME_ZONE)
+            $timezone = new \DateTimeZone($this->timeZone ?? AddressInterface::DEFAULT_TIME_ZONE)
         );
         $now = new Chronos('now');
 

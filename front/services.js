@@ -2,7 +2,6 @@ import ShareDialogFactory from './services/sharer/ShareDialogFactory';
 import Sharer from './services/sharer/Sharer';
 import ReqwestApiClient from './services/api/ReqwestApiClient';
 import AddressFormFactory from './services/address/AddressFormFactory';
-import DateFieldsSynchronizer from './services/form/DateFieldsSynchronizer';
 
 /**
  * @param {Container} di
@@ -36,5 +35,4 @@ export default (di) => {
      * Address form
      */
     di.set('address.form_factory', () => new AddressFormFactory(di.get('api')));
-    di.set('form.date_synchronizer', () => new DateFieldsSynchronizer());
 };

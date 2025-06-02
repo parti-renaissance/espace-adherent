@@ -3,17 +3,12 @@
 namespace App\Controller\EnMarche\EventManager;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
-use App\Event\EventCommand;
-use App\Event\EventCommandHandler;
-use App\Form\EventCommandType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -41,64 +36,6 @@ abstract class AbstractEventManagerController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/evenements/creer', name: '_create', methods: ['GET', 'POST'])]
-    public function eventsCreateAction(
-        Request $request,
-        GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler,
-    ): Response {
-        /** @var Adherent $user */
-        $user = $this->getMainUser($request->getSession());
-
-        $command = new EventCommand($user);
-        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-
-        $form = $this
-            ->createEventForm($command)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $event = $eventCommandHandler->handle($command);
-
-            return $this->renderTemplate('event_manager/event_create_success.html.twig', [
-                'event' => $event,
-                'share_by_email' => $this->shareByEmail(),
-            ]);
-        }
-
-        return $this->renderTemplate('event_manager/event_create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[IsGranted('HOST_EVENT', subject: 'event')]
-    #[Route(path: '/evenements/{slug}/modifier', name: '_edit', methods: ['GET', 'POST'])]
-    public function editAction(Request $request, Event $event, EventCommandHandler $handler): Response
-    {
-        $command = EventCommand::createFromEvent($event);
-
-        $form = $this
-            ->createEventForm($command, $event)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $handler->handleUpdate($event, $command);
-
-            $this->addFlash('info', 'event.update.success');
-
-            return $this->redirectToEventManagerRoute('edit', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->renderTemplate('event_manager/event_edit.html.twig', [
-            'event' => $event,
-            'form' => $form->createView(),
-        ]);
-    }
-
     #[IsGranted('HOST_EVENT', subject: 'event')]
     #[Route(path: '/evenements/{slug}/annuler', name: '_cancel', methods: ['GET'])]
     public function cancelAction(Event $event, EventCanceledHandler $eventCanceledHandler): Response
@@ -115,19 +52,6 @@ abstract class AbstractEventManagerController extends AbstractController
     }
 
     abstract protected function getSpaceType(): string;
-
-    protected function createEventForm(EventCommand $command, ?Event $event = null): FormInterface
-    {
-        return $this->createForm(
-            EventCommandType::class,
-            $command,
-            [
-                'event_group_category' => $this->getEventGroupCategory(),
-                'image_path' => $event ? $event->getImagePath() : null,
-                'extra_fields' => true,
-            ]
-        );
-    }
 
     abstract protected function getEventsPaginator(
         Adherent $adherent,
