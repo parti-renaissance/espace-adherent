@@ -7,6 +7,7 @@ use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
+use App\Entity\Event\RegistrationStatusEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -47,17 +48,24 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return $this->findBy(['event' => $event, 'uuid' => $uuids]);
     }
 
-    public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?EventRegistration
+    public function findAdherentRegistration(string $eventUuid, string $adherentUuid, ?RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED): ?EventRegistration
     {
         self::validUuid($adherentUuid);
 
-        return $this->createEventRegistrationQueryBuilder($eventUuid)
+        $qb = $this->createEventRegistrationQueryBuilder($eventUuid)
             ->innerJoin('r.adherent', 'a')
             ->andWhere('a.uuid = :adherent_uuid')
             ->setParameter('adherent_uuid', $adherentUuid)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if ($status) {
+            $qb
+                ->andWhere('r.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     public function findGuestRegistration(string $eventUuid, string $emailAddress): ?EventRegistration
@@ -212,6 +220,25 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAdherentMembersOfEvent(Event $event): array
+    {
+        $registrations = $this->createQueryBuilder('er')
+            ->select('er', 'a')
+            ->innerJoin('er.adherent', 'a')
+            ->where('er.event = :event')
+            ->andWhere('a.status = :status')
+            ->setParameter('event', $event)
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return array_map(
+            static fn (EventRegistration $eventRegistration): Adherent => $eventRegistration->getAdherent(),
+            $registrations
+        );
+    }
+
     public function isAlreadyRegistered(string $email, Event $event): bool
     {
         return (bool) $this
@@ -269,5 +296,19 @@ class EventRegistrationRepository extends ServiceEntityRepository
     private function createEventRegistrationCollection(array $registrations): EventRegistrationCollection
     {
         return new EventRegistrationCollection($registrations);
+    }
+
+    public function findInvitationByEventAndAdherent(Event $event, Adherent $adherent): ?EventRegistration
+    {
+        return $this->createQueryBuilder('er')
+            ->select('er')
+            ->where('er.event = :event')
+            ->andWhere('er.adherent = :adherent')
+            ->andWhere('er.status = :status')
+            ->setParameter('event', $event)
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

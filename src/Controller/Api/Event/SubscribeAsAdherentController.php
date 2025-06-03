@@ -83,12 +83,22 @@ class SubscribeAsAdherentController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        if ($newRegistration = (!$registration = $this->eventRegistrationRepository->findAdherentRegistration($event->getUuidAsString(), $adherent->getUuidAsString()))) {
+        $registration = $this->eventRegistrationRepository->findAdherentRegistration(
+            $event->getUuidAsString(),
+            $adherent->getUuidAsString(),
+            null
+        );
+
+        $newRegistration = false;
+        if (!$registration) {
+            $newRegistration = true;
             $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
             $event->incrementParticipantsCount();
         }
 
+        $registration->confirm();
         $registration->setSource(AppCodeEnum::VOX);
+
         $this->entityManager->flush();
 
         if ($newRegistration) {
