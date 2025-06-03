@@ -4,10 +4,18 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
+    public function __construct(
+        private readonly EventRegistrationRepository $eventRegistrationRepository,
+        UrlGeneratorInterface $urlGenerator,
+    ) {
+        parent::__construct($urlGenerator);
+    }
+
     protected function getClassName(): string
     {
         return Event::class;
@@ -144,5 +152,14 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getLiveUrl(mixed $object): ?string
     {
         return $object->liveUrl;
+    }
+
+    /** @param Event $object */
+    protected function getAdherentIds(object $object): ?array
+    {
+        return array_map(
+            static fn (Adherent $adherent) => $adherent->getId(),
+            $this->eventRegistrationRepository->findAdherentMembersOfEvent($object)
+        );
     }
 }

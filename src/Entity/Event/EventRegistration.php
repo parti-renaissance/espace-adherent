@@ -50,6 +50,9 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[ORM\Column(enumType: RegistrationStatusEnum::class, options: ['default' => RegistrationStatusEnum::CONFIRMED])]
     public RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $confirmedAt = null;
+
     public function __construct(
         UuidInterface $uuid,
         Event $event,
@@ -170,5 +173,16 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public function getImagePath(): ?string
     {
         return $this->adherent?->getImagePath();
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function confirm(): void
+    {
+        $this->status = RegistrationStatusEnum::CONFIRMED;
+        $this->confirmedAt = new \DateTime();
     }
 }
