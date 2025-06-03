@@ -5,10 +5,12 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\HttpOperation;
 use App\Controller\Api\Agora\JoinAgoraController;
 use App\Controller\Api\Agora\LeaveAgoraController;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AgoraRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,13 +24,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
 #[ApiResource(
     operations: [
+        new Get(
+            uriTemplate: '/agoras/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
+        ),
         new GetCollection(
-            uriTemplate: '/v3/agoras',
+            uriTemplate: '/agoras',
             security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
         ),
         new HttpOperation(
             method: 'POST',
-            uriTemplate: '/v3/agoras/{uuid}/join',
+            uriTemplate: '/agoras/{uuid}/join',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: JoinAgoraController::class,
             security: 'is_granted("RENAISSANCE_ADHERENT")',
@@ -36,14 +43,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new HttpOperation(
             method: 'DELETE',
-            uriTemplate: '/v3/agoras/{uuid}/leave',
+            uriTemplate: '/agoras/{uuid}/leave',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: LeaveAgoraController::class,
             security: "is_granted('ROLE_USER')",
             deserialize: false,
         ),
     ],
-    normalizationContext: ['groups' => ['agora_read', 'image_owner_exposed']],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['agora_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     order: ['createdAt' => 'DESC'],
 )]
 #[ORM\Entity(repositoryClass: AgoraRepository::class)]

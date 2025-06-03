@@ -23,6 +23,7 @@ use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CoordinatorAreaAlreadyTreatedException;
 use App\Geocoder\GeoPointInterface;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Report\ReportType;
 use App\Repository\CommitteeRepository;
 use App\Validator\ZoneType as AssertZoneType;
@@ -43,13 +44,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
         new Put(
             uriTemplate: '/committees/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
             denormalizationContext: ['groups' => ['committee:write']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
@@ -61,7 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/committees/{uuid}/animator',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['committee:list', 'committee:read', 'image_owner_exposed']],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
             denormalizationContext: ['groups' => ['committee:update_animator']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
         ),
@@ -69,7 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(denormalizationContext: ['groups' => ['committee:write']]),
     ],
     routePrefix: '/v3',
-    normalizationContext: ['groups' => ['committee:list', 'image_owner_exposed']],
+    normalizationContext: ['groups' => ['committee:list', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     validationContext: ['groups' => ['api_committee_edition']],
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'committee')"
 )]

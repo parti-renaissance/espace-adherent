@@ -19,14 +19,11 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
 
     public function load(ObjectManager $manager): void
     {
-        /** @var Administrator $admin2 */
         $admin2 = $this->getReference('administrator-2', Administrator::class);
-        /** @var Adherent $adherent1 */
         $adherent1 = $this->getReference('adherent-1', Adherent::class);
-        /** @var Adherent $adherent3 */
         $adherent3 = $this->getReference('adherent-3', Adherent::class);
-        /** @var Adherent $adherent4 */
         $adherent4 = $this->getReference('adherent-4', Adherent::class);
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
 
         $manager->persist($agora1 = $this->createAgora(
             Uuid::fromString(self::UUID_1),
@@ -35,7 +32,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             2,
             true,
             $adherent1,
-            [$adherent3],
+            [$adherent3, $adherent4],
             $admin2
         ));
         $this->setReference('agora-1', $agora1);
@@ -47,7 +44,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             40,
             true,
             $adherent3,
-            [$adherent1, $adherent4],
+            [$adherent1],
             $admin2
         ));
         $this->setReference('agora-2', $agora2);
@@ -58,7 +55,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
             'Description Agora non publiée',
             30,
             false,
-            $adherent4,
+            $adherent5,
             [],
             $admin2
         ));
@@ -66,9 +63,6 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
         $manager->flush();
     }
 
-    /**
-     * @param Adherent[]|array $generalSecretaries
-     */
     private function createAgora(
         UuidInterface $uuid,
         string $name,

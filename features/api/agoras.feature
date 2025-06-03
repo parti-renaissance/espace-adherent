@@ -175,46 +175,27 @@ Feature:
             """
             {
                 "metadata": {
-                    "total_items": 2,
+                    "total_items": 1,
                     "items_per_page": 2,
-                    "count": 2,
+                    "count": 1,
                     "current_page": 1,
                     "last_page": 1
                 },
                 "items": [
                     {
-                        "uuid": "75d47004-db80-4586-8fc5-e97cec58e5b4",
-                        "name": "Deuxième Agora",
-                        "slug": "deuxieme-agora",
-                        "description": "Description deuxième Agora",
-                        "max_members_count": 40,
-                        "members_count": 1,
+                        "uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                        "name": "Première Agora",
+                        "slug": "premiere-agora",
+                        "description": "Description première Agora",
+                        "max_members_count": 2,
+                        "members_count": 2,
                         "published": true,
                         "president": {
-                            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                            "id": "@string@",
-                            "first_name": "Jacques",
-                            "last_name": "Picard",
+                            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                            "id": "123-456",
+                            "first_name": "Michelle",
+                            "last_name": "Dufour",
                             "image_url": null,
-                            "role": "Président d'Agora"
-                        },
-                        "created_at": "@string@.isDateTime()",
-                        "updated_at": "@string@.isDateTime()"
-                    },
-                    {
-                        "uuid": "c3d0fb57-1ce9-441a-9978-8445fc01fa5c",
-                        "name": "Agora non publiée",
-                        "slug": "agora-non-publiee",
-                        "description": "Description Agora non publiée",
-                        "max_members_count": 30,
-                        "members_count": 0,
-                        "published": false,
-                        "president": {
-                            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                            "id": "@string@",
-                            "first_name": "Lucie",
-                            "last_name": "Olivera",
-                            "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
                             "role": "Présidente d'Agora"
                         },
                         "created_at": "@string@.isDateTime()",

@@ -29,6 +29,7 @@ use App\Controller\Api\UpdateImageController;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdvancedImageTrait;
+use App\Entity\Agora;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\Committee;
@@ -245,6 +246,11 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\ManyToOne(targetEntity: Committee::class, fetch: 'EAGER')]
     private $committee;
 
+    #[Groups(['event_read', 'event_write_creation'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne]
+    public ?Agora $agora = null;
+
     /**
      * @var string
      */
@@ -357,6 +363,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
+    #[Assert\Expression("this.visibility !== enum('App\\\Event\\\EventVisibilityEnum::INVITATION_AGORA') or this.agora !== null", message: 'L\'Agora doit être renseignée pour un événement', groups: ['event_creation'])]
     #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
@@ -778,5 +785,14 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function isLivePlayerEnabled(): bool
     {
         return str_starts_with($this->liveUrl ?? '', 'https://vimeo.com/') || str_starts_with($this->liveUrl ?? '', 'https://player.vimeo.com/');
+    }
+
+    public function isAnnounceEnabled(): bool
+    {
+        if ($this->isCancelled() || !$this->isPublished() || $this->isNational()) {
+            return false;
+        }
+
+        return $this->sendInvitationEmail;
     }
 }

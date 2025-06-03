@@ -36,9 +36,9 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "slug": "@string@",
-                "committee": null,
                 "visibility": "private",
                 "created_at": null,
                 "is_national": false,
@@ -897,6 +897,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "agora": null,
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "name": "En Marche Paris 8",
@@ -971,6 +972,7 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -1024,6 +1026,7 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -1073,6 +1076,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "agora": null,
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "name": "En Marche Paris 8",
@@ -1251,6 +1255,7 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "private",
                 "created_at": "@string@.isDateTime()",
@@ -1455,6 +1460,7 @@ Feature:
                     "image_url": null,
                     "zone": "Comité des 3 communes"
                 },
+                "agora": null,
                 "committee": {
                     "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
                     "name": "Comité des 3 communes",
@@ -1757,6 +1763,7 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -2134,6 +2141,7 @@ Feature:
                 "json_description": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"We\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"want\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"to\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"know\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"the\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"truth\"}]}]}",
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -2216,6 +2224,7 @@ Feature:
                 "json_description": null,
                 "time_zone": "Europe/Paris",
                 "committee": null,
+                "agora": null,
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -2385,12 +2394,37 @@ Feature:
                 "visibility": "invitation_agora"
             }
             """
-        Then the JSON should be equal to:
+        Then the response status code should be 400
+        And the JSON nodes should match:
+            | violations[0].message | L'Agora doit être renseignée pour un événement |
+        When I send a "POST" request to "/api/v3/events?scope=agora_manager" with body:
+            """
+            {
+                "name": "Nouvel event pour Agora",
+                "category": "kiosque",
+                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                "description": "Une description de l'événement",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://parti-renaissance.fr/reunions/123",
+                "time_zone": "Europe/Paris",
+                "visibility": "invitation_agora"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON should be equal to:
             """
             {
                 "uuid": "@uuid@",
                 "name": "Nouvel event pour Agora",
                 "slug": "@string@-nouvel-event-pour-agora",
+                "agora": {
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Première Agora",
+                    "slug": "premiere-agora",
+                    "uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+                },
                 "description": "Une description de l'événement",
                 "json_description": null,
                 "time_zone": "Europe/Paris",
@@ -2412,7 +2446,7 @@ Feature:
                     "image_url": null,
                     "zone": ""
                 },
-                "participants_count": 1,
+                "participants_count": 3,
                 "status": "SCHEDULED",
                 "capacity": null,
                 "post_address": {
@@ -2446,7 +2480,89 @@ Feature:
             }
             """
         And I should have 0 notification
-        And I should have 0 email
+        And I should have 1 email "AgoraEventInvitationMessage" for "carl999@example.fr" with payload:
+            """
+            {
+                "template_name": "agora-event-invitation",
+                "template_content": [],
+                "message": {
+                    "subject": "Invitation à un événement",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "content": "Nouvel event pour Agora",
+                            "name": "event_name"
+                        },
+                        {
+                            "content": "Michelle",
+                            "name": "event_organiser"
+                        },
+                        {
+                            "content": "@string@",
+                            "name": "event_date"
+                        },
+                        {
+                            "content": "@string@",
+                            "name": "event_hour"
+                        },
+                        {
+                            "content": "http://vox.code/evenements/2025-06-03-nouvel-event-pour-agora",
+                            "name": "event_link"
+                        },
+                        {
+                            "content": "https://parti-renaissance.fr/reunions/123",
+                            "name": "visio_url"
+                        },
+                        {
+                            "content": null,
+                            "name": "live_url"
+                        },
+                        {
+                            "content": "Première Agora",
+                            "name": "agora_name"
+                        },
+                        {
+                            "content": "Michelle Dufour",
+                            "name": "agora_president"
+                        }
+                    ],
+                    "merge_vars": [
+                        {
+                            "rcpt": "carl999@example.fr",
+                            "vars": [
+                                {
+                                    "content": "Carl",
+                                    "name": "first_name"
+                                }
+                            ]
+                        },
+                        {
+                            "rcpt": "luciole1989@spambox.fr",
+                            "vars": [
+                                {
+                                    "content": "Lucie",
+                                    "name": "first_name"
+                                }
+                            ]
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "carl999@example.fr",
+                            "name": "Carl Mirabeau",
+                            "type": "to"
+                        },
+                        {
+                            "email": "luciole1989@spambox.fr",
+                            "type": "to",
+                            "name": "Lucie Olivera"
+                        }
+                    ]
+                }
+            }
+            """
         When I send a "GET" request to "/api/v3/events?scope=agora_manager"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -2527,7 +2643,7 @@ Feature:
                             "image_url": null,
                             "zone": ""
                         },
-                        "participants_count": 1,
+                        "participants_count": 3,
                         "status": "SCHEDULED",
                         "capacity": null,
                         "post_address": {
@@ -2562,7 +2678,7 @@ Feature:
                 ]
             }
             """
-        When I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/events?scope=agora_manager"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -2617,7 +2733,8 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
-                        "editable": false,
+                        "editable": true,
+                        "edit_link": "@string@.isUrl()",
                         "user_registered_at": null,
                         "object_state": "full"
                     },
@@ -2663,7 +2780,9 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
-                        "editable": false,
+                        "editable": true,
+                        "edit_link": "@string@.isUrl()",
+                        "user_registered_at": null,
                         "object_state": "full"
                     }
                 ]
