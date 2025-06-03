@@ -215,7 +215,7 @@ class ProfileController extends AbstractController
     public function showCommitteesOfMyZone(UserInterface $adherent, CommitteeRepository $committeeRepository): Response
     {
         /** @var Adherent $adherent */
-        return $this->json($committeeRepository->findInAdherentZone($adherent), context: ['groups' => ['committee:list', 'image_owner_exposed']]);
+        return $this->json($committeeRepository->findInAdherentZone($adherent), context: ['groups' => ['committee:list', ImageExposeNormalizer::NORMALIZATION_GROUP]]);
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]

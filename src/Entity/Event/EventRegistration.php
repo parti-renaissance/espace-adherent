@@ -47,6 +47,9 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[ORM\Column(nullable: true)]
     private ?string $source;
 
+    #[ORM\Column(enumType: RegistrationStatusEnum::class, options: ['default' => RegistrationStatusEnum::CONFIRMED])]
+    public RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED;
+
     public function __construct(
         UuidInterface $uuid,
         Event $event,
@@ -58,6 +61,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         ?Adherent $adherent = null,
         ?string $source = null,
         string $createdAt = 'now',
+        RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED,
     ) {
         $this->uuid = $uuid;
         $this->event = $event;
@@ -69,6 +73,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         $this->source = $source;
         $this->createdAt = new \DateTime($createdAt);
         $this->postalCode = $postalCode;
+        $this->status = $status;
     }
 
     public function getEvent(): Event

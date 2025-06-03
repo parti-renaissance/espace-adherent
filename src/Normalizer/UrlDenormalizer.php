@@ -40,10 +40,6 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
 
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__])
-            && (
-                is_a($type, Event::class, true)
-                || Riposte::class === $type
-            );
+        return !isset($context[__CLASS__]) && (Event::class === $type || Riposte::class === $type);
     }
 }

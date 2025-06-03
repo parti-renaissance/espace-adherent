@@ -17,7 +17,8 @@ class EventRegistrationFactory
             $command->getPostalCode(),
             $command->isJoinNewsletter(),
             $command->getAdherent(),
-            $command->getAuthAppCode()
+            $command->getAuthAppCode(),
+            status: $command->status,
         );
     }
 }

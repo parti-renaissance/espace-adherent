@@ -29,15 +29,7 @@ class SendCreationNotificationCommandHandler
             return;
         }
 
-        if ($event->isCancelled()) {
-            return;
-        }
-
-        if (!$event->isPublished()) {
-            return;
-        }
-
-        if (!$event->sendInvitationEmail || $event->isNational()) {
+        if (!$event->isAnnounceEnabled()) {
             return;
         }
 

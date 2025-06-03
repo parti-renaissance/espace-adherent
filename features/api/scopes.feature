@@ -245,6 +245,21 @@ Feature:
             """
             [
                 {
+                    "apps": ["data_corner"],
+                    "attributes": {
+                        "agoras": [
+                            {
+                                "name": "Agora non publiée",
+                                "uuid": "c3d0fb57-1ce9-441a-9978-8445fc01fa5c"
+                            }
+                        ]
+                    },
+                    "code": "agora_manager",
+                    "features": ["agoras", "contacts", "events"],
+                    "name": "role.agora_manager",
+                    "zones": []
+                },
+                {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
                     "name": "Délégué de circonscription délégué",
                     "zones": [

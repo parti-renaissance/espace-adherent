@@ -4,6 +4,7 @@ namespace App\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
+use App\Entity\Event\RegistrationStatusEnum;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -50,7 +51,7 @@ class EventRegistrationCommand
 
     private $registrationUuid;
 
-    public function __construct(Event $event, ?Adherent $adherent = null)
+    public function __construct(Event $event, ?Adherent $adherent = null, public readonly RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED)
     {
         $this->event = $event;
         $this->registrationUuid = Uuid::uuid4();
