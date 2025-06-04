@@ -27,7 +27,7 @@
         -->
 
         <service id="app.admin.adherent" class="App\Admin\AdherentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Adhérents" default="true" />
+            <tag name="sonata.admin" manager-type="orm" label="Militants" group="Militants" default="true" />
 
             <argument />
             <argument>App\Entity\Adherent</argument>
@@ -36,7 +36,7 @@
         </service>
 
         <service id="app.admin.app_session" class="App\Admin\AppSessionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Sessions" group="Adhérents" model_class="App\Entity\AppSession" />
+            <tag name="sonata.admin" manager-type="orm" label="Sessions" group="Militants" model_class="App\Entity\AppSession" />
             <call method="setTemplate">
                 <argument>list</argument>
                 <argument>admin/app_session/list.html.twig</argument>
@@ -44,7 +44,7 @@
         </service>
 
         <service id="app.admin.unregistration" class="App\Admin\UnregistrationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désadhésions/exclusions" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Désadhésions/exclusions" group="Militants" />
 
             <argument />
             <argument>App\Entity\Unregistration</argument>
@@ -56,7 +56,7 @@
         </service>
 
         <service id="app.admin.certification_request" class="App\Admin\CertificationRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Demandes de certification" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Demandes de certification" group="Militants" />
 
             <argument />
             <argument>App\Entity\CertificationRequest</argument>
@@ -69,7 +69,7 @@
         </service>
 
         <service id="app.admin.reporting.adherent_certification_history" class="App\Admin\Reporting\AdherentCertificationHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Historique de certification" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Historique de certification" group="Militants" />
 
             <argument />
             <argument>App\Entity\Reporting\AdherentCertificationHistory</argument>
@@ -77,7 +77,7 @@
         </service>
 
         <service id="app.admin.reporting.declared_mandate_history" class="App\Admin\Reporting\DeclaredMandateHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Historique mandats déclarés" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Historique mandats déclarés" group="Militants" />
 
             <argument />
             <argument>App\Entity\Reporting\DeclaredMandateHistory</argument>
@@ -85,7 +85,7 @@
         </service>
 
         <service id="app.admin.user_action_history" class="App\Admin\UserActionHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Historique adhérents" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Historique adhérents" group="Militants" />
 
             <argument />
             <argument>App\Entity\UserActionHistory</argument>
@@ -93,7 +93,7 @@
         </service>
 
         <service id="app.admin.invite" class="App\Admin\InviteAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Militants" />
 
             <argument />
             <argument>App\Entity\Invite</argument>
@@ -101,7 +101,7 @@
         </service>
 
         <service id="app.admin.referral" class="App\Admin\ReferralAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Parrainages" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Parrainages" group="Militants" />
 
             <argument />
             <argument>App\Entity\Referral</argument>
@@ -109,7 +109,7 @@
         </service>
 
         <service id="app.admin.adherent_referrer" class="App\Admin\AdherentReferrerAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Parrains" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Parrains" group="Militants" />
 
             <argument />
             <argument>App\Entity\Adherent</argument>
@@ -117,7 +117,7 @@
         </service>
 
         <service id="app.admin.adherent_request" class="App\Admin\AdherentRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Demandes d'adhésion" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Demandes d'adhésion" group="Militants" />
 
             <argument />
             <argument>App\Entity\Renaissance\Adhesion\AdherentRequest</argument>

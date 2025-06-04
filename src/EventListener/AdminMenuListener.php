@@ -36,7 +36,7 @@ class AdminMenuListener implements EventSubscriberInterface
     {
         $event
             ->getMenu()
-            ->getChild('Adhérents')
+            ->getChild('Militants')
             ->addChild('admin.new.renaissance_adherent.create.label', [
                 'route' => 'admin_app_adherent_create_renaissance_verify_email',
                 'route_params' => null,

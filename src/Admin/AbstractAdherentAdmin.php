@@ -593,7 +593,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('tags_adherents', AdherentTagFilter::class, [
-                'label' => 'Labels adhérents',
+                'label' => 'Labels militants',
                 'show_filter' => true,
                 'tags' => TagEnum::getAdherentTags(),
             ])
@@ -999,7 +999,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Dernière connexion',
             ])
             ->add('type', null, [
-                'label' => 'Compte',
+                'label' => 'Labels',
                 'template' => 'admin/adherent/list_status.html.twig',
             ])
             ->add('allMandates', null, [
