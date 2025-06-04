@@ -6,6 +6,8 @@ use MyCLabs\Enum\Enum;
 
 class AdherentRoleEnum extends Enum
 {
+    public const DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'delegated_president_departmental_assembly';
+
     public const DELEGATED_DEPUTY = 'delegated_deputy';
 
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';

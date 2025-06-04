@@ -70,38 +70,42 @@
     {% for delegated_role in object.getReceivedDelegatedAccesses() %}
         {% set role_type = delegated_role.getType() %}
 
+        {% set label = delegated_role.role %}
+        {% set tooltip = ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' ~ (object.gender is same as('female') ? 'e') %}
+
         {% if role_type in constant('App\\Adherent\\Authorization\\ZoneBasedRoleTypeEnum::ALL') %}
             {% set zone_based_role = delegated_role.delegator.findZoneBasedRole(role_type) %}
 
-            {% set label %}
-                {{ delegated_role.role }}
+            {% if zone_based_role and zone_based_role.zones is not empty %}
+                {% set zones = [] %}
+                {% set codes = [] %}
+                {% for zone in zone_based_role.zones %}
+                    {% set codes = codes|merge([zone.code]) %}
+                    {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
+                {% endfor %}
 
-                {% if zone_based_role and zone_based_role.zones is not empty %}
-                    {% set codes = [] %}
-                    {% for zone in zone_based_role.zones %}
-                        {% set codes = codes|merge([zone.code]) %}
-                    {% endfor %}
-                    ({{ codes|join(', ') }})
-                {% endif %}
-            {% endset %}
+                {% set label = label ~ ' (' ~ codes|join(', ') ~ ')' %}
 
-            {% set tooltip %}
-                {{ ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' }}
-                {% if zone_based_role and zone_based_role.zones is not empty %}
-                    {% set zones = [] %}
-                    {% for zone in zone_based_role.zones %}
-                        {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
-                    {% endfor %}
-
+                {% set tooltip %}
+                    {{ tooltip }}
                     <br />
                     {{ zones|join(', ') }}
-                {% endif %}
-            {% endset %}
+                {% endset %}
+            {% endif %}
+        {% elseif role_type is same as('animator') %}
+            {% set committees = [] %}
+            {% for committee in delegated_role.delegator.getAnimatorCommittees() %}
+                {% set committees = committees|merge([committee.name]) %}
+            {% endfor %}
 
-            {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
-        {% else %}
-            {{ ui.label(role_type|trans({gender: object.gender})|capitalize ~ ' délégué', bgColor, textColor) }}
+            {% set tooltip %}
+                {{ tooltip }}
+                <br />
+                {{ committees|join(', ') }}
+            {% endset %}
         {% endif %}
+
+        {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
     {% endfor %}
 
     {# 5. Rôles / responsabilités divers #}
