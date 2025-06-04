@@ -185,4 +185,14 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         $this->status = RegistrationStatusEnum::CONFIRMED;
         $this->confirmedAt = new \DateTime();
     }
+
+    public function cancel(): void
+    {
+        $this->status = RegistrationStatusEnum::INVITED;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return RegistrationStatusEnum::CONFIRMED === $this->status;
+    }
 }

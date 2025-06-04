@@ -304,7 +304,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->select('er')
             ->where('er.event = :event')
             ->andWhere('er.adherent = :adherent')
-            ->andWhere('er.status = :status')
             ->setParameter('event', $event)
             ->setParameter('adherent', $adherent)
             ->getQuery()
