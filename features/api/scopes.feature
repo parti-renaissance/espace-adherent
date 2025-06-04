@@ -254,9 +254,9 @@ Feature:
                             }
                         ]
                     },
-                    "code": "agora_manager",
+                    "code": "agora_president",
                     "features": ["agoras", "contacts", "events"],
-                    "name": "role.agora_manager",
+                    "name": "Président d'Agora",
                     "zones": []
                 },
                 {
