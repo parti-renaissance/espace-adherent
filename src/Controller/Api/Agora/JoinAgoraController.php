@@ -27,11 +27,22 @@ class JoinAgoraController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        if (1 < $adherent->agoraMemberships->count()) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Vous avez plus d\'une Agora, merci de quitter des Agoras avant d\'en rejoindre une.',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         if ($agora->isMembersFull()) {
             return $this->json([
                 'status' => 'error',
                 'message' => 'La limite de membres pour cette Agora a été atteinte.',
             ], Response::HTTP_BAD_REQUEST);
+        }
+
+        foreach ($adherent->agoraMemberships as $agoraMembership) {
+            $agoraMembershipHandler->remove($adherent, $agoraMembership->agora);
         }
 
         $agoraMembershipHandler->add($adherent, $agora);
