@@ -4,9 +4,13 @@ namespace App\Command;
 
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
+use App\Entity\UserActionHistory;
+use App\History\UserActionHistoryHandler;
+use App\History\UserActionHistoryTypeEnum;
 use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -27,6 +31,7 @@ class SendMembershipAnniversaryCommand extends Command
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $em,
         private readonly MembershipNotifier $membershipNotifier,
+        private readonly UserActionHistoryHandler $userActionHistoryHandler,
     ) {
         parent::__construct();
     }
@@ -67,6 +72,7 @@ class SendMembershipAnniversaryCommand extends Command
         do {
             foreach ($paginator as $adherent) {
                 $this->membershipNotifier->sendMembershipAnniversaryReminder($adherent);
+                $this->userActionHistoryHandler->createMembershipAnniversaryReminded($adherent);
 
                 $this->io->progressAdvance();
                 ++$offset;
@@ -91,7 +97,20 @@ class SendMembershipAnniversaryCommand extends Command
         $targetDate = $today->modify('-1 year');
         $upToDateTag = TagEnum::getAdherentYearTag((int) $today->format('Y'));
 
-        $qb = $this->adherentRepository->createQueryBuilder('a')
+        $qb = $this->adherentRepository->createQueryBuilder('a');
+
+        $qb
+            ->leftJoin(
+                UserActionHistory::class,
+                'uah',
+                Join::WITH,
+                $qb->expr()->andX(
+                    'uah.adherent = a',
+                    'uah.type = :history_type',
+                    'YEAR(uah.date) = :current_year'
+                )
+            )
+            ->andWhere('uah.id IS NULL')
             ->andWhere('DATE(a.lastMembershipDonation) = :last_membership_date')
             ->andWhere('a.status = :status_enabled')
             ->andWhere('a.tags NOT LIKE :excluded_tag')
@@ -99,6 +118,8 @@ class SendMembershipAnniversaryCommand extends Command
                 'last_membership_date' => $targetDate->format('Y-m-d'),
                 'status_enabled' => Adherent::ENABLED,
                 'excluded_tag' => '%'.$upToDateTag.'%',
+                'history_type' => UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED,
+                'current_year' => $today->format('Y'),
             ])
         ;
 
