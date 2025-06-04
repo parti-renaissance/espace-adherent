@@ -51,6 +51,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                     'instance' => $object->getAuthorInstance(),
                     'zones' => $object->getZones()->toArray(),
                     'committee_uuid' => $object->getCommitteeUuid(),
+                    'agora_uuid' => $object->agora?->getUuid()->toString(),
                     'is_national' => $object->isNational(),
                 ]);
 

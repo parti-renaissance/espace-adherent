@@ -2442,9 +2442,9 @@ Feature:
                     "last_name": "Dufour",
                     "scope": "agora_manager",
                     "role": "Manager d'Agora",
-                    "instance": null,
+                    "instance": "Agora",
                     "image_url": null,
-                    "zone": ""
+                    "zone": null
                 },
                 "participants_count": 3,
                 "status": "SCHEDULED",
@@ -2475,7 +2475,8 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "editable": false,
+                "editable": true,
+                "edit_link": "@string@.isUrl()",
                 "object_state": "full"
             }
             """
@@ -2507,7 +2508,7 @@ Feature:
                             "name": "event_hour"
                         },
                         {
-                            "content": "http://vox.code/evenements/2025-06-03-nouvel-event-pour-agora",
+                            "content": "http://vox.code/evenements/@string@-nouvel-event-pour-agora",
                             "name": "event_link"
                         },
                         {
@@ -2639,9 +2640,9 @@ Feature:
                             "last_name": "Dufour",
                             "scope": "agora_manager",
                             "role": "Manager d'Agora",
-                            "instance": null,
+                            "instance": "Agora",
                             "image_url": null,
-                            "zone": ""
+                            "zone": null
                         },
                         "participants_count": 3,
                         "status": "SCHEDULED",
@@ -2672,7 +2673,8 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
-                        "editable": false,
+                        "editable": true,
+                        "edit_link": "@string@.isUrl()",
                         "object_state": "full"
                     }
                 ]
