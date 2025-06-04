@@ -38,15 +38,29 @@ class EventProcessor extends AbstractFeedProcessor
 
     private function cleanEventDataIfNeed(array $item, Adherent $user): array
     {
-        $needClean =
-            true !== $item['editable']
-            && (
-                EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
-                && (
-                    (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
-                    || (EventVisibilityEnum::ADHERENT_DUES->value === $visibility && !$user->hasTag(TagEnum::getAdherentYearTag()))
-                )
-            );
+        $needClean = true;
+
+        if (true === $item['editable']) {
+            $needClean = false;
+        } else {
+            $visibility = EventVisibilityEnum::ADHERENT_DUES;
+            if (!empty($item['visibility']) && \is_string($item['visibility'])) {
+                $visibility = EventVisibilityEnum::tryFrom($item['visibility']) ?? $visibility;
+            }
+
+            if (EventVisibilityEnum::PUBLIC === $visibility) {
+                $needClean = false;
+            } elseif (EventVisibilityEnum::isForAdherent($visibility)) {
+                $hasAccess =
+                    (EventVisibilityEnum::ADHERENT === $visibility && $user->hasTag(TagEnum::ADHERENT))
+                    || (EventVisibilityEnum::ADHERENT_DUES === $visibility && $user->hasTag(TagEnum::getAdherentYearTag()))
+                    || (EventVisibilityEnum::isInvitation($visibility) && $this->eventRegistrationRepository->findAdherentRegistration($item['uuid'], $user->getUuidAsString(), null));
+
+                if ($hasAccess) {
+                    $needClean = false;
+                }
+            }
+        }
 
         if ($needClean) {
             $item = $this->eventCleaner->cleanEventData($item);

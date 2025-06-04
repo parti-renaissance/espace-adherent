@@ -4,9 +4,11 @@ namespace App\Repository\Event;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
+use App\Entity\Agora;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\Event;
+use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
 use App\Event\EventVisibilityEnum;
 use App\Event\ListFilter;
@@ -560,6 +562,31 @@ class EventRepository extends ServiceEntityRepository
                 'status' => Event::STATUS_SCHEDULED,
                 'live_url' => 'https://vimeo.com/%',
                 'now' => $now = new \DateTime('now'),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function findAllFuturAgoraEvents(Agora $agora, Adherent $adherent, \DateTime $from): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->leftJoin(EventRegistration::class, 'er', 'WITH', 'er.event = e AND er.adherent = :adherent')
+            ->where('e.agora = :agora')
+            ->andWhere('e.beginAt >= :from')
+            ->andWhere('e.published = :published')
+            ->andWhere('e.status = :status')
+            ->andWhere('er IS NULL')
+            ->setParameters([
+                'agora' => $agora,
+                'from' => $from,
+                'published' => true,
+                'status' => Event::STATUS_SCHEDULED,
+                'adherent' => $adherent,
             ])
             ->getQuery()
             ->getResult()

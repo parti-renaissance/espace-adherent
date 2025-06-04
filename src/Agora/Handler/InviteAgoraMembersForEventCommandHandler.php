@@ -3,14 +3,12 @@
 namespace App\Agora\Handler;
 
 use App\Agora\Command\InviteAgoraMembersForEventCommand;
+use App\Agora\Notifier;
 use App\Entity\Event\RegistrationStatusEnum;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\AgoraEventInvitationMessage;
 use App\Repository\Event\EventRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsMessageHandler]
 class InviteAgoraMembersForEventCommandHandler
@@ -18,8 +16,7 @@ class InviteAgoraMembersForEventCommandHandler
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly EventRegistrationCommandHandler $handler,
-        private readonly MailerService $transactionalMailer,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -49,13 +46,6 @@ class InviteAgoraMembersForEventCommandHandler
             }
         }
 
-        if ($adherents) {
-            $this->transactionalMailer->sendMessage(AgoraEventInvitationMessage::create(
-                $event,
-                $agora,
-                $adherents,
-                rtrim($this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL), '/').'/evenements/'.$event->getSlug()
-            ));
-        }
+        $this->notifier->sendEventInvitation($event, $adherents);
     }
 }
