@@ -319,6 +319,12 @@ role.president_departmental_assembly: >-
       other {Président d'assemblée départementale}
     }
 
+role.delegated_president_departmental_assembly: >-
+    {gender, select,
+      female {Présidente d'assemblée départementale déléguée}
+      other {Président d'assemblée départementale délégué}
+    }
+
 role.procurations_manager: Responsable procurations
 
 role.fde_coordinator: >-
