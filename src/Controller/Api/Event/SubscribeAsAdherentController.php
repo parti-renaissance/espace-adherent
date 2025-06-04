@@ -47,14 +47,22 @@ class SubscribeAsAdherentController extends AbstractController
         }
 
         if ($request->isMethod(Request::METHOD_DELETE)) {
-            $eventRegistration = $this->entityManager->getRepository(EventRegistration::class)->findOneBy([
+            /** @var EventRegistration|null $eventRegistration */
+            $eventRegistration = $this->eventRegistrationRepository->findOneBy([
                 'event' => $event,
                 'adherent' => $adherent,
             ]);
 
             if ($eventRegistration) {
-                $event->decrementParticipantsCount();
-                $this->entityManager->remove($eventRegistration);
+                if ($eventRegistration->isConfirmed()) {
+                    $event->decrementParticipantsCount();
+                    $eventRegistration->cancel();
+                }
+
+                if (!$event->isInvitation()) {
+                    $this->entityManager->remove($eventRegistration);
+                }
+
                 $this->entityManager->flush();
             }
 
@@ -93,9 +101,9 @@ class SubscribeAsAdherentController extends AbstractController
         if (!$registration) {
             $newRegistration = true;
             $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
-            $event->incrementParticipantsCount();
         }
 
+        $event->incrementParticipantsCount();
         $registration->confirm();
         $registration->setSource(AppCodeEnum::VOX);
 

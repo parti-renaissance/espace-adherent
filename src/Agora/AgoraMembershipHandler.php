@@ -2,19 +2,21 @@
 
 namespace App\Agora;
 
+use App\Agora\Event\NewAgoraMemberEvent;
+use App\Agora\Event\RemoveAgoraMemberEvent;
 use App\Entity\Adherent;
 use App\Entity\Agora;
 use App\Entity\AgoraMembership;
-use App\History\UserActionHistoryHandler;
 use App\Repository\AgoraMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AgoraMembershipHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AgoraMembershipRepository $agoraMembershipRepository,
-        private readonly UserActionHistoryHandler $userActionHistoryHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -32,7 +34,7 @@ class AgoraMembershipHandler
         $this->entityManager->persist($agoraMembership);
         $this->entityManager->flush();
 
-        $this->userActionHistoryHandler->createAgoraMembershipAdd($adherent, $agora);
+        $this->eventDispatcher->dispatch(new NewAgoraMemberEvent($agoraMembership));
     }
 
     public function remove(Adherent $adherent, Agora $agora): void
@@ -46,6 +48,6 @@ class AgoraMembershipHandler
         $this->entityManager->remove($agoraMembership);
         $this->entityManager->flush();
 
-        $this->userActionHistoryHandler->createAgoraMembershipRemove($adherent, $agora);
+        $this->eventDispatcher->dispatch(new RemoveAgoraMemberEvent($agoraMembership));
     }
 }

@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class AgoraRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Agora::class);

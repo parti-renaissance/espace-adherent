@@ -754,12 +754,12 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
 
     public function isForAdherent(): bool
     {
-        return \in_array($this->visibility, [EventVisibilityEnum::ADHERENT, EventVisibilityEnum::ADHERENT_DUES], true);
+        return EventVisibilityEnum::isForAdherent($this->visibility);
     }
 
     public function isInvitation(): bool
     {
-        return \in_array($this->visibility, [EventVisibilityEnum::INVITATION_AGORA], true);
+        return EventVisibilityEnum::isInvitation($this->visibility);
     }
 
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool

@@ -5,6 +5,7 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
+use App\Entity\Agora;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Event\RegistrationStatusEnum;
@@ -304,11 +305,38 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->select('er')
             ->where('er.event = :event')
             ->andWhere('er.adherent = :adherent')
-            ->andWhere('er.status = :status')
             ->setParameter('event', $event)
             ->setParameter('adherent', $adherent)
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function removeAllForFuturAgoraEvents(Agora $agora, Adherent $adherent, \DateTime $from, RegistrationStatusEnum $status): void
+    {
+        $qb = $this->createQueryBuilder('er')
+            ->select('er.id')
+            ->join('er.event', 'e')
+            ->where('er.adherent = :adherent')
+            ->andWhere('er.status = :status')
+            ->andWhere('e.agora = :agora')
+            ->andWhere('e.beginAt >= :from')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('status', $status)
+            ->setParameter('agora', $agora)
+            ->setParameter('from', $from)
+        ;
+
+        $ids = $qb->getQuery()->getSingleColumnResult();
+
+        if (!empty($ids)) {
+            $this->createQueryBuilder('er')
+                ->delete()
+                ->where('er.id IN (:ids)')
+                ->setParameter('ids', $ids)
+                ->getQuery()
+                ->execute()
+            ;
+        }
     }
 }
