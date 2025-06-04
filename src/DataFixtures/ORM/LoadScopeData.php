@@ -68,7 +68,8 @@ class LoadScopeData extends Fixture
             ScopeEnum::LEGISLATIVE_CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2, FeatureEnum::PROCURATIONS]),
             ScopeEnum::REGIONAL_COORDINATOR => array_diff(FeatureEnum::ALL, [FeatureEnum::DEPARTMENT_SITE]),
             ScopeEnum::PROCURATIONS_MANAGER => [FeatureEnum::PROCURATIONS],
-            ScopeEnum::AGORA_MANAGER => [FeatureEnum::AGORAS, FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
+            ScopeEnum::AGORA_PRESIDENT => [FeatureEnum::AGORAS, FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
+            ScopeEnum::AGORA_GENERAL_SECRETARY => [FeatureEnum::AGORAS, FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
             default => FeatureEnum::ALL,
         };
     }
