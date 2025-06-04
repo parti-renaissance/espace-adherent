@@ -74,5 +74,6 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR => 'Français de l\'Étranger',
         self::REGIONAL_COORDINATOR => 'Région',
         self::LEGISLATIVE_CANDIDATE => 'Circonscription',
+        self::AGORA_MANAGER => 'Agora',
     ];
 }

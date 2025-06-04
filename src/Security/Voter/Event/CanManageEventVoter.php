@@ -63,6 +63,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
             return \in_array($subject->getCommitteeUuid(), $scope->getCommitteeUuids());
         }
 
+        if ($subject->agora) {
+            return \in_array($subject->agora->getUuid()->toString(), $scope->getAgoraUuids());
+        }
+
         return $this->zoneRepository->isInZones($subject->getZones()->toArray(), $scope->getZones());
     }
 
@@ -90,6 +94,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
         foreach ($scopes as $scope) {
             if (!empty($event['committee_uuid'])) {
                 if (\in_array($event['committee_uuid'], $scope->getCommitteeUuids())) {
+                    return true;
+                }
+            } elseif (!empty($event['agora_uuid'])) {
+                if (\in_array($event['agora_uuid'], $scope->getAgoraUuids())) {
                     return true;
                 }
             } else {
