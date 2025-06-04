@@ -7,16 +7,16 @@ use App\Entity\Agora;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class AgoraManagerScopeGenerator extends AbstractScopeGenerator
+class AgoraGeneralSecretaryScopeGenerator extends AbstractScopeGenerator
 {
     public function getCode(): string
     {
-        return ScopeEnum::AGORA_MANAGER;
+        return ScopeEnum::AGORA_GENERAL_SECRETARY;
     }
 
     public function supports(Adherent $adherent): bool
     {
-        return $adherent->isPresidentOfAgora() || $adherent->isGeneralSecretaryOfAgora();
+        return $adherent->isGeneralSecretaryOfAgora();
     }
 
     protected function getZones(Adherent $adherent): array
@@ -35,10 +35,7 @@ class AgoraManagerScopeGenerator extends AbstractScopeGenerator
                     'name' => $agora->getName(),
                     'uuid' => $agora->getUuid()->toString(),
                 ],
-                array_merge(
-                    $adherent->presidentOfAgoras->toArray(),
-                    $adherent->generalSecretaryOfAgoras->toArray(),
-                )
+                $adherent->generalSecretaryOfAgoras->toArray()
             )
         );
 

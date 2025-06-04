@@ -92,7 +92,12 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         ]];
         yield [LoadAdherentData::ADHERENT_3_UUID, [
             [
-                'code' => 'agora_manager',
+                'code' => 'agora_general_secretary',
+                'zones' => [],
+                'apps' => ['data_corner'],
+            ],
+            [
+                'code' => 'agora_president',
                 'zones' => [],
                 'apps' => ['data_corner'],
             ],

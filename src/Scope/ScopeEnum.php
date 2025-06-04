@@ -23,7 +23,8 @@ class ScopeEnum extends Enum
     public const ANIMATOR = 'animator';
     public const PROCURATIONS_MANAGER = 'procurations_manager';
     public const FDE_COORDINATOR = 'fde_coordinator';
-    public const AGORA_MANAGER = 'agora_manager';
+    public const AGORA_PRESIDENT = 'agora_president';
+    public const AGORA_GENERAL_SECRETARY = 'agora_general_secretary';
 
     public const ALL = [
         self::DEPUTY,
@@ -43,7 +44,8 @@ class ScopeEnum extends Enum
         self::REGIONAL_DELEGATE,
         self::PROCURATIONS_MANAGER,
         self::FDE_COORDINATOR,
-        self::AGORA_MANAGER,
+        self::AGORA_PRESIDENT,
+        self::AGORA_GENERAL_SECRETARY,
     ];
 
     public const NATIONAL_SCOPES = [
@@ -62,7 +64,8 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR => 'Coordinateur',
         self::REGIONAL_COORDINATOR => 'Coordinateur',
         self::LEGISLATIVE_CANDIDATE => 'Candidat',
-        self::AGORA_MANAGER => 'Manager d\'Agora',
+        self::AGORA_PRESIDENT => 'Président d\'Agora',
+        self::AGORA_GENERAL_SECRETARY => 'Secrétaire Général d\'Agora',
     ];
 
     public const SCOPE_INSTANCES = [
@@ -74,6 +77,7 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR => 'Français de l\'Étranger',
         self::REGIONAL_COORDINATOR => 'Région',
         self::LEGISLATIVE_CANDIDATE => 'Circonscription',
-        self::AGORA_MANAGER => 'Agora',
+        self::AGORA_PRESIDENT => 'Agora',
+        self::AGORA_GENERAL_SECRETARY => 'Agora',
     ];
 }

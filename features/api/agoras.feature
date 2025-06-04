@@ -169,7 +169,7 @@ Feature:
 
     Scenario: As a logged-in Agora Manager I can see the Agoras I am manager of
         Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/agoras?scope=agora_manager"
+        When I send a "GET" request to "/api/v3/agoras?scope=agora_general_secretary"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -207,7 +207,7 @@ Feature:
 
     Scenario: As a logged-in Agora Manager I can see the members of an Agora
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/adherents?scope=agora_manager&agora_uuids[]=82ad6422-cb82-4c04-b478-bfb421c740e0"
+        When I send a "GET" request to "/api/v3/adherents?scope=agora_president&agora_uuids[]=82ad6422-cb82-4c04-b478-bfb421c740e0"
         Then the response status code should be 200
         And the JSON should be a superset of:
             """

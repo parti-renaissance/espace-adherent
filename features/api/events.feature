@@ -2380,7 +2380,7 @@ Feature:
 
     Scenario: As a President of Agora I can create an event
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "POST" request to "/api/v3/events?scope=agora_manager" with body:
+        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
             """
             {
                 "name": "Nouvel event pour Agora",
@@ -2397,7 +2397,7 @@ Feature:
         Then the response status code should be 400
         And the JSON nodes should match:
             | violations[0].message | L'Agora doit être renseignée pour un événement |
-        When I send a "POST" request to "/api/v3/events?scope=agora_manager" with body:
+        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
             """
             {
                 "name": "Nouvel event pour Agora",
@@ -2440,8 +2440,8 @@ Feature:
                     "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
                     "first_name": "Michelle",
                     "last_name": "Dufour",
-                    "scope": "agora_manager",
-                    "role": "Manager d'Agora",
+                    "scope": "agora_president",
+                    "role": "Président d'Agora",
                     "instance": "Agora",
                     "image_url": null,
                     "zone": null
@@ -2564,7 +2564,7 @@ Feature:
                 }
             }
             """
-        When I send a "GET" request to "/api/v3/events?scope=agora_manager"
+        When I send a "GET" request to "/api/v3/events?scope=agora_president"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -2638,8 +2638,8 @@ Feature:
                             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
                             "first_name": "Michelle",
                             "last_name": "Dufour",
-                            "scope": "agora_manager",
-                            "role": "Manager d'Agora",
+                            "scope": "agora_president",
+                            "role": "Président d'Agora",
                             "instance": "Agora",
                             "image_url": null,
                             "zone": null
@@ -2681,7 +2681,7 @@ Feature:
             }
             """
         When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/events?scope=agora_manager"
+        And I send a "GET" request to "/api/v3/events?scope=agora_president"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
