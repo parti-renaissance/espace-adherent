@@ -33,17 +33,20 @@ class MembershipNotifier implements LoggerAwareInterface
     ) {
     }
 
+    public function sendMembershipAnniversaryReminder(Adherent $adherent): void
+    {
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
+            $adherent,
+            $this->createMagicLink($adherent)
+        ));
+    }
+
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        $adhesionUrl = $this->loginLinkHandler->createLoginLink(
+        return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create(
             $adherent,
-            null,
-            60 * 60 * 48,
-            AppCodeEnum::RENAISSANCE,
-            $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
-        );
-
-        return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
+            $this->createMagicLink($adherent)
+        ));
     }
 
     public function sendConfirmationJoinMessage(Adherent $adherent, bool $renew): void
@@ -94,5 +97,16 @@ class MembershipNotifier implements LoggerAwareInterface
         }
 
         $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
+    }
+
+    private function createMagicLink(Adherent $adherent): string
+    {
+        return $this->loginLinkHandler->createLoginLink(
+            $adherent,
+            null,
+            60 * 60 * 48,
+            AppCodeEnum::RENAISSANCE,
+            $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
     }
 }

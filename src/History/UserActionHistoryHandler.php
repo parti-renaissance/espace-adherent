@@ -227,6 +227,11 @@ class UserActionHistoryHandler
         );
     }
 
+    public function createMembershipAnniversaryReminded(Adherent $adherent): void
+    {
+        $this->dispatch($adherent, UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED);
+    }
+
     private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();

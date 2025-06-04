@@ -2258,6 +2258,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->firstMembershipDonation;
     }
 
+    public function isPrimoInYear(?int $year = null): bool
+    {
+        if (!$this->firstMembershipDonation) {
+            return false;
+        }
+
+        $donationYear = (int) $this->firstMembershipDonation->format('Y');
+        $yearToCheck = $year ?? (int) (new \DateTime())->format('Y');
+
+        return $donationYear === $yearToCheck;
+    }
+
     public function hasActiveMembership(): bool
     {
         return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
