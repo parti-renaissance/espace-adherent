@@ -16,9 +16,10 @@ class AdherentRoles
         self::GROUP_LOCAL => [
             ScopeEnum::REGIONAL_DELEGATE,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+            AdherentRoleEnum::DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             ScopeEnum::DEPUTY,
-            ScopeEnum::SENATOR,
             AdherentRoleEnum::DELEGATED_DEPUTY,
+            ScopeEnum::SENATOR,
             AdherentRoleEnum::ANIMATOR,
             AdherentRoleEnum::DELEGATED_ANIMATOR,
             AdherentRoleEnum::AGORA_PRESIDENT,
