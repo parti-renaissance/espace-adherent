@@ -14,7 +14,7 @@ WORKDIR /srv/app
 
 FROM caddy:${CADDY_VERSION}-alpine AS caddy
 
-FROM mlocati/php-extension-installer:2 AS php_extension_installer
+FROM mlocati/php-extension-installer:2.7 AS php_extension_installer
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
 
