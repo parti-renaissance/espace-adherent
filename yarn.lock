@@ -1986,11 +1986,11 @@ __metadata:
   linkType: hard
 
 "@tiptap/core@npm:^2.11.5, @tiptap/core@npm:^2.12.0":
-  version: 2.12.0
-  resolution: "@tiptap/core@npm:2.12.0"
+  version: 2.13.0
+  resolution: "@tiptap/core@npm:2.13.0"
   peerDependencies:
     "@tiptap/pm": ^2.7.0
-  checksum: 10c0/d2d781c9356dd8fb6339ec09f6abaa9140b2e122f28d1c6c1e3a1d39f546d9af34156720970bfb252bf805c0ce2930e7af078da6e4a9ada20f34976b0aae1504
+  checksum: 10c0/9f4d9ea7d26a08a26f437ef293e9b30d0fbec6c7531f406819443be753991be1cefe75faca669d9d46314e7b8cad882e3f9ebcf0f1d36946a03a28100e08630f
   languageName: node
   linkType: hard
 
