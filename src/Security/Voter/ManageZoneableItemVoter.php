@@ -29,6 +29,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $scope->getDelegator() ?? $adherent;
             $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
             $committeeUuids = $scope->getCommitteeUuids();
+            $agoraUuids = $scope->getAgoraUuids();
         }
 
         if ($subject instanceof ZoneableWithScopeEntityInterface && $scopeCode = $subject->getScope()) {
@@ -45,6 +46,10 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 
         if (!empty($committeeUuids) && $subject instanceof Event && $subject->getCommittee()) {
             return \in_array($subject->getCommitteeUuid(), $committeeUuids);
+        }
+
+        if (!empty($agoraUuids) && $subject instanceof Event && $subject->agora) {
+            return \in_array($subject->agora->getUuid()->toString(), $agoraUuids);
         }
 
         if (empty($zoneIds) && !$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
