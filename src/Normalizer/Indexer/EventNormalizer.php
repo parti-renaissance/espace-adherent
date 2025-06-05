@@ -148,6 +148,11 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
         return $object->getCommitteeUuid();
     }
 
+    protected function getAgoraUuid(object $object): ?string
+    {
+        return $object->agora?->getUuid()->toString();
+    }
+
     /** @param Event $object */
     protected function getLiveUrl(mixed $object): ?string
     {

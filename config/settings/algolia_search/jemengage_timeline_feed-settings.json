@@ -8,6 +8,7 @@
     "numericAttributesToIndex": null,
     "attributesToRetrieve": [
         "address",
+        "agora_uuid",
         "author",
         "begin_at",
         "category",
@@ -20,6 +21,7 @@
         "identifier",
         "image",
         "is_national",
+        "live_url",
         "media_type",
         "mode",
         "participants_count",
@@ -28,7 +30,6 @@
         "title",
         "type",
         "url",
-        "live_url",
         "visibility",
         "zone_codes"
     ],
@@ -62,7 +63,7 @@
     "removeWordsIfNoResults": "none",
     "queryType": "prefixLast",
     "highlightPreTag": "<em>",
-    "highlightPostTag": "</em>",
+    "highlightPostTag": "<\/em>",
     "snippetEllipsisText": "",
     "alternativesAsExact": ["ignorePlurals", "singleWordSynonym"],
     "responseFields": [

@@ -2762,8 +2762,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()",
+                        "editable": false,
                         "user_registered_at": null,
                         "object_state": "full"
                     },
@@ -2774,13 +2773,13 @@ Feature:
                         "time_zone": "Europe/Paris",
                         "live_url": null,
                         "visibility": "private",
-                        "created_at": "@string@.isDateTime()",
+                        "created_at": null,
                         "user_registered_at": null,
                         "begin_at": "@string@.isDateTime()",
-                        "finish_at": "@string@.isDateTime()",
+                        "finish_at": null,
                         "visibility": "private",
                         "organizer": {
-                            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
+                            "uuid": null,
                             "first_name": "Jean-Baptiste",
                             "last_name": "Fortin",
                             "scope": null,
@@ -2789,30 +2788,29 @@ Feature:
                             "image_url": null,
                             "zone": null
                         },
-                        "participants_count": 0,
+                        "participants_count": null,
                         "status": "SCHEDULED",
-                        "capacity": 50,
+                        "capacity": null,
                         "post_address": {
-                            "address": "74 Avenue des Champs-Élysées, 75008 Paris",
+                            "address": null,
                             "postal_code": "75008",
-                            "city": "75008-75108",
+                            "city": null,
                             "city_name": "Paris 8ème",
                             "country": "FR",
-                            "latitude": 48.862724,
-                            "longitude": 2.287592
+                            "latitude": null,
+                            "longitude": null
                         },
                         "category": null,
                         "visio_url": null,
                         "is_national": false,
                         "mode": "online",
-                        "local_begin_at": "@string@.isDateTime()",
-                        "local_finish_at": "@string@.isDateTime()",
+                        "local_begin_at": null,
+                        "local_finish_at": null,
                         "image_url": null,
                         "image": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()",
+                        "editable": false,
                         "user_registered_at": null,
-                        "object_state": "full"
+                        "object_state": "partial"
                     }
                 ]
             }
@@ -2964,7 +2962,7 @@ Feature:
             }
             """
         When I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/events/:saved_response.uuid:/participants?scope=agora_president"
+        And I send a "GET" request to "/api/v3/events/:saved_response.uuid:/participants"
         Then the response status code should be 200
         And the JSON should be equal to:
             """

@@ -29,7 +29,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         if (self::CAN_MANAGE_EVENT === $attribute) {
-            return $this->canManageEvent($subject);
+            return $this->canManageEvent($adherent, $subject);
         }
 
         if (self::CAN_MANAGE_EVENT_ITEM === $attribute) {
@@ -45,10 +45,16 @@ class CanManageEventVoter extends AbstractAdherentVoter
             || (self::CAN_MANAGE_EVENT_ITEM === $attribute && \is_array($subject));
     }
 
-    private function canManageEvent(Event $subject): bool
+    private function canManageEvent(Adherent $adherent, Event $subject): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
-            return false;
+            return $this->canManageEventItem($adherent, [
+                'instance' => $subject->getAuthorInstance(),
+                'zones' => $subject->getZones()->toArray(),
+                'committee_uuid' => $subject->getCommitteeUuid(),
+                'agora_uuid' => $subject->agora?->getUuid()->toString(),
+                'is_national' => $subject->isNational(),
+            ]);
         }
 
         if (!$scope->hasFeature(FeatureEnum::EVENTS)) {
