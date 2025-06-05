@@ -28,7 +28,7 @@ Feature:
                         "name": "Première Agora",
                         "slug": "premiere-agora",
                         "description": "Description première Agora",
-                        "max_members_count": 2,
+                        "max_members_count": 10,
                         "members_count": 2,
                         "published": true,
                         "president": {
@@ -47,8 +47,8 @@ Feature:
                         "name": "Deuxième Agora",
                         "slug": "deuxieme-agora",
                         "description": "Description deuxième Agora",
-                        "max_members_count": 40,
-                        "members_count": 1,
+                        "max_members_count": 2,
+                        "members_count": 2,
                         "published": true,
                         "president": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -85,7 +85,7 @@ Feature:
                         "name": "Première Agora",
                         "slug": "premiere-agora",
                         "description": "Description première Agora",
-                        "max_members_count": 2,
+                        "max_members_count": 10,
                         "members_count": 2,
                         "published": true,
                         "president": {
@@ -126,8 +126,8 @@ Feature:
         Then the response status code should be 404
 
     Scenario: As a logged-in adherent I can not join an Agora that is already full of members
-        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
+        Given I am logged with "adherent-male-51@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/agoras/75d47004-db80-4586-8fc5-e97cec58e5b4/join"
         Then the response status code should be 400
         And the JSON should be equal to:
             """
@@ -138,8 +138,8 @@ Feature:
             """
 
     Scenario: As a logged-in adherent I can join an Agora
-        Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "POST" request to "/api/v3/agoras/75d47004-db80-4586-8fc5-e97cec58e5b4/join"
+        Given I am logged with "adherent-male-51@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
         Then the response status code should be 201
         And the JSON should be equal to:
             """
@@ -187,7 +187,7 @@ Feature:
                         "name": "Première Agora",
                         "slug": "premiere-agora",
                         "description": "Description première Agora",
-                        "max_members_count": 2,
+                        "max_members_count": 10,
                         "members_count": 2,
                         "published": true,
                         "president": {

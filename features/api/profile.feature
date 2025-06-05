@@ -1741,8 +1741,8 @@ Feature:
                     "name": "Deuxième Agora",
                     "slug": "deuxieme-agora",
                     "description": "Description deuxième Agora",
-                    "max_members_count": 40,
-                    "members_count": 1,
+                    "max_members_count": 2,
+                    "members_count": 2,
                     "manager": {
                         "uuid": "@uuid@",
                         "public_id": "@string@",

@@ -364,6 +364,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     protected $postAddress;
 
     #[Assert\Expression("this.visibility !== enum('App\\\Event\\\EventVisibilityEnum::INVITATION_AGORA') or this.agora !== null", message: 'L\'Agora doit être renseignée pour un événement', groups: ['event_creation'])]
+    #[Assert\Expression("null === this.agora or this.visibility === enum('App\\\Event\\\EventVisibilityEnum::INVITATION_AGORA')", message: 'Vous ne pouvez créer que des événements résérvés aux membres', groups: ['event_creation'])]
     #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;

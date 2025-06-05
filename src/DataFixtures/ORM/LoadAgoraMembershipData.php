@@ -18,16 +18,12 @@ class LoadAgoraMembershipData extends AbstractLoadPostAddressData implements Dep
 
     public function load(ObjectManager $manager): void
     {
-        /** @var Agora $agora1 */
         $agora1 = $this->getReference('agora-1', Agora::class);
-        /** @var Agora $agora1 */
         $agora2 = $this->getReference('agora-2', Agora::class);
-        /** @var Adherent $adherent2 */
         $adherent2 = $this->getReference('adherent-2', Adherent::class);
-        /** @var Adherent $adherent4 */
         $adherent4 = $this->getReference('adherent-4', Adherent::class);
-        /** @var Adherent $adherent5 */
         $adherent5 = $this->getReference('adherent-5', Adherent::class);
+        $adherent6 = $this->getReference('adherent-6', Adherent::class);
 
         $manager->persist($this->createAgoraMembership(
             Uuid::fromString(self::UUID_1),
@@ -45,6 +41,12 @@ class LoadAgoraMembershipData extends AbstractLoadPostAddressData implements Dep
             Uuid::fromString(self::UUID_3),
             $agora2,
             $adherent5
+        ));
+
+        $manager->persist($this->createAgoraMembership(
+            Uuid::uuid4(),
+            $agora2,
+            $adherent6
         ));
 
         $manager->flush();
