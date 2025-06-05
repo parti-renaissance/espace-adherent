@@ -42,6 +42,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'cta_label' => $this->getCtaLabel($object),
             'cta_link' => $this->getCtaLink($object),
             'committee_uuid' => $this->getCommitteeUuid($object),
+            'agora_uuid' => $this->getAgoraUuid($object),
             '_tags' => [$this->getType()],
         ];
     }
@@ -94,6 +95,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getCommitteeUuid(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getAgoraUuid(object $object): ?string
     {
         return null;
     }

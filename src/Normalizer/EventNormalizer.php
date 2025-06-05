@@ -45,15 +45,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
 
-            $event['editable'] = PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext ?
-                $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object) :
-                $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
-                    'instance' => $object->getAuthorInstance(),
-                    'zones' => $object->getZones()->toArray(),
-                    'committee_uuid' => $object->getCommitteeUuid(),
-                    'agora_uuid' => $object->agora?->getUuid()->toString(),
-                    'is_national' => $object->isNational(),
-                ]);
+            $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object);
 
             if ($event['editable']) {
                 $event['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$object->getUuidAsString().'?scope='.$object->getAuthorScope()))->getUrl();
