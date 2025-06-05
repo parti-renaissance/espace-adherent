@@ -47,9 +47,11 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[ORM\Column(nullable: true)]
     private ?string $source;
 
+    #[Groups(['event_registration_list'])]
     #[ORM\Column(enumType: RegistrationStatusEnum::class, options: ['default' => RegistrationStatusEnum::CONFIRMED])]
     public RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED;
 
+    #[Groups(['event_registration_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $confirmedAt = null;
 
@@ -77,6 +79,10 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         $this->createdAt = new \DateTime($createdAt);
         $this->postalCode = $postalCode;
         $this->status = $status;
+
+        if (RegistrationStatusEnum::CONFIRMED === $status) {
+            $this->confirmedAt = $this->createdAt;
+        }
     }
 
     public function getEvent(): Event

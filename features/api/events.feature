@@ -2044,6 +2044,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "confirmed_at": "@string@.isDateTime()",
+                        "status": "confirmed",
                         "first_name": "Referent",
                         "last_name": "Referent",
                         "postal_code": "77000",
@@ -2055,6 +2057,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "confirmed_at": "@string@.isDateTime()",
+                        "status": "confirmed",
                         "first_name": "Francis",
                         "last_name": "Brioul",
                         "postal_code": "77000",
@@ -2066,6 +2070,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "confirmed_at": "@string@.isDateTime()",
+                        "status": "confirmed",
                         "first_name": "Simple",
                         "last_name": "User",
                         "postal_code": "8057",
@@ -2077,6 +2083,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "confirmed_at": "@string@.isDateTime()",
+                        "status": "confirmed",
                         "first_name": "Marie",
                         "last_name": "CLAIRE",
                         "postal_code": null,
@@ -2953,5 +2961,98 @@ Feature:
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
                 "object_state": "full"
+            }
+            """
+        When I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/events/:saved_response.uuid:/participants?scope=agora_president"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 4,
+                    "items_per_page": 30,
+                    "count": 4,
+                    "current_page": 1,
+                    "last_page": 1
+                },
+                "items": [
+                    {
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
+                        "confirmed_at": null,
+                        "status": "invited",
+                        "first_name": "Carl",
+                        "last_name": "Mirabeau",
+                        "postal_code": "77190",
+                        "email_address": "carl999@example.fr",
+                        "phone": "+33 1 11 22 33 44",
+                        "image_url": null,
+                        "tags": [
+                            {
+                                "code": "sympathisant:compte_em",
+                                "label": "Ancien compte En Marche",
+                                "type": "sympathisant"
+                            }
+                        ]
+                    },
+                    {
+                        "confirmed_at": null,
+                        "created_at": "@string@.isDateTime()",
+                        "email_address": "luciole1989@spambox.fr",
+                        "first_name": "Lucie",
+                        "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
+                        "last_name": "Olivera",
+                        "phone": "+33 7 27 36 36 43",
+                        "postal_code": "75009",
+                        "status": "invited",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2025:recotisation",
+                                "label": "Adhérent à jour 2025",
+                                "type": "adherent"
+                            }
+                        ],
+                        "uuid": "@string@"
+                    },
+                    {
+                        "confirmed_at": "@string@.isDateTime()",
+                        "created_at": "@string@.isDateTime()",
+                        "email_address": "michelle.dufour@example.ch",
+                        "first_name": "Michelle",
+                        "image_url": null,
+                        "last_name": "Dufour",
+                        "phone": null,
+                        "postal_code": "8057",
+                        "status": "confirmed",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2025:recotisation",
+                                "label": "Adhérent à jour 2025",
+                                "type": "adherent"
+                            }
+                        ],
+                        "uuid": "@string@"
+                    },
+                    {
+                        "confirmed_at": "@string@.isDateTime()",
+                        "created_at": "@string@.isDateTime()",
+                        "email_address": "jacques.picard@en-marche.fr",
+                        "first_name": "Jacques",
+                        "image_url": null,
+                        "last_name": "Picard",
+                        "phone": "+33 1 87 26 42 36",
+                        "postal_code": "75008",
+                        "status": "confirmed",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2025:recotisation",
+                                "label": "Adhérent à jour 2025",
+                                "type": "adherent"
+                            }
+                        ],
+                        "uuid": "@string@"
+                    }
+                ]
             }
             """
