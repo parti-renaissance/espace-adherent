@@ -2409,6 +2409,24 @@ Feature:
                 "mode": "online",
                 "visio_url": "https://parti-renaissance.fr/reunions/123",
                 "time_zone": "Europe/Paris",
+                "visibility": "public"
+            }
+            """
+        Then the response status code should be 400
+        And the JSON nodes should match:
+            | violations[0].message | Vous ne pouvez créer que des événements résérvés aux membres |
+        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
+            """
+            {
+                "name": "Nouvel event pour Agora",
+                "category": "kiosque",
+                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                "description": "Une description de l'événement",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://parti-renaissance.fr/reunions/123",
+                "time_zone": "Europe/Paris",
                 "visibility": "invitation_agora"
             }
             """
@@ -2480,6 +2498,7 @@ Feature:
                 "object_state": "full"
             }
             """
+        And I save this response
         And I should have 0 notification
         And I should have 1 email "AgoraEventInvitationMessage" for "carl999@example.fr" with payload:
             """
@@ -2788,5 +2807,151 @@ Feature:
                         "object_state": "full"
                     }
                 ]
+            }
+            """
+        When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
+        Then the response status code should be 201
+        And the JSON should be equal to:
+            """
+            "OK"
+            """
+        And I should have 1 email "AgoraEventInvitationMessage" for "jacques.picard@en-marche.fr" with payload:
+            """
+            {
+                "template_name": "agora-event-invitation",
+                "template_content": [],
+                "message": {
+                    "subject": "Invitation à un événement",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "content": "Nouvel event pour Agora",
+                            "name": "event_name"
+                        },
+                        {
+                            "content": "Michelle",
+                            "name": "event_organiser"
+                        },
+                        {
+                            "content": "@string@",
+                            "name": "event_date"
+                        },
+                        {
+                            "content": "@string@",
+                            "name": "event_hour"
+                        },
+                        {
+                            "content": "http://vox.code/evenements/@string@-nouvel-event-pour-agora",
+                            "name": "event_link"
+                        },
+                        {
+                            "content": "https://parti-renaissance.fr/reunions/123",
+                            "name": "visio_url"
+                        },
+                        {
+                            "content": null,
+                            "name": "live_url"
+                        },
+                        {
+                            "content": "Première Agora",
+                            "name": "agora_name"
+                        },
+                        {
+                            "content": "Michelle Dufour",
+                            "name": "agora_president"
+                        }
+                    ],
+                    "merge_vars": [
+                        {
+                            "rcpt": "jacques.picard@en-marche.fr",
+                            "vars": [
+                                {
+                                    "content": "Jacques",
+                                    "name": "first_name"
+                                }
+                            ]
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "jacques.picard@en-marche.fr",
+                            "name": "Jacques Picard",
+                            "type": "to"
+                        }
+                    ]
+                }
+            }
+            """
+        When I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe"
+        Then the response status code should be 201
+        When I send a "GET" request to "/api/v3/events/:saved_response.uuid:"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "uuid": "@uuid@",
+                "name": "Nouvel event pour Agora",
+                "slug": "@string@-nouvel-event-pour-agora",
+                "agora": {
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Première Agora",
+                    "slug": "premiere-agora",
+                    "uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+                },
+                "description": "Une description de l'événement",
+                "json_description": null,
+                "time_zone": "Europe/Paris",
+                "committee": null,
+                "live_url": null,
+                "visibility": "private",
+                "created_at": "@string@.isDateTime()",
+                "user_registered_at": "@string@.isDateTime()",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "invitation_agora",
+                "organizer": {
+                    "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+                    "first_name": "Michelle",
+                    "last_name": "Dufour",
+                    "scope": "agora_president",
+                    "role": "Président d'Agora",
+                    "instance": "Agora",
+                    "image_url": null,
+                    "zone": null
+                },
+                "participants_count": 5,
+                "status": "SCHEDULED",
+                "capacity": null,
+                "post_address": {
+                    "address": null,
+                    "postal_code": null,
+                    "city": null,
+                    "city_name": null,
+                    "country": null,
+                    "latitude": null,
+                    "longitude": null
+                },
+                "category": {
+                    "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                    "name": "Kiosque",
+                    "slug": "kiosque"
+                },
+                "visio_url": "https://parti-renaissance.fr/reunions/123",
+                "is_national": false,
+                "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "image": null,
+                "editable": true,
+                "edit_link": "@string@.isUrl()",
+                "object_state": "full"
             }
             """

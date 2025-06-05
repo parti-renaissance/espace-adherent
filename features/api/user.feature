@@ -73,7 +73,7 @@ Feature:
                             "name": "Première Agora",
                             "slug": "premiere-agora",
                             "description": "Description première Agora",
-                            "max_members_count": 2,
+                            "max_members_count": 10,
                             "members_count": 2,
                             "manager": {
                                 "uuid": "@uuid@",
