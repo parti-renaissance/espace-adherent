@@ -50,7 +50,7 @@ class EventProcessor extends AbstractFeedProcessor
 
             if (EventVisibilityEnum::PUBLIC === $visibility) {
                 $needClean = false;
-            } elseif (EventVisibilityEnum::isForAdherent($visibility)) {
+            } elseif (EventVisibilityEnum::isForAdherent($visibility) || EventVisibilityEnum::isInvitation($visibility)) {
                 $hasAccess =
                     (EventVisibilityEnum::ADHERENT === $visibility && $user->hasTag(TagEnum::ADHERENT))
                     || (EventVisibilityEnum::ADHERENT_DUES === $visibility && $user->hasTag(TagEnum::getAdherentYearTag()))

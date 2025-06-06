@@ -79,11 +79,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(
             uriTemplate: '/v3/events/{uuid}',
+            security: "is_granted('CAN_ACCESS_EVENT', object)",
             provider: EventProvider::class,
         ),
         new Get(
             uriTemplate: '/events/{uuid}',
-            security: '!object.isForAdherent()',
+            security: "is_granted('CAN_ACCESS_EVENT', object)",
             provider: EventProvider::class,
         ),
         new Put(
