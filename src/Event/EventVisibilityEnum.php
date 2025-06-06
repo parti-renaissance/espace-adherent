@@ -15,7 +15,7 @@ enum EventVisibilityEnum: string implements TranslatableInterface
 
     public static function isForAdherent(self $visibility): bool
     {
-        return \in_array($visibility, [self::ADHERENT, self::ADHERENT_DUES, self::INVITATION_AGORA], true);
+        return \in_array($visibility, [self::ADHERENT, self::ADHERENT_DUES], true);
     }
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string

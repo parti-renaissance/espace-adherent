@@ -80,7 +80,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         if (true === $eventData['editable'] || $event->isPublic()) {
             $needClean = false;
-        } elseif (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext && $event->isForAdherent()) {
+        } elseif (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext && ($event->isForAdherent() || $event->isInvitation())) {
             $hasAccess = $adherent
                 && (
                     (EventVisibilityEnum::ADHERENT === $event->visibility && $adherent->hasTag(TagEnum::ADHERENT))
