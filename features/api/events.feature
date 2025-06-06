@@ -2773,13 +2773,12 @@ Feature:
                         "time_zone": "Europe/Paris",
                         "live_url": null,
                         "visibility": "private",
-                        "created_at": null,
-                        "user_registered_at": null,
+                        "created_at": "@string@.isDateTime()",
                         "begin_at": "@string@.isDateTime()",
-                        "finish_at": null,
+                        "finish_at": "@string@.isDateTime()",
                         "visibility": "private",
                         "organizer": {
-                            "uuid": null,
+                            "uuid": "@string@",
                             "first_name": "Jean-Baptiste",
                             "last_name": "Fortin",
                             "scope": null,
@@ -2788,29 +2787,29 @@ Feature:
                             "image_url": null,
                             "zone": null
                         },
-                        "participants_count": null,
+                        "participants_count": 0,
                         "status": "SCHEDULED",
-                        "capacity": null,
+                        "capacity": 50,
                         "post_address": {
-                            "address": null,
+                            "address": "74 Avenue des Champs-Élysées, 75008 Paris",
                             "postal_code": "75008",
-                            "city": null,
+                            "city": "75008-75108",
                             "city_name": "Paris 8ème",
                             "country": "FR",
-                            "latitude": null,
-                            "longitude": null
+                            "latitude": 48.862724,
+                            "longitude": 2.287592
                         },
                         "category": null,
                         "visio_url": null,
                         "is_national": false,
                         "mode": "online",
-                        "local_begin_at": null,
-                        "local_finish_at": null,
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
                         "editable": false,
                         "user_registered_at": null,
-                        "object_state": "partial"
+                        "object_state": "full"
                     }
                 ]
             }
