@@ -6,6 +6,7 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
+use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
@@ -31,7 +32,9 @@ use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
+use App\Event\Request\CountInvitationsRequest;
 use App\Membership\MembershipSourceEnum;
+use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Scope\FeatureEnum;
@@ -1476,5 +1479,92 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function countInvitations(CountInvitationsRequest $filter): int
+    {
+        if ($filter->isEmpty()) {
+            return 0;
+        }
+
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('COUNT(DISTINCT a.id)')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+        ;
+
+        if ($filter->agora) {
+            $queryBuilder
+                ->innerJoin('a.agoraMemberships', 'am')
+                ->innerJoin('am.agora', 'agora')
+                ->andWhere('agora.uuid = :agora_uuid')
+                ->andWhere('agora.published = 1')
+                ->setParameter('agora_uuid', $filter->agora)
+            ;
+        }
+
+        if ($filter->roles) {
+            $condition = $queryBuilder->expr()->orX();
+
+            $zoneRoles = $delegatedAccess = $agoraRoles = $committeeRoles = [];
+
+            foreach ($filter->roles as $role) {
+                if (\in_array($role, ZoneBasedRoleTypeEnum::ALL, true)) {
+                    $zoneRoles[] = $role;
+                } elseif (RoleEnum::isValid($role)) {
+                    $delegatedAccess[] = $role;
+                } elseif (\in_array($role, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true)) {
+                    $agoraRoles[] = $role;
+                } elseif (ScopeEnum::ANIMATOR === $role) {
+                    $committeeRoles[] = $role;
+                }
+            }
+
+            $zoneRoles = array_unique($zoneRoles);
+            $agoraRoles = array_unique($agoraRoles);
+            $committeeRoles = array_unique($committeeRoles);
+            $delegatedAccess = array_unique($delegatedAccess);
+
+            if ($zoneRoles) {
+                $condition->add('zbr IS NOT NULL');
+                $queryBuilder
+                    ->leftJoin('a.zoneBasedRoles', 'zbr', Join::WITH, 'zbr.hidden = 0 AND zbr.type IN (:zone_based_roles)')
+                    ->setParameter('zone_based_roles', $zoneRoles)
+                ;
+            }
+
+            if ($delegatedAccess) {
+                $condition->add('rda IS NOT NULL');
+                $queryBuilder
+                    ->leftJoin('a.receivedDelegatedAccesses', 'rda', Join::WITH, 'rda.role IN (:delegated_access)')
+                    ->setParameter('delegated_access', $delegatedAccess)
+                ;
+            }
+
+            if ($agoraRoles) {
+                foreach ($agoraRoles as $role) {
+                    if (ScopeEnum::AGORA_PRESIDENT === $role) {
+                        $queryBuilder->leftJoin('a.presidentOfAgoras', 'pra');
+                        $condition->add('rda IS NOT NULL');
+                    } elseif (ScopeEnum::AGORA_GENERAL_SECRETARY === $role) {
+                        $queryBuilder->leftJoin('a.generalSecretaryOfAgoras', 'gsa');
+                        $condition->add('gsa IS NOT NULL');
+                    }
+                }
+            }
+
+            if ($committeeRoles) {
+                $condition->add('cl IS NOT NULL');
+                $queryBuilder->leftJoin('a.animatorCommittees', 'cl');
+            }
+
+            if (!$zoneRoles && !$delegatedAccess && !$agoraRoles && !$committeeRoles) {
+                return 0;
+            }
+
+            $queryBuilder->andWhere($condition);
+        }
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 }

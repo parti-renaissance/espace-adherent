@@ -30,7 +30,7 @@ class ApiAccessDeniedListener implements EventSubscriberInterface
                 'detail' => \sprintf('Vous devez faire partie de l\'agora %s pour accéder à cet événement.', $eventEntity->agora->getName()),
                 'status' => 403,
                 'type' => '/errors/403',
-                'code' => 'event.agora.access_denied',
+                'key' => 'event.agora.access_denied',
             ], Response::HTTP_FORBIDDEN));
         }
     }

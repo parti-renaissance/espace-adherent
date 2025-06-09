@@ -3053,3 +3053,32 @@ Feature:
                 ]
             }
             """
+
+    Scenario: As a President of Agora I can get the count of invitations for an agora
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events/count-invitations?scope=agora_president" with body:
+            """
+            {
+                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+            }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "count": 2
+            }
+            """
+        When I send a "POST" request to "/api/v3/events/count-invitations?scope=agora_president" with body:
+            """
+            {
+                "roles": ["animator", "deputy", "communication_manager", "treasurer"]
+            }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "count": 5
+            }
+            """

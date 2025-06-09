@@ -23,6 +23,7 @@ use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Api\Provider\EventProvider;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Event\CancelEventController;
+use App\Controller\Api\Event\CountInvitationsController;
 use App\Controller\Api\Event\SubscribeAsAdherentController;
 use App\Controller\Api\Event\SubscribeAsAnonymousController;
 use App\Controller\Api\UpdateImageController;
@@ -140,6 +141,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             denormalizationContext: ['groups' => ['event_write', 'event_write_creation']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'events')",
             validationContext: ['groups' => ['Default', 'api_put_validation', 'event_creation']]
+        ),
+        new Post(
+            uriTemplate: '/v3/events/count-invitations',
+            status: 200,
+            controller: CountInvitationsController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'events')",
+            deserialize: false,
         ),
     ],
     normalizationContext: ['groups' => ['event_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
