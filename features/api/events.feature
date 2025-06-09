@@ -2472,7 +2472,7 @@ Feature:
                     "image_url": null,
                     "zone": null
                 },
-                "participants_count": 3,
+                "participants_count": 1,
                 "status": "SCHEDULED",
                 "capacity": null,
                 "post_address": {
@@ -2671,7 +2671,7 @@ Feature:
                             "image_url": null,
                             "zone": null
                         },
-                        "participants_count": 3,
+                        "participants_count": 1,
                         "status": "SCHEDULED",
                         "capacity": null,
                         "post_address": {
@@ -2926,7 +2926,7 @@ Feature:
                     "image_url": null,
                     "zone": null
                 },
-                "participants_count": 5,
+                "participants_count": 2,
                 "status": "SCHEDULED",
                 "capacity": null,
                 "post_address": {
