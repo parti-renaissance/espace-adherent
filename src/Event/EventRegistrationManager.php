@@ -7,17 +7,14 @@ use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Exception\EventRegistrationException;
 use App\Repository\EventRegistrationRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class EventRegistrationManager
 {
-    private $manager;
-    private $repository;
-
-    public function __construct(ObjectManager $manager, EventRegistrationRepository $repository)
-    {
-        $this->manager = $manager;
-        $this->repository = $repository;
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly EventRegistrationRepository $repository,
+    ) {
     }
 
     public function findRegistration(?string $uuid): ?EventRegistration
@@ -51,28 +48,29 @@ class EventRegistrationManager
         );
     }
 
-    public function create(EventRegistration $registration, bool $flush = true): void
+    public function create(EventRegistration $registration): void
     {
         $event = $registration->getEvent();
-        $event->incrementParticipantsCount();
+
+        if ($registration->isConfirmed()) {
+            $event->incrementParticipantsCount();
+        }
 
         $this->manager->persist($registration);
 
-        if ($flush) {
-            $this->manager->flush();
-        }
+        $this->manager->flush();
     }
 
-    public function remove(EventRegistration $registration, bool $flush = true): void
+    public function remove(EventRegistration $registration): void
     {
         $event = $registration->getEvent();
-        $event->decrementParticipantsCount();
+
+        if ($registration->isConfirmed()) {
+            $event->decrementParticipantsCount();
+        }
 
         $this->manager->remove($registration);
-
-        if ($flush) {
-            $this->manager->flush();
-        }
+        $this->manager->flush();
     }
 
     /**
