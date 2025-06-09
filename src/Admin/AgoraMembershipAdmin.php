@@ -9,8 +9,6 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
 class AgoraMembershipAdmin extends AbstractAdmin
 {
-    protected $parentAssociationMapping = 'agora';
-
     protected function configureFormFields(FormMapper $form): void
     {
         $form
@@ -30,9 +28,9 @@ class AgoraMembershipAdmin extends AbstractAdmin
                     );
 
                     if ($adherent->isRenaissanceAdherent()) {
-                        $label .= '<span class="label" style="background-color: #00205F;">Adhérent</span>';
+                        $label .= '<span class="label" style="margin-left: 4px;background-color: #00205F;">Adhérent</span>';
                     } else {
-                        $label .= '<span class="label" style="background-color: #73C0F1;">Sympathisant</span>';
+                        $label .= '<span class="label" style="margin-left: 4px;background-color: #73C0F1;">Sympathisant</span>';
                     }
 
                     return $label;
