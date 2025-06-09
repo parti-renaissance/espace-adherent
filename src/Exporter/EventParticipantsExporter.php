@@ -23,6 +23,8 @@ class EventParticipantsExporter
 
     public function export(Event $event, string $format): StreamedResponse
     {
+        $isInvitation = $event->isInvitation();
+
         return $this->exporter->getResponse(
             $format,
             \sprintf(
@@ -33,7 +35,7 @@ class EventParticipantsExporter
             ),
             new IteratorCallbackSourceIterator(
                 $this->eventRegistrationRepository->iterateByEvent($event),
-                function (array $data) {
+                function (array $data) use ($isInvitation) {
                     /** @var EventRegistration $registration */
                     $registration = array_shift($data);
                     $row = [];
@@ -44,7 +46,11 @@ class EventParticipantsExporter
                     $row['Labels'] = implode(', ', array_map(fn (string $tag) => $this->tagTranslator->trans($tag, false), $registration->getTags() ?? []));
                     $row['Code postal'] = $registration->getPostalCode();
                     $row['Téléphone'] = PhoneNumberUtils::format($registration->getPhone());
-                    $row['Date d\'inscription'] = $registration->getCreatedAt()->format('Y-m-d H:i:s');
+                    $row['Statut'] = $registration->isConfirmed() ? 'Confirmé' : 'En attente';
+                    if ($isInvitation) {
+                        $row['Date d\'invitation'] = $registration->getCreatedAt()->format('Y-m-d H:i:s');
+                    }
+                    $row['Date de confirmation'] = $registration->confirmedAt?->format('Y-m-d H:i:s');
 
                     return $row;
                 }
