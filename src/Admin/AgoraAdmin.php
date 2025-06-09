@@ -3,6 +3,8 @@
 namespace App\Admin;
 
 use App\Agora\AgoraMembershipHandler;
+use App\Agora\Event\NewAgoraMemberEvent;
+use App\Agora\Event\RemoveAgoraMemberEvent;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Agora;
@@ -19,6 +21,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class AgoraAdmin extends AbstractAdmin
@@ -26,6 +29,7 @@ class AgoraAdmin extends AbstractAdmin
     private ?AgoraMembershipHandler $agoraMembershipHandler = null;
     private ?UserActionHistoryHandler $historyHandler = null;
     private ?Security $security = null;
+    private ?EventDispatcherInterface $eventDispatcher = null;
 
     /** @var Adherent[] */
     private array $adherentsMembersBeforeUpdate = [];
@@ -236,7 +240,7 @@ class AgoraAdmin extends AbstractAdmin
 
         foreach ($object->memberships as $membership) {
             if ($membership->adherent) {
-                $this->adherentsMembersBeforeUpdate[$membership->adherent->getId()] = $membership->adherent;
+                $this->adherentsMembersBeforeUpdate[$membership->adherent->getId()] = $membership;
             }
         }
 
@@ -254,18 +258,20 @@ class AgoraAdmin extends AbstractAdmin
             return;
         }
 
+        $admin = $this->getAdministrator();
+
         foreach ($object->memberships as $membership) {
             if ($membership->adherent) {
-                $this->historyHandler->createAgoraMembershipAdd($membership->adherent, $object, $this->getAdministrator());
+                $this->eventDispatcher->dispatch(new NewAgoraMemberEvent($membership, $admin));
             }
         }
 
         if ($object->president) {
-            $this->historyHandler->createAgoraPresidentAdd($object->president, $object, $this->getAdministrator());
+            $this->historyHandler->createAgoraPresidentAdd($object->president, $object, $admin);
         }
 
         foreach ($object->generalSecretaries as $generalSecretary) {
-            $this->historyHandler->createAgoraGeneralSecretaryAdd($generalSecretary, $object, $this->getAdministrator());
+            $this->historyHandler->createAgoraGeneralSecretaryAdd($generalSecretary, $object, $admin);
         }
 
         $this->handleManagersAsMembers($object);
@@ -280,21 +286,23 @@ class AgoraAdmin extends AbstractAdmin
         $after = [];
         foreach ($object->memberships as $membership) {
             if ($membership->adherent) {
-                $after[$membership->adherent->getId()] = $membership->adherent;
+                $after[$membership->adherent->getId()] = $membership;
             }
         }
 
+        $admin = $this->getAdministrator();
+
         // Detect removed membership
-        foreach ($this->adherentsMembersBeforeUpdate as $id => $adherent) {
+        foreach ($this->adherentsMembersBeforeUpdate as $id => $membership) {
             if (!isset($after[$id])) {
-                $this->historyHandler->createAgoraMembershipRemove($adherent, $object, $this->getAdministrator());
+                $this->eventDispatcher->dispatch(new RemoveAgoraMemberEvent($membership, $admin));
             }
         }
 
         // Detect added membership
-        foreach ($after as $id => $adherent) {
+        foreach ($after as $id => $membership) {
             if (!isset($this->adherentsMembersBeforeUpdate[$id])) {
-                $this->historyHandler->createAgoraMembershipAdd($adherent, $object, $this->getAdministrator());
+                $this->eventDispatcher->dispatch(new NewAgoraMemberEvent($membership, $admin));
             }
         }
 
@@ -302,10 +310,10 @@ class AgoraAdmin extends AbstractAdmin
         $newPresident = $object->president;
         if ($this->presidentBeforeUpdate !== $newPresident) {
             if (null !== $this->presidentBeforeUpdate) {
-                $this->historyHandler->createAgoraPresidentRemove($this->presidentBeforeUpdate, $object, $this->getAdministrator());
+                $this->historyHandler->createAgoraPresidentRemove($this->presidentBeforeUpdate, $object, $admin);
             }
             if (null !== $newPresident) {
-                $this->historyHandler->createAgoraPresidentAdd($newPresident, $object, $this->getAdministrator());
+                $this->historyHandler->createAgoraPresidentAdd($newPresident, $object, $admin);
             }
         }
 
@@ -317,13 +325,13 @@ class AgoraAdmin extends AbstractAdmin
 
         foreach ($this->generalSecretariesBeforeUpdate as $id => $adherent) {
             if (!isset($afterGeneralSecretaries[$id])) {
-                $this->historyHandler->createAgoraGeneralSecretaryRemove($adherent, $object, $this->getAdministrator());
+                $this->historyHandler->createAgoraGeneralSecretaryRemove($adherent, $object, $admin);
             }
         }
 
         foreach ($afterGeneralSecretaries as $id => $adherent) {
             if (!isset($this->generalSecretariesBeforeUpdate[$id])) {
-                $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $this->getAdministrator());
+                $this->historyHandler->createAgoraGeneralSecretaryAdd($adherent, $object, $admin);
             }
         }
 
@@ -378,6 +386,12 @@ class AgoraAdmin extends AbstractAdmin
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    #[Required]
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     private function getAdministrator(): Administrator

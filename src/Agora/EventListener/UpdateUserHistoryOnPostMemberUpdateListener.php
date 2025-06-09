@@ -16,13 +16,13 @@ class UpdateUserHistoryOnPostMemberUpdateListener implements EventSubscriberInte
     public function onPostMemberAdd(NewAgoraMemberEvent $event): void
     {
         $agoraMembership = $event->agoraMembership;
-        $this->userActionHistoryHandler->createAgoraMembershipAdd($agoraMembership->adherent, $agoraMembership->agora);
+        $this->userActionHistoryHandler->createAgoraMembershipAdd($agoraMembership->adherent, $agoraMembership->agora, $event->admin);
     }
 
     public function onPostMemberRemove(RemoveAgoraMemberEvent $event): void
     {
         $agoraMembership = $event->agoraMembership;
-        $this->userActionHistoryHandler->createAgoraMembershipRemove($agoraMembership->adherent, $agoraMembership->agora);
+        $this->userActionHistoryHandler->createAgoraMembershipRemove($agoraMembership->adherent, $agoraMembership->agora, $event->admin);
     }
 
     public static function getSubscribedEvents(): array
