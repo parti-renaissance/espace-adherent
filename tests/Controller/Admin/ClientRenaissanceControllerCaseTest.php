@@ -7,7 +7,6 @@ use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
 use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -91,7 +90,7 @@ class ClientRenaissanceControllerCaseTest extends AbstractAdminWebTestCase
         return $this
             ->getEntityManager()
             ->getRepository(Client::class)
-            ->findClientByUuid(Uuid::fromString($uuid))
+            ->findOneByUuid($uuid)
         ;
     }
 

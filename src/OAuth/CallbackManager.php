@@ -73,7 +73,7 @@ class CallbackManager
             return [];
         }
 
-        if (!$client = $this->clientRepository->findClientByUuid($clientUuid)) {
+        if (!$client = $this->clientRepository->findOneByUuid($clientUuid)) {
             $this->logger->warning("Client \"$clientId\" cannot be found in DB", $callbackParameters);
 
             return [];

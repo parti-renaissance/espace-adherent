@@ -65,6 +65,6 @@ class ClientStore implements OAuthClientRepositoryInterface
             return null;
         }
 
-        return $this->clientRepository->findClientByUuid(Uuid::fromString($identifier));
+        return $this->clientRepository->findOneByUuid($identifier);
     }
 }
