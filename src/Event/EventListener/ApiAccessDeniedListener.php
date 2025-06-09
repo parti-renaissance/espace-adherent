@@ -16,19 +16,21 @@ class ApiAccessDeniedListener implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
+        $eventEntity = $request->attributes->get('data');
 
         if (
             $exception instanceof AccessDeniedHttpException
             && '_api_/v3/events/{uuid}_get' === $request->attributes->get('_api_operation_name')
-            && ($eventEntity = $request->attributes->get('data')) instanceof Event
+            && $eventEntity instanceof Event
             && $eventEntity->isInvitation()
             && $eventEntity->agora
         ) {
             $event->setResponse(new JsonResponse([
                 'title' => 'An error occurred',
-                'detail' => 'agora.event.access_denied',
+                'detail' => \sprintf('Vous devez faire partie de l\'agora %s pour accéder à cet événement.', $eventEntity->agora->getName()),
                 'status' => 403,
                 'type' => '/errors/403',
+                'code' => 'event.agora.access_denied',
             ], Response::HTTP_FORBIDDEN));
         }
     }
