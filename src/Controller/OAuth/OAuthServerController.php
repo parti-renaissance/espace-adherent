@@ -14,7 +14,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -39,7 +38,7 @@ class OAuthServerController extends AbstractController
             $authRequest = $this->authorizationServer->validateAuthorizationRequest($request);
             $authRequest->setUser($user->getOAuthUser());
 
-            $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
+            $client = $repository->findOneByUuid($authRequest->getClient()->getIdentifier());
 
             $this->denyAccessUnlessGranted(OAuthClientVoter::PERMISSION, $client);
 
@@ -107,7 +106,7 @@ class OAuthServerController extends AbstractController
         }
 
         $accessTokenObject = (new Parser(new JoseEncoder()))->parse($accessToken);
-        $client = $repository->findClientByUuid(Uuid::fromString(current($accessTokenObject->claims()->get(RegisteredClaims::AUDIENCE))));
+        $client = $repository->findOneByUuid(current($accessTokenObject->claims()->get(RegisteredClaims::AUDIENCE)));
 
         return new JsonResponse([
             'token_type' => 'Bearer',

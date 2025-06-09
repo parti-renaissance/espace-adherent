@@ -41,7 +41,7 @@ class OAuthTokenGenerator
             return null;
         }
 
-        $client = $this->clientRepository->findClientByUuid(Uuid::fromString($clientId));
+        $client = $this->clientRepository->findOneByUuid($clientId);
         if (null === $client) {
             return null;
         }

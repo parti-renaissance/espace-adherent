@@ -126,7 +126,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
             $identifier,
             new \DateTimeImmutable($expiryDateTime),
             'http://client-oauth.docker:8000/client/receive_authcode',
-            $this->clientRepository->findClientByUuid(Uuid::fromString($clientUuid))
+            $this->clientRepository->findOneByUuid($clientUuid)
         );
     }
 
@@ -141,7 +141,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
             $this->adherentRepository->findOneByUuid(Uuid::fromString($userUuid)),
             $identifier,
             new \DateTimeImmutable($expiryDateTime),
-            $this->clientRepository->findClientByUuid(Uuid::fromString($clientUuid))
+            $this->clientRepository->findOneByUuid($clientUuid)
         );
     }
 

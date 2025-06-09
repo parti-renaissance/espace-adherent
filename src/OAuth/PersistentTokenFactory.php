@@ -100,7 +100,7 @@ class PersistentTokenFactory
 
     private function getClient(string $identifier): Client
     {
-        if (!$client = $this->clientRepository->findClientByUuid(Uuid::fromString($identifier))) {
+        if (!$client = $this->clientRepository->findOneByUuid($identifier)) {
             throw new \RuntimeException(\sprintf('Unable to find %s entity by its identifier "%s".', Client::class, $identifier));
         }
 

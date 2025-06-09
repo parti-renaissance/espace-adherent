@@ -58,7 +58,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->clientRepository
             ->expects($this->any())
-            ->method('findClientByUuid')
+            ->method('findOneByUuid')
             ->with(self::CLIENT_UUID)
             ->willReturn($client = $this->createMock(Client::class))
         ;
@@ -98,7 +98,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->clientRepository
             ->expects($this->any())
-            ->method('findClientByUuid')
+            ->method('findOneByUuid')
             ->with(self::CLIENT_UUID)
             ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback']))
         ;
@@ -127,7 +127,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->clientRepository
             ->expects($this->any())
-            ->method('findClientByUuid')
+            ->method('findOneByUuid')
             ->with(self::CLIENT_UUID)
             ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback', 'http://client2.com']))
         ;
@@ -157,7 +157,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->clientRepository
             ->expects($this->any())
-            ->method('findClientByUuid')
+            ->method('findOneByUuid')
             ->with(self::CLIENT_UUID)
             ->willReturn($client = $this->createMock(Client::class))
         ;
@@ -214,7 +214,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->clientRepository
             ->expects($this->any())
-            ->method('findClientByUuid')
+            ->method('findOneByUuid')
             ->with(self::CLIENT_UUID)
             ->willReturn(null)
         ;

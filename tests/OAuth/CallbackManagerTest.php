@@ -9,7 +9,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -51,9 +50,9 @@ class CallbackManagerTest extends TestCase
 
         $this->clientRepository = $this->createMock(ClientRepository::class);
         $this->clientRepository->expects($this->any())
-            ->method('findClientByUuid')
-            ->willReturnCallback(function (UuidInterface $uuid) {
-                return self::KNOWN_CLIENT_UUID === $uuid->toString() ? $this->createClient() : null;
+            ->method('findOneByUuid')
+            ->willReturnCallback(function (string $uuid) {
+                return self::KNOWN_CLIENT_UUID === $uuid ? $this->createClient() : null;
             })
         ;
 
