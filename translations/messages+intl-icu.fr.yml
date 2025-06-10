@@ -780,11 +780,6 @@ timeline.measure.status.in_progress: en cours
 timeline.measure.status.upcoming: à venir
 
 #
-# UserDocument
-#
-document.upload.success: Le document a été téléchargé avec succès.
-
-#
 # Donation
 #
 donation.type.cb: Carte bleue

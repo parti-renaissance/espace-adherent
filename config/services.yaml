@@ -484,3 +484,123 @@ services:
         arguments: ['@.inner']
 
     League\CommonMark\CommonMarkConverter: ~
+
+    App\Search\SearchParametersFilter:
+        shared: false
+        arguments:
+            - '@App\Geocoder\Geocoder'
+            - '@cache.app'
+        calls:
+            - method: setMaxResults
+              arguments: ['%search_max_results%']
+
+    App\Search\SearchResultsProvidersManager:
+        calls:
+            - method: addProvider
+              arguments: ['@App\Search\CommitteeSearchResultsProvider']
+            - method: addProvider
+              arguments: ['@App\Search\EventSearchResultsProvider']
+
+    App\Api\Doctrine\JecouteNewsExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\EventExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\EventOrderExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: -35,
+                },
+            ]
+
+    App\Api\Doctrine\GeoZoneExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\AuthoredItemsCollectionExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\LoadActivePapCampaignExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\EmailTemplateExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Api\Doctrine\ReferralExtension:
+        tags:
+            [
+                {
+                    name: 'api_platform.doctrine.orm.query_extension.collection',
+                    priority: 9,
+                },
+            ]
+
+    App\Entity\Listener\ContainingUserDocumentListener:
+        public: true
+        arguments:
+            - '@App\UserDocument\UserDocumentManager'
+            - '%pattern_uuid%'
+        tags:
+            - {
+                  name: 'doctrine.orm.entity_listener',
+                  entity: 'App\Entity\Jecoute\News',
+                  event: 'prePersist',
+              }
+            - {
+                  name: 'doctrine.orm.entity_listener',
+                  entity: 'App\Entity\Jecoute\News',
+                  event: 'preUpdate',
+              }
+            - {
+                  name: 'doctrine.orm.entity_listener',
+                  entity: 'App\Entity\Jecoute\News',
+                  event: 'postUpdate',
+              }
+            - {
+                  name: 'doctrine.orm.entity_listener',
+                  entity: 'App\Entity\Jecoute\News',
+                  event: 'preRemove',
+              }
+            - {
+                  name: 'doctrine.orm.entity_listener',
+                  entity: 'App\Entity\Jecoute\News',
+                  event: 'postRemove',
+              }

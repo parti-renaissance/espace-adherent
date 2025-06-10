@@ -27,17 +27,12 @@ class PhoneNumberTypeExtension extends AbstractTypeExtension
         }
     }
 
-    public function getExtendedType()
-    {
-        return PhoneNumberType::class;
-    }
-
     public static function getExtendedTypes(): array
     {
         return [PhoneNumberType::class];
     }
 
-    public function setDefaultRegion(FormEvent $event)
+    public function setDefaultRegion(FormEvent $event): void
     {
         $form = $event->getForm();
         $defaultRegion = $form->getConfig()->getOption('default_region');
