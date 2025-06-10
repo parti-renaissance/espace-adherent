@@ -8,6 +8,7 @@ use App\AppSession\SystemEnum;
 use App\Entity\Agora;
 use App\Entity\AppSession;
 use App\Entity\Committee;
+use App\Entity\OAuth\Client;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Join;
@@ -136,17 +137,17 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     }
 
                     $qb
-                        ->leftJoin("$alias.appSessions", 'active_session_filter', Join::WITH, 'active_session_filter.status = :active_session_filter_status')
-                        ->leftJoin('active_session_filter.client', 'active_session_filter_client', Join::WITH, 'active_session_filter_client.code = :session_client_code')
+                        ->innerJoin(Client::class, 'oauth_client', Join::WITH, 'oauth_client.code = :session_client_code')
+                        ->leftJoin("$alias.appSessions", 'active_session_filter', Join::WITH, 'active_session_filter.status = :active_session_filter_status AND active_session_filter.client = oauth_client')
                         ->setParameter('active_session_filter_status', SessionStatusEnum::ACTIVE)
                         ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
                     ;
 
                     if (\in_array('aucune', $value->getValue(), true)) {
-                        $qb->andWhere('active_session_filter IS NULL OR active_session_filter_client IS NULL');
+                        $qb->andWhere('active_session_filter IS NULL');
                     } else {
                         $qb
-                            ->andWhere('active_session_filter.appSystem IN (:active_session_filter_systems) AND active_session_filter_client IS NOT NULL')
+                            ->andWhere('active_session_filter.appSystem IN (:active_session_filter_systems)')
                             ->setParameter('active_session_filter_systems', $value->getValue())
                         ;
                     }
