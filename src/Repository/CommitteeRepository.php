@@ -140,6 +140,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 SELECT
                     c2.id,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS members_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS adherents_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS sympathizers_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count
                 FROM committees c2
@@ -153,6 +154,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 c.sympathizers_count = t.sympathizers_count',
             [
                 TagEnum::ADHERENT.'%',
+                TagEnum::getAdherentYearTag().'%',
                 TagEnum::SYMPATHISANT.'%',
                 TagEnum::SYMPATHISANT_COMPTE_EM.'%',
             ]

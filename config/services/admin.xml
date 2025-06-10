@@ -214,7 +214,6 @@
             <argument />
             <argument>App\Entity\Committee</argument>
             <argument>App\Controller\Admin\AdminCommitteeCRUDController</argument>
-            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
 
             <call method="setTemplate">
@@ -1276,7 +1275,6 @@
         <service id="app.admin.entity_administrator_blameable_extension" class="App\Admin\Extension\EntityAdministratorBlameableAdminExtension">
             <tag name="sonata.admin.extension" priority="-256" />
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
-            <tag name="sonata.admin.extension" target="app.admin.committee" />
             <tag name="sonata.admin.extension" target="app.admin.cms_block" />
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
