@@ -212,17 +212,17 @@ Feature:
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
                                 "label": "Sénatrice déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
@@ -395,17 +395,17 @@ Feature:
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
                                 "label": "Sénatrice déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
@@ -582,7 +582,7 @@ Feature:
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
@@ -590,12 +590,12 @@ Feature:
                                     contains('Sénateur délégué'),
                                     contains('Sénatrice déléguée')
                                 )",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
                                 "label": "Déléguée de circonscription déléguée",
-                                "tooltip": "Collaborateur parlementaire"
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",

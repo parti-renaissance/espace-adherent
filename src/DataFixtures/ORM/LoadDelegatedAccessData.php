@@ -41,8 +41,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess1 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_1));
         $delegatedAccess1->setDelegated($this->getReference('adherent-8', Adherent::class)); // referent@en-marche-dev.fr
         $delegatedAccess1->setDelegator($this->getReference('deputy-ch-li', Adherent::class)); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess1->setRole('Collaborateur parlementaire');
-        $delegatedAccess1->setType('deputy');
+        $delegatedAccess1->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess1->setType(ScopeEnum::DEPUTY);
         $delegatedAccess1->setAccesses(DelegatedAccess::ACCESSES);
 
         $manager->persist($delegatedAccess1);
@@ -51,8 +51,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess2 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_2));
         $delegatedAccess2->setDelegated($this->getReference('adherent-4', Adherent::class)); // luciole1989@spambox.fr
         $delegatedAccess2->setDelegator($this->getReference('deputy-ch-li', Adherent::class)); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess2->setRole('Collaborateur parlementaire');
-        $delegatedAccess2->setType('deputy');
+        $delegatedAccess2->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess2->setType(ScopeEnum::DEPUTY);
         $delegatedAccess2->setAccesses([DelegatedAccess::ACCESS_EVENTS, DelegatedAccess::ACCESS_ADHERENTS]);
 
         $manager->persist($delegatedAccess2);
@@ -61,8 +61,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess3 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_3));
         $delegatedAccess3->setDelegated($this->getReference('adherent-5', Adherent::class)); // gisele-berthoux@caramail.com
         $delegatedAccess3->setDelegator($this->getReference('deputy-ch-li', Adherent::class)); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess3->setRole('Collaborateur parlementaire');
-        $delegatedAccess3->setType('deputy');
+        $delegatedAccess3->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess3->setType(ScopeEnum::DEPUTY);
         $delegatedAccess3->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_EVENTS]);
         $delegatedAccess3->setScopeFeatures([FeatureEnum::MESSAGES, FeatureEnum::EVENTS]);
         $delegatedAccess3->setRestrictedCities(['59360', '59350', '59044', '59002']);
@@ -73,8 +73,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess4 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_4));
         $delegatedAccess4->setDelegated($this->getReference('adherent-5', Adherent::class)); // gisele-berthoux@caramail.com
         $delegatedAccess4->setDelegator($this->getReference('senator-59', Adherent::class)); // senateur@en-marche-dev.fr
-        $delegatedAccess4->setRole('Collaborateur parlementaire');
-        $delegatedAccess4->setType('senator');
+        $delegatedAccess4->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess4->setType(ScopeEnum::SENATOR);
         $delegatedAccess4->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_ADHERENTS]);
         $delegatedAccess4->setScopeFeatures([FeatureEnum::MESSAGES, FeatureEnum::CONTACTS]);
 
@@ -84,8 +84,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess5 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_5));
         $delegatedAccess5->setDelegated($this->getReference('adherent-5', Adherent::class)); // gisele-berthoux@caramail.com
         $delegatedAccess5->setDelegator($this->getReference('deputy-75-2', Adherent::class)); // deputy-75-2@en-marche-dev.fr
-        $delegatedAccess5->setRole('Collaborateur parlementaire');
-        $delegatedAccess5->setType('deputy');
+        $delegatedAccess5->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess5->setType(ScopeEnum::DEPUTY);
         $delegatedAccess5->setAccesses([DelegatedAccess::ACCESS_ADHERENTS]);
         $delegatedAccess5->setScopeFeatures([FeatureEnum::CONTACTS]);
 
@@ -95,8 +95,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess6 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_6));
         $delegatedAccess6->setDelegated($this->getReference('adherent-8', Adherent::class)); // referent@en-marche-dev.fr
         $delegatedAccess6->setDelegator($this->getReference('senator-59', Adherent::class)); // senateur@en-marche-dev.fr
-        $delegatedAccess6->setRole('Collaborateur parlementaire');
-        $delegatedAccess6->setType('senator');
+        $delegatedAccess6->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
+        $delegatedAccess6->setType(ScopeEnum::SENATOR);
 
         $manager->persist($delegatedAccess6);
 
@@ -104,7 +104,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess7 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_7));
         $delegatedAccess7->setDelegated($this->getReference('senator-59', Adherent::class)); // senateur@en-marche-dev.fr
         $delegatedAccess7->setDelegator($this->getReference('adherent-8', Adherent::class));
-        $delegatedAccess7->setRole('Collaborateur parlementaire');
+        $delegatedAccess7->setRole(RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER]);
         $delegatedAccess7->setType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $delegatedAccess7->setAccesses([
             DelegatedAccess::ACCESS_ADHERENTS,
