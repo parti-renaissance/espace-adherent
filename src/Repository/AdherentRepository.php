@@ -1483,7 +1483,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countInvitations(CountInvitationsRequest $filter): int
     {
-        if ($filter->isEmpty()) {
+        if ($filter->isEmpty() || !$filter->hasPerimeter()) {
             return 0;
         }
 
@@ -1493,13 +1493,40 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
         ;
 
-        if ($filter->agora) {
+        if ($filter->zones) {
+            $this->withGeoZones(
+                $filter->zones,
+                $queryBuilder,
+                'a',
+                Adherent::class,
+                'a2',
+                'zones',
+                'z2'
+            );
+        }
+
+        if ($filter->agoraUuids || $filter->agora) {
+            if ($filter->agoraUuids) {
+                $agoraUuids = $filter->agoraUuids;
+            } else {
+                $agoraUuids = [$filter->agora];
+            }
+
             $queryBuilder
                 ->innerJoin('a.agoraMemberships', 'am')
                 ->innerJoin('am.agora', 'agora')
-                ->andWhere('agora.uuid = :agora_uuid')
+                ->andWhere('agora.uuid IN(:agora_uuids)')
                 ->andWhere('agora.published = 1')
-                ->setParameter('agora_uuid', $filter->agora)
+                ->setParameter('agora_uuids', $agoraUuids)
+            ;
+        }
+
+        if ($filter->committeeUuids) {
+            $queryBuilder
+                ->innerJoin('a.committeeMembership', 'cm')
+                ->innerJoin('cm.committee', 'c')
+                ->andWhere('c.uuid IN (:committee_uuids)')
+                ->setParameter('committee_uuids', $filter->committeeUuids)
             ;
         }
 
@@ -1512,7 +1539,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 if (\in_array($role, ZoneBasedRoleTypeEnum::ALL, true)) {
                     $zoneRoles[] = $role;
                 } elseif (RoleEnum::isValid($role)) {
-                    $delegatedAccess[] = $role;
+                    $delegatedAccess[] = RoleEnum::LABELS[$role] ?? $role;
                 } elseif (\in_array($role, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true)) {
                     $agoraRoles[] = $role;
                 } elseif (ScopeEnum::ANIMATOR === $role) {
@@ -1545,7 +1572,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 foreach ($agoraRoles as $role) {
                     if (ScopeEnum::AGORA_PRESIDENT === $role) {
                         $queryBuilder->leftJoin('a.presidentOfAgoras', 'pra');
-                        $condition->add('rda IS NOT NULL');
+                        $condition->add('pra IS NOT NULL');
                     } elseif (ScopeEnum::AGORA_GENERAL_SECRETARY === $role) {
                         $queryBuilder->leftJoin('a.generalSecretaryOfAgoras', 'gsa');
                         $condition->add('gsa IS NOT NULL');

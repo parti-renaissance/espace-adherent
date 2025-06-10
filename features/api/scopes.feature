@@ -410,7 +410,7 @@ Feature:
                         "last_name": "PARIS II"
                     },
                     "type": "deputy",
-                    "role": "Collaborateur parlementaire"
+                    "role": "Responsable mobilisation"
                 }
             }
             """
@@ -504,7 +504,7 @@ Feature:
                         "first_name": "Referent",
                         "last_name": "Referent"
                     },
-                    "role": "Collaborateur parlementaire",
+                    "role": "Responsable mobilisation",
                     "type": "president_departmental_assembly"
                 },
                 "attributes": null
