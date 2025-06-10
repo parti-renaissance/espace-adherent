@@ -110,3 +110,14 @@ services:
 
             $mailchimpCampaignUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
             $mailchimpOrg: '%env(MAILCHIMP_ORG_ID)%'
+
+    app.mailchimp.request_builders_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        arguments:
+            - App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder: '@App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder'
+              App\Mailchimp\Synchronisation\RequestBuilder: '@App\Mailchimp\Synchronisation\RequestBuilder'
+              App\Mailchimp\Campaign\CampaignRequestBuilder: '@App\Mailchimp\Campaign\CampaignRequestBuilder'
+              App\Mailchimp\Campaign\CampaignContentRequestBuilder: '@App\Mailchimp\Campaign\CampaignContentRequestBuilder'
+              App\Mailchimp\MailchimpSegment\SegmentRequestBuilder: '@App\Mailchimp\MailchimpSegment\SegmentRequestBuilder'
+        tags:
+            - { name: 'container.service_locator' }

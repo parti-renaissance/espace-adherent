@@ -14,11 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextTypeExtension extends AbstractTypeExtension
 {
-    public function getExtendedType()
-    {
-        return TextType::class;
-    }
-
     public static function getExtendedTypes(): array
     {
         return [TextType::class];
