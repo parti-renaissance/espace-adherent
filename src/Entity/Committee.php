@@ -144,6 +144,9 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     private int $membersCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    private int $adherentsCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $sympathizersCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
@@ -623,6 +626,12 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     }
 
     #[Groups(['committee:list'])]
+    public function getAdherentsCount(): int
+    {
+        return $this->adherentsCount;
+    }
+
+    #[Groups(['committee:list'])]
     public function getSympathizersCount(): int
     {
         return $this->sympathizersCount;
@@ -638,10 +647,15 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         bool $incrementAction,
         bool $isSympathizer,
         bool $isAdherent,
+        bool $isActiveMembership,
     ): void {
         if ($incrementAction) {
             if ($isAdherent) {
                 $this->incrementMembersCount();
+
+                if ($isActiveMembership) {
+                    $this->incrementAdherentsCount();
+                }
             } elseif ($isSympathizer) {
                 $this->incrementSympathizersCount();
             } else {
@@ -650,6 +664,10 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         } else {
             if ($isAdherent) {
                 $this->decrementMembersCount();
+
+                if ($isActiveMembership) {
+                    $this->decrementAdherentsCount();
+                }
             } elseif ($isSympathizer) {
                 $this->decrementSympathizersCount();
             } else {
@@ -661,6 +679,11 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function incrementMembersCount(): void
     {
         ++$this->membersCount;
+    }
+
+    public function incrementAdherentsCount(): void
+    {
+        ++$this->adherentsCount;
     }
 
     public function incrementMembersEmCount(): void
@@ -676,6 +699,11 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function decrementMembersCount(): void
     {
         $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
+    }
+
+    public function decrementAdherentsCount(): void
+    {
+        $this->adherentsCount = $this->adherentsCount < 1 ? 0 : $this->adherentsCount - 1;
     }
 
     public function decrementSympathizersCount(): void
@@ -771,5 +799,10 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         }
 
         $this->status = self::PRE_APPROVED;
+    }
+
+    public function countElections(): int
+    {
+        return $this->committeeElections->count();
     }
 }

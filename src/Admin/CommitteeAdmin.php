@@ -2,22 +2,26 @@
 
 namespace App\Admin;
 
-use App\Admin\Filter\PostalCodeFilter;
+use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\Event\BeforeEditCommitteeEvent;
 use App\Committee\Event\EditCommitteeEvent;
-use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
-use App\Form\ReCountryType;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\QueryBuilder;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -27,32 +31,44 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeAdmin extends AbstractAdmin
 {
-    private $committeeMembershipRepository;
-    private $committeeRepository;
-    private $adherentRepository;
-    private $dispatcher;
+    use IterableCallbackDataSourceTrait;
+
+    protected LoggerInterface $logger;
+    private TagTranslator $tagTranslator;
+    protected EventDispatcherInterface $dispatcher;
 
     public function __construct(
         $code,
         $class,
         $baseControllerName,
-        ObjectManager $om,
+        LoggerInterface $logger,
+        TagTranslator $tagTranslator,
         EventDispatcherInterface $dispatcher,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
-        $this->committeeRepository = $om->getRepository(Committee::class);
-        $this->adherentRepository = $om->getRepository(Adherent::class);
+        $this->logger = $logger;
+        $this->tagTranslator = $tagTranslator;
         $this->dispatcher = $dispatcher;
+    }
+
+    /** @param QueryBuilder|ProxyQueryInterface $query */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $alias = $query->getRootAliases()[0];
+
+        $query
+            ->addSelect('_animator')
+            ->leftJoin($alias.'.animator', '_animator')
+        ;
+
+        return $query;
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -133,26 +149,6 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Date de fermeture',
                 ])
             ->end()
-            ->with('Adresse', ['class' => 'col-md-5'])
-                ->add('postAddress.address', null, [
-                    'label' => 'Rue',
-                ])
-                ->add('postAddress.postalCode', null, [
-                    'label' => 'Code postal',
-                ])
-                ->add('postAddress.cityName', null, [
-                    'label' => 'Ville',
-                ])
-                ->add('postAddress.country', null, [
-                    'label' => 'Pays',
-                ])
-                ->add('postAddress.latitude', null, [
-                    'label' => 'Latitude',
-                ])
-                ->add('postAddress.longitude', null, [
-                    'label' => 'Longitude',
-                ])
-            ->end()
         ;
     }
 
@@ -200,23 +196,6 @@ class CommitteeAdmin extends AbstractAdmin
                             'field' => 'animator',
                             '_sonata_admin' => 'app.admin.committee',
                         ],
-                    ])
-                ->end()
-                ->with('Localisation', ['class' => 'col-md-5'])
-                    ->add('postAddress.address', TextType::class, [
-                        'required' => false,
-                        'label' => 'Adresse postale',
-                    ])
-                    ->add('postAddress.postalCode', TextType::class, [
-                        'required' => false,
-                        'label' => 'Code postal',
-                    ])
-                    ->add('postAddress.cityName', TextType::class, [
-                        'required' => false,
-                        'label' => 'Ville',
-                    ])
-                    ->add('postAddress.country', ReCountryType::class, [
-                        'required' => false,
                     ])
                 ->end()
             ->end()
@@ -277,91 +256,37 @@ class CommitteeAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $committeeMembershipRepository = $this->committeeMembershipRepository;
-        $committeeRepository = $this->committeeRepository;
-        $adherentRepository = $this->adherentRepository;
-
         $filter
-            ->add('id', null, [
-                'label' => 'ID',
-                'show_filter' => true,
-            ])
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
             ])
-            ->add('createdAt', DateRangeFilter::class, [
-                'label' => 'Date de création',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('hostOrCreatorFirstName', CallbackFilter::class, [
-                'label' => 'Prénom de l\'animateur/créateur',
+            ->add('animator', CallbackFilter::class, [
+                'label' => 'Responsable',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
                         return false;
                     }
 
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByFirstName($value->getValue()));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value->getValue());
-                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
-                        // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
-
-                        return true;
-                    }
-
-                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
-
-                    return true;
-                },
-            ])
-            ->add('hostOrCreatorLastName', CallbackFilter::class, [
-                'label' => 'Nom de l\'animateur/créateur',
-                'show_filter' => true,
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $committeeRepository, $adherentRepository) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByLastName($value->getValue()));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value->getValue());
-                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
-                        // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
-
-                        return true;
-                    }
-
-                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
-
-                    return true;
-                },
-            ])
-            ->add('hostOrCreatorEmailAddress', CallbackFilter::class, [
-                'label' => 'Email de l\'animateur/créateur',
-                'show_filter' => true,
-                'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByEmailAddress($value->getValue()));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value->getValue());
-                    if (!$creatorCommitteeIds && !$hostCommitteeIds) {
-                        // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
-
-                        return true;
-                    }
-
-                    $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ['_animator.firstName', '_animator.lastName'],
+                            ['_animator.lastName', '_animator.firstName'],
+                            ['_animator.emailAddress', '_animator.emailAddress'],
+                        ],
+                        [
+                            '_animator.phone',
+                        ],
+                        [
+                            '_animator.id',
+                            '_animator.uuid',
+                            '_animator.publicId',
+                        ]
+                    );
 
                     return true;
                 },
@@ -379,52 +304,15 @@ class CommitteeAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add('postalCode', PostalCodeFilter::class, [
-                'label' => 'Code postal',
+            ->add('createdAt', DateRangeFilter::class, [
+                'label' => 'Date de création',
+                'show_filter' => false,
+                'field_type' => DateRangePickerType::class,
             ])
-            ->add('city', CallbackFilter::class, [
-                'label' => 'Ville',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
-
-                    return true;
-                },
-            ])
-            ->add('country', CallbackFilter::class, [
-                'label' => 'Pays',
-                'show_filter' => true,
-                'field_type' => ReCountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', strtolower($value->getValue()));
-
-                    return true;
-                },
-            ])
-            ->add('status', null, [
-                'label' => 'Statut',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => [
-                        'En attente' => Committee::PENDING,
-                        'Accepté' => Committee::APPROVED,
-                        'Refusé' => Committee::REFUSED,
-                        'Fermé' => Committee::CLOSED,
-                        'Pré-approuvé' => Committee::PRE_APPROVED,
-                        'Pré-refusé' => Committee::PRE_REFUSED,
-                    ],
-                ],
+            ->add('updatedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernière modification',
+                'show_filter' => false,
+                'field_type' => DateRangePickerType::class,
             ])
         ;
     }
@@ -432,21 +320,110 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id', null, ['label' => 'ID'])
-            ->addIdentifier('name', null, ['label' => 'Nom'])
+            ->add('assembly', null, [
+                'label' => 'Assemblée',
+                'virtual_field' => true,
+                'template' => 'admin/committee/list_assembly.html.twig',
+            ])
+            ->addIdentifier('name', null, [
+                'label' => 'Nom',
+            ])
             ->add('animator', null, [
                 'label' => 'Responsable',
+                'template' => 'admin/committee/list_animator.html.twig',
             ])
-            ->add('zones', null, ['label' => 'Zones'])
-            ->add('createdAt', null, ['label' => 'Date de création'])
-            ->add('status', null, [
-                'label' => 'Statut',
-                'template' => 'admin/committee/list_status.html.twig',
+            ->add('members', null, [
+                'label' => 'Membres',
+                'virtual_field' => true,
+                'template' => 'admin/committee/list_members.html.twig',
+            ])
+            ->add('elections', null, [
+                'label' => 'Elections',
+                'virtual_field' => true,
+                'template' => 'admin/committee/list_elections.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/committee/list_actions.html.twig',
             ])
+            ->add('zones', null, [
+                'label' => 'Zones',
+                'template' => 'admin/committee/list_zones.html.twig',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créé le',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Modifié le',
+            ])
+            ->add('authors', null, [
+                'label' => 'Auteurs',
+                'virtual_field' => true,
+                'template' => 'admin/committee/list_authors.html.twig',
+            ])
         ;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $committee) {
+            /** @var Committee $committee */
+            $committee = $committee[0];
+
+            $animator = $committee->animator;
+
+            try {
+                return [
+                    'Région' => implode(', ', array_map(function (Zone $zone): string {
+                        return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+                    }, $committee->getParentZonesOfType(Zone::REGION))),
+                    'Assemblée' => ($assemblyZone = $committee->getAssemblyZone())
+                        ? \sprintf('%s (%s)', $assemblyZone->getName(), $assemblyZone->getCode())
+                        : null,
+                    'Nom' => $committee->getName(),
+                    'Description' => $committee->getDescription(),
+                    'Zones' => implode(', ', array_map(function (Zone $zone): string {
+                        return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+                    }, $committee->getZones()->toArray())),
+                    'Numéro adhérent RCL' => $animator?->getPublicId(),
+                    'Nom RCL' => $animator?->getLastName(),
+                    'Prénom RCL' => $animator?->getFirstName(),
+                    'Email RCL' => $animator?->getEmailAddress(),
+                    'Téléphone RCL' => PhoneNumberUtils::format($animator?->getPhone()),
+                    'Labels militants RCL' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                        if (!\in_array($tag, TagEnum::getAdherentTags(), true)) {
+                            return null;
+                        }
+
+                        return $this->tagTranslator->trans($tag);
+                    }, $animator?->tags ?? []))),
+                    'Nombre de membres' => $committee->getMembersCount(),
+                    'Dont adhérents à jour' => $committee->getAdherentsCount(),
+                    'Nombre de sympathisants sur la zone' => $committee->getSympathizersCount(),
+                    'Nombre d\'élections liées' => $committee->countElections(),
+                    'Date de création' => $committee->getCreatedAt()?->format('d/m/Y H:i:s'),
+                    'Date de dernière modification' => $committee->getUpdatedAt()?->format('d/m/Y H:i:s'),
+                    'Créé par' => ($createdBy = $committee->getCreatedByAdherent())
+                        ? \sprintf('%s (%s)', $createdBy->getFirstName(), $createdBy->getPublicId())
+                        : null,
+                    'Modifié par' => ($updatedBy = $committee->getUpdatedByAdherent())
+                        ? \sprintf('%s (%s)', $updatedBy->getFirstName(), $updatedBy->getPublicId())
+                        : null,
+                    'UUID' => $committee->getUUID()->toString(),
+                ];
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    \sprintf('Error exporting Committee with UUID: %s. (%s)', $committee->getUuid()->toString(), $e->getMessage()),
+                    ['exception' => $e]
+                );
+
+                return [
+                    'Nom' => $committee->getName(),
+                    'UUID' => $committee->getUuid()->toString(),
+                ];
+            }
+        }];
     }
 }

@@ -1,0 +1,19 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% macro display_zone(zone) %}
+    {% if zone %}
+        <a href="{{ path('admin_app_committee_list', {filter: {zones: {value: [zone.id]}}}) }}" class="sonata-action-element">
+            {{ zone }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
+{% block field %}
+    <ul style="padding-left: 10px;">
+        {% for zone in object.zones %}
+            <li style="white-space: nowrap;">
+                {{ _self.display_zone(zone) }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

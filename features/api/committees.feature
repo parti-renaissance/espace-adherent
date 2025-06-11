@@ -39,6 +39,7 @@ Feature:
                         "updated_at": "@string@.isDateTime()",
                         "name": "Comité des 3 communes",
                         "members_count": 10,
+                        "adherents_count": 0,
                         "members_em_count": 0,
                         "sympathizers_count": 0,
                         "animator": {
@@ -57,6 +58,7 @@ Feature:
                         "updated_at": "@string@.isDateTime()",
                         "name": "Second Comité des 3 communes",
                         "members_count": 3,
+                        "adherents_count": 0,
                         "members_em_count": 0,
                         "sympathizers_count": 0,
                         "animator": {
@@ -78,6 +80,7 @@ Feature:
             """
             {
                 "members_count": 3,
+                "adherents_count": 0,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -135,6 +138,7 @@ Feature:
             """
             {
                 "members_count": 3,
+                "adherents_count": 0,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -195,6 +199,7 @@ Feature:
             """
             {
                 "members_count": 3,
+                "adherents_count": 0,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",
@@ -254,6 +259,7 @@ Feature:
             """
             {
                 "members_count": 3,
+                "adherents_count": 0,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",
@@ -366,6 +372,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "updated_at": "@string@.isDateTime()",
                 "members_count": 0,
+                "adherents_count": 0,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "animator": null

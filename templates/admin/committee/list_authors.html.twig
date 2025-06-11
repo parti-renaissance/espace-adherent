@@ -1,0 +1,31 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% macro display_author(adherent) %}
+    {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+        <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+            {{ adherent.fullName }} ({{ adherent.publicId }})
+        </a>
+    {% else %}
+        {{ adherent.fullName }} ({{ adherent.publicId }})
+    {% endif %}
+{% endmacro %}
+
+{% block field %}
+    {% set createdBy = object.createdByAdherent %}
+    {% set updatedBy = object.updatedByAdherent %}
+
+    {% if createdBy or updatedBy %}
+        <ul style="padding-left: 10px;">
+            {% if createdBy %}
+                <li>
+                    Crée par : {{ _self.display_author(createdBy) }}
+                </li>
+            {% endif %}
+            {% if updatedBy %}
+                <li>
+                    Modifié par : {{ _self.display_author(updatedBy) }}
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endblock %}

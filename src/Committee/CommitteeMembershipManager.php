@@ -37,7 +37,12 @@ class CommitteeMembershipManager
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
         $membership->setTrigger($trigger);
 
-        $committee->updateMembersCount(true, $adherent->isRenaissanceSympathizer(), $adherent->isRenaissanceAdherent());
+        $committee->updateMembersCount(
+            true,
+            $adherent->isRenaissanceSympathizer(),
+            $adherent->isRenaissanceAdherent(),
+            $adherent->hasActiveMembership()
+        );
 
         $this->entityManager->flush();
 
@@ -58,7 +63,12 @@ class CommitteeMembershipManager
         $adherent->setCommitteeMembership(null);
         $this->entityManager->remove($membership);
 
-        $membership->getCommittee()->updateMembersCount(false, $adherent->isRenaissanceSympathizer(), $adherent->isRenaissanceAdherent());
+        $membership->getCommittee()->updateMembersCount(
+            false,
+            $adherent->isRenaissanceSympathizer(),
+            $adherent->isRenaissanceAdherent(),
+            $adherent->hasActiveMembership()
+        );
 
         $this->entityManager->flush();
 

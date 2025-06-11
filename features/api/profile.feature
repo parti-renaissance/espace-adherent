@@ -1312,6 +1312,7 @@ Feature:
             [
                 {
                     "members_count": 10,
+                    "adherents_count": 0,
                     "sympathizers_count": 0,
                     "members_em_count": 0,
                     "description": "Un petit comité avec seulement 3 communes",
@@ -1330,6 +1331,7 @@ Feature:
                 },
                 {
                     "members_count": 3,
+                    "adherents_count": 0,
                     "sympathizers_count": 0,
                     "members_em_count": 0,
                     "description": "Un petit comité avec seulement 3 communes",
