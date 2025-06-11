@@ -48,8 +48,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'),
             true,
             true,
-            false,
-            false,
             null,
             new \DateTime('-1 hour')
         ));
@@ -62,8 +60,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             'Voir',
             null,
             true,
-            false,
-            false,
             false,
             null,
             new \DateTime('-2 hours')
@@ -79,8 +75,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             true,
             true,
-            false,
-            false,
             $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-3 hours')
         ));
@@ -93,8 +87,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
             true,
-            false,
-            false,
             false,
             $this->getReference('senator-59', Adherent::class),
             new \DateTime('-4 hours')
@@ -109,8 +101,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             true,
             true,
-            false,
-            false,
             null,
             new \DateTime('-5 hours')
         ));
@@ -124,8 +114,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
             true,
             true,
-            false,
-            false,
             $this->getReference('adherent-19', Adherent::class),
             new \DateTime('-6 hours')
         ));
@@ -139,8 +127,6 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             true,
             true,
-            true,
-            false,
             $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-2 days')
         ));
@@ -175,8 +161,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             true,
             true,
-            true,
-            true,
             $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-3 days')
         ));
@@ -190,8 +174,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             null,
             false,
             true,
-            true,
-            false,
             null,
             new \DateTime('-1 day')
         ));
@@ -206,8 +188,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             false,
             true,
-            false,
-            false,
             $this->getReference('correspondent-1', Adherent::class),
             new \DateTime('-7 hours')
         ));
@@ -221,8 +201,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             false,
             true,
-            false,
-            false,
             $this->getReference('adherent-9', Adherent::class),
             new \DateTime('-8 hours')
         ));
@@ -236,8 +214,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             false,
             true,
-            false,
-            false,
             $this->getReference('senatorial-candidate', Adherent::class),
             new \DateTime('-10 hours')
         ));
@@ -251,8 +227,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             false,
             true,
-            false,
-            false,
             $this->getReference('adherent-5', Adherent::class),
             new \DateTime('-9 hours')
         ));
@@ -269,8 +243,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
         ?Zone $zone = null,
         bool $notification = true,
         bool $published = true,
-        bool $pinned = false,
-        bool $enriched = false,
         ?Adherent $author = null,
         ?\DateTime $createdAt = null,
     ): News {
@@ -283,8 +255,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             $zone,
             $notification,
             $published,
-            $pinned,
-            $enriched
         );
         $news->setCreatedAt($createdAt ?? new \DateTime());
         if ($author) {

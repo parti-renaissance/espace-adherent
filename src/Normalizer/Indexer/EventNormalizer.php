@@ -46,7 +46,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Event $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }
@@ -76,7 +76,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Event $object */
-    protected function getBeginAt(object $object): ?\DateTime
+    protected function getBeginAt(object $object): ?\DateTimeInterface
     {
         return $object->getLocalBeginAt();
     }
@@ -94,7 +94,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Event $object */
-    protected function getFinishAt(object $object): ?\DateTime
+    protected function getFinishAt(object $object): ?\DateTimeInterface
     {
         return $object->getLocalFinishAt();
     }

@@ -25,19 +25,19 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }
 
     /** @param Campaign $object */
-    protected function getFinishAt(object $object): ?\DateTime
+    protected function getFinishAt(object $object): ?\DateTimeInterface
     {
         return $object->getFinishAt();
     }
 
     /** @param Campaign $object */
-    protected function getBeginAt(object $object): ?\DateTime
+    protected function getBeginAt(object $object): ?\DateTimeInterface
     {
         return $object->getBeginAt();
     }

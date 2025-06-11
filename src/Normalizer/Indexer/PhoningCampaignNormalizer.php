@@ -35,13 +35,13 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }
 
     /** @param Campaign $object */
-    protected function getFinishAt(object $object): ?\DateTime
+    protected function getFinishAt(object $object): ?\DateTimeInterface
     {
         return $object->getFinishAt();
     }

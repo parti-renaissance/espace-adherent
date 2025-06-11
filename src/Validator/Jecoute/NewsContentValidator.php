@@ -7,35 +7,32 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class NewsTextValidator extends ConstraintValidator
+class NewsContentValidator extends ConstraintValidator
 {
     /**
      * @param News $value
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof NewsText) {
-            throw new UnexpectedTypeException($constraint, NewsText::class);
+        if (!$constraint instanceof NewsContent) {
+            throw new UnexpectedTypeException($constraint, NewsContent::class);
         }
 
-        $isEnriched = $value->isEnriched();
-        if (null == $value->getText()) {
+        if (empty($value->getContent())) {
             $this
                 ->context
                 ->buildViolation($constraint->messageRequired)
-                ->atPath($isEnriched ? 'enrichedText' : 'text')
+                ->atPath($constraint->path)
                 ->addViolation()
             ;
         }
 
-        $textLength = \strlen($value->getText());
-        if (($textLength > 1000 && !$isEnriched)
-            || ($textLength > 10000 && $isEnriched)) {
+        if (mb_strlen($value->getContent()) > $constraint->contentLength) {
             $this
                 ->context
                 ->buildViolation($constraint->messageLength)
-                ->setParameter('{{ limit }}', $isEnriched ? $constraint->enrichedTextLength : $constraint->textLength)
-                ->atPath($isEnriched ? 'enrichedText' : 'text')
+                ->setParameter('{{ limit }}', $constraint->contentLength)
+                ->atPath($constraint->path)
                 ->addViolation()
             ;
         }

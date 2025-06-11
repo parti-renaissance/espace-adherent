@@ -1,6 +1,0 @@
-{% set actionName = object.isPinned ? 'Désépingler' : 'Épingler' %}
-<a href="{{ path('admin_app_jecoute_news_pin', {id: object.id}) }}" class="btn btn-sm btn-default view_link"
-   title="{{ actionName }}" rel="noopener noreferrer">
-    <i class="fa fa-thumb-tack" aria-hidden="true"></i>
-    {{ actionName }}
-</a>

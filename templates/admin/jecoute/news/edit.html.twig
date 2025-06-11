@@ -19,26 +19,6 @@
                     zoneSelectContainer.show();
                 }
             });
-
-            var isEnrichedCheckbox = $('input[name$="[enriched]"]');
-            var textarea = $('textarea[name$="[text]"]').parents('.form-group');
-            var enrichedTextarea = $('textarea[name$="[enrichedText]"]').parents('.form-group');
-            var toggleTextarea = function() {
-                var isEnriched = isEnrichedCheckbox.is(':checked');
-                if (isEnriched) {
-                    textarea.hide();
-                    enrichedTextarea.show();
-                } else {
-                    textarea.show();
-                    enrichedTextarea.hide();
-                }
-            };
-
-            isEnrichedCheckbox.on('ifChanged change', function () {
-                toggleTextarea();
-            });
-
-            toggleTextarea();
         });
     </script>
 {% endblock %}

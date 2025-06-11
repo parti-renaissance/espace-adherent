@@ -31,7 +31,7 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }

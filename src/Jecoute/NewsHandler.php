@@ -4,14 +4,12 @@ namespace App\Jecoute;
 
 use App\Entity\Jecoute\News;
 use App\JeMengage\Push\Command\NewsCreatedNotificationCommand;
-use App\Repository\Jecoute\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class NewsHandler
 {
     public function __construct(
-        private readonly NewsRepository $newsRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
     ) {
@@ -24,15 +22,6 @@ class NewsHandler
         }
 
         $this->bus->dispatch(new NewsCreatedNotificationCommand($news->getUuid()));
-    }
-
-    public function changePinned(News $news): void
-    {
-        if (!$news->isPinned()) {
-            return;
-        }
-
-        $this->newsRepository->changePinned($news);
     }
 
     public function publish(News $news): void

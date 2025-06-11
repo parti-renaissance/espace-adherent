@@ -608,7 +608,7 @@
 
             <argument />
             <argument>App\Entity\Jecoute\News</argument>
-            <argument>App\Controller\Admin\AdminJecouteNewsCRUDController</argument>
+            <argument />
 
             <call method="setTemplate">
                 <argument>edit</argument>
