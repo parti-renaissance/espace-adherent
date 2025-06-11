@@ -25,7 +25,7 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Riposte $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }

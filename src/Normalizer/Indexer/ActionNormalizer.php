@@ -37,13 +37,13 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Action $object */
-    protected function getBeginAt(object $object): ?\DateTime
+    protected function getBeginAt(object $object): ?\DateTimeInterface
     {
         return $object->date;
     }
 
     /** @param Action $object */
-    protected function getDate(object $object): ?\DateTime
+    protected function getDate(object $object): ?\DateTimeInterface
     {
         return $object->getCreatedAt();
     }

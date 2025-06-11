@@ -4,7 +4,6 @@ namespace App\Entity\Jecoute;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -17,6 +16,7 @@ use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\Committee;
 use App\Entity\EntityAdministratorBlameableTrait;
+use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
@@ -30,8 +30,8 @@ use App\EntityListener\AlgoliaIndexListener;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Scope\ScopeVisibilityEnum;
 use App\Utils\StringCleaner;
+use App\Validator\Jecoute\NewsContent;
 use App\Validator\Jecoute\NewsTarget;
-use App\Validator\Jecoute\NewsText;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -83,8 +83,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     filters: [JecouteNewsZipCodeFilter::class, JecouteNewsScopeFilter::class],
     order: ['createdAt' => 'DESC']
 )]
+#[NewsContent]
 #[NewsTarget(groups: ['Admin'])]
-#[NewsText]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
 #[ORM\Entity]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
@@ -92,6 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ScopeVisibility]
 class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use AuthorInstanceTrait;
     use EntityScopeVisibilityTrait {
@@ -99,17 +100,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     }
     use UserDocumentTrait;
     use EntityAdministratorBlameableTrait;
-
-    #[ApiProperty(identifier: false)]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    #[ORM\Id]
-    private ?int $id = null;
-
-    #[ApiProperty(identifier: true)]
-    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc'])]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private UuidInterface $uuid;
 
     #[Assert\Length(max: 120)]
     #[Assert\NotBlank]
@@ -119,19 +109,14 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
     #[ORM\Column(type: 'text')]
-    private ?string $text;
-
-    /**
-     * Used in admin for enriched text.
-     */
-    private ?string $enrichedText = null;
+    private ?string $content = null;
 
     #[Assert\Url]
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
     private ?string $externalLink;
 
-    #[Assert\Expression('value !== null or (this.isEnriched() === false or null === this.getExternalLink())', message: 'news.link_label.required')]
+    #[Assert\Expression('value !== null or null === this.getExternalLink()', message: 'news.link_label.required')]
     #[Assert\Length(max: 30)]
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
@@ -141,23 +126,15 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     private ?string $topic;
 
     #[Groups(['jecoute_news_write_national'])]
-    private bool $global = false;
+    private bool $global = true;
 
     #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $notification;
 
     #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $published;
-
-    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private bool $pinned;
-
-    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private bool $enriched;
 
     /**
      * @var UserDocument[]|Collection
@@ -175,42 +152,28 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     public function __construct(
         ?UuidInterface $uuid = null,
         ?string $title = null,
-        ?string $text = null,
+        ?string $content = null,
         ?string $externalLink = null,
         ?string $linkLabel = null,
         ?Zone $zone = null,
-        bool $notification = false,
+        bool $notification = true,
         bool $published = true,
-        bool $pinned = false,
-        bool $enriched = false,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
-        $this->text = $text;
+        $this->content = $content;
         $this->externalLink = $externalLink;
         $this->linkLabel = $linkLabel;
         $this->notification = $notification;
         $this->published = $published;
-        $this->pinned = $pinned;
-        $this->enriched = $enriched;
 
         $this->setZone($zone);
         $this->documents = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->title;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
+        return (string) $this->title;
     }
 
     public function getTitle(): ?string
@@ -225,37 +188,23 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     public function getCleanedCroppedText(?int $length = 512): ?string
     {
-        if ($this->isEnriched()) {
-            $content = (new UnicodeString(StringCleaner::removeMarkdown($this->text)));
+        $content = (new UnicodeString(StringCleaner::removeMarkdown($this->content)));
 
-            if ($length) {
-                $content = $content->truncate($length, '…', false);
-            }
-
-            return $content->toString();
+        if ($length) {
+            $content = $content->truncate($length, '…', false);
         }
 
-        return $this->text;
+        return $content->toString();
     }
 
-    public function getText(): ?string
+    public function getContent(): ?string
     {
-        return $this->text;
+        return $this->content;
     }
 
-    public function setText(?string $text): void
+    public function setContent(?string $content): void
     {
-        $this->text = $text;
-    }
-
-    public function getEnrichedText(): ?string
-    {
-        return $this->enrichedText;
-    }
-
-    public function setEnrichedText(?string $text): void
-    {
-        $this->enrichedText = $text;
+        $this->content = $content;
     }
 
     public function getExternalLink(): ?string
@@ -308,26 +257,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         $this->published = $published;
     }
 
-    public function isPinned(): bool
-    {
-        return $this->pinned;
-    }
-
-    public function setPinned(bool $pinned): void
-    {
-        $this->pinned = $pinned;
-    }
-
-    public function isEnriched(): bool
-    {
-        return $this->enriched;
-    }
-
-    public function setEnriched(bool $enriched): void
-    {
-        $this->enriched = $enriched;
-    }
-
     public function setZone(?Zone $zone): void
     {
         $this->traitSetZone($zone);
@@ -346,12 +275,12 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     public function getContentContainingDocuments(): string
     {
-        return (string) $this->text;
+        return (string) $this->content;
     }
 
     public function getFieldContainingDocuments(): string
     {
-        return 'text';
+        return 'content';
     }
 
     public function updateVisibility(): void

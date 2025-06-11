@@ -138,6 +138,8 @@ trait EntityIdentityTrait
         'profile_update',
         'agora_read',
         'agora_membership_read',
+        'jecoute_news_read',
+        'jecoute_news_read_dc',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

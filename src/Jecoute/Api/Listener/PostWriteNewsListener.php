@@ -35,7 +35,5 @@ class PostWriteNewsListener implements EventSubscriberInterface
         if ($event->getRequest()->isMethod(Request::METHOD_POST)) {
             $this->handler->handleNotification($news);
         }
-
-        $this->handler->changePinned($news);
     }
 }

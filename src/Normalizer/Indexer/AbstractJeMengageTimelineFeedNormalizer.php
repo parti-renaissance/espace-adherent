@@ -51,7 +51,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     abstract protected function getDescription(object $object): ?string;
 
-    abstract protected function getDate(object $object): ?\DateTime;
+    abstract protected function getDate(object $object): ?\DateTimeInterface;
 
     abstract protected function getAuthorObject(object $object): ?Adherent;
 
@@ -104,12 +104,12 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
-    protected function getBeginAt(object $object): ?\DateTime
+    protected function getBeginAt(object $object): ?\DateTimeInterface
     {
         return null;
     }
 
-    protected function getFinishAt(object $object): ?\DateTime
+    protected function getFinishAt(object $object): ?\DateTimeInterface
     {
         return null;
     }

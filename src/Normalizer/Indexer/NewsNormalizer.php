@@ -21,7 +21,7 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param News $object */
     protected function getDescription(object $object): ?string
     {
-        return $object->getText();
+        return $object->getContent();
     }
 
     /** @param News $object */

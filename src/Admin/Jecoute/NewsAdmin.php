@@ -12,7 +12,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -41,18 +40,6 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler = $newsHandler;
     }
 
-    protected function getAccessMapping(): array
-    {
-        return [
-            'pin' => 'PIN',
-        ];
-    }
-
-    protected function configureRoutes(RouteCollectionInterface $collection): void
-    {
-        $collection->add('pin', $this->getRouterIdParameter().'/pin');
-    }
-
     protected function configureFormFields(FormMapper $form): void
     {
         $form
@@ -60,18 +47,8 @@ class NewsAdmin extends AbstractAdmin
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
-                ->add('enriched', null, [
-                    'label' => 'Enrichie',
-                ])
-                ->add('text', TextareaType::class, [
-                    'label' => 'Texte*',
-                    'required' => false,
-                    'attr' => ['maxlength' => 1000],
-                    'help' => '1000 caractères maximum.',
-                ])
-                ->add('enrichedText', TextareaType::class, [
-                    'label' => 'Texte*',
-                    'required' => false,
+                ->add('content', TextareaType::class, [
+                    'label' => 'Contenu',
                     'attr' => [
                         'class' => 'markdown-content-editor',
                         'maxlength' => 10000,
@@ -94,10 +71,6 @@ class NewsAdmin extends AbstractAdmin
                     'required' => false,
                     'help' => 'Le label du lien (30 caractères maximum).',
                 ])
-                ->add('pinned', null, [
-                    'label' => 'Épinglée',
-                    'required' => false,
-                ])
             ->end()
             ->with('Zone', ['class' => 'col-md-6'])
                 ->add('global', CheckboxType::class, [
@@ -105,6 +78,7 @@ class NewsAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('zone', EntityType::class, [
+                    'label' => 'Zone géographique',
                     'class' => Zone::class,
                     'query_builder' => $this->zoneRepository->createSelectForJeMarcheNotificationsQueryBuilder(),
                     'required' => false,
@@ -133,29 +107,10 @@ class NewsAdmin extends AbstractAdmin
 
         $zone = $this->getSubject()->getZone();
         $form->getFormBuilder()->get('global')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($zone) {
-            if (!$this->isCreation() && null === $zone) {
-                $event->setData(true);
+            if (!$this->isCreation()) {
+                $event->setData(null === $zone);
             }
         });
-        $text = $this->getSubject()->getText();
-        $form->getFormBuilder()->get('enrichedText')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($text) {
-            if (null != $text) {
-                $event->setData($text);
-            }
-        });
-
-        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
-    }
-
-    public function preSubmit(FormEvent $event): void
-    {
-        $data = $event->getData();
-
-        if (isset($data['enriched']) && '1' == $data['enriched']) {
-            $data['text'] = $data['enrichedText'] ?? '';
-
-            $event->setData($data);
-        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -165,10 +120,6 @@ class NewsAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
-            ])
-            ->add('pinned', null, [
-                'label' => 'Épinglée',
-                'show_filter' => true,
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
@@ -199,8 +150,8 @@ class NewsAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
             ])
-            ->add('text', null, [
-                'label' => 'Texte',
+            ->add('content', null, [
+                'label' => 'Contenu',
             ])
             ->add('notification', null, [
                 'label' => 'Notification',
@@ -217,8 +168,9 @@ class NewsAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
             ])
-            ->add('text', null, [
-                'label' => 'Texte',
+            ->add('content', null, [
+                'label' => 'Contenu',
+                'header_style' => 'width: 400px;',
             ])
             ->add('externalLink', null, [
                 'label' => 'Lien',
@@ -233,21 +185,12 @@ class NewsAdmin extends AbstractAdmin
             ->add('published', null, [
                 'label' => 'Publiée',
             ])
-            ->add('pinned', null, [
-                'label' => 'Épinglée',
-            ])
-            ->add('enriched', null, [
-                'label' => 'Enrichie',
-            ])
             ->add('createdAt', null, [
                 'label' => 'Date',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'pin' => [
-                        'template' => 'admin/jecoute/news/action_pin.html.twig',
-                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
@@ -259,12 +202,5 @@ class NewsAdmin extends AbstractAdmin
     protected function postPersist(object $object): void
     {
         $this->newsHandler->handleNotification($object);
-        $this->newsHandler->changePinned($object);
-    }
-
-    /** @param News $object */
-    protected function postUpdate(object $object): void
-    {
-        $this->newsHandler->changePinned($object);
     }
 }
