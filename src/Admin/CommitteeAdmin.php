@@ -2,6 +2,10 @@
 
 namespace App\Admin;
 
+use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\Event\BeforeEditCommitteeEvent;
 use App\Committee\Event\EditCommitteeEvent;
@@ -9,7 +13,10 @@ use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
 use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\QueryBuilder;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -30,16 +37,24 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeAdmin extends AbstractAdmin
 {
-    private $dispatcher;
+    use IterableCallbackDataSourceTrait;
+
+    protected LoggerInterface $logger;
+    private TagTranslator $tagTranslator;
+    protected EventDispatcherInterface $dispatcher;
 
     public function __construct(
         $code,
         $class,
         $baseControllerName,
+        LoggerInterface $logger,
+        TagTranslator $tagTranslator,
         EventDispatcherInterface $dispatcher,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
+        $this->logger = $logger;
+        $this->tagTranslator = $tagTranslator;
         $this->dispatcher = $dispatcher;
     }
 
@@ -347,5 +362,68 @@ class CommitteeAdmin extends AbstractAdmin
                 'template' => 'admin/committee/list_authors.html.twig',
             ])
         ;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $committee) {
+            /** @var Committee $committee */
+            $committee = $committee[0];
+
+            $animator = $committee->animator;
+
+            try {
+                return [
+                    'Région' => implode(', ', array_map(function (Zone $zone): string {
+                        return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+                    }, $committee->getParentZonesOfType(Zone::REGION))),
+                    'Assemblée' => ($assemblyZone = $committee->getAssemblyZone())
+                        ? \sprintf('%s (%s)', $assemblyZone->getName(), $assemblyZone->getCode())
+                        : null,
+                    'Nom' => $committee->getName(),
+                    'Description' => $committee->getDescription(),
+                    'Zones' => implode(', ', array_map(function (Zone $zone): string {
+                        return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+                    }, $committee->getZones()->toArray())),
+                    'Numéro adhérent RCL' => $animator?->getPublicId(),
+                    'Nom RCL' => $animator?->getLastName(),
+                    'Prénom RCL' => $animator?->getFirstName(),
+                    'Email RCL' => $animator?->getEmailAddress(),
+                    'Téléphone RCL' => PhoneNumberUtils::format($animator?->getPhone()),
+                    'Labels militants RCL' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                        if (!\in_array($tag, TagEnum::getAdherentTags(), true)) {
+                            return null;
+                        }
+
+                        return $this->tagTranslator->trans($tag);
+                    }, $animator?->tags ?? []))),
+                    'Nombre de membres' => $committee->getMembersCount(),
+                    'Dont adhérents à jour' => $committee->getAdherentsCount(),
+                    'Nombre de sympathisants sur la zone' => $committee->getSympathizersCount(),
+                    'Nombre d\'élections liées' => $committee->countElections(),
+                    'Date de création' => $committee->getCreatedAt()?->format('d/m/Y H:i:s'),
+                    'Date de dernière modification' => $committee->getUpdatedAt()?->format('d/m/Y H:i:s'),
+                    'Créé par' => ($createdBy = $committee->getCreatedByAdherent())
+                        ? \sprintf('%s (%s)', $createdBy->getFirstName(), $createdBy->getPublicId())
+                        : null,
+                    'Modifié par' => ($updatedBy = $committee->getUpdatedByAdherent())
+                        ? \sprintf('%s (%s)', $updatedBy->getFirstName(), $updatedBy->getPublicId())
+                        : null,
+                    'UUID' => $committee->getUUID()->toString(),
+                ];
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    \sprintf('Error exporting Committee with UUID: %s. (%s)', $committee->getUuid()->toString(), $e->getMessage()),
+                    ['exception' => $e]
+                );
+
+                return [
+                    'Nom' => $committee->getName(),
+                    'UUID' => $committee->getUuid()->toString(),
+                ];
+            }
+        }];
     }
 }

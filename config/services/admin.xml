@@ -214,7 +214,6 @@
             <argument />
             <argument>App\Entity\Committee</argument>
             <argument>App\Controller\Admin\AdminCommitteeCRUDController</argument>
-            <argument type="service" id="event_dispatcher"/>
 
             <call method="setTemplate">
                 <argument>show</argument>
