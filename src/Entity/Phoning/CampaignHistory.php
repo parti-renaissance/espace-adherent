@@ -143,7 +143,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @var int|null
      */
-    #[Assert\Range(min: '1', max: '5')]
+    #[Assert\Range(min: 1, max: 5)]
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private $note;

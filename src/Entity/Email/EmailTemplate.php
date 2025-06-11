@@ -67,13 +67,13 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
 
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
     #[Groups(['email_template_read', 'email_template_write', 'email_template_list_read'])]
     #[ORM\Column]
     private ?string $label = null;
 
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[Groups(['email_template_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $subject = null;

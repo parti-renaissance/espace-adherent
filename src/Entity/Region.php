@@ -24,7 +24,7 @@ class Region
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
     private $name;
@@ -32,7 +32,7 @@ class Region
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '10')]
+    #[Assert\Length(max: 10)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 10, unique: true)]
     private $code;

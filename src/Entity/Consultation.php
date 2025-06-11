@@ -9,13 +9,13 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConsultationRepository::class)]
-class Consultation
+class Consultation implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column]
     private ?string $title = null;
@@ -25,7 +25,7 @@ class Consultation
     private ?string $content = null;
 
     #[Assert\NotBlank]
-    #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
+    #[Assert\Url(message: 'Protocole autorisé : https', protocols: ['https'])]
     #[ORM\Column]
     private ?string $url = null;
 

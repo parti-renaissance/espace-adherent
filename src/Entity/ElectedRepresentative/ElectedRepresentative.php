@@ -69,7 +69,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var string
      */
-    #[Assert\Length(max: '50')]
+    #[Assert\Length(max: 50)]
     #[Assert\NotBlank]
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     #[ORM\Column(length: 50)]
@@ -78,7 +78,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var string
      */
-    #[Assert\Length(max: '50')]
+    #[Assert\Length(max: 50)]
     #[Assert\NotBlank]
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     #[ORM\Column(length: 50)]
@@ -105,7 +105,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
     #[ORM\Column(nullable: true)]
     private $birthPlace;
@@ -127,9 +127,6 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private $contactPhone;
 
-    /**
-     * @var bool|null
-     */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $hasFollowedTraining = false;

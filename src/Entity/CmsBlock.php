@@ -25,7 +25,7 @@ class CmsBlock implements EntityAdministratorBlameableInterface
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100', maxMessage: 'cms_block.name.max_length')]
+    #[Assert\Length(max: 100, maxMessage: 'cms_block.name.max_length')]
     #[Assert\NotBlank(message: 'cms_block.name.not_blank')]
     #[ORM\Column(length: 100, unique: true)]
     private $name;
@@ -33,7 +33,7 @@ class CmsBlock implements EntityAdministratorBlameableInterface
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '255', maxMessage: 'cms_block.description.max_length')]
+    #[Assert\Length(max: 255, maxMessage: 'cms_block.description.max_length')]
     #[ORM\Column(nullable: true)]
     private $description;
 

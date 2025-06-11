@@ -17,12 +17,12 @@ class AdministratorRole
     #[ORM\Id]
     public ?int $id = null;
 
-    #[Assert\Length(max: '256')]
+    #[Assert\Length(max: 256)]
     #[Assert\NotBlank]
     #[ORM\Column(unique: true)]
     public ?string $code = null;
 
-    #[Assert\Length(max: '256')]
+    #[Assert\Length(max: 256)]
     #[Assert\NotBlank]
     #[ORM\Column]
     public ?string $label = null;

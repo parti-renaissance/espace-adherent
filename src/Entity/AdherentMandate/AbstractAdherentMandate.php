@@ -4,7 +4,9 @@ namespace App\Entity\AdherentMandate;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -21,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['type'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'adherent_mandate')]
-abstract class AbstractAdherentMandate implements AdherentMandateInterface
+abstract class AbstractAdherentMandate implements AdherentMandateInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

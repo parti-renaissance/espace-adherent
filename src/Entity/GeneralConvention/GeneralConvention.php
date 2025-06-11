@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -38,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('RENAISSANCE_ADHERENT')"
 )]
 #[ORM\Entity]
-class GeneralConvention
+class GeneralConvention implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -55,7 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     order: ['createdAt' => 'DESC'],
 )]
 #[ORM\Entity(repositoryClass: AgoraRepository::class)]
-class Agora
+class Agora implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

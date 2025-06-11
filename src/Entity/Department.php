@@ -23,7 +23,7 @@ class Department
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
     private $name;
@@ -31,7 +31,7 @@ class Department
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 100, nullable: true)]
     private $label;
@@ -39,7 +39,7 @@ class Department
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '10')]
+    #[Assert\Length(max: 10)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 10, unique: true)]
     private $code;
