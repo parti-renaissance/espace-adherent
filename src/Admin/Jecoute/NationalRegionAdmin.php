@@ -18,11 +18,8 @@ class NationalRegionAdmin extends AbstractRegionAdmin
     protected $baseRoutePattern = 'jecoute-national-region';
     protected $baseRouteName = 'jecoute_national_region';
 
-    /** @var ZoneRepository */
-    private $zoneRepository;
-
-    /** @var RegionRepository */
-    private $regionRepository;
+    private ZoneRepository $zoneRepository;
+    private RegionRepository $regionRepository;
 
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {

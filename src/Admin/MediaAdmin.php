@@ -17,15 +17,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MediaAdmin extends AbstractAdmin
 {
-    /**
-     * @var FilesystemOperator
-     */
-    private $storage;
-
-    /**
-     * @var Server
-     */
-    private $glide;
+    public function __construct(
+        private readonly FilesystemOperator $defaultStorage,
+        private readonly Server $glide,
+    ) {
+        parent::__construct();
+    }
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -43,7 +40,7 @@ class MediaAdmin extends AbstractAdmin
         parent::preRemove($object);
 
         try {
-            $this->storage->delete($object->getPathWithDirectory());
+            $this->defaultStorage->delete($object->getPathWithDirectory());
             $this->glide->deleteCache($object->getPathWithDirectory());
         } catch (\Exception $e) {
         }
@@ -56,7 +53,7 @@ class MediaAdmin extends AbstractAdmin
     {
         parent::prePersist($object);
 
-        $this->storage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+        $this->defaultStorage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
         $this->glide->deleteCache($object->getPathWithDirectory());
     }
 
@@ -68,7 +65,7 @@ class MediaAdmin extends AbstractAdmin
         parent::preUpdate($object);
 
         if ($object->getFile()) {
-            $this->storage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+            $this->defaultStorage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
             $this->glide->deleteCache($object->getPathWithDirectory());
         }
     }
@@ -159,15 +156,5 @@ class MediaAdmin extends AbstractAdmin
                 'template' => 'admin/media/list_actions.html.twig',
             ])
         ;
-    }
-
-    public function setStorage(FilesystemOperator $defaultStorage): void
-    {
-        $this->storage = $defaultStorage;
-    }
-
-    public function setGlide(Server $glide): void
-    {
-        $this->glide = $glide;
     }
 }

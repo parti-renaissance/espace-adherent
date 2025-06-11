@@ -5,24 +5,20 @@ namespace App\Admin;
 use App\Entity\EntityMediaInterface;
 use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait MediaSynchronisedAdminTrait
 {
-    /**
-     * @var FilesystemOperator
-     */
-    protected $storage;
+    protected FilesystemOperator $storage;
+    protected Server $glide;
 
-    /**
-     * @var Server
-     */
-    protected $glide;
-
+    #[Required]
     public function setStorage(FilesystemOperator $defaultStorage): void
     {
         $this->storage = $defaultStorage;
     }
 
+    #[Required]
     public function setGlide(Server $glide): void
     {
         $this->glide = $glide;

@@ -14,14 +14,15 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class TeamAdmin extends AbstractAdmin
 {
-    private ?TeamMemberHistoryManager $teamMemberHistoryManager = null;
+    private ?Team $beforeUpdate = null;
 
-    /** @var Team|null */
-    private $beforeUpdate;
+    public function __construct(private readonly TeamMemberHistoryManager $teamMemberHistoryManager)
+    {
+        parent::__construct();
+    }
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -112,11 +113,5 @@ class TeamAdmin extends AbstractAdmin
     protected function postUpdate(object $object): void
     {
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
-    }
-
-    #[Required]
-    public function setTeamMemberHistoryManager(TeamMemberHistoryManager $teamMemberHistoryManager): void
-    {
-        $this->teamMemberHistoryManager = $teamMemberHistoryManager;
     }
 }

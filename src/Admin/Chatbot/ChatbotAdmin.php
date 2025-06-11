@@ -11,12 +11,15 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class ChatbotAdmin extends AbstractAdmin
 {
     private ?string $telegramBotApiTokenBeforeUpdate = null;
-    private WebhookHandler $botWebhookHandler;
+
+    public function __construct(private readonly WebhookHandler $botWebhookHandler)
+    {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -124,11 +127,5 @@ class ChatbotAdmin extends AbstractAdmin
         if ($object->telegramBotApiToken) {
             $this->botWebhookHandler->deleteWebhook($object->telegramBotApiToken);
         }
-    }
-
-    #[Required]
-    public function setBotWebhookHandler(WebhookHandler $botWebhookHandler): void
-    {
-        $this->botWebhookHandler = $botWebhookHandler;
     }
 }

@@ -24,12 +24,15 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class CampaignAdmin extends AbstractAdmin
 {
-    private Security $security;
-    private MessageBusInterface $bus;
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+        private readonly Security $security,
+    ) {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -212,17 +215,5 @@ class CampaignAdmin extends AbstractAdmin
         parent::postUpdate($object);
 
         $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($object->getUuid()));
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
-    }
-
-    #[Required]
-    public function setBus(MessageBusInterface $bus): void
-    {
-        $this->bus = $bus;
     }
 }

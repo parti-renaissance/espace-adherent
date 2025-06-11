@@ -13,10 +13,14 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
+    {
+        parent::__construct();
+    }
+
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         parent::configureDefaultSortValues($sortValues);
@@ -25,9 +29,6 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -100,12 +101,6 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     protected function postUpdate(object $object): void
     {
         $this->eventDispatcher->dispatch(new NewsletterEvent($object), Events::UPDATE);
-    }
-
-    #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

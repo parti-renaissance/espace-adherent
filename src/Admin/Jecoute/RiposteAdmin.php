@@ -17,10 +17,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class RiposteAdmin extends AbstractAdmin
 {
+    public function __construct(
+        private readonly RiposteOpenGraphHandler $openGraphHandler,
+        private readonly Security $security,
+    ) {
+        parent::__construct();
+    }
+
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         parent::configureDefaultSortValues($sortValues);
@@ -29,10 +35,6 @@ class RiposteAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
-
-    private $security;
-    /** @var RiposteOpenGraphHandler */
-    private $openGraphHandler;
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -157,17 +159,5 @@ class RiposteAdmin extends AbstractAdmin
         $administrator = $this->security->getUser();
 
         $object->setCreatedBy($administrator);
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
-    }
-
-    #[Required]
-    public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler): void
-    {
-        $this->openGraphHandler = $openGraphHandler;
     }
 }

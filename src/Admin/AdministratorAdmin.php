@@ -16,26 +16,17 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class AdministratorAdmin extends AbstractAdmin
 {
-    private UserPasswordHasherInterface $hasher;
-
-    /**
-     * @var GoogleAuthenticator
-     */
-    private $googleAuthenticator;
-
-    private AdministratorRoleHistoryHandler $administratorRoleHistoryHandler;
-
     private array $rolesBeforeUpdate = [];
 
-    public function __construct(?string $code, ?string $class, ?string $baseControllerName, AdministratorRoleHistoryHandler $administratorRoleHistoryHandler)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->administratorRoleHistoryHandler = $administratorRoleHistoryHandler;
+    public function __construct(
+        private readonly AdministratorRoleHistoryHandler $administratorRoleHistoryHandler,
+        private readonly GoogleAuthenticator $googleAuthenticator,
+        private readonly UserPasswordHasherInterface $hasher,
+    ) {
+        parent::__construct();
     }
 
     /**
@@ -170,16 +161,5 @@ class AdministratorAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
-    }
-
-    #[Required]
-    public function setHasher(UserPasswordHasherInterface $hasher): void
-    {
-        $this->hasher = $hasher;
-    }
-
-    public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator): void
-    {
-        $this->googleAuthenticator = $googleAuthenticator;
     }
 }

@@ -34,7 +34,7 @@ class ElectionVotersListController extends AbstractController
 
             return $exporter->getResponse(
                 $_format,
-                \sprintf('Emargements - %s.xlsx', $designation->getTitle()),
+                \sprintf('Émargements - %s.xlsx', $designation->getTitle()),
                 new IteratorCallbackSourceIterator(
                     new \ArrayIterator($voters),
                     fn ($voter) => [

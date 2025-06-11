@@ -12,14 +12,17 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class TransactionalEmailTemplateAdmin extends AbstractAdmin
 {
-    private EntityRepository $transactionEmailTemplateRepository;
-    private string $appEnvironment;
-
     private ?TransactionalEmailTemplate $beforeUpdate = null;
+
+    public function __construct(
+        private readonly string $appEnvironment,
+        private readonly TransactionalEmailTemplateRepository $transactionEmailTemplateRepository,
+    ) {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -191,16 +194,5 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         }
 
         return $actions;
-    }
-
-    #[Required]
-    public function setTransactionEmailTemplateRepository(TransactionalEmailTemplateRepository $transactionEmailTemplateRepository): void
-    {
-        $this->transactionEmailTemplateRepository = $transactionEmailTemplateRepository;
-    }
-
-    public function setAppEnvironment(string $appEnvironment): void
-    {
-        $this->appEnvironment = $appEnvironment;
     }
 }

@@ -27,7 +27,6 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentReferrerAdmin extends AbstractAdmin
 {
@@ -43,14 +42,10 @@ class AdherentReferrerAdmin extends AbstractAdmin
     protected $baseRouteName = 'adherents-parrains';
 
     public function __construct(
-        ?string $code,
-        ?string $class,
-        ?string $baseControllerName,
         private readonly ReferralRepository $referralRepository,
-        private readonly TranslatorInterface $translator,
         private readonly LoggerInterface $logger,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
+        parent::__construct();
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -61,7 +56,6 @@ class AdherentReferrerAdmin extends AbstractAdmin
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-
         $sortValues[DatagridInterface::SORT_BY] = 'referralsCountAdhesionFinished';
     }
 
@@ -203,7 +197,9 @@ class AdherentReferrerAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) {
+        $translator = $this->getTranslator();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) use ($translator) {
             /** @var Adherent $adherent */
             $adherent = $adherent[0];
 
@@ -216,7 +212,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
                         return $zone->getCode().' - '.$zone->getName();
                     }, $adherent->getParentZonesOfType(Zone::DEPARTMENT))),
                     'PID' => $adherent->getPublicId(),
-                    'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
+                    'Civilité' => $translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
                     'Email' => $adherent->getEmailAddress(),

@@ -18,17 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class DepartmentSiteAdmin extends AbstractAdmin
 {
-    private int $dptSiteUnlayerTemplateId;
-
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        string $dptSiteUnlayerTemplateId,
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->dptSiteUnlayerTemplateId = (int) $dptSiteUnlayerTemplateId;
+    public function __construct(private readonly int $dptSiteUnlayerTemplateId)
+    {
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void

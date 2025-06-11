@@ -9,13 +9,10 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AdminReportRuntime implements RuntimeExtensionInterface
 {
-    private $reportAdmin;
-    private $builder;
-
-    public function __construct(ReportAdmin $reportAdmin, ShowBuilderInterface $builder)
-    {
-        $this->reportAdmin = $reportAdmin;
-        $this->builder = $builder;
+    public function __construct(
+        private readonly ReportAdmin $reportAdmin,
+        private readonly ShowBuilderInterface $builder,
+    ) {
     }
 
     /**

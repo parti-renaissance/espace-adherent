@@ -16,11 +16,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class ClientAdmin extends AbstractAdmin
 {
-    private ?TokenRevocationAuthority $tokenRevocationAuthority = null;
+    public function __construct(private readonly TokenRevocationAuthority $tokenRevocationAuthority)
+    {
+        parent::__construct();
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -143,11 +145,5 @@ class ClientAdmin extends AbstractAdmin
     protected function postRemove(object $object): void
     {
         $this->tokenRevocationAuthority->revokeClientTokens($object);
-    }
-
-    #[Required]
-    public function setTokenRevocationAuthority(TokenRevocationAuthority $tokenRevocationAuthority): void
-    {
-        $this->tokenRevocationAuthority = $tokenRevocationAuthority;
     }
 }

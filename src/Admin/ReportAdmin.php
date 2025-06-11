@@ -26,17 +26,9 @@ class ReportAdmin extends AbstractAdmin
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
-    private $reportRepository;
-
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        ReportRepository $reportRepository,
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->reportRepository = $reportRepository;
+    public function __construct(private readonly ReportRepository $reportRepository)
+    {
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void

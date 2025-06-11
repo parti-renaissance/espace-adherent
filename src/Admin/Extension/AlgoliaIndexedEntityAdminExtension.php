@@ -9,11 +9,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AlgoliaIndexedEntityAdminExtension extends AbstractAdminExtension
 {
-    private $algoliaManager;
-
-    public function __construct(AlgoliaIndexedEntityManager $manager)
+    public function __construct(private readonly AlgoliaIndexedEntityManager $algoliaManager)
     {
-        $this->algoliaManager = $manager;
     }
 
     /**

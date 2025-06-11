@@ -20,12 +20,15 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class ContactAdmin extends AbstractAdmin
 {
-    private ?ContactHandler $contactHandler = null;
     private ?Adherent $adherentBeforeUpdate = null;
+
+    public function __construct(private readonly ContactHandler $contactHandler)
+    {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -210,11 +213,5 @@ class ContactAdmin extends AbstractAdmin
         if ($this->adherentBeforeUpdate !== $object->adherent) {
             $this->contactHandler->updateAdherentLink($object);
         }
-    }
-
-    #[Required]
-    public function setContactHandler(ContactHandler $contactHandler): void
-    {
-        $this->contactHandler = $contactHandler;
     }
 }

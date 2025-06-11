@@ -31,23 +31,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileAdmin extends AbstractAdmin
 {
-    /** @var FileManager */
-    private $fileManager;
-    /** @var FileRepository */
-    private $repository;
     private array $elementsToRemove = [];
 
     public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        FileRepository $repository,
-        FileManager $fileManager,
+        private readonly FileRepository $repository,
+        private readonly FileManager $fileManager,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->repository = $repository;
-        $this->fileManager = $fileManager;
+        parent::__construct();
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface

@@ -54,7 +54,7 @@ services:
             $jemengageHost: '%env(JEMENGAGE_HOST)%'
             $userVoxHost: '%user_vox_host%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
-            $unlayerDefaultTemplateId: '%env(UNLAYER_DEFAULT_TEMPLATE_ID)%'
+            $unlayerDefaultTemplateId: '%env(int:UNLAYER_DEFAULT_TEMPLATE_ID)%'
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'

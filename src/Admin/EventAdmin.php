@@ -32,12 +32,15 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class EventAdmin extends AbstractAdmin
 {
-    private $dispatcher;
     private $beforeUpdate;
+
+    public function __construct(private readonly EventDispatcherInterface $dispatcher)
+    {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -370,11 +373,5 @@ class EventAdmin extends AbstractAdmin
             'Date de création' => 'createdAt',
             'Date de modification' => 'updatedAt',
         ];
-    }
-
-    #[Required]
-    public function setDispatcher(EventDispatcherInterface $dispatcher): void
-    {
-        $this->dispatcher = $dispatcher;
     }
 }

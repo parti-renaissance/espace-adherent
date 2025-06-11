@@ -46,17 +46,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ElectedRepresentativeAdmin extends AbstractAdmin
 {
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'id';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
-    private $dispatcher;
-    private $userListDefinitionHistoryManager;
-
     /**
      * @var UserListDefinition[]|array
      */
@@ -64,16 +53,18 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     private $beforeUpdate;
 
     public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        EventDispatcherInterface $dispatcher,
-        UserListDefinitionHistoryManager $userListDefinitionHistoryManager,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly UserListDefinitionHistoryManager $userListDefinitionHistoryManager,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
+        parent::__construct();
+    }
 
-        $this->dispatcher = $dispatcher;
-        $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

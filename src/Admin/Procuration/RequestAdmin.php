@@ -16,11 +16,13 @@ use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class RequestAdmin extends AbstractProcurationAdmin
 {
-    private ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
+    {
+        parent::__construct();
+    }
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -103,12 +105,6 @@ class RequestAdmin extends AbstractProcurationAdmin
     protected function postUpdate(object $object): void
     {
         $this->eventDispatcher->dispatch(new ProcurationEvent($object), ProcurationEvents::REQUEST_AFTER_UPDATE);
-    }
-
-    #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     protected function configureExportFields(): array

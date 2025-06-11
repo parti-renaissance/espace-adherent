@@ -17,11 +17,13 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class FormationAdmin extends AbstractAdmin
 {
-    private FormationHandler $formationHandler;
+    public function __construct(private readonly FormationHandler $formationHandler)
+    {
+        parent::__construct();
+    }
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -147,11 +149,5 @@ class FormationAdmin extends AbstractAdmin
     private function handleFile(Formation $formation): void
     {
         $this->formationHandler->handleFile($formation);
-    }
-
-    #[Required]
-    public function setFormationHandler(FormationHandler $formationHandler): void
-    {
-        $this->formationHandler = $formationHandler;
     }
 }

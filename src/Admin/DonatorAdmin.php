@@ -39,13 +39,9 @@ class DonatorAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    private $donatorManager;
-
-    public function __construct(string $code, string $class, string $baseControllerName, DonatorManager $donatorManager)
+    public function __construct(private readonly DonatorManager $donatorManager)
     {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->donatorManager = $donatorManager;
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
