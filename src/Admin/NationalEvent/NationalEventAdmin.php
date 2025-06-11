@@ -13,11 +13,13 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalEventAdmin extends AbstractAdmin
 {
-    private FilesystemOperator $storage;
+    public function __construct(private readonly FilesystemOperator $defaultStorage)
+    {
+        parent::__construct();
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -115,12 +117,6 @@ class NationalEventAdmin extends AbstractAdmin
         $this->handleFileUpload($object);
     }
 
-    #[Required]
-    public function setStorage(FilesystemOperator $defaultStorage): void
-    {
-        $this->storage = $defaultStorage;
-    }
-
     private function handleFileUpload(NationalEvent $object): void
     {
         if (!$object->intoImageFile) {
@@ -129,6 +125,6 @@ class NationalEventAdmin extends AbstractAdmin
 
         $object->intoImagePath = \sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->intoImageFile->getClientOriginalExtension());
 
-        $this->storage->write('/static'.$object->intoImagePath, file_get_contents($object->intoImageFile->getPathname()));
+        $this->defaultStorage->write('/static'.$object->intoImagePath, file_get_contents($object->intoImageFile->getPathname()));
     }
 }

@@ -11,13 +11,10 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class ImageRelationUploadExtension extends AbstractAdminExtension
 {
-    private $storage;
-    private $logger;
-
-    public function __construct(FilesystemOperator $defaultStorage, LoggerInterface $logger)
-    {
-        $this->storage = $defaultStorage;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly FilesystemOperator $defaultStorage,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function prePersist(AdminInterface $admin, object $object): void
@@ -67,14 +64,14 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
             $image->syncWithUploadedFile();
 
             $path = $image->getFilePath();
-            $this->storage->write($path, file_get_contents($image->getFile()->getPathname()));
+            $this->defaultStorage->write($path, file_get_contents($image->getFile()->getPathname()));
         }
     }
 
     private function removeImageFile(Image $image): void
     {
         try {
-            $this->storage->delete($image->getFilePath());
+            $this->defaultStorage->delete($image->getFilePath());
         } catch (\Exception $e) {
             $this->logger->warning(
                 \sprintf('Cannot delete image [%s], error: %s', $image->getFilePath(), $e->getMessage()),

@@ -16,17 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PoliticalFunctionAdmin extends AbstractAdmin
 {
-    private $mandateRepository;
-
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        MandateRepository $mandateRepository,
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->mandateRepository = $mandateRepository;
+    public function __construct(private readonly MandateRepository $mandateRepository)
+    {
+        parent::__construct();
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

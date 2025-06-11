@@ -39,23 +39,12 @@ class CommitteeAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    protected LoggerInterface $logger;
-    private TagTranslator $tagTranslator;
-    protected EventDispatcherInterface $dispatcher;
-
     public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        LoggerInterface $logger,
-        TagTranslator $tagTranslator,
-        EventDispatcherInterface $dispatcher,
+        private readonly LoggerInterface $logger,
+        private readonly TagTranslator $tagTranslator,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->logger = $logger;
-        $this->tagTranslator = $tagTranslator;
-        $this->dispatcher = $dispatcher;
+        parent::__construct();
     }
 
     /** @param QueryBuilder|ProxyQueryInterface $query */

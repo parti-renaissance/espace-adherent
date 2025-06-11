@@ -50,23 +50,12 @@ class DonationAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    private $storage;
-    private $dispatcher;
-    private $adherentRepository;
-
     public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        FilesystemOperator $defaultStorage,
-        EventDispatcherInterface $dispatcher,
-        AdherentRepository $adherentRepository,
+        private readonly FilesystemOperator $defaultStorage,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly AdherentRepository $adherentRepository,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->storage = $defaultStorage;
-        $this->dispatcher = $dispatcher;
-        $this->adherentRepository = $adherentRepository;
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -649,8 +638,8 @@ class DonationAdmin extends AbstractAdmin
         if ($object->hasFileUploaded()) {
             $filePath = $object->getFilePathWithDirectory();
 
-            if ($this->storage->has($filePath)) {
-                $this->storage->delete($filePath);
+            if ($this->defaultStorage->has($filePath)) {
+                $this->defaultStorage->delete($filePath);
             }
         }
     }
@@ -687,8 +676,8 @@ class DonationAdmin extends AbstractAdmin
     {
         $filepath = $donation->getFilePathWithDirectory();
 
-        if ($donation->getRemoveFile() && $this->storage->has($filepath)) {
-            $this->storage->delete($filepath);
+        if ($donation->getRemoveFile() && $this->defaultStorage->has($filepath)) {
+            $this->defaultStorage->delete($filepath);
             $donation->removeFilename();
 
             return;
@@ -711,7 +700,7 @@ class DonationAdmin extends AbstractAdmin
 
         $donation->setFilenameFromUploadedFile();
 
-        $this->storage->write($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
+        $this->defaultStorage->write($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
     }
 
     private function getTypeChoices(): array

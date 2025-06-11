@@ -9,12 +9,13 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class DataSurveyAdmin extends AbstractAdmin
 {
-    /** @var SurveyRepository */
-    private $surveyRepository;
+    public function __construct(private readonly SurveyRepository $surveyRepository)
+    {
+        parent::__construct();
+    }
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -95,11 +96,5 @@ class DataSurveyAdmin extends AbstractAdmin
                 ]);
             }
         }
-    }
-
-    #[Required]
-    public function setSurveyRepository(SurveyRepository $surveyRepository): void
-    {
-        $this->surveyRepository = $surveyRepository;
     }
 }

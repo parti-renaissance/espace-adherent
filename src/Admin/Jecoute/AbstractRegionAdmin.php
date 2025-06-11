@@ -24,20 +24,11 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 abstract class AbstractRegionAdmin extends AbstractAdmin
 {
-    private $regionManager;
-    private $security;
-
     public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        RegionManager $regionManager,
-        Security $security,
+        private readonly RegionManager $regionManager,
+        private readonly Security $security,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->regionManager = $regionManager;
-        $this->security = $security;
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void

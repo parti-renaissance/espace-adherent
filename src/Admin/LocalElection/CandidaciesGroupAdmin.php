@@ -15,11 +15,13 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class CandidaciesGroupAdmin extends AbstractAdmin
 {
-    private ?Manager $localElectionManager = null;
+    public function __construct(private readonly Manager $localElectionManager)
+    {
+        parent::__construct();
+    }
 
     protected function getAccessMapping(): array
     {
@@ -179,11 +181,5 @@ class CandidaciesGroupAdmin extends AbstractAdmin
     private function uploadFaithStatementFile(CandidaciesGroup $candidaciesGroup): void
     {
         $this->localElectionManager->uploadFaithStatementFile($candidaciesGroup);
-    }
-
-    #[Required]
-    public function setLocalElectionManager(Manager $localElectionManager): void
-    {
-        $this->localElectionManager = $localElectionManager;
     }
 }

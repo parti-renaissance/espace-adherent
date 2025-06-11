@@ -81,22 +81,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Intl\Countries;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractAdherentAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
-
-    protected EventDispatcherInterface $dispatcher;
-    protected EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager;
-    protected AdherentProfileHandler $adherentProfileHandler;
-    protected LoggerInterface $logger;
-    protected FranceCities $franceCities;
-    private TranslatorInterface $translator;
-    private TagTranslator $tagTranslator;
-    private CommitteeMembershipManager $committeeMembershipManager;
-    private Security $security;
 
     /**
      * State of adherent data before update
@@ -113,26 +101,16 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     protected $electedMandatesBeforeUpdate;
 
     public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        EventDispatcherInterface $dispatcher,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
-        AdherentProfileHandler $adherentProfileHandler,
-        LoggerInterface $logger,
-        FranceCities $franceCities,
-        TagTranslator $tagTranslator,
-        TranslatorInterface $translator,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
+        private readonly AdherentProfileHandler $adherentProfileHandler,
+        private readonly LoggerInterface $logger,
+        private readonly FranceCities $franceCities,
+        private readonly TagTranslator $tagTranslator,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly Security $security,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->dispatcher = $dispatcher;
-        $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
-        $this->adherentProfileHandler = $adherentProfileHandler;
-        $this->logger = $logger;
-        $this->franceCities = $franceCities;
-        $this->tagTranslator = $tagTranslator;
-        $this->translator = $translator;
+        parent::__construct();
 
         $this->electedMandatesBeforeUpdate = new ArrayCollection();
     }
@@ -1023,7 +1001,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) {
+        $translator = $this->getTranslator();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) use ($translator) {
             /** @var Adherent $adherent */
             $adherent = $adherent[0];
 
@@ -1031,7 +1011,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 return [
                     'PID' => $adherent->getPublicId(),
                     'Email' => $adherent->getEmailAddress(),
-                    'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
+                    'Civilité' => $translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
                     'Date de naissance' => $adherent->getBirthdate()?->format('d/m/Y'),
@@ -1058,10 +1038,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'Rôles' => implode(
                         ', ',
                         array_merge(
-                            array_map(function (AdherentZoneBasedRole $role): string {
+                            array_map(function (AdherentZoneBasedRole $role) use ($translator): string {
                                 return \sprintf(
                                     '%s [%s]',
-                                    $this->translator->trans('role.'.$role->getType(), ['gender' => $role->getAdherent()->getGender()]),
+                                    $translator->trans('role.'.$role->getType(), ['gender' => $role->getAdherent()->getGender()]),
                                     implode(', ', array_map(function (Zone $zone): string {
                                         return \sprintf(
                                             '%s (%s)',
@@ -1072,8 +1052,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                                 );
                             }, $adherent->getZoneBasedRoles()),
                             array_filter([
-                                $adherent->isPresidentOfAgora() ? $this->translator->trans('role.agora_president', ['gender' => $adherent->getGender()]) : null,
-                                $adherent->isGeneralSecretaryOfAgora() ? $this->translator->trans('role.agora_general_secretary', ['gender' => $adherent->getGender()]) : null,
+                                $adherent->isPresidentOfAgora() ? $translator->trans('role.agora_president', ['gender' => $adherent->getGender()]) : null,
+                                $adherent->isGeneralSecretaryOfAgora() ? $translator->trans('role.agora_general_secretary', ['gender' => $adherent->getGender()]) : null,
                             ])
                         )
                     ),
@@ -1091,11 +1071,11 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
                         return $this->tagTranslator->trans($tag);
                     }, $adherent->tags))),
-                    'Déclaration de mandats' => implode(', ', array_map(function (string $declaredMandate): string {
-                        return $this->translator->trans("adherent.mandate.type.$declaredMandate");
+                    'Déclaration de mandats' => implode(', ', array_map(function (string $declaredMandate) use ($translator): string {
+                        return $translator->trans("adherent.mandate.type.$declaredMandate");
                     }, $adherent->getMandates())),
-                    'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate): string {
-                        $str = $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType);
+                    'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate) use ($translator): string {
+                        $str = $translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 
                         if ($zone = $mandate->zone) {
                             $str .= \sprintf(
@@ -1140,12 +1120,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         }];
     }
 
-    #[Required]
-    public function setCommitteeMembershipManager(CommitteeMembershipManager $committeeMembershipManager): void
-    {
-        $this->committeeMembershipManager = $committeeMembershipManager;
-    }
-
     protected function isGrantedAdherentAdminRole(): bool
     {
         return $this->isGranted('ROLE_ADMIN_ADHERENT_ADHERENTS');
@@ -1182,12 +1156,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         ;
 
         return $query;
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 
     private function getAdministrator(): Administrator

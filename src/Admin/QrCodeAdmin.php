@@ -18,10 +18,14 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class QrCodeAdmin extends AbstractAdmin
 {
+    public function __construct(private readonly Security $security)
+    {
+        parent::__construct();
+    }
+
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         parent::configureDefaultSortValues($sortValues);
@@ -30,8 +34,6 @@ class QrCodeAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
-
-    private $security;
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -146,11 +148,5 @@ class QrCodeAdmin extends AbstractAdmin
         $administrator = $this->security->getUser();
 
         $object->setCreatedBy($administrator);
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 }

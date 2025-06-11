@@ -22,27 +22,27 @@ use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class AgoraAdmin extends AbstractAdmin
 {
-    private ?AgoraMembershipHandler $agoraMembershipHandler = null;
-    private ?UserActionHistoryHandler $historyHandler = null;
-    private ?Security $security = null;
-    private ?EventDispatcherInterface $eventDispatcher = null;
-
+    private ?Adherent $presidentBeforeUpdate = null;
     /** @var Adherent[] */
     private array $adherentsMembersBeforeUpdate = [];
-
-    private ?Adherent $presidentBeforeUpdate = null;
     /** @var Adherent[] */
     private array $generalSecretariesBeforeUpdate = [];
 
+    public function __construct(
+        private readonly AgoraMembershipHandler $agoraMembershipHandler,
+        private readonly UserActionHistoryHandler $historyHandler,
+        private readonly Security $security,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        parent::__construct();
+    }
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection
-            ->remove('delete')
-        ;
+        $collection->remove('delete');
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -368,30 +368,6 @@ class AgoraAdmin extends AbstractAdmin
         $alias = $qb->getRootAliases()[0];
 
         $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'a');
-    }
-
-    #[Required]
-    public function setAgoraMembershipHandler(AgoraMembershipHandler $agoraMembershipHandler): void
-    {
-        $this->agoraMembershipHandler = $agoraMembershipHandler;
-    }
-
-    #[Required]
-    public function setUserActionHistoryHandler(UserActionHistoryHandler $historyHandler): void
-    {
-        $this->historyHandler = $historyHandler;
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
-    }
-
-    #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     private function getAdministrator(): Administrator

@@ -6,6 +6,7 @@ use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\Scope;
 use App\Form\Admin\UnlayerContentType;
+use App\Form\DataTransformer\ScopeToCodeDataTransformer;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -18,27 +19,16 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EmailTemplateAdmin extends AbstractAdmin
 {
-    private int $emailTemplateUnlayerTemplateId;
-
-    private DataTransformerInterface $dataTransformer;
-
     public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        string $emailTemplateUnlayerTemplateId,
-        DataTransformerInterface $dataTransformer,
+        private readonly int $emailTemplateUnlayerTemplateId,
+        private readonly ScopeToCodeDataTransformer $dataTransformer,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->emailTemplateUnlayerTemplateId = (int) $emailTemplateUnlayerTemplateId;
-        $this->dataTransformer = $dataTransformer;
+        parent::__construct();
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -159,9 +149,7 @@ class EmailTemplateAdmin extends AbstractAdmin
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query
-            ->andWhere(\sprintf('%s.createdByAdministrator IS NOT NULL', $query->getRootAliases()[0]))
-        ;
+        $query->andWhere(\sprintf('%s.createdByAdministrator IS NOT NULL', $query->getRootAliases()[0]));
 
         return $query;
     }

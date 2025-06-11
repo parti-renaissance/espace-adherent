@@ -19,10 +19,10 @@ class SocialShareAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
 
-    /**
-     * @var AssetRuntime
-     */
-    protected $assetRuntime;
+    public function __construct(private readonly AssetRuntime $assetRuntime)
+    {
+        parent::__construct();
+    }
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -153,10 +153,5 @@ class SocialShareAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    public function setAssetRuntime(AssetRuntime $assetRuntime): void
-    {
-        $this->assetRuntime = $assetRuntime;
     }
 }

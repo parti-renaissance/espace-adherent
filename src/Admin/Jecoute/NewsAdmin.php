@@ -24,20 +24,11 @@ use Symfony\Component\Form\FormEvents;
 
 class NewsAdmin extends AbstractAdmin
 {
-    private $zoneRepository;
-    private $newsHandler;
-
     public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        ZoneRepository $zoneRepository,
-        NewsHandler $newsHandler,
+        private readonly ZoneRepository $zoneRepository,
+        private readonly NewsHandler $newsHandler,
     ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->zoneRepository = $zoneRepository;
-        $this->newsHandler = $newsHandler;
+        parent::__construct();
     }
 
     protected function configureFormFields(FormMapper $form): void

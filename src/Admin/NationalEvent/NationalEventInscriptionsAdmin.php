@@ -35,14 +35,17 @@ use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    private TagTranslator $tagTranslator;
-    private ZoneRepository $zoneRepository;
+    public function __construct(
+        private readonly ZoneRepository $zoneRepository,
+        private readonly TagTranslator $tagTranslator,
+    ) {
+        parent::__construct();
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -245,17 +248,5 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
         ;
 
         return $query;
-    }
-
-    #[Required]
-    public function setTagTranslator(TagTranslator $tagTranslator): void
-    {
-        $this->tagTranslator = $tagTranslator;
-    }
-
-    #[Required]
-    public function setZoneRepository(ZoneRepository $zoneRepository): void
-    {
-        $this->zoneRepository = $zoneRepository;
     }
 }

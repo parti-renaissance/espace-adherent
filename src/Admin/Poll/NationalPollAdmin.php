@@ -16,12 +16,13 @@ use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalPollAdmin extends AbstractAdmin
 {
-    /** @var Security */
-    private $security;
+    public function __construct(private readonly Security $security)
+    {
+        parent::__construct();
+    }
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -122,11 +123,5 @@ class NationalPollAdmin extends AbstractAdmin
         $administrator = $this->security->getUser();
 
         $object->setAdministrator($administrator);
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 }

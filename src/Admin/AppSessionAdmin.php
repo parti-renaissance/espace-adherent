@@ -22,12 +22,15 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class AppSessionAdmin extends AbstractAdmin
 {
-    private AppSessionRepository $appSessionRepository;
-    private ClientRepository $clientRepository;
+    public function __construct(
+        private readonly AppSessionRepository $appSessionRepository,
+        private readonly ClientRepository $clientRepository,
+    ) {
+        parent::__construct();
+    }
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -206,17 +209,5 @@ class AppSessionAdmin extends AbstractAdmin
             'active_sessions_vox_android' => $this->appSessionRepository->countActiveSessions($voxClient, SystemEnum::ANDROID),
             'active_push_token' => $this->appSessionRepository->countActivePushTokens(),
         ];
-    }
-
-    #[Required]
-    public function setAppSessionRepository(AppSessionRepository $appSessionRepository): void
-    {
-        $this->appSessionRepository = $appSessionRepository;
-    }
-
-    #[Required]
-    public function setClientRepository(ClientRepository $clientRepository): void
-    {
-        $this->clientRepository = $clientRepository;
     }
 }

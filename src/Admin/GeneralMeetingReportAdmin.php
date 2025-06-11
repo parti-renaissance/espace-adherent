@@ -17,11 +17,13 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class GeneralMeetingReportAdmin extends AbstractAdmin
 {
-    private GeneralMeetingReportHandler $generalMeetingReportHandler;
+    public function __construct(private readonly GeneralMeetingReportHandler $generalMeetingReportHandler)
+    {
+        parent::__construct();
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -127,11 +129,5 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
             ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
         ;
-    }
-
-    #[Required]
-    public function setGeneralMeetingReportHandler(GeneralMeetingReportHandler $generalMeetingReportHandler): void
-    {
-        $this->generalMeetingReportHandler = $generalMeetingReportHandler;
     }
 }

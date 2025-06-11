@@ -192,7 +192,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/instances/election_list_pools_column.html.twig',
             ])
-            ->add('Emargements', null, [
+            ->add('Émargements', null, [
                 'virtual_field' => true,
                 'template' => 'admin/instances/election_list_details_column.html.twig',
             ])
