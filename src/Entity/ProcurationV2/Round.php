@@ -2,6 +2,7 @@
 
 namespace App\Entity\ProcurationV2;
 
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RoundRepository::class)]
 #[ORM\Index(columns: ['date'])]
 #[ORM\Table(name: 'procuration_v2_rounds')]
-class Round
+class Round implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

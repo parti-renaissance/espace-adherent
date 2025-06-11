@@ -5,6 +5,7 @@ namespace App\Entity\ProcurationV2;
 use App\Address\AddressInterface;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\Adherent;
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
@@ -23,7 +24,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class AbstractProcuration implements TranslatedTagInterface
+abstract class AbstractProcuration implements TranslatedTagInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

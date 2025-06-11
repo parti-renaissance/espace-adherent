@@ -17,7 +17,7 @@ class Tag
     #[ORM\Id]
     private $id;
 
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[Groups(['approach_list_read'])]
     #[ORM\Column(length: 100, unique: true)]

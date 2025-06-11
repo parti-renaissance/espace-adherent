@@ -20,7 +20,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
     #[ORM\Id]
     protected $id;
 
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\Column(length: 100, unique: true)]

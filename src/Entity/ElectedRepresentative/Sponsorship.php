@@ -28,7 +28,7 @@ class Sponsorship
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(nullable: true)]
     private $candidate;
 

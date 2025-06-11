@@ -3,6 +3,7 @@
 namespace App\Entity\Ohme;
 
 use App\Entity\Adherent;
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -16,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Index(columns: ['ohme_identifier'])]
 #[ORM\Table(name: 'ohme_contact')]
 #[UniqueEntity(fields: ['ohmeIdentifier'])]
-class Contact
+class Contact implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

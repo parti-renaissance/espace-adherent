@@ -16,7 +16,7 @@ class DonationTag
     #[ORM\Id]
     private $id;
 
-    #[Assert\Length(max: '100')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[ORM\Column(length: 100, unique: true)]
     private $label;

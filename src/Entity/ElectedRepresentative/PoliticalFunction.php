@@ -30,7 +30,7 @@ class PoliticalFunction
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(nullable: true)]
     private $clarification;

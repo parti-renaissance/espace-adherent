@@ -99,7 +99,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     /**
      * @var SurveyQuestion[]|Collection
      */
-    #[Assert\Count(min: '1', minMessage: 'survey.questions.min_count')]
+    #[Assert\Count(min: 1, minMessage: 'survey.questions.min_count')]
     #[Assert\Valid]
     #[Groups(['survey_write_dc'])]
     #[ORM\OneToMany(mappedBy: 'survey', targetEntity: SurveyQuestion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]

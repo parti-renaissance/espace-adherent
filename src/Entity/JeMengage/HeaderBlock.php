@@ -26,7 +26,7 @@ class HeaderBlock implements ImageManageableInterface, ImageExposeInterface
     #[ORM\Id]
     private ?int $id = null;
 
-    #[Assert\Length(max: '100', maxMessage: 'header_block.name.max_length')]
+    #[Assert\Length(max: 100, maxMessage: 'header_block.name.max_length')]
     #[Assert\NotBlank(message: 'header_block.name.not_blank')]
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 100, unique: true)]
@@ -36,13 +36,13 @@ class HeaderBlock implements ImageManageableInterface, ImageExposeInterface
     #[ORM\Column(length: 130, unique: true)]
     private ?string $slug = null;
 
-    #[Assert\Length(max: '50', maxMessage: 'header_block.prefix.max_length')]
+    #[Assert\Length(max: 50, maxMessage: 'header_block.prefix.max_length')]
     #[Assert\NotBlank(message: 'header_block.prefix.not_blank')]
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 50)]
     private ?string $prefix = null;
 
-    #[Assert\Length(max: '100', maxMessage: 'header_block.slogan.max_length')]
+    #[Assert\Length(max: 100, maxMessage: 'header_block.slogan.max_length')]
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $slogan = null;

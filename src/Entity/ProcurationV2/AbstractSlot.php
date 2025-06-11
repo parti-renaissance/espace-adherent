@@ -3,6 +3,7 @@
 namespace App\Entity\ProcurationV2;
 
 use App\Entity\Adherent;
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Index(columns: ['manual'])]
 #[ORM\MappedSuperclass]
-abstract class AbstractSlot
+abstract class AbstractSlot implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

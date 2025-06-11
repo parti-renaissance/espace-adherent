@@ -24,11 +24,11 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     use UnlayerJsonContentTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(unique: true, nullable: true)]
     public ?string $identifier = null;
 
-    #[Assert\Length(max: '255')]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(nullable: true)]
     public ?string $subject = null;
 

@@ -23,7 +23,7 @@ class City
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '100', maxMessage: 'city.name.max_length')]
+    #[Assert\Length(max: 100, maxMessage: 'city.name.max_length')]
     #[Assert\NotBlank(message: 'city.name.not_blank')]
     #[ORM\Column(length: 100)]
     private $name;
@@ -31,7 +31,7 @@ class City
     /**
      * @var string|null
      */
-    #[Assert\Length(max: '10', maxMessage: 'city.insee_code.max_length')]
+    #[Assert\Length(max: 10, maxMessage: 'city.insee_code.max_length')]
     #[Assert\NotBlank(message: 'city.insee_code.not_blank')]
     #[ORM\Column(length: 10, unique: true)]
     private $inseeCode;
@@ -39,7 +39,7 @@ class City
     /**
      * @var array|null
      */
-    #[Assert\Count(min: '1')]
+    #[Assert\Count(min: 1)]
     #[Assert\NotBlank(message: 'city.postal_code.not_blank')]
     #[ORM\Column(type: 'simple_array')]
     private $postalCodes;

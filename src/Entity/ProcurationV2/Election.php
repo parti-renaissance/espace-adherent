@@ -2,6 +2,7 @@
 
 namespace App\Entity\ProcurationV2;
 
+use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'procuration_v2_elections')]
 #[UniqueEntity(fields: ['name'])]
 #[UniqueEntity(fields: ['slug'])]
-class Election
+class Election implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
