@@ -2,7 +2,7 @@
 
 {% macro display_author(adherent) %}
     {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-        <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+        <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}" class="sonata-link-identifier">
             {{ adherent.fullName }} ({{ adherent.publicId }})
         </a>
     {% else %}

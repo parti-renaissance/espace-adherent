@@ -64,8 +64,8 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR => 'Coordinateur',
         self::REGIONAL_COORDINATOR => 'Coordinateur',
         self::LEGISLATIVE_CANDIDATE => 'Candidat',
-        self::AGORA_PRESIDENT => 'Président d\'Agora',
-        self::AGORA_GENERAL_SECRETARY => 'Secrétaire Général d\'Agora',
+        self::AGORA_PRESIDENT => 'Président',
+        self::AGORA_GENERAL_SECRETARY => 'Secrétaire Général',
     ];
 
     public const SCOPE_INSTANCES = [
