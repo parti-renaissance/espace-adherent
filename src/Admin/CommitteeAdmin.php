@@ -53,8 +53,10 @@ class CommitteeAdmin extends AbstractAdmin
         $alias = $query->getRootAliases()[0];
 
         $query
-            ->addSelect('_animator')
+            ->addSelect('_animator', '_created_by_adherent', '_updated_by_adherent')
             ->leftJoin($alias.'.animator', '_animator')
+            ->leftJoin($alias.'.createdByAdherent', '_created_by_adherent')
+            ->leftJoin($alias.'.updatedByAdherent', '_updated_by_adherent')
         ;
 
         return $query;
@@ -295,13 +297,69 @@ class CommitteeAdmin extends AbstractAdmin
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
-                'show_filter' => false,
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('updatedAt', DateRangeFilter::class, [
                 'label' => 'Date de dernière modification',
-                'show_filter' => false,
                 'field_type' => DateRangePickerType::class,
+            ])
+            ->add('_created_by_adherent', CallbackFilter::class, [
+                'label' => 'Créé par',
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ['_created_by_adherent.firstName', '_created_by_adherent.lastName'],
+                            ['_created_by_adherent.lastName', '_created_by_adherent.firstName'],
+                            ['_created_by_adherent.emailAddress', '_created_by_adherent.emailAddress'],
+                        ],
+                        [
+                            '_created_by_adherent.phone',
+                        ],
+                        [
+                            '_created_by_adherent.id',
+                            '_created_by_adherent.uuid',
+                            '_created_by_adherent.publicId',
+                        ]
+                    );
+
+                    return true;
+                },
+            ])
+            ->add('_updated_by_adherent', CallbackFilter::class, [
+                'label' => 'Modifié par',
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ['_updated_by_adherent.firstName', '_updated_by_adherent.lastName'],
+                            ['_updated_by_adherent.lastName', '_updated_by_adherent.firstName'],
+                            ['_updated_by_adherent.emailAddress', '_updated_by_adherent.emailAddress'],
+                        ],
+                        [
+                            '_updated_by_adherent.phone',
+                        ],
+                        [
+                            '_updated_by_adherent.id',
+                            '_updated_by_adherent.uuid',
+                            '_updated_by_adherent.publicId',
+                        ]
+                    );
+
+                    return true;
+                },
             ])
         ;
     }
@@ -313,18 +371,22 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Assemblée',
                 'virtual_field' => true,
                 'template' => 'admin/committee/list_assembly.html.twig',
+                'header_style' => 'min-width: 200px',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
+                'header_style' => 'min-width: 200px',
             ])
             ->add('animator', null, [
                 'label' => 'Responsable',
                 'template' => 'admin/committee/list_animator.html.twig',
+                'header_style' => 'min-width: 280px',
             ])
             ->add('members', null, [
                 'label' => 'Membres',
                 'virtual_field' => true,
                 'template' => 'admin/committee/list_members.html.twig',
+                'header_style' => 'min-width: 145px',
             ])
             ->add('elections', null, [
                 'label' => 'Elections',
@@ -395,10 +457,10 @@ class CommitteeAdmin extends AbstractAdmin
                     'Date de création' => $committee->getCreatedAt()?->format('d/m/Y H:i:s'),
                     'Date de dernière modification' => $committee->getUpdatedAt()?->format('d/m/Y H:i:s'),
                     'Créé par' => ($createdBy = $committee->getCreatedByAdherent())
-                        ? \sprintf('%s (%s)', $createdBy->getFirstName(), $createdBy->getPublicId())
+                        ? \sprintf('%s (%s)', $createdBy->getFullName(), $createdBy->getPublicId())
                         : null,
                     'Modifié par' => ($updatedBy = $committee->getUpdatedByAdherent())
-                        ? \sprintf('%s (%s)', $updatedBy->getFirstName(), $updatedBy->getPublicId())
+                        ? \sprintf('%s (%s)', $updatedBy->getFullName(), $updatedBy->getPublicId())
                         : null,
                     'UUID' => $committee->getUUID()->toString(),
                 ];

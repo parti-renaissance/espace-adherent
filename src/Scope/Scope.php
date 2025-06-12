@@ -156,6 +156,8 @@ class Scope
     {
         if (ScopeEnum::ANIMATOR === $this->getMainCode()) {
             $zones = array_column($this->attributes['committees'] ?? [], 'name');
+        } elseif (\in_array($this->getMainCode(), [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY])) {
+            $zones = array_column($this->attributes['agoras'] ?? [], 'name');
         } else {
             $zones = array_map(fn (Zone $zone) => match ($zone->getType()) {
                 Zone::DISTRICT => $zone->getName().' ('.$zone->getCode().')',

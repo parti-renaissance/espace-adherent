@@ -2467,10 +2467,10 @@ Feature:
                     "first_name": "Michelle",
                     "last_name": "Dufour",
                     "scope": "agora_president",
-                    "role": "Président d'Agora",
+                    "role": "Président",
                     "instance": "Agora",
                     "image_url": null,
-                    "zone": null
+                    "zone": "Première Agora"
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -2666,10 +2666,10 @@ Feature:
                             "first_name": "Michelle",
                             "last_name": "Dufour",
                             "scope": "agora_president",
-                            "role": "Président d'Agora",
+                            "role": "Président",
                             "instance": "Agora",
                             "image_url": null,
-                            "zone": null
+                            "zone": "Première Agora"
                         },
                         "participants_count": 1,
                         "status": "SCHEDULED",
@@ -2921,10 +2921,10 @@ Feature:
                     "first_name": "Michelle",
                     "last_name": "Dufour",
                     "scope": "agora_president",
-                    "role": "Président d'Agora",
+                    "role": "Président",
                     "instance": "Agora",
                     "image_url": null,
-                    "zone": null
+                    "zone": "Première Agora"
                 },
                 "participants_count": 2,
                 "status": "SCHEDULED",
