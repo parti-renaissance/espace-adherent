@@ -126,21 +126,18 @@ class EventRegistrationAdmin extends AbstractAdmin
             ])
             ->add('adherent.tags_adherents', AdherentTagFilter::class, [
                 'label' => 'Labels militants',
-                'show_filter' => true,
                 'tags' => TagEnum::getAdherentTags(),
             ])
             ->add('adherent.tags_elected', AdherentTagFilter::class, [
                 'label' => 'Labels élus',
-                'show_filter' => true,
                 'tags' => TagEnum::getElectTags(),
             ])
             ->add('adherent.tags_static', StaticAdherentTagFilter::class, [
                 'label' => 'Labels divers',
-                'show_filter' => true,
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date d\'inscription',
-                'show_filter' => false,
+                'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('event', ModelFilter::class, [
