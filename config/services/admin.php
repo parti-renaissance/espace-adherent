@@ -121,9 +121,7 @@ return static function (ContainerConfigurator $configurator) {
     ;
     $services
         ->set('app.admin.event', App\Admin\EventAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\Event::class, 'label' => 'Événements', 'group' => 'Territoires'])
-        ->call('setTemplate', ['show', 'admin/event/show.html.twig'])
-        ->call('setTemplate', ['edit', 'admin/event/edit.html.twig'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\EventRegistration::class, 'label' => 'Inscriptions aux Événements', 'group' => 'Territoires'])
     ;
     $services
         ->set('app.admin.event_category', App\Admin\EventCategoryAdmin::class)
@@ -132,6 +130,12 @@ return static function (ContainerConfigurator $configurator) {
     $services
         ->set('app.admin.event_group_category', App\Admin\EventGroupCategoryAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\EventGroupCategory::class, 'label' => 'Groupe de Catégories d\'événements', 'group' => 'Territoires'])
+    ;
+    $services
+        ->set('app.admin.event_registration', App\Admin\EventRegistrationAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\Event::class, 'label' => 'Événements', 'group' => 'Territoires'])
+        ->call('setTemplate', ['show', 'admin/event/show.html.twig'])
+        ->call('setTemplate', ['edit', 'admin/event/edit.html.twig'])
     ;
     $services
         ->set('app.admin.team.team', App\Admin\Team\TeamAdmin::class)

@@ -1,0 +1,26 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% import 'admin/macros/labels.html.twig' as ui %}
+
+{% block field %}
+    {% set adherent = object.adherent %}
+
+    {% if adherent %}
+        {% for tag in adherent.tags %}
+            {% if tag starts with 'adherent:' %}
+                {{ ui.label(
+                    translate_tag(tag, false),
+                    adherent.hasActiveMembership() ? '#ffeccc' : '#d6e7ff',
+                    adherent.hasActiveMembership() ? '#8e681e' : '#0f72bd',
+                ) }}
+            {% elseif tag starts with 'sympathisant:' %}
+                {{ ui.label(
+                    translate_tag(tag, false),
+                    '#e3f8ff',
+                    '#4890a8',
+                ) }}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+    {% endif %}
+{% endblock %}
