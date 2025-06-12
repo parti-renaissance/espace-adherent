@@ -1,0 +1,48 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set event = object.event %}
+
+    {% if event %}
+        <a href="{{ path('admin_app_event_eventregistration_list', {filter: {event: {value: [event.id]}}}) }}" class="sonata-action-element">
+            {{ event.name }}
+        </a>
+        {% if is_granted('ROLE_APP_ADMIN_EVENT_EDIT') %}
+            <a href="{{ path('admin_app_event_event_edit', {id: event.id}) }}" title="Événement">
+                <i class="fa fa-external-link"></i>
+            </a>
+        {% endif %}
+
+        <br />
+        {{ event.beginAt|date('d/m/Y H:i') }} à {{ event.finishAt|date('d/m/Y H:i') }}
+
+        {% if event.authorZone %}
+            <br />
+            {% if event.committee and is_granted('ROLE_APP_ADMIN_COMMITTEE_EDIT') %}
+                <a href="{{ path('admin_app_committee_edit', {id: event.committee.id}) }}" title="Comité">
+                    {{ event.authorZone }} <i class="fa fa-external-link"></i>
+                </a>
+            {% elseif event.agora and is_granted('ROLE_APP_ADMIN_AGORA_EDIT') %}
+                <a href="{{ path('admin_app_agora_edit', {id: event.agora.id}) }}" title="Agora">
+                    {{ event.authorZone }} <i class="fa fa-external-link"></i>
+                </a>
+            {% else %}
+                {{ event.authorZone }}
+            {% endif %}
+        {% endif %}
+
+        {% if event.visioUrl %}
+            <br />
+            <a href="{{ event.visioUrl }}" target="_blank" class="sonata-action-element">
+                Lien de visio <i class="fa fa-external-link"></i>
+            </a>
+        {% endif %}
+
+        {% if event.liveUrl %}
+            <br />
+            <a href="{{ event.liveUrl }}" target="_blank" class="sonata-action-element">
+                Lien de live <i class="fa fa-external-link"></i>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

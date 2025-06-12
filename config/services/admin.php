@@ -134,6 +134,10 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\EventGroupCategory::class, 'label' => 'Groupe de Catégories d\'événements', 'group' => 'Territoires'])
     ;
     $services
+        ->set('app.admin.event_registration', App\Admin\EventRegistrationAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\EventRegistration::class, 'label' => 'Inscriptions aux événements', 'group' => 'Territoires'])
+    ;
+    $services
         ->set('app.admin.team.team', App\Admin\Team\TeamAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Team\Team::class, 'label' => 'Équipes', 'group' => 'Territoires'])
     ;
