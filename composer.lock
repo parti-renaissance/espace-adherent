@@ -3239,16 +3239,16 @@
         },
         {
             "name": "exercise/htmlpurifier-bundle",
-            "version": "5.0",
+            "version": "5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Exercise/HTMLPurifierBundle.git",
-                "reference": "3a6420410366933841589552c680f42b8481b1e4"
+                "reference": "a5399a26512e66bb8ccedc3278f34258ae05eabd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Exercise/HTMLPurifierBundle/zipball/3a6420410366933841589552c680f42b8481b1e4",
-                "reference": "3a6420410366933841589552c680f42b8481b1e4",
+                "url": "https://api.github.com/repos/Exercise/HTMLPurifierBundle/zipball/a5399a26512e66bb8ccedc3278f34258ae05eabd",
+                "reference": "a5399a26512e66bb8ccedc3278f34258ae05eabd",
                 "shasum": ""
             },
             "require": {
@@ -3260,7 +3260,7 @@
             },
             "require-dev": {
                 "symfony/form": "^5.4 || ^6.0 || ^7.0",
-                "symfony/phpunit-bridge": "^7.0",
+                "symfony/phpunit-bridge": "^7.0.1",
                 "twig/twig": "^2.4.4 || ^3.0"
             },
             "type": "symfony-bundle",
@@ -3294,9 +3294,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Exercise/HTMLPurifierBundle/issues",
-                "source": "https://github.com/Exercise/HTMLPurifierBundle/tree/v5.0-BETA1"
+                "source": "https://github.com/Exercise/HTMLPurifierBundle/tree/5.1"
             },
-            "time": "2023-11-16T11:41:23+00:00"
+            "time": "2025-06-04T09:23:15+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
