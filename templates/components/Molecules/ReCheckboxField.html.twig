@@ -6,20 +6,42 @@
 })">
     <div class="relative flex-col flex justify-center">
         <div class="justify-start items-start gap-2.5 inline-flex">
-            <twig:Atoms:ReCheckbox
-                {{ ...attributes.without('class').all() }}
-                status="{{ status }}"
-                class="mt-1"
-                type="checkbox"
-                checked="{{ checked }}"
-                x-bind="validateField"
-                xSyncStatus="status"
-            />
+            {% if widgetSide == 'left' %}
+                <twig:Atoms:ReCheckbox
+                    {{ ...attributes.without('class').all() }}
+                    status="{{ status }}"
+                    class="mt-1"
+                    type="checkbox"
+                    checked="{{ checked }}"
+                    x-bind="validateField"
+                    xSyncStatus="status"
+                />
+            {% endif %}
+
+            {% if widgetSide == 'right' %}
+                {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                    <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                {% endif %}
+            {% endif %}
 
             {% block content '' %}
 
-            {% if iconToolTip is defined and iconToolTip|length > 0 %}
-                <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+            {% if widgetSide == 'left' %}
+                {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                    <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                {% endif %}
+            {% endif %}
+
+            {% if widgetSide == 'right' %}
+                <twig:Atoms:ReCheckbox
+                    {{ ...attributes.without('class').all() }}
+                    status="{{ status }}"
+                    class="mt-1"
+                    type="checkbox"
+                    checked="{{ checked }}"
+                    x-bind="validateField"
+                    xSyncStatus="status"
+                />
             {% endif %}
         </div>
     </div>

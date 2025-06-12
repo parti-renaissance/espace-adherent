@@ -99,11 +99,11 @@ return static function (ContainerConfigurator $configurator) {
     ;
     $services
         ->set('app.admin.national_event', App\Admin\NationalEvent\NationalEventAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\NationalEvent::class, 'controller' => App\Controller\Admin\AdminNationalEventCRUDController::class, 'label' => 'Événements', 'group' => 'Événements'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\NationalEvent::class, 'controller' => App\Controller\Admin\AdminNationalEventCRUDController::class, 'label' => 'Meetings', 'group' => 'Meetings'])
     ;
     $services
         ->set('app.admin.national_event_inscriptions', App\Admin\NationalEvent\NationalEventInscriptionsAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'label' => 'Inscrits', 'group' => 'Événements'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'label' => 'Inscrits', 'group' => 'Meetings'])
     ;
     $services
         ->set('app.admin.committee', App\Admin\CommitteeAdmin::class)
@@ -583,7 +583,9 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin.extension', ['target' => 'app.admin.jecoute.news'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.live_stream'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.agora'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event'])
     ;
+
     $services
         ->set('app.admin.entity_scope_visibility_extension', App\Admin\Extension\EntityScopeVisibilityAdminExtension::class)
         ->tag('sonata.admin.extension', ['target' => 'app.admin.team.team'])

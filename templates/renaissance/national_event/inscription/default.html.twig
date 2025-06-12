@@ -1,0 +1,154 @@
+{% extends 'renaissance/national_event/_inscription_layout.html.twig' %}
+
+{% block content_section %}
+    {{ form_start(form) }}
+        <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
+            <div class="flex gap-8 flex-col mt-[90px] pt-[150px] md:pt-[50px] p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
+                <div class="flex flex-col gap-8 max-w-[500px]">
+                    <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-black !border-[1px]">
+                        {% if event.intoImage %}
+                            <img class="w-full" src="{{ vich_uploader_asset(event.intoImage) }}" alt="{{ event.name }}">
+                        {% endif %}
+
+                        {% if event.textIntro %}
+                            <div class="text-subtitle1">{{ event.textIntro|tw_html }}</div>
+                        {% endif %}
+
+                        <div class="bg-ui_gray-5 rounded-lg p-6">
+                            Une question relative à l’inscription ?<br/>
+                            Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
+                        </div>
+
+                        {{ form_errors(form) }}
+
+                        <div class="flex-col flex gap-4">
+                            <twig:Atoms:ReLabel>Mes informations personnelles</twig:Atoms:ReLabel>
+
+                            {{ form_row(form.civility, {
+                                label: false,
+                                attr: {onCheck: "setFieldValid('gender')", validate: "['required']"},
+                            }) }}
+
+                            <div class="flex flex-col xs:flex-row gap-5 ">
+                                {{ form_row(form.firstName, {
+                                    label: false,
+                                    attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
+                                }) }}
+                                {{ form_row(form.lastName, {
+                                    label: false,
+                                    attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
+                                }) }}
+                            </div>
+                        </div>
+
+                        {{ form_row(form.email, {
+                            label: 'Mon adresse email',
+                            help: 'Si vous êtes déjà militant, merci de renseigner l\'adresse email de votre compte',
+                            attr: {
+                                placeholder: 'adresse@mail.com',
+                                validate: "['required', 'email']",
+                                autocomplete: 'email',
+                                onCheck: "setFieldValid('email')",
+                            },
+                        }) }}
+
+                        {{ form_row(form.postalCode, {
+                            label: 'Code postal',
+                            attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"},
+                        }) }}
+
+                        <fieldset class="relative">
+                            <twig:Atoms:ReLabel class="mb-3">Date de naissance</twig:Atoms:ReLabel>
+
+                            <fieldset class="flex gap-2.5 relative">
+                                {{ form_widget(form.birthdate.day, {label: false, attr: {
+                                    class: 'w-full',
+                                    placeholder: 'Jour',
+                                    validate: "['required']",
+                                    onCheck: "setFieldValid('birthDay')",
+                                    searchBoxProps: {'x-numberonly': ''},
+                                }}) }}
+
+                                {{ form_widget(form.birthdate.month, {label: false, attr: {
+                                    class: 'w-full',
+                                    placeholder: 'Mois',
+                                    validate: "['required']",
+                                    onCheck: "setFieldValid('birthMonth')",
+                                }}) }}
+
+                                {{ form_widget(form.birthdate.year, {label: false, attr: {
+                                    class: 'w-full',
+                                    placeholder: 'Année',
+                                    validate: "['required']",
+                                    onCheck: "setFieldValid('birthYear')",
+                                    searchBoxProps: {'x-numberonly': ''},
+                                }}) }}
+                            </fieldset>
+
+                            {{ form_errors(form.birthdate) }}
+                        </fieldset>
+
+                        {{ form_row(form.birthPlace, {
+                            label: 'Lieu de naissance',
+                            attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                        }) }}
+
+                        <fieldset class="mb-4">
+                            {{ form_row(form.phone, {label: 'Numéro de téléphone', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
+                        </fieldset>
+
+                        <div class="bg-ui_gray-10 rounded-lg p-6">
+                            {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
+                        </div>
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-black !border-[1px]">
+                        {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
+                        {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
+
+                        <hr class="my-6" />
+
+                        <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
+                            {{ form_row(form.withChildren, {label: 'Je viens avec mes enfants', attr: {'x-model': 'with_children'}}) }}
+
+                            <fieldset class="bg-gray-100 ml-6 mt-2 flex flex-col gap-4 rounded-lg p-4" x-show="with_children" x-transition>
+                                <span class="text-sm font-medium text-gray-900">Veillez indiquer le nom prénom âge de chaque enfant.</span>
+
+                                {{ form_row(form.children, {label: false}) }}
+
+                                {{ form_row(form.isResponsibilityWaived, {label: 'Déclare, en qualité de responsable légal, décharger de toute responsabilité le Parti Renaissance concernant les blessures et dommages matériels ou corporels occasionnés ou subis par mon enfant, en cas de vol ou de perte de biens ainsi que toute dégradation des sites pouvant lui être imputées.'}) }}
+                            </fieldset>
+                        </div>
+
+                        <hr class="my-6" />
+
+                        {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
+
+                        {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
+
+                        {{ form_row(form.acceptMedia, {label: 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}
+
+                        <hr class="my-6" />
+
+                        {{ form_row(form.accessibility, {label: 'Avez-vous un handicap visible ou invisible nécessitant des aménagements spécifiques ?'}) }}
+
+                        <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
+                            {{ include('renaissance/partials/friendly-captcha.html.twig', {friendly_captcha_site_key: friendly_captcha_europe_site_key}) }}
+                        </div>
+
+                        <twig:ReButton class="w-full" color="black">{{ is_edit is defined ? 'Modifier mon inscription' : 'Je réserve ma place' }}</twig:ReButton>
+                    </twig:Atoms:ReCard>
+
+                    {% if event.textHelp %}
+                        <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-black !border-[1px] ">
+                            {{ event.textHelp|raw }}
+                        </twig:Atoms:ReCard>
+                    {% endif %}
+
+                    {{ block('national_event_legality') }}
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+    {{ form_end(form) }}
+{% endblock %}

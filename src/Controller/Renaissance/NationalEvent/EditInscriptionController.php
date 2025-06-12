@@ -58,7 +58,7 @@ class EditInscriptionController extends AbstractController
             return $this->redirectToRoute('app_national_event_edit_inscription', ['uuid' => $inscription->getUuid(), 'token' => $token, 'app_domain' => $request->attributes->get('app_domain')]);
         }
 
-        return $this->render('renaissance/national_event/event_inscription.html.twig', [
+        return $this->render('renaissance/national_event/event_inscription_type_'.$event->type->value.'.html.twig', [
             'form' => $form->createView(),
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),

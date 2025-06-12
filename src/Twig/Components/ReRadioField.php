@@ -12,4 +12,5 @@ class ReRadioField
     public ?string $iconToolTip = null;
     public ?string $icon = null;
     public bool $checked = false;
+    public string $widgetSide = 'left';
 }

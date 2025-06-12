@@ -55,11 +55,15 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
+    public ?string $visitDay = null;
+    public ?string $transport = null;
+
     public bool $transportNeeds = false;
     public bool $volunteer = false;
 
     public bool $allowNotifications = false;
 
+    public bool $isJAM = false;
     public bool $withChildren = false;
 
     #[Assert\Expression('!this.withChildren or this.isResponsibilityWaived', message: 'Veillez cocher cette case.')]
@@ -104,6 +108,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         $request->qualities = $inscription->qualities;
         $request->accessibility = $inscription->accessibility;
         $request->allowNotifications = $inscription->joinNewsletter;
+        $request->isJAM = $inscription->isJAM;
 
         return $request;
     }

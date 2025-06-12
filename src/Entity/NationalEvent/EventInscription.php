@@ -109,6 +109,16 @@ class EventInscription
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isResponsibilityWaived = false;
 
+    #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isJAM = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $visitDay = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $transport = null;
+
     #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
 
@@ -174,7 +184,8 @@ class EventInscription
         $this->volunteer = $eventInscription->volunteer ?? $this->volunteer;
         $this->birthdate = $eventInscription->birthdate ?? $this->birthdate;
         $this->children = $eventInscription->children ?? $this->children;
-        $this->isResponsibilityWaived = $eventInscription->isResponsibilityWaived ?? $this->isResponsibilityWaived;
+        $this->isResponsibilityWaived = $this->isResponsibilityWaived || $eventInscription->isResponsibilityWaived;
+        $this->isJAM = $this->isJAM || $eventInscription->isJAM;
     }
 
     public function updateFromRequest(EventInscriptionRequest $inscriptionRequest): void
@@ -195,6 +206,9 @@ class EventInscription
         $this->birthdate = $inscriptionRequest->birthdate;
         $this->children = $inscriptionRequest->withChildren ? $inscriptionRequest->children : null;
         $this->isResponsibilityWaived = $inscriptionRequest->isResponsibilityWaived;
+        $this->isJAM = $inscriptionRequest->isJAM;
+        $this->visitDay = $inscriptionRequest->visitDay;
+        $this->transport = $inscriptionRequest->transport;
 
         // Update only for creation
         if (!$this->id) {

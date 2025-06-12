@@ -10,5 +10,6 @@ class ReCheckbox
     public string $type = 'checkbox';
     public string $status = 'default';
     public bool $checked = false;
+    public string $widgetSide = 'right';
     public ?string $xSyncStatus;
 }

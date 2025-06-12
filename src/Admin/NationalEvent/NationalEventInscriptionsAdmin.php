@@ -122,14 +122,15 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('postalCode', null, ['label' => 'Code postal'])
                 ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
                 ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
+                ->add('isJAM', null, ['label' => 'Jeunes avec Macron', 'required' => false])
                 ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
                 ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
-                ->add('accessibility', null, ['label' => 'Handicap visible ou invisible', 'required' => false])
-                ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités'])
-                ->add('phone', TelNumberType::class, [
-                    'required' => false,
-                ])
+                ->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false])
+                ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false])
+                ->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false])
                 ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
+                ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false])
+                ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
@@ -221,6 +222,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
                 'Handicap' => $inscription->accessibility,
                 'Enfants' => $inscription->children,
+                'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
+                'Jour de visite' => $inscription->visitDay,
+                'Choix de transport' => $inscription->transport,
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];

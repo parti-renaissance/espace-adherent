@@ -22,6 +22,17 @@ Feature:
                     "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/event-national-1/@string@"
                 },
                 {
+                    "type": "meeting",
+                    "label": "Grand rassemblement",
+                    "title": "Venez nombreux !",
+                    "description": "",
+                    "cta_label": "Je réserve ma place",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fcampus",
+                    "image_url": null,
+                    "data": null,
+                    "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/campus/@string@"
+                },
+                {
                     "type": "election",
                     "label": "Consultation / Élection",
                     "title": "Élection en cours !!",

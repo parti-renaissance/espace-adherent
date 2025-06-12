@@ -1,0 +1,46 @@
+{% extends 'renaissance/national_event/_layout.html.twig' %}
+
+{% block page_title event.getName() ~ ' • Inscription' %}
+
+{% form_theme form with 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block header_inner %}
+    {% if not is_open %}
+        <div class="fixed top-0 left-0 bottom-0 right-0 bg-black bg-opacity-40 flex flex-col items-center">
+            <div class="flex flex-col md:flex-row md:gap-12 gap-8 bg-white justify-center p-8 w-full">
+                <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux</p>
+                <div class="flex gap-8">
+                    {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
+                </div>
+            </div>
+
+            <h1 class="font-bold mt-25 md:p-12 w-fit transform rotate-12 text-center rounded-lg bg-[#FF005C] bg-opacity-75 text-2xl md:text-9xl text-white">COMPLET</h1>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+
+    <script>
+        Bootstrap.onLoad(() => Main.runNationaleEventPage());
+    </script>
+{% endblock %}
+
+{% block content_section '' %}
+
+{% block national_event_legality %}
+    <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-white/20 !border-[1px] text-white !bg-[rgb(47,53,50)]">
+        <h2 class="font-medium">Légalités</h2>
+
+        <p>
+            Les données recueillies sur ce formulaire sont traitées par Renaissance et ses équipes aux fins d’organisation de cet événement. Elles permettront à ses équipes de gérer les informations relatives aux participants et de vous inviter à d’autres événements qu’elles organisent. Elles permettront également à Renaissance de vous envoyer ses communications politiques si vous y consentez. En envoyant ce formulaire, vous acceptez que Renaissance traite vos données pour ces finalités. Les champs marqués d’un astérisque sont obligatoires, l’absence de réponse dans ces champs ne permettra pas de traiter votre demande. Vos données seront conservées jusqu’à 1 mois à compter de la fin de l’événement ou jusqu’au retrait de votre consentement lorsque vous acceptez de recevoir les communications politiques de Renaissance.
+            Conformément à la réglementation en vigueur, vous pouvez retirer votre consentement à tout moment. Vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement des données vous concernant, ainsi que d’un droit d’accès, de rectification et d’effacement de vos données. Vous disposez, par ailleurs, de la faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez exercer vos droits en contactant Renaissance à l’adresse postale : Renaissance, 68 rue du Rocher 75008 Paris, ou à l’adresse électronique mes-donnees@parti-renaissance.fr. Dans certaines hypothèses, une copie de votre pièce d’identité pourra vous être demandée. Pour toute information relative au traitement de vos données par Renaissance, vous pouvez consulter la politique de protection des données ou contacter le délégué à la protection des données à l’adresse dpo@parti-renaissance.fr
+        </p>
+
+        <p>
+            (1) J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+            Si je participe en compagnie d’une personne mineure, en qualité de représentant légal de cette personne mineure, j’autorise sans réserve Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer les images de la personne participante dont j’ai la responsabilité, ainsi que les éléments sonores dont elle serait l’émettrice, durant l’événement autorise Renaissance à exploiter ces images et/ou éléments sonores, à les diffuser intégralement ou par extrait, sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par Renaissance ou ses partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour un durée de 2 ans. J’accepte également que cette vidéo contenant l’image et/ou la voix de la personne dont j’ai la responsabilité soit partagée sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+        </p>
+    </twig:Atoms:ReCard>
+{% endblock %}

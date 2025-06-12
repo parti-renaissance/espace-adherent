@@ -13,12 +13,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventInscriptionType extends AbstractType
+class CommonEventInscriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -45,12 +44,7 @@ class EventInscriptionType extends AbstractType
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
             ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
-            ->add('transportNeeds', CheckboxType::class, ['required' => false])
             ->add('volunteer', CheckboxType::class, ['required' => false])
-            ->add('withChildren', CheckboxType::class, ['required' => false])
-            ->add('children', TextareaType::class, ['required' => false])
-            ->add('isResponsibilityWaived', CheckboxType::class, ['required' => false])
-            ->add('accessibility', TextType::class, ['required' => false])
             ->add('utmSource', HiddenType::class)
             ->add('utmCampaign', HiddenType::class)
         ;

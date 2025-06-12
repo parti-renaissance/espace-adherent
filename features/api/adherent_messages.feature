@@ -410,6 +410,7 @@ Feature:
                                 "advanced": true,
                                 "favorite": true,
                                 "choices": {
+                                    "national_event:campus": "Campus",
                                     "national_event:event-national-1": "Event National 1",
                                     "national_event:event-national-2": "Event National 2"
                                 }

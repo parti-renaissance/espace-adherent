@@ -1,19 +1,52 @@
-<div {{ attributes.only('class') }}>
-    <div class="relative flex-col flex justify-center">
-        <div class="justify-start items-start gap-2.5 inline-flex">
-            <twig:Atoms:ReCheckbox
-                {{ ...attributes.without('class').all() }}
-                    status="{{ status }}"
-                class="mt-1"
-                type="radio"
-                checked="{{ checked }}"
-            />
+<div {{ attributes.only('class', ':class') }}>
+    <label class="relative flex-col flex justify-center cursor-pointer">
+        <div class="relative flex-col flex justify-center">
+            <div class="justify-start gap-2.5 inline-flex items-center">
+                {% if widgetSide == 'left' %}
+                    <twig:Atoms:ReCheckbox
+                        {{ ...attributes.without('class', ':class', 'description').all() }}
+                        status="{{ status }}"
+                        class="mt-1"
+                        type="radio"
+                        checked="{{ checked }}"
+                    />
+                {% endif %}
 
-            {% block content '' %}
+                {% if widgetSide == 'right' %}
+                    {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                        <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                    {% endif %}
+                {% endif %}
 
-            {% if iconToolTip is defined and iconToolTip|length > 0 %}
-                <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
-            {% endif %}
+                {% set description = attributes.render('description') %}
+
+                {% if description %}
+                    <div class="flex flex-col grow shrink basis-0 gap-2">
+                {% endif %}
+
+                    {% block content '' %}
+
+                {% if description %}
+                        {{ description|raw }}
+                    </div>
+                {% endif %}
+
+                {% if widgetSide == 'right' %}
+                    <twig:Atoms:ReCheckbox
+                        {{ ...attributes.without('class', ':class', 'description').all() }}
+                        status="{{ status }}"
+                        class="mt-1"
+                        type="radio"
+                        checked="{{ checked }}"
+                    />
+                {% endif %}
+
+                {% if widgetSide == 'left' %}
+                    {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                        <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </label>
 </div>

@@ -6,6 +6,11 @@ module.exports = {
     safelist: [
         'form-group',
         'form-control',
+        'border-ui_gray-1',
+        'text-ui_blue-60',
+        'hover:bg-white',
+        'hover:border-ui_gray-20',
+        'border-ui_blue-50',
     ],
     theme: {
         extend: {
@@ -19,6 +24,7 @@ module.exports = {
                     70: '#006ACC',
                 },
                 ui_gray: {
+                    1: '#F9FAFB',
                     5: '#F9F9F9',
                     10: '#F2F5F7',
                     20: '#E1E5E8',

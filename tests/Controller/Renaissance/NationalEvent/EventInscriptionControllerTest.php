@@ -29,11 +29,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['event_inscription[acceptCgu]']->tick();
-        $form['event_inscription[acceptMedia]']->tick();
+        $form['default_event_inscription[acceptCgu]']->tick();
+        $form['default_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'event_inscription' => [
+            'default_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -63,11 +63,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['event_inscription[acceptCgu]']->tick();
-        $form['event_inscription[acceptMedia]']->tick();
+        $form['default_event_inscription[acceptCgu]']->tick();
+        $form['default_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'event_inscription' => [
+            'default_event_inscription' => [
                 'email' => $email = 'gisele-berthoux@caramail.com',
                 'civility' => 'female',
                 'firstName' => 'Gisele',
@@ -96,11 +96,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['event_inscription[acceptCgu]']->tick();
-        $form['event_inscription[acceptMedia]']->tick();
+        $form['default_event_inscription[acceptCgu]']->tick();
+        $form['default_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'event_inscription' => [
+            'default_event_inscription' => [
                 'email' => $email = 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -125,11 +125,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['event_inscription[acceptCgu]']->tick();
-        $form['event_inscription[acceptMedia]']->tick();
+        $form['default_event_inscription[acceptCgu]']->tick();
+        $form['default_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'event_inscription' => [
+            'default_event_inscription' => [
                 'email' => $email,
                 'civility' => 'male',
                 'firstName' => 'John',
