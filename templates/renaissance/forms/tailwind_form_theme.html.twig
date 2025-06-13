@@ -137,6 +137,7 @@
         checked="{{ checked }}"
         iconToolTip="{{ help|trans }}"
         status="default"
+        widgetSide="{{ attr.widget_side|default('left') }}"
         {{ ...attr }}
     >
         {{ form_label(form, label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 font-normal'}}) }}
@@ -157,9 +158,10 @@
                     id="{{ child.vars.id }}"
                     value="{{ child.vars.value }}"
                     checked="{{ child.vars.checked }}"
-                    {{ ...child.vars.attr }}
+                    widgetSide="{{ child.vars.attr.widget_side|default('left') }}"
+                    {{ ...child.vars.attr|filter((v, k) => k != 'label_attr') }}
                 >
-                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 font-normal', id: child.vars.id ~ '_label'}}) }}
+                    {{ form_label(child, child.vars.label, {label_attr: {id: child.vars.id ~ '_label'}|merge(child.vars.attr.label_attr|default({class: 'grow shrink basis-0 text-gray-700 font-normal'}))}) }}
                 </twig:ReRadioField>
             {% endfor %}
         </twig:ReRadioFieldset>

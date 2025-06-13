@@ -2,47 +2,57 @@
 
 namespace App\Entity\NationalEvent;
 
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\UploadableFile;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
-class NationalEvent implements NotificationObjectInterface
+class NationalEvent implements NotificationObjectInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;
     use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
 
+    #[Assert\NotBlank]
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $startDate = null;
 
+    #[Assert\NotBlank]
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $endDate = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $ticketStartDate = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $ticketEndDate = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textIntro = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textHelp = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textConfirmation = null;
 
@@ -57,9 +67,6 @@ class NationalEvent implements NotificationObjectInterface
     #[Assert\NotBlank(groups: ['Admin'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $imageTicketEmail = null;
-
-    #[ORM\Column(nullable: true)]
-    public ?string $intoImagePath = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $source = null;
@@ -87,11 +94,18 @@ class NationalEvent implements NotificationObjectInterface
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $logoImage = null;
 
-    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*'])]
-    public ?UploadedFile $intoImageFile = null;
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $intoImage = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $inscriptionEditDeadline = null;
+
+    #[ORM\Column(enumType: NationalEventTypeEnum::class, options: ['default' => NationalEventTypeEnum::DEFAULT])]
+    public NationalEventTypeEnum $type = NationalEventTypeEnum::DEFAULT;
+
+    #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
+    public ?array $transportConfiguration = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {

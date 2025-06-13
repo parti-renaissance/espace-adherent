@@ -47,7 +47,9 @@
 
 {% block content %}
     <main class="re_new_ui bg-primary relative" style="height:calc(100vh - 80px);">
-        {{ include('renaissance/national_event/partials/background_video.html.twig') }}
+        {% block background_image %}
+            {{ include('renaissance/national_event/partials/background_video.html.twig') }}
+        {% endblock %}
 
         {% block content_section '' %}
     </main>

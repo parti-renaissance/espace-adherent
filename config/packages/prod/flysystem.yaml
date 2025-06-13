@@ -9,6 +9,13 @@ flysystem:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: '%env(GCLOUD_BUCKET)%'
 
+        uploadable_file.storage:
+            adapter: 'gcloud'
+            options:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: '%env(GCLOUD_BUCKET)%'
+                prefix: '/uploads/'
+
         national_event.storage:
             adapter: 'gcloud'
             options:

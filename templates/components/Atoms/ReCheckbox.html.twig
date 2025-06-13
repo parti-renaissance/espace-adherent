@@ -1,7 +1,7 @@
 {% set xStatus = xSyncStatus is defined ? xSyncStatus : '\'' ~ status ~ '\'' %}
 
 <div
-    {{ attributes.only('class').defaults({class: 'w4 h4 relative bg-white re-checkbox' ~ ' re-checkbox--' ~ status}) }}
+    {{ attributes.only('class').defaults({class: 'rounded-full w4 h4 relative bg-white re-checkbox' ~ ' re-checkbox--' ~ status}) }}
     x-bind:class="'re-checkbox--' + {{ xStatus }}"
 >
     <input {{ attributes.without('type', 'x-bind:class', 'class') }} class="absolute opacity-0" type="{{ type }}" {% if checked %}checked="checked"{% endif %} />

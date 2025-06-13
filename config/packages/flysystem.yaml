@@ -8,3 +8,9 @@ flysystem:
             public_url: 'http://%env(RENAISSANCE_HOST)%/assets'
             options:
                 directory: '%kernel.project_dir%/app/data'
+
+        uploadable_file.storage:
+            adapter: 'local'
+            public_url: 'http://%env(RENAISSANCE_HOST)%/assets'
+            options:
+                directory: '%kernel.project_dir%/app/data/uploads/'

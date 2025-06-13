@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Admin\EventListener;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;

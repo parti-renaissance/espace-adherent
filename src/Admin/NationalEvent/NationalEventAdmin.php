@@ -3,24 +3,19 @@
 namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\NationalEvent\NationalEvent;
 use App\Form\Admin\UploadableFileType;
 use App\Form\CkEditorType;
-use League\Flysystem\FilesystemOperator;
+use App\Form\JsonType;
+use App\NationalEvent\NationalEventTypeEnum;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class NationalEventAdmin extends AbstractAdmin
 {
-    public function __construct(private readonly FilesystemOperator $defaultStorage)
-    {
-        parent::__construct();
-    }
-
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -34,97 +29,87 @@ class NationalEventAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id', null, ['label' => 'Id'])
             ->addIdentifier('name', null, ['label' => 'Nom'])
-            ->add('slug', null, ['label' => 'Lien', 'template' => 'admin/national_event/list_slug.html.twig'])
-            ->add('intoImagePath', null, ['label' => 'Image', 'template' => 'admin/national_event/list_image.html.twig'])
+            ->add('type', 'enum', ['label' => 'Type', 'use_value' => true, 'enum_translation_domain' => 'messages'])
             ->add('startDate', null, ['label' => 'Date de début'])
             ->add('endDate', null, ['label' => 'Date de fin'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
                 'edit' => [],
-                'inscriptions' => [
-                    'template' => 'admin/national_event/list_action_inscriptions.html.twig',
-                ],
+                'inscriptions' => ['template' => 'admin/national_event/list_action_inscriptions.html.twig'],
+                'link' => ['template' => 'admin/national_event/list_action_link.html.twig'],
             ]])
+            ->add('createdAt', null, ['label' => 'Date de création'])
+            ->add('updatedAt', null, ['label' => 'Date de modification'])
         ;
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->tab('Général')
+            ->tab('Général 📜')
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('name', null, ['label' => 'Nom'])
+                    ->add('type', ChoiceType::class, [
+                        'label' => 'Type',
+                        'help' => 'Définit le template utilisé pour la page d\'inscription',
+                        'choices' => NationalEventTypeEnum::all(),
+                        'choice_label' => fn (NationalEventTypeEnum $type) => $type->trans($this->getTranslator()),
+                    ])
                     ->add('source', null, ['label' => 'Source', 'help' => 'UTM source pour s\'inscrire même après la fermeture des inscriptions'])
-                    ->add('startDate', null, ['label' => 'Date de début', 'widget' => 'single_text', 'with_seconds' => true])
-                    ->add('endDate', null, ['label' => 'Date de fin', 'widget' => 'single_text', 'with_seconds' => true])
-                    ->add('ticketStartDate', null, ['label' => 'Billetterie - date de début', 'widget' => 'single_text', 'with_seconds' => true])
-                    ->add('ticketEndDate', null, ['label' => 'Billetterie - date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+                ->end()
+                ->with('Dates', ['class' => 'col-md-6'])
+                    ->add('ticketStartDate', null, ['label' => 'Billetterie : date de début', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('ticketEndDate', null, ['label' => 'Billetterie : date de fin', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('startDate', null, ['label' => 'Meeting : date de début', 'widget' => 'single_text', 'with_seconds' => true])
+                    ->add('endDate', null, ['label' => 'Meeting : date de fin', 'widget' => 'single_text', 'with_seconds' => true])
                     ->add('inscriptionEditDeadline', null, ['label' => 'Date limite de modification de l\'inscription', 'widget' => 'single_text', 'with_seconds' => false])
-
-                    ->add('intoImageFile', FileType::class, ['label' => 'Image de cover', 'required' => false])
-                ->end()
-                ->with('Introduction', ['class' => 'col-md-6'])
-                    ->add('textIntro', CkEditorType::class, ['label' => false, 'required' => true])
-                ->end()
-                ->with('Message d\'aide', ['class' => 'col-md-6'])
-                    ->add('textHelp', CkEditorType::class, ['label' => false, 'required' => true])
-                ->end()
-                ->with('Message de confirmation', ['class' => 'col-md-6'])
-                    ->add('textConfirmation', CkEditorType::class, ['label' => false, 'required' => true])
                 ->end()
             ->end()
-            ->tab('Alerte & OG')
+            ->tab('Images 🖼️')
+                ->with('Couverture', ['class' => 'col-md-6', 'description' => 'Image de couverture affichée en haut de la page d\'inscription'])
+                    ->add('intoImage', UploadableFileType::class, ['label' => false, 'required' => false])
+                ->end()
+                ->with('Alerte & OG Image', ['class' => 'col-md-6', 'description' => 'Image affichée dans l\'alerte et dans les balises Open Graph'])
+                    ->add('ogImage', UploadableFileType::class, ['label' => false])
+                ->end()
+                ->with('Logo', ['class' => 'col-md-6', 'description' => 'Logo affiché dans l\'alerte'])
+                    ->add('logoImage', UploadableFileType::class, ['label' => false])
+                ->end()
+            ->end()
+            ->tab('Wording 📝')
+                ->with('Introduction', ['class' => 'col-md-6', 'description' => 'Texte d\'introduction affiché en haut de la page d\'inscription'])
+                    ->add('textIntro', CkEditorType::class, ['label' => false])
+                ->end()
+                ->with('Message d\'aide', ['class' => 'col-md-6', 'description' => 'Texte d\'aide affiché en bas de la page d\'inscription, avant le bouton de Légalités'])
+                    ->add('textHelp', CkEditorType::class, ['label' => false])
+                ->end()
+                ->with('Message de confirmation', ['class' => 'col-md-6', 'description' => 'Texte affiché sur la page de confirmation et dans le mail de confirmation'])
+                    ->add('textConfirmation', CkEditorType::class, ['label' => false])
+                ->end()
+            ->end()
+            ->tab('Alerte & OG 📯')
                 ->with('Alerte', ['class' => 'col-md-6'])
                     ->add('alertEnabled', null, ['label' => 'Alerte activée', 'required' => false])
                     ->add('alertTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('alertDescription', TextType::class, ['label' => 'Description', 'required' => false])
-                    ->add('logoImage', UploadableFileType::class, ['label' => 'Image Logo'])
                 ->end()
                 ->with('Open Graph', ['class' => 'col-md-6'])
                     ->add('ogTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('ogDescription', TextType::class, ['label' => 'Description', 'required' => false])
-                    ->add('ogImage', UploadableFileType::class, ['label' => 'Image Open Graph & Alerte'])
                 ->end()
             ->end()
-            ->tab('Ticket')
+            ->tab('Ticket 🎟️')
                 ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
                     ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
                     ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
                     ->add('textTicketEmail', CkEditorType::class, ['label' => 'Détail', 'required' => true])
                 ->end()
             ->end()
+            ->tab('Configuration Campus  🛠️')
+                ->with('Choix de transport & tarifs', ['class' => 'col-md-6'])
+                    ->add('transportConfiguration', JsonType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 10], 'help' => 'Configuration des transports et tarifs pour le campus. Utilisez le format JSON.'])
+                ->end()
+            ->end()
         ;
-    }
-
-    /**
-     * @param NationalEvent $object
-     */
-    protected function prePersist(object $object): void
-    {
-        parent::prePersist($object);
-
-        $this->handleFileUpload($object);
-    }
-
-    /**
-     * @param NationalEvent $object
-     */
-    protected function preUpdate(object $object): void
-    {
-        parent::preUpdate($object);
-
-        $this->handleFileUpload($object);
-    }
-
-    private function handleFileUpload(NationalEvent $object): void
-    {
-        if (!$object->intoImageFile) {
-            return;
-        }
-
-        $object->intoImagePath = \sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->intoImageFile->getClientOriginalExtension());
-
-        $this->defaultStorage->write('/static'.$object->intoImagePath, file_get_contents($object->intoImageFile->getPathname()));
     }
 }

@@ -1437,6 +1437,8 @@ national_event.inscription.accept_cgu: J’ai lu et j’accepte <a href="https:/
 besoindeurope.inscription.accept_cgu: J’accepte <a href="https://parti-renaissance.fr/cgu" class="underline" target="_blank">les CGU</a> du site et déclare avoir lu <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees" class="underline" target="_blank">la Politique de protection des données personnelles</a> et les mentions d’information relatives au traitement de mes données ci-dessous.
 besoindeurope.donation.autorisations: Je certifie sur l’honneur être une personne physique d’au moins 16 ans et que le règlement de mon don ne provient pas du compte d’une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel.<br><br>Je certifie être de nationalité Française ou résident fiscal Français.<br/><br/>J’accepte <a href="https://parti-renaissance.fr/cgu" class="text-ui_blue-50">les CGU</a> et déclare avoir lu la <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees" class="text-ui_blue-50">Politique de protection des données personnelles</a> et les mentions d’information relatives au traitement de mes données ci-dessous.
 
+national_event.type.default: Meeting classique
+national_event.type.campus: Campus
 #
 # Administrators
 #

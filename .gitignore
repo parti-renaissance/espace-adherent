@@ -3,6 +3,7 @@
 /app/data/images/profile/*
 !/app/data/images/profile/example.jpg
 !/app/data/images/profile/176a058b1ee701ab813f3256560a213d.jpg
+/app/data/uploads/*
 /app/data/files/
 /app/data/chez-vous/
 /app/data/timeline/

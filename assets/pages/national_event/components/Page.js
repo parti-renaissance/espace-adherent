@@ -5,6 +5,7 @@
  * @returns {AlpineComponent}
  */
 const Page = () => ({
+    accessibility: false,
     init() {
         this.$nextTick(() => {
             const tokenInput = dom('input[name="frc-captcha-solution"]:last-child');
@@ -19,6 +20,13 @@ const Page = () => ({
                 this.fieldsValid.captcha = true;
             }
         });
+    },
+
+    handleAccessibilityChange(e) {
+        this.accessibility = e.target.checked;
+        if (false === this.accessibility) {
+            document.querySelector('#campus_event_inscription_accessibility').value = '';
+        }
     },
 
     fieldsValid: {
@@ -47,7 +55,6 @@ const Page = () => ({
         return Object.values(this.fieldsValid)
             .every((x) => x);
     },
-
 });
 
 export default Page;

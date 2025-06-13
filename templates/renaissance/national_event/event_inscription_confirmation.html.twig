@@ -14,7 +14,9 @@
                     {% else %}
                         <h1 class="font-bold text-2xl">Merci !</h1>
 
-                        {{ event.textConfirmation|raw }}
+                        {% if event.textConfirmation %}
+                            <div>{{ event.textConfirmation|raw }}</div>
+                        {% endif %}
                     {% endif %}
                     <div class="h-[2px] bg-black w-full"></div>
 
