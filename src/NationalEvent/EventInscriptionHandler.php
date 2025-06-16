@@ -20,7 +20,7 @@ class EventInscriptionHandler
     ) {
     }
 
-    public function handle(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest, ?EventInscription $existingInscription = null): void
+    public function handle(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest, ?EventInscription $existingInscription = null): EventInscription
     {
         $eventInscription = $existingInscription ?? new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
@@ -45,5 +45,7 @@ class EventInscriptionHandler
         } else {
             $this->eventDispatcher->dispatch(new NewNationalEventInscriptionEvent($eventInscription));
         }
+
+        return $eventInscription;
     }
 }

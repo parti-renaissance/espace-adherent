@@ -139,4 +139,20 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
     }
+
+    public function isPaymentEnabled(): bool
+    {
+        return NationalEventTypeEnum::CAMPUS === $this->type;
+    }
+
+    public function calculateTransportAmount(string $transport): ?int
+    {
+        foreach ($this->transportConfiguration['transports'] ?? [] as $transportConfig) {
+            if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
+                return (int) $transportConfig['montant'] * 100;
+            }
+        }
+
+        return null;
+    }
 }

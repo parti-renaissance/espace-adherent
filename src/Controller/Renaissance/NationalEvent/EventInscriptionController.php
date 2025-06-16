@@ -81,7 +81,11 @@ class EventInscriptionController extends AbstractController
         ;
 
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
-            $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
+            $inscription = $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
+
+            if ($inscription->isPaymentRequired()) {
+                return $this->redirectToRoute('app_national_event_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
+            }
 
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }

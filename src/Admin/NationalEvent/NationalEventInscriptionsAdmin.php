@@ -131,6 +131,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
                 ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false])
                 ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false])
+                ->add('transportCosts', TextType::class, ['label' => 'Prix du transport', 'required' => false, 'disabled' => true])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
