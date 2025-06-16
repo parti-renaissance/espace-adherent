@@ -9,7 +9,7 @@ final class Version20250611083310 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE jecoute_news_user_documents DROP CONSTRAINT FK_1231D19DD18EE7B3');
+        $this->addSql('ALTER TABLE jecoute_news_user_documents DROP FOREIGN KEY FK_1231D19DD18EE7B3');
 
         $this->addSql(<<<'SQL'
                 ALTER TABLE

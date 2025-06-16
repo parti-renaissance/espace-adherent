@@ -119,6 +119,9 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    public ?int $transportCosts = null;
+
     #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
 
@@ -209,6 +212,11 @@ class EventInscription
         $this->isJAM = $inscriptionRequest->isJAM;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->transport = $inscriptionRequest->transport;
+        $this->transportCosts = $this->getTransportAmount();
+
+        if ($this->transportCosts > 0 && InscriptionStatusEnum::PENDING === $this->status) {
+            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+        }
 
         // Update only for creation
         if (!$this->id) {
@@ -228,5 +236,19 @@ class EventInscription
     public function __toString(): string
     {
         return $this->getFullName();
+    }
+
+    public function isPaymentRequired(): bool
+    {
+        return $this->event->isPaymentEnabled() && $this->transportCosts > 0;
+    }
+
+    public function getTransportAmount(): ?int
+    {
+        if (empty($this->transport) || 'n/a' === $this->transport) {
+            return null;
+        }
+
+        return $this->event->calculateTransportAmount($this->transport);
     }
 }
