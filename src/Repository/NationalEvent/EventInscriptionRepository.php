@@ -256,4 +256,29 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function countPlacesByTransport(int $eventId, array $transportModes): array
+    {
+        $qb = $this
+            ->createQueryBuilder('ei', 'ei.transport')
+            ->select('ei.transport, COUNT(ei) as count')
+            ->innerJoin('ei.event', 'e')
+            ->where('e.id = :event_id')
+            ->andWhere('ei.status IN (:statuses)')
+            ->setParameter('event_id', $eventId)
+            ->setParameter('statuses', [InscriptionStatusEnum::APPROVED_STATUSES, InscriptionStatusEnum::WAITING_PAYMENT, InscriptionStatusEnum::INCONCLUSIVE])
+            ->groupBy('ei.transport')
+        ;
+
+        if (!empty($transportModes)) {
+            $qb
+                ->andWhere('ei.transport IN (:transport_modes)')
+                ->setParameter('transport_modes', $transportModes)
+            ;
+        } else {
+            $qb->andWhere('ei.transport IS NOT NULL');
+        }
+
+        return array_column($qb->getQuery()->getResult(), 'count', 'transport');
+    }
 }

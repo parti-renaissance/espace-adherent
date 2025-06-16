@@ -94,6 +94,7 @@ class LoadNationalEventData extends Fixture
                 [
                     'id' => 'train',
                     'jours_ids' => ['jour_2'],
+                    'recap_label' => 'Train aller-retour',
                     'quota' => 1000,
                     'titre' => 'Train (Paris >< Arras) Dimanche',
                     'montant' => 50,
@@ -102,6 +103,7 @@ class LoadNationalEventData extends Fixture
                 [
                     'id' => 'bus',
                     'jours_ids' => ['jour_2'],
+                    'recap_label' => 'Bus aller-retour',
                     'quota' => 600,
                     'titre' => 'Bus (Paris >< Arras) Dimanche',
                     'montant' => 20,

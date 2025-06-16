@@ -16,7 +16,7 @@
             x-text="message"
     />
 
-    <div class="flex flex-col gap-4" x-data="{selected: null}" x-init="selected = $el.querySelector('input[type=radio]:checked')?.value;">
+    <div class="flex flex-col gap-4">
         {% block content '' %}
     </div>
 </fieldset>

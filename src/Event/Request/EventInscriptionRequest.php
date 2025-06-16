@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\NationalEventTransportMode;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
@@ -14,6 +15,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha]
+#[NationalEventTransportMode]
 class EventInscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -57,6 +59,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     public ?string $visitDay = null;
     public ?string $transport = null;
+    public bool $withDiscount = false;
 
     public bool $transportNeeds = false;
     public bool $volunteer = false;
@@ -84,14 +87,16 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     public ?string $accessibility = null;
 
     public function __construct(
+        public readonly int $eventId,
         public readonly string $sessionId,
         public readonly string $clientIp,
+        public readonly ?array $transportConfiguration = null,
     ) {
     }
 
     public static function fromInscription(EventInscription $inscription): self
     {
-        $request = new self($inscription->sessionId ?? '', $inscription->clientIp ?? '');
+        $request = new self($inscription->event->getId(), $inscription->sessionId ?? '', $inscription->clientIp ?? '');
         $request->email = $inscription->addressEmail;
         $request->civility = $inscription->gender;
         $request->firstName = $inscription->firstName;

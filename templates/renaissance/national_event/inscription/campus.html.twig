@@ -4,7 +4,7 @@
 {% block body_classes 'bg-ui_gray-5' %}
 
 {% block content_section %}
-    <div class="flex flex-col md:flex-row gap-8 justify-center mb-[120px] w-full z-10 relative mt-[90px] pt-[150px] md:pt-[50px] p-5" x-data="xNationalEventPage">
+    <div class="flex flex-col md:flex-row gap-8 justify-center mb-[120px] w-full z-10 relative mt-[90px] pt-[150px] md:pt-[50px] p-5" x-data="xNationalEventPage({transportConfig: {{ event.transportConfiguration|json_encode }}})">
         {% if event.intoImage %}
             <div class="flex flex-col gap-8 h-fit w-[500px] md:sticky md:top-[120px]">
                 <img class="w-full" src="{{ vich_uploader_asset(event.intoImage) }}" alt="{{ event.name }}">
@@ -111,15 +111,28 @@
                 <twig:Atoms:ReCard class="!rounded-2xl">
                     {{ form_row(form.visitDay, {
                         label: 'Quand venez-vous ?',
-                        attr: {validate: "['required']"},
+                        attr: {
+                            validate: "['required']",
+                            '@change': 'handleVisitDayChange($event)',
+                        },
                     }) }}
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="!rounded-2xl">
+                <twig:Atoms:ReCard class="!rounded-2xl" x-show="availableTransports.length > 0">
                     {{ form_row(form.transport, {
                         label: 'Besoin d’un transport ?',
-                        attr: {validate: "['required']"},
+                        attr: {
+                            validate: "['required']",
+                            'x-model': 'transport',
+                        },
                     }) }}
+
+                    <template x-if="selectedTransportConfig">
+                        {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
+                            widget_side: 'right',
+                            'x-model': 'withDiscount',
+                        }}) }}
+                    </template>
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="!rounded-2xl">
@@ -142,6 +155,35 @@
 
                     <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
                         {{ include('renaissance/partials/friendly-captcha.html.twig', {friendly_captcha_site_key: friendly_captcha_europe_site_key}) }}
+                    </div>
+
+                    <div class="flex flex-col  bg-ui_gray-1 rounded-lg p-6 gap-4" x-show="selectedTransportConfig">
+                        <twig:Atoms:ReLabel class="text-gray-950">Récapitulatif</twig:Atoms:ReLabel>
+
+                        <template x-if="selectedTransportConfig">
+                            <div>
+                                <div class="grid grid-cols-[5fr_1fr] gap-2 items-center">
+                                    <span x-text="selectedTransportConfig.recap_label"></span>
+                                    <span class="text-ui_blue-50 text-right" x-text="selectedTransportConfig.montant + ' €'"></span>
+                                </div>
+
+                                <template x-if="withDiscount">
+                                    <div class="grid grid-cols-[5fr_1fr] gap-2 mt-1 items-center">
+                                        <span>Je suis étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux</span>
+                                        <span class="text-ui_green-50 text-right" x-text="'-' + (selectedTransportConfig.montant / 2) + ' €'"></span>
+                                        <span class="font-medium text-ui_gray-80">Montant total</span>
+                                        <span class="font-medium text-ui_gray-80 text-right" x-text="(selectedTransportConfig.montant / 2) + ' €'"></span>
+                                    </div>
+                                </template>
+
+                                <template x-if="!withDiscount">
+                                    <div class="grid grid-cols-[5fr_1fr] gap-2 mt-1 items-center">
+                                        <span class="font-medium text-ui_gray-80">Montant total</span>
+                                        <span class="font-medium text-ui_gray-80 text-right" x-text="selectedTransportConfig.montant + ' €'"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
 
                     <twig:ReButton class="w-full" color="blue">{{ is_edit is defined ? 'Modifier mon inscription' : 'Je réserve ma place' }}</twig:ReButton>

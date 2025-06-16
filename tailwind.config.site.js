@@ -11,6 +11,8 @@ module.exports = {
         'hover:bg-white',
         'hover:border-ui_gray-20',
         'border-ui_blue-50',
+        'opacity-60',
+        'cursor-not-allowed',
     ],
     theme: {
         extend: {

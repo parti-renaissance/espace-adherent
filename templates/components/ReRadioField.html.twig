@@ -1,10 +1,10 @@
-<div {{ attributes.only('class', ':class') }}>
+<div {{ attributes.only('class', ':class', 'x-show') }}>
     <label class="relative flex-col flex justify-center cursor-pointer">
         <div class="relative flex-col flex justify-center">
             <div class="justify-start gap-2.5 inline-flex items-center">
                 {% if widgetSide == 'left' %}
                     <twig:Atoms:ReCheckbox
-                        {{ ...attributes.without('class', ':class', 'description').all() }}
+                        {{ ...attributes.without('class', ':class', 'description', 'x-show').all() }}
                         status="{{ status }}"
                         class="mt-1"
                         type="radio"
@@ -33,7 +33,7 @@
 
                 {% if widgetSide == 'right' %}
                     <twig:Atoms:ReCheckbox
-                        {{ ...attributes.without('class', ':class', 'description').all() }}
+                        {{ ...attributes.without('class', ':class', 'description', 'x-show').all() }}
                         status="{{ status }}"
                         class="mt-1"
                         type="radio"
