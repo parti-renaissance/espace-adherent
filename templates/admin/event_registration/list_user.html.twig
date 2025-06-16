@@ -7,5 +7,7 @@
         {{ include(('admin/adherent/display_fullname_certified.html.twig'), {object: adherent}) }}
     {% else %}
         {{ object.fullName }}
+        <br />
+        {{ object.emailAddress }}
     {% endif %}
 {% endblock %}

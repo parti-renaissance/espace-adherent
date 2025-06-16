@@ -212,9 +212,9 @@ class EventRegistrationAdmin extends AbstractAdmin
                     'Civilité' => $adherent ?
                         $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true))
                         : null,
-                    'Nom' => $adherent?->getLastName(),
-                    'Prénom' => $adherent?->getFirstName(),
-                    'Email' => $adherent?->getEmailAddress(),
+                    'Nom' => $adherent ? $adherent->getLastName() : $eventRegistration->getLastName(),
+                    'Prénom' => $adherent ? $adherent->getFirstName() : $eventRegistration->getFirstName(),
+                    'Email' => $adherent ? $adherent->getEmailAddress() : $eventRegistration->getEmailAddress(),
                     'Téléphone' => PhoneNumberUtils::format($adherent?->getPhone()),
                     'Labels militants' => implode(', ', array_filter(array_map(function (string $tag): ?string {
                         if (!\in_array($tag, TagEnum::getAdherentTags(), true)) {
@@ -272,7 +272,7 @@ class EventRegistrationAdmin extends AbstractAdmin
                             ])
                         )
                     ),
-                    'Code postal' => $adherent?->getPostalCode(),
+                    'Code postal' => $adherent ? $adherent->getPostalCode() : $eventRegistration->getPostalCode(),
                     'UUID événement' => $event->getUuid()->toString(),
                     'Nom de l\'événement' => $event->getName(),
                     'Instance liée' => $event->getAuthorInstance(),
