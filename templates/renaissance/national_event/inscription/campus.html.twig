@@ -3,13 +3,57 @@
 {% block background_image '' %}
 {% block body_classes 'bg-ui_gray-5' %}
 
+{% block header %}
+    <header class="flex py-10 md:py-20 justify-center w-full">
+        <a href="{{ path('renaissance_site') }}">
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo"/>
+        </a>
+    </header>
+{% endblock %}
+
 {% block content_section %}
-    <div class="flex flex-col md:flex-row gap-8 justify-center mb-[120px] w-full z-10 relative mt-[90px] pt-[150px] md:pt-[50px] p-5" x-data="xNationalEventPage({transportConfig: {{ event.transportConfiguration|json_encode }}})">
-        {% if event.intoImage %}
-            <div class="flex flex-col gap-8 h-fit w-[500px] md:sticky md:top-[120px]">
-                <img class="w-full" src="{{ vich_uploader_asset(event.intoImage) }}" alt="{{ event.name }}">
-            </div>
-        {% endif %}
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({transportConfig: {{ event.transportConfiguration|json_encode }}})">
+        <div class="flex flex-col gap-8 max-w-[500px] md:w-[500px]">
+            {% if event.intoImage %}
+                {% set imgRatio = event.intoImage.getHeight() / event.intoImage.getWidth() %}
+                {% set imgHeight = 500 * imgRatio %}
+                <div style="height: {{ imgHeight }}px;">
+                    <img class="w-full h-full object-cover rounded-2xl" src="{{ vich_uploader_asset(event.intoImage) }}" loading="lazy" />
+                </div>
+            {% endif %}
+
+            {% if event.textHelp %}
+                <div x-data="{ expanded: false }" class="relative">
+                    <div
+                        class="relative overflow-hidden md:overflow-visible transition-all duration-300"
+                        :class="expanded ? 'max-h-full' : 'max-h-[10rem]'"
+                    >
+                        <div class="md:block">
+                            {{ event.textHelp|raw }}
+                        </div>
+
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent pointer-events-none md:hidden"
+                            x-show="!expanded"
+                        ></div>
+                    </div>
+
+                    <div class="mt-2 md:hidden">
+                        <button
+                            x-show="!expanded"
+                            @click="expanded = true"
+                            class="text-blue-600 font-medium"
+                        >Lire la suite</button>
+
+                        <button
+                            x-show="expanded"
+                            @click="expanded = false"
+                            class="text-blue-600 font-medium"
+                        >Réduire</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
 
         {{ form_start(form, {attr: {class: 'max-w-[500px]'}}) }}
             <div class="flex flex-col gap-8">
@@ -188,12 +232,6 @@
 
                     <twig:ReButton class="w-full" color="blue">{{ is_edit is defined ? 'Modifier mon inscription' : 'Je réserve ma place' }}</twig:ReButton>
                 </twig:Atoms:ReCard>
-
-                {% if event.textHelp %}
-                    <twig:Atoms:ReCard class="!rounded-2xl">
-                        {{ event.textHelp|raw }}
-                    </twig:Atoms:ReCard>
-                {% endif %}
 
                 {{ block('national_event_legality') }}
             </div>
