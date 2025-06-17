@@ -2,6 +2,7 @@
 
 namespace App\Form\NationalEvent;
 
+use App\Form\BirthdateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,6 +25,9 @@ class CampusEventInscriptionType extends AbstractType
         ];
 
         $builder
+            ->add('birthdate', BirthdateType::class, [
+                'years' => array_combine($years = range(date('Y') - 15, date('Y') - 120), $years),
+            ])
             ->add('accessibility', TextareaType::class, ['required' => false])
             ->add('withDiscount', CheckboxType::class, ['required' => false])
             ->add('visitDay', ChoiceType::class, [

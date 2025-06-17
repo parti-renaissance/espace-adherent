@@ -42,6 +42,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank]
     #[Assert\Range(max: '-1 years')]
+    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['national_event_campus'])]
     public ?\DateTime $birthdate = null;
 
     #[Assert\Length(max: 255)]
