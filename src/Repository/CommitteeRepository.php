@@ -149,6 +149,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 GROUP BY c2.id
             ) AS t ON t.id = c.id
             SET
+                c.adherents_count = t.adherents_count,
                 c.members_count = t.members_count,
                 c.members_em_count = t.members_em_count,
                 c.sympathizers_count = t.sympathizers_count',
