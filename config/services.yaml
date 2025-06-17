@@ -64,6 +64,7 @@ services:
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
             $ogonePspId: '%env(OGONE_PSPID)%'
             $ogoneShaInKey: '%env(OGONE_SHAINKEY)%'
+            $ogoneWebhookKey: '%env(OGONE_WEBHOOK_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
             $maxIdleTime: '%env(SESSION_MAX_IDLE_TIME)%'

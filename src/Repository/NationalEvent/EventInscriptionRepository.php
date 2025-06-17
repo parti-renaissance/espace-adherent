@@ -266,7 +266,12 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->where('e.id = :event_id')
             ->andWhere('ei.status IN (:statuses)')
             ->setParameter('event_id', $eventId)
-            ->setParameter('statuses', [InscriptionStatusEnum::APPROVED_STATUSES, InscriptionStatusEnum::WAITING_PAYMENT, InscriptionStatusEnum::INCONCLUSIVE])
+            ->setParameter('statuses', [
+                InscriptionStatusEnum::APPROVED_STATUSES,
+                InscriptionStatusEnum::WAITING_PAYMENT,
+                InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                InscriptionStatusEnum::INCONCLUSIVE,
+            ])
             ->groupBy('ei.transport')
         ;
 
