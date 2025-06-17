@@ -9,7 +9,7 @@
 
 {% block open_graph %}
     {% if event.ogImage %}
-        <meta property="og:image" content="{{ path('asset_url', {path: event.ogImage.getPath()}) }}" />
+        <meta property="og:image" content="{{ url('asset_url', {path: vich_uploader_asset(event.ogImage)|replace({'/assets/': ''})}) }}" />
         <meta property="og:image:width" content="{{ event.ogImage.getWidth() }}" />
         <meta property="og:image:height" content="{{ event.ogImage.getHeight() }}" />
     {% endif %}
