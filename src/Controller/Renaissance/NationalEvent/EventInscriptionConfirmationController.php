@@ -13,7 +13,7 @@ class EventInscriptionConfirmationController extends AbstractController
 {
     public function __invoke(NationalEventRepository $nationalEventRepository, NationalEvent $event): Response
     {
-        return $this->render('renaissance/national_event/event_inscription_confirmation.html.twig', [
+        return $this->render('renaissance/national_event/confirmation/'.$event->type->value.'.html.twig', [
             'event' => $event,
         ]);
     }

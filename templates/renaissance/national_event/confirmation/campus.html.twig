@@ -1,0 +1,33 @@
+{% extends 'renaissance/national_event/_confirmation_layout.html.twig' %}
+
+{% block header '' %}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="bg-ui_gray-5">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+            <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
+                {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+
+                {% if app.request.query.has('already-registered') %}
+                    <h1 class="font-bold text-2xl">Vous êtes déjà inscrit</h1>
+                {% else %}
+                    <h1 class="font-bold text-2xl">Merci !</h1>
+
+                    {% if event.textConfirmation %}
+                        <div>{{ event.textConfirmation|raw }}</div>
+                    {% endif %}
+                {% endif %}
+
+                <hr/>
+
+                <p class="text-ui_gray-80">Suivez nos réseaux sociaux :</p>
+
+                <div class="flex items-center justify-center gap-[40px]">
+                    {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
+                </div>
+            </div>
+
+            <twig:ReButton class="w-full" color="blue" tag="a" href="{{ path('renaissance_site') }}">Retourner sur le site</twig:ReButton>
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}
