@@ -3,6 +3,7 @@
 namespace App\NationalEvent\Payment;
 
 use App\Entity\NationalEvent\EventInscription;
+use Ramsey\Uuid\Uuid;
 
 class RequestParamsBuilder
 {
@@ -16,7 +17,8 @@ class RequestParamsBuilder
     {
         $params = [
             'PSPID' => $this->ogonePspId,
-            'ORDERID' => $inscription->getUuid()->toString(),
+            'ORDERID' => Uuid::uuid4()->toString(),
+            'COMPLUS' => $inscription->getUuid()->toString(),
             'AMOUNT' => $inscription->transportCosts, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',

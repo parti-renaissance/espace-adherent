@@ -27,7 +27,7 @@ class PaymentStatusUpdateCommandHandler
     {
         $payload = $command->payload;
 
-        if (empty($inscriptionUuid = ($payload['orderID'] ?? null)) || !Uuid::isValid($inscriptionUuid)) {
+        if (empty($inscriptionUuid = ($payload['COMPLUS'] ?? null)) || !Uuid::isValid($inscriptionUuid)) {
             return;
         }
 
