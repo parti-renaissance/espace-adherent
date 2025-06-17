@@ -49,7 +49,7 @@ class EventInscriptionController extends AbstractController
             $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
         }
 
-        $inscriptionRequest = new EventInscriptionRequest($sessionId, $request->getClientIp());
+        $inscriptionRequest = new EventInscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
 
         if ($user) {
             if ($this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
@@ -108,6 +108,7 @@ class EventInscriptionController extends AbstractController
         if (NationalEventTypeEnum::CAMPUS === $event->type) {
             return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'transport_configuration' => $event->transportConfiguration,
+                'reserved_places' => $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'], 'id')),
             ]));
         }
 

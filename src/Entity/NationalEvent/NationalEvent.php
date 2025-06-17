@@ -145,11 +145,11 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
         return NationalEventTypeEnum::CAMPUS === $this->type;
     }
 
-    public function calculateTransportAmount(string $transport): ?int
+    public function calculateTransportAmount(string $transport, ?bool $withDiscount): ?int
     {
         foreach ($this->transportConfiguration['transports'] ?? [] as $transportConfig) {
             if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
-                return (int) $transportConfig['montant'] * 100;
+                return (int) $transportConfig['montant'] * 100 / ($withDiscount ? 2 : 1);
             }
         }
 

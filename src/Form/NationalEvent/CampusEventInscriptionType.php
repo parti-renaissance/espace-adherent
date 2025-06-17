@@ -3,6 +3,7 @@
 namespace App\Form\NationalEvent;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,23 +15,24 @@ class CampusEventInscriptionType extends AbstractType
     {
         $days = $options['transport_configuration']['jours'] ?? [];
         $transports = $options['transport_configuration']['transports'] ?? [];
+        $reservedPlaces = $options['reserved_places'] ?? [];
 
         $defaultOptions = [
-            'class' => ' rounded-lg p-6 border-2  hover:bg-white',
-            'x-model' => 'selected',
+            'class' => 'rounded-lg p-6 border-2 hover:bg-white',
             'label_attr' => ['class' => 'grow shrink basis-0 text-gray-700'],
             'widget_side' => 'right',
         ];
 
-        $classPattern = "selected === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'";
-
         $builder
             ->add('accessibility', TextareaType::class, ['required' => false])
+            ->add('withDiscount', CheckboxType::class, ['required' => false])
             ->add('visitDay', ChoiceType::class, [
                 'choices' => array_column($days, 'id', 'titre'),
                 'expanded' => true,
-                'choice_attr' => function ($key) use ($defaultOptions, $classPattern, $days): array {
-                    $options = [':class' => \sprintf($classPattern, $key)];
+                'choice_attr' => function ($key) use ($defaultOptions, $days): array {
+                    $options = [
+                        ':class' => \sprintf("visitDay === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
+                    ];
 
                     foreach ($days as $day) {
                         if ($day['id'] === $key) {
@@ -45,15 +47,31 @@ class CampusEventInscriptionType extends AbstractType
             ->add('transport', ChoiceType::class, [
                 'choices' => array_column($transports, 'id', 'titre'),
                 'expanded' => true,
-                'choice_attr' => function ($key) use ($defaultOptions, $classPattern, $transports): array {
-                    $options = [':class' => \sprintf($classPattern, $key)];
+                'choice_attr' => function ($key) use ($defaultOptions, $reservedPlaces, $transports): array {
+                    $options = [
+                        ':class' => \sprintf("transport === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
+                        'x-show' => 'availableTransports.some(t => t.id === \''.$key.'\')',
+                    ];
 
                     foreach ($transports as $transport) {
                         if ($transport['id'] === $key) {
                             $descriptionParts = [$transport['description'] ?? null];
 
                             $price = '<span class="text-ui_blue-60 font-semibold">'.(!empty($transport['montant']) ? ($transport['montant'].' €') : 'Gratuit').'</span>';
-                            $quota = !empty($transport['quota']) ? \sprintf('<span class="text-ui_gray-60"> - %d place%2$s restante%2$s</span>', $transport['quota'], $transport['quota'] > 1 ? 's' : '') : null;
+                            $quota = null;
+
+                            if (!empty($transport['quota'])) {
+                                $reservedCount = $reservedPlaces[$key] ?? 0;
+                                $availablePlaces = $transport['quota'] - $reservedCount;
+
+                                if ($availablePlaces > 0) {
+                                    $quota = \sprintf('<span class="text-ui_gray-60"> - %d place%2$s restante%2$s</span>', $availablePlaces, $availablePlaces > 1 ? 's' : '');
+                                } else {
+                                    $quota = '<span class="text-ui_gray-60"> - Complet</span>';
+                                    $options['disabled'] = true;
+                                    $defaultOptions['class'] .= ' opacity-60';
+                                }
+                            }
 
                             $descriptionParts[] = $price.$quota;
 
@@ -75,6 +93,6 @@ class CampusEventInscriptionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefined('transport_configuration');
+        $resolver->setDefined(['transport_configuration', 'reserved_places']);
     }
 }

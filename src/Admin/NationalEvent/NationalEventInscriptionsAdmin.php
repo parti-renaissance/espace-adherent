@@ -32,6 +32,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -131,7 +132,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
                 ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false])
                 ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false])
-                ->add('transportCosts', TextType::class, ['label' => 'Prix du transport', 'required' => false, 'disabled' => true])
+                ->add('transportCosts', TextType::class, ['label' => 'Prix du transport (en centimes)', 'required' => false, 'disabled' => true])
+                ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
@@ -226,6 +228,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
                 'Jour de visite' => $inscription->visitDay,
                 'Choix de transport' => $inscription->transport,
+                'Bénéficie de -50%' => true === $inscription->withDiscount ? 'Oui' : 'Non',
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];

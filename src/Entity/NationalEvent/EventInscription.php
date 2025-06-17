@@ -119,6 +119,9 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    public ?bool $withDiscount = null;
+
     #[ORM\Column(type: 'smallint', nullable: true)]
     public ?int $transportCosts = null;
 
@@ -212,6 +215,7 @@ class EventInscription
         $this->isJAM = $inscriptionRequest->isJAM;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->transport = $inscriptionRequest->transport;
+        $this->withDiscount = $inscriptionRequest->withDiscount;
         $this->transportCosts = $this->getTransportAmount();
 
         if ($this->transportCosts > 0 && InscriptionStatusEnum::PENDING === $this->status) {
@@ -249,6 +253,6 @@ class EventInscription
             return null;
         }
 
-        return $this->event->calculateTransportAmount($this->transport);
+        return $this->event->calculateTransportAmount($this->transport, $this->withDiscount);
     }
 }
