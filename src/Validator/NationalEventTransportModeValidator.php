@@ -29,10 +29,6 @@ class NationalEventTransportModeValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, EventInscriptionRequest::class);
         }
 
-        if (null === $value->transport) {
-            return;
-        }
-
         if (!$value->visitDay) {
             $this
                 ->context
@@ -41,6 +37,10 @@ class NationalEventTransportModeValidator extends ConstraintValidator
                 ->addViolation()
             ;
 
+            return;
+        }
+
+        if (null === $value->transport) {
             return;
         }
 
@@ -67,7 +67,7 @@ class NationalEventTransportModeValidator extends ConstraintValidator
 
         $selectedTransportConfig = $availableModes[array_search($value->transport, array_column($availableModes, 'id'), true)];
 
-        if (!empty($selectedTransportConfig['quota'])) {
+        if (isset($selectedTransportConfig['quota'])) {
             $reservedPlaces = $this->eventInscriptionRepository->countPlacesByTransport($value->eventId, [$value->transport]);
 
             if ($selectedTransportConfig['quota'] <= ($reservedPlaces[$value->transport] ?? 0)) {

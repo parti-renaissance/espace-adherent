@@ -109,6 +109,7 @@ class EventInscriptionController extends AbstractController
             return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'transport_configuration' => $event->transportConfiguration,
                 'reserved_places' => $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'], 'id')),
+                'validation_groups' => ['Default', 'national_event_campus'],
             ]));
         }
 
