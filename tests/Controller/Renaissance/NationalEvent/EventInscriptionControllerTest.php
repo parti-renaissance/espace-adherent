@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\NationalEvent;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -149,6 +150,88 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame(InscriptionStatusEnum::PENDING, $eventInscriptions[0]->status);
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $eventInscriptions[1]->status);
+    }
+
+    public function testCampusInscription(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['campus_event_inscription[acceptCgu]']->tick();
+        $form['campus_event_inscription[acceptMedia]']->tick();
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+
+        $this->assertStringContainsString('Veillez sélectionner votre jour de visite.', $crawler->filter('body')->text());
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_1_et_2',
+                'transport' => 'bus',
+            ],
+        ]);
+
+        $this->assertStringContainsString('Le mode de transport sélectionné n\'est pas disponible pour le jour de visite choisi.', $crawler->filter('body')->text());
+
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'campus']);
+        $event->transportConfiguration['transports'][0]['quota'] = 0;
+        $em->flush();
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_2',
+                'transport' => 'train',
+            ],
+        ]);
+
+        $this->assertStringContainsString('Le quota de places pour ce mode de transport est atteint.', $crawler->filter('body')->text());
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_2',
+                'transport' => 'bus',
+            ],
+        ]);
+
+        $inscription = $this->getRepository(EventInscription::class)->findOneBy(['addressEmail' => 'john.doe@example.com']);
+
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/campus/'.$inscription->getUuid().'/paiement', $this->client);
     }
 
     public static function provideReferrerCodes(): iterable

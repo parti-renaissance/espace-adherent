@@ -15,7 +15,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha]
-#[NationalEventTransportMode]
+#[NationalEventTransportMode(groups: ['national_event_campus'])]
 class EventInscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
