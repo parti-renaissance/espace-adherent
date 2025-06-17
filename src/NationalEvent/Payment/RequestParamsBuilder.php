@@ -22,7 +22,10 @@ class RequestParamsBuilder
             'LANGUAGE' => 'fr_FR',
             'CN' => $inscription->firstName.' '.$inscription->lastName,
             'EMAIL' => $inscription->addressEmail,
-            'BACKURL' => $backUrl,
+            'ACCEPTURL' => $backUrl.'?status=success',
+            'DECLINEURL' => $backUrl.'?status=error',
+            'EXCEPTIONURL' => $backUrl.'?status=error',
+            'CANCELURL' => $backUrl.'?status=cancel',
         ];
 
         ksort($params);
