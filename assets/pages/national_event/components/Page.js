@@ -71,7 +71,7 @@ const Page = (props) => ({
     },
 
     getSelectedTransportConfig() {
-        if (!this.transport || 'n/a' === this.transport) {
+        if (!this.transport || this.transport.startsWith('gratuit')) {
             return null;
         }
 

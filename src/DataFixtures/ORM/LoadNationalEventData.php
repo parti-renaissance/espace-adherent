@@ -110,7 +110,7 @@ class LoadNationalEventData extends Fixture
                     'description' => 'Départ 7h45 à Paris gare du nord<br/>Retour à 17h45 à Paris gare du nord',
                 ],
                 [
-                    'id' => 'n/a',
+                    'id' => 'gratuit',
                     'jours_ids' => ['jour_1_et_2', 'jour_2'],
                     'titre' => 'Je viens par mes propres moyens',
                 ],

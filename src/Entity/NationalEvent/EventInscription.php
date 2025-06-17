@@ -255,7 +255,7 @@ class EventInscription
 
     public function getTransportAmount(): ?int
     {
-        if (empty($this->transport) || 'n/a' === $this->transport) {
+        if (empty($this->transport) || str_starts_with($this->transport, 'gratuit')) {
             return null;
         }
 
