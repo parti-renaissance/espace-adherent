@@ -65,9 +65,15 @@ class NationalEventTransportModeValidator extends ConstraintValidator
             ;
         }
 
-        $selectedTransportConfig = $availableModes[array_search($value->transport, array_column($availableModes, 'id'), true)];
+        $selectedTransportConfig = null;
+        foreach ($availableModes as $transport) {
+            if ($transport['id'] === $value->transport) {
+                $selectedTransportConfig = $transport;
+                break;
+            }
+        }
 
-        if (isset($selectedTransportConfig['quota'])) {
+        if ($selectedTransportConfig && isset($selectedTransportConfig['quota'])) {
             $reservedPlaces = $this->eventInscriptionRepository->countPlacesByTransport($value->eventId, [$value->transport]);
 
             if ($selectedTransportConfig['quota'] <= ($reservedPlaces[$value->transport] ?? 0)) {

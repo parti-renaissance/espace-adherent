@@ -12,7 +12,7 @@ class RequestParamsBuilder
     ) {
     }
 
-    public function build(EventInscription $inscription): array
+    public function build(EventInscription $inscription, string $backUrl): array
     {
         $params = [
             'PSPID' => $this->ogonePspId,
@@ -22,6 +22,7 @@ class RequestParamsBuilder
             'LANGUAGE' => 'fr_FR',
             'CN' => $inscription->firstName.' '.$inscription->lastName,
             'EMAIL' => $inscription->addressEmail,
+            'BACKURL' => $backUrl,
         ];
 
         ksort($params);

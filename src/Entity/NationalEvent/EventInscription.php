@@ -11,6 +11,8 @@ use App\Entity\EntityUTMTrait;
 use App\Event\Request\EventInscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -167,10 +169,14 @@ class EventInscription
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referrer = null;
 
+    #[ORM\OneToMany(mappedBy: 'inscription', targetEntity: PaymentStatus::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $paymentStatuses;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->event = $event;
+        $this->paymentStatuses = new ArrayCollection();
     }
 
     public function updateFromDuplicate(EventInscription $eventInscription): void
@@ -254,5 +260,10 @@ class EventInscription
         }
 
         return $this->event->calculateTransportAmount($this->transport, $this->withDiscount);
+    }
+
+    public function addPaymentStatus(PaymentStatus $paymentStatus): void
+    {
+        $this->paymentStatuses->add($paymentStatus);
     }
 }
