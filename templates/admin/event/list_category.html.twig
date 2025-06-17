@@ -1,0 +1,11 @@
+{% extends 'admin/list/list_author.html.twig' %}
+
+{% block field %}
+    {% set category = object.category %}
+
+    {% if category %}
+        <a href="{{ path('admin_app_event_event_list', {filter: {category: {value: category.id}}}) }}" class="sonata-action-element">
+            {{ category }}
+        </a>
+    {% endif %}
+{% endblock %}

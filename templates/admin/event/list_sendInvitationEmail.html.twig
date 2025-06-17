@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <a href="{{ path('admin_app_event_event_list', {filter: {sendInvitationEmail: {value: object.sendInvitationEmail ? '1' : '2'}}}) }}" class="sonata-action-element">
+        {{ ('global.' ~ (object.sendInvitationEmail ? 'yes' : 'no'))|trans }}
+    </a>
+{% endblock %}

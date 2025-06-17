@@ -1,0 +1,7 @@
+{% extends 'admin/list/list_author.html.twig' %}
+
+{% block field %}
+    <a href="{{ path('admin_app_event_event_list', {filter: {visibility: {value: [object.visibility.value]}}}) }}" class="sonata-action-element">
+        {{ ('event.visibility.' ~ object.visibility.value)|trans }}
+    </a>
+{% endblock %}

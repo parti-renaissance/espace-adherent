@@ -2,28 +2,36 @@
 
 namespace App\Admin;
 
-use App\Admin\Filter\PostalCodeFilter;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\Entity\Agora;
+use App\Entity\Committee;
 use App\Entity\Event\Event;
+use App\Entity\Geo\Zone;
 use App\Event\EventEvent;
 use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Form\Admin\TipTapContentType;
 use App\Form\EventCategoryType;
 use App\Form\ReCountryType;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhpConfigurator;
+use Doctrine\ORM\QueryBuilder;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -32,14 +40,32 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EventAdmin extends AbstractAdmin
 {
+    use IterableCallbackDataSourceTrait;
     private $beforeUpdate;
 
-    public function __construct(private readonly EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly TranslatorInterface $translator,
+        private readonly LoggerInterface $logger,
+    ) {
         parent::__construct();
+    }
+
+    /** @param QueryBuilder|ProxyQueryInterface $query */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $alias = $query->getRootAliases()[0];
+
+        $query
+            ->addSelect('_organizer')
+            ->leftJoin($alias.'.author', '_organizer')
+        ;
+
+        return $query;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -227,6 +253,46 @@ class EventAdmin extends AbstractAdmin
         $filter
             ->add('name', null, [
                 'label' => 'Nom',
+                'show_filter' => true,
+            ])
+            ->add('organizer', CallbackFilter::class, [
+                'label' => 'Organisateur',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ['_organizer.firstName', '_organizer.lastName'],
+                            ['_organizer.lastName', '_organizer.firstName'],
+                            ['_organizer.emailAddress', '_organizer.emailAddress'],
+                        ],
+                        [
+                            '_organizer.phone',
+                        ],
+                        [
+                            '_organizer.id',
+                            '_organizer.uuid',
+                            '_organizer.publicId',
+                        ]
+                    );
+
+                    return true;
+                },
+            ])
+            ->add('visibility', ChoiceFilter::class, [
+                'label' => 'Visibilité',
+                'show_filter' => true,
+                'field_type' => EnumType::class,
+                'field_options' => [
+                    'multiple' => true,
+                    'class' => EventVisibilityEnum::class,
+                ],
             ])
             ->add('category', CallbackFilter::class, [
                 'label' => 'Catégorie',
@@ -246,34 +312,9 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('visibility', ChoiceFilter::class, [
-                'label' => 'Visibilité',
-                'show_filter' => true,
-                'field_type' => EnumType::class,
-                'field_options' => [
-                    'multiple' => true,
-                    'class' => EventVisibilityEnum::class,
-                ],
-            ])
-            ->add('createdAt', DateRangeFilter::class, [
-                'label' => 'Date de création',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('beginAt', DateRangeFilter::class, [
-                'label' => 'Date de début',
-                'show_filter' => true,
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('author.firstName', null, [
-                'label' => 'Prénom de l\'organisateur',
-                'show_filter' => true,
-            ])
-            ->add('author.lastName', null, [
-                'label' => 'Nom de l\'organisateur',
-                'show_filter' => true,
-            ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
+                'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
@@ -285,28 +326,53 @@ class EventAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add('postalCode', PostalCodeFilter::class, [
-                'label' => 'Code postal',
+            ->add('committee', ModelFilter::class, [
+                'label' => 'Comité',
+                'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'name',
+                    ],
+                    'to_string_callback' => static function (Committee $committee): string {
+                        return $committee->getName();
+                    },
+                ],
             ])
-            ->add('city', CallbackFilter::class, [
-                'label' => 'Ville',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
-
-                    return true;
-                },
+            ->add('agora', ModelFilter::class, [
+                'label' => 'Agora',
+                'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'name',
+                    ],
+                    'to_string_callback' => static function (Agora $agora): string {
+                        return $agora->getName();
+                    },
+                ],
             ])
-            ->add('published', BooleanFilter::class, [
-                'label' => 'Publié',
+            ->add('beginAt', DateRangeFilter::class, [
+                'label' => 'Date de début',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
             ])
-            ->add('electoral', BooleanFilter::class, [
-                'label' => 'Électoral',
+            ->add('sendInvitationEmail', null, [
+                'label' => 'Invitation Auto',
+            ])
+            ->add('finishAt', DateRangeFilter::class, [
+                'label' => 'Date de fin',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('updatedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernière modification',
+                'field_type' => DateRangePickerType::class,
             ])
         ;
     }
@@ -314,46 +380,61 @@ class EventAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id', null, [
-                'label' => 'Id',
+            ->add('_assembly', null, [
+                'label' => 'Assemblée',
+                'virtual_field' => true,
+                'template' => 'admin/event/list_assembly.html.twig',
+                'header_style' => 'min-width: 150px',
             ])
             ->add('name', null, [
                 'label' => 'Nom',
+                'header_style' => 'min-width: 150px',
             ])
-            ->add('committee', null, [
-                'label' => 'Comité organisateur',
+            ->add('_instance', null, [
+                'label' => 'Instance organisatrice',
                 'virtual_field' => true,
-                'template' => 'admin/event/list_committee.html.twig',
-            ])
-            ->add('visibility', null, [
-                'label' => 'Visibilité',
-                'class' => EventVisibilityEnum::class,
+                'template' => 'admin/event/list_instance.html.twig',
+                'header_style' => 'min-width: 150px',
             ])
             ->add('organizer', null, [
                 'label' => 'Organisateur',
                 'template' => 'admin/event/list_organizer.html.twig',
             ])
-            ->add('beginAt', null, [
-                'label' => 'Date de début',
-            ])
-            ->add('_location', null, [
-                'label' => 'Lieu',
+            ->add('_informations', null, [
+                'label' => 'Informations',
                 'virtual_field' => true,
-                'template' => 'admin/event/list_location.html.twig',
+                'template' => 'admin/event/list_informations.html.twig',
+                'header_style' => 'min-width: 120px',
+            ])
+            ->add('visibility', null, [
+                'label' => 'Visibilité',
+                'class' => EventVisibilityEnum::class,
+                'template' => 'admin/event/list_visibility.html.twig',
             ])
             ->add('category', null, [
                 'label' => 'Catégorie',
-            ])
-            ->add('participantsCount', null, [
-                'label' => 'Participants',
-            ])
-            ->add('status', null, [
-                'label' => 'Statut',
-                'template' => 'admin/event/list_status.html.twig',
+                'template' => 'admin/event/list_category.html.twig',
+                'header_style' => 'min-width: 150px',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/event/list_actions.html.twig',
+            ])
+            ->add('sendInvitationEmail', null, [
+                'label' => 'Invitation auto',
+                'template' => 'admin/event/list_sendInvitationEmail.html.twig',
+            ])
+            ->add('beginAt', null, [
+                'label' => 'Date de début',
+                'header_style' => 'min-width: 150px',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créé le',
+                'header_style' => 'min-width: 150px',
+            ])
+            ->add('updatedAt', null, [
+                'label' => 'Modifié le',
+                'header_style' => 'min-width: 150px',
             ])
         ;
     }
@@ -362,16 +443,47 @@ class EventAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [
-            'Date' => 'beginAt',
-            'Titre' => 'name',
-            'Organisateur' => 'organizer.getFullName',
-            'Catégorie' => 'category',
-            'Ville' => 'cityName',
-            'Code Postal' => 'postalCode',
-            'Nombre d\'inscrits' => 'participantsCount',
-            'Date de création' => 'createdAt',
-            'Date de modification' => 'updatedAt',
-        ];
+        return [IteratorCallbackDataSource::CALLBACK => function (array $event) {
+            /** @var Event $event */
+            $event = $event[0];
+
+            $organizer = $event->getOrganizer();
+
+            try {
+                return [
+                    'UUID' => $event->getUUID()->toString(),
+                    'Région' => implode(', ', array_map(function (Zone $zone): string {
+                        return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+                    }, $event->getParentZonesOfType(Zone::REGION))),
+                    'Assemblée' => ($assemblyZone = $event->getAssemblyZone())
+                        ? \sprintf('%s (%s)', $assemblyZone->getName(), $assemblyZone->getCode())
+                        : null,
+                    'Nom' => $event->getName(),
+                    'Annulé' => $event->isCancelled() ? 'oui' : 'non',
+                    'Instance organisatrice' => $event->getAuthorZone(),
+                    'Numéro adhérent organisateur' => $organizer?->getPublicId(),
+                    'Prénom organisateur' => $organizer?->getFirstName(),
+                    'Nom organisateur' => $organizer?->getLastName(),
+                    'Rôle organisateur' => $event->getAuthorRole(),
+                    'Lien de visio' => $event->getVisioUrl(),
+                    'Lien de live' => $event->liveUrl,
+                    'Visibilité' => $this->translator->trans('event.visibility.'.$event->visibility->value),
+                    'Date de début' => $event->getBeginAt()?->format('d/m/Y H:i:s'),
+                    'Date de fin' => $event->getFinishAt()?->format('d/m/Y H:i:s'),
+                    'Date de création' => $event->getCreatedAt()?->format('d/m/Y H:i:s'),
+                    'Date de dernière modification' => $event->getUpdatedAt()?->format('d/m/Y H:i:s'),
+                ];
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    \sprintf('Error exporting Event with UUID: %s. (%s)', $event->getUuid()->toString(), $e->getMessage()),
+                    ['exception' => $e]
+                );
+
+                return [
+                    'UUID' => $event->getUuid()->toString(),
+                    'Nom' => $event->getName(),
+                ];
+            }
+        }];
     }
 }

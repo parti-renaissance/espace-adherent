@@ -6,11 +6,6 @@
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Éditer
         </a>
-
-        <a href="{{ path('admin_app_event_event_show', {id: object.id}) }}" class="btn btn-xs btn-default" title="Afficher">
-            <i class="fa fa-search-plus" aria-hidden="true"></i>
-            Afficher
-        </a>
     </div>
 
     {% if object.isPublished %}
@@ -22,4 +17,12 @@
             </a>
         </div>
     {% endif %}
+
+    <div style="width: 160px; margin-top: 5px;">
+        <a href="{{ path('admin_app_event_eventregistration_list', {filter: {event: {value: [object.id]}}}) }}"
+           class="btn btn-xs btn-default" title="Voir sur le site" target="_blank">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Participants
+        </a>
+    </div>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'admin/list/list_author.html.twig' %}
+
+{% block field %}
+    {% if object.visioUrl %}
+        <a href="{{ object.visioUrl }}" target="_blank" class="sonata-action-element">
+            Lien de visio <i class="fa fa-external-link"></i>
+        </a>
+    {% endif %}
+
+    {% if object.liveUrl %}
+        {% if object.visiourl %}
+            <br />
+        {% endif %}
+
+        <a href="{{ object.liveUrl }}" target="_blank" class="sonata-action-element">
+            Lien de live <i class="fa fa-external-link"></i>
+        </a>
+    {% endif %}
+{% endblock %}

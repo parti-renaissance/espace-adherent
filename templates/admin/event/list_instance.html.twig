@@ -1,0 +1,17 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.authorZone %}
+        {% if object.committee and is_granted('ROLE_APP_ADMIN_COMMITTEE_EDIT') %}
+            <a href="{{ path('admin_app_committee_edit', {id: object.committee.id}) }}" title="Comité">
+                {{ object.authorZone }} <i class="fa fa-external-link"></i>
+            </a>
+        {% elseif object.agora and is_granted('ROLE_APP_ADMIN_AGORA_EDIT') %}
+            <a href="{{ path('admin_app_agora_edit', {id: object.agora.id}) }}" title="Agora">
+                {{ object.authorZone }} <i class="fa fa-external-link"></i>
+            </a>
+        {% else %}
+            {{ object.authorZone }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
