@@ -272,7 +272,7 @@ class EventRegistrationAdmin extends AbstractAdmin
                             ])
                         )
                     ),
-                    'Code postal' => $adherent ? $adherent->getPostalCode() : $eventRegistration->getPostalCode(),
+                    'Code postal' => $eventRegistration->getPostalCode(),
                     'UUID événement' => $event->getUuid()->toString(),
                     'Nom de l\'événement' => $event->getName(),
                     'Instance liée' => $event->getAuthorInstance(),
