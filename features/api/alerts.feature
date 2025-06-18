@@ -28,7 +28,7 @@ Feature:
                     "description": "",
                     "cta_label": "Je réserve ma place",
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fcampus",
-                    "image_url": null,
+                    "image_url": "http://test.renaissance.code/assets/uploads/@string@",
                     "data": null,
                     "share_url": "http://inscription.besoindeurope.code/grand-rassemblement/campus/@string@"
                 },

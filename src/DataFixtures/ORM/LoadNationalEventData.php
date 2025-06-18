@@ -65,6 +65,12 @@ class LoadNationalEventData extends Fixture
         $event->intoImage = new UploadableFile();
         $event->intoImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/campus/campus-illustration.png', 'campus-illustration.png', 'image/png', null, true));
 
+        $event->ogImage = new UploadableFile();
+        $event->ogImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/campus/campus-illustration.png', 'campus-illustration.png', 'image/png', null, true));
+
+        $event->logoImage = new UploadableFile();
+        $event->logoImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/campus/campus-illustration.png', 'campus-illustration.png', 'image/png', null, true));
+
         $formatter = new \IntlDateFormatter(
             'fr_FR',
             \IntlDateFormatter::FULL,

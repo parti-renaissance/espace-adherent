@@ -11,6 +11,7 @@ use App\Repository\NationalEvent\NationalEventRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 class MeetingProvider implements AlertProviderInterface
 {
@@ -20,6 +21,7 @@ class MeetingProvider implements AlertProviderInterface
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Security $security,
+        private readonly UploaderHelperInterface $uploaderHelper,
     ) {
     }
 
@@ -40,13 +42,14 @@ class MeetingProvider implements AlertProviderInterface
             ]) : $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]);
 
             if ($event->ogImage) {
-                $imageUrl = $this->generateUrl('asset_url', ['path' => $event->ogImage->getPath()]);
+                $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->ogImage))]);
             }
 
             if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event, InscriptionStatusEnum::REFUSED)) {
                 if ($event->logoImage) {
-                    $imageUrl = $this->generateUrl('asset_url', ['path' => $event->logoImage->getPath()]);
+                    $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->logoImage))]);
                 }
+
                 $ctaLabel = 'Billet bientôt disponible';
                 $ctaUrl = null;
 

@@ -607,3 +607,5 @@ services:
                   entity: 'App\Entity\Jecoute\News',
                   event: 'postRemove',
               }
+
+    Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface: '@Vich\UploaderBundle\Templating\Helper\UploaderHelper'
