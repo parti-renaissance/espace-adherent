@@ -14,16 +14,19 @@ class PaymentStatus
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    #[ORM\ManyToOne(targetEntity: EventInscription::class, inversedBy: 'paymentStatuses')]
-    public EventInscription $inscription;
+    #[ORM\ManyToOne(inversedBy: 'statuses')]
+    public Payment $payment;
+
+    #[ORM\ManyToOne]
+    public ?EventInscription $inscription = null;
 
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
-    public function __construct(EventInscription $inscription, array $payload = [])
+    public function __construct(Payment $payment, array $payload = [])
     {
         $this->uuid = Uuid::uuid4();
-        $this->inscription = $inscription;
+        $this->payment = $payment;
         $this->payload = $payload;
     }
 

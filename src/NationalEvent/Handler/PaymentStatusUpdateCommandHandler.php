@@ -2,12 +2,13 @@
 
 namespace App\NationalEvent\Handler;
 
-use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\Payment;
 use App\Entity\NationalEvent\PaymentStatus;
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
 use App\NationalEvent\Event\SuccessPaymentEvent;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,6 +21,7 @@ class PaymentStatusUpdateCommandHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly EventInscriptionRepository $inscriptionRepository,
+        private readonly PaymentRepository $paymentRepository,
     ) {
     }
 
@@ -27,17 +29,18 @@ class PaymentStatusUpdateCommandHandler
     {
         $payload = $command->payload;
 
-        if (empty($inscriptionUuid = ($payload['COMPLUS'] ?? null)) || !Uuid::isValid($inscriptionUuid)) {
+        if (empty($paymentUuid = ($payload['orderID'] ?? null)) || !Uuid::isValid($paymentUuid)) {
             return;
         }
 
-        $inscription = $this->inscriptionRepository->findOneByUuid($inscriptionUuid);
-
-        if (!$inscription instanceof EventInscription) {
+        $payment = $this->paymentRepository->findOneByUuid($paymentUuid);
+        if (!$payment instanceof Payment) {
             return;
         }
 
-        $inscription->addPaymentStatus($paymentStatus = new PaymentStatus($inscription, $payload));
+        $inscription = $payment->inscription;
+
+        $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload));
 
         $this->entityManager->flush();
 
