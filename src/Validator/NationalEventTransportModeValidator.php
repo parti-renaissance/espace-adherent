@@ -41,6 +41,13 @@ class NationalEventTransportModeValidator extends ConstraintValidator
         }
 
         if (null === $value->transport) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageTransportMissing)
+                ->atPath('transport')
+                ->addViolation()
+            ;
+
             return;
         }
 

@@ -188,6 +188,21 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
                 'postalCode' => '75001',
                 'visitDay' => 'jour_1_et_2',
+            ],
+        ]);
+
+        $this->assertStringContainsString('Veillez sélectionner le forfait.', $crawler->filter('body')->text());
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_1_et_2',
                 'transport' => 'bus',
             ],
         ]);
@@ -215,7 +230,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $this->assertStringContainsString('Le quota de places pour ce mode de transport est atteint.', $crawler->filter('body')->text());
 
-        $crawler = $this->client->submit($form, [
+        $this->client->submit($form, [
             'campus_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
