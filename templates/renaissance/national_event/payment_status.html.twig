@@ -5,7 +5,16 @@
 {% block content %}
     <twig:ReStandaloneLayout class="bg-ui_gray-5">
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {% if status == 'cancel' %}
+            {% if status == 'limit' %}
+                <twig:ReParagraphStatus status="warning" icon="warning" class="w-full justify-center" slim="true">
+                    Un problème est survenu
+                </twig:ReParagraphStatus>
+
+                <p class="text-ui_gray-80 font-medium">Pour des raisons de sécurité, nous limitons le nombre de tentatives de paiement.
+                    Pas d’inquiétude, vous pourrez réessayer dans quelques instants.</p>
+
+                <twig:ReButton tag="a" href="{{ path('app_national_event_payment', {slug: event.slug, uuid: inscription.uuid}) }}" color="blue">Retourner vers la page de paiement</twig:ReButton>
+            {% elseif status == 'cancel' %}
                 <twig:ReParagraphStatus status="warning" icon="warning" class="w-full justify-center" slim="true">
                     Un problème est survenu
                 </twig:ReParagraphStatus>

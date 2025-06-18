@@ -1,0 +1,37 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Paiement' %}
+
+{% form_theme form with 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="bg-ui_gray-5">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+            <div class="hidden flex-col items-center" id="app-redirect-loader">
+                <twig:ReParagraphStatus status="info" class="w-full justify-center" slim="true">
+                    Redirection en cours...
+                </twig:ReParagraphStatus>
+
+                <div class="relative flex h-6 w-6 items-center justify-center my-12">
+                    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
+                    <div class="relative inline-flex rounded-full h-5 w-5 bg-sky-500"></div>
+                </div>
+
+                <div class="font-medium">Vous allez être redirigé vers la banque...</div>
+            </div>
+
+            <div class="self-center">{{ form(form, {attr: {id: 'app-redirect-form'}}) }}</div>
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            dom('#app-redirect-loader').style.display = 'flex';
+            var form = dom('#app-redirect-form');
+            form.style.display = 'none';
+            form.submit();
+        });
+    </script>
+{% endblock %}

@@ -5,6 +5,11 @@ framework:
             limit: 3
             interval: '1 minute'
 
+        payment_retry:
+            policy: 'sliding_window'
+            limit: 5
+            interval: '30 minute'
+
         change_email:
             policy: 'sliding_window'
             limit: 3
