@@ -69,6 +69,13 @@
                         Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
                     </div>
 
+                    {% if enable_connexion_widget %}
+                        <div class="text-center">
+                            Adhérent ou sympathisant ?<br/>
+                            <a href="{{ login_path_for_anonymous_follower() }}" class="text-ui_blue-50">Connectez-vous</a> pour faciliter votre inscription.
+                        </div>
+                    {% endif %}
+
                     {{ form_errors(form) }}
 
                     <div class="flex-col flex gap-4">

@@ -12,6 +12,7 @@ use App\NationalEvent\EventInscriptionHandler;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Utils\UtmParams;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,14 +34,19 @@ class EventInscriptionController extends AbstractController
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EventInscriptionHandler $eventInscriptionHandler,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly AnonymousFollowerSession $anonymousFollowerSession,
         private readonly string $friendlyCaptchaEuropeSiteKey,
     ) {
     }
 
-    public function __invoke(Request $request, string $app_domain, ?NationalEvent $event = null, ?string $referrerCode = null, #[CurrentUser] ?Adherent $user = null): Response
+    public function __invoke(Request $request, string $userVoxHost, string $app_domain, ?NationalEvent $event = null, ?string $referrerCode = null, #[CurrentUser] ?Adherent $user = null): Response
     {
         if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
             return $this->redirectToRoute('renaissance_site');
+        }
+
+        if ($response = $this->anonymousFollowerSession->start($request)) {
+            return $response;
         }
 
         $session = $request->getSession();
@@ -95,6 +101,7 @@ class EventInscriptionController extends AbstractController
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'is_open' => $isOpen,
+            'enable_connexion_widget' => !$user && $userVoxHost === $app_domain,
         ]);
     }
 
