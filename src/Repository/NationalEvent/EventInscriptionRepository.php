@@ -5,8 +5,10 @@ namespace App\Repository\NationalEvent;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\InscriptionReminder;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\PushToken;
+use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
@@ -285,5 +287,57 @@ class EventInscriptionRepository extends ServiceEntityRepository
         }
 
         return array_column($qb->getQuery()->getResult(), 'count', 'transport');
+    }
+
+    public function findAllWithPendingPayments(\DateTime $now): array
+    {
+        return $this->createQueryBuilder('ei')
+            ->select('PARTIAL ei.{id, uuid}')
+            ->leftJoin(InscriptionReminder::class, 'r', Join::WITH, "r.inscription = ei AND r.type = (
+                CASE WHEN ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) < 60 THEN 'payment_10'
+                WHEN ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) < 360 THEN 'payment_60'
+                WHEN ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) < 720 THEN 'payment_360'
+                ELSE 'payment_1200' END
+            )")
+            ->where('ei.status = :status')
+            ->andWhere('r.id IS NULL')
+            ->andWhere('ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) > 10')
+            ->setParameter('now', $now)
+            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function cancelWaitingPayments(\DateTime $now): void
+    {
+        $ids = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('DISTINCT ei.id')
+            ->from(InscriptionReminder::class, 'r')
+            ->innerJoin('r.inscription', 'ei')
+            ->where('r.type = :reminder_type AND ei.status = :status')
+            ->andWhere('ROUND(TIMESTAMPDIFF(HOUR, ei.createdAt, :now)) > 30')
+            ->setParameter('reminder_type', InscriptionReminderTypeEnum::PAYMENT_20H)
+            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+
+        $this->createQueryBuilder('ei')
+            ->update()
+            ->set('ei.status', ':new_status')
+            ->where('ei.status = :status')
+            ->andWhere('ROUND(TIMESTAMPDIFF(HOUR, ei.createdAt, :now)) > 30')
+            ->andWhere('ei.id IN (:ids)')
+            ->setParameter('new_status', InscriptionStatusEnum::CANCELED)
+            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->setParameter('now', $now)
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->execute()
+        ;
     }
 }
