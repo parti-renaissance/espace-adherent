@@ -4,6 +4,7 @@ namespace App\NationalEvent\Payment;
 
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\String\UnicodeString;
 
 class RequestParamsBuilder
 {
@@ -22,7 +23,7 @@ class RequestParamsBuilder
             'AMOUNT' => $inscription->transportCosts, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',
-            'CN' => $inscription->firstName.' '.$inscription->lastName,
+            'CN' => (new UnicodeString($inscription->firstName.' '.$inscription->lastName))->ascii(),
             'EMAIL' => $inscription->addressEmail,
             'ACCEPTURL' => $backUrl.'?status=success',
             'DECLINEURL' => $backUrl.'?status=error',
