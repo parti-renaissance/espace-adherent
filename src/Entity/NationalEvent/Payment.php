@@ -17,6 +17,7 @@ class Payment
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(inversedBy: 'payments')]
     public EventInscription $inscription;
 
