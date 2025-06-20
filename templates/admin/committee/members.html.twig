@@ -1,5 +1,54 @@
 {% extends 'admin/layout.html.twig' %}
 
+{% import 'admin/macros/labels.html.twig' as ui %}
+
+{% macro render_members_table(title, memberships) %}
+    <div class="box box-primary">
+        <div class="box-header with-border"><h3 class="box-title">{{ title }}</h3></div>
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-striped sonata-ba-list committee-members">
+                <thead>
+                <tr>
+                    <th>Membre</th>
+                    <th>Labels</th>
+                    <th>Date d'entrée</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for membership in memberships %}
+                    {% set adherent = membership.adherent %}
+                    <tr>
+                        <td>
+                            {{ include('admin/adherent/display_fullname_certified.html.twig', {object: adherent}) }}
+                        </td>
+                        <td>
+                            {% for tag in adherent.tags %}
+                                {% if tag starts with 'adherent:' %}
+                                    {{ ui.label(
+                                        translate_tag(tag, false),
+                                        adherent.hasActiveMembership() ? '#ffeccc' : '#d6e7ff',
+                                        adherent.hasActiveMembership() ? '#8e681e' : '#0f72bd',
+                                    ) }}
+                                {% elseif tag starts with 'sympathisant:' %}
+                                    {{ ui.label(
+                                        translate_tag(tag, false),
+                                        '#e3f8ff',
+                                        '#4890a8',
+                                    ) }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {{ membership.subscriptionDate|date('d/m/Y H:i') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endmacro %}
+
 {% block sonata_page_content_header %}
     <div class="sticky-wrapper">
         <nav class="navbar navbar-default" role="navigation" style="width: auto;">
@@ -37,93 +86,15 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-10">
-            <div class="box box-primary">
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-bordered table-striped sonata-ba-list committee-members">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Id
-                                </th>
-                                <th>
-                                    Membre
-                                </th>
-                                <th>
-                                    Civilité
-                                </th>
-                                <th>
-                                    Rôle
-                                </th>
-                                <th>
-                                    Date de membership
-                                </th>
-                                <th>
-                                    Comité de vote
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) %}
-                            {% set member = membership.adherent %}
-                            {% set token = csrf_token('committee.change_privilege.' ~ member.id) %}
-                            {% set mandateToken = csrf_token('committee.change_mandate.' ~ member.id) %}
+            {{ _self.render_members_table(
+                'Membres (adhérents)',
+                memberships|filter(m => m.adherent and m.adherent.isRenaissanceAdherent),
+            ) }}
 
-                            <tr>
-                                <td>
-                                    {{ membership.id }}
-                                </td>
-                                <td>
-                                    <a href="{{ path('admin_app_adherent_show', {id: member.id}) }}">
-                                        {{ member.fullName }}
-                                    </a>
-                                    <br />
-                                    {{ member.emailAddress }}
-                                </td>
-                                <td>
-                                    {{ member.gender ? ('common.gender.' ~ member.gender)|trans }}
-                                </td>
-                                <td>
-                                    {% if membership.isSupervisor(false) %}
-                                        <span class="label label-primary">Animateur</span>
-                                    {% elseif membership.isSupervisor(true) %}
-                                        <span class="label label-primary">Animateur provisoire</span>
-                                    {% elseif membership.isHostMember %}
-                                        <span class="label label-primary">Co-animateur</span>
-                                    {% endif %}
-                                    {% if member.id in active_mandates_adherent_ids %}
-                                        <span class="label label-warning">Adhérent désigné</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {{ membership.subscriptionDate|date('d/m/Y H:i') }}
-                                </td>
-                                <td>
-                                    {{ (membership.votingCommittee ? 'global.yes' : 'global.no')|trans }}
-                                </td>
-                                <td>
-                                    {% if committee.isApproved %}
-                                        {% if membership.isFollower and can_add_host %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', {committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token}) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en co-animateur
-                                            </a>
-                                        {% elseif membership.isHostMember %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', {committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_FOLLOWER', membership), token: token}) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en membre normal
-                                            </a>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {{ _self.render_members_table(
+                'Non-membres (sympathisants)',
+                memberships|filter(m => m.adherent and not m.adherent.isRenaissanceAdherent),
+            ) }}
         </div>
     </div>
 {% endblock %}
