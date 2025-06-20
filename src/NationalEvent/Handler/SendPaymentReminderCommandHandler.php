@@ -57,7 +57,7 @@ class SendPaymentReminderCommandHandler
                 'slug' => $eventInscription->event->getSlug(),
                 'uuid' => $eventInscription->getUuid()->toString(),
                 'app_domain' => $this->userVoxHost,
-            ])
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
         $this->entityManager->persist(new InscriptionReminder($eventInscription, $reminderType));
 

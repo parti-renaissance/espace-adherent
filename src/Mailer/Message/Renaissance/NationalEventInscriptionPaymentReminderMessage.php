@@ -34,6 +34,7 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
                 'primary_link' => $finalizeUrl,
                 'amount' => $eventInscription->transportCosts / 100,
                 'transport_title' => $selectedTransportConfig['titre'],
+                'cancellation_date' => (clone $eventInscription->getCreatedAt())->modify(\sprintf('+%d hours', EventInscription::CANCELLATION_DELAY_IN_HOUR + 20))->format('d/m/Y à H:i'),
             ],
         );
     }

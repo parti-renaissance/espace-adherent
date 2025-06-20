@@ -322,7 +322,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->andWhere('r.createdAt < :since')
             ->setParameter('reminder_type', InscriptionReminderTypeEnum::PAYMENT_20H)
             ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
-            ->setParameter('since', (clone $now)->modify('-30 hours'))
+            ->setParameter('since', (clone $now)->modify(\sprintf('-%d hours', EventInscription::CANCELLATION_DELAY_IN_HOUR)))
             ->getQuery()
             ->getSingleColumnResult()
         ;
