@@ -4,9 +4,11 @@ namespace App\History\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Committee;
 use App\History\AdministratorActionEvent;
 use App\History\AdministratorActionEvents;
 use App\History\AdministratorActionHistoryHandler;
+use App\History\AdministratorCommitteeActionEvent;
 use App\Utils\ArrayUtils;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,6 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AdministratorActionHistorySubscriber implements EventSubscriberInterface
 {
     private array $userBeforeUpdate = [];
+    private array $committeeBeforeUpdate = [];
 
     public function __construct(
         private readonly Security $security,
@@ -38,6 +41,10 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
             KernelEvents::RESPONSE => ['onKernelResponse', -4096],
             AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE => ['onAdherentProfileBeforeUpdate', -4096],
             AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE => ['onAdherentProfileAfterUpdate', -4096],
+            AdministratorActionEvents::ADMIN_COMMITTEE_BEFORE_UPDATE => ['onCommitteeBeforeUpdate', -4096],
+            AdministratorActionEvents::ADMIN_COMMITTEE_AFTER_UPDATE => ['onCommitteeAfterUpdate', -4096],
+            AdministratorActionEvents::ADMIN_COMMITTEE_CREATE => ['onCommitteeCreate', -4096],
+            AdministratorActionEvents::ADMIN_COMMITTEE_DELETE => ['onCommitteeDelete', -4096],
         ];
     }
 
@@ -130,6 +137,62 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         $this->administratorActionHistoryHandler->createAdherentProfileUpdate($event->administrator, $adherent, $diff);
     }
 
+    public function onCommitteeBeforeUpdate(AdministratorCommitteeActionEvent $event): void
+    {
+        if (!$committee = $event->committee) {
+            return;
+        }
+
+        $this->committeeBeforeUpdate = $this->transformCommitteeToArray($committee);
+    }
+
+    public function onCommitteeAfterUpdate(AdministratorCommitteeActionEvent $event): void
+    {
+        if (!$committee = $event->committee) {
+            return;
+        }
+
+        $diff = ArrayUtils::arrayDiffRecursive(
+            $this->committeeBeforeUpdate,
+            $afterUpdate = $this->transformCommitteeToArray($committee),
+            true
+        );
+
+        if (empty($diff)) {
+            return;
+        }
+
+        $this->administratorActionHistoryHandler->createCommitteeUpdate($event->administrator, $committee, $this->committeeBeforeUpdate, $afterUpdate);
+
+        $filteredBefore = array_intersect_key($this->committeeBeforeUpdate, $diff);
+        $filteredAfter = array_intersect_key($afterUpdate, $diff);
+
+        $this->administratorActionHistoryHandler->createCommitteeUpdate(
+            $event->administrator,
+            $committee,
+            $filteredBefore,
+            $filteredAfter
+        );
+    }
+
+    public function onCommitteeCreate(AdministratorCommitteeActionEvent $event): void
+    {
+        if (!$committee = $event->committee) {
+            return;
+        }
+
+        $this->administratorActionHistoryHandler->createCommitteeCreate($event->administrator, $committee);
+    }
+
+    public function onCommitteeDelete(AdministratorCommitteeActionEvent $event): void
+    {
+        if (!$committee = $event->committee) {
+            return;
+        }
+
+        $this->administratorActionHistoryHandler->createCommitteeDelete($event->administrator, $committee);
+    }
+
     private function transformAdherentToArray(Adherent $adherent): array
     {
         return $this->normalizer->normalize(
@@ -141,5 +204,33 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
                 ],
             ]
         );
+    }
+
+    private function transformCommitteeToArray(Committee $committee): array
+    {
+        return $this->normalizer->normalize(
+            $committee,
+            'array',
+            [
+                'groups' => [
+                    'admin_committee_update',
+                ],
+            ]
+        );
+    }
+
+    private function filterArrayByDiff(array $source, array $diff): array
+    {
+        $result = [];
+
+        foreach ($diff as $key => $value) {
+            if (\is_array($value) && isset($source[$key]) && \is_array($source[$key])) {
+                $result[$key] = $this->filterArrayByDiff($source[$key], $value);
+            } elseif (\array_key_exists($key, $source)) {
+                $result[$key] = $source[$key];
+            }
+        }
+
+        return $result;
     }
 }

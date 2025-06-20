@@ -9,9 +9,12 @@ use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\Event\BeforeEditCommitteeEvent;
 use App\Committee\Event\EditCommitteeEvent;
+use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\RenaissanceAdherentAutocompleteType;
+use App\History\AdministratorActionEvents;
+use App\History\AdministratorCommitteeActionEvent;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -31,6 +34,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -39,10 +43,13 @@ class CommitteeAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
+    protected ?Committee $beforeUpdate = null;
+
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly TagTranslator $tagTranslator,
         private readonly EventDispatcherInterface $dispatcher,
+        private readonly Security $security,
     ) {
         parent::__construct();
     }
@@ -143,14 +150,56 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param Committee $object
+     */
     protected function alterObject(object $object): void
     {
         $this->dispatcher->dispatch(new BeforeEditCommitteeEvent($object));
+
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $object;
+
+            $this->dispatcher->dispatch(
+                new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
+                AdministratorActionEvents::ADMIN_COMMITTEE_BEFORE_UPDATE
+            );
+        }
     }
 
+    /**
+     * @param Committee $object
+     */
     protected function postUpdate(object $object): void
     {
         $this->dispatcher->dispatch(new EditCommitteeEvent($object));
+
+        $this->dispatcher->dispatch(
+            new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
+            AdministratorActionEvents::ADMIN_COMMITTEE_AFTER_UPDATE
+        );
+    }
+
+    /**
+     * @param Committee $object
+     */
+    protected function postPersist(object $object): void
+    {
+        $this->dispatcher->dispatch(
+            new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
+            AdministratorActionEvents::ADMIN_COMMITTEE_CREATE
+        );
+    }
+
+    /**
+     * @param Committee $object
+     */
+    protected function postRemove(object $object): void
+    {
+        $this->dispatcher->dispatch(
+            new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
+            AdministratorActionEvents::ADMIN_COMMITTEE_DELETE
+        );
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -476,5 +525,10 @@ class CommitteeAdmin extends AbstractAdmin
                 ];
             }
         }];
+    }
+
+    private function getAdministrator(): Administrator
+    {
+        return $this->security->getUser();
     }
 }

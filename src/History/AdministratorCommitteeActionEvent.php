@@ -2,16 +2,14 @@
 
 namespace App\History;
 
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class AdministratorActionEvent extends Event
+class AdministratorCommitteeActionEvent extends Event
 {
     public function __construct(
         public readonly Administrator $administrator,
-        public readonly ?Adherent $adherent = null,
         public readonly ?Committee $committee = null,
     ) {
     }
