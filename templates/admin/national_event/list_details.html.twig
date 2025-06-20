@@ -1,0 +1,34 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% set items = [] %}
+    {% if object.visitDay %}
+        {% set visit_day_config = object.getVisitDayConfig() %}
+        {% if visit_day_config %}
+            {% set items = items|merge([visit_day_config.titre]) %}
+        {% endif %}
+    {% endif %}
+    {% if object.transport %}
+        {% set transport_config = object.getTransportConfig() %}
+        {% if transport_config %}
+            {% set items = items|merge([transport_config.titre]) %}
+        {% endif %}
+    {% endif %}
+    {% if object.volunteer %}
+        {% set items = items|merge(['Souhaite être bénévole']) %}
+    {% endif %}
+    {% if object.isJAM %}
+        {% set items = items|merge(['Est JAM']) %}
+    {% endif %}
+    {% if object.accessibility %}
+        {% set items = items|merge(['A un handicap']) %}
+    {% endif %}
+
+    {% if items|length %}
+        <ul class="list-disc pl-5">
+            {% for item in items %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

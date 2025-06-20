@@ -116,13 +116,9 @@ services:
     App\:
         resource: '../src/*'
         exclude:
-            - '../src/Admin'
-            - '../src/DependencyInjection'
             - '../src/Entity'
             - '../src/Exception'
             - '../src/Kernel.php'
-            - '../src/Mailchimp'
-            - '../src/Monolog'
 
     App\Twig\AssetRuntime:
         arguments:

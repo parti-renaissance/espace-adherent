@@ -104,6 +104,12 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('lastName', null, ['label' => 'Nom'])
             ->add('addressEmail', null, ['label' => 'E-mail'])
             ->add('postalCode', null, ['label' => 'Code postal'])
+            ->add('details', null, [
+                'label' => 'Détails',
+                'virtual_field' => true,
+                'template' => 'admin/national_event/list_details.html.twig',
+                'header_style' => 'min-width: 300px;',
+            ])
             ->add('status', 'trans', ['label' => 'Statut'])
             ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('adherent.tags', null, ['label' => 'Labels', 'template' => 'admin/national_event/list_adherent_tags.html.twig'])
