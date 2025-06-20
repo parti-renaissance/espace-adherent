@@ -7,7 +7,6 @@ use App\Entity\NationalEvent\PaymentStatus;
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
 use App\NationalEvent\Event\SuccessPaymentEvent;
 use App\NationalEvent\InscriptionStatusEnum;
-use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
@@ -20,7 +19,6 @@ class PaymentStatusUpdateCommandHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly EventInscriptionRepository $inscriptionRepository,
         private readonly PaymentRepository $paymentRepository,
     ) {
     }
