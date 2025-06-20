@@ -4,6 +4,7 @@ namespace App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\Payment\RequestParamsBuilder;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/{slug}/{uuid}/paiement/statut', name: 'app_national_event_payment_status', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+#[Route('/{slug}/{uuid}/paiement/statut', name: 'app_national_event_payment_status', requirements: ['slug' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class PaymentStatusController extends AbstractController
 {
     public function __invoke(
@@ -24,6 +25,10 @@ class PaymentStatusController extends AbstractController
         $status = $request->query->get('status', 'unknown');
 
         if ('success' === $status) {
+            if (NationalEventTypeEnum::CAMPUS === $event->type) {
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
+            }
+
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug()]);
         }
 

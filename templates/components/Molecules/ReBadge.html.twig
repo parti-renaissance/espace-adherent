@@ -1,0 +1,12 @@
+<div
+     class="{{ this.tw(
+         're-badge',
+         this.props.status.twig ? 're-badge--' ~ this.props.status.twig : '',
+     ) }}"
+>
+    {% if icon %}
+        <twig:ReIcon name="{{ icon|length > 1 ? icon : status }}" />
+    {% endif %}
+
+    <div>{% block content '' %}</div>
+</div>

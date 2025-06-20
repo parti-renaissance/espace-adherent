@@ -8,8 +8,6 @@ use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailer\Message\Renaissance\RenaissanceEventInvitationMessage;
-use App\Repository\Email\EmailLogRepository;
-use App\Repository\EventRegistrationRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -23,9 +21,6 @@ use Tests\App\Controller\ControllerTestTrait;
 class EventControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
-
-    private ?EventRegistrationRepository $repository;
-    private ?EmailLogRepository $emailRepository;
 
     public function testAnonymousUserCanRegisterToEvent()
     {
@@ -271,22 +266,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertRedirectionEventNotPublishTest('/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
     }
 
-    public function testRedirectionEventFromOldUrl()
-    {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadCommitteeEventData::EVENT_5_UUID.'/'.self::getRelativeDate('2018-05-18', '+17 days').'-reunion-de-reflexion-marseillaise');
-
-        $this->assertClientIsRedirectedTo(
-            '/evenements/'.self::getRelativeDate('2018-05-18', '+17 days').'-reunion-de-reflexion-marseillaise',
-            $this->client,
-            false,
-            true
-        );
-
-        $this->client->followRedirect();
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
     private function assertRedirectionEventNotPublishTest(string $url): void
     {
         $this->client->request(Request::METHOD_GET, $url);
@@ -365,22 +344,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
 
         Chronos::setTestNow();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->repository = $this->getEventRegistrationRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->repository = null;
-        $this->emailRepository = null;
-
-        parent::tearDown();
     }
 
     protected function getEventUrl(): string

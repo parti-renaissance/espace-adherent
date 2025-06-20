@@ -84,7 +84,7 @@
                             {% endif %}
 
                             <div class="gap-2">
-                                <p><span class="font-bold">Prénom Nom :</span> {{ referral.getCivilityAlias() }} {{ referral.firstName }} {{ referral.lastName }}</p>
+                                <p><span class="font-bold">Prénom Nom :</span> {{ referral.civility|civility_alias }} {{ referral.firstName }} {{ referral.lastName }}</p>
                                 <p><span class="font-bold">Email :</span> {{ referral.emailAddress }}</p>
 
                                 {% if referral.phone %}

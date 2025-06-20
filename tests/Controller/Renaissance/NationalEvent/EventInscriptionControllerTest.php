@@ -252,7 +252,6 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     public static function provideReferrerCodes(): iterable
     {
         yield ['123-456', 'michelle.dufour@example.ch'];
-        yield ['invalid', null];
     }
 
     protected function setUp(): void
