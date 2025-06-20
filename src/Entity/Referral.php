@@ -186,15 +186,6 @@ class Referral implements ZoneableEntityInterface
         $this->birthdate = $adherent->getBirthdate();
     }
 
-    public function getCivilityAlias(): string
-    {
-        return match ($this->civility) {
-            CivilityEnum::Monsieur => 'M',
-            CivilityEnum::Madame => 'Mme',
-            default => '',
-        };
-    }
-
     public function hasFullInformations(): bool
     {
         return null !== $this->lastName

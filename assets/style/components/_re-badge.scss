@@ -1,0 +1,11 @@
+.re-badge {
+    @apply flex gap-1 rounded-full items-center leading-none py-[6px] px-2 text-center justify-center border text-xs font-medium;
+
+    &--default {
+        @apply text-[#555555] bg-[rgba(221,221,221,0.10)] border-[#D1D5DA]
+    }
+
+    &--info {
+        @apply text-ui_blue-60 border-ui_blue-20 bg-ui_blue-5;
+    }
+}

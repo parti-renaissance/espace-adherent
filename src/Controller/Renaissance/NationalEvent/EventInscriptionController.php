@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\NationalEvent;
 
-use App\Adherent\Referral\ReferralParams;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
@@ -23,8 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route('/{slug}', name: 'app_national_event_by_slug', methods: ['GET', 'POST'])]
-#[Route('/{slug}/{referrerCode}', name: 'app_national_event_by_slug_with_referrer', methods: ['GET', 'POST'])]
+#[Route('/{slug}', name: 'app_national_event_by_slug', requirements: ['slug' => '[^/]+'], methods: ['GET', 'POST'])]
+#[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => '%pattern_pid%'], methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
@@ -39,7 +38,7 @@ class EventInscriptionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $userVoxHost, string $app_domain, ?NationalEvent $event = null, ?string $referrerCode = null, #[CurrentUser] ?Adherent $user = null): Response
+    public function __invoke(Request $request, string $userVoxHost, string $app_domain, ?NationalEvent $event = null, ?string $pid = null, #[CurrentUser] ?Adherent $user = null): Response
     {
         if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
             return $this->redirectToRoute('renaissance_site');
@@ -58,7 +57,11 @@ class EventInscriptionController extends AbstractController
         $inscriptionRequest = new EventInscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
 
         if ($user) {
-            if ($this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
+            if ($existingInscription = $this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
+                if (NationalEventTypeEnum::CAMPUS === $event->type) {
+                    return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+                }
+
                 return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain, 'already-registered' => true]);
             }
 
@@ -75,8 +78,8 @@ class EventInscriptionController extends AbstractController
             $inscriptionRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
-        if ($referrerCode) {
-            $inscriptionRequest->referrerCode = ReferralParams::filterParameter($referrerCode);
+        if ($pid) {
+            $inscriptionRequest->referrerCode = $pid;
         }
 
         $isOpen = !$event->isComplete($inscriptionRequest->utmSource);
@@ -91,6 +94,10 @@ class EventInscriptionController extends AbstractController
 
             if ($inscription->isPaymentRequired()) {
                 return $this->redirectToRoute('app_national_event_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
+            }
+
+            if (NationalEventTypeEnum::CAMPUS === $event->type) {
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);

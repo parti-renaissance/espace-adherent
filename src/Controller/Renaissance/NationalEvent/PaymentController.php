@@ -18,7 +18,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[Route('/{slug}/{uuid}/paiement', name: 'app_national_event_payment', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
+#[Route('/{slug}/{uuid}/paiement', name: 'app_national_event_payment', requirements: ['slug' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
 class PaymentController extends AbstractController
 {
     public function __invoke(

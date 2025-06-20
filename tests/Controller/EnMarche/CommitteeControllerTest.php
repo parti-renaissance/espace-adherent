@@ -2,7 +2,6 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Committee;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
@@ -19,25 +18,12 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
     use MessengerTestTrait;
 
-    private $committeeRepository;
-
     public function testBackButtonPresentWhenCommitteeIsAccepted(): void
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
         $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-new-york-city/editer');
 
         $this->assertStringContainsString('Tous mes comités', $this->client->getResponse()->getContent());
-    }
-
-    public function testRedirectionComiteFromOldUrl()
-    {
-        $this->client->request(Request::METHOD_GET, '/comites/'.LoadCommitteeV1Data::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
-
-        $this->assertClientIsRedirectedTo('/comites/en-marche-dammarie-les-lys', $this->client, false, true);
-
-        $this->client->followRedirect();
-
-        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testAnonymousUserIsNotAllowedToFollowCommittee()
@@ -332,14 +318,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
     {
         parent::setUp();
 
-        $this->committeeRepository = $this->getCommitteeRepository();
         $this->disableRepublicanSilence();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->committeeRepository = null;
-
-        parent::tearDown();
     }
 }

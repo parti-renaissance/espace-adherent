@@ -266,4 +266,39 @@ class EventInscription
     {
         $this->payments->add($payment);
     }
+
+    public function getVisitDayConfig(): ?array
+    {
+        if (!$this->visitDay) {
+            return null;
+        }
+
+        foreach ($this->event->transportConfiguration['jours'] ?? [] as $day) {
+            if ($day['id'] === $this->visitDay) {
+                return $day;
+            }
+        }
+
+        return null;
+    }
+
+    public function getTransportConfig(): ?array
+    {
+        if (!$this->transport) {
+            return null;
+        }
+
+        foreach ($this->event->transportConfiguration['transports'] ?? [] as $transport) {
+            if ($transport['id'] === $this->transport) {
+                return $transport;
+            }
+        }
+
+        return null;
+    }
+
+    public function isApproved(): bool
+    {
+        return \in_array($this->status, InscriptionStatusEnum::APPROVED_STATUSES);
+    }
 }

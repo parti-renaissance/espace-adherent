@@ -2,7 +2,10 @@
 
 namespace App\Twig;
 
+use App\Enum\CivilityEnum;
+use App\ValueObject\Genders;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AdherentExtension extends AbstractExtension
@@ -17,6 +20,19 @@ class AdherentExtension extends AbstractExtension
             new TwigFunction('translate_tag', [AdherentRuntime::class, 'translateTag']),
             new TwigFunction('count_contribution', [AdherentRuntime::class, 'countContribution']),
             new TwigFunction('get_adherent_by_uuid', [AdherentRuntime::class, 'getAdherentByUuid']),
+        ];
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('civility_alias', static function (mixed $gender): string {
+                return match ($gender) {
+                    CivilityEnum::Monsieur, Genders::MALE => 'M',
+                    CivilityEnum::Madame, Genders::FEMALE => 'Mme',
+                    default => null,
+                };
+            }),
         ];
     }
 }

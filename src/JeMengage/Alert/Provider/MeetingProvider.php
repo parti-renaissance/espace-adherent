@@ -38,7 +38,7 @@ class MeetingProvider implements AlertProviderInterface
             $currentUser = $this->getCurrentUser();
             $shareUrl = $currentUser ? $this->generateUrl('app_national_event_by_slug_with_referrer', [
                 'slug' => $event->getSlug(),
-                'referrerCode' => $currentUser->getPublicId(),
+                'pid' => $currentUser->getPublicId(),
             ]) : $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]);
 
             if ($event->ogImage) {
