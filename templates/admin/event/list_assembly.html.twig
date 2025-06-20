@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set assembly = object.getAssemblyZone() %}
+
+    {% if assembly %}
+        <a href="{{ path('admin_app_event_event_list', {filter: {zones: {value: [assembly.id]}}}) }}" class="sonata-action-element">
+            {{ assembly }}
+        </a>
+    {% endif %}
+{% endblock %}

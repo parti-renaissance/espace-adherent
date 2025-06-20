@@ -1,6 +1,7 @@
 {% extends 'admin/list/list_author.html.twig' %}
 
 {% block field %}
-    {% set author = object.organizer %}
-    {{ parent() }}
+    {% if object.author %}
+        {{ include(('admin/adherent/display_fullname_certified.html.twig'), {object: object.author}) }}
+    {% endif %}
 {% endblock %}
