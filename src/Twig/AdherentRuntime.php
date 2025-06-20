@@ -5,9 +5,11 @@ namespace App\Twig;
 use App\Adherent\SessionModal\SessionModalActivatorListener;
 use App\Adherent\Tag\TagTranslator;
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
+use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
         private readonly CommitteeAdherentMandateRepository $committeeMandateRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly CommitteeRepository $committeeRepository,
         private readonly DonationRepository $donationRepository,
         private readonly TagTranslator $tagTranslator,
     ) {
@@ -99,5 +102,10 @@ class AdherentRuntime implements RuntimeExtensionInterface
     public function getAdherentByUuid(string $uuid): ?Adherent
     {
         return $this->adherentRepository->findOneByUuid($uuid);
+    }
+
+    public function getCommitteeByUuid(string $uuid): ?Committee
+    {
+        return $this->committeeRepository->findOneByUuid($uuid);
     }
 }

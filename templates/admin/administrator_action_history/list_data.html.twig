@@ -15,12 +15,34 @@
                         {% else %}
                             {{ adherent.fullName }}
                         {% endif %}
+                    {% elseif key is same as('committee_uuid') %}
+                        {% set committee = get_committee_by_uuid(value) %}
+
+                        {% if is_granted('ROLE_APP_ADMIN_COMMITTEE_EDIT') %}
+                            <a href="{{ path('admin_app_committee_edit', {id: committee.id}) }}">
+                                {{ committee.name }}
+                            </a>
+                        {% else %}
+                            {{ committee.name }}
+                        {% endif %}
                     {% else %}
                         {% if not (key matches '/^\\d+$/') %}
-                            <b>{{ key }}:</b>
+                            <b>
+                                {% if key is same as('before') %}
+                                    Avant:
+                                {% elseif key is same as('after') %}
+                                    Après:
+                                {% else %}
+                                    {{ key }}:
+                                {% endif %}
+                            </b>
                         {% endif %}
 
-                        {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+                        {% if value is iterable %}
+                            <pre><code>{{ value|json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES'))|raw }}</code></pre>
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
                     {% endif %}
                 </li>
             {% endfor %}

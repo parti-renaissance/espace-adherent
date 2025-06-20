@@ -202,7 +202,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
 
     #[AssertZoneType(types: Zone::COMMITTEE_TYPES, groups: ['api_committee_edition'])]
     #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
-    #[Groups(['committee:read', 'committee:write'])]
+    #[Groups(['committee:read', 'committee:write', 'admin_committee_update'])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 

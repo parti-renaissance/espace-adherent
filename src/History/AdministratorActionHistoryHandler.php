@@ -4,6 +4,7 @@ namespace App\History;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\History\Command\AdministratorActionHistoryCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -101,6 +102,43 @@ class AdministratorActionHistoryHandler
                 'adherent_uuid' => $adherent->getUuid()->toString(),
                 'role' => $role,
                 'zones' => $this->getZoneNames($zones),
+            ]
+        );
+    }
+
+    public function createCommitteeUpdate(Administrator $administrator, Committee $committee, array $beforeUpdate, array $afterUpdate): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::COMMITTEE_UPDATE,
+            [
+                'committee_uuid' => $committee->getUuid()->toString(),
+                'before' => $beforeUpdate,
+                'after' => $afterUpdate,
+            ]
+        );
+    }
+
+    public function createCommitteeCreate(Administrator $administrator, Committee $committee): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::COMMITTEE_CREATE,
+            [
+                'committee_uuid' => $committee->getUuid()->toString(),
+                'committee_name' => $committee->getName(),
+            ]
+        );
+    }
+
+    public function createCommitteeDelete(Administrator $administrator, Committee $committee): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::COMMITTEE_DELETE,
+            [
+                'committee_uuid' => $committee->getUuid()->toString(),
+                'committee_name' => $committee->getName(),
             ]
         );
     }
