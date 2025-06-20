@@ -38,7 +38,7 @@ class EventInscriptionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $userVoxHost, string $app_domain, ?NationalEvent $event = null, ?string $pid = null, #[CurrentUser] ?Adherent $user = null): Response
+    public function __invoke(Request $request, string $app_domain, ?NationalEvent $event = null, ?string $pid = null, #[CurrentUser] ?Adherent $user = null): Response
     {
         if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
             return $this->redirectToRoute('renaissance_site');
@@ -108,7 +108,6 @@ class EventInscriptionController extends AbstractController
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'is_open' => $isOpen,
-            'enable_connexion_widget' => !$user && $userVoxHost === $app_domain,
         ]);
     }
 
