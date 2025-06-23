@@ -61,7 +61,10 @@ class PaymentAdmin extends AbstractAdmin
                 ->add('status', 'enum', ['label' => 'Statut'])
                 ->add('createdAt', null, ['label' => 'Créé le'])
                 ->add('updatedAt', null, ['label' => 'Modifié le'])
-                ->add('payload', 'array', ['label' => 'Payload'])
+                ->add('payload', null, [
+                    'label' => 'Payload',
+                    'template' => 'admin/CRUD/show/show_json.html.twig',
+                ])
             ->end()
             ->with('Statuts')
                 ->add('statuses', null, [
