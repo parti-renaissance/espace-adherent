@@ -218,19 +218,4 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
             ]
         );
     }
-
-    private function filterArrayByDiff(array $source, array $diff): array
-    {
-        $result = [];
-
-        foreach ($diff as $key => $value) {
-            if (\is_array($value) && isset($source[$key]) && \is_array($source[$key])) {
-                $result[$key] = $this->filterArrayByDiff($source[$key], $value);
-            } elseif (\array_key_exists($key, $source)) {
-                $result[$key] = $source[$key];
-            }
-        }
-
-        return $result;
-    }
 }

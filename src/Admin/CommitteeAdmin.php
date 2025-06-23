@@ -43,8 +43,6 @@ class CommitteeAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    protected ?Committee $beforeUpdate = null;
-
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly TagTranslator $tagTranslator,
@@ -157,14 +155,10 @@ class CommitteeAdmin extends AbstractAdmin
     {
         $this->dispatcher->dispatch(new BeforeEditCommitteeEvent($object));
 
-        if (null === $this->beforeUpdate) {
-            $this->beforeUpdate = clone $object;
-
-            $this->dispatcher->dispatch(
-                new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
-                AdministratorActionEvents::ADMIN_COMMITTEE_BEFORE_UPDATE
-            );
-        }
+        $this->dispatcher->dispatch(
+            new AdministratorCommitteeActionEvent($this->getAdministrator(), $object),
+            AdministratorActionEvents::ADMIN_COMMITTEE_BEFORE_UPDATE
+        );
     }
 
     /**
