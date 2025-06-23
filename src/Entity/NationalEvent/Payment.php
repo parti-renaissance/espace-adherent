@@ -25,16 +25,20 @@ class Payment
     #[ORM\Column(enumType: PaymentStatusEnum::class, options: ['default' => PaymentStatusEnum::PENDING])]
     public PaymentStatusEnum $status = PaymentStatusEnum::PENDING;
 
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
+    public int $amount = 0;
+
     #[ORM\OneToMany(mappedBy: 'payment', targetEntity: PaymentStatus::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $statuses;
 
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
-    public function __construct(UuidInterface $uuid, EventInscription $inscription, array $payload = [])
+    public function __construct(UuidInterface $uuid, EventInscription $inscription, int $amount, array $payload = [])
     {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
+        $this->amount = $amount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();
     }
@@ -52,5 +56,10 @@ class Payment
     public function getStatuses(): array
     {
         return $this->statuses->toArray();
+    }
+
+    public function getAmountInEuro(): int
+    {
+        return (int) round($this->amount / 100);
     }
 }
