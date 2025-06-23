@@ -193,7 +193,7 @@ jobs:
             - uses: ./.github/actions/build
               with:
                   hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
-                  extra-containers: db rabbitmq
+                  extra-containers: db redis rabbitmq
                   keys: true
                   cache-warmup: true
 

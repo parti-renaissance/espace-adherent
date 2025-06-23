@@ -17,6 +17,7 @@ class EventInscriptionHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AdherentRepository $adherentRepository,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -44,6 +45,10 @@ class EventInscriptionHandler
             $this->eventDispatcher->dispatch(new UpdateNationalEventInscriptionEvent($eventInscription));
         } else {
             $this->eventDispatcher->dispatch(new NewNationalEventInscriptionEvent($eventInscription));
+        }
+
+        if ($nationalEvent->isCampus() && $eventInscription->isDuplicate() && $eventInscription->originalInscription) {
+            $this->notifier->sendDuplicateNotification($eventInscription->originalInscription);
         }
 
         return $eventInscription;

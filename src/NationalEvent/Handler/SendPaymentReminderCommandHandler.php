@@ -4,16 +4,14 @@ namespace App\NationalEvent\Handler;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\InscriptionReminder;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\NationalEventInscriptionPaymentReminderMessage;
 use App\NationalEvent\Command\SendPaymentReminderCommand;
 use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\Notifier;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\InscriptionReminderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsMessageHandler]
 class SendPaymentReminderCommandHandler
@@ -22,9 +20,7 @@ class SendPaymentReminderCommandHandler
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly InscriptionReminderRepository $inscriptionReminderRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly MailerService $transactionalMailer,
-        private readonly string $userVoxHost,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -51,14 +47,7 @@ class SendPaymentReminderCommandHandler
             throw new \LogicException(\sprintf('Cannot send payment reminder for an inscription [%s] without transport costs.', $eventInscription->getId()));
         }
 
-        $this->transactionalMailer->sendMessage(NationalEventInscriptionPaymentReminderMessage::create(
-            $eventInscription,
-            $this->urlGenerator->generate('app_national_event_payment', [
-                'slug' => $eventInscription->event->getSlug(),
-                'uuid' => $eventInscription->getUuid()->toString(),
-                'app_domain' => $this->userVoxHost,
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $this->notifier->sendPaymentReminder($eventInscription);
         $this->entityManager->persist(new InscriptionReminder($eventInscription, $reminderType));
 
         $this->entityManager->flush();

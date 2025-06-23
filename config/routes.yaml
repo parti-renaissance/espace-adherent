@@ -172,7 +172,7 @@ app_national_event:
     prefix: '/grand-rassemblement'
     type: attribute
     defaults:
-        app_domain: '%national_event_host%'
+        app_domain: '%user_vox_host%'
     requirements:
         app_domain: '%national_event_host%|%user_vox_host%'
 

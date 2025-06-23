@@ -31,6 +31,6 @@ class PaymentStatus
 
     public function isSuccess(): bool
     {
-        return isset($this->payload['STATUS']) && \in_array($this->payload['STATUS'], [5, 9]);
+        return isset($this->payload['STATUS']) && '9' === $this->payload['STATUS'];
     }
 }

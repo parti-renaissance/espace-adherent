@@ -46,10 +46,7 @@ class Payment
     public function addStatus(PaymentStatus $status): void
     {
         $this->statuses->add($status);
-
-        if ($status->isSuccess() && PaymentStatusEnum::PENDING === $this->status) {
-            $this->status = PaymentStatusEnum::CONFIRMED;
-        }
+        $this->status = $status->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
     }
 
     /** @return PaymentStatus[] */

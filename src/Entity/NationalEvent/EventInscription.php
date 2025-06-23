@@ -10,6 +10,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
 use App\Event\Request\EventInscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -171,6 +172,8 @@ class EventInscription
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referrer = null;
 
+    public ?self $originalInscription = null;
+
     #[ORM\OneToMany(mappedBy: 'inscription', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $payments;
 
@@ -274,6 +277,13 @@ class EventInscription
         return $this->payments->count();
     }
 
+    public function isPaymentSuccess(): bool
+    {
+        $statutes = array_unique($this->payments->map(static fn (Payment $payment) => $payment->status)->toArray());
+
+        return \in_array(PaymentStatusEnum::CONFIRMED, $statutes, true);
+    }
+
     public function getVisitDayConfig(): ?array
     {
         if (!$this->visitDay) {
@@ -307,5 +317,18 @@ class EventInscription
     public function isApproved(): bool
     {
         return \in_array($this->status, InscriptionStatusEnum::APPROVED_STATUSES);
+    }
+
+    public function isDuplicate(): bool
+    {
+        return InscriptionStatusEnum::DUPLICATE === $this->status;
+    }
+
+    /**
+     * @return Payment[]
+     */
+    public function getPayments(): array
+    {
+        return $this->payments->toArray();
     }
 }

@@ -3,9 +3,8 @@
 namespace App\NationalEvent\Handler;
 
 use App\Entity\NationalEvent\EventInscription;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\NationalEventTicketMessage;
 use App\NationalEvent\Command\SendTicketCommand;
+use App\NationalEvent\Notifier;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,7 +15,7 @@ class SendTicketCommandHandler
     public function __construct(
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MailerService $transactionalMailer,
+        private readonly Notifier $notifier,
     ) {
     }
 
@@ -31,7 +30,7 @@ class SendTicketCommandHandler
 
         $this->entityManager->refresh($eventInscription);
 
-        $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create($eventInscription), false);
+        $this->notifier->sendTicket($eventInscription);
 
         $eventInscription->ticketSentAt = new \DateTime();
 

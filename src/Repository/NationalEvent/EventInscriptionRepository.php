@@ -235,15 +235,14 @@ class EventInscriptionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findDuplicate(EventInscription $eventInscription): ?EventInscription
+    public function findDuplicate(EventInscription $eventInscription, array $statuses = []): ?EventInscription
     {
-        return $this->createQueryBuilder('ei')
+        $qb = $this->createQueryBuilder('ei')
             ->where('ei.id != :event_inscription_id')
             ->andWhere('ei.event = :event')
             ->andWhere('ei.addressEmail = :email')
             ->andWhere('ei.firstName = :firstName')
             ->andWhere('ei.lastName = :lastName')
-            ->andWhere('ei.status != :status')
             ->orderBy('ei.createdAt', 'ASC')
             ->setParameters([
                 'event_inscription_id' => $eventInscription->getId(),
@@ -251,8 +250,22 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 'email' => $eventInscription->addressEmail,
                 'firstName' => $eventInscription->firstName,
                 'lastName' => $eventInscription->lastName,
-                'status' => InscriptionStatusEnum::DUPLICATE,
             ])
+        ;
+
+        if (!empty($statuses)) {
+            $qb
+                ->andWhere('ei.status IN (:statuses)')
+                ->setParameter('statuses', $statuses)
+            ;
+        } else {
+            $qb
+                ->andWhere('ei.status != :status')
+                ->setParameter('status', InscriptionStatusEnum::DUPLICATE)
+            ;
+        }
+
+        return $qb
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

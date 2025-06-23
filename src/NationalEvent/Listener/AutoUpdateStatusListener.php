@@ -3,6 +3,7 @@
 namespace App\NationalEvent\Listener;
 
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
+use App\NationalEvent\Event\SuccessPaymentEvent;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,10 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [NewNationalEventInscriptionEvent::class => 'autoUpdateStatus'];
+        return [
+            NewNationalEventInscriptionEvent::class => 'autoUpdateStatus',
+            SuccessPaymentEvent::class => 'onSuccessPayment',
+        ];
     }
 
     public function autoUpdateStatus(NewNationalEventInscriptionEvent $event): void
@@ -27,12 +31,16 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
 
         // Duplicate
         if ($oldEventInscription = $this->eventInscriptionRepository->findDuplicate($newEventInscription)) {
-            $newEventInscription->status = InscriptionStatusEnum::DUPLICATE;
-            $oldEventInscription->updateFromDuplicate($newEventInscription);
+            if (!$oldEventInscription->isPaymentRequired() || $oldEventInscription->isPaymentSuccess()) {
+                $newEventInscription->status = InscriptionStatusEnum::DUPLICATE;
+                $oldEventInscription->updateFromDuplicate($newEventInscription);
 
-            $this->entityManager->flush();
+                $newEventInscription->originalInscription = $oldEventInscription;
 
-            return;
+                $this->entityManager->flush();
+
+                return;
+            }
         }
 
         if (InscriptionStatusEnum::PENDING !== $newEventInscription->status || !$adherent = $newEventInscription->adherent) {
@@ -51,6 +59,24 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
         ) {
             $newEventInscription->status = InscriptionStatusEnum::ACCEPTED;
 
+            $this->entityManager->flush();
+        }
+    }
+
+    public function onSuccessPayment(SuccessPaymentEvent $event): void
+    {
+        $eventInscription = $event->eventInscription;
+
+        if (!$eventInscription->isPaymentSuccess()) {
+            return;
+        }
+
+        while ($oldInscription = $this->eventInscriptionRepository->findDuplicate($eventInscription, [
+            InscriptionStatusEnum::PENDING,
+            InscriptionStatusEnum::WAITING_PAYMENT,
+            InscriptionStatusEnum::CANCELED,
+        ])) {
+            $oldInscription->status = InscriptionStatusEnum::DUPLICATE;
             $this->entityManager->flush();
         }
     }

@@ -4,7 +4,6 @@ namespace App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\Payment\RequestParamsBuilder;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,7 @@ class PaymentStatusController extends AbstractController
         $status = $request->query->get('status', 'unknown');
 
         if ('success' === $status) {
-            if (NationalEventTypeEnum::CAMPUS === $event->type) {
+            if ($event->isCampus()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 
