@@ -2,7 +2,7 @@
     {% set object = object.adherent %}
 {% endif %}
 
-<div class="row" style="display: flex;">
+<div class="row" style="display: flex; white-space: nowrap;">
     {% set image_url = object.hasImageName() ? path('asset_url', {path: object.getImagePath()}) : null %}
     <a class="avatar" data-toggle="modal" data-target="#adherent-profile-photo-{{ object.id }}" style="background-image: url('{{ image_url }}')">
         {% if not object.hasImageName() %}

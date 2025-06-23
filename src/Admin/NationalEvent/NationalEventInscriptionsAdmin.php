@@ -97,12 +97,13 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('uuid', null, ['label' => 'Uuid'])
+            ->add('uuid', null, ['label' => 'Uuid', 'header_style' => 'min-width: 270px;'])
             ->add('event', null, ['label' => 'Event'])
-            ->add('gender', null, ['label' => 'Civilité'])
-            ->add('firstName', null, ['label' => 'Prénom'])
-            ->add('lastName', null, ['label' => 'Nom'])
-            ->add('addressEmail', null, ['label' => 'E-mail'])
+            ->add('identity', null, [
+                'label' => 'Inscrit',
+                'template' => 'admin/national_event/list_identity.html.twig',
+                'virtual_field' => true,
+            ])
             ->add('postalCode', null, ['label' => 'Code postal'])
             ->add('details', null, [
                 'label' => 'Détails',
@@ -111,6 +112,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'header_style' => 'min-width: 300px;',
             ])
             ->add('status', 'trans', ['label' => 'Statut'])
+            ->add('transportCosts', null, ['label' => 'Montant du transport', 'template' => 'admin/national_event/list_transport_costs.html.twig'])
             ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('adherent.tags', null, ['label' => 'Labels', 'template' => 'admin/national_event/list_adherent_tags.html.twig'])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])

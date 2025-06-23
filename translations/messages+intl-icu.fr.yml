@@ -1442,6 +1442,11 @@ besoindeurope.donation.autorisations: Je certifie sur l’honneur être une pers
 
 national_event.type.default: Meeting classique
 national_event.type.campus: Campus
+
+national_event.payment.status.pending: En attente de paiement
+national_event.payment.status.confirmed: Confirmé
+national_event.payment.status.error: Erreur de paiement
+
 #
 # Administrators
 #
