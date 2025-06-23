@@ -8,5 +8,5 @@
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    {{ show.render_array(value, field_description.options.inline|default(false)) }}
+    {{ show.render_array(value, field_description.options|default()) }}
 {% endblock %}

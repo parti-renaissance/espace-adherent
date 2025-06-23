@@ -23,6 +23,7 @@ class InscriptionStatusEnum extends Enum
         self::INCONCLUSIVE,
         self::REFUSED,
         self::DUPLICATE,
+        self::CANCELED,
     ];
 
     public const APPROVED_STATUSES = [
