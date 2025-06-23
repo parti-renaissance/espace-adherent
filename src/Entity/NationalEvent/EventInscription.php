@@ -269,6 +269,11 @@ class EventInscription
         $this->payments->add($payment);
     }
 
+    public function countPayments(): int
+    {
+        return $this->payments->count();
+    }
+
     public function getVisitDayConfig(): ?array
     {
         if (!$this->visitDay) {

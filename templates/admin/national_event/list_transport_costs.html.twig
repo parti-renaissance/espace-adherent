@@ -3,7 +3,7 @@
 {% block field %}
     {% if value > 0 %}
         <a href="{{ path('admin_app_nationalevent_payment_list', {filter: {inscription: {value: object.id}}}) }}">
-            {{ value / 100 }} €
+            {{ value / 100 }} € ({{ object.countPayments() }})
         </a>
     {% endif %}
 {% endblock %}

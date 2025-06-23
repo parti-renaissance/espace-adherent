@@ -1,13 +1,21 @@
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    <table class="table">
-        {% for status in value|sort((a, b) => b.createdAt <=> a.createdAt) %}
-            <tr>
-                <td>{{ status.isSuccess() ? 'Confirmé' : 'Échec' }}</td>
-                <td>{{ status.createdAt|date('d/m/Y H:i:s') }}</td>
-                <td><pre>{{ status.payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></td>
-            </tr>
-        {% endfor %}
-    </table>
+    <p>
+        <a href="https://support.legacy.worldline-solutions.com/fr/get-started/transaction-management/transaction-statuses" target="_blank">Liste complète des statuts <i class="fa fa-link"></i></a>
+    </p>
+
+    {% if value|length %}
+        <table class="table">
+            {% for status in value|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                <tr>
+                    <td>{{ status.isSuccess() ? 'Confirmé' : 'Échec' }}</td>
+                    <td>{{ status.createdAt|date('d/m/Y H:i:s') }}</td>
+                    <td><pre>{{ status.payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Aucun statut de paiement n'a été transmis pour le moment.</p>
+    {% endif %}
 {% endblock %}
