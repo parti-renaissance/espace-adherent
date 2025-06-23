@@ -162,8 +162,6 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->administratorActionHistoryHandler->createCommitteeUpdate($event->administrator, $committee, $this->committeeBeforeUpdate, $afterUpdate);
-
         $filteredBefore = array_intersect_key($this->committeeBeforeUpdate, $diff);
         $filteredAfter = array_intersect_key($afterUpdate, $diff);
 
