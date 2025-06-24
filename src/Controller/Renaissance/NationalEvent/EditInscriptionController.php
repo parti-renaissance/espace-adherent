@@ -25,7 +25,6 @@ class EditInscriptionController extends AbstractController
     public function __construct(
         private readonly EventInscriptionHandler $eventInscriptionHandler,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly string $friendlyCaptchaEuropeSiteKey,
     ) {
     }
 

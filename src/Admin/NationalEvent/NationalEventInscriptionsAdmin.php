@@ -148,6 +148,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                 ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
                 ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
                 ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
             ->end()
