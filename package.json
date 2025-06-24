@@ -22,7 +22,6 @@
     "@tailwindcss/typography": "^0.5.13",
     "@tiptap/core": "^2.11.5",
     "@tiptap/extension-link": "^2.11.5",
-    "@tiptap/pm": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "alpinejs": "^3.13.10",
     "atob": "^2.1.0",

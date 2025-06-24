@@ -2182,7 +2182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/pm@npm:^2.11.5, @tiptap/pm@npm:^2.22.3":
+"@tiptap/pm@npm:^2.22.3":
   version: 2.22.3
   resolution: "@tiptap/pm@npm:2.22.3"
   dependencies:
@@ -3988,7 +3988,6 @@ __metadata:
     "@tailwindcss/typography": "npm:^0.5.13"
     "@tiptap/core": "npm:^2.11.5"
     "@tiptap/extension-link": "npm:^2.11.5"
-    "@tiptap/pm": "npm:^2.11.5"
     "@tiptap/starter-kit": "npm:^2.11.5"
     "@types/alpinejs": "npm:^3.13.10"
     "@types/google.maps": "npm:^3.55.9"
