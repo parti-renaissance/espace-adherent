@@ -30,6 +30,10 @@ class PaymentController extends AbstractController
         EntityManagerInterface $entityManager,
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
+        if ($inscription->isPaymentRequired() && InscriptionStatusEnum::WAITING_PAYMENT !== $inscription->status) {
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+        }
+
         if (!$inscription->isPaymentRequired() || InscriptionStatusEnum::WAITING_PAYMENT !== $inscription->status) {
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }

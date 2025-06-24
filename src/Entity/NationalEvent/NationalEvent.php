@@ -142,7 +142,7 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
 
     public function isPaymentEnabled(): bool
     {
-        return NationalEventTypeEnum::CAMPUS === $this->type;
+        return $this->isCampus();
     }
 
     public function calculateTransportAmount(string $transport, ?bool $withDiscount): ?int
@@ -154,5 +154,10 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
         }
 
         return null;
+    }
+
+    public function isCampus(): bool
+    {
+        return NationalEventTypeEnum::CAMPUS === $this->type;
     }
 }

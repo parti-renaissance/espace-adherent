@@ -8,7 +8,7 @@ use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
 use App\NationalEvent\EventInscriptionHandler;
-use App\NationalEvent\NationalEventTypeEnum;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/{slug}', name: 'app_national_event_by_slug', requirements: ['slug' => '[^/]+'], methods: ['GET', 'POST'])]
 #[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => '%pattern_pid%'], methods: ['GET', 'POST'])]
-class EventInscriptionController extends AbstractController
+class InscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
 
@@ -58,7 +58,7 @@ class EventInscriptionController extends AbstractController
 
         if ($user) {
             if ($existingInscription = $this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
-                if (NationalEventTypeEnum::CAMPUS === $event->type) {
+                if ($event->isCampus()) {
                     return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscription->getUuid()->toString(), 'app_domain' => $app_domain]);
                 }
 
@@ -92,11 +92,11 @@ class EventInscriptionController extends AbstractController
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
             $inscription = $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
 
-            if ($inscription->isPaymentRequired()) {
+            if (InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status && $inscription->isPaymentRequired()) {
                 return $this->redirectToRoute('app_national_event_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
             }
 
-            if (NationalEventTypeEnum::CAMPUS === $event->type) {
+            if ($event->isCampus()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 
@@ -118,7 +118,7 @@ class EventInscriptionController extends AbstractController
             'disabled' => !$isOpen,
         ];
 
-        if (NationalEventTypeEnum::CAMPUS === $event->type) {
+        if ($event->isCampus()) {
             return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'transport_configuration' => $event->transportConfiguration,
                 'reserved_places' => $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'], 'id')),

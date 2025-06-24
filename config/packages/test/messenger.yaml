@@ -14,3 +14,4 @@ framework:
             App\Mailer\Command\AsyncSendMessageCommand: sync
             App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand: sync
             App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand: sync
+            App\NationalEvent\Command\PaymentStatusUpdateCommand: sync
