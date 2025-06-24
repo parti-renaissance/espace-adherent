@@ -147,6 +147,10 @@ class EventInscription
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $canceledAt = null;
+
+    #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

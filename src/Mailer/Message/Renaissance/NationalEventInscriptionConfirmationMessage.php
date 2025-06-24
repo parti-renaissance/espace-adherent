@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMessage
 {
-    public static function create(EventInscription $eventInscription, string $editUrl, ?string $civility, ?string $region, ?string $department): self
+    public static function create(EventInscription $eventInscription, string $editUrl, string $eventUrl, ?string $shareUrl, ?string $civility, ?string $region, ?string $department): self
     {
         $event = $eventInscription->event;
 
@@ -31,6 +31,9 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
                 'birthdate' => self::escape($eventInscription->birthdate->format('d/m/Y')),
                 'birth_place' => self::escape((string) $eventInscription->birthPlace),
                 'inscription_uuid' => $eventInscription->getUuid()->toString(),
+                'adherent_public_id' => $eventInscription->adherent?->getPublicId(),
+                'event_url' => $eventUrl,
+                'share_url' => $shareUrl,
             ]
         );
     }
