@@ -9,7 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReButton extends AbstractComponentsLogic
 {
     /**
-     * @var string 'blue'|'green'|'yellow'|'gray'
+     * @var string 'blue'|'green'|'yellow'|'gray'|'white'|'black'|'red'
      */
     public ?string $color = 'blue';
     public ?string $stroke = null;
@@ -56,6 +56,13 @@ class ReButton extends AbstractComponentsLogic
                 active:not(:disabled):bg-ui_gray-70
                 disabled:bg-ui_gray-30 disabled:text-white
                 TW,
+            'white' => <<<TW
+                bg-white text-black
+                border border-ui_gray-30
+                hover:text-white hover:bg-ui_gray-40
+                active:not(:disabled):bg-ui_gray-70
+                disabled:bg-ui_gray-30 disabled:text-white
+                TW,
             'red' => <<<TW
                 bg-ui_red-50 text-white
                 border border-ui_red-50
@@ -71,7 +78,7 @@ class ReButton extends AbstractComponentsLogic
     {
         return match ($this->color) {
             'blue' => <<<TW
-                bg-white text-ui_blue-50
+                bg-white text-ui_blue-50 border-ui_blue-50
                 hover:enabled:bg-ui_blue-5
                 TW,
             'black' => <<<TW

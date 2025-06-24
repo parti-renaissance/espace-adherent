@@ -41,13 +41,18 @@ class CommonEventInscriptionType extends AbstractType
             ])
             ->add('postalCode', TextType::class, ['disabled' => $isAdherent && $adherent->getPostalCode()])
             ->add('isJAM', CheckboxType::class, ['required' => false])
-            ->add('acceptCgu', AcceptPersonalDataCollectType::class)
-            ->add('acceptMedia', AcceptPersonalDataCollectType::class)
-            ->add('allowNotifications', CheckboxType::class, ['required' => false])
             ->add('volunteer', CheckboxType::class, ['required' => false])
-            ->add('utmSource', HiddenType::class)
-            ->add('utmCampaign', HiddenType::class)
         ;
+
+        if (false === $options['is_edit']) {
+            $builder
+                ->add('utmSource', HiddenType::class)
+                ->add('utmCampaign', HiddenType::class)
+                ->add('acceptCgu', AcceptPersonalDataCollectType::class)
+                ->add('acceptMedia', AcceptPersonalDataCollectType::class)
+                ->add('allowNotifications', CheckboxType::class, ['required' => false])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -56,9 +61,11 @@ class CommonEventInscriptionType extends AbstractType
             ->setDefaults([
                 'data_class' => EventInscriptionRequest::class,
                 'adherent' => null,
+                'is_edit' => false,
             ])
-            ->setDefined('adherent')
+            ->setDefined(['adherent', 'is_edit'])
             ->addAllowedTypes('adherent', ['null', Adherent::class])
+            ->addAllowedTypes('is_edit', ['bool'])
         ;
     }
 }

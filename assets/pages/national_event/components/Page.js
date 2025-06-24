@@ -37,6 +37,8 @@ const Page = (props) => ({
             this.selectedTransportConfig = this.getSelectedTransportConfig();
         });
         this.visitDay = dom('input[name*="[visitDay]"]:checked')?.value || null;
+        this.accessibility = !!dom('#campus_event_inscription_accessibility').value;
+        dom('#accessibility-checkbox').checked = this.accessibility;
         this.updateAvailableTransports();
     },
 

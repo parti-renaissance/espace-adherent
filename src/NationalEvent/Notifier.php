@@ -18,7 +18,6 @@ class Notifier
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslatorInterface $translator,
-        private readonly string $secret,
     ) {
     }
 
@@ -53,7 +52,7 @@ class Notifier
     {
         $this->transactionalMailer->sendMessage(NationalEventInscriptionConfirmationMessage::create(
             $eventInscription,
-            $this->urlGenerator->generate('app_national_event_edit_inscription', ['uuid' => $uuid = $eventInscription->getUuid()->toString(), 'token' => hash_hmac('sha256', $uuid, $this->secret)], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->urlGenerator->generate('app_national_event_edit_inscription', ['uuid' => $eventInscription->getUuid()->toString(), 'slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
             civility: $eventInscription->gender ? $this->translator->trans(array_search($eventInscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
             region: $zone['region_name'] ?? null,
             department: $zone['name'] ?? null

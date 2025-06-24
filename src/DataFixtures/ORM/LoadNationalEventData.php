@@ -52,6 +52,7 @@ class LoadNationalEventData extends Fixture
         $event->alertEnabled = true;
         $event->type = NationalEventTypeEnum::CAMPUS;
         $event->alertTitle = 'Venez nombreux !';
+        $event->inscriptionEditDeadline = new \DateTime('+1 month');
         $event->startDate = new \DateTime('+1 month');
         $event->endDate = (new \DateTime())->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
