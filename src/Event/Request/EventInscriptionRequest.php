@@ -14,8 +14,8 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[AssertRecaptcha]
-#[NationalEventTransportMode(groups: ['national_event_campus'])]
+#[AssertRecaptcha(groups: ['inscription_creation'])]
+#[NationalEventTransportMode(groups: ['inscription_campus_creation'])]
 class EventInscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -42,7 +42,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank]
     #[Assert\Range(max: '-1 years')]
-    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['national_event_campus'])]
+    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['inscription_campus_creation', 'inscription_campus_edit'])]
     public ?\DateTime $birthdate = null;
 
     #[Assert\Length(max: 255)]
@@ -111,7 +111,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         $request->withChildren = null !== $inscription->children;
         $request->isResponsibilityWaived = $inscription->isResponsibilityWaived;
         $request->children = $inscription->children;
-        $request->qualities = $inscription->qualities;
+        $request->qualities = $inscription->qualities ?? [];
         $request->accessibility = $inscription->accessibility;
         $request->allowNotifications = $inscription->joinNewsletter;
         $request->isJAM = $inscription->isJAM;

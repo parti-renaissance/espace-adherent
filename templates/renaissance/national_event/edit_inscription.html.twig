@@ -1,0 +1,129 @@
+{% extends 'renaissance/national_event/_inscription_layout.html.twig' %}
+
+{% block background_image '' %}
+{% block body_classes 'bg-ui_gray-5' %}
+
+{% block header %}
+    <header class="flex py-10 md:py-20 justify-center w-full">
+        <a href="{{ path('renaissance_site') }}">
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo"/>
+        </a>
+    </header>
+{% endblock %}
+
+{% block content_section %}
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({})">
+        {{ form_start(form, {attr: {class: 'max-w-[500px]'}}) }}
+            <div class="flex flex-col gap-8">
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
+                    {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+
+                    <p class="font-medium text-2xl text-ui_gray-80">Modifier mes informations</p>
+
+                    {{ form_errors(form) }}
+
+                    <div class="flex-col flex gap-4">
+                        <twig:Atoms:ReLabel>Mes informations personnelles</twig:Atoms:ReLabel>
+
+                        {{ form_row(form.civility, {
+                            label: false,
+                            attr: {onCheck: "setFieldValid('gender')", validate: "['required']"},
+                        }) }}
+
+                        <div class="flex flex-col xs:flex-row gap-5 ">
+                            {{ form_row(form.firstName, {
+                                label: false,
+                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
+                            }) }}
+                            {{ form_row(form.lastName, {
+                                label: false,
+                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
+                            }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.email, {
+                        label: 'Mon adresse email',
+                        help: 'Si vous êtes déjà militant, merci de renseigner l\'adresse email de votre compte',
+                        attr: {
+                            placeholder: 'adresse@mail.com',
+                            validate: "['required', 'email']",
+                            autocomplete: 'email',
+                            onCheck: "setFieldValid('email')",
+                        },
+                    }) }}
+
+                    {{ form_row(form.postalCode, {
+                        label: 'Code postal',
+                        attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"},
+                    }) }}
+
+                    <fieldset class="relative">
+                        <twig:Atoms:ReLabel class="mb-3">Date de naissance</twig:Atoms:ReLabel>
+
+                        <fieldset class="flex gap-2.5 relative">
+                            {{ form_widget(form.birthdate.day, {label: false, attr: {
+                                class: 'w-full',
+                                placeholder: 'Jour',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthDay')",
+                                searchBoxProps: {'x-numberonly': ''},
+                            }}) }}
+
+                            {{ form_widget(form.birthdate.month, {label: false, attr: {
+                                class: 'w-full',
+                                placeholder: 'Mois',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthMonth')",
+                            }}) }}
+
+                            {{ form_widget(form.birthdate.year, {label: false, attr: {
+                                class: 'w-full',
+                                placeholder: 'Année',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthYear')",
+                                searchBoxProps: {'x-numberonly': ''},
+                            }}) }}
+                        </fieldset>
+
+                        {{ form_errors(form.birthdate) }}
+                    </fieldset>
+
+                    {{ form_row(form.birthPlace, {
+                        label: 'Lieu de naissance',
+                        attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                    }) }}
+
+                    <fieldset class="mb-4">
+                        {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
+                    </fieldset>
+
+                    <div class="bg-ui_gray-1 rounded-lg p-6">
+                        {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
+                    </div>
+
+                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
+                        {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+
+                        <div>
+                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" @change="handleAccessibilityChange($event)">
+                                <label for="accessibility-checkbox">J’ai un handicap visible ou invisible nécessitant des aménagements spécifiques</label>
+                            </twig:Molecules:ReCheckboxField>
+                        </div>
+                        <div x-show="accessibility" x-transition>
+                            {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
+                        </div>
+                    </div>
+
+                    <twig:ReButton class="w-full" color="blue">Enregistrer les modifications</twig:ReButton>
+
+                    {% if event.isCampus() %}
+                        <twig:ReButton tag="a" href="{{ path('app_national_event_my_inscription', {slug: event.slug, uuid: inscription.uuid}) }}" class="w-full" color="white">Annuler</twig:ReButton>
+                    {% endif %}
+                </twig:Atoms:ReCard>
+            </div>
+
+            <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -116,13 +116,14 @@ class InscriptionController extends AbstractController
         $defaultOptions = [
             'adherent' => $adherent,
             'disabled' => !$isOpen,
+            'validation_groups' => ['Default', 'inscription_creation'],
         ];
 
         if ($event->isCampus()) {
             return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'transport_configuration' => $event->transportConfiguration,
                 'reserved_places' => $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'], 'id')),
-                'validation_groups' => ['Default', 'national_event_campus'],
+                'validation_groups' => ['Default', 'inscription_creation', 'inscription_campus_creation'],
             ]));
         }
 

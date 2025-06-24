@@ -49,6 +49,8 @@
             {% endif %}
 
             <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} md:order-none">
+                {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
+
                 <div class="flex justify-between items-center">
                     <h2 class="font-medium text-2xl">Mon inscription</h2>
 
@@ -93,6 +95,10 @@
                         {% endif %}
                     </div>
                 </div>
+
+                {% if event.allowEditInscription() %}
+                    <twig:ReButton stroke tag="a" href="{{ path('app_national_event_edit_inscription', {slug: event.getSlug(), uuid: inscription.getUuid().toString()}) }}">Modifier mes informations</twig:ReButton>
+                {% endif %}
 
                 <div class="flex flex-col gap-4">
                     <p class="font-medium">Mon forfait</p>

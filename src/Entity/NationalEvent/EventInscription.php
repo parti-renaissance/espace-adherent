@@ -224,14 +224,6 @@ class EventInscription
         $this->children = $inscriptionRequest->withChildren ? $inscriptionRequest->children : null;
         $this->isResponsibilityWaived = $inscriptionRequest->isResponsibilityWaived;
         $this->isJAM = $inscriptionRequest->isJAM;
-        $this->visitDay = $inscriptionRequest->visitDay;
-        $this->transport = $inscriptionRequest->transport;
-        $this->withDiscount = $inscriptionRequest->withDiscount;
-        $this->transportCosts = $this->getTransportAmount();
-
-        if ($this->transportCosts > 0 && InscriptionStatusEnum::PENDING === $this->status) {
-            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
-        }
 
         // Update only for creation
         if (!$this->id) {
@@ -240,6 +232,15 @@ class EventInscription
             $this->utmSource = $inscriptionRequest->utmSource;
             $this->utmCampaign = $inscriptionRequest->utmCampaign;
             $this->referrerCode = $inscriptionRequest->referrerCode;
+
+            $this->visitDay = $inscriptionRequest->visitDay;
+            $this->transport = $inscriptionRequest->transport;
+            $this->withDiscount = $inscriptionRequest->withDiscount;
+            $this->transportCosts = $this->getTransportAmount();
+
+            if ($this->transportCosts > 0 && InscriptionStatusEnum::PENDING === $this->status) {
+                $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+            }
         }
     }
 
