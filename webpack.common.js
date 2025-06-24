@@ -1,9 +1,13 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import {WebpackManifestPlugin} from 'webpack-manifest-plugin';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default {
     entry: {
         kernel: './front/kernel.js',
         bootstrap: './assets/bootstrap.js',
@@ -59,7 +63,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
         modules: [
             path.resolve('./front'),
             path.resolve('./assets'),

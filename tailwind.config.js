@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     presets: [
         require('./tailwind.config.site'),
     ],
