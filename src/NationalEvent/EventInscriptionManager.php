@@ -8,20 +8,22 @@ use App\Event\Request\EventInscriptionRequest;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use App\Repository\AdherentRepository;
+use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class EventInscriptionHandler
+class EventInscriptionManager
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AdherentRepository $adherentRepository,
         private readonly Notifier $notifier,
     ) {
     }
 
-    public function handle(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest, ?EventInscription $existingInscription = null): EventInscription
+    public function saveInscription(NationalEvent $nationalEvent, EventInscriptionRequest $inscriptionRequest, ?EventInscription $existingInscription = null): EventInscription
     {
         $eventInscription = $existingInscription ?? new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
@@ -52,5 +54,10 @@ class EventInscriptionHandler
         }
 
         return $eventInscription;
+    }
+
+    public function countReservedPlaces(NationalEvent $event): array
+    {
+        return $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'] ?? [], 'id'));
     }
 }

@@ -44,8 +44,11 @@ class EventInscription
 
     #[Assert\Choice(InscriptionStatusEnum::STATUSES)]
     #[Groups(['national_event_inscription:webhook', 'event_inscription_update'])]
-    #[ORM\Column(options: ['default' => 'pending'])]
+    #[ORM\Column(options: ['default' => InscriptionStatusEnum::PENDING])]
     public string $status = InscriptionStatusEnum::PENDING;
+
+    #[ORM\Column(enumType: PaymentStatusEnum::class, options: ['default' => PaymentStatusEnum::PENDING])]
+    public PaymentStatusEnum $paymentStatus = PaymentStatusEnum::PENDING;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -237,14 +240,22 @@ class EventInscription
             $this->utmCampaign = $inscriptionRequest->utmCampaign;
             $this->referrerCode = $inscriptionRequest->referrerCode;
 
-            $this->visitDay = $inscriptionRequest->visitDay;
-            $this->transport = $inscriptionRequest->transport;
-            $this->withDiscount = $inscriptionRequest->withDiscount;
-            $this->transportCosts = $this->getTransportAmount();
+            $this->updateTransportFromRequest($inscriptionRequest);
+        }
+    }
 
-            if ($this->transportCosts > 0 && InscriptionStatusEnum::PENDING === $this->status) {
-                $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
-            }
+    public function updateTransportFromRequest(EventInscriptionRequest $inscriptionRequest): void
+    {
+        $initialTransport = $this->transport;
+        $this->transport = $inscriptionRequest->transport;
+
+        $this->visitDay = $inscriptionRequest->visitDay;
+        $this->withDiscount = $inscriptionRequest->withDiscount;
+        $this->transportCosts = $this->getTransportAmount();
+
+        if ($initialTransport !== $this->transport && $this->transportCosts > 0) {
+            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+            $this->paymentStatus = PaymentStatusEnum::PENDING;
         }
     }
 
@@ -284,9 +295,12 @@ class EventInscription
 
     public function isPaymentSuccess(): bool
     {
-        $statutes = array_unique($this->payments->map(static fn (Payment $payment) => $payment->status)->toArray());
+        return PaymentStatusEnum::CONFIRMED === $this->paymentStatus;
+    }
 
-        return \in_array(PaymentStatusEnum::CONFIRMED, $statutes, true);
+    public function isPaymentFailed(): bool
+    {
+        return PaymentStatusEnum::ERROR === $this->paymentStatus;
     }
 
     public function getVisitDayConfig(): ?array

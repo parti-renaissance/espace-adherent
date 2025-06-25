@@ -63,7 +63,7 @@ class PaymentController extends AbstractController
                 $this->generateUrl('app_national_event_payment_status', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain], UrlGeneratorInterface::ABSOLUTE_URL),
             );
 
-            $inscription->addPayment(new Payment($uuid, $inscription, $inscription->transportCosts, $paymentParams));
+            $inscription->addPayment(new Payment($uuid, $inscription, $paymentParams));
             $entityManager->flush();
 
             return $this->render('renaissance/national_event/payment.html.twig', [

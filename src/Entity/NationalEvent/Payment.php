@@ -25,6 +25,12 @@ class Payment
     #[ORM\Column(enumType: PaymentStatusEnum::class, options: ['default' => PaymentStatusEnum::PENDING])]
     public PaymentStatusEnum $status = PaymentStatusEnum::PENDING;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $transport = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    public ?bool $withDiscount = null;
+
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $amount = 0;
 
@@ -34,11 +40,13 @@ class Payment
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
-    public function __construct(UuidInterface $uuid, EventInscription $inscription, int $amount, array $payload = [])
+    public function __construct(UuidInterface $uuid, EventInscription $inscription, array $payload = [])
     {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
-        $this->amount = $amount;
+        $this->amount = $inscription->transportCosts;
+        $this->transport = $inscription->transport;
+        $this->withDiscount = $inscription->withDiscount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();
     }
