@@ -57,7 +57,7 @@
 
         {{ form_start(form, {attr: {class: 'max-w-[500px]'}}) }}
             <div class="flex flex-col gap-8">
-                <twig:Atoms:ReCard class="!rounded-2xl">
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     <h1 class="font-bold text-5xl text-ui_gray-80">Inscription</h1>
 
                     {% if event.textIntro %}
@@ -154,12 +154,12 @@
                         {{ form_row(form.phone, {label: 'Numéro de téléphone', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
-                    <div class="bg-ui_gray-10 rounded-lg p-6">
+                    <div class="bg-ui_gray-1 rounded-lg p-6">
                         {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
                     </div>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="!rounded-2xl">
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     {{ form_row(form.visitDay, {
                         label: 'Quand venez-vous ?',
                         attr: {
@@ -169,7 +169,7 @@
                     }) }}
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="!rounded-2xl" x-show="availableTransports.length > 0">
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableTransports.length > 0">
                     {{ form_row(form.transport, {
                         label: 'Besoin d’un transport ?',
                         attr: {
@@ -186,7 +186,7 @@
                     </template>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="!rounded-2xl">
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
                         {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
 

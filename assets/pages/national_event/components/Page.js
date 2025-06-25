@@ -5,6 +5,8 @@
  *
  * @param {{
  *   transportConfig?: Object | null,
+ *   uncheckInputs?: boolean | null,
+ *   transport?: string | null,
  * }} props
  *
  * @returns {AlpineComponent}
@@ -14,7 +16,8 @@ const Page = (props) => ({
     transportConfig: props.transportConfig || null,
     visitDay: null,
     availableTransports: [],
-    transport: null,
+    transport: props.transport || null,
+    initialTransport: props.transport || null,
     selectedTransportConfig: null,
     withDiscount: false,
 
@@ -37,9 +40,12 @@ const Page = (props) => ({
             this.selectedTransportConfig = this.getSelectedTransportConfig();
         });
         this.visitDay = dom('input[name*="[visitDay]"]:checked')?.value || null;
-        this.accessibility = !!dom('#campus_event_inscription_accessibility').value;
-        dom('#accessibility-checkbox').checked = this.accessibility;
-        this.updateAvailableTransports();
+        this.accessibility = !!dom('#campus_event_inscription_accessibility')?.value;
+        const accessibilityCheckbox = dom('#accessibility-checkbox');
+        if (accessibilityCheckbox) {
+            accessibilityCheckbox.checked = this.accessibility;
+        }
+        this.updateAvailableTransports('boolean' === typeof props.uncheckInputs ? props.uncheckInputs : true);
     },
 
     handleAccessibilityChange(e) {
@@ -54,9 +60,8 @@ const Page = (props) => ({
         this.updateAvailableTransports();
     },
 
-    updateAvailableTransports() {
+    updateAvailableTransports(uncheckInputs = true) {
         this.availableTransports = [];
-        this.transport = null;
         this.selectedTransportConfig = null;
 
         if (!this.visitDay || !this.transportConfig?.transports) {
@@ -67,9 +72,12 @@ const Page = (props) => ({
             (transport) => transport.jours_ids.includes(this.visitDay)
         );
 
-        findAll(document, 'input[name*="[transport]"]').forEach((input) => {
-            input.checked = false;
-        });
+        if (uncheckInputs) {
+            this.transport = null;
+            findAll(document, 'input[name*="[transport]"]').forEach((input) => {
+                input.checked = false;
+            });
+        }
     },
 
     getSelectedTransportConfig() {

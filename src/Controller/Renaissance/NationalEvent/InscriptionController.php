@@ -7,7 +7,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
-use App\NationalEvent\EventInscriptionHandler;
+use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
@@ -31,7 +31,7 @@ class InscriptionController extends AbstractController
     public function __construct(
         private readonly NationalEventRepository $nationalEventRepository,
         private readonly EventInscriptionRepository $eventInscriptionRepository,
-        private readonly EventInscriptionHandler $eventInscriptionHandler,
+        private readonly EventInscriptionManager $eventInscriptionManager,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly AnonymousFollowerSession $anonymousFollowerSession,
         private readonly string $friendlyCaptchaEuropeSiteKey,
@@ -90,7 +90,7 @@ class InscriptionController extends AbstractController
         ;
 
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
-            $inscription = $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
+            $inscription = $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest);
 
             if (InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status && $inscription->isPaymentRequired()) {
                 return $this->redirectToRoute('app_national_event_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
@@ -122,7 +122,7 @@ class InscriptionController extends AbstractController
         if ($event->isCampus()) {
             return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'transport_configuration' => $event->transportConfiguration,
-                'reserved_places' => $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'], 'id')),
+                'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
                 'validation_groups' => ['Default', 'inscription_creation', 'inscription_campus_creation'],
             ]));
         }

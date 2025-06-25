@@ -7,6 +7,7 @@ use App\Entity\NationalEvent\PaymentStatus;
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
 use App\NationalEvent\Event\SuccessPaymentEvent;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
@@ -42,11 +43,15 @@ class PaymentStatusUpdateCommandHandler
 
         $this->entityManager->flush();
 
+        $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
+
         if ($paymentStatus->isSuccess() && InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status) {
             $inscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
+        }
 
-            $this->entityManager->flush();
+        $this->entityManager->flush();
 
+        if ($inscription->isPaymentSuccess()) {
             $this->eventDispatcher->dispatch(new SuccessPaymentEvent($inscription));
         }
     }

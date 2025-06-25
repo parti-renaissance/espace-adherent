@@ -15,7 +15,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['inscription_creation'])]
-#[NationalEventTransportMode(groups: ['inscription_campus_creation'])]
+#[NationalEventTransportMode(groups: ['inscription_campus_creation', 'campus_transport_update'])]
 class EventInscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -60,6 +60,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     public ?string $visitDay = null;
     public ?string $transport = null;
+    public ?string $initialTransport = null;
     public bool $withDiscount = false;
 
     public bool $transportNeeds = false;
@@ -115,6 +116,10 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         $request->accessibility = $inscription->accessibility;
         $request->allowNotifications = $inscription->joinNewsletter;
         $request->isJAM = $inscription->isJAM;
+        $request->visitDay = $inscription->visitDay;
+        $request->transport = $inscription->transport;
+        $request->initialTransport = $inscription->transport;
+        $request->withDiscount = $inscription->withDiscount ?? false;
 
         return $request;
     }

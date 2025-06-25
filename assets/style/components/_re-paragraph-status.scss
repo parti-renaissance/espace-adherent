@@ -1,15 +1,8 @@
 .re-paragraph-status {
-    @apply text-sm sm:text-base border rounded-[10px] px-6 py-4 flex items-center;
-
-    .re-icon {
-        @apply mr-6;
-    }
+    @apply text-sm sm:text-base border rounded-[10px] px-6 py-2 flex items-center gap-2;
 
     &--slim {
-        @apply leading-none py-2 text-center justify-center;
-        .re-icon {
-            @apply mr-2;
-        }
+        @apply leading-none text-center justify-center;
     }
 
     &--default {
@@ -33,7 +26,7 @@
     }
 
     &--info {
-        @apply text-ui_gray-80 bg-ui_blue-5 font-normal border-ui_blue-50;
+        @apply text-ui_blue-70 bg-ui_blue-5 font-normal border-ui_blue-50;
 
         a {
             @apply text-ui_blue-50;

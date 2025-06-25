@@ -8,7 +8,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
-use App\NationalEvent\EventInscriptionHandler;
+use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class EditInscriptionController extends AbstractController
 {
     public function __construct(
-        private readonly EventInscriptionHandler $eventInscriptionHandler,
+        private readonly EventInscriptionManager $eventInscriptionManager,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
@@ -37,8 +37,6 @@ class EditInscriptionController extends AbstractController
         if ($inscription->event !== $event) {
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
-
-        $event = $inscription->event;
 
         if (!$event->allowEditInscription()) {
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
@@ -60,7 +58,7 @@ class EditInscriptionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $inscription->status = InscriptionStatusEnum::PENDING;
 
-            $this->eventInscriptionHandler->handle($event, $inscriptionRequest, $inscription);
+            $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest, $inscription);
 
             $this->addFlash('success', 'Votre inscription a bien été mise à jour.');
 
