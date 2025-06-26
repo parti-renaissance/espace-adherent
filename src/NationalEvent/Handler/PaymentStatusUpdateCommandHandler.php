@@ -41,12 +41,23 @@ class PaymentStatusUpdateCommandHandler
 
         $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload));
 
-        $this->entityManager->flush();
-
         $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
 
-        if ($paymentStatus->isSuccess() && InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status) {
-            $inscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
+        $this->entityManager->flush();
+
+        if ($paymentStatus->isSuccess()) {
+            if (\in_array($inscription->status, [InscriptionStatusEnum::WAITING_PAYMENT, InscriptionStatusEnum::PENDING], true)) {
+                $inscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
+            }
+
+            foreach ($inscription->getSuccessPayments() as $successPayment) {
+                if ($successPayment === $payment) {
+                    continue;
+                }
+
+                $successPayment->replacement = $payment;
+                $successPayment->status = PaymentStatusEnum::TO_REFUND;
+            }
         }
 
         $this->entityManager->flush();

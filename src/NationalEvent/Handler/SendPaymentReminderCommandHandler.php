@@ -6,8 +6,8 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\InscriptionReminder;
 use App\NationalEvent\Command\SendPaymentReminderCommand;
 use App\NationalEvent\InscriptionReminderTypeEnum;
-use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\Notifier;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\InscriptionReminderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,12 +26,12 @@ class SendPaymentReminderCommandHandler
 
     public function __invoke(SendPaymentReminderCommand $command): void
     {
-        /** @var EventInscription|null $eventInscription */
-        if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {
+        $eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString());
+        if (!$eventInscription instanceof EventInscription) {
             return;
         }
 
-        if (InscriptionStatusEnum::WAITING_PAYMENT !== $eventInscription->status) {
+        if (PaymentStatusEnum::CONFIRMED === $eventInscription->paymentStatus) {
             return;
         }
 

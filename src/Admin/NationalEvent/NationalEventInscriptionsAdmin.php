@@ -16,6 +16,7 @@ use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\Geo\ZoneRepository;
@@ -91,6 +92,16 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                     'choices' => array_combine(InscriptionStatusEnum::STATUSES, InscriptionStatusEnum::STATUSES),
                 ],
             ])
+            ->add('paymentStatus', ChoiceFilter::class, [
+                'label' => 'Statut du paiement',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'multiple' => true,
+                    'choices' => PaymentStatusEnum::all(),
+                    'choice_label' => fn (PaymentStatusEnum $status) => $status,
+                ],
+            ])
         ;
     }
 
@@ -149,6 +160,13 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
             ->end()
             ->with('Forfait', ['class' => 'col-md-6'])
+                ->add('paymentStatus', ChoiceType::class, [
+                    'label' => 'Statut du paiement',
+                    'choices' => PaymentStatusEnum::all(),
+                    'choice_label' => fn (PaymentStatusEnum $status) => $status,
+                    'disabled' => true,
+                    'required' => false,
+                ])
                 ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
                 ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
                 ->add('transportCosts', TextType::class, ['label' => 'Prix du transport (en centimes)', 'required' => false, 'disabled' => true])

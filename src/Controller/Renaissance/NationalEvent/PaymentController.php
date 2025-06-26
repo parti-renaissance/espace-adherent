@@ -5,8 +5,8 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
-use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\Payment\RequestParamsBuilder;
+use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -30,11 +30,15 @@ class PaymentController extends AbstractController
         EntityManagerInterface $entityManager,
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
-        if ($inscription->isPaymentRequired() && InscriptionStatusEnum::WAITING_PAYMENT !== $inscription->status) {
+        if ($inscription->isPaymentRequired() && PaymentStatusEnum::CONFIRMED === $inscription->paymentStatus) {
             return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
         }
 
-        if (!$inscription->isPaymentRequired() || InscriptionStatusEnum::WAITING_PAYMENT !== $inscription->status) {
+        if (!$inscription->isPaymentRequired()) {
+            if ($event->isCampus()) {
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+            }
+
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }
 

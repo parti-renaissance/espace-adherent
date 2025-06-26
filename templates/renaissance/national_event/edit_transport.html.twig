@@ -49,13 +49,15 @@
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
-                    <twig:ReParagraphStatus status="info" icon="info" x-show="initialTransport !== transport && initialTransport?.startsWith('gratuit') && !transport?.startsWith('gratuit')">
-                        Le nouveau forfait est gratuit.<br/>L’ancien vous sera remboursé sous 30 jours.
-                    </twig:ReParagraphStatus>
+                    {% if inscription.isPaymentSuccess() %}
+                        <twig:ReParagraphStatus status="info" icon="info" x-show="initialTransport !== transport && !initialTransport?.startsWith('gratuit') && transport?.startsWith('gratuit')">
+                            Le nouveau forfait est gratuit.<br/>L’ancien vous sera remboursé sous 30 jours.
+                        </twig:ReParagraphStatus>
 
-                    <twig:ReParagraphStatus status="warning" icon="warning" x-show="initialTransport !== transport && !initialTransport?.startsWith('gratuit') && !transport?.startsWith('gratuit')">
-                        Le nouveau forfait doit être réglé en totalité.<br/>L’ancien vous sera remboursé sous 30 jours.
-                    </twig:ReParagraphStatus>
+                        <twig:ReParagraphStatus status="warning" icon="warning" x-show="initialTransport !== transport && !initialTransport?.startsWith('gratuit') && !transport?.startsWith('gratuit')">
+                            Le nouveau forfait doit être réglé en totalité.<br/>L’ancien vous sera remboursé sous 30 jours.
+                        </twig:ReParagraphStatus>
+                    {% endif %}
 
                     <div class="flex flex-col  bg-ui_gray-1 rounded-lg p-6 gap-4" x-show="initialTransport !== transport && selectedTransportConfig">
                         <twig:Atoms:ReLabel class="text-gray-950">Récapitulatif</twig:Atoms:ReLabel>

@@ -47,8 +47,11 @@ class EventInscription
     #[ORM\Column(options: ['default' => InscriptionStatusEnum::PENDING])]
     public string $status = InscriptionStatusEnum::PENDING;
 
-    #[ORM\Column(enumType: PaymentStatusEnum::class, options: ['default' => PaymentStatusEnum::PENDING])]
-    public PaymentStatusEnum $paymentStatus = PaymentStatusEnum::PENDING;
+    #[ORM\ManyToOne(targetEntity: self::class)]
+    public ?self $duplicateInscriptionForStatus = null;
+
+    #[ORM\Column(nullable: true, enumType: PaymentStatusEnum::class)]
+    public ?PaymentStatusEnum $paymentStatus = null;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -157,6 +160,9 @@ class EventInscription
     public ?\DateTime $ticketSentAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $confirmationSentAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketScannedAt = null;
 
     #[Groups(['national_event_inscription:webhook'])]
@@ -247,14 +253,14 @@ class EventInscription
     public function updateTransportFromRequest(EventInscriptionRequest $inscriptionRequest): void
     {
         $initialTransport = $this->transport;
-        $this->transport = $inscriptionRequest->transport;
+        $initialTransportCosts = $this->transportCosts;
 
+        $this->transport = $inscriptionRequest->transport;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->withDiscount = $inscriptionRequest->withDiscount;
         $this->transportCosts = $this->getTransportAmount();
 
-        if ($initialTransport !== $this->transport && $this->transportCosts > 0) {
-            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+        if ($initialTransport !== $this->transport && $this->transportCosts > 0 && $initialTransportCosts !== $this->transportCosts) {
             $this->paymentStatus = PaymentStatusEnum::PENDING;
         }
     }
@@ -286,6 +292,14 @@ class EventInscription
     public function addPayment(Payment $payment): void
     {
         $this->payments->add($payment);
+
+        if (InscriptionStatusEnum::PENDING === $this->status) {
+            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+        }
+
+        if (null === $this->paymentStatus) {
+            $this->paymentStatus = $payment->status;
+        }
     }
 
     public function countPayments(): int
@@ -349,5 +363,11 @@ class EventInscription
     public function getPayments(): array
     {
         return $this->payments->toArray();
+    }
+
+    /** @return Payment[] */
+    public function getSuccessPayments(): array
+    {
+        return array_filter($this->getPayments(), static fn (Payment $payment) => $payment->isConfirmed());
     }
 }

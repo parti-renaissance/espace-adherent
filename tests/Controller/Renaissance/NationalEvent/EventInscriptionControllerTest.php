@@ -9,6 +9,7 @@ use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionDuplicateMessage;
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -298,7 +299,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $firstInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_1']);
 
         self::assertSame(1, $firstInscription->countPayments());
-        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $firstInscription->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $firstInscription->status);
+        self::assertSame(PaymentStatusEnum::PENDING, $firstInscription->paymentStatus);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -341,7 +343,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $secondInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_2']);
 
         self::assertSame(1, $secondInscription->countPayments());
-        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $secondInscription->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $secondInscription->status);
+        self::assertSame(PaymentStatusEnum::PENDING, $secondInscription->paymentStatus);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -386,7 +389,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
         self::assertCount(1, $payments = $thirdInscription->getPayments());
-        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $thirdInscription->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $thirdInscription->status);
+        self::assertSame(PaymentStatusEnum::PENDING, $thirdInscription->paymentStatus);
 
         /** @var Payment $payment */
         $payment = $payments[0];
@@ -396,15 +400,21 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
         self::assertSame(InscriptionStatusEnum::PAYMENT_CONFIRMED, $thirdInscription->status);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $thirdInscription->paymentStatus);
         self::assertTrue($thirdInscription->isPaymentSuccess());
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
+
+        $this->em->clear();
 
         $duplicatedInscriptions = $this->eventInscriptionRepository->findBy(['utmSource' => ['inscription_1', 'inscription_2']]);
         self::assertCount(2, $duplicatedInscriptions);
 
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[0]->status);
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[1]->status);
+
+        self::assertNull($duplicatedInscriptions[0]->paymentStatus);
+        self::assertNull($duplicatedInscriptions[1]->paymentStatus);
     }
 
     public function testNewCampusInscriptionMarkedAsDuplicateAfterSuccessfulPaymentOfFirstOne(): void
@@ -446,6 +456,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->client->submitForm('Continuer vers ma banque');
+
+        $this->em->clear();
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
@@ -495,6 +507,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $inscription->status);
         $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s?confirmation=1', $inscription->getUuid()), $this->client);
 
+        $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
         $this->assertCountMails(1, NationalEventInscriptionDuplicateMessage::class);
     }
 
@@ -508,6 +521,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         parent::setUp();
 
         $this->eventInscriptionRepository = $this->getRepository(EventInscription::class);
+        $this->em = $this->getEntityManager(EventInscription::class);
         $this->bus = $this->get(MessageBusInterface::class);
 
         $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
@@ -517,6 +531,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     {
         parent::tearDown();
 
+        $this->em = null;
         $this->eventInscriptionRepository = null;
         $this->bus = null;
     }
