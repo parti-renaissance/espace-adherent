@@ -22,21 +22,7 @@
                             {{ include('admin/adherent/display_fullname_certified.html.twig', {object: adherent}) }}
                         </td>
                         <td>
-                            {% for tag in adherent.tags %}
-                                {% if tag starts with 'adherent:' %}
-                                    {{ ui.label(
-                                        translate_tag(tag, false),
-                                        adherent.hasActiveMembership() ? '#ffeccc' : '#d6e7ff',
-                                        adherent.hasActiveMembership() ? '#8e681e' : '#0f72bd',
-                                    ) }}
-                                {% elseif tag starts with 'sympathisant:' %}
-                                    {{ ui.label(
-                                        translate_tag(tag, false),
-                                        '#e3f8ff',
-                                        '#4890a8',
-                                    ) }}
-                                {% endif %}
-                            {% endfor %}
+                            {{ include('admin/adherent/statuses.html.twig', {object: adherent}) }}
                         </td>
                         <td>
                             {{ membership.subscriptionDate|date('d/m/Y H:i') }}
