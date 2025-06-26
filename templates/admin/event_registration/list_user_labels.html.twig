@@ -6,20 +6,6 @@
     {% set adherent = object.adherent %}
 
     {% if adherent %}
-        {% for tag in adherent.tags %}
-            {% if tag starts with 'adherent:' %}
-                {{ ui.label(
-                    translate_tag(tag, false),
-                    adherent.hasActiveMembership() ? '#ffeccc' : '#d6e7ff',
-                    adherent.hasActiveMembership() ? '#8e681e' : '#0f72bd',
-                ) }}
-            {% elseif tag starts with 'sympathisant:' %}
-                {{ ui.label(
-                    translate_tag(tag, false),
-                    '#e3f8ff',
-                    '#4890a8',
-                ) }}
-            {% endif %}
-        {% endfor %}
+        {{ include('admin/adherent/statuses.html.twig', {object: adherent}) }}
     {% endif %}
 {% endblock %}
