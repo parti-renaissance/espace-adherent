@@ -4,7 +4,10 @@ namespace App\History\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Committee;
+use App\History\UserActionEvents;
 use App\History\UserActionHistoryHandler;
+use App\History\UserCommitteeActionEvent;
 use App\Membership\Event\UserEmailEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
@@ -21,6 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class UserActionHistorySubscriber implements EventSubscriberInterface
 {
     private array $userBeforeUpdate = [];
+    private array $committeeBeforeUpdate = [];
 
     public function __construct(
         private readonly Security $security,
@@ -41,6 +45,10 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             UserEvents::USER_FORGOT_PASSWORD_VALIDATED => ['onPasswordResetValidate', -4096],
             UserEvents::USER_EMAIL_CHANGE_REQUEST => ['onEmailChangeRequest', -4096],
             UserEvents::USER_EMAIL_UPDATED => ['onEmailChangeValidate', -4096],
+            UserActionEvents::USER_COMMITTEE_CREATE => ['onCommitteeCreate', -4096],
+            UserActionEvents::USER_COMMITTEE_BEFORE_UPDATE => ['onCommitteeBeforeUpdate', -4096],
+            UserActionEvents::USER_COMMITTEE_AFTER_UPDATE => ['onCommitteeAfterUpdate', -4096],
+            UserActionEvents::USER_COMMITTEE_DELETE => ['onCommitteeDelete', -4096],
         ];
     }
 
@@ -127,6 +135,52 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $this->userActionHistoryHandler->createEmailChangeValidate($event->getUser());
     }
 
+    public function onCommitteeCreate(UserCommitteeActionEvent $event): void
+    {
+        $this->userActionHistoryHandler->createCommitteeCreate(
+            $event->adherent,
+            $event->committee
+        );
+    }
+
+    public function onCommitteeBeforeUpdate(UserCommitteeActionEvent $event): void
+    {
+        $this->committeeBeforeUpdate = $this->transformCommitteeToArray($event->committee);
+    }
+
+    public function onCommitteeAfterUpdate(UserCommitteeActionEvent $event): void
+    {
+        $after = $this->transformCommitteeToArray($event->committee);
+
+        $diff = ArrayUtils::arrayDiffRecursive(
+            $this->committeeBeforeUpdate,
+            $after,
+            true
+        );
+
+        if (empty($diff)) {
+            return;
+        }
+
+        $filteredBefore = array_intersect_key($this->committeeBeforeUpdate, $diff);
+        $filteredAfter = array_intersect_key($after, $diff);
+
+        $this->userActionHistoryHandler->createCommitteeUpdate(
+            $event->adherent,
+            $event->committee,
+            $filteredBefore,
+            $filteredAfter
+        );
+    }
+
+    public function onCommitteeDelete(UserCommitteeActionEvent $event): void
+    {
+        $this->userActionHistoryHandler->createCommitteeDelete(
+            $event->adherent,
+            $event->committee
+        );
+    }
+
     private function transformToArray(Adherent $adherent): array
     {
         return $this->normalizer->normalize(
@@ -135,6 +189,19 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             [
                 'groups' => [
                     'profile_update',
+                ],
+            ]
+        );
+    }
+
+    private function transformCommitteeToArray(Committee $committee): array
+    {
+        return $this->normalizer->normalize(
+            $committee,
+            'array',
+            [
+                'groups' => [
+                    'api_committee_update',
                 ],
             ]
         );

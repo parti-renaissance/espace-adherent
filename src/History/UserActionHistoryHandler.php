@@ -5,6 +5,7 @@ namespace App\History;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Agora;
+use App\Entity\Committee;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
@@ -230,6 +231,43 @@ class UserActionHistoryHandler
     public function createMembershipAnniversaryReminded(Adherent $adherent): void
     {
         $this->dispatch($adherent, UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED);
+    }
+
+    public function createCommitteeCreate(Adherent $adherent, Committee $committee): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::COMMITTEE_CREATE,
+            [
+                'committee_id' => $committee->getId(),
+                'name' => $committee->getName(),
+            ]
+        );
+    }
+
+    public function createCommitteeUpdate(Adherent $adherent, Committee $committee, array $before, array $after): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::COMMITTEE_UPDATE,
+            [
+                'committee_id' => $committee->getId(),
+                'before' => $before,
+                'after' => $after,
+            ]
+        );
+    }
+
+    public function createCommitteeDelete(Adherent $adherent, Committee $committee): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::COMMITTEE_DELETE,
+            [
+                'committee_id' => $committee->getId(),
+                'name' => $committee->getName(),
+            ]
+        );
     }
 
     private function getImpersonator(): ?Administrator

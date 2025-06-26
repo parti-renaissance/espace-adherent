@@ -1505,6 +1505,9 @@ user_action_history.type.agora_president_remove: Retrait du rôle de président 
 user_action_history.type.agora_general_secretary_add: Ajout du rôle de Secrétaire Général d'Agora
 user_action_history.type.agora_general_secretary_remove: Retrait du rôle de Secrétaire Général d'Agora
 user_action_history.type.membership_anniversary_reminded: Anniversaire adhérent non à jour de cotisation
+user_action_history.type.committee_create: Création d'un comité
+user_action_history.type.committee_update: Modification d'un comité
+user_action_history.type.committee_delete: Suppression d'un comité
 
 #
 # AdministratorActionHistory
