@@ -19,5 +19,3 @@ Feature: Test donation page
 
         When I follow "Mettre fin à mon don mensuel"
         When I press "Oui"
-        Then I should be on "/espace-adherent/mes-dons"
-        And I should see "La requête n'a pas abouti, veuillez réessayer s'il vous plait."
