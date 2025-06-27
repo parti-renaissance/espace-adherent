@@ -406,6 +406,9 @@ class EventAdmin extends AbstractAdmin
                 'template' => 'admin/event/list_informations.html.twig',
                 'header_style' => 'min-width: 120px',
             ])
+            ->add('participantsCount', null, [
+                'label' => 'Participants',
+            ])
             ->add('visibility', null, [
                 'label' => 'Visibilité',
                 'class' => EventVisibilityEnum::class,
