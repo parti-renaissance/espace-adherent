@@ -50,8 +50,13 @@ class MeetingProvider implements AlertProviderInterface
                     $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->logoImage))]);
                 }
 
-                $ctaLabel = 'Billet bientôt disponible';
-                $ctaUrl = null;
+                if ($event->isCampus()) {
+                    $ctaLabel = 'Suivre mon inscription';
+                    $ctaUrl = $this->generateUrl('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscriptions[0]->getUuid()->toString()]);
+                } else {
+                    $ctaLabel = 'Billet bientôt disponible';
+                    $ctaUrl = null;
+                }
 
                 $data = [
                     'first_name' => null,
