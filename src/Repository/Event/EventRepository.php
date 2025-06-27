@@ -571,7 +571,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Event[]
      */
-    public function findAllFuturAgoraEvents(Agora $agora, Adherent $adherent, \DateTime $from): array
+    public function findAllFuturAgoraEventsWithoutAdherent(Agora $agora, Adherent $adherent, \DateTime $from): array
     {
         return $this->createQueryBuilder('e')
             ->select('e')
@@ -587,6 +587,28 @@ class EventRepository extends ServiceEntityRepository
                 'published' => true,
                 'status' => Event::STATUS_SCHEDULED,
                 'adherent' => $adherent,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function findAllFuturAgoraEvents(Agora $agora, \DateTime $from): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.agora = :agora')
+            ->andWhere('e.beginAt >= :from')
+            ->andWhere('e.published = :published')
+            ->andWhere('e.status = :status')
+            ->setParameters([
+                'agora' => $agora,
+                'from' => $from,
+                'published' => true,
+                'status' => Event::STATUS_SCHEDULED,
             ])
             ->getQuery()
             ->getResult()
