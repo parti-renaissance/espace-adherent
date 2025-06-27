@@ -406,6 +406,9 @@ class EventAdmin extends AbstractAdmin
                 'template' => 'admin/event/list_informations.html.twig',
                 'header_style' => 'min-width: 120px',
             ])
+            ->add('participantsCount', null, [
+                'label' => 'Participants',
+            ])
             ->add('visibility', null, [
                 'label' => 'Visibilité',
                 'class' => EventVisibilityEnum::class,
@@ -468,6 +471,7 @@ class EventAdmin extends AbstractAdmin
                     'Lien de visio' => $event->getVisioUrl(),
                     'Lien de live' => $event->liveUrl,
                     'Visibilité' => $this->translator->trans('event.visibility.'.$event->visibility->value),
+                    'Participants' => $event->getParticipantsCount(),
                     'Date de début' => $event->getBeginAt()?->format('d/m/Y H:i:s'),
                     'Date de fin' => $event->getFinishAt()?->format('d/m/Y H:i:s'),
                     'Date de création' => $event->getCreatedAt()?->format('d/m/Y H:i:s'),
