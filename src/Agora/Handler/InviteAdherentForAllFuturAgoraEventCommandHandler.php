@@ -46,7 +46,7 @@ class InviteAdherentForAllFuturAgoraEventCommandHandler
             return;
         }
 
-        $events = $this->eventRepository->findAllFuturAgoraEvents($agora, $adherent, new \DateTime());
+        $events = $this->eventRepository->findAllFuturAgoraEventsWithoutAdherent($agora, $adherent, new \DateTime());
 
         foreach ($events as $event) {
             if ($this->handler->handle(new EventRegistrationCommand($event, $adherent, RegistrationStatusEnum::INVITED), false)) {
