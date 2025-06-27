@@ -49,6 +49,7 @@ use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Event\EventVisibilityEnum;
 use App\Geocoder\GeoPointInterface;
+use App\JeMengage\Alert\AlertOwnerInterface;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
@@ -167,7 +168,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: '`events`')]
-class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface
+class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
@@ -804,5 +805,10 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         }
 
         return $this->sendInvitationEmail;
+    }
+
+    public function getSortableAlertDate(): \DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }

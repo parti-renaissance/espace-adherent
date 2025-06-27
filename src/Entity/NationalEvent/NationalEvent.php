@@ -9,6 +9,7 @@ use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\UploadableFile;
+use App\JeMengage\Alert\AlertOwnerInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\Repository\NationalEvent\NationalEventRepository;
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
-class NationalEvent implements NotificationObjectInterface, EntityAdministratorBlameableInterface
+class NationalEvent implements NotificationObjectInterface, EntityAdministratorBlameableInterface, AlertOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;
@@ -159,5 +160,10 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     public function isCampus(): bool
     {
         return NationalEventTypeEnum::CAMPUS === $this->type;
+    }
+
+    public function getSortableAlertDate(): \DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }

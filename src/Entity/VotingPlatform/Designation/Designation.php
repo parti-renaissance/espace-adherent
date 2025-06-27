@@ -29,6 +29,7 @@ use App\Entity\VotingPlatform\Designation\Poll\PollQuestion;
 use App\Entity\VotingPlatform\Designation\Poll\QuestionChoice;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\ZoneableEntityInterface;
+use App\JeMengage\Alert\AlertOwnerInterface;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -73,7 +74,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'designation')"
 )]
 #[ORM\Entity(repositoryClass: DesignationRepository::class)]
-class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface
+class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface, AlertOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -922,5 +923,10 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         ];
 
         return implode("\n\n", array_filter($descriptionParts));
+    }
+
+    public function getSortableAlertDate(): \DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }
