@@ -117,6 +117,15 @@ class LoadNationalEventData extends Fixture
                     'description' => 'Départ 7h45 à Paris gare du nord<br/>Retour à 17h45 à Paris gare du nord',
                 ],
                 [
+                    'id' => 'train_aller',
+                    'jours_ids' => ['jour_2'],
+                    'recap_label' => 'Train aller uniquement',
+                    'quota' => 200,
+                    'titre' => 'Train (Paris > Arras) Dimanche',
+                    'montant' => 25,
+                    'description' => 'Départ 7h45 à Paris gare du nord',
+                ],
+                [
                     'id' => 'gratuit',
                     'jours_ids' => ['jour_1_et_2', 'jour_2'],
                     'titre' => 'Je viens par mes propres moyens',

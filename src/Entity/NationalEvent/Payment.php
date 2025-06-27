@@ -40,6 +40,9 @@ class Payment
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
+    #[ORM\ManyToOne(targetEntity: self::class)]
+    public ?self $replacement = null;
+
     public function __construct(UuidInterface $uuid, EventInscription $inscription, array $payload = [])
     {
         $this->uuid = $uuid;
@@ -66,5 +69,10 @@ class Payment
     public function getAmountInEuro(): int
     {
         return (int) round($this->amount / 100);
+    }
+
+    public function isConfirmed(): bool
+    {
+        return PaymentStatusEnum::CONFIRMED === $this->status;
     }
 }

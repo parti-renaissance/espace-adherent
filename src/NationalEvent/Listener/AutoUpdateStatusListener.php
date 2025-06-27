@@ -2,9 +2,11 @@
 
 namespace App\NationalEvent\Listener;
 
+use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\SuccessPaymentEvent;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,13 +33,28 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
 
         // Duplicate
         if ($oldEventInscription = $this->eventInscriptionRepository->findDuplicate($newEventInscription)) {
-            if (!$oldEventInscription->isPaymentRequired() || $oldEventInscription->isPaymentSuccess()) {
+            // Mark as duplicate the new inscription
+            if (!$newEventInscription->getTransportAmount() || $oldEventInscription->isPaymentSuccess()) {
                 $newEventInscription->status = InscriptionStatusEnum::DUPLICATE;
+                $newEventInscription->paymentStatus = null;
                 $oldEventInscription->updateFromDuplicate($newEventInscription);
 
                 $newEventInscription->originalInscription = $oldEventInscription;
 
                 $this->entityManager->flush();
+
+                return;
+            }
+
+            // Mark as duplicate the old inscription
+            if (
+                $newEventInscription->getTransportAmount() > 0
+                && (
+                    PaymentStatusEnum::PENDING === $oldEventInscription->paymentStatus
+                    || !$oldEventInscription->getTransportAmount()
+                )
+            ) {
+                $this->markAsDuplicatedOldInscription($oldEventInscription, $newEventInscription);
 
                 return;
             }
@@ -71,13 +88,26 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
             return;
         }
 
-        while ($oldInscription = $this->eventInscriptionRepository->findDuplicate($eventInscription, [
-            InscriptionStatusEnum::PENDING,
-            InscriptionStatusEnum::WAITING_PAYMENT,
-            InscriptionStatusEnum::CANCELED,
-        ])) {
-            $oldInscription->status = InscriptionStatusEnum::DUPLICATE;
-            $this->entityManager->flush();
+        while ($oldInscription = $this->eventInscriptionRepository->findDuplicate($eventInscription)) {
+            $this->markAsDuplicatedOldInscription($oldInscription, $eventInscription);
         }
+    }
+
+    public function markAsDuplicatedOldInscription(EventInscription $oldEventInscription, EventInscription $newEventInscription): void
+    {
+        $oldStatus = $oldEventInscription->status;
+
+        $oldEventInscription->status = InscriptionStatusEnum::DUPLICATE;
+        $oldEventInscription->paymentStatus = null;
+
+        if (
+            \in_array($oldStatus, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE, InscriptionStatusEnum::REFUSED], true)
+            && !\in_array($newEventInscription->status, [InscriptionStatusEnum::REFUSED, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE], true)
+        ) {
+            $newEventInscription->status = $oldStatus;
+            $newEventInscription->duplicateInscriptionForStatus = $oldEventInscription;
+        }
+
+        $this->entityManager->flush();
     }
 }

@@ -10,6 +10,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\PushToken;
 use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -235,37 +236,42 @@ class EventInscriptionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findDuplicate(EventInscription $eventInscription, array $statuses = []): ?EventInscription
+    public function findDuplicate(EventInscription $eventInscription): ?EventInscription
     {
-        $qb = $this->createQueryBuilder('ei')
+        return $this->createQueryBuilder('ei')
+            ->addSelect('
+                CASE
+                    WHEN ei.status = :status_accepted THEN 1
+                    WHEN ei.status = :status_inconclusive THEN 2
+                    WHEN ei.status = :status_refused THEN 3
+                    WHEN ei.status = :status_payment_confirmed THEN 4
+                    WHEN ei.status = :status_waiting_payment THEN 5
+                    WHEN ei.status = :status_pending THEN 6
+                    ELSE 7
+                END AS HIDDEN priority
+            ')
             ->where('ei.id != :event_inscription_id')
             ->andWhere('ei.event = :event')
             ->andWhere('ei.addressEmail = :email')
-            ->andWhere('ei.firstName = :firstName')
-            ->andWhere('ei.lastName = :lastName')
-            ->orderBy('ei.createdAt', 'ASC')
+            ->andWhere('ei.firstName = :first_name')
+            ->andWhere('ei.lastName = :last_name')
+            ->andWhere('ei.status != :status')
+            ->orderBy('priority', 'ASC')
+            ->addOrderBy('ei.createdAt', 'ASC')
             ->setParameters([
                 'event_inscription_id' => $eventInscription->getId(),
                 'event' => $eventInscription->event,
                 'email' => $eventInscription->addressEmail,
-                'firstName' => $eventInscription->firstName,
-                'lastName' => $eventInscription->lastName,
+                'first_name' => $eventInscription->firstName,
+                'last_name' => $eventInscription->lastName,
+                'status' => InscriptionStatusEnum::DUPLICATE,
+                'status_accepted' => InscriptionStatusEnum::ACCEPTED,
+                'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
+                'status_refused' => InscriptionStatusEnum::REFUSED,
+                'status_payment_confirmed' => InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                'status_waiting_payment' => InscriptionStatusEnum::WAITING_PAYMENT,
+                'status_pending' => InscriptionStatusEnum::PENDING,
             ])
-        ;
-
-        if (!empty($statuses)) {
-            $qb
-                ->andWhere('ei.status IN (:statuses)')
-                ->setParameter('statuses', $statuses)
-            ;
-        } else {
-            $qb
-                ->andWhere('ei.status != :status')
-                ->setParameter('status', InscriptionStatusEnum::DUPLICATE)
-            ;
-        }
-
-        return $qb
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -312,12 +318,14 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 WHEN ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) < 720 THEN 'payment_360'
                 ELSE 'payment_1200' END
             )")
-            ->where('ei.status = :status')
+            ->where('ei.status NOT IN :statuses')
+            ->andWhere('ei.paymentStatus != :payment_status')
             ->andWhere('r.id IS NULL')
             ->andWhere('ei.createdAt < :since')
             ->setParameter('now', $now)
             ->setParameter('since', (clone $now)->modify('-10 minutes'))
-            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->setParameter('statuses', [InscriptionStatusEnum::REFUSED, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE])
+            ->setParameter('payment_status', PaymentStatusEnum::CONFIRMED)
             ->getQuery()
             ->getResult()
         ;

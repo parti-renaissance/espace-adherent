@@ -5,9 +5,9 @@ namespace App\NationalEvent\Listener;
 use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\SuccessPaymentEvent;
-use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\Notifier;
 use App\Repository\Geo\ZoneRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SendInscriptionConfirmationListener implements EventSubscriberInterface
@@ -15,6 +15,7 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
     public function __construct(
         private readonly Notifier $notifier,
         private readonly ZoneRepository $zoneRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -30,7 +31,7 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
     {
         $eventInscription = $event->eventInscription;
 
-        if (InscriptionStatusEnum::WAITING_PAYMENT !== $eventInscription->status) {
+        if (!$eventInscription->isDuplicate() && null === $eventInscription->paymentStatus) {
             $this->sendConfirmationEmail($eventInscription);
         }
     }
@@ -42,6 +43,10 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
     private function sendConfirmationEmail(EventInscription $eventInscription): void
     {
+        if ($eventInscription->confirmationSentAt) {
+            return;
+        }
+
         $departmentCode = $eventInscription->postalCode ? substr($eventInscription->postalCode, 0, 2) : null;
 
         $zone = [];
@@ -51,5 +56,9 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
         }
 
         $this->notifier->sendInscriptionConfirmation($eventInscription, $zone);
+
+        $eventInscription->confirmationSentAt = new \DateTime();
+
+        $this->entityManager->flush();
     }
 }
