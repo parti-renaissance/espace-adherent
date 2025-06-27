@@ -2117,14 +2117,14 @@ __metadata:
   linkType: hard
 
 "@tiptap/extension-link@npm:^2.11.5":
-  version: 2.22.3
-  resolution: "@tiptap/extension-link@npm:2.22.3"
+  version: 2.23.0
+  resolution: "@tiptap/extension-link@npm:2.23.0"
   dependencies:
     linkifyjs: "npm:^4.2.0"
   peerDependencies:
     "@tiptap/core": ^2.7.0
     "@tiptap/pm": ^2.7.0
-  checksum: 10c0/270eb35fdc2e6a4fbae8a389a35c294e391479d8e2d92e69de29805bfb6828628bd8a31a33e3bf2fb8a2d6cffa7eac75b2f973976540d7fe061d091b94485db2
+  checksum: 10c0/6e5f917d8d7a8b83ba631da1514c329d5423807d351654cf3a9f034029aa98b09a6c867ae88c5a5d63205fec5ab385f2e6beb02aff02688490a863f661f2a6b1
   languageName: node
   linkType: hard
 
