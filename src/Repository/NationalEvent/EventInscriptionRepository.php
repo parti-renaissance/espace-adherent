@@ -318,7 +318,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 WHEN ROUND(TIMESTAMPDIFF(MINUTE, ei.createdAt, :now)) < 720 THEN 'payment_360'
                 ELSE 'payment_1200' END
             )")
-            ->where('ei.status NOT IN :statuses')
+            ->where('ei.status NOT IN (:statuses)')
             ->andWhere('ei.paymentStatus != :payment_status')
             ->andWhere('r.id IS NULL')
             ->andWhere('ei.createdAt < :since')
