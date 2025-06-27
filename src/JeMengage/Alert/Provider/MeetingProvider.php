@@ -93,7 +93,7 @@ class MeetingProvider implements AlertProviderInterface
             }
 
             $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $shareUrl, $data);
-            $alert->date = $event->startDate;
+            $alert->date = $event->getSortableAlertDate();
         }
 
         return $alerts;

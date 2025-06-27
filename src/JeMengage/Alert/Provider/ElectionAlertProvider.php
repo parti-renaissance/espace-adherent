@@ -47,7 +47,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                         targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
                     )
                 );
-                $alert->date = $designation->getVoteStartDate();
+                $alert->date = $designation->getSortableAlertDate();
             }
         }
 
