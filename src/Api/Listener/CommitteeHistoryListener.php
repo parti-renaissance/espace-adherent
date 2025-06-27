@@ -26,34 +26,40 @@ class CommitteeHistoryListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['onCommitteePreWrite', EventPriorities::PRE_WRITE],
-                ['onCommitteeWrite', EventPriorities::POST_WRITE],
+                ['onPreWrite', EventPriorities::PRE_WRITE],
+                ['onPostWrite', EventPriorities::POST_WRITE],
             ],
         ];
     }
 
-    public function onCommitteePreWrite(ViewEvent $viewEvent): void
+    public function onPreWrite(ViewEvent $viewEvent): void
     {
-        $committee = $viewEvent->getControllerResult();
         $request = $viewEvent->getRequest();
+        $committee = $viewEvent->getControllerResult();
         $user = $this->security->getUser();
 
-        if (!$committee instanceof Committee || !$user instanceof Adherent) {
+        if (
+            !$committee instanceof Committee
+            || !$user instanceof Adherent
+            || !$request->isMethod(Request::METHOD_PUT)
+        ) {
             return;
         }
 
-        if ($request->isMethod(Request::METHOD_PUT)) {
+        $original = $request->attributes->get('original_data');
+
+        if ($original instanceof Committee) {
             $this->dispatcher->dispatch(
-                new UserCommitteeActionEvent($user, $committee),
+                new UserCommitteeActionEvent($user, clone $original),
                 UserActionEvents::USER_COMMITTEE_BEFORE_UPDATE
             );
         }
     }
 
-    public function onCommitteeWrite(ViewEvent $viewEvent): void
+    public function onPostWrite(ViewEvent $viewEvent): void
     {
-        $committee = $viewEvent->getControllerResult();
         $request = $viewEvent->getRequest();
+        $committee = $viewEvent->getControllerResult();
         $user = $this->security->getUser();
 
         if (!$committee instanceof Committee || !$user instanceof Adherent) {
