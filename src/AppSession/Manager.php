@@ -70,6 +70,8 @@ class Manager
             $session->ip ?? $this->requestStack->getMainRequest()?->getClientIp(),
         );
 
+        $session->adherent->recordLastLoginTime();
+
         return $session;
     }
 
