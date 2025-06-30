@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp\Synchronisation;
 
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Entity\Adherent;
 use App\Entity\Campus\Registration;
@@ -9,6 +10,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneTagEnum;
 use App\Entity\Jecoute\JemarcheDataSurvey;
+use App\Entity\NationalEvent\EventInscription;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
@@ -17,6 +19,9 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use App\Repository\DonationRepository;
+use App\Repository\Geo\ZoneRepository;
+use App\Utils\PhoneNumberUtils;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -29,6 +34,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     private $publicId;
     private $email;
+    private $phone;
     private $gender;
     private $firstName;
     private $lastName;
@@ -47,6 +53,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?\DateTime $lastMembershipDonation = null;
     private ?string $source = null;
     private ?array $adherentTags = null;
+    private ?array $electTags = null;
 
     private $activeTags = [];
     private $inactiveTags = [];
@@ -54,6 +61,23 @@ class RequestBuilder implements LoggerAwareInterface
     private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $isSubscribeRequest = true;
+
+    private ?\DateTime $inscriptionDate = null;
+    private ?\DateTime $confirmationDate = null;
+    private ?\DateTime $ticketSentAt = null;
+    private ?\DateTime $ticketScannedAt = null;
+    private ?string $ticketCustomDetail = null;
+    private ?bool $isVolunteer = null;
+    private ?bool $isJAM = null;
+    private ?string $visitDay = null;
+    private ?string $accessibility = null;
+    private ?bool $isTransportNeeds = null;
+    private ?bool $isWithDiscount = null;
+    private ?UuidInterface $participantUuid = null;
+    private ?string $status = null;
+
+    private ?string $utmSource = null;
+    private ?string $utmCampaign = null;
 
     private ?array $mandateTypes = null;
     private ?array $declaredMandates = null;
@@ -79,6 +103,7 @@ class RequestBuilder implements LoggerAwareInterface
         private readonly ElectedRepresentativeAdherentMandateRepository $mandateRepository,
         private readonly DonationRepository $donationRepository,
         private readonly TagTranslator $tagTranslator,
+        private readonly ZoneRepository $zoneRepository,
     ) {
         $this->logger = new NullLogger();
     }
@@ -138,6 +163,37 @@ class RequestBuilder implements LoggerAwareInterface
         ;
     }
 
+    public function updateFromEventInscription(EventInscription $eventInscription): self
+    {
+        return $this
+            ->setEmail($eventInscription->addressEmail)
+            ->setPhone(PhoneNumberUtils::format($eventInscription->phone))
+            ->setFirstName($eventInscription->firstName)
+            ->setLastName($eventInscription->lastName)
+            ->setGender($eventInscription->gender)
+            ->setBirthDay($eventInscription->birthdate)
+            ->setAdherentTags(array_intersect(TagEnum::getAdherentTags(), $eventInscription->adherent?->tags ?? []))
+            ->setElectTags(array_intersect(TagEnum::getElectTags(), $eventInscription->adherent?->tags ?? []))
+            ->setZipCode($eventInscription->postalCode)
+            ->setInscriptionDate($eventInscription->getCreatedAt())
+            ->setConfirmationDate($eventInscription->confirmedAt)
+            ->setTicketSentAt($eventInscription->ticketSentAt)
+            ->setTicketScannedAt($eventInscription->ticketScannedAt)
+            ->setTicketCustomDetail($eventInscription->ticketCustomDetail)
+            ->setIsVolunteer($eventInscription->volunteer)
+            ->setIsJAM($eventInscription->isJAM)
+            ->setVisitDay($eventInscription->visitDay)
+            ->setAccessibility($eventInscription->accessibility)
+            ->setIsTransportNeeds($eventInscription->transportNeeds)
+            ->setIsWithDiscount($eventInscription->withDiscount)
+            ->setParticipantUuid($eventInscription->uuid)
+            ->setStatus($eventInscription->status)
+            ->setUtmSource($eventInscription->utmSource)
+            ->setUtmCampaign($eventInscription->utmCampaign)
+            ->setZones(new ArrayCollection($this->zoneRepository->findByPostalCode($eventInscription->postalCode)))
+        ;
+    }
+
     public function updateFromDataSurvey(JemarcheDataSurvey $dataSurvey, array $zones): self
     {
         $this
@@ -164,6 +220,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }
@@ -278,6 +341,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setAdherentTags(?array $tags): self
     {
         $this->adherentTags = array_filter(array_map(fn (string $key) => $this->tagTranslator->trans($key), $tags));
+
+        return $this;
+    }
+
+    public function setElectTags(?array $tags): self
+    {
+        $this->electTags = array_filter(array_map(fn (string $key) => $this->tagTranslator->trans($key), $tags));
 
         return $this;
     }
@@ -609,6 +679,58 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_DONATION_YEARS] = implode(',', $this->donationYears);
         }
 
+        if ($this->inscriptionDate) {
+            $mergeFields[MemberRequest::MERGE_FIELD_INSCRIPTION_DATE] = $this->inscriptionDate->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if ($this->confirmationDate) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if ($this->ticketSentAt) {
+            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if ($this->ticketScannedAt) {
+            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if ($this->ticketCustomDetail) {
+            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail;
+        }
+
+        if (null !== $this->isVolunteer) {
+            $mergeFields[MemberRequest::MERGE_FIELD_IS_VOLUNTEER] = $this->isVolunteer ? 'oui' : 'non';
+        }
+
+        if (null !== $this->isJAM) {
+            $mergeFields[MemberRequest::MERGE_FIELD_IS_JAM] = $this->isJAM ? 'oui' : 'non';
+        }
+
+        if ($this->visitDay) {
+            $mergeFields[MemberRequest::MERGE_FIELD_VISIT_DAY] = $this->visitDay;
+        }
+
+        if ($this->accessibility) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ACCESSIBILITY] = $this->accessibility;
+        }
+
+        if (null !== $this->isTransportNeeds) {
+            $mergeFields[MemberRequest::MERGE_FIELD_IS_TRANSPORT_NEEDS] = $this->isTransportNeeds ? 'oui' : 'non';
+        }
+
+        if (null !== $this->isWithDiscount) {
+            $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
+        }
+
+        if ($this->participantUuid) {
+            $mergeFields[MemberRequest::MERGE_FIELD_PARTICIPANT_UUID] = $this->participantUuid->toString();
+        }
+
+        if ($this->status) {
+            $mergeFields[MemberRequest::MERGE_FIELD_STATUS] = $this->status;
+        }
+
         return $mergeFields;
     }
 
@@ -700,5 +822,110 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         return $tags;
+    }
+
+    public function setInscriptionDate(?\DateTimeInterface $inscriptionDate): self
+    {
+        $this->inscriptionDate = $inscriptionDate;
+
+        return $this;
+    }
+
+    public function setConfirmationDate(?\DateTimeInterface $confirmationDate): self
+    {
+        $this->confirmationDate = $confirmationDate;
+
+        return $this;
+    }
+
+    public function setTicketSentAt(?\DateTimeInterface $ticketSentAt): self
+    {
+        $this->ticketSentAt = $ticketSentAt;
+
+        return $this;
+    }
+
+    public function setTicketScannedAt(?\DateTimeInterface $ticketScannedAt): self
+    {
+        $this->ticketScannedAt = $ticketScannedAt;
+
+        return $this;
+    }
+
+    public function setTicketCustomDetail(?string $ticketCustomDetail): self
+    {
+        $this->ticketCustomDetail = $ticketCustomDetail;
+
+        return $this;
+    }
+
+    public function setIsVolunteer(?bool $isVolunteer = null): self
+    {
+        $this->isVolunteer = $isVolunteer;
+
+        return $this;
+    }
+
+    public function setIsJAM(?bool $isJAM = null): self
+    {
+        $this->isJAM = $isJAM;
+
+        return $this;
+    }
+
+    public function setVisitDay(?string $visitDay): self
+    {
+        $this->visitDay = $visitDay;
+
+        return $this;
+    }
+
+    public function setAccessibility(?bool $accessibility = null): self
+    {
+        $this->accessibility = $accessibility;
+
+        return $this;
+    }
+
+    public function setIsTransportNeeds(?bool $isTransportNeeds = null): self
+    {
+        $this->isTransportNeeds = $isTransportNeeds;
+
+        return $this;
+    }
+
+    public function setParticipantUuid(?UuidInterface $participantUuid = null): self
+    {
+        $this->participantUuid = $participantUuid;
+
+        return $this;
+    }
+
+    public function setStatus(?string $status = null): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function setIsWithDiscount(?bool $isWithDiscount = null): self
+    {
+        $this->isWithDiscount = $isWithDiscount;
+
+        return $this;
+    }
+
+    public function setUtmSource(?string $utmSource = null): self
+    {
+        $this->utmSource = $utmSource;
+
+        return $this;
+    }
+
+    public function setUtmCampaign(?string $utmCampaign = null): self
+    {
+        $this->utmCampaign = $utmCampaign;
+
+        return $this;
     }
 }

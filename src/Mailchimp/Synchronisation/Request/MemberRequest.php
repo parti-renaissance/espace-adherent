@@ -49,6 +49,19 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_DECLARED_MANDATES = 'DEC_MANDAT';
     public const MERGE_FIELD_CAMPUS_REGISTRATION_DATE = 'CAMPUS_REG';
     public const MERGE_FIELD_DONATION_YEARS = 'DON_YEARS';
+    public const MERGE_FIELD_INSCRIPTION_DATE = 'INSC_DATE';
+    public const MERGE_FIELD_CONFIRMATION_DATE = 'CONF_DATE';
+    public const MERGE_FIELD_TICKET_SENT_AT = 'TICK_SENT';
+    public const MERGE_FIELD_TICKET_SCANNED_AT = 'TICK_SCAN';
+    public const MERGE_FIELD_TICKET_CUSTOM_DETAIL = 'TICK_DET';
+    public const MERGE_FIELD_IS_VOLUNTEER = 'IS_VLNT';
+    public const MERGE_FIELD_IS_JAM = 'IS_JAM';
+    public const MERGE_FIELD_VISIT_DAY = 'VISIT_DAY';
+    public const MERGE_FIELD_ACCESSIBILITY = 'ACCESSBLTY';
+    public const MERGE_FIELD_IS_TRANSPORT_NEEDS = 'IS_TRNS';
+    public const MERGE_FIELD_IS_WITH_DISCOUNT = 'IS_DISC';
+    public const MERGE_FIELD_PARTICIPANT_UUID = 'PRTCPNT_UUID';
+    public const MERGE_FIELD_STATUS = 'STATUS';
 
     public const ZONE_MERGE_FIELD_BY_ZONE_TYPE = [
         self::MERGE_FIELD_ZONE_BOROUGH => Zone::BOROUGH,

@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\MailchimpSegment;
+use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -23,6 +24,7 @@ use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
+use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
@@ -157,6 +159,29 @@ class Manager implements LoggerAwareInterface
 
         $result = $this->driver->editMember(
             $requestBuilder->buildMemberRequest($message->getOldEmailAddress() ?? $emailAddress),
+            $listId
+        );
+
+        if ($result) {
+            $this->updateMemberTags($emailAddress, $listId, $requestBuilder);
+        }
+    }
+
+    public function editEventInscriptionMember(
+        EventInscription $eventInscription,
+        EventInscriptionChangeCommand $message,
+    ): void {
+        $emailAddress = $eventInscription->addressEmail;
+        $listId = $this->mailchimpObjectIdMapping->getEventInscriptionListId();
+
+        /** @var RequestBuilder $requestBuilder */
+        $requestBuilder = $this->requestBuildersLocator
+            ->get(RequestBuilder::class)
+            ->updateFromEventInscription($eventInscription)
+        ;
+
+        $result = $this->driver->editMember(
+            $requestBuilder->buildMemberRequest($message->oldEmailAddress ?? $emailAddress),
             $listId
         );
 
