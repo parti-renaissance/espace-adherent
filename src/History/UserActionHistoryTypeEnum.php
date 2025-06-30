@@ -26,4 +26,7 @@ enum UserActionHistoryTypeEnum: string
     case AGORA_GENERAL_SECRETARY_ADD = 'agora_general_secretary_add';
     case AGORA_GENERAL_SECRETARY_REMOVE = 'agora_general_secretary_remove';
     case MEMBERSHIP_ANNIVERSARY_REMINDED = 'membership_anniversary_reminded';
+    case COMMITTEE_CREATE = 'committee_create';
+    case COMMITTEE_UPDATE = 'committee_update';
+    case COMMITTEE_DELETE = 'committee_delete';
 }
