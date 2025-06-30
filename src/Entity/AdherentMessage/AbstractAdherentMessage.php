@@ -19,6 +19,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Controller\Api\AdherentMessage\DuplicateMessageController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
+use App\Controller\Api\AdherentMessage\GetAdherentMessageRecipientsCountController;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
@@ -58,6 +59,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read_content']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
+        ),
+        new Get(
+            uriTemplate: '/v3/adherent_messages/{uuid}/count-recipients',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetAdherentMessageRecipientsCountController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
         ),
         new Put(
             uriTemplate: '/v3/adherent_messages/{uuid}',
