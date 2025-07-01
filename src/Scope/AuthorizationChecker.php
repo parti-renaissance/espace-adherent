@@ -78,7 +78,7 @@ class AuthorizationChecker
         return !empty(array_intersect($featureCodes, [
             FeatureEnum::ACTIONS,
             FeatureEnum::MESSAGES,
-            FeatureEnum::MESSAGES_VOX,
+            FeatureEnum::PUBLICATIONS,
         ]));
     }
 }

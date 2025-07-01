@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox'])"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"))]
 #[Route('/v3/upload-file', methods: ['POST'])]
 class UploadFileController extends AbstractController
 {

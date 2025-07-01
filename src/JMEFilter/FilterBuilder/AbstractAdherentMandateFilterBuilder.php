@@ -18,7 +18,7 @@ abstract class AbstractAdherentMandateFilterBuilder implements FilterBuilderInte
         return \in_array($feature, [
             FeatureEnum::CONTACTS,
             FeatureEnum::MESSAGES,
-            FeatureEnum::MESSAGES_VOX,
+            FeatureEnum::PUBLICATIONS,
         ], true);
     }
 
