@@ -1618,12 +1618,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $zones = $messageFilter->getZones();
         if (!$zones->isEmpty()) {
-            $this->withGeoZones($zones->toArray(), $qb, 'a', Adherent::class, 'a2', 'zones', 'z2');
+            $this->withGeoZones($zones->toArray(), $qb, 'a', Adherent::class, 'a2', 'zones', 'z2', zoneParentAlias: 'zone_parent2');
             $perimeterFilterWasApplied = true;
         }
 
         if ($messageFilter->getZone()) {
-            $this->withGeoZones([$messageFilter->getZone()], $qb, 'a', Adherent::class, 'a3', 'zones', 'z3');
+            $this->withGeoZones([$messageFilter->getZone()], $qb, 'a', Adherent::class, 'a3', 'zones', 'z3', zoneParentAlias: 'zone_parent3');
             $perimeterFilterWasApplied = true;
         }
 
@@ -1698,6 +1698,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ;
         }
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (int) $qb->getQuery()->getOneOrNullResult();
     }
 }

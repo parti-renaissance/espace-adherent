@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Form\ColorType;
 use App\Scope\AppEnum;
 use App\Scope\FeatureEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -41,7 +42,13 @@ class ScopeAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Fonctionnalités 🗝️️', ['class' => 'col-md-6'])
+            ->with('Thème 🎨', ['box_class' => 'box box-success', 'class' => 'col-md-6'])
+                ->add('colorPrimary', ColorType::class, ['label' => 'Couleur primaire', 'required' => false])
+                ->add('colorSoft', ColorType::class, ['label' => 'Couleur soft', 'required' => false])
+                ->add('colorHover', ColorType::class, ['label' => 'Couleur hover', 'required' => false])
+                ->add('colorActive', ColorType::class, ['label' => 'Couleur active', 'required' => false])
+            ->end()
+            ->with('Fonctionnalités 🗝️️', ['box_class' => 'box box-warning'])
                 ->add('features', ChoiceType::class, [
                     'label' => 'Code',
                     'choices' => FeatureEnum::ALL,

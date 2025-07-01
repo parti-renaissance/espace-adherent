@@ -45,7 +45,7 @@ class DelegatedAccessNotifier
         ;
 
         return match ($scope->getCode()) {
-            ScopeEnum::ANIMATOR => [$scope->getAttributes()['dpt']],
+            ScopeEnum::ANIMATOR => [$scope->getAttribute('dpt')],
             default => $scope->getZoneNames(),
         };
     }

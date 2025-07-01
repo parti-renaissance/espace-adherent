@@ -967,3 +967,13 @@
         {% if not form.parent %}</div>{% endif %}
     {% endif %}
 {%- endblock form_errors %}
+
+{% block color_widget %}
+    <div class="input-group">
+        <span class="input-group-addon" style="padding: 0;">
+            <span style="display:block;width: 32px;height:32px;background: {{ form.vars.value }};"></span>
+        </span>
+        {% set type = 'text' %}
+        {{ parent() }}
+    </div>
+{% endblock %}

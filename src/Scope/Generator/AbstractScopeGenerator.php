@@ -47,6 +47,8 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 
         $this->delegatedAccess = null;
 
+        $scope->addAttribute('theme', $scopeEntity->getTheme());
+
         return $this->enrichAttributes($scope, $adherent);
     }
 

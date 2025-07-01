@@ -56,6 +56,15 @@ class Scope
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $apps;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $colorPrimary = null;
+    #[ORM\Column(nullable: true)]
+    public ?string $colorSoft = null;
+    #[ORM\Column(nullable: true)]
+    public ?string $colorHover = null;
+    #[ORM\Column(nullable: true)]
+    public ?string $colorActive = null;
+
     public function __construct(?string $code = null, ?string $name = null, ?array $features = null, ?array $apps = null)
     {
         $this->code = $code;
@@ -112,5 +121,15 @@ class Scope
     public function setApps(array $apps): void
     {
         $this->apps = $apps;
+    }
+
+    public function getTheme(): array
+    {
+        return [
+            'primary' => $this->colorPrimary,
+            'soft' => $this->colorSoft,
+            'hover' => $this->colorHover,
+            'active' => $this->colorActive,
+        ];
     }
 }
