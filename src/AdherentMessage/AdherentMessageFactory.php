@@ -18,9 +18,9 @@ class AdherentMessageFactory
         return (new $className(Uuid::uuid4(), $adherent))->updateFromDataObject($dataObject);
     }
 
-    public static function getMessageClassName(string $type): string
+    public static function getMessageClassName(string $scopeCode, ?string $type = null): string
     {
-        if (!$className = AdherentMessageTypeEnum::getMessageClassFromScopeCode($type)) {
+        if (!$className = AdherentMessageTypeEnum::getMessageClassFromScopeCode($scopeCode, $type)) {
             throw new \InvalidArgumentException(\sprintf('Message type "%s" is undefined', $type));
         }
 

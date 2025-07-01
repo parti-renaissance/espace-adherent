@@ -41,7 +41,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75');
 
         $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
-        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        $message->setSource(AdherentMessageInterface::SOURCE_VOX);
         $message->setRecipientCount(10);
         $message->setFilter(new MessageFilter([$parisZone]));
         $message->setContent($faker->randomHtml());
@@ -79,7 +79,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $manager->persist($message2);
 
         $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
-        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        $message->setSource(AdherentMessageInterface::SOURCE_VOX);
         $message->setRecipientCount(2);
         $message->setFilter(new MessageFilter([$parisZone]));
         $message->markAsSent();

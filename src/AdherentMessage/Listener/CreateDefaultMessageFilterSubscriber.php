@@ -6,7 +6,6 @@ use App\Adherent\Tag\TagEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Events;
 use App\AdherentMessage\MessageEvent;
-use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\TransactionalMessageInterface;
 use App\Repository\CommitteeRepository;
@@ -31,10 +30,6 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
     public function createDefaultMessageFilter(MessageEvent $event): void
     {
         $message = $event->getMessage();
-
-        if (AdherentMessageInterface::SOURCE_API !== $message->getSource()) {
-            return;
-        }
 
         if ($message->getFilter() || !$message->getAuthor()) {
             return;

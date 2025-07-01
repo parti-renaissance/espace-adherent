@@ -33,10 +33,8 @@ class MailchimpObjectIdMapping
 
     public function getTemplateId(AdherentMessageInterface $message): ?int
     {
-        if (AdherentMessageInterface::SOURCE_API === $message->getSource()) {
-            if (!$templateId = $this->findTemplateId(\sprintf('%s_api', $message->getType()))) {
-                $templateId = $this->findTemplateId('default_api');
-            }
+        if (!$templateId = $this->findTemplateId(\sprintf('%s_api', $message->getType()))) {
+            $templateId = $this->findTemplateId('default_api');
         }
 
         return $templateId ?? $this->findTemplateId($message->getType());
