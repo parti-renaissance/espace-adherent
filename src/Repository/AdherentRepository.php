@@ -1609,7 +1609,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $qb = $this->createQueryBuilder('a')
-            ->select('DISTINCT a.id')
+            ->select('COUNT(DISTINCT a.id)')
             ->where('a.status = :status')
             ->setParameter('status', Adherent::ENABLED)
         ;
