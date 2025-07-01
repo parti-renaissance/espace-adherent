@@ -20,8 +20,8 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createFrom(ZoneAutocomplete::class, [
-                'code' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) ? 'zone' : 'zones',
-                'zone_types' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) ? [
+                'code' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'zone' : 'zones',
+                'zone_types' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? [
                     Zone::BOROUGH,
                     Zone::CANTON,
                     Zone::CITY,
@@ -33,8 +33,8 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
                     Zone::CUSTOM,
                 ] : [],
             ])
-            ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]))
-            ->setRequired(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) && ScopeEnum::ANIMATOR !== $scope)
+            ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
+            ->setRequired(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) && ScopeEnum::ANIMATOR !== $scope)
             ->getFilters()
         ;
     }

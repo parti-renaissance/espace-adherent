@@ -14,7 +14,7 @@ class DeclaredMandateFilterBuilder extends AbstractAdherentMandateFilterBuilder
         return (new FilterCollectionBuilder())
             ->createSelect($multiple ? 'declaredMandates' : 'declaredMandate', 'Déclaration de mandat')
             ->setChoices($this->getTranslatedChoices())
-            ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]))
+            ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
             ->setMultiple($multiple)
             ->getFilters()
         ;

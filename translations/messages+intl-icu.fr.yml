@@ -1330,7 +1330,7 @@ scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
 scope.feature.contacts_export: Export contacts
 scope.feature.messages: Messagerie
-scope.feature.messages_vox: Messagerie V3 (beta)
+scope.feature.publications: Publications (beta)
 scope.feature.events: Événements
 scope.feature.my_team: Mon équipe
 scope.feature.mobile_app: Application Mobile

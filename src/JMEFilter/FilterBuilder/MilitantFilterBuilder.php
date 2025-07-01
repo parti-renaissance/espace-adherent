@@ -10,14 +10,14 @@ class MilitantFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX, FeatureEnum::CONTACTS], true);
+        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS, FeatureEnum::CONTACTS], true);
     }
 
     public function build(string $scope, ?string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createDateInterval('registered', 'Inscrit')
-            ->setPosition(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]) ? 99 : 200)
+            ->setPosition(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 99 : 200)
             ->getFilters()
         ;
     }

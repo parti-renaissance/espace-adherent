@@ -30,7 +30,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         $builder = (new FilterCollectionBuilder())
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
-            ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::MESSAGES_VOX]))
+            ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
             ->setChoices($this->getTranslatedChoices())
         ;
 
