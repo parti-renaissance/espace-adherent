@@ -17,7 +17,7 @@ trait EntityTimestampableTrait
     protected $createdAt;
 
     #[Gedmo\Timestampable(on: 'update')]
-    #[Groups(['phoning_campaign_read', 'committee:list', 'national_event_inscription:webhook', 'action_read', 'action_read_list', 'referral_read', 'agora_read', 'agora_membership_read'])]
+    #[Groups(['phoning_campaign_read', 'committee:list', 'national_event_inscription:webhook', 'action_read', 'action_read_list', 'referral_read', 'agora_read', 'agora_membership_read', 'message_read'])]
     #[ORM\Column(type: 'datetime')]
     protected $updatedAt;
 

@@ -139,7 +139,8 @@ Feature:
                     "first_name": "Damien",
                     "last_name": "Durock",
                     "email_address": "president-ad@renaissance-dev.fr"
-                }
+                },
+                "updated_at": "@string@.isDateTime()"
             }
             """
         When I save this response

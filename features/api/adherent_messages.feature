@@ -148,7 +148,8 @@ Feature:
                     "first_name": "Jules",
                     "last_name": "Fullstack",
                     "email_address": "je-mengage-user-1@en-marche-dev.fr"
-                }
+                },
+                "updated_at": "@string@.isDateTime()"
             }
             """
 
@@ -187,7 +188,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent",
                     "email_address": "referent@en-marche-dev.fr"
-                }
+                },
+                "updated_at": "@string@.isDateTime()"
             }
             """
 
@@ -220,7 +222,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent",
                     "email_address": "referent@en-marche-dev.fr"
-                }
+                },
+                "updated_at": "@string@.isDateTime()"
             }
             """
 
@@ -266,7 +269,8 @@ Feature:
                     "first_name": "Coordinateur",
                     "last_name": "Coordinateur",
                     "email_address": "coordinateur@en-marche-dev.fr"
-                }
+                },
+                "updated_at": "@string@.isDateTime()"
             }
             """
 
