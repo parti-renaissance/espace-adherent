@@ -20,6 +20,7 @@ use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Controller\Api\AdherentMessage\DuplicateMessageController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageRecipientsCountController;
+use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
@@ -49,75 +50,85 @@ use Symfony\Component\Validator\Constraints as Assert;
     shortName: 'AdherentMessage',
     operations: [
         new Get(
-            uriTemplate: '/v3/adherent_messages/{uuid}',
+            uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new Get(
-            uriTemplate: '/v3/adherent_messages/{uuid}/content',
+            uriTemplate: '/adherent_messages/{uuid}/content',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read_content']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new Get(
-            uriTemplate: '/v3/adherent_messages/{uuid}/count-recipients',
+            uriTemplate: '/adherent_messages/{uuid}/count-recipients',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetAdherentMessageRecipientsCountController::class,
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
         ),
+        new Get(
+            uriTemplate: '/adherent_messages/available-senders',
+            controller: GetAvailableSendersController::class,
+            read: false,
+        ),
         new Put(
-            uriTemplate: '/v3/adherent_messages/{uuid}',
+            uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new HttpOperation(
             method: 'POST',
-            uriTemplate: '/v3/adherent_messages/{uuid}/send',
+            uriTemplate: '/adherent_messages/{uuid}/send',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendAdherentMessageController::class,
-            deserialize: false
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
+            deserialize: false,
         ),
         new HttpOperation(
             method: 'POST',
-            uriTemplate: '/v3/adherent_messages/{uuid}/send-test',
+            uriTemplate: '/adherent_messages/{uuid}/send-test',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendTestAdherentMessageController::class,
-            deserialize: false
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
+            deserialize: false,
         ),
         new HttpOperation(
             method: 'PUT',
-            uriTemplate: '/v3/adherent_messages/{uuid}/filter',
+            uriTemplate: '/adherent_messages/{uuid}/filter',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: UpdateAdherentMessageFilterController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
             deserialize: false
         ),
         new HttpOperation(
             method: 'POST',
-            uriTemplate: '/v3/adherent_messages/{uuid}/duplicate',
+            uriTemplate: '/adherent_messages/{uuid}/duplicate',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: DuplicateMessageController::class,
-            deserialize: false
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))",
+            deserialize: false,
         ),
         new Delete(
-            uriTemplate: '/v3/adherent_messages/{uuid}',
+            uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'messages_vox']) and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'messages_vox'))"
         ),
         new GetCollection(
-            uriTemplate: '/v3/adherent_messages',
+            uriTemplate: '/adherent_messages',
             normalizationContext: ['groups' => ['message_read_list']]
         ),
         new Post(
-            uriTemplate: '/v3/adherent_messages',
+            uriTemplate: '/adherent_messages',
             normalizationContext: ['groups' => ['message_read']]
         ),
         new GetCollection(
-            uriTemplate: '/v3/adherent_messages/kpi',
-            controller: GetAdherentMessageKpiController::class
+            uriTemplate: '/adherent_messages/kpi',
+            controller: GetAdherentMessageKpiController::class,
         ),
     ],
+    routePrefix: '/v3',
     normalizationContext: ['groups' => ['message_read_list']],
     denormalizationContext: ['groups' => ['message_write']],
     paginationClientEnabled: true,

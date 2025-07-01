@@ -15,7 +15,14 @@ Feature:
                 {
                     "code": "deputy",
                     "name": "Délégué de circonscription",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [
                         {
                             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -43,7 +50,14 @@ Feature:
                 {
                     "code": "national_communication",
                     "name": "Rôle national communication",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [
                         {
                             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -57,7 +71,14 @@ Feature:
                 {
                     "code": "national",
                     "name": "Rôle national",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [
                         {
                             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -98,7 +119,14 @@ Feature:
                 {
                     "code": "pap_national_manager",
                     "name": "Responsable National PAP",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [
                         {
                             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -112,7 +140,14 @@ Feature:
                 {
                     "code": "pap",
                     "name": "Porte-à-porteur",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [],
                     "apps": ["jemarche"],
                     "features": []
@@ -120,7 +155,14 @@ Feature:
                 {
                     "code": "phoning_national_manager",
                     "name": "Responsable phoning",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [
                         {
                             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -134,7 +176,14 @@ Feature:
                 {
                     "code": "phoning",
                     "name": "Appelant",
-                    "attributes": null,
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    },
                     "zones": [],
                     "apps": ["jemarche"],
                     "features": []
@@ -178,7 +227,14 @@ Feature:
                     "documents",
                     "referrals"
                 ],
-                "attributes": null,
+                "attributes": {
+                    "theme": {
+                        "primary": null,
+                        "soft": null,
+                        "hover": null,
+                        "active": null
+                    }
+                },
                 "delegated_access": null
             }
             """
@@ -232,7 +288,14 @@ Feature:
                     "circonscriptions",
                     "referrals"
                 ],
-                "attributes": null,
+                "attributes": {
+                    "theme": {
+                        "primary": null,
+                        "soft": null,
+                        "hover": null,
+                        "active": null
+                    }
+                },
                 "delegated_access": null
             }
             """
@@ -247,6 +310,12 @@ Feature:
                 {
                     "apps": ["data_corner"],
                     "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        },
                         "agoras": [
                             {
                                 "name": "Agora non publiée",
@@ -271,7 +340,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "messages", "events", "mobile_app"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
@@ -285,7 +361,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "contacts", "mobile_app"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_01ddb89b-25be-4ccb-a90f-8338c42e7e58",
@@ -299,7 +382,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "contacts", "messages", "events", "mobile_app", "ripostes", "survey"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_1d29b80c-a308-441c-9d7d-a333c366fdb1",
@@ -313,7 +403,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "mobile_app", "elected_representative"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
@@ -347,7 +444,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "contacts", "messages", "events", "mobile_app"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
@@ -361,7 +465,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "contacts", "mobile_app"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 },
                 {
                     "code": "delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c",
@@ -375,7 +486,14 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["dashboard", "contacts", "events", "mobile_app", "news"],
-                    "attributes": null
+                    "attributes": {
+                        "theme": {
+                            "primary": null,
+                            "soft": null,
+                            "hover": null,
+                            "active": null
+                        }
+                    }
                 }
             ]
             """
@@ -402,7 +520,14 @@ Feature:
                 ],
                 "apps": ["data_corner"],
                 "features": ["dashboard", "contacts", "mobile_app"],
-                "attributes": null,
+                "attributes": {
+                    "theme": {
+                        "primary": null,
+                        "soft": null,
+                        "hover": null,
+                        "active": null
+                    }
+                },
                 "delegated_access": {
                     "delegator": {
                         "uuid": "160cdf45-80c4-4663-aa21-0ae23091a381",
@@ -507,7 +632,14 @@ Feature:
                     "role": "Responsable mobilisation",
                     "type": "president_departmental_assembly"
                 },
-                "attributes": null
+                "attributes": {
+                    "theme": {
+                        "primary": null,
+                        "soft": null,
+                        "hover": null,
+                        "active": null
+                    }
+                }
             }
             """
 
@@ -555,6 +687,12 @@ Feature:
                     "referrals"
                 ],
                 "attributes": {
+                    "theme": {
+                        "primary": null,
+                        "soft": null,
+                        "hover": null,
+                        "active": null
+                    },
                     "committees": [{ "name": "Comité des 3 communes", "uuid": "@uuid@" }],
                     "dpt": "92"
                 },

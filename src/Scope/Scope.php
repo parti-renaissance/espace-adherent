@@ -127,6 +127,11 @@ class Scope
         return $this->attributes;
     }
 
+    public function getAttribute(string $key, mixed $default = null)
+    {
+        return $this->attributes[$key] ?? $default;
+    }
+
     public function addAttribute(string $name, $value): void
     {
         $this->attributes[$name] = $value;

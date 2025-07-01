@@ -140,6 +140,7 @@ trait EntityIdentityTrait
         'agora_membership_read',
         'jecoute_news_read',
         'jecoute_news_read_dc',
+        'adherent_message_sender',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
