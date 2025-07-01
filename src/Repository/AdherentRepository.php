@@ -9,11 +9,15 @@ use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
+use App\AppSession\SessionStatusEnum;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AppSession;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -33,6 +37,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Event\Request\CountInvitationsRequest;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\MembershipSourceEnum;
 use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
@@ -1593,5 +1598,106 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function countAdherentsForMessage(AbstractAdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, ?bool $inApp = null): int
+    {
+        $messageFilter = $message->getFilter();
+
+        if (!$messageFilter instanceof AudienceFilter) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder('a')
+            ->select('DISTINCT a.id')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+        ;
+
+        $perimeterFilterWasApplied = false;
+
+        $zones = $messageFilter->getZones();
+        if (!$zones->isEmpty()) {
+            $this->withGeoZones($zones->toArray(), $qb, 'a', Adherent::class, 'a2', 'zones', 'z2');
+            $perimeterFilterWasApplied = true;
+        }
+
+        if ($messageFilter->getZone()) {
+            $this->withGeoZones([$messageFilter->getZone()], $qb, 'a', Adherent::class, 'a3', 'zones', 'z3');
+            $perimeterFilterWasApplied = true;
+        }
+
+        if ($messageFilter->getCommittee()) {
+            $qb
+                ->innerJoin('a.committeeMembership', 'cm', Join::WITH, 'cm.committee = :committee')
+                ->setParameter('committee', $messageFilter->getCommittee())
+            ;
+            $perimeterFilterWasApplied = true;
+        }
+
+        if (!$perimeterFilterWasApplied) {
+            return 0;
+        }
+
+        foreach (array_filter([$messageFilter->adherentTags, $messageFilter->electTags, $messageFilter->staticTags]) as $index => $tag) {
+            $operator = str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE';
+
+            $qb
+                ->andWhere('a.tags '.$operator.' :tag_'.$index)
+                ->setParameter('tag_'.$index, '%'.$tag.'%')
+            ;
+        }
+
+        if (null !== $byPush) {
+            if ($byPush) {
+                $qb
+                    ->innerJoin('a.appSessions', 'session', Join::WITH, 'session.status = :session_status')
+                    ->innerJoin('session.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
+                    ->setParameter('session_status', SessionStatusEnum::ACTIVE)
+                ;
+            } else {
+                $qb
+                    ->andWhere(\sprintf('NOT EXISTS (
+                        SELECT 1 FROM %s s
+                        JOIN s.pushTokenLinks p
+                        WHERE s.adherent = a
+                        AND s.status = :session_status
+                        AND p.unsubscribedAt IS NULL
+                    )', AppSession::class))
+                    ->setParameter('session_status', SessionStatusEnum::ACTIVE)
+                ;
+            }
+        }
+
+        if (null !== $byEmail) {
+            if ($byEmail) {
+                $condition = $qb->expr()->andX()->add('a.mailchimpStatus = :mailchimp_status');
+            } else {
+                $condition = $qb->expr()->orX()->add('a.mailchimpStatus != :mailchimp_status');
+            }
+
+            if (($scope = $messageFilter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
+                $qb
+                    ->leftJoin('a.subscriptionTypes', 'subscription_type', Join::WITH, 'subscription_type.code = :subscription_type_code')
+                    ->setParameter('subscription_type_code', SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])
+                ;
+
+                $condition->add('subscription_type '.($byEmail ? 'IS NOT NULL' : 'IS NULL'));
+            }
+
+            $qb
+                ->andWhere($condition)
+                ->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED)
+            ;
+        }
+
+        if (null !== $inApp) {
+            $qb
+                ->leftJoin('a.appSessions', 'session2')
+                ->andWhere('session2.id '.($inApp ? 'IS NOT NULL' : 'IS NULL'))
+            ;
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

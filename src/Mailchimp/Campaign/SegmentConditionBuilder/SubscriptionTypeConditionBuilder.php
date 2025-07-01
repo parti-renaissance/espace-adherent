@@ -15,7 +15,6 @@ use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
-use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
 class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
@@ -89,26 +88,12 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        switch ($scope = $filter->getScope()) {
-            case ScopeEnum::DEPUTY:
-                $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
-                break;
-            case ScopeEnum::CANDIDATE:
-                $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
-                break;
-            case ScopeEnum::SENATOR:
-                $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
-                break;
-            case ScopeEnum::CORRESPONDENT:
-            case ScopeEnum::REGIONAL_COORDINATOR:
-                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
-                break;
-            default:
-                throw new \InvalidArgumentException(\sprintf('Scope %s does not match any subscription type', $scope));
+        if (!$subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope = $filter->getScope()] ?? null) {
+            throw new \InvalidArgumentException(\sprintf('Scope %s does not match any subscription type', $scope));
         }
 
         return [$this->buildInterestCondition(
-            $interestKeys,
+            [$subscriptionType],
             $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId()
         )];
     }

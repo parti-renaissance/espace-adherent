@@ -34,6 +34,10 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
             if ($committeeUuids = $scope->getCommitteeUuids()) {
                 $audienceFilter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
             }
+
+            if (!$audienceFilter->getScope()) {
+                $audienceFilter->setScope($scope->getMainCode());
+            }
         } else {
             if (($user = $this->security->getUser()) && $audienceFilter->getScope() && AdherentSpaceEnum::SCOPES[$audienceFilter->getScope()]) {
                 $audienceFilter->setZones($this->managedZoneProvider->getManagedZones(

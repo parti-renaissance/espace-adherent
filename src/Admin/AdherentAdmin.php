@@ -181,11 +181,9 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     } else {
                         $qb->andWhere(\sprintf("NOT EXISTS (
                             SELECT 1 FROM %s s
-                            JOIN s.client c
                             JOIN s.pushTokenLinks p
                             WHERE s.adherent = $alias
                             AND s.status = :subscription_push_filter_status
-                            AND c.code = :session_client_code
                             AND p.unsubscribedAt IS NULL
                         )", AppSession::class));
                     }
