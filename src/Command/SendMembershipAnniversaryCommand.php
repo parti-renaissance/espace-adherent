@@ -40,6 +40,7 @@ class SendMembershipAnniversaryCommand extends Command
     {
         $this
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, 'Number of adherents per batch', 500)
+            ->addOption('date', null, InputOption::VALUE_OPTIONAL, 'Override the membership donation date to match (format: Y-m-d)')
         ;
     }
 
@@ -51,11 +52,24 @@ class SendMembershipAnniversaryCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $batchSize = (int) $input->getOption('batch-size');
+        $dateOption = $input->getOption('date');
+
+        if (null !== $dateOption) {
+            try {
+                $targetDate = new \DateTimeImmutable($dateOption);
+            } catch (\Exception $e) {
+                $this->io->error("Invalid date format. Please use 'Y-m-d'.");
+
+                return Command::FAILURE;
+            }
+        } else {
+            $targetDate = (new \DateTimeImmutable('today'))->modify('-1 year');
+        }
 
         $this->io->title('Anniversary Recotisation Reminder');
-        $this->io->text('Looking for adherents who contributed exactly one year ago and are not up to date.');
+        $this->io->text(\sprintf('Target date for membership donation match: %s', $targetDate->format('Y-m-d')));
 
-        $paginator = $this->getQueryBuilder();
+        $paginator = $this->getQueryBuilder($targetDate);
         $total = $paginator->count();
 
         $this->io->text("Found $total adherents to remind.");
@@ -91,11 +105,11 @@ class SendMembershipAnniversaryCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(): Paginator
+    private function getQueryBuilder(\DateTimeImmutable $targetDate): Paginator
     {
         $today = new \DateTimeImmutable('today');
-        $targetDate = $today->modify('-1 year');
-        $upToDateTag = TagEnum::getAdherentYearTag((int) $today->format('Y'));
+        $currentYear = (int) $today->format('Y');
+        $upToDateTag = TagEnum::getAdherentYearTag($currentYear);
 
         $qb = $this->adherentRepository->createQueryBuilder('a');
 
@@ -119,7 +133,7 @@ class SendMembershipAnniversaryCommand extends Command
                 'status_enabled' => Adherent::ENABLED,
                 'excluded_tag' => '%'.$upToDateTag.'%',
                 'history_type' => UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED,
-                'current_year' => $today->format('Y'),
+                'current_year' => $currentYear,
             ])
         ;
 
