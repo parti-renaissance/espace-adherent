@@ -12,6 +12,7 @@ use App\Mailer\Message\Renaissance\AdhesionAlreadySympathizerMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
+use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,6 +22,9 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 class MembershipNotifier implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    private const ANNIVERSARY_UTM_SOURCE = 'email';
+    private const ANNIVERSARY_UTM_CAMPAIGN = 'anniversaire';
 
     public function __construct(
         private readonly CallbackManager $callbackManager,
@@ -37,7 +41,7 @@ class MembershipNotifier implements LoggerAwareInterface
     {
         $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
             $adherent,
-            $this->createMagicLink($adherent)
+            $this->createMagicLink($adherent, self::ANNIVERSARY_UTM_SOURCE, self::ANNIVERSARY_UTM_CAMPAIGN)
         ));
     }
 
@@ -99,14 +103,18 @@ class MembershipNotifier implements LoggerAwareInterface
         $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
     }
 
-    private function createMagicLink(Adherent $adherent): string
+    private function createMagicLink(Adherent $adherent, ?string $utmSource = null, ?string $utmCampaign = null): string
     {
         return $this->loginLinkHandler->createLoginLink(
             $adherent,
             null,
             60 * 60 * 48,
             AppCodeEnum::RENAISSANCE,
-            $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->urlGenerator->generate(
+                'app_adhesion_index',
+                ($utmSource && $utmCampaign) ? UtmParams::mergeParams([], $utmSource, $utmCampaign) : [],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
         );
     }
 }
