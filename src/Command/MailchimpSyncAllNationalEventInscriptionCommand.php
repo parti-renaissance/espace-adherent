@@ -112,6 +112,9 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
         $queryBuilder = $this->eventInscriptionRepository
             ->createQueryBuilder('event_inscription')
             ->select('PARTIAL event_inscription.{id, uuid, addressEmail}')
+            ->innerJoin('event_inscription.event', 'event')
+            ->andWhere('event.mailchimpSync = :true')
+            ->setParameter('true', true)
             ->andWhere('event_inscription.event = :nationalEvent')
             ->setParameter('nationalEvent', $nationalEvent)
         ;

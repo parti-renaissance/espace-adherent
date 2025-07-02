@@ -108,6 +108,9 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
     public ?array $transportConfiguration = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $mailchimpSync = false;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

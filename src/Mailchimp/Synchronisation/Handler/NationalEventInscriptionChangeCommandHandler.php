@@ -36,6 +36,10 @@ class NationalEventInscriptionChangeCommandHandler implements LoggerAwareInterfa
 
         $this->entityManager->refresh($eventInscription);
 
+        if (!$eventInscription->event->mailchimpSync) {
+            return;
+        }
+
         if ($adherent = $eventInscription->adherent) {
             $this->entityManager->refresh($adherent);
         }
