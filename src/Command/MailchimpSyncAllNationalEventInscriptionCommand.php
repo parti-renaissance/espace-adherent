@@ -3,16 +3,13 @@
 namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
-use App\Entity\NationalEvent\NationalEvent;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
-use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +23,6 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
     private $io;
 
     public function __construct(
-        private readonly NationalEventRepository $nationalEventRepository,
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
@@ -37,9 +33,9 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('event-slug', InputArgument::REQUIRED)
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
+            ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
     }
 
@@ -53,16 +49,7 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
         $batchSize = (int) $input->getOption('batch-size');
         $limit = (int) $input->getOption('limit');
 
-        $nationalEvent = $this->nationalEventRepository->findOneBy(['slug' => $input->getArgument('event-slug')]);
-
-        if (!$nationalEvent) {
-            $this->io->error(\sprintf('No NationalEvent found with slug "%s".', $input->getArgument('event-slug')));
-
-            return self::FAILURE;
-        }
-
         $paginator = $this->getQueryBuilder(
-            $nationalEvent,
             $input->getOption('emails')
         );
 
@@ -105,18 +92,14 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
     /**
      * @return Paginator|EventInscription[]
      */
-    private function getQueryBuilder(
-        NationalEvent $nationalEvent,
-        array $emails,
-    ): Paginator {
+    private function getQueryBuilder(array $emails): Paginator
+    {
         $queryBuilder = $this->eventInscriptionRepository
             ->createQueryBuilder('event_inscription')
             ->select('PARTIAL event_inscription.{id, uuid, addressEmail}')
             ->innerJoin('event_inscription.event', 'event')
             ->andWhere('event.mailchimpSync = :true')
             ->setParameter('true', true)
-            ->andWhere('event_inscription.event = :nationalEvent')
-            ->setParameter('nationalEvent', $nationalEvent)
         ;
 
         if ($emails) {

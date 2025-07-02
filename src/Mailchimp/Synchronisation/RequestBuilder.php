@@ -186,7 +186,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setAccessibility($eventInscription->accessibility)
             ->setIsTransportNeeds($eventInscription->transportNeeds)
             ->setIsWithDiscount($eventInscription->withDiscount)
-            ->setParticipantUuid($eventInscription->uuid)
+            ->setParticipantUuid($eventInscription->getUuid())
             ->setStatus($eventInscription->status)
             ->setUtmSource($eventInscription->utmSource)
             ->setUtmCampaign($eventInscription->utmCampaign)
