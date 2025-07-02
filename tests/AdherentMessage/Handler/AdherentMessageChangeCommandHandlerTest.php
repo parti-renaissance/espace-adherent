@@ -418,6 +418,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'main_list_id',
                     'newsletter_list_id',
                     'elected_representative_list_id',
+                    'event_inscription_list_id',
                     'jecoute_list_id',
                     'jemengage_list_id',
                     'newsletter_legislative_candidate_list_id',

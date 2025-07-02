@@ -11,6 +11,7 @@ class MailchimpObjectIdMapping
         private readonly string $mainListId,
         private readonly string $newsletterListId,
         private readonly string $electedRepresentativeListId,
+        private readonly string $nationalEventInscriptionListId,
         private readonly string $jecouteListId,
         private readonly string $jeMengageListId,
         private readonly string $newsletterLegislativeCandidateListId,
@@ -83,6 +84,11 @@ class MailchimpObjectIdMapping
     public function getElectedRepresentativeListId(): string
     {
         return $this->electedRepresentativeListId;
+    }
+
+    public function getNationalEventInscriptionListId(): string
+    {
+        return $this->nationalEventInscriptionListId;
     }
 
     public function getJecouteListId(): string

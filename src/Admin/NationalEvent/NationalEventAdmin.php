@@ -110,6 +110,11 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('transportConfiguration', JsonType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 10], 'help' => 'Configuration des transports et tarifs pour le campus. Utilisez le format JSON.'])
                 ->end()
             ->end()
+            ->tab('Mailchimp')
+                ->with('Mailchimp', ['class' => 'col-md-6'])
+                    ->add('mailchimpSync', null, ['label' => 'Synchronisation des participants vers Mailchimp', 'required' => false])
+                ->end()
+            ->end()
         ;
     }
 }

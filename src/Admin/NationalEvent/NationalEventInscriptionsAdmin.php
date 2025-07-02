@@ -15,6 +15,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\NationalEvent\QualityEnum;
@@ -37,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin
 {
@@ -45,6 +47,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     public function __construct(
         private readonly ZoneRepository $zoneRepository,
         private readonly TagTranslator $tagTranslator,
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
@@ -285,5 +288,28 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
         ;
 
         return $query;
+    }
+
+    /** @param EventInscription $object */
+    protected function postPersist(object $object): void
+    {
+        $this->dispatchChange($object);
+    }
+
+    /** @param EventInscription $object */
+    protected function postUpdate(object $object): void
+    {
+        $this->dispatchChange($object);
+    }
+
+    /** @param EventInscription $object */
+    protected function postRemove(object $object): void
+    {
+        $this->dispatchChange($object);
+    }
+
+    private function dispatchChange(EventInscription $eventInscription): void
+    {
+        $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
     }
 }

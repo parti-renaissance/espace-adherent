@@ -5,11 +5,13 @@ namespace App\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventInscriptionManager
@@ -18,6 +20,7 @@ class EventInscriptionManager
         private readonly EntityManagerInterface $entityManager,
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBusInterface $bus,
         private readonly AdherentRepository $adherentRepository,
         private readonly Notifier $notifier,
     ) {
@@ -52,6 +55,8 @@ class EventInscriptionManager
         if ($nationalEvent->isCampus() && $eventInscription->isDuplicate() && $eventInscription->originalInscription) {
             $this->notifier->sendDuplicateNotification($eventInscription->originalInscription);
         }
+
+        $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid(), $existingInscription?->addressEmail));
 
         return $eventInscription;
     }
