@@ -22,7 +22,8 @@ class GetAvailableSendersController extends AbstractController
 
         return $this->json([array_merge($user, [
             'instance' => $scope->getScopeInstance(),
-            'role' => $scope->getRoleName(),
+            'role' => $scope->getMainRoleName(),
+            'zone' => implode(', ', $scope->getZoneNames()) ?: null,
             'theme' => $scope->getAttribute('theme'),
         ])]);
     }
