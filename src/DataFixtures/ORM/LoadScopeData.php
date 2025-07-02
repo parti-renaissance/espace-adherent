@@ -49,6 +49,11 @@ class LoadScopeData extends Fixture
             $scope->canaryFeatures = [FeatureEnum::PUBLICATIONS];
         }
 
+        $scope->colorPrimary = '#3A7DFF';
+        $scope->colorSoft = '#E8F0FF';
+        $scope->colorHover = '#2F6FE0';
+        $scope->colorActive = '#1C5CD8';
+
         return $scope;
     }
 

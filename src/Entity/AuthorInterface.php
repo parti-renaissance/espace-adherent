@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
+use App\Normalizer\AuthorDenormalizer;
+
 /**
- * Interface is used for denormalization to get a logged user (ex. App\Normalizer\AuthorDenormalizer).
+ * Interface is used for denormalization to get a logged user
+ *
+ * @see AuthorDenormalizer
  */
 interface AuthorInterface
 {

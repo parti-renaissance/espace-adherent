@@ -74,15 +74,19 @@ class AdherentMessageTypeEnum extends Enum
         FdeCoordinatorAdherentMessage::class => ['ROLE_FDE_COORDINATOR', 'ROLE_DELEGATED_FDE_COORDINATOR'],
     ];
 
-    public static function getMessageClassFromScopeCode(string $scopeCode): ?string
+    public static function getMessageClassFromScopeCode(string $scopeCode, ?string $type): ?string
     {
-        return self::CLASSES[static::getMessageTypeFromScopeCode($scopeCode)] ?? null;
+        return self::CLASSES[static::getMessageTypeFromScopeCode($scopeCode, $type)] ?? null;
     }
 
-    public static function getMessageTypeFromScopeCode(string $scopeCode): string
+    public static function getMessageTypeFromScopeCode(string $scopeCode, ?string $type = null): string
     {
         if (ScopeEnum::ANIMATOR === $scopeCode) {
             return self::COMMITTEE;
+        }
+
+        if (self::STATUTORY === $type) {
+            return $type;
         }
 
         return $scopeCode;

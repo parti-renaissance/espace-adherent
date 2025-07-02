@@ -17,10 +17,10 @@ Feature:
                     "name": "Délégué de circonscription",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [
@@ -52,10 +52,10 @@ Feature:
                     "name": "Rôle national communication",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [
@@ -73,10 +73,10 @@ Feature:
                     "name": "Rôle national",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [
@@ -121,10 +121,10 @@ Feature:
                     "name": "Responsable National PAP",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [
@@ -142,10 +142,10 @@ Feature:
                     "name": "Porte-à-porteur",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [],
@@ -157,10 +157,10 @@ Feature:
                     "name": "Responsable phoning",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [
@@ -178,10 +178,10 @@ Feature:
                     "name": "Appelant",
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     },
                     "zones": [],
@@ -229,10 +229,10 @@ Feature:
                 ],
                 "attributes": {
                     "theme": {
-                        "primary": null,
-                        "soft": null,
-                        "hover": null,
-                        "active": null
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
                     }
                 },
                 "delegated_access": null
@@ -290,10 +290,10 @@ Feature:
                 ],
                 "attributes": {
                     "theme": {
-                        "primary": null,
-                        "soft": null,
-                        "hover": null,
-                        "active": null
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
                     }
                 },
                 "delegated_access": null
@@ -311,10 +311,10 @@ Feature:
                     "apps": ["data_corner"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         },
                         "agoras": [
                             {
@@ -342,10 +342,10 @@ Feature:
                     "features": ["dashboard", "messages", "events", "mobile_app"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -363,10 +363,10 @@ Feature:
                     "features": ["dashboard", "contacts", "mobile_app"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -384,10 +384,10 @@ Feature:
                     "features": ["dashboard", "contacts", "messages", "events", "mobile_app", "ripostes", "survey"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -405,10 +405,10 @@ Feature:
                     "features": ["dashboard", "mobile_app", "elected_representative"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -446,10 +446,10 @@ Feature:
                     "features": ["dashboard", "contacts", "messages", "events", "mobile_app"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -467,10 +467,10 @@ Feature:
                     "features": ["dashboard", "contacts", "mobile_app"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 },
@@ -488,10 +488,10 @@ Feature:
                     "features": ["dashboard", "contacts", "events", "mobile_app", "news"],
                     "attributes": {
                         "theme": {
-                            "primary": null,
-                            "soft": null,
-                            "hover": null,
-                            "active": null
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
                         }
                     }
                 }
@@ -522,10 +522,10 @@ Feature:
                 "features": ["dashboard", "contacts", "mobile_app"],
                 "attributes": {
                     "theme": {
-                        "primary": null,
-                        "soft": null,
-                        "hover": null,
-                        "active": null
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
                     }
                 },
                 "delegated_access": {
@@ -634,10 +634,10 @@ Feature:
                 },
                 "attributes": {
                     "theme": {
-                        "primary": null,
-                        "soft": null,
-                        "hover": null,
-                        "active": null
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
                     }
                 }
             }
@@ -688,10 +688,10 @@ Feature:
                 ],
                 "attributes": {
                     "theme": {
-                        "primary": null,
-                        "soft": null,
-                        "hover": null,
-                        "active": null
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
                     },
                     "committees": [{ "name": "Comité des 3 communes", "uuid": "@uuid@" }],
                     "dpt": "92"

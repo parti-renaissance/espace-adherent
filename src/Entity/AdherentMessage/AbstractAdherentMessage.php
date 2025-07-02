@@ -26,7 +26,7 @@ use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
-use App\Entity\AuthoredTrait;
+use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
@@ -145,16 +145,27 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
-    use AuthoredTrait;
+    use AuthorInstanceTrait;
 
     /**
      * @var Adherent
      */
     #[Assert\NotBlank]
     #[Groups(['message_read_list', 'message_read'])]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
+
+    #[Groups(['message_read_list', 'message_read', 'message_write'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+    private ?Adherent $sender = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $senderEmail = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $senderName = null;
 
     /**
      * @var string
@@ -210,13 +221,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      */
     #[Groups(['message_read', 'message_read_list'])]
-    #[ORM\Column(options: ['default' => self::SOURCE_PLATFORM])]
-    private $source = self::SOURCE_PLATFORM;
+    #[ORM\Column(options: ['default' => self::SOURCE_CADRE])]
+    private $source = self::SOURCE_CADRE;
 
     public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-        $this->author = $author;
+        $this->author = $this->sender = $author;
         $this->mailchimpCampaigns = new ArrayCollection();
     }
 
@@ -332,7 +343,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     #[Groups('message_read_list')]
     public function getFromName(): ?string
     {
-        return ($this->author ? trim($this->author->getFullName()) : null).$this->getFromNameSuffix();
+        if ($this->sender) {
+            return trim($this->sender->getFullName()).$this->getFromNameSuffix();
+        }
+
+        if ($this->author) {
+            return trim($this->author->getFullName()).$this->getFromNameSuffix();
+        }
+
+        return null;
     }
 
     protected function getFromNameSuffix(): string
@@ -420,6 +439,22 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return null;
     }
 
+    public function getSender(): ?Adherent
+    {
+        return $this->sender;
+    }
+
+    public function setSender(Adherent $sender): void
+    {
+        if ($this->isSent()) {
+            throw new \LogicException('Cannot change sender of a sent message.');
+        }
+
+        $this->sender = $sender;
+        $this->senderEmail = $sender->getEmailAddress();
+        $this->senderName = $sender->getFullName();
+    }
+
     public function __clone(): void
     {
         $this->id = null;
@@ -429,7 +464,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->recipientCount = 0;
         $this->sentAt = null;
         $this->filter = null;
-        $this->label = $this->label.' - Copie';
+        $this->label .= ' - Copie';
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 }

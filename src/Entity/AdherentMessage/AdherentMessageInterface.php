@@ -6,12 +6,13 @@ use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
+use App\Entity\AuthorInstanceInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
+interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, AuthorInstanceInterface
 {
-    public const SOURCE_PLATFORM = 'platform';
-    public const SOURCE_API = 'api';
+    public const SOURCE_CADRE = 'cadre';
+    public const SOURCE_VOX = 'vox';
 
     public function getLabel(): ?string;
 
@@ -71,4 +72,8 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
     public function setSource(string $source): void;
 
     public function isCompatibleWithScope(string $scope): bool;
+
+    public function getSender(): ?Adherent;
+
+    public function setSender(Adherent $sender): void;
 }

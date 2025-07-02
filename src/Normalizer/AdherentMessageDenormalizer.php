@@ -2,11 +2,11 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Metadata\HttpOperation;
 use App\AdherentMessage\AdherentMessageFactory;
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -15,6 +15,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class AdherentMessageDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
+
+    public function __construct(private readonly ScopeGeneratorResolver $resolver)
+    {
+    }
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
@@ -25,15 +29,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
             $messageClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
             $oldMessage = clone $context[AbstractNormalizer::OBJECT_TO_POPULATE];
         } else {
-            $messageType = $data['type'] ?? null;
-
-            if (!$messageType || !($messageClass = AdherentMessageFactory::getMessageClassName($messageType))) {
-                throw new UnexpectedValueException('Type value is missing or invalid');
-            }
-        }
-
-        if (!$messageClass) {
-            throw new UnexpectedValueException('Type value is missing or invalid');
+            $messageClass = AdherentMessageFactory::getMessageClassName($this->resolver->resolve()?->getCode() ?? '', $data['type'] ?? null);
         }
 
         unset($data['type']);
@@ -41,15 +37,19 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         if (!isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new $messageClass();
         }
-        $context['resource_class'] = $messageClass;
-        /** @var HttpOperation $operation */
-        $operation = $context['operation'];
-        $context['operation'] = $operation->withClass($messageClass);
 
         /** @var AdherentMessageInterface $message */
         $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context + [__CLASS__ => true]);
 
-        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        if (!$message->getLabel()) {
+            $message->setLabel($message->getSubject());
+        }
+
+        $message->setSource(PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? AdherentMessageInterface::SOURCE_CADRE : AdherentMessageInterface::SOURCE_VOX);
+
+        if (!$message->getSender() && $message->getAuthor()) {
+            $message->setSender($message->getAuthor());
+        }
 
         if (
             ($context['operation_name'] ?? null) === '_api_/v3/adherent_messages/{uuid}_put'
@@ -67,9 +67,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
     public function getSupportedTypes(?string $format): array
     {
-        return [
-            AbstractAdherentMessage::class => false,
-        ];
+        return [AbstractAdherentMessage::class => false];
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool

@@ -61,12 +61,17 @@ Feature:
                             "first_name": "Damien",
                             "last_name": "Durock"
                         },
+                        "sender": {
+                            "uuid": "@string@",
+                            "first_name": "Damien",
+                            "last_name": "Durock"
+                        },
                         "label": "@string@",
                         "subject": "@string@",
                         "status": "draft",
                         "sent_at": null,
                         "recipient_count": 10,
-                        "source": "api",
+                        "source": "vox",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
                             "sent": 0,
@@ -88,12 +93,17 @@ Feature:
                             "first_name": "Damien",
                             "last_name": "Durock"
                         },
+                        "sender": {
+                            "uuid": "@string@",
+                            "first_name": "Damien",
+                            "last_name": "Durock"
+                        },
                         "label": "@string@",
                         "subject": "@string@",
                         "status": "sent",
                         "sent_at": "@string@.isDateTime()",
                         "recipient_count": 2,
-                        "source": "api",
+                        "source": "vox",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
                             "sent": 0,
@@ -133,8 +143,14 @@ Feature:
                 "status": "draft",
                 "recipient_count": 3,
                 "preview_link": null,
-                "source": "api",
+                "source": "vox",
                 "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Damien",
+                    "last_name": "Durock",
+                    "email_address": "president-ad@renaissance-dev.fr"
+                },
+                "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Damien",
                     "last_name": "Durock",

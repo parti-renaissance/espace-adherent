@@ -36,6 +36,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
     public const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
     public const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
+    public const ADHERENT_8_UUID = '5f68e1cc-024e-4193-bd51-f2469f22dd07';
     public const ADHERENT_9_UUID = '93de5d98-383a-4863-9f47-eb7a348873a8';
     public const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
     public const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
@@ -896,7 +897,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         }
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
+            'uuid' => self::ADHERENT_8_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'je-mengage-user-1@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,

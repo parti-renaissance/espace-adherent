@@ -27,12 +27,17 @@ Feature:
                         "subject": "@string@",
                         "status": "draft",
                         "recipient_count": 0,
-                        "source": "platform",
+                        "source": "cadre",
                         "synchronized": false,
                         "from_name": "Referent Referent | Renaissance",
                         "created_at": "@string@.isDateTime()",
                         "sent_at": null,
                         "author": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        },
+                        "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent"
@@ -54,13 +59,18 @@ Feature:
                         "subject": "@string@",
                         "status": "sent",
                         "recipient_count": 0,
-                        "source": "platform",
+                        "source": "cadre",
                         "synchronized": false,
                         "preview_link": null,
                         "from_name": "Referent Referent | Renaissance",
                         "created_at": "@string@.isDateTime()",
                         "sent_at": "@string@.isDateTime()",
                         "author": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        },
+                        "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent"
@@ -123,7 +133,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
             """
             {
-                "type": "correspondent",
+                "sender": "5f68e1cc-024e-4193-bd51-f2469f22dd07",
                 "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
                 "subject": "L'objet de l'email",
                 "content": "<table>...</table>",
@@ -141,9 +151,15 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "preview_link": null,
-                "source": "api",
+                "source": "vox",
                 "synchronized": false,
                 "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "@string@",
+                    "last_name": "@string@",
+                    "email_address": "<user>"
+                },
+                "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Jules",
                     "last_name": "Fullstack",
@@ -163,7 +179,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
             """
             {
-                "type": "president_departmental_assembly",
+                "sender": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                 "label": "Message d'un référent délégué",
                 "subject": "L'objet de l'email",
                 "content": "<table>...</table>",
@@ -181,9 +197,15 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "preview_link": null,
-                "source": "api",
+                "source": "vox",
                 "synchronized": false,
                 "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Bob",
+                    "last_name": "Senateur (59)",
+                    "email_address": "senateur@en-marche-dev.fr"
+                },
+                "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
                     "last_name": "Referent",
@@ -215,9 +237,15 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "preview_link": null,
-                "source": "api",
+                "source": "vox",
                 "synchronized": false,
                 "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Referent",
+                    "last_name": "Referent",
+                    "email_address": "referent@en-marche-dev.fr"
+                },
+                "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
                     "last_name": "Referent",
@@ -244,7 +272,6 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=regional_coordinator" with body:
             """
             {
-                "type": "regional_coordinator",
                 "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
                 "subject": "L'objet de l'email",
                 "content": "<table>...</table>",
@@ -262,9 +289,15 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "preview_link": null,
-                "source": "api",
+                "source": "vox",
                 "synchronized": false,
                 "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Coordinateur",
+                    "last_name": "Coordinateur",
+                    "email_address": "coordinateur@en-marche-dev.fr"
+                },
+                "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
                     "last_name": "Coordinateur",

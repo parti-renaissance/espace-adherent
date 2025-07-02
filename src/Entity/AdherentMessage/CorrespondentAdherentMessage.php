@@ -21,7 +21,15 @@ class CorrespondentAdherentMessage extends AbstractAdherentMessage implements Ca
 
     public function getFromName(): ?string
     {
-        return ($this->getAuthor() ? trim($this->getAuthor()->getFirstName()) : null).$this->getFromNameSuffix();
+        if ($this->getSender()) {
+            return trim($this->getSender()->getFirstName()).$this->getFromNameSuffix();
+        }
+
+        if ($this->author) {
+            return trim($this->author->getFirstName()).$this->getFromNameSuffix();
+        }
+
+        return null;
     }
 
     protected function getFromNameSuffix(): string
