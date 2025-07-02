@@ -34,11 +34,11 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin
 {
@@ -47,7 +47,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     public function __construct(
         private readonly ZoneRepository $zoneRepository,
         private readonly TagTranslator $tagTranslator,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
@@ -310,6 +310,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
 
     private function dispatchChange(EventInscription $eventInscription): void
     {
-        $this->eventDispatcher->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
+        $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
     }
 }
