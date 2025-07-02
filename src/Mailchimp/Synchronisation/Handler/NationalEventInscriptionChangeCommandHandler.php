@@ -4,7 +4,7 @@ namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Manager;
-use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Log\LoggerAwareInterface;
@@ -13,7 +13,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class EventInscriptionChangeCommandHandler implements LoggerAwareInterface
+class NationalEventInscriptionChangeCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -25,7 +25,7 @@ class EventInscriptionChangeCommandHandler implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function __invoke(EventInscriptionChangeCommand $message): void
+    public function __invoke(NationalEventInscriptionChangeCommand $message): void
     {
         /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->repository->findOneByUuid($uuid = $message->uuid->toString())) {
@@ -44,7 +44,7 @@ class EventInscriptionChangeCommandHandler implements LoggerAwareInterface
             return;
         }
 
-        $this->manager->editEventInscriptionMember($eventInscription, $message);
+        $this->manager->editNationalEventInscriptionMember($eventInscription, $message);
 
         $this->entityManager->clear();
     }

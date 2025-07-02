@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,8 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsCommand(name: 'mailchimp:sync:all-campus')]
-class MailchimpSyncAllEventInscriptionCommand extends Command
+#[AsCommand(name: 'mailchimp:sync:all-national-event-inscription')]
+class MailchimpSyncAllNationalEventInscriptionCommand extends Command
 {
     /** @var SymfonyStyle */
     private $io;
@@ -80,7 +80,7 @@ class MailchimpSyncAllEventInscriptionCommand extends Command
 
         do {
             foreach ($paginator as $eventInscription) {
-                $this->bus->dispatch(new EventInscriptionChangeCommand(
+                $this->bus->dispatch(new NationalEventInscriptionChangeCommand(
                     $eventInscription->getUuid(),
                     $eventInscription->addressEmail
                 ));

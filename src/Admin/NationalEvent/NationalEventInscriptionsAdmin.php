@@ -15,7 +15,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
-use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\NationalEvent\QualityEnum;
@@ -310,6 +310,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
 
     private function dispatchChange(EventInscription $eventInscription): void
     {
-        $this->eventDispatcher->dispatch(new EventInscriptionChangeCommand($eventInscription->getUuid()));
+        $this->eventDispatcher->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
     }
 }

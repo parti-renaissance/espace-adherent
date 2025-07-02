@@ -24,7 +24,7 @@ use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
-use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
@@ -167,17 +167,17 @@ class Manager implements LoggerAwareInterface
         }
     }
 
-    public function editEventInscriptionMember(
+    public function editNationalEventInscriptionMember(
         EventInscription $eventInscription,
-        EventInscriptionChangeCommand $message,
+        NationalEventInscriptionChangeCommand $message,
     ): void {
         $emailAddress = $eventInscription->addressEmail;
-        $listId = $this->mailchimpObjectIdMapping->getEventInscriptionListId();
+        $listId = $this->mailchimpObjectIdMapping->getNationalEventInscriptionListId();
 
         /** @var RequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
-            ->updateFromEventInscription($eventInscription)
+            ->updateFromNationalEventInscription($eventInscription)
         ;
 
         $result = $this->driver->editMember(

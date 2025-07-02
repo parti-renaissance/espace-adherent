@@ -94,7 +94,7 @@ services:
             $mainListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $newsletterListId: '%env(MAILCHIMP_NEWSLETTER_LIST_ID)%'
             $electedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $eventInscriptionListId: '%env(MAILCHIMP_EVENT_INSCRIPTION_LIST_ID)%'
+            $nationalEventInscriptionListId: '%env(MAILCHIMP_NATIONAL_EVENT_INSCRIPTION_LIST_ID)%'
             $jecouteListId: '%env(MAILCHIMP_JECOUTE_LIST_ID)%'
             $jeMengageListId: '%env(MAILCHIMP_JEMENGAGE_LIST_ID)%'
             $newsletterLegislativeCandidateListId: '%env(MAILCHIMP_NEWSLETTER_LEGISLATIVE_CANDIDATE_LIST_ID)%'

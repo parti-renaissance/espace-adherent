@@ -163,7 +163,7 @@ class RequestBuilder implements LoggerAwareInterface
         ;
     }
 
-    public function updateFromEventInscription(EventInscription $eventInscription): self
+    public function updateFromNationalEventInscription(EventInscription $eventInscription): self
     {
         return $this
             ->setEmail($eventInscription->addressEmail)

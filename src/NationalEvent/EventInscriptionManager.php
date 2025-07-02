@@ -5,7 +5,7 @@ namespace App\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
-use App\Mailchimp\Synchronisation\Command\EventInscriptionChangeCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use App\Repository\AdherentRepository;
@@ -54,7 +54,7 @@ class EventInscriptionManager
             $this->notifier->sendDuplicateNotification($eventInscription->originalInscription);
         }
 
-        $this->eventDispatcher->dispatch(new EventInscriptionChangeCommand($eventInscription->getUuid(), $existingInscription?->addressEmail));
+        $this->eventDispatcher->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid(), $existingInscription?->addressEmail));
 
         return $eventInscription;
     }

@@ -4,7 +4,7 @@ namespace App\Mailchimp\Synchronisation\Command;
 
 use Ramsey\Uuid\UuidInterface;
 
-class EventInscriptionChangeCommand
+class NationalEventInscriptionChangeCommand
 {
     public function __construct(
         public readonly UuidInterface $uuid,
