@@ -562,3 +562,102 @@ Feature:
             | user                      | scope                                          |
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: I can retrieve available senders list
+        Given I am logged with "<user>" via OAuth client "JeMengage Web"
+        When I send a "GET" request to "/api/v3/adherent_messages/available-senders?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "uuid": "@uuid@",
+                    "image_url": null,
+                    "first_name": "Referent",
+                    "last_name": "Referent",
+                    "instance": "Assemblée départementale",
+                    "role": "Président",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
+                    }
+                }
+            ]
+            """
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: I can retrieve recipients count
+        Given I am logged with "<user>" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
+            """
+            {
+                "sender": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+                "subject": "L'objet de l'email",
+                "content": "<table>...</table>",
+                "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "uuid": "@uuid@",
+                "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+                "subject": "L'objet de l'email",
+                "status": "draft",
+                "recipient_count": 0,
+                "preview_link": null,
+                "source": "vox",
+                "synchronized": false,
+                "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "@string@",
+                    "last_name": "@string@",
+                    "email_address": "<user>"
+                },
+                "sender": {
+                    "uuid": "@uuid@",
+                    "first_name": "@string@",
+                    "last_name": "@string@",
+                    "email_address": "referent@en-marche-dev.fr"
+                },
+                "updated_at": "@string@.isDateTime()"
+            }
+            """
+        When I save this response
+        And I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
+            """
+            {
+                "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+            }
+            """
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "push": 4,
+                "email": 6,
+                "push_email": 2,
+                "only_push": 4,
+                "only_email": 4,
+                "contacts": 8,
+                "total": 12
+            }
+            """
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

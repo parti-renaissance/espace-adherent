@@ -1600,7 +1600,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    public function countAdherentsForMessage(AbstractAdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, ?bool $inApp = null): int
+    public function countAdherentsForMessage(AbstractAdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, bool $asUnion = false): int
     {
         $messageFilter = $message->getFilter();
 
@@ -1648,32 +1648,36 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ;
         }
 
+        if ($asUnion) {
+            $condition = $qb->expr()->orX();
+        } else {
+            $condition = $qb->expr()->andX();
+        }
+
         if (null !== $byPush) {
             if ($byPush) {
                 $qb
-                    ->innerJoin('a.appSessions', 'session', Join::WITH, 'session.status = :session_status')
-                    ->innerJoin('session.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
-                    ->setParameter('session_status', SessionStatusEnum::ACTIVE)
+                    ->leftJoin('a.appSessions', 'session', Join::WITH, 'session.status = :session_status')
+                    ->leftJoin('session.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
                 ;
+                $condition->add('push_token_link IS NOT NULL');
             } else {
-                $qb
-                    ->andWhere(\sprintf('NOT EXISTS (
-                        SELECT 1 FROM %s s
-                        JOIN s.pushTokenLinks p
-                        WHERE s.adherent = a
-                        AND s.status = :session_status
-                        AND p.unsubscribedAt IS NULL
-                    )', AppSession::class))
-                    ->setParameter('session_status', SessionStatusEnum::ACTIVE)
-                ;
+                $condition->add(\sprintf('NOT EXISTS (
+                    SELECT 1 FROM %s s
+                    JOIN s.pushTokenLinks p
+                    WHERE s.adherent = a
+                    AND s.status = :session_status
+                    AND p.unsubscribedAt IS NULL
+                )', AppSession::class));
             }
+            $qb->setParameter('session_status', SessionStatusEnum::ACTIVE);
         }
 
         if (null !== $byEmail) {
             if ($byEmail) {
-                $condition = $qb->expr()->andX()->add('a.mailchimpStatus = :mailchimp_status');
+                $subEmailCondition = $qb->expr()->andX()->add('a.mailchimpStatus = :mailchimp_status');
             } else {
-                $condition = $qb->expr()->orX()->add('a.mailchimpStatus != :mailchimp_status');
+                $subEmailCondition = $qb->expr()->orX()->add('a.mailchimpStatus != :mailchimp_status');
             }
 
             if (($scope = $messageFilter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
@@ -1682,22 +1686,17 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                     ->setParameter('subscription_type_code', SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])
                 ;
 
-                $condition->add('subscription_type '.($byEmail ? 'IS NOT NULL' : 'IS NULL'));
+                $subEmailCondition->add('subscription_type '.($byEmail ? 'IS NOT NULL' : 'IS NULL'));
             }
 
-            $qb
-                ->andWhere($condition)
-                ->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED)
-            ;
+            $condition->add($subEmailCondition);
+            $qb->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED);
         }
 
-        if (null !== $inApp) {
-            $qb
-                ->leftJoin('a.appSessions', 'session2')
-                ->andWhere('session2.id '.($inApp ? 'IS NOT NULL' : 'IS NULL'))
-            ;
+        if ($condition->count()) {
+            $qb->andWhere($condition);
         }
 
-        return (int) $qb->getQuery()->getOneOrNullResult();
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

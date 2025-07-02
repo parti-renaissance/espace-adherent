@@ -2,11 +2,14 @@
 
 namespace App\Api;
 
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\UrlGeneratorInterface;
+use App\Api\Exception\InvalidIdentifierException;
 use App\Entity\Event\BaseEventCategory;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class IriConverterDecorator implements IriConverterInterface
 {
@@ -22,7 +25,15 @@ class IriConverterDecorator implements IriConverterInterface
             $iri = $this->decorated->getIriFromResource(resource: $context['resource_class'], context: ['uri_variables' => ['slug' => $iri]]);
         }
 
-        return $this->decorated->getResourceFromIri($iri, $context, $operation);
+        try {
+            return $this->decorated->getResourceFromIri($iri, $context, $operation);
+        } catch (InvalidArgumentException $e) {
+            if ($e->getPrevious() instanceof ResourceNotFoundException) {
+                throw new InvalidIdentifierException($e->getPrevious()->getMessage());
+            }
+
+            throw $e;
+        }
     }
 
     public function getIriFromResource(
