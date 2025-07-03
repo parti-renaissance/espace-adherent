@@ -51,6 +51,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             $filter->adherentTags = TagEnum::ADHERENT;
         }
 
+        $filter->setScope($scope->getMainCode());
         $filter->setZones($scope->getZones());
 
         if ($committeeUuids = $scope->getCommitteeUuids()) {

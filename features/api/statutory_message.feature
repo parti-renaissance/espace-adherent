@@ -147,14 +147,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Damien",
-                    "last_name": "Durock",
-                    "email_address": "president-ad@renaissance-dev.fr"
+                    "last_name": "Durock"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Damien",
-                    "last_name": "Durock",
-                    "email_address": "president-ad@renaissance-dev.fr"
+                    "last_name": "Durock"
                 },
                 "updated_at": "@string@.isDateTime()"
             }

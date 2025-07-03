@@ -156,14 +156,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
-                    "last_name": "@string@",
-                    "email_address": "<user>"
+                    "last_name": "@string@"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Jules",
-                    "last_name": "Fullstack",
-                    "email_address": "je-mengage-user-1@en-marche-dev.fr"
+                    "last_name": "Fullstack"
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -202,14 +200,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Bob",
-                    "last_name": "Senateur (59)",
-                    "email_address": "senateur@en-marche-dev.fr"
+                    "last_name": "Senateur (59)"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent",
-                    "email_address": "referent@en-marche-dev.fr"
+                    "last_name": "Referent"
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -242,14 +238,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent",
-                    "email_address": "referent@en-marche-dev.fr"
+                    "last_name": "Referent"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent",
-                    "email_address": "referent@en-marche-dev.fr"
+                    "last_name": "Referent"
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -294,14 +288,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
-                    "last_name": "Coordinateur",
-                    "email_address": "coordinateur@en-marche-dev.fr"
+                    "last_name": "Coordinateur"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
-                    "last_name": "Coordinateur",
-                    "email_address": "coordinateur@en-marche-dev.fr"
+                    "last_name": "Coordinateur"
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -622,14 +614,12 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
-                    "last_name": "@string@",
-                    "email_address": "<user>"
+                    "last_name": "@string@"
                 },
                 "sender": {
                     "uuid": "@uuid@",
-                    "first_name": "@string@",
-                    "last_name": "@string@",
-                    "email_address": "referent@en-marche-dev.fr"
+                    "first_name": "Referent",
+                    "last_name": "Referent"
                 },
                 "updated_at": "@string@.isDateTime()"
             }

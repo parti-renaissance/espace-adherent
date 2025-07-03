@@ -3,10 +3,12 @@
 namespace App\Api;
 
 use ApiPlatform\Metadata\Exception\InvalidArgumentException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException as ApiItemNotFoundException;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\UrlGeneratorInterface;
 use App\Api\Exception\InvalidIdentifierException;
+use App\Api\Exception\ItemNotFoundException;
 use App\Entity\Event\BaseEventCategory;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -30,6 +32,10 @@ class IriConverterDecorator implements IriConverterInterface
         } catch (InvalidArgumentException $e) {
             if ($e->getPrevious() instanceof ResourceNotFoundException) {
                 throw new InvalidIdentifierException($e->getPrevious()->getMessage());
+            }
+
+            if ($e instanceof ApiItemNotFoundException) {
+                throw new ItemNotFoundException($e->getMessage());
             }
 
             throw $e;
