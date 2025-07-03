@@ -14,10 +14,10 @@ class GetAdherentMessageRecipientsCountController extends AbstractController
         return $this->json(
             [
                 'push' => $adherentRepository->countAdherentsForMessage($message, byPush: true),
-                'email' => $message->getRecipientCount() ?: $adherentRepository->countAdherentsForMessage($message, byEmail: true),
+                'email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true),
                 'push_email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true),
                 'only_push' => $adherentRepository->countAdherentsForMessage($message, byEmail: false, byPush: true),
-                'only_email' => $message->getRecipientCount() ?: $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: false),
+                'only_email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: false),
                 'contacts' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true, asUnion: true),
                 'total' => $adherentRepository->countAdherentsForMessage($message),
             ],

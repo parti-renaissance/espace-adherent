@@ -8,6 +8,7 @@ api_platform:
     enable_entrypoint: false
     exception_to_status:
         App\Api\Exception\InvalidIdentifierException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
+        App\Api\Exception\ItemNotFoundException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
         ApiPlatform\Validator\Exception\ValidationException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
         Symfony\Component\Serializer\Exception\NotNormalizableValueException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
     formats:
