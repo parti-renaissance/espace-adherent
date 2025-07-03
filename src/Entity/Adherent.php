@@ -117,6 +117,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
 #[ORM\Index(columns: ['tags'], options: ['lengths' => [512]])]
 #[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['mailchimp_status'])]
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]

@@ -1639,7 +1639,17 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             return 0;
         }
 
-        foreach (array_filter([$messageFilter->adherentTags, $messageFilter->electTags, $messageFilter->staticTags]) as $index => $tag) {
+        // Use different condition for adherentTags to improve performance with LIKE
+        if ($messageFilter->adherentTags) {
+            $operator = str_starts_with($messageFilter->adherentTags, '!') ? 'NOT LIKE' : 'LIKE';
+
+            $qb
+                ->andWhere('a.tags '.$operator.' :tag_adherent')
+                ->setParameter('tag_adherent', $messageFilter->adherentTags.'%')
+            ;
+        }
+
+        foreach (array_filter([$messageFilter->electTags, $messageFilter->staticTags]) as $index => $tag) {
             $operator = str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE';
 
             $qb
