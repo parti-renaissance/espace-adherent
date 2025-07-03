@@ -19,4 +19,8 @@ interface AuthorInstanceInterface extends AuthorInterface
     public function getAuthorZone(): ?string;
 
     public function setAuthorZone(?string $authorZone): void;
+
+    public function getAuthorTheme(): ?array;
+
+    public function setAuthorTheme(?array $theme): void;
 }

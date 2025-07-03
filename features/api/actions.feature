@@ -64,7 +64,13 @@ Feature:
                     "scope": "president_departmental_assembly",
                     "role": "Président",
                     "zone": "Hauts-de-Seine",
-                    "instance": "Assemblée départementale"
+                    "instance": "Assemblée départementale",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "zones": [
                     {
@@ -143,7 +149,13 @@ Feature:
                     "scope": "president_departmental_assembly",
                     "role": "Président",
                     "zone": "Hauts-de-Seine",
-                    "instance": "Assemblée départementale"
+                    "instance": "Assemblée départementale",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "zones": [
                     {

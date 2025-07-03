@@ -53,7 +53,8 @@ Feature:
                     "role": null,
                     "instance": null,
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": null,
                 "status": "SCHEDULED",
@@ -134,7 +135,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 1,
                         "status": "SCHEDULED",
@@ -186,7 +188,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -262,7 +265,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 1,
                         "status": "SCHEDULED",
@@ -314,7 +318,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -366,7 +371,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -434,7 +440,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 2,
                         "status": "SCHEDULED",
@@ -486,7 +493,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -529,7 +537,8 @@ Feature:
                             "role": "Président",
                             "instance": "Assemblée départementale",
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -599,7 +608,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 1,
                         "status": "SCHEDULED",
@@ -641,7 +651,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 3,
                         "status": "SCHEDULED",
@@ -703,7 +714,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -769,7 +781,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "CANCELLED",
@@ -812,7 +825,8 @@ Feature:
                             "role": "Président",
                             "instance": "Assemblée départementale",
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -856,7 +870,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -923,7 +938,8 @@ Feature:
                     "role": null,
                     "instance": null,
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -986,7 +1002,8 @@ Feature:
                     "role": null,
                     "instance": null,
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "CANCELLED",
@@ -1040,7 +1057,8 @@ Feature:
                     "role": null,
                     "instance": null,
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "CANCELLED",
@@ -1102,7 +1120,8 @@ Feature:
                     "role": null,
                     "instance": null,
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -1269,7 +1288,13 @@ Feature:
                     "role": "Président",
                     "instance": "Assemblée départementale",
                     "image_url": null,
-                    "zone": "Hauts-de-Seine"
+                    "zone": "Hauts-de-Seine",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -1458,7 +1483,13 @@ Feature:
                     "role": "Responsable",
                     "instance": "Comité local",
                     "image_url": null,
-                    "zone": "Comité des 3 communes"
+                    "zone": "Comité des 3 communes",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "agora": null,
                 "committee": {
@@ -1777,7 +1808,8 @@ Feature:
                     "role": "Président",
                     "instance": "Assemblée départementale",
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -2163,7 +2195,13 @@ Feature:
                     "role": "<role>",
                     "instance": "Circonscription",
                     "image_url": null,
-                    "zone": "Paris (1) (75-1)"
+                    "zone": "Paris (1) (75-1)",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -2246,7 +2284,8 @@ Feature:
                     "role": "Candidat",
                     "instance": "Circonscription",
                     "image_url": null,
-                    "zone": null
+                    "zone": null,
+                    "theme": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -2470,7 +2509,13 @@ Feature:
                     "role": "Président",
                     "instance": "Agora",
                     "image_url": null,
-                    "zone": "Première Agora"
+                    "zone": "Première Agora",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -2622,7 +2667,8 @@ Feature:
                             "role": "Président",
                             "instance": "Assemblée départementale",
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -2669,7 +2715,13 @@ Feature:
                             "role": "Président",
                             "instance": "Agora",
                             "image_url": null,
-                            "zone": "Première Agora"
+                            "zone": "Première Agora",
+                            "theme": {
+                                "active": "#1C5CD8",
+                                "hover": "#2F6FE0",
+                                "primary": "#3A7DFF",
+                                "soft": "#E8F0FF"
+                            }
                         },
                         "participants_count": 1,
                         "status": "SCHEDULED",
@@ -2739,7 +2791,8 @@ Feature:
                             "role": "Président",
                             "instance": "Assemblée départementale",
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -2785,7 +2838,8 @@ Feature:
                             "role": null,
                             "instance": null,
                             "image_url": null,
-                            "zone": null
+                            "zone": null,
+                            "theme": null
                         },
                         "participants_count": 0,
                         "status": "SCHEDULED",
@@ -2924,7 +2978,13 @@ Feature:
                     "role": "Président",
                     "instance": "Agora",
                     "image_url": null,
-                    "zone": "Première Agora"
+                    "zone": "Première Agora",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "participants_count": 2,
                 "status": "SCHEDULED",

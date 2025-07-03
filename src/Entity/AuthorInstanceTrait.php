@@ -25,6 +25,10 @@ trait AuthorInstanceTrait
     #[ORM\Column(nullable: true)]
     private ?string $authorZone = null;
 
+    #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $authorTheme = null;
+
     public function getAuthorScope(): ?string
     {
         return $this->authorScope;
@@ -63,5 +67,15 @@ trait AuthorInstanceTrait
     public function setAuthorZone(?string $zone): void
     {
         $this->authorZone = $zone;
+    }
+
+    public function getAuthorTheme(): ?array
+    {
+        return $this->authorTheme;
+    }
+
+    public function setAuthorTheme(?array $authorTheme): void
+    {
+        $this->authorTheme = $authorTheme;
     }
 }

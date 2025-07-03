@@ -40,7 +40,12 @@ Feature:
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
-                            "last_name": "Referent"
+                            "last_name": "Referent",
+                            "instance": null,
+                            "scope": null,
+                            "role": null,
+                            "zone": null,
+                            "theme": null
                         },
                         "preview_link": null,
                         "statistics": {
@@ -73,7 +78,12 @@ Feature:
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
-                            "last_name": "Referent"
+                            "last_name": "Referent",
+                            "instance": null,
+                            "scope": null,
+                            "role": null,
+                            "zone": null,
+                            "theme": null
                         },
                         "statistics": {
                             "click_rate": 0,
@@ -133,7 +143,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
             """
             {
-                "sender": "5f68e1cc-024e-4193-bd51-f2469f22dd07",
+                "sender": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
                 "subject": "L'objet de l'email",
                 "content": "<table>...</table>",
@@ -156,21 +166,33 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
-                    "last_name": "@string@"
+                    "last_name": "@string@",
+                    "image_url": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
-                    "first_name": "Jules",
-                    "last_name": "Fullstack"
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR",
+                    "image_url": null,
+                    "instance": "Assemblée départementale",
+                    "scope": null,
+                    "role": "Responsable mobilisation",
+                    "zone": "Hauts-de-Seine",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "updated_at": "@string@.isDateTime()"
             }
             """
 
         Examples:
-            | user                               | scope                                          |
-            | je-mengage-user-1@en-marche-dev.fr | correspondent                                  |
-            | laura@deloche.com                  | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | kiroule.p@blabla.tld            | delegated_4e1eddaf-00e3-4670-aa11-24420da834c4 |
 
     Scenario: As a delegated referent I can create a message
         Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -200,12 +222,24 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Bob",
-                    "last_name": "Senateur (59)"
+                    "last_name": "Senateur (59)",
+                    "image_url": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "image_url": null,
+                    "instance": "Assemblée départementale",
+                    "scope": null,
+                    "role": "Président",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -238,12 +272,19 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "image_url": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "image_url": null,
+                    "instance": null,
+                    "scope": null,
+                    "role": null,
+                    "zone": null,
+                    "theme": null
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -288,12 +329,24 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
-                    "last_name": "Coordinateur"
+                    "last_name": "Coordinateur",
+                    "image_url": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
-                    "last_name": "Coordinateur"
+                    "last_name": "Coordinateur",
+                    "image_url": null,
+                    "instance": "Région",
+                    "scope": null,
+                    "role": "Coordinateur",
+                    "zone": "Provence-Alpes-Côte d'Azur",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "updated_at": "@string@.isDateTime()"
             }
@@ -591,7 +644,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
             """
             {
-                "sender": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                "sender": "021268fe-d4b3-44a7-bce9-c001191249a7",
                 "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
                 "subject": "L'objet de l'email",
                 "content": "<table>...</table>",
@@ -614,12 +667,24 @@ Feature:
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
-                    "last_name": "@string@"
+                    "last_name": "@string@",
+                    "image_url": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
+                    "first_name": "Bob",
+                    "last_name": "Senateur (59)",
+                    "image_url": null,
+                    "instance": "Assemblée départementale",
+                    "scope": null,
+                    "role": "Responsable mobilisation",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
                 },
                 "updated_at": "@string@.isDateTime()"
             }

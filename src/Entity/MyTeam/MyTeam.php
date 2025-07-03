@@ -29,8 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/my_teams',
-            deserialize: false,
-            controller: InitializeMyTeamController::class
+            controller: InitializeMyTeamController::class,
+            deserialize: false
         ),
     ],
     normalizationContext: ['groups' => ['my_team_read']],
