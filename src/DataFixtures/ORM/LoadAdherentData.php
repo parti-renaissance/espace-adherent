@@ -626,6 +626,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
+        $senator_59->setImageName(new UploadedFile(
+            __DIR__.'/../../../app/data/images/profile/example.jpg',
+            'example.jpg',
+            'image/jpg',
+        ));
         $this->addReference('senator-59', $senator_59);
 
         $assessor = $this->adherentFactory->createFromArray([
