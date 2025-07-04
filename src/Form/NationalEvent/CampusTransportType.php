@@ -4,8 +4,10 @@ namespace App\Form\NationalEvent;
 
 use App\Event\Request\EventInscriptionRequest;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,6 +28,7 @@ class CampusTransportType extends AbstractType
 
         $builder
             ->add('withDiscount', CheckboxType::class, ['required' => false])
+            ->add('roommateIdentifier', TextType::class, ['required' => false])
             ->add('visitDay', ChoiceType::class, [
                 'choices' => array_column($days, 'id', 'titre'),
                 'expanded' => true,
@@ -65,7 +68,11 @@ class CampusTransportType extends AbstractType
                                 $availablePlaces = $transport['quota'] - $reservedCount;
 
                                 if ($availablePlaces > 0) {
-                                    $quota = \sprintf('<span class="text-ui_gray-60"> - %d place%2$s restante%2$s</span>', $availablePlaces, $availablePlaces > 1 ? 's' : '');
+                                    if ($availablePlaces > 50) {
+                                        $quota = '<span class="text-ui_gray-60"> - Places limitées</span>';
+                                    } else {
+                                        $quota = \sprintf('<span class="text-ui_gray-60"> - %d place%2$s restante%2$s</span>', $availablePlaces, $availablePlaces > 1 ? 's' : '');
+                                    }
                                 } else {
                                     $quota = '<span class="text-ui_gray-60"> - Complet</span>';
                                     $options['disabled'] = true;
@@ -98,6 +105,10 @@ class CampusTransportType extends AbstractType
 
                             $price = '<span class="text-ui_blue-60 font-semibold">'.(!empty($accommodation['montant']) ? ($accommodation['montant'].' €') : 'Gratuit').'</span>';
 
+                            if (!empty($accommodation['montant'])) {
+                                $price .= '<span class="text-ui_gray-60"> - Places limitées</span>';
+                            }
+
                             $descriptionParts[] = $price;
 
                             $options['description'] = '<div>'.implode('</div><div>', array_filter($descriptionParts)).'</div>';
@@ -109,6 +120,17 @@ class CampusTransportType extends AbstractType
                 },
             ])
         ;
+
+        $builder->get('roommateIdentifier')->addModelTransformer(new CallbackTransformer(
+            fn ($value) => $value,
+            function ($value) {
+                if (preg_match('/^\d{6}$/', $value)) {
+                    return substr($value, 0, 3).'-'.substr($value, 3);
+                }
+
+                return $value;
+            }
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

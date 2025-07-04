@@ -31,6 +31,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
                 'birthdate' => self::escape($eventInscription->birthdate->format('d/m/Y')),
                 'birth_place' => self::escape((string) $eventInscription->birthPlace),
                 'inscription_uuid' => $eventInscription->getUuid()->toString(),
+                'roommate_identifier' => $eventInscription->roommateIdentifier,
                 'adherent_public_id' => $eventInscription->adherent?->getPublicId(),
                 'event_url' => $eventUrl,
                 'share_url' => $shareUrl,

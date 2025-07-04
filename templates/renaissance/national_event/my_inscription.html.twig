@@ -164,6 +164,43 @@
                             {% else %}
                                 <div class="text-ui_green-50 font-medium">Gratuit</div>
                             {% endif %}
+
+                            {% if accommodation_config.accompagnement %}
+                                <div class="flex flex-col gap-4 border border-[#919EAB] p-6 rounded-lg bg-white mt-2">
+                                    <p class="text-ui_gray-80 font-medium">
+                                        {% if inscription.accommodation == 'chambre_individuelle' %}
+                                            {% if inscription.roommateIdentifier %}
+                                                Vous partagez cette chambre en couple
+                                            {% else %}
+                                                Vous ne partagez pas cette chambre en couple
+                                            {% endif %}
+                                        {% elseif inscription.accommodation == 'chambre_partagee' %}
+                                            Vous partagez cette chambre avec un autre participant
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-[#919EAB]">
+                                        {% if inscription.accommodation == 'chambre_individuelle' %}
+                                            {% if inscription.roommateIdentifier %}
+                                                {% if roommate %}
+                                                    Lors de votre inscription vous avez sélectionné <span class="font-bold">{{ roommate }} ({{ roommate.publicId }})</span> pour partager le lit double de votre chambre.
+                                                {% endif %}
+                                            {% else %}
+                                                Lors de votre inscription vous n’avez pas déclaré partager cette chambre en couple.
+                                            {% endif %}
+                                        {% elseif inscription.accommodation == 'chambre_partagee' %}
+                                            {% if inscription.roommateIdentifier %}
+                                                {% if roommate %}
+                                                    Lors de votre inscription vous avez déclaré vouloir partager votre chambre avec <span class="font-bold">{{ roommate }} ({{ roommate.publicId }})</span>. Vous disposerez chacun d’un lit simple.
+                                                {% endif %}
+                                            {% else %}
+                                                Lors de votre inscription vous n’avez pas fléché d’autre participant pour partager votre chambre.
+                                                <br/><br/>
+                                                Par défaut, nous choisirons un participant de même civilité et d’âge similaire.
+                                            {% endif %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>

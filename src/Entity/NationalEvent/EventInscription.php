@@ -133,6 +133,9 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $accommodation = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $roommateIdentifier = null;
+
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $withDiscount = null;
 
@@ -263,6 +266,7 @@ class EventInscription
         $this->accommodation = $inscriptionRequest->accommodation;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->withDiscount = $inscriptionRequest->withDiscount;
+        $this->roommateIdentifier = $inscriptionRequest->roommateIdentifier;
 
         $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
 

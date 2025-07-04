@@ -173,6 +173,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
                 ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
                 ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false, 'disabled' => true])
+                ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
                 ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false, 'disabled' => true])
                 ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
             ->end()
@@ -262,6 +263,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Jour de visite' => $inscription->visitDay,
                 'Choix de transport' => $inscription->transport,
                 'Choix d\'hébergement' => $inscription->accommodation,
+                'Numéro du partenaire' => $inscription->roommateIdentifier,
                 'Bénéficie de -50%' => true === $inscription->withDiscount ? 'Oui' : 'Non',
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,

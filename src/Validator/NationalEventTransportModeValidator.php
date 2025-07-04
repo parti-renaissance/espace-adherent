@@ -29,30 +29,9 @@ class NationalEventTransportModeValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, EventInscriptionRequest::class);
         }
 
-        if (!$value->visitDay) {
-            $this
-                ->context
-                ->buildViolation($constraint->messageVisitDayMissing)
-                ->atPath('visitDay')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
-        if (null === $value->transport) {
-            $this
-                ->context
-                ->buildViolation($constraint->messageTransportMissing)
-                ->atPath('transport')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
         $transportConfig = $value->transportConfiguration;
-        if (!$transportConfig || empty($transportConfig['transports'])) {
+
+        if (!$value->visitDay || !$value->transport || !$transportConfig || empty($transportConfig['transports'])) {
             return;
         }
 
