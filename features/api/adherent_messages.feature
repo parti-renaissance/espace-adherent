@@ -35,12 +35,14 @@ Feature:
                         "author": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
-                            "last_name": "Referent"
+                            "last_name": "Referent",
+                            "image_url": null
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent",
+                            "image_url": null,
                             "instance": null,
                             "scope": null,
                             "role": null,
@@ -73,12 +75,14 @@ Feature:
                         "author": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
-                            "last_name": "Referent"
+                            "last_name": "Referent",
+                            "image_url": null
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent",
+                            "image_url": null,
                             "instance": null,
                             "scope": null,
                             "role": null,

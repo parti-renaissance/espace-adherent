@@ -59,12 +59,14 @@ Feature:
                         "author": {
                             "uuid": "@string@",
                             "first_name": "Damien",
-                            "last_name": "Durock"
+                            "last_name": "Durock",
+                            "image_url": null
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
                             "first_name": "Damien",
                             "last_name": "Durock",
+                            "image_url": null,
                             "instance": null,
                             "scope": null,
                             "role": null,
@@ -96,12 +98,14 @@ Feature:
                         "author": {
                             "uuid": "@string@",
                             "first_name": "Damien",
-                            "last_name": "Durock"
+                            "last_name": "Durock",
+                            "image_url": null
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
                             "first_name": "Damien",
                             "last_name": "Durock",
+                            "image_url": null,
                             "instance": null,
                             "scope": null,
                             "role": null,
