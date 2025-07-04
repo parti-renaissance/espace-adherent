@@ -36,7 +36,8 @@ Feature:
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent",
-                            "image_url": null
+                            "image_url": null,
+                            "scope": null
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -44,7 +45,6 @@ Feature:
                             "last_name": "Referent",
                             "image_url": null,
                             "instance": null,
-                            "scope": null,
                             "role": null,
                             "zone": null,
                             "theme": null
@@ -76,7 +76,8 @@ Feature:
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                             "first_name": "Referent",
                             "last_name": "Referent",
-                            "image_url": null
+                            "image_url": null,
+                            "scope": null
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -84,7 +85,6 @@ Feature:
                             "last_name": "Referent",
                             "image_url": null,
                             "instance": null,
-                            "scope": null,
                             "role": null,
                             "zone": null,
                             "theme": null
@@ -171,7 +171,8 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "@string@",
                     "last_name": "@string@",
-                    "image_url": null
+                    "image_url": null,
+                    "scope": "<scope>"
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -179,7 +180,6 @@ Feature:
                     "last_name": "VASSEUR",
                     "image_url": null,
                     "instance": "Assemblée départementale",
-                    "scope": null,
                     "role": "Responsable mobilisation",
                     "zone": "Hauts-de-Seine",
                     "theme": {
@@ -227,7 +227,8 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "Bob",
                     "last_name": "Senateur (59)",
-                    "image_url": null
+                    "image_url": null,
+                    "scope": "delegated_08f40730-d807-4975-8773-69d8fae1da74"
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -235,7 +236,6 @@ Feature:
                     "last_name": "Referent",
                     "image_url": null,
                     "instance": "Assemblée départementale",
-                    "scope": null,
                     "role": "Président",
                     "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
                     "theme": {
@@ -277,7 +277,8 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "Referent",
                     "last_name": "Referent",
-                    "image_url": null
+                    "image_url": null,
+                    "scope": null
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -285,7 +286,6 @@ Feature:
                     "last_name": "Referent",
                     "image_url": null,
                     "instance": null,
-                    "scope": null,
                     "role": null,
                     "zone": null,
                     "theme": null
@@ -334,7 +334,8 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
                     "last_name": "Coordinateur",
-                    "image_url": null
+                    "image_url": null,
+                    "scope": "regional_coordinator"
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -342,7 +343,6 @@ Feature:
                     "last_name": "Coordinateur",
                     "image_url": null,
                     "instance": "Région",
-                    "scope": null,
                     "role": "Coordinateur",
                     "zone": "Provence-Alpes-Côte d'Azur",
                     "theme": {
@@ -672,7 +672,8 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "@string@",
                     "last_name": "@string@",
-                    "image_url": null
+                    "image_url": null,
+                    "scope": "<scope>"
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -680,7 +681,6 @@ Feature:
                     "last_name": "Senateur (59)",
                     "image_url": null,
                     "instance": "Assemblée départementale",
-                    "scope": null,
                     "role": "Responsable mobilisation",
                     "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
                     "theme": {
