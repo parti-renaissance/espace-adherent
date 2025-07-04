@@ -53,7 +53,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['message_read']],
+            normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'publications'))"
         ),
         new Get(

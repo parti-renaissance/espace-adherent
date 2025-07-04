@@ -192,6 +192,45 @@ Feature:
                 "updated_at": "@string@.isDateTime()"
             }
             """
+        When I send a "GET" request to "/api/v3/adherent_messages/:last_response.uuid:?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "uuid": "@uuid@",
+                "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+                "subject": "L'objet de l'email",
+                "status": "draft",
+                "recipient_count": 0,
+                "preview_link": null,
+                "source": "vox",
+                "synchronized": false,
+                "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "@string@",
+                    "last_name": "@string@",
+                    "image_url": null,
+                    "scope": "<scope>"
+                },
+                "sender": {
+                    "uuid": "@uuid@",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR",
+                    "image_url": null,
+                    "instance": "Assemblée départementale",
+                    "role": "Responsable mobilisation",
+                    "zone": "Hauts-de-Seine",
+                    "theme": {
+                        "active": "#1C5CD8",
+                        "hover": "#2F6FE0",
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF"
+                    }
+                },
+                "updated_at": "@string@.isDateTime()"
+            }
+            """
 
         Examples:
             | user                            | scope                                          |
@@ -227,7 +266,7 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "Bob",
                     "last_name": "Senateur (59)",
-                    "image_url": null,
+                    "image_url": "http://test.renaissance.code/assets/images/profile/@string@.jpg",
                     "scope": "delegated_08f40730-d807-4975-8773-69d8fae1da74"
                 },
                 "sender": {
@@ -672,14 +711,14 @@ Feature:
                     "uuid": "@uuid@",
                     "first_name": "@string@",
                     "last_name": "@string@",
-                    "image_url": null,
+                    "image_url": <image_url>,
                     "scope": "<scope>"
                 },
                 "sender": {
                     "uuid": "@uuid@",
                     "first_name": "Bob",
                     "last_name": "Senateur (59)",
-                    "image_url": null,
+                    "image_url": "http://test.renaissance.code/assets/images/profile/@string@.jpg",
                     "instance": "Assemblée départementale",
                     "role": "Responsable mobilisation",
                     "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
@@ -717,6 +756,6 @@ Feature:
             """
 
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | scope                                          | image_url                                                         |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | null                                                              |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | "http://test.renaissance.code/assets/images/profile/@string@.jpg" |
