@@ -118,7 +118,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/adherent_messages',
-            normalizationContext: ['groups' => ['message_read_list']]
+            normalizationContext: ['groups' => ['message_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]]
         ),
         new Post(
             uriTemplate: '/adherent_messages',
