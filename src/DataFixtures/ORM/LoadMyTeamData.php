@@ -59,7 +59,6 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team1->addMember($member1_1);
         $team1->addMember($member1_2);
         $team1->addMember($member1_3);
-        $this->setReference('my-team-referent-1', $team1);
 
         $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1', Adherent::class), ScopeEnum::CORRESPONDENT);
         $member2_1 = $this->createMember(
@@ -78,7 +77,6 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $this->setReference('my_team_member_2_2', $member2_2);
         $team2->addMember($member2_1);
         $team2->addMember($member2_2);
-        $this->setReference('my-team-correspondent-1', $team2);
 
         $team3 = $this->createMyTeam(self::TEAM_3_UUID, $this->getReference('adherent-19', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $member3_1 = $this->createMember(
@@ -97,7 +95,6 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $this->setReference('my_team_member_3_2', $member3_2);
         $team3->addMember($member3_1);
         $team3->addMember($member3_2);
-        $this->setReference('my-team-referent-2', $team3);
 
         $team_lc_1 = $this->createMyTeam(self::TEAM_4_UUID, $this->getReference('senatorial-candidate', Adherent::class), ScopeEnum::LEGISLATIVE_CANDIDATE);
         $member_lc_1 = $this->createMember(
@@ -108,12 +105,28 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         );
         $this->setReference('my_team_lc_member_1', $member_lc_1);
         $team_lc_1->addMember($member_lc_1);
-        $this->setReference('my-team-legislative-candidate-1', $team_lc_1);
+
+        $teamPad = $this->createMyTeam(Uuid::uuid4()->toString(), $this->getReference('president-ad-1', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $teamPad->addMember($padMember1 = $this->createMember(
+            $this->getReference('adherent-12', Adherent::class),
+            RoleEnum::COMMUNICATION_MANAGER,
+            [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS],
+            Uuid::uuid4()->toString()
+        ));
+        $teamPad->addMember($padMember2 = $this->createMember(
+            $this->getReference('adherent-13', Adherent::class),
+            RoleEnum::MOBILIZATION_MANAGER,
+            [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS],
+            Uuid::uuid4()->toString()
+        ));
+        $this->setReference('my_team_pad_member_1', $padMember1);
+        $this->setReference('my_team_pad_member_2', $padMember2);
 
         $manager->persist($team1);
         $manager->persist($team2);
         $manager->persist($team3);
         $manager->persist($team_lc_1);
+        $manager->persist($teamPad);
 
         $manager->flush();
     }

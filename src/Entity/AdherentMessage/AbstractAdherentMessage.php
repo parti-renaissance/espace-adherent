@@ -30,6 +30,7 @@ use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
+use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
 use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -75,7 +76,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['message_read']],
+            normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
             security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'publications'))"
         ),
         new HttpOperation(
@@ -121,7 +122,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/adherent_messages',
-            normalizationContext: ['groups' => ['message_read']]
+            normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]
         ),
         new GetCollection(
             uriTemplate: '/adherent_messages/kpi',
@@ -129,7 +130,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ],
     routePrefix: '/v3',
-    normalizationContext: ['groups' => ['message_read_list']],
+    normalizationContext: ['groups' => ['message_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['message_write']],
     paginationClientEnabled: true,
     security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"

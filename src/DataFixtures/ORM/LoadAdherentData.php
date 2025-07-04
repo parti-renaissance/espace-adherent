@@ -932,6 +932,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
             'is_adherent' => true,
         ]));
+        $adherent->canaryTester = true;
         $adherent->tags = [TagEnum::getAdherentYearTag()];
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));

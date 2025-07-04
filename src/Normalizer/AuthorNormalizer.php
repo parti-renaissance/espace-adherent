@@ -38,7 +38,7 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
             return $data;
         }
 
-        foreach (['author_scope', 'author_role', 'author_instance', 'author_zone'] as $key) {
+        foreach (['author_scope', 'author_role', 'author_instance', 'author_zone', 'author_theme'] as $key) {
             if (\array_key_exists($key, $data)) {
                 if (!empty($data[$authorKey])) {
                     $data[$authorKey][explode('_', $key, 2)[1]] = $data[$key];
