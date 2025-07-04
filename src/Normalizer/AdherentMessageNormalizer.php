@@ -33,10 +33,11 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         if (array_intersect($groups, ['message_read_list', 'message_read'])) {
             $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
 
+            $data['author']['scope'] = $object->getAuthorScope();
+
             if (!empty($data['sender'])) {
                 $data['sender'] = array_merge($data['sender'], [
                     'instance' => $object->getAuthorInstance(),
-                    'scope' => $object->getAuthorScope(),
                     'role' => $object->getAuthorRole(),
                     'zone' => $object->getAuthorZone(),
                     'theme' => $object->getAuthorTheme(),

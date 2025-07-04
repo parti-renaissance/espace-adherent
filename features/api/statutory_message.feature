@@ -60,7 +60,8 @@ Feature:
                             "uuid": "@string@",
                             "first_name": "Damien",
                             "last_name": "Durock",
-                            "image_url": null
+                            "image_url": null,
+                            "scope": null
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
@@ -68,7 +69,6 @@ Feature:
                             "last_name": "Durock",
                             "image_url": null,
                             "instance": null,
-                            "scope": null,
                             "role": null,
                             "zone": null,
                             "theme": null
@@ -99,7 +99,8 @@ Feature:
                             "uuid": "@string@",
                             "first_name": "Damien",
                             "last_name": "Durock",
-                            "image_url": null
+                            "image_url": null,
+                            "scope": null
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
@@ -107,7 +108,6 @@ Feature:
                             "last_name": "Durock",
                             "image_url": null,
                             "instance": null,
-                            "scope": null,
                             "role": null,
                             "zone": null,
                             "theme": null
@@ -162,7 +162,8 @@ Feature:
                     "uuid": "@uuid@",
                     "image_url": null,
                     "first_name": "Damien",
-                    "last_name": "Durock"
+                    "last_name": "Durock",
+                    "scope": "president_departmental_assembly"
                 },
                 "sender": {
                     "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
@@ -170,7 +171,6 @@ Feature:
                     "last_name": "Durock",
                     "image_url": null,
                     "instance": "Assemblée départementale",
-                    "scope": null,
                     "role": "Président",
                     "zone": "Hauts-de-Seine",
                     "theme": {
