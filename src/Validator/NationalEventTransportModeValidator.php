@@ -92,5 +92,36 @@ class NationalEventTransportModeValidator extends ConstraintValidator
                 ;
             }
         }
+
+        $availableAccommodationModes = array_filter(
+            $transportConfig['hebergements'] ?? [],
+            static function (array $accommodation) use ($value) {
+                return \in_array($value->visitDay, $accommodation['jours_ids'] ?? [], true);
+            }
+        );
+
+        if (empty($availableAccommodationModes)) {
+            return;
+        }
+
+        if (empty($value->accommodation)) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageAccommodationMissing)
+                ->atPath('accommodation')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if (!\in_array($value->accommodation, array_column($availableAccommodationModes, 'id'), true)) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageInvalidAccommodation)
+                ->atPath('accommodation')
+                ->addViolation()
+            ;
+        }
     }
 }

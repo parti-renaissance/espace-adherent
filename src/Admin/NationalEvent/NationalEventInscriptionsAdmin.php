@@ -125,7 +125,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'template' => 'admin/national_event/list_details.html.twig',
                 'header_style' => 'min-width: 300px;',
             ])
-            ->add('transportCosts', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_transport_costs.html.twig'])
+            ->add('amount', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_amount.html.twig'])
             ->add('status', 'trans', ['label' => 'Statut', 'header_style' => 'min-width: 160px;'])
             ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
@@ -172,7 +172,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ])
                 ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
                 ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
-                ->add('transportCosts', TextType::class, ['label' => 'Prix du transport (en centimes)', 'required' => false, 'disabled' => true])
+                ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false, 'disabled' => true])
+                ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false, 'disabled' => true])
                 ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
             ->end()
             ->with('Billet', ['class' => 'col-md-6'])
@@ -260,6 +261,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
                 'Jour de visite' => $inscription->visitDay,
                 'Choix de transport' => $inscription->transport,
+                'Choix d\'hébergement' => $inscription->accommodation,
                 'Bénéficie de -50%' => true === $inscription->withDiscount ? 'Oui' : 'Non',
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,

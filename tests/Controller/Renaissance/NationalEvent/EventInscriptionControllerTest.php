@@ -248,6 +248,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'bus',
+                'accommodation' => 'chambre_individuelle',
             ],
         ]);
 
@@ -279,6 +280,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'train',
+                'accommodation' => 'chambre_individuelle',
                 'utmSource' => 'inscription_1',
             ],
         ]);
@@ -323,6 +325,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'train',
+                'accommodation' => 'chambre_individuelle',
                 'utmSource' => 'inscription_2',
             ],
         ]);
@@ -367,6 +370,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'train',
+                'accommodation' => 'chambre_partagee',
                 'utmSource' => 'inscription_3',
             ],
         ]);
@@ -389,6 +393,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
         self::assertCount(1, $payments = $thirdInscription->getPayments());
+        self::assertSame(9900, $thirdInscription->amount);
         self::assertSame(InscriptionStatusEnum::PENDING, $thirdInscription->status);
         self::assertSame(PaymentStatusEnum::PENDING, $thirdInscription->paymentStatus);
 
@@ -415,6 +420,14 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertNull($duplicatedInscriptions[0]->paymentStatus);
         self::assertNull($duplicatedInscriptions[1]->paymentStatus);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus/'.$thirdInscription->getUuid());
+
+        self::assertStringContainsString('L’essentiel du Campus se déroule sur la deuxième journée.', $crawler->filter('body')->text());
+        self::assertStringContainsString('Train (Paris >< Arras) Dimanche', $crawler->filter('body')->text());
+        self::assertStringContainsString('50 € - Paiement accepté', $crawler->filter('body')->text());
+        self::assertStringContainsString('Chambre partagée (à deux)', $crawler->filter('body')->text());
+        self::assertStringContainsString('49 € - Paiement accepté', $crawler->filter('body')->text());
     }
 
     public function testNewCampusInscriptionMarkedAsDuplicateAfterSuccessfulPaymentOfFirstOne(): void
@@ -440,6 +453,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'train',
+                'accommodation' => 'chambre_partagee',
             ],
         ]);
 
@@ -497,6 +511,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'postalCode' => '75001',
                 'visitDay' => 'jour_2',
                 'transport' => 'train',
+                'accommodation' => 'chambre_partagee',
                 'utmSource' => 'duplicate',
             ],
         ]);

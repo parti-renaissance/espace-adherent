@@ -20,7 +20,7 @@ class RequestParamsBuilder
             'PSPID' => $this->ogonePspId,
             'ORDERID' => $orderId->toString(),
             'COMPLUS' => $inscription->getUuid()->toString(),
-            'AMOUNT' => $inscription->transportCosts, // en cents
+            'AMOUNT' => $inscription->amount, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',
             'CN' => (new UnicodeString($inscription->firstName.' '.$inscription->lastName))->ascii(),

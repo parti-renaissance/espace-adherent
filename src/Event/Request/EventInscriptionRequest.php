@@ -60,6 +60,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     public ?string $visitDay = null;
     public ?string $transport = null;
+    public ?string $accommodation = null;
     public ?string $initialTransport = null;
     public bool $withDiscount = false;
 
@@ -118,6 +119,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
         $request->isJAM = $inscription->isJAM;
         $request->visitDay = $inscription->visitDay;
         $request->transport = $inscription->transport;
+        $request->accommodation = $inscription->accommodation;
         $request->initialTransport = $inscription->transport;
         $request->withDiscount = $inscription->withDiscount ?? false;
 

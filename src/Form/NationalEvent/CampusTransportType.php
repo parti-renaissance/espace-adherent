@@ -15,6 +15,7 @@ class CampusTransportType extends AbstractType
     {
         $days = $options['transport_configuration']['jours'] ?? [];
         $transports = $options['transport_configuration']['transports'] ?? [];
+        $accommodations = $options['transport_configuration']['hebergements'] ?? [];
         $reservedPlaces = $options['reserved_places'] ?? [];
 
         $defaultOptions = [
@@ -73,6 +74,31 @@ class CampusTransportType extends AbstractType
                             }
 
                             $descriptionParts[] = $price.$quota;
+
+                            $options['description'] = '<div>'.implode('</div><div>', array_filter($descriptionParts)).'</div>';
+                            break;
+                        }
+                    }
+
+                    return array_merge($defaultOptions, $options);
+                },
+            ])
+            ->add('accommodation', ChoiceType::class, [
+                'choices' => array_column($accommodations, 'id', 'titre'),
+                'expanded' => true,
+                'choice_attr' => function ($key) use ($defaultOptions, $accommodations): array {
+                    $options = [
+                        ':class' => \sprintf("accommodation === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
+                        'x-show' => 'availableAccommodations.some(t => t.id === \''.$key.'\')',
+                    ];
+
+                    foreach ($accommodations as $accommodation) {
+                        if ($accommodation['id'] === $key) {
+                            $descriptionParts = [$accommodation['description'] ?? null];
+
+                            $price = '<span class="text-ui_blue-60 font-semibold">'.(!empty($accommodation['montant']) ? ($accommodation['montant'].' €') : 'Gratuit').'</span>';
+
+                            $descriptionParts[] = $price;
 
                             $options['description'] = '<div>'.implode('</div><div>', array_filter($descriptionParts)).'</div>';
                             break;

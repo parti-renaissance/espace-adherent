@@ -138,6 +138,34 @@
                             {% endif %}
                         </div>
                     {% endif %}
+
+                    {% set accommodation_config = inscription.getAccommodationConfig() %}
+
+                    {% if accommodation_config %}
+                        <div class="flex flex-col bg-ui_gray-1 rounded-lg p-6 gap-2">
+                            <p class="font-medium">{{ accommodation_config.titre }}</p>
+
+                            {% if accommodation_config.description is defined %}
+                                <div>{{ accommodation_config.description|raw }}</div>
+                            {% endif %}
+
+                            {% if accommodation_config.montant is defined %}
+                                <div>
+                                    <span class="text-ui_blue-50 font-medium">{{ accommodation_config.montant }} €</span> -
+
+                                    {% if inscription.isPaymentSuccess() %}
+                                        <span class="text-ui_green-50 italic">Paiement accepté</span>
+                                    {% elseif inscription.isPaymentFailed() %}
+                                        <span class="text-ui_red-50 italic">Paiement échoué</span>
+                                    {% else %}
+                                        <span class="text-amber-500 italic">Paiement en attente</span>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="text-ui_green-50 font-medium">Gratuit</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 {% if event.allowEditInscription() %}

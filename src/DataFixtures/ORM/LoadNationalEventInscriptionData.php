@@ -58,7 +58,7 @@ class LoadNationalEventInscriptionData extends Fixture
             $eventInscription->isJAM = 0 === $i % 2;
             $eventInscription->volunteer = 0 === $i % 2;
             $eventInscription->accessibility = 4 === $i ? null : 'handicap_moteur';
-            $eventInscription->transportCosts = 5000;
+            $eventInscription->amount = 5000;
             $eventInscription->visitDay = 'jour_2';
             $eventInscription->transport = 'train';
 
@@ -66,10 +66,10 @@ class LoadNationalEventInscriptionData extends Fixture
 
             if (0 === $i % 2) {
                 $eventInscription->addPayment($payment = new Payment($uuid = Uuid::uuid4(), $eventInscription, ['orderID' => $uuid->toString()]));
-                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->transportCosts]));
+                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
                 $eventInscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
             } else {
-                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 5, 'AMOUNT' => $eventInscription->transportCosts]));
+                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 5, 'AMOUNT' => $eventInscription->amount]));
             }
         }
 

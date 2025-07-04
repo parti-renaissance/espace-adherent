@@ -26,6 +26,7 @@ class PaymentAdmin extends AbstractAdmin
             ])
             ->add('inscription.event', null, ['label' => 'Event', 'show_filter' => true])
             ->add('transport', null, ['label' => 'Forfait', 'show_filter' => true])
+            ->add('accommodation', null, ['label' => 'Hébergement', 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -45,6 +46,7 @@ class PaymentAdmin extends AbstractAdmin
             ->add('inscription.event', null, ['label' => 'Event'])
             ->add('inscription', null, ['label' => 'Inscrit', 'template' => 'admin/national_event/list_identity.html.twig'])
             ->add('transport', null, ['label' => 'Forfait'])
+            ->add('accommodation', null, ['label' => 'Hébergement'])
             ->add('amountInEuro', null, ['label' => 'Montant €'])
             ->add('status', 'enum', ['label' => 'Statut'])
             ->add('createdAt', null, ['label' => 'Créé le'])

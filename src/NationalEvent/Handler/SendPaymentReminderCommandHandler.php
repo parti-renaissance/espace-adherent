@@ -43,7 +43,7 @@ class SendPaymentReminderCommandHandler
             return;
         }
 
-        if (empty($eventInscription->transport) || empty($eventInscription->transportCosts)) {
+        if (empty($eventInscription->transport) || empty($eventInscription->amount)) {
             throw new \LogicException(\sprintf('Cannot send payment reminder for an inscription [%s] without transport costs.', $eventInscription->getId()));
         }
 

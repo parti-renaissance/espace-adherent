@@ -62,7 +62,7 @@ class EditTransportController extends AbstractController
 
             $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest, $inscription);
 
-            if ($inscriptionRequest->initialTransport !== $inscription->transport && $inscription->getTransportAmount() > 0) {
+            if ($inscriptionRequest->initialTransport !== $inscription->transport && $inscription->amount > 0) {
                 return $this->redirectToRoute('app_national_event_payment', [
                     'slug' => $event->getSlug(),
                     'uuid' => $inscription->getUuid()->toString(),
