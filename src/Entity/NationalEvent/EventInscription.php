@@ -130,11 +130,14 @@ class EventInscription
     #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $accommodation = null;
+
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $withDiscount = null;
 
-    #[ORM\Column(type: 'smallint', nullable: true)]
-    public ?int $transportCosts = null;
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
+    public ?int $amount = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
@@ -253,14 +256,21 @@ class EventInscription
     public function updateTransportFromRequest(EventInscriptionRequest $inscriptionRequest): void
     {
         $initialTransport = $this->transport;
-        $initialTransportCosts = $this->transportCosts;
+        $initialAccommodation = $this->accommodation;
+        $initialAmountCosts = $this->amount;
 
         $this->transport = $inscriptionRequest->transport;
+        $this->accommodation = $inscriptionRequest->accommodation;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->withDiscount = $inscriptionRequest->withDiscount;
-        $this->transportCosts = $this->getTransportAmount();
 
-        if ($initialTransport !== $this->transport && $this->transportCosts > 0 && $initialTransportCosts !== $this->transportCosts) {
+        $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
+
+        if (
+            ($initialTransport !== $this->transport || $initialAccommodation !== $this->accommodation)
+            && $this->amount > 0
+            && $initialAmountCosts !== $this->amount
+        ) {
             $this->paymentStatus = PaymentStatusEnum::PENDING;
         }
     }
@@ -277,16 +287,7 @@ class EventInscription
 
     public function isPaymentRequired(): bool
     {
-        return $this->event->isPaymentEnabled() && $this->transportCosts > 0;
-    }
-
-    public function getTransportAmount(): ?int
-    {
-        if (empty($this->transport) || str_starts_with($this->transport, 'gratuit')) {
-            return null;
-        }
-
-        return $this->event->calculateTransportAmount($this->transport, $this->withDiscount);
+        return $this->event->isPaymentEnabled() && $this->amount > 0;
     }
 
     public function addPayment(Payment $payment): void
@@ -341,6 +342,21 @@ class EventInscription
         foreach ($this->event->transportConfiguration['transports'] ?? [] as $transport) {
             if ($transport['id'] === $this->transport) {
                 return $transport;
+            }
+        }
+
+        return null;
+    }
+
+    public function getAccommodationConfig(): ?array
+    {
+        if (!$this->accommodation) {
+            return null;
+        }
+
+        foreach ($this->event->transportConfiguration['hebergements'] ?? [] as $accommodation) {
+            if ($accommodation['id'] === $this->accommodation) {
+                return $accommodation;
             }
         }
 

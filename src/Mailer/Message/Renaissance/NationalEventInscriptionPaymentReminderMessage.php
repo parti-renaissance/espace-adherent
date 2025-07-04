@@ -19,8 +19,12 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
             }
         }
 
-        if (!$selectedTransportConfig) {
-            throw new \InvalidArgumentException(\sprintf('Transport configuration not found for the given inscription [%s]', $eventInscription->getId()));
+        $selectedAccommodationConfig = null;
+        foreach ($event->transportConfiguration['hebergements'] ?? [] as $accommodation) {
+            if ($accommodation['id'] === $eventInscription->accommodation) {
+                $selectedAccommodationConfig = $accommodation;
+                break;
+            }
         }
 
         return new self(
@@ -32,8 +36,9 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
                 'first_name' => $eventInscription->firstName,
                 'last_name' => $eventInscription->lastName,
                 'primary_link' => $finalizeUrl,
-                'amount' => $eventInscription->transportCosts / 100,
-                'transport_title' => $selectedTransportConfig['titre'],
+                'amount' => $eventInscription->amount / 100,
+                'transport_title' => $selectedTransportConfig['titre'] ?? null,
+                'accommodation_title' => $selectedAccommodationConfig['titre'] ?? null,
                 'cancellation_date' => (clone $eventInscription->getCreatedAt())->modify(\sprintf('+%d hours', EventInscription::CANCELLATION_DELAY_IN_HOUR + 20))->format('d/m/Y à H:i'),
             ],
         );

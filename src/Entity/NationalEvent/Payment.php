@@ -28,6 +28,9 @@ class Payment
     #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $accommodation = null;
+
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $withDiscount = null;
 
@@ -47,8 +50,9 @@ class Payment
     {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
-        $this->amount = $inscription->transportCosts;
+        $this->amount = $inscription->amount;
         $this->transport = $inscription->transport;
+        $this->accommodation = $inscription->accommodation;
         $this->withDiscount = $inscription->withDiscount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();
@@ -66,9 +70,9 @@ class Payment
         return $this->statuses->toArray();
     }
 
-    public function getAmountInEuro(): int
+    public function getAmountInEuro(): float
     {
-        return (int) round($this->amount / 100);
+        return $this->amount / 100;
     }
 
     public function isConfirmed(): bool

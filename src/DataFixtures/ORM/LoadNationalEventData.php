@@ -131,6 +131,30 @@ class LoadNationalEventData extends Fixture
                     'titre' => 'Je viens par mes propres moyens',
                 ],
             ],
+            'hebergements' => [
+                [
+                    'id' => 'chambre_individuelle',
+                    'jours_ids' => ['jour_2'],
+                    'recap_label' => 'Chambre individuelle',
+                    'titre' => 'Je reserve une chambre individuelle',
+                    'montant' => 49,
+                    'description' => 'Chambre individuelle',
+                ],
+                [
+                    'id' => 'chambre_partagee',
+                    'jours_ids' => ['jour_2'],
+                    'recap_label' => 'Chambre partagée (à deux)',
+                    'titre' => 'Chambre partagée (à deux)',
+                    'montant' => 49,
+                    'description' => 'Chambre partagée',
+                ],
+                [
+                    'id' => 'gratuit',
+                    'jours_ids' => ['jour_2'],
+                    'titre' => 'Je n\'ai pas besoin d\'hébergement',
+                    'description' => 'Je trouve un hébergement par mes propres moyens',
+                ],
+            ],
         ];
 
         $this->setReference('event-national-3', $event);

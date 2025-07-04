@@ -149,12 +149,30 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
         return $this->isCampus();
     }
 
-    public function calculateTransportAmount(string $transport, ?bool $withDiscount): ?int
+    public function calculateInscriptionAmount(?string $transport, ?string $accommodation, ?bool $withDiscount): ?int
     {
-        foreach ($this->transportConfiguration['transports'] ?? [] as $transportConfig) {
-            if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
-                return (int) $transportConfig['montant'] * 100 / ($withDiscount ? 2 : 1);
+        $amount = 0;
+
+        if ($transport) {
+            foreach ($this->transportConfiguration['transports'] ?? [] as $transportConfig) {
+                if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
+                    $amount += (int) $transportConfig['montant'];
+                    break;
+                }
             }
+        }
+
+        if ($accommodation) {
+            foreach ($this->transportConfiguration['hebergements'] ?? [] as $accommodationConfig) {
+                if ($accommodationConfig['id'] === $accommodation && !empty($accommodationConfig['montant'])) {
+                    $amount += (int) $accommodationConfig['montant'];
+                    break;
+                }
+            }
+        }
+
+        if ($amount > 0) {
+            return $amount * 100 / ($withDiscount ? 2 : 1);
         }
 
         return null;

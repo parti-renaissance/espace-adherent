@@ -16,6 +16,12 @@
         {% set items = items|merge([transport_config.titre]) %}
     {% endif %}
 {% endif %}
+{% if object.accommodation %}
+    {% set accommodation_config = object.getAccommodationConfig() %}
+    {% if accommodation_config %}
+        {% set items = items|merge([accommodation_config.titre]) %}
+    {% endif %}
+{% endif %}
 {% if object.volunteer %}
     {% set items = items|merge(['Souhaite être bénévole']) %}
 {% endif %}
