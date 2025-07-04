@@ -1467,7 +1467,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function findByPublicId(string $publicId, bool $partial = false): ?Adherent
     {
         return $this->createQueryBuilder('a')
-            ->select($partial ? 'PARTIAL a.{id, uuid, emailAddress}' : 'a')
+            ->select($partial ? 'PARTIAL a.{id, uuid, emailAddress, publicId, firstName, lastName}' : 'a')
             ->where('a.publicId = :pid')
             ->setParameter('pid', $publicId)
             ->getQuery()

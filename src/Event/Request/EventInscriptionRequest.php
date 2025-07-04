@@ -58,11 +58,17 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
+    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['inscription_campus_creation', 'campus_transport_update'])]
     public ?string $visitDay = null;
+
+    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['inscription_campus_creation', 'campus_transport_update'])]
     public ?string $transport = null;
     public ?string $accommodation = null;
     public ?string $initialTransport = null;
     public bool $withDiscount = false;
+
+    #[Assert\Length(min: 6, max: 7)]
+    public ?string $roommateIdentifier = null;
 
     public bool $transportNeeds = false;
     public bool $volunteer = false;

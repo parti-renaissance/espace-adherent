@@ -171,33 +171,45 @@
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableTransports.length > 0">
                     {{ form_row(form.transport, {
-                        label: 'Besoin d’un transport ?',
+                        label: 'Choisissez un transport',
                         attr: {
                             validate: "['required']",
                             'x-model': 'transport',
                         },
                     }) }}
-
-                    <template x-if="selectedTransportConfig">
-                        {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
-                            widget_side: 'right',
-                            'x-model': 'withDiscount',
-                        }}) }}
-                    </template>
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableAccommodations.length > 0">
                     {{ form_row(form.accommodation, {
-                        label: 'Besoin d’un hébergement ?',
+                        label: 'Choisissez un hébergement',
                         attr: {
                             validate: "['required']",
                             'x-model': 'accommodation',
                         },
                     }) }}
+
+                    <template x-if="selectedAccommodationConfig && !!selectedAccommodationConfig?.accompagnement">
+                        <fieldset class="flex flex-col gap-4">
+                            <twig:Atoms:ReLabel x-text="selectedAccommodationConfig.pid_label"></twig:Atoms:ReLabel>
+                            <p x-html="selectedAccommodationConfig.pid_description" class="text-[#919EAB]"></p>
+
+                            {{ form_row(form.roommateIdentifier, {label: false, attr: {
+                                placeholder: 'Code à 6 ou 7 caractères XXX-XXX ou XXXXXX',
+                                class: 'border border-ui_blue-50 rounded-lg',
+                            }}) }}
+                        </fieldset>
+                    </template>
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
+                        <template x-if="selectedTransportConfig || selectedAccommodationConfig">
+                            {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
+                                widget_side: 'right',
+                                'x-model': 'withDiscount',
+                            }}) }}
+                        </template>
+
                         {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
 
                         <div>
@@ -224,13 +236,13 @@
                         <template x-for="item in getSummaryItems()" :key="item.label">
                             <div class="grid grid-cols-[5fr_1fr] gap-2 items-center">
                                 <span x-text="item.label"></span>
-                                <span class="text-right" :class="item.price < 0 ? 'text-ui_green-50' : 'text-ui_blue-50'" x-text="item.price + ' €'"></span>
+                                <span class="text-right" :class="item.price < 0 ? 'text-ui_green-50' : 'text-ui_blue-50'" x-text="item.price.toLocaleString() + ' €'"></span>
                             </div>
                         </template>
 
                         <div class="grid grid-cols-[5fr_1fr] gap-2 mt-1 items-center">
                             <span class="font-medium text-ui_gray-80">Montant total</span>
-                            <span class="font-medium text-ui_gray-80 text-right" x-text="getTotalPrice() + ' €'"></span>
+                            <span class="font-medium text-ui_gray-80 text-right" x-text="getTotalPrice().toLocaleString() + ' €'"></span>
                         </div>
                     </div>
 

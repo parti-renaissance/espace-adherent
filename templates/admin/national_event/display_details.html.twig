@@ -22,6 +22,9 @@
         {% set items = items|merge([accommodation_config.titre]) %}
     {% endif %}
 {% endif %}
+{% if object.roommateIdentifier %}
+    {% set items = items|merge(['Partenaire : <a href="' ~ path('admin_app_adherent_list', {filter: {search: {value: object.roommateIdentifier}}}) ~ '" target="_blank">' ~ object.roommateIdentifier ~ '</a>']) %}
+{% endif %}
 {% if object.volunteer %}
     {% set items = items|merge(['Souhaite être bénévole']) %}
 {% endif %}
@@ -35,7 +38,7 @@
 {% if items|length %}
     <ul class="list-disc pl-5">
         {% for item in items %}
-            <li>{{ item }}</li>
+            <li>{{ item|raw }}</li>
         {% endfor %}
     </ul>
 {% endif %}
