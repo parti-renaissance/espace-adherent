@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content_section %}
-    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({transportConfig: {{ event.transportConfiguration|json_encode }}})">
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({uncheckInputs: {{ form.vars.valid ? 'true' : 'false' }}, transportConfig: {{ event.transportConfiguration|json_encode }}})">
         <div class="flex flex-col gap-8 max-w-[500px] md:w-[500px]">
             {% if event.intoImage %}
                 {% set imgRatio = event.intoImage.getHeight() / event.intoImage.getWidth() %}
@@ -188,27 +188,25 @@
                         },
                     }) }}
 
-                    <template x-if="selectedAccommodationConfig && !!selectedAccommodationConfig?.accompagnement">
-                        <fieldset class="flex flex-col gap-4">
-                            <twig:Atoms:ReLabel x-text="selectedAccommodationConfig.pid_label"></twig:Atoms:ReLabel>
-                            <p x-html="selectedAccommodationConfig.pid_description" class="text-[#919EAB]"></p>
+                    <fieldset class="flex flex-col gap-4" x-show="selectedAccommodationConfig && !!selectedAccommodationConfig?.accompagnement">
+                        <twig:Atoms:ReLabel x-text="selectedAccommodationConfig?.pid_label"></twig:Atoms:ReLabel>
+                        <p x-html="selectedAccommodationConfig?.pid_description" class="text-[#919EAB]"></p>
 
-                            {{ form_row(form.roommateIdentifier, {label: false, attr: {
-                                placeholder: 'Code à 6 ou 7 caractères XXX-XXX ou XXXXXX',
-                                class: 'border border-ui_blue-50 rounded-lg',
-                            }}) }}
-                        </fieldset>
-                    </template>
+                        {{ form_row(form.roommateIdentifier, {label: false, attr: {
+                            placeholder: 'Code à 6 ou 7 caractères XXX-XXX ou XXXXXX',
+                            class: 'border border-ui_blue-50 rounded-lg',
+                        }}) }}
+                    </fieldset>
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-                        <template x-if="selectedTransportConfig || selectedAccommodationConfig">
+                        <div x-show="selectedTransportConfig || selectedAccommodationConfig">
                             {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
                                 widget_side: 'right',
                                 'x-model': 'withDiscount',
                             }}) }}
-                        </template>
+                        </div>
 
                         {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
 

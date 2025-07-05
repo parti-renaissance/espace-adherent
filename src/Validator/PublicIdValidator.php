@@ -30,7 +30,7 @@ class PublicIdValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (!preg_match($this->patternPid, $value)) {
+        if (!preg_match('#'.$this->patternPid.'#', $value)) {
             $this->context
                 ->buildViolation($constraint->messageWrongFormat)
                 ->addViolation()

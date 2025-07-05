@@ -39,6 +39,12 @@ const Page = (props) => ({
                 this.captchaToken = tokenInput.value;
                 this.fieldsValid.captcha = true;
             }
+
+            const firstError = Array.from(findAll(document, '.re-text-status--error'))
+                .find((el) => '' !== el.textContent.trim());
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         });
 
         this.$watch('transport', () => {
@@ -48,6 +54,9 @@ const Page = (props) => ({
             this.selectedAccommodationConfig = this.getSelectedAccommodationConfig();
         });
         this.visitDay = dom('input[name*="[visitDay]"]:checked')?.value || null;
+        this.transport = dom('input[name*="[transport]"]:checked')?.value || null;
+        this.accommodation = dom('input[name*="[accommodation]"]:checked')?.value || null;
+        this.withDiscount = !!dom('input[name*="[withDiscount]"]')?.checked;
         this.accessibility = !!dom('#campus_event_inscription_accessibility')?.value;
         const accessibilityCheckbox = dom('#accessibility-checkbox');
         if (accessibilityCheckbox) {
