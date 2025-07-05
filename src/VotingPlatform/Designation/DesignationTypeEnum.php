@@ -61,7 +61,6 @@ final class DesignationTypeEnum extends Enum
 
     public const NATIONAL_TYPES = [
         self::POLL,
-        self::CONSULTATION,
         self::TERRITORIAL_ASSEMBLY,
         self::CONGRESS_CN,
     ];
