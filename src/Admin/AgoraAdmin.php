@@ -21,6 +21,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AgoraAdmin extends AbstractAdmin
@@ -170,8 +171,9 @@ class AgoraAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Accès ⚙️', ['class' => 'col-md-6'])
-                ->add('maxMembersCount', null, [
+                ->add('maxMembersCount', IntegerType::class, [
                     'label' => 'Nombre maximum de membres',
+                    'empty_data' => 0,
                 ])
                 ->add('published', null, [
                     'label' => 'Publiée',
