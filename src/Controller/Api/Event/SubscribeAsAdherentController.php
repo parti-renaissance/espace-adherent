@@ -56,6 +56,13 @@ class SubscribeAsAdherentController extends AbstractController
             if ($eventRegistration) {
                 if ($eventRegistration->isConfirmed()) {
                     $event->decrementParticipantsCount();
+                    $event->updateMembersCount(
+                        false,
+                        $adherent->isRenaissanceSympathizer(),
+                        $adherent->isRenaissanceAdherent(),
+                        $adherent->hasActiveMembership()
+                    );
+
                     $eventRegistration->cancel();
                 }
 
@@ -104,6 +111,13 @@ class SubscribeAsAdherentController extends AbstractController
         }
 
         $event->incrementParticipantsCount();
+        $event->updateMembersCount(
+            true,
+            $adherent->isRenaissanceSympathizer(),
+            $adherent->isRenaissanceAdherent(),
+            $adherent->hasActiveMembership()
+        );
+
         $registration->confirm();
         $registration->setSource(AppCodeEnum::VOX);
 

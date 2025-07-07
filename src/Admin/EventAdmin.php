@@ -384,11 +384,11 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Assemblée',
                 'virtual_field' => true,
                 'template' => 'admin/event/list_assembly.html.twig',
-                'header_style' => 'min-width: 150px',
+                'header_style' => 'min-width: 130px',
             ])
             ->add('name', null, [
                 'label' => 'Nom',
-                'header_style' => 'min-width: 150px',
+                'header_style' => 'min-width: 130px',
             ])
             ->add('_instance', null, [
                 'label' => 'Instance organisatrice',
@@ -408,6 +408,8 @@ class EventAdmin extends AbstractAdmin
             ])
             ->add('participantsCount', null, [
                 'label' => 'Participants',
+                'template' => 'admin/event/list_registrations.html.twig',
+                'header_style' => 'min-width: 120px',
             ])
             ->add('visibility', null, [
                 'label' => 'Visibilité',

@@ -53,7 +53,15 @@ class EventRegistrationManager
         $event = $registration->getEvent();
 
         if ($registration->isConfirmed()) {
+            $adherent = $registration->getAdherent();
+
             $event->incrementParticipantsCount();
+            $event->updateMembersCount(
+                true,
+                $adherent?->isRenaissanceSympathizer() ?? false,
+                $adherent?->isRenaissanceAdherent() ?? false,
+                $adherent?->hasActiveMembership() ?? false
+            );
         }
 
         $this->manager->persist($registration);
@@ -66,7 +74,15 @@ class EventRegistrationManager
         $event = $registration->getEvent();
 
         if ($registration->isConfirmed()) {
+            $adherent = $registration->getAdherent();
+
             $event->decrementParticipantsCount();
+            $event->updateMembersCount(
+                false,
+                $adherent?->isRenaissanceSympathizer() ?? false,
+                $adherent?->isRenaissanceAdherent() ?? false,
+                $adherent?->hasActiveMembership() ?? false
+            );
         }
 
         $this->manager->remove($registration);

@@ -294,6 +294,18 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     protected $participantsCount = 0;
 
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $membersCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $adherentsCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $sympathizersCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $membersEmCount = 0;
+
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $national = false;
@@ -810,5 +822,78 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function getSortableAlertDate(): \DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function updateMembersCount(
+        bool $incrementAction,
+        bool $isSympathizer,
+        bool $isAdherent,
+        bool $isActiveMembership,
+    ): void {
+        if ($incrementAction) {
+            if ($isAdherent) {
+                $this->incrementMembersCount();
+
+                if ($isActiveMembership) {
+                    $this->incrementAdherentsCount();
+                }
+            } elseif ($isSympathizer) {
+                $this->incrementSympathizersCount();
+            } else {
+                $this->incrementMembersEmCount();
+            }
+        } else {
+            if ($isAdherent) {
+                $this->decrementMembersCount();
+
+                if ($isActiveMembership) {
+                    $this->decrementAdherentsCount();
+                }
+            } elseif ($isSympathizer) {
+                $this->decrementSympathizersCount();
+            } else {
+                $this->decrementMembersEmCount();
+            }
+        }
+    }
+
+    public function incrementMembersCount(): void
+    {
+        ++$this->membersCount;
+    }
+
+    public function incrementAdherentsCount(): void
+    {
+        ++$this->adherentsCount;
+    }
+
+    public function incrementMembersEmCount(): void
+    {
+        ++$this->membersEmCount;
+    }
+
+    public function incrementSympathizersCount(): void
+    {
+        ++$this->sympathizersCount;
+    }
+
+    public function decrementMembersCount(): void
+    {
+        $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
+    }
+
+    public function decrementAdherentsCount(): void
+    {
+        $this->adherentsCount = $this->adherentsCount < 1 ? 0 : $this->adherentsCount - 1;
+    }
+
+    public function decrementSympathizersCount(): void
+    {
+        $this->sympathizersCount = $this->sympathizersCount < 1 ? 0 : $this->sympathizersCount - 1;
+    }
+
+    public function decrementMembersEmCount(): void
+    {
+        $this->membersEmCount = $this->membersEmCount < 1 ? 0 : $this->membersEmCount - 1;
     }
 }

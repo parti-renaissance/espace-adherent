@@ -3,6 +3,7 @@
 namespace App\Repository\Event;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Agora;
 use App\Entity\Committee;
@@ -613,5 +614,35 @@ class EventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function updateRegistrationsCounters(): void
+    {
+        $this->getEntityManager()->getConnection()->executeQuery(
+            'UPDATE events AS e
+            INNER JOIN (
+                SELECT
+                    e2.id,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS adherents_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS sympathizers_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count
+                FROM events e2
+                INNER JOIN events_registrations er ON er.event_id = e2.id
+                INNER JOIN adherents a ON a.id = er.adherent_id
+                GROUP BY e2.id
+            ) AS t ON t.id = c.id
+            SET
+                e.members_count = t.members_count,
+                e.adherents_count = t.adherents_count,
+                e.members_em_count = t.members_em_count,
+                e.sympathizers_count = t.sympathizers_count',
+            [
+                TagEnum::ADHERENT.'%',
+                TagEnum::getAdherentYearTag().'%',
+                TagEnum::SYMPATHISANT.'%',
+                TagEnum::SYMPATHISANT_COMPTE_EM.'%',
+            ]
+        );
     }
 }
