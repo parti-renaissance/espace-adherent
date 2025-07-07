@@ -63,6 +63,6 @@ class EventInscriptionManager
 
     public function countReservedPlaces(NationalEvent $event): array
     {
-        return $this->eventInscriptionRepository->countPlacesByTransport($event->getId(), array_column($event->transportConfiguration['transports'] ?? [], 'id'));
+        return $this->eventInscriptionRepository->countPlacesByTransport($event->getId());
     }
 }
