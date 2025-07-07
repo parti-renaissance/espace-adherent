@@ -60,7 +60,7 @@ class NationalEventTransportModeValidator extends ConstraintValidator
         }
 
         if ($selectedTransportConfig && isset($selectedTransportConfig['quota'])) {
-            $reservedPlaces = $this->eventInscriptionRepository->countPlacesByTransport($value->eventId, [$value->transport]);
+            $reservedPlaces = $this->eventInscriptionRepository->countPlacesByTransport($value->eventId, [$value->transport], []);
 
             if ($selectedTransportConfig['quota'] <= ($reservedPlaces[$value->transport] ?? 0)) {
                 $this
@@ -78,6 +78,17 @@ class NationalEventTransportModeValidator extends ConstraintValidator
                 return \in_array($value->visitDay, $accommodation['jours_ids'] ?? [], true);
             }
         );
+
+        if (empty($availableAccommodationModes) && !empty($value->accommodation)) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageInvalidAccommodation)
+                ->atPath('accommodation')
+                ->addViolation()
+            ;
+
+            return;
+        }
 
         if (empty($availableAccommodationModes)) {
             return;
@@ -101,6 +112,27 @@ class NationalEventTransportModeValidator extends ConstraintValidator
                 ->atPath('accommodation')
                 ->addViolation()
             ;
+        }
+
+        $selectedAccommodationConfig = null;
+        foreach ($availableAccommodationModes as $accommodation) {
+            if ($accommodation['id'] === $value->accommodation) {
+                $selectedAccommodationConfig = $accommodation;
+                break;
+            }
+        }
+
+        if ($selectedAccommodationConfig && isset($selectedAccommodationConfig['quota'])) {
+            $reservedPlaces = $this->eventInscriptionRepository->countPlacesByTransport($value->eventId, [], [$value->accommodation]);
+
+            if ($selectedAccommodationConfig['quota'] <= ($reservedPlaces[$value->accommodation] ?? 0)) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->messageAccommodationLimit)
+                    ->atPath('accommodation')
+                    ->addViolation()
+                ;
+            }
         }
     }
 }

@@ -93,7 +93,7 @@ class CampusTransportType extends AbstractType
             ->add('accommodation', ChoiceType::class, [
                 'choices' => array_column($accommodations, 'id', 'titre'),
                 'expanded' => true,
-                'choice_attr' => function ($key) use ($defaultOptions, $accommodations): array {
+                'choice_attr' => function ($key) use ($defaultOptions, $reservedPlaces, $accommodations): array {
                     $options = [
                         ':class' => \sprintf("accommodation === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
                         'x-show' => 'availableAccommodations.some(t => t.id === \''.$key.'\')',
@@ -104,12 +104,26 @@ class CampusTransportType extends AbstractType
                             $descriptionParts = [$accommodation['description'] ?? null];
 
                             $price = '<span class="text-ui_blue-60 font-semibold">'.(!empty($accommodation['montant']) ? ($accommodation['montant'].' €') : 'Gratuit').'</span>';
+                            $quota = null;
 
-                            if (!empty($accommodation['montant'])) {
-                                $price .= '<span class="text-ui_gray-60"> - Places limitées</span>';
+                            if (!empty($accommodation['quota'])) {
+                                $reservedCount = $reservedPlaces[$key] ?? 0;
+                                $availablePlaces = $accommodation['quota'] - $reservedCount;
+
+                                if ($availablePlaces > 0) {
+                                    if ($availablePlaces > 50) {
+                                        $quota = '<span class="text-ui_gray-60"> - Places limitées</span>';
+                                    } else {
+                                        $quota = \sprintf('<span class="text-ui_gray-60"> - %d place%2$s restante%2$s</span>', $availablePlaces, $availablePlaces > 1 ? 's' : '');
+                                    }
+                                } else {
+                                    $quota = '<span class="text-ui_gray-60"> - Complet</span>';
+                                    $options['disabled'] = true;
+                                    $defaultOptions['class'] .= ' opacity-60';
+                                }
                             }
 
-                            $descriptionParts[] = $price;
+                            $descriptionParts[] = $price.$quota;
 
                             $options['description'] = '<div>'.implode('</div><div>', array_filter($descriptionParts)).'</div>';
                             break;

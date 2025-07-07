@@ -278,34 +278,69 @@ class EventInscriptionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countPlacesByTransport(int $eventId, array $transportModes): array
+    public function countPlacesByTransport(int $eventId, ?array $transportModes = null, ?array $accommodationModes = null): array
     {
-        $qb = $this
-            ->createQueryBuilder('ei', 'ei.transport')
-            ->select('ei.transport, COUNT(ei) as count')
-            ->innerJoin('ei.event', 'e')
-            ->where('e.id = :event_id')
-            ->andWhere('ei.status IN (:statuses)')
-            ->setParameter('event_id', $eventId)
-            ->setParameter('statuses', [
-                InscriptionStatusEnum::APPROVED_STATUSES,
-                InscriptionStatusEnum::WAITING_PAYMENT,
-                InscriptionStatusEnum::PAYMENT_CONFIRMED,
-                InscriptionStatusEnum::INCONCLUSIVE,
-            ])
-            ->groupBy('ei.transport')
-        ;
+        $results = [];
 
-        if (!empty($transportModes)) {
-            $qb
-                ->andWhere('ei.transport IN (:transport_modes)')
-                ->setParameter('transport_modes', $transportModes)
+        if ([] !== $transportModes) {
+            $qb = $this
+                ->createQueryBuilder('ei', 'ei.transport')
+                ->select('ei.transport, COUNT(ei) as count')
+                ->innerJoin('ei.event', 'e')
+                ->where('e.id = :event_id')
+                ->andWhere('ei.status IN (:statuses)')
+                ->setParameter('event_id', $eventId)
+                ->setParameter('statuses', [
+                    InscriptionStatusEnum::APPROVED_STATUSES,
+                    InscriptionStatusEnum::WAITING_PAYMENT,
+                    InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                    InscriptionStatusEnum::INCONCLUSIVE,
+                ])
+                ->groupBy('ei.transport')
             ;
-        } else {
-            $qb->andWhere('ei.transport IS NOT NULL');
+
+            if (!empty($transportModes)) {
+                $qb
+                    ->andWhere('ei.transport IN (:transport_modes)')
+                    ->setParameter('transport_modes', $transportModes)
+                ;
+            } else {
+                $qb->andWhere('ei.transport IS NOT NULL');
+            }
+
+            $results = array_column($qb->getQuery()->getResult(), 'count', 'transport');
         }
 
-        return array_column($qb->getQuery()->getResult(), 'count', 'transport');
+        if ([] !== $accommodationModes) {
+            $qb = $this
+                ->createQueryBuilder('ei', 'ei.accommodation')
+                ->select('ei.accommodation, COUNT(ei) as count')
+                ->innerJoin('ei.event', 'e')
+                ->where('e.id = :event_id')
+                ->andWhere('ei.status IN (:statuses)')
+                ->setParameter('event_id', $eventId)
+                ->setParameter('statuses', [
+                    InscriptionStatusEnum::APPROVED_STATUSES,
+                    InscriptionStatusEnum::WAITING_PAYMENT,
+                    InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                    InscriptionStatusEnum::INCONCLUSIVE,
+                ])
+                ->groupBy('ei.accommodation')
+            ;
+
+            if (!empty($accommodationModes)) {
+                $qb
+                    ->andWhere('ei.accommodation IN (:accommodation_modes)')
+                    ->setParameter('accommodation_modes', $accommodationModes)
+                ;
+            } else {
+                $qb->andWhere('ei.accommodation IS NOT NULL');
+            }
+
+            $results = array_merge($results, array_column($qb->getQuery()->getResult(), 'count', 'accommodation'));
+        }
+
+        return $results;
     }
 
     public function findAllWithPendingPayments(\DateTime $now): array
