@@ -86,7 +86,6 @@ jobs:
         runs-on: ubuntu-24.04
         needs: [build]
         env:
-            PHP_CS_FIXER_IGNORE_ENV: 1
             EXEC:
         steps:
             - uses: actions/checkout@v4
