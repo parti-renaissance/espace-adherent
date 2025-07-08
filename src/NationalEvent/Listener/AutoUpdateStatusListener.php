@@ -60,7 +60,10 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
             }
         }
 
-        if (InscriptionStatusEnum::PENDING !== $newEventInscription->status || !$adherent = $newEventInscription->adherent) {
+        if (
+            PaymentStatusEnum::PENDING === $newEventInscription->paymentStatus
+            || InscriptionStatusEnum::PENDING !== $newEventInscription->status
+            || !$adherent = $newEventInscription->adherent) {
             return;
         }
 

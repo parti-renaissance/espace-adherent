@@ -33,13 +33,15 @@ class MeetingProvider implements AlertProviderInterface
 
         $alerts = [];
 
+        $utm = ['utm_source' => 'app', 'utm_campaign' => 'alerte'];
+
         foreach ($events as $event) {
             $imageUrl = $data = null;
             $currentUser = $this->getCurrentUser();
-            $shareUrl = $currentUser ? $this->generateUrl('app_national_event_by_slug_with_referrer', [
+            $shareUrl = $currentUser ? $this->generateUrl('app_national_event_by_slug_with_referrer', array_merge([
                 'slug' => $event->getSlug(),
                 'pid' => $currentUser->getPublicId(),
-            ]) : $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]);
+            ], $utm)) : $this->generateUrl('app_national_event_by_slug', array_merge(['slug' => $event->getSlug()], $utm));
 
             if ($event->ogImage) {
                 $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->ogImage))]);
@@ -86,7 +88,7 @@ class MeetingProvider implements AlertProviderInterface
                     $adherent,
                     lifetime: 3600,
                     targetPath: parse_url(
-                        $this->generateUrl('app_national_event_by_slug', ['slug' => $event->getSlug()]),
+                        $this->generateUrl('app_national_event_by_slug', array_merge(['slug' => $event->getSlug()], $utm)),
                         \PHP_URL_PATH
                     ),
                 )->getUrl();

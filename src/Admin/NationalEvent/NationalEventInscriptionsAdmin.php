@@ -125,8 +125,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'template' => 'admin/national_event/list_details.html.twig',
                 'header_style' => 'min-width: 300px;',
             ])
-            ->add('amount', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_amount.html.twig'])
             ->add('status', 'trans', ['label' => 'Statut', 'header_style' => 'min-width: 160px;'])
+            ->add('amount', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_amount.html.twig'])
+            ->add('paymentStatus', 'enum', ['label' => 'Statut du paiement', 'use_value' => true, 'enum_translation_domain' => 'messages', 'header_style' => 'min-width: 160px;'])
             ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])

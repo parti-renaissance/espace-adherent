@@ -41,7 +41,7 @@ Feature:
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
                     "image_url": null,
                     "data": null,
-                    "share_url": "http://test.renaissance.code/grand-rassemblement/event-national-1/@string@"
+                    "share_url": "http://test.renaissance.code/grand-rassemblement/event-national-1/@string@?utm_source=app&utm_campaign=alerte"
                 },
                 {
                     "type": "meeting",
@@ -52,7 +52,7 @@ Feature:
                     "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fcampus",
                     "image_url": "http://test.renaissance.code/assets/uploads/@string@",
                     "data": null,
-                    "share_url": "http://test.renaissance.code/grand-rassemblement/campus/@string@"
+                    "share_url": "http://test.renaissance.code/grand-rassemblement/campus/@string@?utm_source=app&utm_campaign=alerte"
                 }
             ]
             """

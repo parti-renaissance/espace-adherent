@@ -7,6 +7,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
 use App\Entity\NationalEvent\PaymentStatus;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\PaymentStatusEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -67,7 +68,8 @@ class LoadNationalEventInscriptionData extends Fixture
             if (0 === $i % 2) {
                 $eventInscription->addPayment($payment = new Payment($uuid = Uuid::uuid4(), $eventInscription, ['orderID' => $uuid->toString()]));
                 $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
-                $eventInscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
+                $eventInscription->status = InscriptionStatusEnum::PENDING;
+                $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
             } else {
                 $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 5, 'AMOUNT' => $eventInscription->amount]));
             }

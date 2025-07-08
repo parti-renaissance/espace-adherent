@@ -244,7 +244,6 @@ class EventInscriptionRepository extends ServiceEntityRepository
                     WHEN ei.status = :status_accepted THEN 1
                     WHEN ei.status = :status_inconclusive THEN 2
                     WHEN ei.status = :status_refused THEN 3
-                    WHEN ei.status = :status_payment_confirmed THEN 4
                     WHEN ei.status = :status_waiting_payment THEN 5
                     WHEN ei.status = :status_pending THEN 6
                     ELSE 7
@@ -268,7 +267,6 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 'status_accepted' => InscriptionStatusEnum::ACCEPTED,
                 'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
                 'status_refused' => InscriptionStatusEnum::REFUSED,
-                'status_payment_confirmed' => InscriptionStatusEnum::PAYMENT_CONFIRMED,
                 'status_waiting_payment' => InscriptionStatusEnum::WAITING_PAYMENT,
                 'status_pending' => InscriptionStatusEnum::PENDING,
             ])
@@ -293,7 +291,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 ->setParameter('statuses', [
                     InscriptionStatusEnum::APPROVED_STATUSES,
                     InscriptionStatusEnum::WAITING_PAYMENT,
-                    InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                    InscriptionStatusEnum::PENDING,
                     InscriptionStatusEnum::INCONCLUSIVE,
                 ])
                 ->groupBy('ei.transport')
@@ -322,7 +320,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
                 ->setParameter('statuses', [
                     InscriptionStatusEnum::APPROVED_STATUSES,
                     InscriptionStatusEnum::WAITING_PAYMENT,
-                    InscriptionStatusEnum::PAYMENT_CONFIRMED,
+                    InscriptionStatusEnum::PENDING,
                     InscriptionStatusEnum::INCONCLUSIVE,
                 ])
                 ->groupBy('ei.accommodation')

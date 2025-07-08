@@ -36,7 +36,7 @@ class EventInscription
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
-    public const int CANCELLATION_DELAY_IN_HOUR = 72;
+    public const int CANCELLATION_DELAY_IN_HOUR = 336;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
