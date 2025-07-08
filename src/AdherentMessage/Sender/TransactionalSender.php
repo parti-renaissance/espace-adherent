@@ -4,21 +4,17 @@ namespace App\AdherentMessage\Sender;
 
 use App\AdherentMessage\TransactionalMessage\TransactionalMessageFactory;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\TransactionalMessageInterface;
 use App\Mailer\MailerService;
 
 class TransactionalSender implements SenderInterface
 {
-    private $mailer;
-
-    public function __construct(MailerService $transactionalMailer)
+    public function __construct(private readonly MailerService $transactionalMailer)
     {
-        $this->mailer = $transactionalMailer;
     }
 
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof TransactionalMessageInterface;
+        return $message->isStatutory();
     }
 
     public function send(AdherentMessageInterface $message, array $recipients = []): bool
@@ -34,13 +30,8 @@ class TransactionalSender implements SenderInterface
         return $this->doSend($message, $recipients);
     }
 
-    public function renderMessage(AdherentMessageInterface $message, array $recipients = []): string
-    {
-        return $this->mailer->renderMessage(TransactionalMessageFactory::createFromAdherentMessage($message, $recipients));
-    }
-
     private function doSend(AdherentMessageInterface $message, array $recipients = []): bool
     {
-        return $this->mailer->sendMessage(TransactionalMessageFactory::createFromAdherentMessage($message, $recipients));
+        return $this->transactionalMailer->sendMessage(TransactionalMessageFactory::createFromAdherentMessage($message, $recipients));
     }
 }

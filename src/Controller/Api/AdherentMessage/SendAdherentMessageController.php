@@ -4,7 +4,7 @@ namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class SendAdherentMessageController extends AbstractController
 {
-    public function __invoke(AdherentMessageManager $manager, AbstractAdherentMessage $message, #[CurrentUser] Adherent $adherent): Response
+    public function __invoke(AdherentMessageManager $manager, AdherentMessage $message, #[CurrentUser] Adherent $adherent): Response
     {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to send.');

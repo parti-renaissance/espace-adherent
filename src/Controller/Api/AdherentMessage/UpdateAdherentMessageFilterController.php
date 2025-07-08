@@ -3,7 +3,7 @@
 namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +27,7 @@ class UpdateAdherentMessageFilterController extends AbstractController
 
     public function __invoke(
         Request $request,
-        AbstractAdherentMessage $data,
+        AdherentMessage $data,
         ScopeGeneratorResolver $scopeGeneratorResolver,
     ): Response {
         if ($data->isSent()) {

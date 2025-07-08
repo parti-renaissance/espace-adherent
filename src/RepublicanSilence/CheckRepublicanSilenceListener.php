@@ -21,16 +21,12 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Referent Space
         'app_referent_managed_users_list' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_referent_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_message_send' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_message_referent_*' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
 
         // Committee
         'app_committee_show' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_contact_members' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
-        'app_message_committee_*' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Deputy Space
-        'app_message_deputy_*' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
         'app_deputy_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
 
         // Candidate Space
@@ -40,9 +36,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         // Procuration Space
         'app_procuration_manager_*' => ZoneExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER,
-
-        // All message actions
-        'app_message_*' => ZoneExtractorInterface::NONE,
     ];
 
     public function __construct(

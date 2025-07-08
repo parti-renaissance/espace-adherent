@@ -98,6 +98,6 @@ class SegmentConditionsBuilder
             return $this->mailchimpObjectIdMapping->getListIdFromSource($campaign->getMailchimpListType());
         }
 
-        return $this->mailchimpObjectIdMapping->getListIdByMessageType($message->getType());
+        return $this->mailchimpObjectIdMapping->getMainListId();
     }
 }

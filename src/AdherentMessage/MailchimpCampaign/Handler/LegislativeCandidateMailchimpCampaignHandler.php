@@ -5,14 +5,14 @@ namespace App\AdherentMessage\MailchimpCampaign\Handler;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Mailchimp\Campaign\AudienceTypeEnum;
+use App\Scope\ScopeEnum;
 
 class LegislativeCandidateMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof LegislativeCandidateAdherentMessage && $message->getFilter() instanceof AudienceFilter;
+        return ScopeEnum::LEGISLATIVE_CANDIDATE === $message->getInstanceScope() && $message->getFilter() instanceof AudienceFilter;
     }
 
     /**

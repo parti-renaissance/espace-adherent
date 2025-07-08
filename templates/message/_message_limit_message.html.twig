@@ -1,8 +1,0 @@
-{% set message_limit = get_message_limit(message_type) %}
-
-{% if message_limit %}
-    <div class="alert alert--tips b__nudge--bottom-large">
-        Attention, le nombre d'emails envoyés par mois est limité à {{ message_limit }} pour les {{ ('adherent_message.limit.' ~ message_type)|trans }}.
-        Vous en avez déjà envoyé {{ get_sent_message_count(app.request, current_user(), message_type) }} ce mois-ci.
-    </div>
-{% endif %}

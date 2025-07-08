@@ -4,7 +4,6 @@ namespace App\AdherentMessage\TransactionalMessage\MessageModifier;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\StatutoryAdherentMessage;
 use App\Repository\AdherentRepository;
 
 class StatutoryMessageModifier implements MessageModifierInterface
@@ -15,7 +14,7 @@ class StatutoryMessageModifier implements MessageModifierInterface
 
     public function support(AdherentMessageInterface $message): bool
     {
-        return $message instanceof StatutoryAdherentMessage;
+        return $message->isStatutory();
     }
 
     public function modify(AdherentMessageInterface $message): void

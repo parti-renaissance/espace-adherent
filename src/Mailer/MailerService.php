@@ -48,9 +48,4 @@ class MailerService
 
         return $delivered;
     }
-
-    public function renderMessage(Message $message): string
-    {
-        return $this->emailClient->renderEmail($this->factory->createFromMessage($message));
-    }
 }

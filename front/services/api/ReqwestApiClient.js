@@ -125,13 +125,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    getMessageStatus(messageId, callback, errorCallback) {
-        this._reqwest({
-            url: `/api/adherent_messages/${messageId}`,
-            type: 'json',
-        }).then((response) => callback(response)).fail((response) => errorCallback(response));
-    }
-
     getAssessorRequests(queryString, page, callback) {
         this._createRequest(callback, {
             url: `/espace-responsable-assesseur/plus?page=${page}&${queryString}`,

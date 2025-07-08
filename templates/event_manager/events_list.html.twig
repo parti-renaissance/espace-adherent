@@ -1,31 +1,5 @@
 {% extends 'event_manager/_layout.html.twig' %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {% if share_by_email %}
-                findAll(document, '.share-by-email').forEach(function (event) {
-                    event.addEventListener('click', function (e) {
-                        e.preventDefault();
-
-                        var form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '{{ path("app_message_#{space_name}_create") }}';
-
-                        var messageElement = document.createElement('input');
-                        messageElement.name = 'message_content';
-                        messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + e.target.dataset.url + '">ici</a>';
-
-                        form.appendChild(messageElement);
-                        document.body.appendChild(form);
-                        form.submit();
-                    });
-                });
-            {% endif %}
-        });
-    </script>
-{% endblock %}
-
 {% block event_manager_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Événements</h3>

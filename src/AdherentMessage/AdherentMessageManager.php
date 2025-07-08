@@ -8,33 +8,17 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\TransactionalMessageInterface;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager
 {
-    private $em;
-    private $eventDispatcher;
-    /** @var SenderInterface[] */
-    private $senders;
-
-    public function __construct(ObjectManager $em, EventDispatcherInterface $eventDispatcher, iterable $senders)
-    {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->senders = $senders;
-    }
-
-    public function saveMessage(AdherentMessageInterface $message): void
-    {
-        if (!$message->getId()) {
-            $this->em->persist($message);
-
-            $this->eventDispatcher->dispatch(new MessageEvent($message), Events::MESSAGE_PRE_CREATE);
-        }
-
-        $this->em->flush();
+    /** @param SenderInterface[] $senders */
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly iterable $senders,
+    ) {
     }
 
     public function updateFilter(AdherentMessageInterface $message, ?AdherentMessageFilterInterface $filter): void
@@ -59,20 +43,6 @@ class AdherentMessageManager
         $this->em->flush();
     }
 
-    public function updateMessage(AdherentMessageInterface $message, AdherentMessageDataObject $dataObject): void
-    {
-        if (
-            $message->getContent() !== $dataObject->getContent()
-            || $message->getSubject() !== $dataObject->getSubject()
-        ) {
-            $message->setSynchronized(false);
-        }
-
-        $message->updateFromDataObject($dataObject);
-
-        $this->em->flush();
-    }
-
     public function send(AdherentMessageInterface $message, array $recipients = []): bool
     {
         if (!$sender = $this->getSender($message)) {
@@ -89,17 +59,12 @@ class AdherentMessageManager
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool
     {
-        return ($sender = $this->getSender($message)) ? $sender->sendTest($message, [$user]) : false;
+        return ($sender = $this->getSender($message)) && $sender->sendTest($message, [$user]);
     }
 
-    public function getMessageContent(AdherentMessageInterface $message): string
+    public function getRecipients(AdherentMessageInterface $message): array
     {
-        return ($sender = $this->getSender($message)) ? $sender->renderMessage($message, [$message->getAuthor()]) : '';
-    }
-
-    public function getRecipients(AdherentMessageInterface $message)
-    {
-        if (!$message instanceof TransactionalMessageInterface) {
+        if (!$message->isStatutory()) {
             return [];
         }
 

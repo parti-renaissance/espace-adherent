@@ -4,15 +4,15 @@ namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
+use App\Scope\ScopeEnum;
 
 class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof CommitteeAdherentMessage
+        return ScopeEnum::ANIMATOR === $message->getInstanceScope()
             && ($message->getFilter() instanceof CommitteeFilter || $message->getFilter() instanceof MessageFilter);
     }
 

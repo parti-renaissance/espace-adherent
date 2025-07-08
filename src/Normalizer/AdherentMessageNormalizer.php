@@ -3,7 +3,7 @@
 namespace App\Normalizer;
 
 use App\AdherentMessage\StatisticsAggregator;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -19,7 +19,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     ) {
     }
 
-    /** @param AbstractAdherentMessage $object */
+    /** @param AdherentMessage $object */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
@@ -51,12 +51,12 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     public function getSupportedTypes(?string $format): array
     {
         return [
-            AbstractAdherentMessage::class => false,
+            AdherentMessage::class => false,
         ];
     }
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__]) && $data instanceof AbstractAdherentMessage;
+        return !isset($context[__CLASS__]) && $data instanceof AdherentMessage;
     }
 }

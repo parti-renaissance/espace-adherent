@@ -15,7 +15,7 @@ use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AppSession;
 use App\Entity\Audience\AudienceInterface;
@@ -1600,7 +1600,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    public function countAdherentsForMessage(AbstractAdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, bool $asUnion = false): int
+    public function countAdherentsForMessage(AdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, bool $asUnion = false): int
     {
         $messageFilter = $message->getFilter();
 

@@ -2,19 +2,10 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\CandidateAdherentMessage;
-use App\Entity\AdherentMessage\CommitteeAdherentMessage;
-use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
-use App\Entity\AdherentMessage\DeputyAdherentMessage;
-use App\Entity\AdherentMessage\FdeCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
-use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
-use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
-use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
-use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
 class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
@@ -22,14 +13,14 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AudienceFilter
-            || \in_array(\get_class($filter->getMessage()), [
-                DeputyAdherentMessage::class,
-                CommitteeAdherentMessage::class,
-                SenatorAdherentMessage::class,
-                LegislativeCandidateAdherentMessage::class,
-                CandidateAdherentMessage::class,
-                CorrespondentAdherentMessage::class,
-                RegionalCoordinatorAdherentMessage::class,
+            || \in_array($filter->getMessage()?->getInstanceScope(), [
+                ScopeEnum::DEPUTY,
+                ScopeEnum::ANIMATOR,
+                ScopeEnum::SENATOR,
+                ScopeEnum::LEGISLATIVE_CANDIDATE,
+                ScopeEnum::CANDIDATE,
+                ScopeEnum::CORRESPONDENT,
+                ScopeEnum::REGIONAL_COORDINATOR,
             ], true);
     }
 
@@ -37,19 +28,19 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     {
         $interestKeys = [];
 
-        switch ($messageClass = \get_class($campaign->getMessage())) {
-            case RegionalCoordinatorAdherentMessage::class:
-            case PresidentDepartmentalAssemblyAdherentMessage::class:
-            case FdeCoordinatorAdherentMessage::class:
+        switch ($scope = $campaign->getMessage()?->getInstanceScope()) {
+            case ScopeEnum::REGIONAL_COORDINATOR:
+            case ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY:
+            case ScopeEnum::FDE_COORDINATOR:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
-            case DeputyAdherentMessage::class:
-            case RegionalDelegateAdherentMessage::class:
+            case ScopeEnum::DEPUTY:
+            case ScopeEnum::REGIONAL_DELEGATE:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
                 break;
 
-            case LegislativeCandidateAdherentMessage::class:
-            case CandidateAdherentMessage::class:
+            case ScopeEnum::LEGISLATIVE_CANDIDATE:
+            case ScopeEnum::CANDIDATE:
                 if ($campaign->getMailchimpListType()) {
                     return [];
                 }
@@ -57,15 +48,15 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                 break;
 
-            case SenatorAdherentMessage::class:
+            case ScopeEnum::SENATOR:
                 $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
                 break;
 
-            case CommitteeAdherentMessage::class:
+            case ScopeEnum::ANIMATOR:
                 $interestKeys[] = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
                 break;
 
-            case CorrespondentAdherentMessage::class:
+            case ScopeEnum::CORRESPONDENT:
                 if ($campaign->getMailchimpListType()) {
                     return [];
                 }
@@ -74,7 +65,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             default:
-                throw new \InvalidArgumentException(\sprintf('Message type %s does not match any subscription type', $messageClass));
+                throw new \InvalidArgumentException(\sprintf('Message type %s does not match any subscription type', $scope));
         }
 
         return [$this->buildInterestCondition(

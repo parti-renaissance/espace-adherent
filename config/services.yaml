@@ -30,9 +30,6 @@ parameters:
     image_max_length: 450px
     national_event_ticket_host: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'
     webhook.email_subscriptions_secret: '%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%'
-    adherent_message_referent_limit: 1000
-    adherent_message_committee_limit: 1000
-    adherent_message_deputy_limit: 1000
 
 services:
     _defaults:
@@ -219,12 +216,6 @@ services:
             $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
             $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
-
-    App\AdherentMessage\MessageLimiter:
-        arguments:
-            - referent: '%adherent_message_referent_limit%'
-              committee: '%adherent_message_committee_limit%'
-              deputy: '%adherent_message_deputy_limit%'
 
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']

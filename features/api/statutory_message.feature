@@ -37,7 +37,7 @@ Feature:
 
     Scenario: As a logged-in user I can retrieve my statutory messages
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherent_messages?statutory=1&scope=president_departmental_assembly"
+        When I send a "GET" request to "/api/v3/adherent_messages?is_statutory=1&scope=president_departmental_assembly"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -138,7 +138,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages?scope=president_departmental_assembly" with body:
             """
             {
-                "type": "statutory",
+                "is_statutory": true,
                 "label": "Message statutaire de test",
                 "subject": "Voici un message statutaire",
                 "content": "<table><tr><td><strong>Hello</strong></td></tr></table>",
