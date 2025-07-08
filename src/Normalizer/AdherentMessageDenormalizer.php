@@ -2,9 +2,8 @@
 
 namespace App\Normalizer;
 
-use App\AdherentMessage\AdherentMessageFactory;
 use App\Api\Serializer\PrivatePublicContextBuilder;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\MemberRepository;
@@ -34,20 +33,15 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         $scope = $this->resolver->generate();
 
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
-            $messageClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
             $oldMessage = clone $context[AbstractNormalizer::OBJECT_TO_POPULATE];
-        } else {
-            $messageClass = AdherentMessageFactory::getMessageClassName($scope?->getMainCode() ?? '', $data['type'] ?? null);
         }
 
-        unset($data['type']);
-
         if (!isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
-            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new $messageClass();
+            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new AdherentMessage();
         }
 
         /** @var AdherentMessageInterface $message */
-        $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context + [__CLASS__ => true]);
+        $message = $this->denormalizer->denormalize($data, AdherentMessage::class, $format, $context + [__CLASS__ => true]);
 
         if (!$message->getLabel()) {
             $message->setLabel($message->getSubject());
@@ -92,11 +86,11 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
     public function getSupportedTypes(?string $format): array
     {
-        return [AbstractAdherentMessage::class => false];
+        return [AdherentMessage::class => false];
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__]) && AbstractAdherentMessage::class === $type;
+        return !isset($context[__CLASS__]) && AdherentMessage::class === $type;
     }
 }

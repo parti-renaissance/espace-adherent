@@ -23,7 +23,7 @@ class CampaignRequestBuilder
         $message = $campaign->getMessage();
 
         return (new EditCampaignRequest())
-            ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getType()))
+            ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getInstanceScope() ?? ''))
             ->setTemplateId($this->objectIdMapping->getTemplateId($message))
             ->setSubject($message->getSubject())
             ->setTitle($this->createCampaignLabel($campaign))

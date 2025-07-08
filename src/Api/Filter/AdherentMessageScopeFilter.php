@@ -2,10 +2,9 @@
 
 namespace App\Api\Filter;
 
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Api\Doctrine\AuthoredItemsCollectionExtension;
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Repository\AdherentMessageRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -18,7 +17,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
 
     protected function needApplyFilter(string $property, string $resourceClass): bool
     {
-        return is_a($resourceClass, AbstractAdherentMessage::class, true);
+        return is_a($resourceClass, AdherentMessage::class, true);
     }
 
     protected function applyFilter(
@@ -29,17 +28,12 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
         array $context,
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
-        $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
-
-        $type = AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scopeGenerator->getCode());
-
-        if (isset($context['filters']['statutory']) && '1' === $context['filters']['statutory']) {
-            $type = AdherentMessageTypeEnum::STATUTORY;
-        }
+        $scope = $scopeGenerator->generate($currentUser);
+        $user = $scope->getMainUser();
 
         $this
             ->adherentMessageRepository
-            ->withMessageType($queryBuilder, $type, $alias)
+            ->withInstanceScope($queryBuilder, $scope->getMainCode(), $alias)
             ->withAuthor($queryBuilder, $user, $alias)
         ;
 

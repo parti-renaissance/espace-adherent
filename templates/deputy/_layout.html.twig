@@ -11,8 +11,6 @@
     {% endif %}
 {% endblock %}
 
-{% block canonical_url url('app_message_deputy_list') %}
-
 {% set hasCharterAccepted = app.user.charters.hasDeputyCharterAccepted %}
 
 {% block stylesheets %}

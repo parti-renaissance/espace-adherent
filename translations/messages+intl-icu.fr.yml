@@ -906,22 +906,6 @@ payment.message.expiry_data_passed: La date de validité de votre carte semble �
 payment.message.card_absent: Votre carte bancaire semble ne pas être reconnue par le système. Nous vous invitons à contacter votre banque pour obtenir plus d'informations.
 
 # Adherent message
-adherent_message.created_successfully: 'Votre message a bien été créé.'
-adherent_message.updated_successfully: 'Votre message a bien été mis à jour.'
-adherent_message.deleted_successfully: 'Votre message a bien été supprimé.'
-adherent_message.filter_updated: 'Les filtres ont bien été appliqués.'
-adherent_message.campaign_sent_successfully: 'Votre message a bien été envoyé'
-adherent_message.campaign_sent_failure: "Votre message n'a pas été envoyé"
-adherent_message.test_campaign_sent_successfully: 'Votre message test a bien été envoyé.'
-adherent_message.test_campaign_sent_failure: "Votre message test n'a pas été envoyé."
-adherent_message.referent: Message référent
-adherent_message.deputy: Message député
-adherent_message.host: Message co-animateur
-adherent_message.supervisor: Message animateur
-adherent_message.limit.committee: animateurs
-adherent_message.limit.referent: référents
-adherent_message.limit.deputy: députés
-adherent_message.limit.senator: sénateurs
 adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
 adherent_message.filter.role.CommitteeProvisionalSupervisors: 'Animateurs provisoire de comités locaux'
 adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'

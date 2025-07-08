@@ -3,23 +3,15 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CandidateAdherentMessage;
-use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Scope\ScopeEnum;
 use App\Utils\StringCleaner;
 
 class BasicMessageSectionBuilder implements ContentSectionBuilderInterface
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return \in_array(
-            $message::class,
-            [
-                LegislativeCandidateAdherentMessage::class,
-                CandidateAdherentMessage::class,
-            ],
-            true
-        );
+        return \in_array($message->getInstanceScope(), [ScopeEnum::LEGISLATIVE_CANDIDATE, ScopeEnum::CANDIDATE], true);
     }
 
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void

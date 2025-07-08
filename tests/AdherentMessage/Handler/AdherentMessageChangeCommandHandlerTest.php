@@ -6,16 +6,12 @@ use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CandidateAdherentMessage;
-use App\Entity\AdherentMessage\CandidateJecouteMessage;
-use App\Entity\AdherentMessage\CommitteeAdherentMessage;
-use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
@@ -41,6 +37,7 @@ use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
@@ -61,7 +58,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
-        $message = $this->preparedMessage(CommitteeAdherentMessage::class);
+        $message = $this->preparedMessage(ScopeEnum::ANIMATOR);
         $message->setFilter($committeeFilter = new MessageFilter());
         $committeeFilter->setCommittee($this->createConfiguredMock(Committee::class, [
             'getName' => 'Committee name',
@@ -72,8 +69,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'folder_id' => '3',
-                    'template_id' => 3,
+                    'folder_id' => '13',
+                    'template_id' => 13,
                     'subject_line' => '[Comité] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
                     'reply_to' => 'contact@parti-renaissance.fr',
@@ -102,7 +99,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/123/content', ['json' => [
                 'template' => [
-                    'id' => 3,
+                    'id' => 13,
                     'sections' => [
                         'content' => 'Content',
                         'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
@@ -129,7 +126,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     public function testCandidateMessageGeneratesGoodPayloads(): void
     {
-        $message = $this->preparedMessage(CandidateAdherentMessage::class);
+        $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
         (new GenericMailchimpCampaignHandler())->handle($message);
@@ -138,7 +135,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'template_id' => 7,
+                    'folder_id' => '2',
+                    'template_id' => 2,
                     'subject_line' => '[Candidat] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
                     'reply_to' => 'contact@parti-renaissance.fr',
@@ -167,7 +165,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
                 'template' => [
-                    'id' => 7,
+                    'id' => 2,
                     'sections' => [
                         'content' => 'Content',
                         'full_name' => 'Full Name',
@@ -195,7 +193,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     public function testCandidateJecouteMessageGeneratesGoodPayloads(): void
     {
-        $message = $this->preparedMessage(CandidateJecouteMessage::class);
+        $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
         $message->setFilter(new JecouteFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
         (new GenericMailchimpCampaignHandler())->handle($message);
@@ -204,14 +202,15 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'template_id' => 8,
-                    'subject_line' => 'Subject',
+                    'folder_id' => '2',
+                    'template_id' => 2,
+                    'subject_line' => '[Candidat] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
-                    'list_id' => 'jecoute_list_id',
+                    'list_id' => 'main_list_id',
                     'segment_opts' => [
                         'match' => 'all',
                         'conditions' => [
@@ -221,15 +220,25 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 'field' => 'CODE_DPT',
                                 'value' => 'code1',
                             ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [],
+                            ],
                         ],
                     ],
                 ],
             ]]],
             ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
                 'template' => [
-                    'id' => 8,
+                    'id' => 2,
                     'sections' => [
                         'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
                 ],
             ]]],
@@ -251,7 +260,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     public function testCorrespondentMessageGeneratesGoodPayloads(): void
     {
-        $message = $this->preparedMessage(CorrespondentAdherentMessage::class);
+        $message = $this->preparedMessage(ScopeEnum::CORRESPONDENT);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
         (new GenericMailchimpCampaignHandler())->handle($message);
@@ -260,11 +269,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'template_id' => 10,
+                    'folder_id' => '9',
+                    'template_id' => 9,
                     'subject_line' => '[Responsable local] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
                     'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'First Name | Campagne 2022',
+                    'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
                     'list_id' => 'main_list_id',
@@ -289,7 +299,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/id1/content', ['json' => [
                 'template' => [
-                    'id' => 10,
+                    'id' => 9,
                     'sections' => [
                         'content' => 'Content',
                     ],
@@ -313,7 +323,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     public function testRegionalCoordinatorMessageGeneratesGoodPayloads(): void
     {
-        $message = $this->preparedMessage(RegionalCoordinatorAdherentMessage::class);
+        $message = $this->preparedMessage(ScopeEnum::REGIONAL_COORDINATOR);
         $message->setFilter(new MessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
         (new GenericMailchimpCampaignHandler())->handle($message);
@@ -322,6 +332,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
+                    'folder_id' => '11',
                     'template_id' => 11,
                     'subject_line' => '[Coordinateur Régional] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
@@ -399,12 +410,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->commandDummy = null;
     }
 
-    private function preparedMessage(string $messageClass): AdherentMessageInterface
+    private function preparedMessage(string $instanceScope): AdherentMessageInterface
     {
-        /** @var AdherentMessageInterface $message */
-        $message = new $messageClass(Uuid::uuid4(), $this->adherentDummy);
+        $message = new AdherentMessage(Uuid::uuid4(), $this->adherentDummy);
         $message->setSubject('Subject');
         $message->setContent('Content');
+        $message->setInstanceScope($instanceScope);
         $message->addMailchimpCampaign(new MailchimpCampaign($message));
 
         return $message;
@@ -423,22 +434,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'jemengage_list_id',
                     'newsletter_legislative_candidate_list_id',
                     'newsletter_renaissance_list_id',
-                    [
-                        'referent' => 1,
-                        'deputy' => 2,
-                        'committee' => 3,
-                        'senator' => 6,
-                    ],
-                    [
-                        'referent' => 1,
-                        'deputy' => 2,
-                        'committee' => 3,
-                        'senator' => 6,
-                        'candidate' => 7,
-                        'candidate_jecoute' => 8,
-                        'correspondent' => 10,
-                        'regional_coordinator' => 11,
-                    ],
+                    array_flip(ScopeEnum::ALL),
+                    array_flip(ScopeEnum::ALL),
                     [
                         'subscribed_emails_referents' => 1,
                         'COMMITTEE_SUPERVISOR' => 3,

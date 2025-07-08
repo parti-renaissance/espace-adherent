@@ -2,9 +2,9 @@
 
 namespace App\Mailchimp\Campaign\Listener;
 
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Events;
+use App\Scope\ScopeEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
@@ -21,24 +21,24 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $message = $event->getMessage();
 
-        switch ($message->getType()) {
-            case AdherentMessageTypeEnum::DEPUTY:
+        switch ($message->getInstanceScope()) {
+            case ScopeEnum::DEPUTY:
                 $prefix = '[Délégué de circonscription]';
                 break;
-            case AdherentMessageTypeEnum::SENATOR:
+            case ScopeEnum::SENATOR:
                 $prefix = '[Sénateur]';
                 break;
-            case AdherentMessageTypeEnum::COMMITTEE:
+            case ScopeEnum::ANIMATOR:
                 $prefix = '[Comité]';
                 break;
-            case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
-            case AdherentMessageTypeEnum::CANDIDATE:
+            case ScopeEnum::LEGISLATIVE_CANDIDATE:
+            case ScopeEnum::CANDIDATE:
                 $prefix = '[Candidat]';
                 break;
-            case AdherentMessageTypeEnum::CORRESPONDENT:
+            case ScopeEnum::CORRESPONDENT:
                 $prefix = '[Responsable local]';
                 break;
-            case AdherentMessageTypeEnum::REGIONAL_COORDINATOR:
+            case ScopeEnum::REGIONAL_COORDINATOR:
                 $prefix = '[Coordinateur Régional]';
                 break;
             default:

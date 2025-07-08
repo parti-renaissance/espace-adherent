@@ -2,6 +2,7 @@
 
 namespace App\Entity\AdherentMessage;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -12,9 +13,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageStatusEnum;
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Controller\Api\AdherentMessage\DuplicateMessageController;
@@ -32,7 +31,6 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
-use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,12 +39,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @phpstan-consistent-constructor
- */
 #[ApiFilter(filterClass: AdherentMessageScopeFilter::class)]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['label' => 'partial', 'status' => 'exact'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['isStatutory'])]
 #[ApiResource(
     shortName: 'AdherentMessage',
     operations: [
@@ -135,13 +131,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationClientEnabled: true,
     security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"
 )]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(AdherentMessageTypeEnum::CLASSES)]
 #[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Index(fields: ['status'])]
+#[ORM\Index(fields: ['source'])]
+#[ORM\Index(fields: ['instanceScope'])]
 #[ORM\Table(name: 'adherent_messages')]
-#[ValidAuthorRoleMessageType]
-abstract class AbstractAdherentMessage implements AdherentMessageInterface
+class AdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
@@ -225,6 +220,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     #[ORM\Column(options: ['default' => self::SOURCE_CADRE])]
     private $source = self::SOURCE_CADRE;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $instanceScope = null;
+
+    #[Groups(['message_read', 'message_read_list', 'message_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isStatutory = false;
+
     public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -234,7 +236,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public static function createFromAdherent(Adherent $adherent, ?UuidInterface $uuid = null): AdherentMessageInterface
     {
-        return new static($uuid ?? Uuid::uuid4(), $adherent);
+        return new self($uuid ?? Uuid::uuid4(), $adherent);
     }
 
     public function getId(): ?int
@@ -281,6 +283,10 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
     public function isSynchronized(): bool
     {
+        if ($this->isStatutory) {
+            return true;
+        }
+
         if ($this->mailchimpCampaigns->isEmpty()) {
             return false;
         }
@@ -365,23 +371,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->sentAt;
     }
 
-    public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface
-    {
-        if ($dataObject->getContent()) {
-            $this->setContent($dataObject->getContent());
-        }
-
-        if ($dataObject->getLabel()) {
-            $this->setLabel($dataObject->getLabel());
-        }
-
-        if ($dataObject->getSubject()) {
-            $this->setSubject($dataObject->getSubject());
-        }
-
-        return $this;
-    }
-
     /** @return MailchimpCampaign[] */
     public function getMailchimpCampaigns(): array
     {
@@ -402,11 +391,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         foreach ($campaigns as $campaign) {
             $this->addMailchimpCampaign($campaign);
         }
-    }
-
-    public function isMailchimp(): bool
-    {
-        return $this instanceof CampaignAdherentMessageInterface;
     }
 
     public function getSource(): string
@@ -454,6 +438,26 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->sender = $sender;
         $this->senderEmail = $sender->getEmailAddress();
         $this->senderName = $sender->getFullName();
+    }
+
+    public function getInstanceScope(): ?string
+    {
+        return $this->instanceScope;
+    }
+
+    public function setInstanceScope(?string $instanceScope): void
+    {
+        $this->instanceScope = $instanceScope;
+    }
+
+    public function isStatutory(): bool
+    {
+        return $this->isStatutory;
+    }
+
+    public function setIsStatutory(bool $isStatutory): void
+    {
+        $this->isStatutory = $isStatutory;
     }
 
     public function __clone(): void

@@ -7,12 +7,6 @@
     {{ include(('components/_data_corner_button.html.twig')) }}
 
     <ul>
-        {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-            <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
-                <a href="{{ path('app_message_deputy_list', route_params|default({})) }}">Mes messages</a>
-            </li>
-        {% endif %}
-
         {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
             <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
                 <a href="{{ path('app_deputy_event_manager_events') }}">Événements</a>

@@ -4,7 +4,7 @@ namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Command\AdherentMessageDeleteCommand;
-use App\Entity\AdherentMessage\CampaignAdherentMessageInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\CampaignAdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
@@ -47,7 +47,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof CampaignAdherentMessageInterface) {
+        if ($object instanceof AdherentMessageInterface) {
             $this->objects[] = $object;
         }
     }
@@ -56,7 +56,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof CampaignAdherentMessageInterface && false === $object->isSynchronized()) {
+        if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
             $this->objects[] = $object;
         } elseif ($object instanceof CampaignAdherentMessageFilterInterface && false === $object->isSynchronized()) {
             $this->objects[] = $object->getMessage();
@@ -89,7 +89,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $this->objects = [];
     }
 
-    private function dispatchMessage(CampaignAdherentMessageInterface $object): void
+    private function dispatchMessage(AdherentMessageInterface $object): void
     {
         $this->bus->dispatch(new AdherentMessageChangeCommand($object->getUuid()));
     }

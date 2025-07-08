@@ -3,7 +3,6 @@
 namespace App\Mandrill;
 
 use App\Mailer\EmailClientInterface;
-use App\Mailer\EmailTemplateInterface;
 use App\Mailer\Exception\MailerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -31,15 +30,6 @@ class EmailClient implements EmailClientInterface
         $response = $this->mandrillClient->request('POST', 'messages/send'.($useTemplateEndpoint ? '-template' : '').'.json', ['json' => $this->prepareBody($email, $resend)]);
 
         return $this->filterResponse($response);
-    }
-
-    public function renderEmail(EmailTemplateInterface $email): string
-    {
-        $response = $this->mandrillClient->request('POST', 'templates/render.json', ['json' => $this->prepareBody(json_encode($email))]);
-
-        $data = json_decode($this->filterResponse($response), true);
-
-        return $data['html'] ?? '';
     }
 
     private function prepareBody(string $email, bool $resend = false): array

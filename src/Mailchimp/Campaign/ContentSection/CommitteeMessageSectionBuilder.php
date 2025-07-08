@@ -3,25 +3,22 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Scope\ScopeEnum;
 use App\Utils\StringCleaner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface
 {
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof CommitteeAdherentMessage;
+        return ScopeEnum::ANIMATOR === $message->getInstanceScope();
     }
 
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void

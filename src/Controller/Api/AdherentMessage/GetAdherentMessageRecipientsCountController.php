@@ -2,14 +2,14 @@
 
 namespace App\Controller\Api\AdherentMessage;
 
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetAdherentMessageRecipientsCountController extends AbstractController
 {
-    public function __invoke(AbstractAdherentMessage $message, AdherentRepository $adherentRepository): Response
+    public function __invoke(AdherentMessage $message, AdherentRepository $adherentRepository): Response
     {
         return $this->json(
             [

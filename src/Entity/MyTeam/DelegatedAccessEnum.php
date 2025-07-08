@@ -44,7 +44,6 @@ class DelegatedAccessEnum extends Enum
     {
         return [
             DelegatedAccess::ACCESS_ADHERENTS => "app_{$type}_managed_users_list",
-            DelegatedAccess::ACCESS_MESSAGES => "app_message_{$type}_list",
             DelegatedAccess::ACCESS_EVENTS => "app_{$type}_event_manager_events",
             DelegatedAccess::ACCESS_COMMITTEE => "app_{$type}_committees",
             DelegatedAccess::ACCESS_POLLS => "app_{$type}_polls_local_list",

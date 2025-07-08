@@ -11,6 +11,4 @@ interface SenderInterface
     public function send(AdherentMessageInterface $message, array $recipients = []): bool;
 
     public function sendTest(AdherentMessageInterface $message, array $recipients = []): bool;
-
-    public function renderMessage(AdherentMessageInterface $message, array $recipients = []): string;
 }

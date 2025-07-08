@@ -3,7 +3,6 @@
 namespace Tests\App\Test\Mailer;
 
 use App\Mailer\EmailClientInterface;
-use App\Mailer\EmailTemplateInterface;
 use App\Mailer\Exception\MailerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -26,10 +25,5 @@ class DummyEmailClient implements EmailClientInterface
         }
 
         return $response->getContent();
-    }
-
-    public function renderEmail(EmailTemplateInterface $email): string
-    {
-        return '<h1>Email content</h1>';
     }
 }

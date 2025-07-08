@@ -5,7 +5,7 @@ namespace App\Entity\AdherentMessage\Filter;
 use ApiPlatform\Metadata\ApiResource;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Collection\ZoneCollection;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use App\Entity\EntityZoneTrait;
@@ -30,7 +30,7 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
     /**
      * @var AdherentMessageInterface
      */
-    #[ORM\OneToOne(mappedBy: 'filter', targetEntity: AbstractAdherentMessage::class)]
+    #[ORM\OneToOne(mappedBy: 'filter', targetEntity: AdherentMessage::class)]
     private $message;
 
     /**

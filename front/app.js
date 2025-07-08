@@ -141,12 +141,6 @@ class App {
         });
     }
 
-    runMessageFilters(messageId, synchronized, recipientCount, sendLocked) {
-        import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), messageId, synchronized, recipientCount, sendLocked);
-        });
-    }
-
     runCandidacyModal(triggerSelector) {
         import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
             module.default(triggerSelector, this.get('api'));

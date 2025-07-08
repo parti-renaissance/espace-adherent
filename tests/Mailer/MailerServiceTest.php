@@ -89,24 +89,4 @@ class MailerServiceTest extends TestCase
 
         $this->assertFalse($service->sendMessage(DummyMessage::create()));
     }
-
-    public function testRenderEmailTemplate(): void
-    {
-        $emailClientMock = $this->createConfiguredMock(EmailClientInterface::class, [
-            'renderEmail' => '<p>email template</p>',
-        ]);
-
-        $service = new MailerService(
-            $this->createMock(EventDispatcherInterface::class),
-            new FailingTransport(),
-            new EmailTemplateFactory(
-                'contact@en-marche.fr',
-                'En Marche',
-                $this->createMock(Manager::class)
-            ),
-            $emailClientMock
-        );
-
-        $this->assertSame('<p>email template</p>', $service->renderMessage(DummyMessage::create()));
-    }
 }

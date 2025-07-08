@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage;
 
-use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
@@ -18,7 +17,7 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, Aut
 
     public function getUuid(): UuidInterface;
 
-    public function getType(): string;
+    public function getInstanceScope(): ?string;
 
     public function getSubject(): ?string;
 
@@ -61,8 +60,6 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, Aut
 
     public function resetFilter(): void;
 
-    public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface;
-
     public function markAsSent(): void;
 
     public static function createFromAdherent(Adherent $adherent, ?UuidInterface $uuid = null): self;
@@ -76,4 +73,6 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, Aut
     public function getSender(): ?Adherent;
 
     public function setSender(Adherent $sender): void;
+
+    public function isStatutory(): bool;
 }

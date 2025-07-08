@@ -12,28 +12,6 @@
         </div>
     {% endif %}
 
-    {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-        <ul>
-            <li class="menu-section">Messagerie</li>
-            <li class="{{ is_active_route(app.request, 'app_message_candidate_*') and not is_active_route(app.request, 'app_message_candidate_jecoute_*') ? 'active' }}">
-                <a href="{{ path('app_message_candidate_list') }}" class="messaging adherent">
-                    <svg width="16" height="16" viewBox="0 0 16 16">
-                        <use xlink:href="/images/icons/icons.svg#messaging"></use>
-                    </svg>
-                    Aux adhérents
-                </a>
-            </li>
-            <li class="{{ is_active_route(app.request, 'app_message_candidate_jecoute_*') ? 'active' }}">
-                <a href="{{ path('app_message_candidate_jecoute_list') }}" class="messaging jecoute">
-                    <svg width="16" height="16" viewBox="0 0 16 16">
-                        <use xlink:href="/images/icons/icons.svg#messaging"></use>
-                    </svg>
-                    Je marche !
-                </a>
-            </li>
-        </ul>
-    {% endif %}
-
     <ul>
         <li class="menu-section">Territoires</li>
 

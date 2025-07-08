@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\AdherentMessage;
 
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Repository\MailchimpCampaignReportRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -19,8 +18,8 @@ class GetAdherentMessageKpiController
         $scope = $resolver->generate();
 
         return [
-            'local' => $mailchimpCampaignReportRepository->findLocalReportRation(AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scope->getMainCode()), $scope->getZones(), $maxHistory),
-            'national' => $mailchimpCampaignReportRepository->findNationalReportRatio(AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scope->getMainCode()), $maxHistory),
+            'local' => $mailchimpCampaignReportRepository->findLocalReportRation($scope->getMainCode(), $scope->getZones(), $maxHistory),
+            'national' => $mailchimpCampaignReportRepository->findNationalReportRatio($scope->getMainCode(), $maxHistory),
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getName();
             }, $scope->getZones()),

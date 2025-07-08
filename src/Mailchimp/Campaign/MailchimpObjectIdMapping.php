@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Campaign;
 
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 class MailchimpObjectIdMapping
@@ -34,11 +33,11 @@ class MailchimpObjectIdMapping
 
     public function getTemplateId(AdherentMessageInterface $message): ?int
     {
-        if (!$templateId = $this->findTemplateId(\sprintf('%s_api', $message->getType()))) {
+        if (!$templateId = $this->findTemplateId(\sprintf('%s_api', $message->getInstanceScope()))) {
             $templateId = $this->findTemplateId('default_api');
         }
 
-        return $templateId ?? $this->findTemplateId($message->getType());
+        return $templateId ?? $this->findTemplateId($message->getInstanceScope() ?? '');
     }
 
     public function getInterestIds(): array
@@ -94,16 +93,6 @@ class MailchimpObjectIdMapping
     public function getJecouteListId(): string
     {
         return $this->jecouteListId;
-    }
-
-    public function getListIdByMessageType(string $messageType): string
-    {
-        switch ($messageType) {
-            case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
-                return $this->jecouteListId;
-            default:
-                return $this->mainListId;
-        }
     }
 
     public function getJeMengageListId(): string

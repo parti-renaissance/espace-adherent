@@ -53,10 +53,10 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     private $recipientCount;
 
     /**
-     * @var AdherentMessageInterface|AbstractAdherentMessage
+     * @var AdherentMessageInterface|AdherentMessage
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: AbstractAdherentMessage::class, inversedBy: 'mailchimpCampaigns')]
+    #[ORM\ManyToOne(targetEntity: AdherentMessage::class, inversedBy: 'mailchimpCampaigns')]
     private $message;
 
     /**
