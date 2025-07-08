@@ -46,8 +46,8 @@ class PaymentStatusUpdateCommandHandler
         $this->entityManager->flush();
 
         if ($paymentStatus->isSuccess()) {
-            if (\in_array($inscription->status, [InscriptionStatusEnum::WAITING_PAYMENT, InscriptionStatusEnum::PENDING], true)) {
-                $inscription->status = InscriptionStatusEnum::PAYMENT_CONFIRMED;
+            if (InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status) {
+                $inscription->status = InscriptionStatusEnum::PENDING;
             }
 
             foreach ($inscription->getSuccessPayments() as $successPayment) {

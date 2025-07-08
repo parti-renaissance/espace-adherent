@@ -404,7 +404,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
-        self::assertSame(InscriptionStatusEnum::PAYMENT_CONFIRMED, $thirdInscription->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $thirdInscription->status);
         self::assertSame(PaymentStatusEnum::CONFIRMED, $thirdInscription->paymentStatus);
         self::assertTrue($thirdInscription->isPaymentSuccess());
 
@@ -485,7 +485,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
-        self::assertSame(InscriptionStatusEnum::PAYMENT_CONFIRMED, $inscription->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
         self::assertTrue($inscription->isPaymentSuccess());
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);

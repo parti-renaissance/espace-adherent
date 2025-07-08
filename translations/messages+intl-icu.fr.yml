@@ -66,7 +66,6 @@ refused: Refusé
 accepted: Accepté
 inconclusive: Non concluant
 waiting_payment: En attente de paiement
-payment_confirmed: Paiement confirmé
 canceled: Annulé
 duplicate: Doublon
 blocked: Bloqué
@@ -1428,7 +1427,7 @@ national_event.type.default: Meeting classique
 national_event.type.campus: Campus
 
 national_event.payment.status.pending: En attente de paiement
-national_event.payment.status.confirmed: Confirmé
+national_event.payment.status.confirmed: Paiement confirmé
 national_event.payment.status.error: Erreur de paiement
 national_event.payment.status.to_refund: À rembourser
 
