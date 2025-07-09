@@ -4,6 +4,7 @@ namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
 use App\Entity\Action\Action;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\Event\Event;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\LocalSurvey;
@@ -49,12 +50,8 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
             Riposte::class,
             Event::class,
             Action::class,
+            AdherentMessage::class,
         ];
-    }
-
-    public function getIndexOptions(): array
-    {
-        return [];
     }
 
     public function isIndexable(): bool

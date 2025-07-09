@@ -17,7 +17,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $indexer = $this->createMock(SearchService::class);
         $indexer->expects($this->once())->method('index')->with(
             $this->isInstanceOf(EntityManagerInterface::class),
-            $entity
+            [$entity]
         );
 
         $this->getManager($indexer)->postPersist($entity);
@@ -31,7 +31,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $indexer
             ->expects($this->once())
             ->method('index')
-            ->with($this->isInstanceOf(EntityManagerInterface::class), $entity, [])
+            ->with($this->isInstanceOf(EntityManagerInterface::class), [$entity])
         ;
 
         $this->getManager($indexer)->postUpdate($entity);

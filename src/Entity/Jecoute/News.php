@@ -264,11 +264,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         $this->updateVisibility();
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return $this->isPublished();

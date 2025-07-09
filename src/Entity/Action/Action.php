@@ -175,11 +175,6 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
         $this->participants->add(new ActionParticipant($this, $adherent));
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return !$this->isCancelled();

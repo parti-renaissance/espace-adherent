@@ -29,6 +29,7 @@ use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
+use App\EntityListener\AlgoliaIndexListener;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -132,6 +133,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"
 )]
 #[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Index(fields: ['status'])]
 #[ORM\Index(fields: ['source'])]
 #[ORM\Index(fields: ['instanceScope'])]
@@ -471,5 +473,10 @@ class AdherentMessage implements AdherentMessageInterface
         $this->filter = null;
         $this->label .= ' - Copie';
         $this->createdAt = $this->updatedAt = new \DateTime();
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isSent() && self::SOURCE_VOX === $this->source;
     }
 }

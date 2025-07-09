@@ -8,23 +8,20 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class AlgoliaIndexedEntityManager
 {
-    private $algolia;
-    private $entityManager;
-
-    public function __construct(SearchServiceInterface $algolia, EntityManagerInterface $manager)
-    {
-        $this->algolia = $algolia;
-        $this->entityManager = $manager;
+    public function __construct(
+        private readonly SearchServiceInterface $algolia,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     public function postPersist(AlgoliaIndexedEntityInterface $entity): void
     {
-        $this->index($entity);
+        $this->index([$entity]);
     }
 
     public function postUpdate(AlgoliaIndexedEntityInterface $entity): void
     {
-        $this->index($entity);
+        $this->index([$entity]);
     }
 
     public function preRemove(AlgoliaIndexedEntityInterface $entity): void
@@ -34,12 +31,12 @@ class AlgoliaIndexedEntityManager
 
     public function batch(array $entities): void
     {
-        $this->algolia->index($this->entityManager, $entities);
+        $this->index($entities);
     }
 
-    private function index(AlgoliaIndexedEntityInterface $entity): void
+    private function index(array $entities): void
     {
-        $this->algolia->index($this->entityManager, $entity, $entity->getIndexOptions());
+        $this->algolia->index($this->entityManager, $entities);
     }
 
     private function unIndex(AlgoliaIndexedEntityInterface $entity): void

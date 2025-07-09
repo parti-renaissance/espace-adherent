@@ -291,11 +291,6 @@ class Riposte implements AuthorInterface, IndexableEntityInterface
         return (string) $this->title;
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return $this->isEnabled();

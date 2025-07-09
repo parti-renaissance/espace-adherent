@@ -7,11 +7,8 @@ use App\Entity\AlgoliaIndexedEntityInterface;
 
 class AlgoliaIndexListener
 {
-    private $manager;
-
-    public function __construct(AlgoliaIndexedEntityManager $manager)
+    public function __construct(private readonly AlgoliaIndexedEntityManager $manager)
     {
-        $this->manager = $manager;
     }
 
     public function postPersist(AlgoliaIndexedEntityInterface $entity): void
