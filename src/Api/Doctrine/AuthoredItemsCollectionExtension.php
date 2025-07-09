@@ -12,12 +12,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterface
 {
-    private Security $security;
-    private bool $skip = false;
-
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     public function applyToCollection(
@@ -32,7 +28,6 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
         if (
             !$user instanceof Adherent
             || !is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)
-            || $this->skip
         ) {
             return;
         }
@@ -41,10 +36,5 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
             ->andWhere($queryBuilder->getRootAliases()[0].'.author = :author')
             ->setParameter('author', $user)
         ;
-    }
-
-    public function setSkip(bool $skip): void
-    {
-        $this->skip = $skip;
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Api\Filter;
 
-use App\Api\Doctrine\AuthoredItemsCollectionExtension;
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Repository\AdherentMessageRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -13,11 +14,10 @@ use Symfony\Contracts\Service\Attribute\Required;
 final class AdherentMessageScopeFilter extends AbstractScopeFilter
 {
     private AdherentMessageRepository $adherentMessageRepository;
-    private AuthoredItemsCollectionExtension $authoredItemsCollectionExtension;
 
     protected function needApplyFilter(string $property, string $resourceClass): bool
     {
-        return is_a($resourceClass, AdherentMessage::class, true);
+        return AdherentMessage::class === $resourceClass;
     }
 
     protected function applyFilter(
@@ -29,27 +29,22 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $scope = $scopeGenerator->generate($currentUser);
-        $user = $scope->getMainUser();
 
         $this
             ->adherentMessageRepository
             ->withInstanceScope($queryBuilder, $scope->getMainCode(), $alias)
-            ->withAuthor($queryBuilder, $user, $alias)
+            ->withSource(
+                $queryBuilder,
+                ($context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null) === PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER ?
+                    AdherentMessageInterface::SOURCE_VOX : AdherentMessageInterface::SOURCE_CADRE,
+                $alias
+            )
         ;
-
-        $this->authoredItemsCollectionExtension->setSkip(true);
     }
 
     #[Required]
     public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
     {
         $this->adherentMessageRepository = $adherentMessageRepository;
-    }
-
-    #[Required]
-    public function setAuthoredItemsCollectionExtension(
-        AuthoredItemsCollectionExtension $authoredItemsCollectionExtension,
-    ): void {
-        $this->authoredItemsCollectionExtension = $authoredItemsCollectionExtension;
     }
 }
