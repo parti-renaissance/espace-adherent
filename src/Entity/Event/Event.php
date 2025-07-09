@@ -768,11 +768,6 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         return $this->isPublished() && !$this->isCancelled();
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isPublic(): bool
     {
         return EventVisibilityEnum::PUBLIC === $this->visibility;

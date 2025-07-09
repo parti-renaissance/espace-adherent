@@ -226,11 +226,6 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
         return (string) $this->name;
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return $this->isPublished();

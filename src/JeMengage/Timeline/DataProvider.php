@@ -20,7 +20,7 @@ class DataProvider
         $timelineFeeds = $this->search->rawSearch(AlgoliaJeMengageTimelineFeed::class, '', [
             'page' => $page,
             'attributesToHighlight' => [],
-            'filters' => implode(' OR ', $filters),
+            'filters' => implode(' AND ', $filters),
             'tagFilters' => $tagFilters,
         ]);
 

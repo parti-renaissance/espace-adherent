@@ -395,11 +395,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         $this->participantsCount = $participantsCount;
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return true;

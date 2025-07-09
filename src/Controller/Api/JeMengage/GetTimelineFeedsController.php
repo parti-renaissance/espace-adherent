@@ -26,19 +26,42 @@ class GetTimelineFeedsController extends AbstractController
             $page = 0;
         }
 
-        $filters = [
+        $baseFilters = [
             'is_national:true',
             'adherent_ids:'.$user->getId(),
         ];
 
         if ($assemblyZone = $user->getAssemblyZone()) {
-            $filters[] = 'zone_codes:'.$assemblyZone->getTypeCode();
+            $baseFilters[] = 'zone_codes:'.$assemblyZone->getTypeCode();
+        }
+
+        $showFilters = [];
+        $hideFilters = [];
+
+        foreach ($user->tags as $tag) {
+            $parts = explode(':', $tag);
+            $prefix = '';
+            foreach ($parts as $i => $part) {
+                $prefix = 0 === $i ? $part : "$prefix:$part";
+
+                $showFilters[] = 'audience.show_tags:"'.$prefix.'"';
+                $hideFilters[] = 'NOT audience.hide_tags:"'.$prefix.'"';
+            }
+        }
+
+        $accessConditions = array_merge($baseFilters, $showFilters);
+        $filters = [];
+        $filters[] = '('.implode(' OR ', array_unique($accessConditions)).')';
+
+        if ($hideFilters) {
+            $filters[] = implode(' AND ', array_unique($hideFilters));
         }
 
         $tagFilters = [[
             TimelineFeedTypeEnum::NEWS,
             TimelineFeedTypeEnum::EVENT,
             TimelineFeedTypeEnum::ACTION,
+            TimelineFeedTypeEnum::PUBLICATION,
         ]];
 
         return $this->json($dataProvider->findItems($user, $page, $filters, $tagFilters));

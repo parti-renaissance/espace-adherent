@@ -17,6 +17,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     final public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return [
+            '_tags' => [$this->getType()],
             'type' => $this->getType(),
             'identifier' => $this->getIdentifier($object),
             'title' => $this->getTitle($object),
@@ -43,7 +44,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'cta_link' => $this->getCtaLink($object),
             'committee_uuid' => $this->getCommitteeUuid($object),
             'agora_uuid' => $this->getAgoraUuid($object),
-            '_tags' => [$this->getType()],
+            'audience' => $this->getAudience($object),
         ];
     }
 
@@ -66,6 +67,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'zone' => $this->getAuthorZone($object),
             'scope' => $this->getAuthorScope($object),
             'image_url' => $this->getAuthorImageUrl($object),
+            'theme' => $this->getAuthorTheme($object),
         ];
     }
 
@@ -205,6 +207,15 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
+    protected function getAuthorTheme(object $object): ?array
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getAuthorTheme();
+        }
+
+        return null;
+    }
+
     /** @param Adherent $object */
     protected function getAuthorImageUrl(object $object): ?string
     {
@@ -242,6 +253,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getLiveUrl(mixed $object): ?string
+    {
+        return null;
+    }
+
+    protected function getAudience(mixed $object): ?array
     {
         return null;
     }

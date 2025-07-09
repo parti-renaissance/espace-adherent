@@ -138,11 +138,6 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         return null;
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isDraft(): bool
     {
         return CandidacyInterface::STATUS_DRAFT === $this->status;

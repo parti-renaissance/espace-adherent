@@ -6,9 +6,10 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
 use App\Entity\AuthorInstanceInterface;
+use App\Entity\IndexableEntityInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, AuthorInstanceInterface
+interface AdherentMessageInterface extends AuthoredItemsCollectionInterface, AuthorInstanceInterface, IndexableEntityInterface
 {
     public const SOURCE_CADRE = 'cadre';
     public const SOURCE_VOX = 'vox';

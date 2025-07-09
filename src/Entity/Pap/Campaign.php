@@ -408,11 +408,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         return $this->buildingStatistics;
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function isIndexable(): bool
     {
         return true;

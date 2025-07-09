@@ -2,7 +2,7 @@
 
 namespace App\JeMengage\Timeline\Handler;
 
-use Algolia\SearchBundle\SearchService;
+use App\Algolia\AlgoliaIndexedEntityManager;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\JeMengage\Timeline\Command\IndexAllItemsForAuthorCommand;
@@ -16,7 +16,7 @@ class IndexAllItemsForAuthorCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly SearchService $searchService,
+        private readonly AlgoliaIndexedEntityManager $algoliaManager,
     ) {
     }
 
@@ -37,10 +37,7 @@ class IndexAllItemsForAuthorCommandHandler
 
             $repository = $this->entityManager->getRepository($class);
 
-            $this->searchService->index(
-                $this->entityManager,
-                $repository->findBy(['author' => $adherent])
-            );
+            $this->algoliaManager->batch($repository->findBy(['author' => $adherent]));
         }
     }
 }
