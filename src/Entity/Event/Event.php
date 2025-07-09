@@ -295,16 +295,19 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     protected $participantsCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
-    public int $membersCount = 0;
+    public int $adherentsUpToDateCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
-    public int $adherentsCount = 0;
+    public int $adherentsNotUpToDateCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     public int $sympathizersCount = 0;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     public int $membersEmCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $citizensCount = 0;
 
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -826,30 +829,36 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
 
     public function updateMembersCount(
         bool $incrementAction,
-        bool $isSympathizer,
-        bool $isAdherent,
-        bool $isActiveMembership,
+        ?Adherent $adherent = null,
     ): void {
         if ($incrementAction) {
-            if ($isAdherent) {
-                $this->incrementMembersCount();
+            $this->incrementParticipantsCount();
 
-                if ($isActiveMembership) {
-                    $this->incrementAdherentsCount();
+            if (!$adherent) {
+                $this->incrementCitizensCount();
+            } elseif ($adherent->isRenaissanceSympathizer()) {
+                if ($adherent->hasActiveMembership()) {
+                    $this->incrementAdherentsUpToDateCount();
+                } else {
+                    $this->incrementAdherentsNotUpToDateCount();
                 }
-            } elseif ($isSympathizer) {
+            } elseif ($adherent->isRenaissanceSympathizer()) {
                 $this->incrementSympathizersCount();
             } else {
                 $this->incrementMembersEmCount();
             }
         } else {
-            if ($isAdherent) {
-                $this->decrementMembersCount();
+            $this->decrementParticipantsCount();
 
-                if ($isActiveMembership) {
-                    $this->decrementAdherentsCount();
+            if (!$adherent) {
+                $this->decrementCitizensCount();
+            } elseif ($adherent->isRenaissanceAdherent()) {
+                if ($adherent->hasActiveMembership()) {
+                    $this->decrementAdherentsUpToDateCount();
+                } else {
+                    $this->decrementAdherentsNotUpToDateCount();
                 }
-            } elseif ($isSympathizer) {
+            } elseif ($adherent->isRenaissanceSympathizer()) {
                 $this->decrementSympathizersCount();
             } else {
                 $this->decrementMembersEmCount();
@@ -857,14 +866,14 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         }
     }
 
-    public function incrementMembersCount(): void
+    public function incrementAdherentsUpToDateCount(): void
     {
-        ++$this->membersCount;
+        ++$this->adherentsUpToDateCount;
     }
 
-    public function incrementAdherentsCount(): void
+    public function incrementAdherentsNotUpToDateCount(): void
     {
-        ++$this->adherentsCount;
+        ++$this->adherentsNotUpToDateCount;
     }
 
     public function incrementMembersEmCount(): void
@@ -877,14 +886,19 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         ++$this->sympathizersCount;
     }
 
-    public function decrementMembersCount(): void
+    public function incrementCitizensCount(): void
     {
-        $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
+        ++$this->citizensCount;
     }
 
-    public function decrementAdherentsCount(): void
+    public function decrementAdherentsUpToDateCount(): void
     {
-        $this->adherentsCount = $this->adherentsCount < 1 ? 0 : $this->adherentsCount - 1;
+        $this->adherentsUpToDateCount = $this->adherentsUpToDateCount < 1 ? 0 : $this->adherentsUpToDateCount - 1;
+    }
+
+    public function decrementAdherentsNotUpToDateCount(): void
+    {
+        $this->adherentsNotUpToDateCount = $this->adherentsNotUpToDateCount < 1 ? 0 : $this->adherentsNotUpToDateCount - 1;
     }
 
     public function decrementSympathizersCount(): void
@@ -895,5 +909,10 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function decrementMembersEmCount(): void
     {
         $this->membersEmCount = $this->membersEmCount < 1 ? 0 : $this->membersEmCount - 1;
+    }
+
+    public function decrementCitizensCount(): void
+    {
+        $this->citizensCount = $this->citizensCount < 1 ? 0 : $this->citizensCount - 1;
     }
 }

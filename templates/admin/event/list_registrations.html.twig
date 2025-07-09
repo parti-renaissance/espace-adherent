@@ -3,13 +3,11 @@
 {% block field %}
     <div style="text-align: left">
         Total: {{ object.participantsCount }}
-        <br />
-        à jour: {{ object.adherentsCount }}
-        <br />
-        non-à jour: {{ object.membersCount }}
-        <br />
-        sympathisants: {{ object.sympathizersCount }}
-        <br />
-        citoyens: {{ object.membersEmCount }}
+        <ul>
+            <li>à jour: {{ object.adherentsUpToDateCount }}</li>
+            <li>non-à jour: {{ object.adherentsNotUpToDateCount }}</li>
+            <li>sympathisants: {{ object.sympathizersCount }}</li>
+            <li>citoyens: {{ object.citizensCount }}</li>
+        </ul>
     </div>
 {% endblock %}
