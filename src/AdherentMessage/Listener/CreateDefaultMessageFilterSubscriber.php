@@ -33,10 +33,6 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$message->isStatutory()) {
-            return;
-        }
-
         if (!$scopeGenerator = $this->scopeGeneratorResolver->resolve()) {
             return;
         }
