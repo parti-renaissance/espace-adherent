@@ -35,9 +35,12 @@ class CampaignRequestBuilder
 
     private function createCampaignLabel(MailchimpCampaign $campaign): string
     {
-        return implode(' - ', array_merge([
-            $campaign->getMessage()->getAuthor()->getFullName(),
-            (new \DateTime())->format('d/m/Y'),
-        ], ($label = $campaign->getLabel()) ? [$label] : []));
+        $message = $campaign->getMessage();
+
+        return implode(' - ', array_filter([
+            (new \DateTime())->format('Y/m/d'),
+            $message->getAuthorInstance(),
+            ($message->getSender() ?? $message->getAuthor())?->getFullName().' : '.$message->getSubject(),
+        ]));
     }
 }
