@@ -626,17 +626,19 @@ class EventRepository extends ServiceEntityRepository
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS members_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS adherents_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS sympathizers_count,
-                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count,
+                    SUM(IF(a.id IS NULL, 1, 0)) AS citizzens_count
                 FROM events e2
                 INNER JOIN events_registrations er ON er.event_id = e2.id
-                INNER JOIN adherents a ON a.id = er.adherent_id
+                LEFT JOIN adherents a ON a.id = er.adherent_id
                 GROUP BY e2.id
             ) AS t ON t.id = c.id
             SET
                 e.members_count = t.members_count,
                 e.adherents_count = t.adherents_count,
                 e.members_em_count = t.members_em_count,
-                e.sympathizers_count = t.sympathizers_count',
+                e.sympathizers_count = t.sympathizers_count,
+                e.citizens_count = t.citizens_count',
             [
                 TagEnum::ADHERENT.'%',
                 TagEnum::getAdherentYearTag().'%',
