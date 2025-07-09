@@ -47,6 +47,10 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
             $message->setLabel($message->getSubject());
         }
 
+        if (!$message->getInstanceScope()) {
+            $message->setInstanceScope($scope->getMainCode());
+        }
+
         $message->setSource(PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? AdherentMessageInterface::SOURCE_CADRE : AdherentMessageInterface::SOURCE_VOX);
 
         if (!$message->getSender() && $scope) {
