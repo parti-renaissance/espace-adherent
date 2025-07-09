@@ -1,0 +1,13 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="text-align: left">
+        Total: {{ object.participantsCount }}
+        <ul>
+            <li>à jour: {{ object.adherentsUpToDateCount }}</li>
+            <li>non-à jour: {{ object.adherentsNotUpToDateCount }}</li>
+            <li>sympathisants: {{ object.sympathizersCount }}</li>
+            <li>citoyens: {{ object.citizensCount }}</li>
+        </ul>
+    </div>
+{% endblock %}

@@ -55,7 +55,8 @@ class SubscribeAsAdherentController extends AbstractController
 
             if ($eventRegistration) {
                 if ($eventRegistration->isConfirmed()) {
-                    $event->decrementParticipantsCount();
+                    $event->updateMembersCount(false, $adherent);
+
                     $eventRegistration->cancel();
                 }
 
@@ -103,7 +104,8 @@ class SubscribeAsAdherentController extends AbstractController
             $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
         }
 
-        $event->incrementParticipantsCount();
+        $event->updateMembersCount(true, $adherent);
+
         $registration->confirm();
         $registration->setSource(AppCodeEnum::VOX);
 

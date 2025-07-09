@@ -294,6 +294,21 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     protected $participantsCount = 0;
 
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $adherentsUpToDateCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $adherentsNotUpToDateCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $sympathizersCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $membersEmCount = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $citizensCount = 0;
+
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $national = false;
@@ -810,5 +825,94 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function getSortableAlertDate(): \DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function updateMembersCount(
+        bool $incrementAction,
+        ?Adherent $adherent = null,
+    ): void {
+        if ($incrementAction) {
+            $this->incrementParticipantsCount();
+
+            if (!$adherent) {
+                $this->incrementCitizensCount();
+            } elseif ($adherent->isRenaissanceSympathizer()) {
+                if ($adherent->hasActiveMembership()) {
+                    $this->incrementAdherentsUpToDateCount();
+                } else {
+                    $this->incrementAdherentsNotUpToDateCount();
+                }
+            } elseif ($adherent->isRenaissanceSympathizer()) {
+                $this->incrementSympathizersCount();
+            } else {
+                $this->incrementMembersEmCount();
+            }
+        } else {
+            $this->decrementParticipantsCount();
+
+            if (!$adherent) {
+                $this->decrementCitizensCount();
+            } elseif ($adherent->isRenaissanceAdherent()) {
+                if ($adherent->hasActiveMembership()) {
+                    $this->decrementAdherentsUpToDateCount();
+                } else {
+                    $this->decrementAdherentsNotUpToDateCount();
+                }
+            } elseif ($adherent->isRenaissanceSympathizer()) {
+                $this->decrementSympathizersCount();
+            } else {
+                $this->decrementMembersEmCount();
+            }
+        }
+    }
+
+    public function incrementAdherentsUpToDateCount(): void
+    {
+        ++$this->adherentsUpToDateCount;
+    }
+
+    public function incrementAdherentsNotUpToDateCount(): void
+    {
+        ++$this->adherentsNotUpToDateCount;
+    }
+
+    public function incrementMembersEmCount(): void
+    {
+        ++$this->membersEmCount;
+    }
+
+    public function incrementSympathizersCount(): void
+    {
+        ++$this->sympathizersCount;
+    }
+
+    public function incrementCitizensCount(): void
+    {
+        ++$this->citizensCount;
+    }
+
+    public function decrementAdherentsUpToDateCount(): void
+    {
+        $this->adherentsUpToDateCount = $this->adherentsUpToDateCount < 1 ? 0 : $this->adherentsUpToDateCount - 1;
+    }
+
+    public function decrementAdherentsNotUpToDateCount(): void
+    {
+        $this->adherentsNotUpToDateCount = $this->adherentsNotUpToDateCount < 1 ? 0 : $this->adherentsNotUpToDateCount - 1;
+    }
+
+    public function decrementSympathizersCount(): void
+    {
+        $this->sympathizersCount = $this->sympathizersCount < 1 ? 0 : $this->sympathizersCount - 1;
+    }
+
+    public function decrementMembersEmCount(): void
+    {
+        $this->membersEmCount = $this->membersEmCount < 1 ? 0 : $this->membersEmCount - 1;
+    }
+
+    public function decrementCitizensCount(): void
+    {
+        $this->citizensCount = $this->citizensCount < 1 ? 0 : $this->citizensCount - 1;
     }
 }

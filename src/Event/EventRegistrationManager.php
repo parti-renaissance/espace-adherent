@@ -53,7 +53,9 @@ class EventRegistrationManager
         $event = $registration->getEvent();
 
         if ($registration->isConfirmed()) {
-            $event->incrementParticipantsCount();
+            $adherent = $registration->getAdherent();
+
+            $event->updateMembersCount(true, $adherent);
         }
 
         $this->manager->persist($registration);
@@ -66,7 +68,9 @@ class EventRegistrationManager
         $event = $registration->getEvent();
 
         if ($registration->isConfirmed()) {
-            $event->decrementParticipantsCount();
+            $adherent = $registration->getAdherent();
+
+            $event->updateMembersCount(false, $adherent);
         }
 
         $this->manager->remove($registration);
