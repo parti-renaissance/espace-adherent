@@ -60,27 +60,7 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
             }
         }
 
-        if (
-            PaymentStatusEnum::PENDING === $newEventInscription->paymentStatus
-            || InscriptionStatusEnum::PENDING !== $newEventInscription->status
-            || !$adherent = $newEventInscription->adherent) {
-            return;
-        }
-
-        // Accepted
-        if (
-            ($adherent->isRenaissanceAdherent() && $adherent->getFirstMembershipDonation() && $adherent->getFirstMembershipDonation() < new \DateTime(date('Y-01-01')))
-            || ($adherent->isRenaissanceSympathizer() && \count($this->eventInscriptionRepository->findAcceptedByEmail($newEventInscription->addressEmail, $newEventInscription->event)))
-            || ($adherent->isRenaissanceAdherent() && (
-                \count($adherent->getZoneBasedRoles())
-                || !$adherent->getReceivedDelegatedAccesses()->isEmpty()
-                || \count($adherent->findElectedRepresentativeMandates(true))
-            ))
-        ) {
-            $newEventInscription->status = InscriptionStatusEnum::ACCEPTED;
-
-            $this->entityManager->flush();
-        }
+        $this->acceptInscription($newEventInscription);
     }
 
     public function onSuccessPayment(SuccessPaymentEvent $event): void
@@ -90,6 +70,8 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
         if (!$eventInscription->isPaymentSuccess()) {
             return;
         }
+
+        $this->acceptInscription($eventInscription);
 
         while ($oldInscription = $this->eventInscriptionRepository->findDuplicate($eventInscription)) {
             $this->markAsDuplicatedOldInscription($oldInscription, $eventInscription);
@@ -112,5 +94,30 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
+    }
+
+    private function acceptInscription(EventInscription $eventInscription): void
+    {
+        if (
+            PaymentStatusEnum::PENDING === $eventInscription->paymentStatus
+            || InscriptionStatusEnum::PENDING !== $eventInscription->status
+            || !($adherent = $eventInscription->adherent)
+        ) {
+            return;
+        }
+
+        if (
+            ($adherent->isRenaissanceAdherent() && $adherent->getFirstMembershipDonation() && $adherent->getFirstMembershipDonation() < new \DateTime(date('Y-01-01')))
+            || ($adherent->isRenaissanceSympathizer() && \count($this->eventInscriptionRepository->findAcceptedByEmail($eventInscription->addressEmail, $eventInscription->event)))
+            || ($adherent->isRenaissanceAdherent() && (
+                \count($adherent->getZoneBasedRoles())
+                || !$adherent->getReceivedDelegatedAccesses()->isEmpty()
+                || \count($adherent->findElectedRepresentativeMandates(true))
+            ))
+        ) {
+            $eventInscription->status = InscriptionStatusEnum::ACCEPTED;
+
+            $this->entityManager->flush();
+        }
     }
 }

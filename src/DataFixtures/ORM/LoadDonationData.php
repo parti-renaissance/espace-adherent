@@ -33,6 +33,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
             $donator1 = $this->createDonator('000051', $this->getReference('adherent-4', Adherent::class)),
             $donator2 = $this->createDonator('000052', $this->getReference('adherent-3', Adherent::class)),
             $donator3 = $this->createDonator('000053', $this->getReference('adherent-5', Adherent::class)),
+            $this->createDonator('000054', $this->getReference('renaissance-user-2', Adherent::class)),
         ];
 
         $currentYear = date('Y');
@@ -146,7 +147,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         );
         $this->createTransaction($donation5);
 
-        $donator4 = $this->createDonator('000054', $this->getReference('renaissance-user-4', Adherent::class));
+        $donator4 = $this->createDonator('000055', $this->getReference('renaissance-user-4', Adherent::class));
         $donation = $this->createDonation(
             $donator4,
             30,
@@ -161,7 +162,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         $donator4->setMembershipDonation($donation);
 
         $donation = $this->createDonation(
-            $donator5 = $this->createDonator('000055', $this->getReference('president-ad-1', Adherent::class)),
+            $donator5 = $this->createDonator('000056', $this->getReference('president-ad-1', Adherent::class)),
             100.,
             PayboxPaymentSubscription::UNLIMITED,
             Donation::TYPE_CB,
