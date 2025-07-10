@@ -78,7 +78,7 @@ Feature:
                         "status": "draft",
                         "sent_at": null,
                         "recipient_count": 10,
-                        "source": "vox",
+                        "source": "cadre",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
                             "sent": 0,
@@ -117,7 +117,7 @@ Feature:
                         "status": "sent",
                         "sent_at": "@string@.isDateTime()",
                         "recipient_count": 2,
-                        "source": "vox",
+                        "source": "cadre",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
                             "sent": 0,

@@ -41,6 +41,16 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $this;
     }
 
+    public function withSource(QueryBuilder $queryBuilder, string $source, string $alias = 'message'): self
+    {
+        $queryBuilder
+            ->andWhere("$alias.source = :source")
+            ->setParameter('source', $source)
+        ;
+
+        return $this;
+    }
+
     public function withAuthor(QueryBuilder $queryBuilder, Adherent $adherent, string $alias = 'message'): self
     {
         $queryBuilder

@@ -40,7 +40,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $manager->persist($message = AdherentMessage::createFromAdherent($this->getAuthor('', true)));
         $message->setIsStatutory(true);
         $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
-        $message->setSource(AdherentMessageInterface::SOURCE_VOX);
+        $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(10);
         $message->setFilter(new MessageFilter([$parisZone]));
         $message->setContent($faker->randomHtml());
@@ -83,6 +83,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->setSource(AdherentMessageInterface::SOURCE_VOX);
         $message->setIsStatutory(true);
         $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(2);
         $message->setFilter(new MessageFilter([$parisZone]));
         $message->markAsSent();
