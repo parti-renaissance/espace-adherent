@@ -27,6 +27,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RequestBuilder implements LoggerAwareInterface
 {
@@ -71,6 +72,8 @@ class RequestBuilder implements LoggerAwareInterface
     private ?bool $isJAM = null;
     private ?string $visitDay = null;
     private ?string $accessibility = null;
+    private ?string $transport = null;
+    private ?string $accomodation = null;
     private ?bool $isTransportNeeds = null;
     private ?bool $isWithDiscount = null;
     private ?UuidInterface $participantUuid = null;
@@ -104,6 +107,7 @@ class RequestBuilder implements LoggerAwareInterface
         private readonly DonationRepository $donationRepository,
         private readonly TagTranslator $tagTranslator,
         private readonly ZoneRepository $zoneRepository,
+        private readonly TranslatorInterface $translator,
     ) {
         $this->logger = new NullLogger();
     }
@@ -185,6 +189,8 @@ class RequestBuilder implements LoggerAwareInterface
             ->setVisitDay($eventInscription->visitDay)
             ->setAccessibility($eventInscription->accessibility)
             ->setIsTransportNeeds($eventInscription->transportNeeds)
+            ->setTransport($eventInscription->transport)
+            ->setAccomodation($eventInscription->accommodation)
             ->setIsWithDiscount($eventInscription->withDiscount)
             ->setParticipantUuid($eventInscription->getUuid())
             ->setStatus($eventInscription->status)
@@ -719,6 +725,14 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_IS_TRANSPORT_NEEDS] = $this->isTransportNeeds ? 'oui' : 'non';
         }
 
+        if (null !== $this->transport) {
+            $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport;
+        }
+
+        if (null !== $this->accomodation) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accomodation;
+        }
+
         if (null !== $this->isWithDiscount) {
             $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
         }
@@ -728,7 +742,15 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if ($this->status) {
-            $mergeFields[MemberRequest::MERGE_FIELD_STATUS] = $this->status;
+            $mergeFields[MemberRequest::MERGE_FIELD_STATUS] = $this->translator->trans($this->status);
+        }
+
+        if ($this->utmSource) {
+            $mergeFields[MemberRequest::MERGE_FIELD_UTM_SOURCE] = $this->utmSource;
+        }
+
+        if ($this->utmCampaign) {
+            $mergeFields[MemberRequest::MERGE_FIELD_UTM_CAMPAIGN] = $this->utmCampaign;
         }
 
         return $mergeFields;
@@ -890,6 +912,20 @@ class RequestBuilder implements LoggerAwareInterface
     public function setIsTransportNeeds(?bool $isTransportNeeds = null): self
     {
         $this->isTransportNeeds = $isTransportNeeds;
+
+        return $this;
+    }
+
+    public function setTransport(?string $transport = null): self
+    {
+        $this->transport = $transport;
+
+        return $this;
+    }
+
+    public function setAccomodation(?string $accomodation = null): self
+    {
+        $this->accomodation = $accomodation;
 
         return $this;
     }
