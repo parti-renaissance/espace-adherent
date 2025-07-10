@@ -733,9 +733,72 @@ Feature:
             }
             """
         When I save this response
-        And I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
             """
             {
+                "is_certified": null,
+                "zone": null,
+                "committee": null,
+                "is_committee_member": null,
+                "mandate_type": null,
+                "declared_mandate": null,
+                "is_campus_registered": null,
+                "donator_status": null,
+                "adherent_tags": "adherent",
+                "elect_tags": null,
+                "static_tags": null,
+                "zones": [
+                    {
+                        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "77",
+                        "name": "Seine-et-Marne"
+                    },
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "76",
+                        "name": "Seine-Maritime"
+                    },
+                    {
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    },
+                    {
+                        "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "13",
+                        "name": "Bouches-du-Rhône"
+                    }
+                ],
+                "gender": null,
+                "age_min": null,
+                "age_max": null,
+                "first_name": null,
+                "last_name": null,
+                "registered_since": null,
+                "registered_until": null,
+                "first_membership_since": null,
+                "first_membership_before": null,
+                "last_membership_since": null,
+                "last_membership_before": null
+            }
+            """
+        When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
+            """
+            {
+                "gender": "male",
                 "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
             }
             """
@@ -752,6 +815,73 @@ Feature:
                 "only_email": 4,
                 "contacts": 8,
                 "total": 12
+            }
+            """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "is_certified": null,
+                "zone": {
+                    "type": "department",
+                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "code": "77",
+                    "name": "Seine-et-Marne"
+                },
+                "committee": null,
+                "is_committee_member": null,
+                "mandate_type": null,
+                "declared_mandate": null,
+                "is_campus_registered": null,
+                "donator_status": null,
+                "adherent_tags": null,
+                "elect_tags": null,
+                "static_tags": null,
+                "zones": [
+                    {
+                        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "77",
+                        "name": "Seine-et-Marne"
+                    },
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "76",
+                        "name": "Seine-Maritime"
+                    },
+                    {
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    },
+                    {
+                        "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "13",
+                        "name": "Bouches-du-Rhône"
+                    }
+                ],
+                "gender": "male",
+                "age_min": null,
+                "age_max": null,
+                "first_name": null,
+                "last_name": null,
+                "registered_since": null,
+                "registered_until": null,
+                "first_membership_since": null,
+                "first_membership_before": null,
+                "last_membership_since": null,
+                "last_membership_before": null
             }
             """
 

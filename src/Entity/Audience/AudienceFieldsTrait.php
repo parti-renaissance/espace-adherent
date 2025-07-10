@@ -76,9 +76,6 @@ trait AudienceFieldsTrait
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isCertified;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $renaissanceMembership = null;
-
     /**
      * @var bool|null
      */

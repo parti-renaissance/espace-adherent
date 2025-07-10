@@ -22,6 +22,7 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
 {
     use EntityZoneTrait;
 
+    #[Groups(['adherent_message_read_filter'])]
     #[ORM\JoinColumn(name: 'adherent_message_filter_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\JoinTable(name: 'adherent_message_filter_zone')]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
