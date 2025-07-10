@@ -59,9 +59,13 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_VISIT_DAY = 'VISIT_DAY';
     public const MERGE_FIELD_ACCESSIBILITY = 'ACCESSBLTY';
     public const MERGE_FIELD_IS_TRANSPORT_NEEDS = 'IS_TRNS';
+    public const MERGE_FIELD_TRANSPORT = 'TRANSPORT';
+    public const MERGE_FIELD_ACCOMODATION = 'ACCMDTION';
     public const MERGE_FIELD_IS_WITH_DISCOUNT = 'IS_DISC';
-    public const MERGE_FIELD_PARTICIPANT_UUID = 'PRTCPNT_UUID';
+    public const MERGE_FIELD_PARTICIPANT_UUID = 'PRTCPNT_ID';
     public const MERGE_FIELD_STATUS = 'STATUS';
+    public const MERGE_FIELD_UTM_SOURCE = 'UTM_SOURCE';
+    public const MERGE_FIELD_UTM_CAMPAIGN = 'UTM_CMPGN';
 
     public const ZONE_MERGE_FIELD_BY_ZONE_TYPE = [
         self::MERGE_FIELD_ZONE_BOROUGH => Zone::BOROUGH,
