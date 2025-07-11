@@ -11,7 +11,7 @@ trait UnlayerJsonContentTrait
     /**
      * JSON representation of unlayer content (using by Unlayer JS lib)
      */
-    #[Groups(['message_write', 'message_read_content', 'department_site_read', 'department_site_write', 'email_template_read', 'email_template_write'])]
+    #[Groups(['message_write', 'message_read', 'message_read_content', 'department_site_read', 'department_site_write', 'email_template_read', 'email_template_write'])]
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $jsonContent = null;
 

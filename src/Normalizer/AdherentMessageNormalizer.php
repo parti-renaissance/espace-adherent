@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,6 +15,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     use NormalizerAwareTrait;
 
     public function __construct(
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly StatisticsAggregator $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
     ) {
@@ -26,13 +28,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         $groups = $context['groups'] ?? [];
 
-        if (\in_array('message_read_list', $groups, true)) {
-            $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
-        }
-
         if (array_intersect($groups, ['message_read_list', 'message_read'])) {
-            $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
-
             $data['author']['scope'] = $object->getAuthorScope();
 
             if (!empty($data['sender'])) {
@@ -42,6 +38,17 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
                     'zone' => $object->getAuthorZone(),
                     'theme' => $object->getAuthorTheme(),
                 ]);
+            }
+
+            if ($this->scopeGeneratorResolver->generate()) {
+                $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
+                $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
+            } else {
+                foreach (array_keys($data) as $key) {
+                    if (!\in_array($key, ['uuid', 'sender', 'json_content', 'sent_at', 'subject', 'updated_at'])) {
+                        unset($data[$key]);
+                    }
+                }
             }
         }
 

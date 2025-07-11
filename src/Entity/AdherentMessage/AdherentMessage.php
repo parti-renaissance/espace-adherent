@@ -45,13 +45,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['label' => 'partial', 'status' => 'exact'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isStatutory'])]
 #[ApiResource(
-    shortName: 'AdherentMessage',
     operations: [
         new Get(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getAuthor(), 'publications'))"
+            security: "is_granted('ROLE_USER')",
         ),
         new Get(
             uriTemplate: '/adherent_messages/{uuid}/content',
@@ -199,7 +198,7 @@ class AdherentMessage implements AdherentMessageInterface
     /**
      * @var \DateTimeInterface|null
      */
-    #[Groups(['message_read_list'])]
+    #[Groups(['message_read_list', 'message_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $sentAt;
 
