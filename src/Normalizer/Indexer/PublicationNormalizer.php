@@ -38,65 +38,109 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param AdherentMessage $object */
-    public function getAudience(mixed $object): ?array
+    public function getAudience(mixed $object): array
     {
+        $enabledFilters = parent::getAudience($object);
         $filter = $object->getFilter();
+
         if (!$filter instanceof AudienceFilter) {
-            return null;
+            return $enabledFilters;
         }
 
-        $audience = [];
+        $audienceKeys = $audienceExcludeKeys = [];
 
-        $showTags = $hideTags = [];
-
+        // Tags
         foreach (array_filter([$filter->adherentTags, $filter->electTags, $filter->staticTags]) as $tag) {
             if (str_starts_with($tag, '!')) {
-                $hideTags[] = substr($tag, 1);
+                $audienceExcludeKeys[] = 'tag:'.substr($tag, 1);
             } else {
-                $showTags[] = $tag;
+                $enabledFilters['tag'] = true;
+                $audienceKeys[] = 'tag:'.$tag;
             }
         }
 
-        if ($showTags) {
-            $audience['show_tags'] = $showTags;
-        }
-
-        if ($hideTags) {
-            $audience['hide_tags'] = $hideTags;
-        }
-
-        if ($zones = $this->getZoneCodes($object)) {
-            $audience['zones'] = $zones;
-        }
-
-        return $audience;
-    }
-
-    /** @param AdherentMessage $object */
-    protected function getCommitteeUuid(object $object): ?string
-    {
-        $filter = $object->getFilter();
-        if (!$filter instanceof AudienceFilter) {
-            return null;
-        }
-
-        return $filter->getCommittee()?->getUuid()?->toString();
-    }
-
-    /** @param AdherentMessage $object */
-    protected function getZoneCodes(object $object): ?array
-    {
-        $filter = $object->getFilter();
-        if (!$filter instanceof AudienceFilter) {
-            return null;
-        }
-
+        // Zones
+        $zones = [];
         if ($filter->getZone()) {
             $zones = [$filter->getZone()];
         } elseif (!$filter->getZones()->isEmpty()) {
             $zones = $filter->getZones()->toArray();
         }
 
-        return empty($zones) ? null : array_map([$this, 'buildZoneCodes'], $zones);
+        foreach ($zones as $zone) {
+            foreach ($this->buildZoneCodes($zone) as $code) {
+                $audienceKeys[] = 'zone:'.$code;
+            }
+            $enabledFilters['zone'] = true;
+        }
+
+        // Committee
+        if ($filter->getCommittee()) {
+            $audienceKeys[] = 'committee:'.$filter->getCommittee()->getUuid()->toString();
+            $enabledFilters['committee'] = true;
+        }
+
+        // Mandate type
+        if ($type = $filter->getMandateType()) {
+            if (str_starts_with($type, '!')) {
+                $audienceExcludeKeys[] = 'mandate_type:'.substr($type, 1);
+            } else {
+                $audienceKeys[] = 'mandate_type:'.$type;
+                $enabledFilters['mandate_type'] = true;
+            }
+        }
+
+        // Declared mandate
+        if ($declared = $filter->getDeclaredMandate()) {
+            if (str_starts_with($declared, '!')) {
+                $audienceExcludeKeys[] = 'declared_mandate:'.substr($declared, 1);
+            } else {
+                $audienceKeys[] = 'declared_mandate:'.$declared;
+                $enabledFilters['declared_mandate'] = true;
+            }
+        }
+
+        // Dates
+        $audience = [];
+
+        if ($filter->firstMembershipSince) {
+            $audience['first_membership_since'] = $filter->firstMembershipSince->getTimestamp();
+            $enabledFilters['first_membership_since'] = true;
+        }
+
+        if ($filter->firstMembershipBefore) {
+            $audience['first_membership_before'] = $filter->firstMembershipBefore->getTimestamp();
+            $enabledFilters['first_membership_before'] = true;
+        }
+
+        if ($filter->getLastMembershipSince()) {
+            $audience['last_membership_since'] = $filter->getLastMembershipSince()->getTimestamp();
+            $enabledFilters['last_membership_since'] = true;
+        }
+
+        if ($filter->getLastMembershipBefore()) {
+            $audience['last_membership_before'] = $filter->getLastMembershipBefore()->getTimestamp();
+            $enabledFilters['last_membership_before'] = true;
+        }
+
+        if ($filter->getRegisteredSince()) {
+            $audience['registered_since'] = $filter->getRegisteredSince()->getTimestamp();
+            $enabledFilters['registered_since'] = true;
+        }
+
+        if ($filter->getRegisteredUntil()) {
+            $audience['registered_before'] = $filter->getRegisteredUntil()->getTimestamp();
+            $enabledFilters['registered_before'] = true;
+        }
+
+        if ($audienceKeys) {
+            $audience['include'] = array_values(array_unique($audienceKeys));
+        }
+
+        if ($audienceExcludeKeys) {
+            $audience['exclude'] = array_values(array_unique($audienceExcludeKeys));
+        }
+
+        return array_merge($enabledFilters, $audience);
     }
 }
