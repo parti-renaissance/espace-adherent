@@ -5,7 +5,7 @@ Feature:
 
     Scenario Outline: As a logged-in user I can get statutory templates
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/email_templates?statutory=1&scope=<scope>"
+        When I send a "GET" request to "/api/v3/email_templates?is_statutory=1&scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
