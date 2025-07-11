@@ -180,6 +180,17 @@ Feature:
                         "soft": "#E8F0FF"
                     }
                 },
+                "statistics": {
+                    "click_rate": 0,
+                    "clicks": 0,
+                    "open_rate": 0,
+                    "opens": 0,
+                    "sent": 0,
+                    "unsubscribe": 0,
+                    "unsubscribe_rate": 0
+                },
+                "json_content": "@string@",
+                "sent_at": null,
                 "updated_at": "@string@.isDateTime()"
             }
             """
