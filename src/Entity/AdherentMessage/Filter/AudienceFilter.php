@@ -3,6 +3,9 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
@@ -12,7 +15,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource(operations: [])]
+#[ApiResource(
+    uriTemplate: '/v3/adherent_messages/{uuid}/filter',
+    operations: [new Get(
+        security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and (object.getMessage().getAuthor() == user or user.hasDelegatedFromUser(object.getMessage().getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getMessage().getAuthor(), 'publications'))"
+    )],
+    uriVariables: [
+        'uuid' => new Link(
+            fromProperty: 'filter',
+            fromClass: AdherentMessage::class
+        ),
+    ],
+    normalizationContext: ['groups' => ['adherent_message_read_filter']],
+)]
 #[ManagedZone]
 #[ORM\Entity]
 class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntityInterface, CampaignAdherentMessageFilterInterface
@@ -24,7 +39,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     /**
      * @var bool|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
     protected $isCertified;
 
@@ -32,7 +47,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @var Zone|null
      */
     #[Assert\Expression('this.getSegment() or this.getZone() or this.getCommittee()', message: 'Cette valeur ne doit pas être vide.')]
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
@@ -52,40 +67,40 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     #[ORM\Column(nullable: true)]
     private $audienceType;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
     private ?Committee $committee = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isCommitteeMember = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     private ?string $mandateType = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     private ?string $declaredMandate = null;
 
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
     protected ?bool $isCampusRegistered = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     private ?string $donatorStatus = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     public ?string $adherentTags = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     public ?string $electTags = null;
 
-    #[Groups(['adherent_message_update_filter'])]
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
     public ?string $staticTags = null;
 

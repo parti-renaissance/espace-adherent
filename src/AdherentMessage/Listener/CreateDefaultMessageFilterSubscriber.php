@@ -33,11 +33,9 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$scopeGenerator = $this->scopeGeneratorResolver->resolve()) {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return;
         }
-
-        $scope = $scopeGenerator->generate($message->getAuthor());
 
         $filter = new AudienceFilter();
 
