@@ -347,6 +347,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
             'adherent_create' => $submittedValues,
         ]));
 
+        var_dump($this->client->getResponse()->getContent());
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/app/adherent/create-adherent-verify-email', $this->client);
 
