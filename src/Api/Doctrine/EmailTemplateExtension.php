@@ -48,7 +48,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
                 ->add(\sprintf('%s.createdByAdherent = :adherent', $rootAlias))
             )
             ->andWhere($rootAlias.'.isStatutory = :statutory_value')
-            ->setParameter('statutory_value', isset($context['filters']['statutory']) && '1' === $context['filters']['statutory'])
+            ->setParameter('statutory_value', isset($context['filters']['is_statutory']) && '1' === $context['filters']['is_statutory'])
             ->setParameter('adherent', $user)
             ->setParameter('scope', $scope->getMainCode())
             ->setParameter('zones', $scope->getZones())

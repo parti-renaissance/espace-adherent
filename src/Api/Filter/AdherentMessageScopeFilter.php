@@ -40,6 +40,13 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
                 $alias
             )
         ;
+
+        if (empty($context['filters']['is_statutory'])) {
+            $queryBuilder
+                ->andWhere($alias.'.isStatutory = :statutory_value')
+                ->setParameter('statutory_value', false)
+            ;
+        }
     }
 
     #[Required]
