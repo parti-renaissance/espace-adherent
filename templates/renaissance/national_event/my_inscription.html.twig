@@ -165,7 +165,7 @@
                                 <div class="text-ui_green-50 font-medium">Gratuit</div>
                             {% endif %}
 
-                            {% if accommodation_config.accompagnement %}
+                            {% if accommodation_config.accompagnement is defined %}
                                 <div class="flex flex-col gap-4 border border-[#919EAB] p-6 rounded-lg bg-white mt-2">
                                     <p class="text-ui_gray-80 font-medium">
                                         {% if inscription.accommodation == 'chambre_individuelle' %}

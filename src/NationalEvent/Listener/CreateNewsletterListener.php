@@ -26,7 +26,7 @@ class CreateNewsletterListener implements EventSubscriberInterface
 
     public function createNewsletter(NationalEventInscriptionEventInterface $event): void
     {
-        $eventInscription = $event->eventInscription;
+        $eventInscription = $event->getEventInscription();
 
         if (!$eventInscription->joinNewsletter || !$eventInscription->needSendNewsletterConfirmation) {
             return;

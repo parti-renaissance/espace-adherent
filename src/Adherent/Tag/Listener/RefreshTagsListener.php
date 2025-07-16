@@ -32,8 +32,8 @@ class RefreshTagsListener implements EventSubscriberInterface
 
     public function postEventInscription(NationalEventInscriptionEventInterface $event): void
     {
-        if ($event->eventInscription->adherent) {
-            $this->dispatch($event->eventInscription->adherent);
+        if ($event->getEventInscription()->adherent) {
+            $this->dispatch($event->getEventInscription()->adherent);
         }
     }
 

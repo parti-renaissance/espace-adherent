@@ -29,9 +29,9 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
     public function onNewInscription(NewNationalEventInscriptionEvent $event): void
     {
-        $eventInscription = $event->eventInscription;
+        $eventInscription = $event->getEventInscription();
 
-        if (!$eventInscription->isDuplicate() && null === $eventInscription->paymentStatus) {
+        if (!$eventInscription->isDuplicate() && !$eventInscription->amount) {
             $this->sendConfirmationEmail($eventInscription);
         }
     }

@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\Payment\RequestParamsBuilder;
 use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,11 +19,10 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[Route('/{slug}/{uuid}/paiement', name: 'app_national_event_payment', requirements: ['slug' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
 class PaymentController extends AbstractController
 {
-    public function __invoke(
-        Request $request,
+    #[Route('/{slug}/{uuid}/paiement', name: 'app_national_event_new_payment', requirements: ['slug' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
+    public function newPaymentAction(
         string $app_domain,
         #[MapEntity(mapping: ['slug' => 'slug'])] NationalEvent $event,
         #[MapEntity(mapping: ['uuid' => 'uuid'])] EventInscription $inscription,
@@ -30,16 +30,66 @@ class PaymentController extends AbstractController
         EntityManagerInterface $entityManager,
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
-        if ($inscription->isPaymentRequired() && PaymentStatusEnum::CONFIRMED === $inscription->paymentStatus) {
-            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
-        }
-
-        if (!$inscription->isPaymentRequired()) {
+        if (!$inscription->isPaymentRequired() || PaymentStatusEnum::CONFIRMED === $inscription->paymentStatus) {
             if ($event->isCampus()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
             }
 
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
+        }
+
+        $limiter = $paymentRetryLimiter->create('meeting.inscription.'.$inscription->getUuid()->toString());
+
+        if (!$limiter->consume()->isAccepted()) {
+            return $this->redirectToRoute('app_national_event_payment_status', [
+                'slug' => $event->getSlug(),
+                'uuid' => $inscription->getUuid()->toString(),
+                'app_domain' => $app_domain,
+                'status' => 'limit',
+            ]);
+        }
+
+        $paymentParams = $requestParamsBuilder->build(
+            $uuid = Uuid::uuid4(),
+            $inscription->amount,
+            $inscription,
+            $this->generateUrl('app_national_event_payment_status', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain], UrlGeneratorInterface::ABSOLUTE_URL),
+        );
+
+        $inscription->addPayment(new Payment(
+            $uuid,
+            $inscription,
+            $inscription->amount,
+            $inscription->transport,
+            $inscription->accommodation,
+            $inscription->withDiscount,
+            $paymentParams
+        ));
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_national_event_payment', [
+            'slug' => $event->getSlug(),
+            'uuid' => $uuid->toString(),
+            'app_domain' => $app_domain,
+        ]);
+    }
+
+    #[Route('/{slug}/{uuid}/paiement-process', name: 'app_national_event_payment', requirements: ['slug' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
+    public function paymentAction(
+        Request $request,
+        string $app_domain,
+        #[MapEntity(mapping: ['slug' => 'slug'])] NationalEvent $event,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])] Payment $payment,
+    ): Response {
+        if (!$payment->isPending()) {
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $payment->inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+        }
+
+        $inscription = $payment->inscription;
+
+        if (\in_array($inscription->status, [InscriptionStatusEnum::DUPLICATE, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::REFUSED], true)) {
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
         }
 
         $form = $this->createFormBuilder()
@@ -50,28 +100,8 @@ class PaymentController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $limiter = $paymentRetryLimiter->create('meeting.inscription.'.$inscription->getUuid()->toString());
-
-            if (!$limiter->consume()->isAccepted()) {
-                return $this->redirectToRoute('app_national_event_payment_status', [
-                    'slug' => $event->getSlug(),
-                    'uuid' => $inscription->getUuid()->toString(),
-                    'app_domain' => $app_domain,
-                    'status' => 'limit',
-                ]);
-            }
-
-            $paymentParams = $requestParamsBuilder->build(
-                $uuid = Uuid::uuid4(),
-                $inscription,
-                $this->generateUrl('app_national_event_payment_status', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain], UrlGeneratorInterface::ABSOLUTE_URL),
-            );
-
-            $inscription->addPayment(new Payment($uuid, $inscription, $paymentParams));
-            $entityManager->flush();
-
             return $this->render('renaissance/national_event/payment.html.twig', [
-                'params' => $paymentParams,
+                'params' => $payment->payload,
             ]);
         }
 

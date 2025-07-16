@@ -25,6 +25,9 @@ class Payment
     #[ORM\Column(enumType: PaymentStatusEnum::class, options: ['default' => PaymentStatusEnum::PENDING])]
     public PaymentStatusEnum $status = PaymentStatusEnum::PENDING;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $toRefund = false;
+
     #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
@@ -46,14 +49,21 @@ class Payment
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $replacement = null;
 
-    public function __construct(UuidInterface $uuid, EventInscription $inscription, array $payload = [])
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        EventInscription $inscription,
+        ?int $amount = null,
+        ?string $transport = null,
+        ?string $accommodation = null,
+        ?bool $withDiscount = null,
+        array $payload = [],
+    ) {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
-        $this->amount = $inscription->amount;
-        $this->transport = $inscription->transport;
-        $this->accommodation = $inscription->accommodation;
-        $this->withDiscount = $inscription->withDiscount;
+        $this->amount = $amount;
+        $this->transport = $transport;
+        $this->accommodation = $accommodation;
+        $this->withDiscount = $withDiscount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();
     }
@@ -78,5 +88,16 @@ class Payment
     public function isConfirmed(): bool
     {
         return PaymentStatusEnum::CONFIRMED === $this->status;
+    }
+
+    public function markAsToRefund(?self $replacement = null): void
+    {
+        $this->replacement = $replacement;
+        $this->toRefund = true;
+    }
+
+    public function isPending(): bool
+    {
+        return PaymentStatusEnum::PENDING === $this->status;
     }
 }

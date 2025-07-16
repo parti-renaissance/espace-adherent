@@ -4,9 +4,9 @@ namespace App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
+use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -54,7 +54,7 @@ class InscriptionController extends AbstractController
             $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
         }
 
-        $inscriptionRequest = new EventInscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
+        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
 
         if ($user) {
             if ($existingInscription = $this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
@@ -93,7 +93,7 @@ class InscriptionController extends AbstractController
             $inscription = $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest);
 
             if (PaymentStatusEnum::PENDING === $inscription->paymentStatus && $inscription->isPaymentRequired()) {
-                return $this->redirectToRoute('app_national_event_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
+                return $this->redirectToRoute('app_national_event_new_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
             }
 
             if ($event->isCampus()) {
@@ -111,7 +111,7 @@ class InscriptionController extends AbstractController
         ]);
     }
 
-    protected function createInscriptionForm(NationalEvent $event, EventInscriptionRequest $eventInscriptionRequest, ?Adherent $adherent, bool $isOpen): FormInterface
+    protected function createInscriptionForm(NationalEvent $event, InscriptionRequest $eventInscriptionRequest, ?Adherent $adherent, bool $isOpen): FormInterface
     {
         $defaultOptions = [
             'adherent' => $adherent,

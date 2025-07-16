@@ -10,7 +10,6 @@ enum PaymentStatusEnum: string implements TranslatableInterface
     case PENDING = 'pending';
     case CONFIRMED = 'confirmed';
     case ERROR = 'error';
-    case TO_REFUND = 'to_refund';
 
     public static function all(): array
     {

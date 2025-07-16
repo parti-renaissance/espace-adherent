@@ -9,4 +9,9 @@ abstract class AbstractNationalEventInscriptionEvent implements NationalEventIns
     public function __construct(public readonly EventInscription $eventInscription)
     {
     }
+
+    public function getEventInscription(): EventInscription
+    {
+        return $this->eventInscription;
+    }
 }

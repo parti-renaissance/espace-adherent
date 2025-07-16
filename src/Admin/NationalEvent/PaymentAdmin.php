@@ -27,6 +27,7 @@ class PaymentAdmin extends AbstractAdmin
             ->add('inscription.event', null, ['label' => 'Event', 'show_filter' => true])
             ->add('transport', null, ['label' => 'Forfait', 'show_filter' => true])
             ->add('accommodation', null, ['label' => 'Hébergement', 'show_filter' => true])
+            ->add('toRefund', null, ['label' => 'À rembourser', 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -49,6 +50,7 @@ class PaymentAdmin extends AbstractAdmin
             ->add('accommodation', null, ['label' => 'Hébergement'])
             ->add('amountInEuro', null, ['label' => 'Montant €'])
             ->add('status', 'enum', ['label' => 'Statut'])
+            ->add('toRefund', null, ['label' => 'À rembourser'])
             ->add('createdAt', null, ['label' => 'Créé le'])
             ->add('updatedAt', null, ['label' => 'Modifié le'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['show' => []]])
@@ -65,6 +67,7 @@ class PaymentAdmin extends AbstractAdmin
                 ->add('_inscription', null, ['label' => 'Détails', 'virtual_field' => true, 'template' => 'admin/national_event/show_details.html.twig'])
                 ->add('amountInEuro', null, ['label' => 'Montant €'])
                 ->add('status', 'enum', ['label' => 'Statut'])
+                ->add('toRefund', null, ['label' => 'À rembourser'])
                 ->add('createdAt', null, ['label' => 'Créé le'])
                 ->add('updatedAt', null, ['label' => 'Modifié le'])
                 ->add('payload', null, [

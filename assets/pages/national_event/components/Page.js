@@ -8,6 +8,7 @@
  *   uncheckInputs?: boolean | null,
  *   transport?: string | null,
  *   accommodation?: string | null,
+ *   initialPayedAmount?: int | null,
  * }} props
  *
  * @returns {AlpineComponent}
@@ -15,6 +16,7 @@
 const Page = (props) => ({
     accessibility: false,
     transportConfig: props.transportConfig || null,
+    initialPayedAmount: props.initialPayedAmount || null,
     visitDay: null,
     availableTransports: [],
     availableAccommodations: [],
@@ -45,6 +47,8 @@ const Page = (props) => ({
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+            this.selectedTransportConfig = this.getSelectedTransportConfig();
+            this.selectedAccommodationConfig = this.getSelectedAccommodationConfig();
         });
 
         this.$watch('transport', () => {
@@ -84,7 +88,6 @@ const Page = (props) => ({
 
     updateAvailableTransports(uncheckInputs = true) {
         this.availableTransports = [];
-        this.selectedTransportConfig = null;
 
         if (!this.visitDay || !this.transportConfig?.transports) {
             return;
@@ -104,7 +107,6 @@ const Page = (props) => ({
 
     updateAvailableAccommodations(uncheckInputs = true) {
         this.availableAccommodations = [];
-        this.selectedAccommodationConfig = null;
 
         if (!this.visitDay || !this.transportConfig?.hebergements) {
             return;
@@ -205,6 +207,14 @@ const Page = (props) => ({
     checkValidity() {
         return Object.values(this.fieldsValid)
             .every((x) => x);
+    },
+
+    isFromPayedToFreeUpdate() {
+        return 0 < this.initialPayedAmount && 0 === this.getTotalPrice();
+    },
+
+    isFromPayedToPayedUpdate() {
+        return 0 < this.initialPayedAmount && 0 < this.getTotalPrice() && this.initialPayedAmount !== this.getTotalPrice();
     },
 });
 
