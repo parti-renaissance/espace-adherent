@@ -5,9 +5,9 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
+use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -48,7 +48,7 @@ class EditInscriptionController extends AbstractController
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $request->attributes->get('app_domain')]);
         }
 
-        $inscriptionRequest = EventInscriptionRequest::fromInscription($inscription);
+        $inscriptionRequest = InscriptionRequest::fromInscription($inscription);
 
         $form = $this
             ->createInscriptionForm($event, $inscriptionRequest, $user)
@@ -79,7 +79,7 @@ class EditInscriptionController extends AbstractController
         ]);
     }
 
-    protected function createInscriptionForm(NationalEvent $event, EventInscriptionRequest $eventInscriptionRequest, ?Adherent $adherent): FormInterface
+    protected function createInscriptionForm(NationalEvent $event, InscriptionRequest $eventInscriptionRequest, ?Adherent $adherent): FormInterface
     {
         $defaultOptions = [
             'is_edit' => true,

@@ -50,13 +50,28 @@ class PaymentStatusUpdateCommandHandler
                 $inscription->status = InscriptionStatusEnum::PENDING;
             }
 
+            if ($inscription->transport !== $payment->transport) {
+                $inscription->transport = $payment->transport;
+            }
+
+            if ($inscription->accommodation !== $payment->accommodation) {
+                $inscription->accommodation = $payment->accommodation;
+            }
+
+            if ($inscription->withDiscount !== $payment->withDiscount) {
+                $inscription->withDiscount = $payment->withDiscount;
+            }
+
+            if ($inscription->amount !== $payment->amount) {
+                $inscription->amount = $payment->amount;
+            }
+
             foreach ($inscription->getSuccessPayments() as $successPayment) {
                 if ($successPayment === $payment) {
                     continue;
                 }
 
-                $successPayment->replacement = $payment;
-                $successPayment->status = PaymentStatusEnum::TO_REFUND;
+                $successPayment->markAsToRefund($payment);
             }
         }
 

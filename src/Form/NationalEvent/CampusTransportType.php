@@ -2,7 +2,7 @@
 
 namespace App\Form\NationalEvent;
 
-use App\Event\Request\EventInscriptionRequest;
+use App\NationalEvent\DTO\InscriptionRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -93,6 +93,7 @@ class CampusTransportType extends AbstractType
             ->add('accommodation', ChoiceType::class, [
                 'choices' => array_column($accommodations, 'id', 'titre'),
                 'expanded' => true,
+                'required' => false,
                 'choice_attr' => function ($key) use ($defaultOptions, $reservedPlaces, $accommodations): array {
                     $options = [
                         ':class' => \sprintf("accommodation === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
@@ -150,7 +151,7 @@ class CampusTransportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefaults(['data_class' => EventInscriptionRequest::class])
+            ->setDefaults(['data_class' => InscriptionRequest::class])
             ->setDefined(['transport_configuration', 'reserved_places'])
             ->addAllowedTypes('transport_configuration', ['array'])
             ->addAllowedTypes('reserved_places', ['array'])

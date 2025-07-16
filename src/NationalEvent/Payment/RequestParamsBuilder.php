@@ -14,13 +14,13 @@ class RequestParamsBuilder
     ) {
     }
 
-    public function build(UuidInterface $orderId, EventInscription $inscription, string $backUrl): array
+    public function build(UuidInterface $orderId, int $amount, EventInscription $inscription, string $backUrl): array
     {
         $params = [
             'PSPID' => $this->ogonePspId,
             'ORDERID' => $orderId->toString(),
             'COMPLUS' => $inscription->getUuid()->toString(),
-            'AMOUNT' => $inscription->amount, // en cents
+            'AMOUNT' => $amount, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',
             'CN' => (new UnicodeString($inscription->firstName.' '.$inscription->lastName))->ascii(),

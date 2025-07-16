@@ -36,7 +36,7 @@ class Notifier
     {
         $this->transactionalMailer->sendMessage(NationalEventInscriptionPaymentReminderMessage::create(
             $eventInscription,
-            $this->urlGenerator->generate('app_national_event_payment', [
+            $this->urlGenerator->generate('app_national_event_new_payment', [
                 'slug' => $eventInscription->event->getSlug(),
                 'uuid' => $eventInscription->getUuid()->toString(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)

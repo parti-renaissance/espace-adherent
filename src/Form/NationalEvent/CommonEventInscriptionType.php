@@ -3,11 +3,11 @@
 namespace App\Form\NationalEvent;
 
 use App\Entity\Adherent;
-use App\Event\Request\EventInscriptionRequest;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\BirthdateType;
 use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
+use App\NationalEvent\DTO\InscriptionRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -59,7 +59,7 @@ class CommonEventInscriptionType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => EventInscriptionRequest::class,
+                'data_class' => InscriptionRequest::class,
                 'adherent' => null,
                 'is_edit' => false,
             ])

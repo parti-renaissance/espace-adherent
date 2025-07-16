@@ -5,8 +5,8 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\CampusTransportType;
+use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +46,7 @@ class EditTransportController extends AbstractController
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $request->attributes->get('app_domain')]);
         }
 
-        $inscriptionRequest = EventInscriptionRequest::fromInscription($inscription);
+        $inscriptionRequest = InscriptionRequest::fromInscription($inscription);
 
         $form = $this
             ->createForm(CampusTransportType::class, $inscriptionRequest, [
@@ -58,14 +58,12 @@ class EditTransportController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $inscription->updateTransportFromRequest($inscriptionRequest);
+            $payment = $this->eventInscriptionManager->updatePackage($inscriptionRequest, $inscription);
 
-            $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest, $inscription);
-
-            if ($inscriptionRequest->initialTransport !== $inscription->transport && $inscription->amount > 0) {
+            if ($payment) {
                 return $this->redirectToRoute('app_national_event_payment', [
                     'slug' => $event->getSlug(),
-                    'uuid' => $inscription->getUuid()->toString(),
+                    'uuid' => $payment->getUuid()->toString(),
                 ]);
             }
 

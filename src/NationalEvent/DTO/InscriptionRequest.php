@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Event\Request;
+namespace App\NationalEvent\DTO;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['inscription_creation'])]
 #[NationalEventTransportMode(groups: ['inscription_campus_creation', 'campus_transport_update'])]
-class EventInscriptionRequest implements RecaptchaChallengeInterface
+class InscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
@@ -107,7 +107,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
 
     public static function fromInscription(EventInscription $inscription): self
     {
-        $request = new self($inscription->event->getId(), $inscription->sessionId ?? '', $inscription->clientIp ?? '');
+        $request = new self($inscription->event->getId(), $inscription->sessionId ?? '', $inscription->clientIp ?? '', $inscription->event->transportConfiguration);
         $request->email = $inscription->addressEmail;
         $request->civility = $inscription->gender;
         $request->firstName = $inscription->firstName;

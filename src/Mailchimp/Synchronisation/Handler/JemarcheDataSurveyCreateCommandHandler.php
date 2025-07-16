@@ -7,7 +7,6 @@ use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Geo\ZoneMatcher;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\JemarcheDataSurveyCommandInterface;
-use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -23,20 +22,17 @@ class JemarcheDataSurveyCreateCommandHandler implements LoggerAwareInterface
     private $manager;
     private $entityManager;
     private $dataSurveyRepository;
-    private $zoneRepository;
     private $zoneMatcher;
 
     public function __construct(
         Manager $manager,
         JemarcheDataSurveyRepository $dataSurveyRepository,
-        ZoneRepository $zoneRepository,
         ZoneMatcher $zoneMatcher,
         EntityManagerInterface $entityManager,
     ) {
         $this->manager = $manager;
         $this->entityManager = $entityManager;
         $this->dataSurveyRepository = $dataSurveyRepository;
-        $this->zoneRepository = $zoneRepository;
         $this->zoneMatcher = $zoneMatcher;
         $this->logger = new NullLogger();
     }

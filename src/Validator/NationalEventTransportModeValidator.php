@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Event\Request\EventInscriptionRequest;
+use App\NationalEvent\DTO\InscriptionRequest;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,8 +25,8 @@ class NationalEventTransportModeValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof EventInscriptionRequest) {
-            throw new UnexpectedValueException($value, EventInscriptionRequest::class);
+        if (!$value instanceof InscriptionRequest) {
+            throw new UnexpectedValueException($value, InscriptionRequest::class);
         }
 
         $transportConfig = $value->transportConfiguration;

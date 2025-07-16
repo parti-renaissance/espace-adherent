@@ -8,7 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
-use App\Event\Request\EventInscriptionRequest;
+use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -224,7 +224,7 @@ class EventInscription
         $this->isJAM = $this->isJAM || $eventInscription->isJAM;
     }
 
-    public function updateFromRequest(EventInscriptionRequest $inscriptionRequest): void
+    public function updateFromRequest(InscriptionRequest $inscriptionRequest): void
     {
         $this->addressEmail = $inscriptionRequest->email;
         $this->needSendNewsletterConfirmation = !$this->joinNewsletter && $inscriptionRequest->allowNotifications;
@@ -253,30 +253,22 @@ class EventInscription
             $this->referrerCode = $inscriptionRequest->referrerCode;
 
             $this->updateTransportFromRequest($inscriptionRequest);
+
+            if ($this->amount) {
+                $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+                $this->paymentStatus = PaymentStatusEnum::PENDING;
+            }
         }
     }
 
-    public function updateTransportFromRequest(EventInscriptionRequest $inscriptionRequest): void
+    public function updateTransportFromRequest(InscriptionRequest $inscriptionRequest): void
     {
-        $initialTransport = $this->transport;
-        $initialAccommodation = $this->accommodation;
-        $initialAmountCosts = $this->amount;
-
         $this->transport = $inscriptionRequest->transport;
         $this->accommodation = $inscriptionRequest->accommodation;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->withDiscount = $inscriptionRequest->withDiscount;
         $this->roommateIdentifier = $inscriptionRequest->roommateIdentifier;
-
         $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
-
-        if (
-            ($initialTransport !== $this->transport || $initialAccommodation !== $this->accommodation)
-            && $this->amount > 0
-            && $initialAmountCosts !== $this->amount
-        ) {
-            $this->paymentStatus = PaymentStatusEnum::PENDING;
-        }
     }
 
     public function getFullName(): string
@@ -298,11 +290,10 @@ class EventInscription
     {
         $this->payments->add($payment);
 
-        if (InscriptionStatusEnum::PENDING === $this->status) {
-            $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
-        }
-
         if (null === $this->paymentStatus) {
+            if (InscriptionStatusEnum::PENDING === $this->status) {
+                $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
+            }
             $this->paymentStatus = $payment->status;
         }
     }
@@ -389,5 +380,19 @@ class EventInscription
     public function getSuccessPayments(): array
     {
         return array_filter($this->getPayments(), static fn (Payment $payment) => $payment->isConfirmed());
+    }
+
+    public function getAmountInEuro(): ?float
+    {
+        if (null === $this->amount) {
+            return null;
+        }
+
+        return $this->amount / 100.0;
+    }
+
+    public function isPending(): bool
+    {
+        return InscriptionStatusEnum::PENDING === $this->status;
     }
 }

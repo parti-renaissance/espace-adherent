@@ -2,14 +2,14 @@
 
 namespace App\NationalEvent\Listener;
 
-use App\NationalEvent\Command\SendWebhookCommand;
+use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\Event\NationalEventInscriptionEventInterface;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class SendWebhookListener implements EventSubscriberInterface
+class SyncMailchimpListener implements EventSubscriberInterface
 {
     public function __construct(private readonly MessageBusInterface $bus)
     {
@@ -18,13 +18,13 @@ class SendWebhookListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            NewNationalEventInscriptionEvent::class => ['sendWebhook', -100],
-            UpdateNationalEventInscriptionEvent::class => ['sendWebhook', -100],
+            UpdateNationalEventInscriptionEvent::class => ['onInscriptionEdit', -1024],
+            NewNationalEventInscriptionEvent::class => ['onInscriptionEdit', -1024],
         ];
     }
 
-    public function sendWebhook(NationalEventInscriptionEventInterface $event): void
+    public function onInscriptionEdit(NationalEventInscriptionEventInterface $event): void
     {
-        $this->bus->dispatch(new SendWebhookCommand($event->getEventInscription()->getUuid()));
+        $this->bus->dispatch(new NationalEventInscriptionChangeCommand($event->getEventInscription()->getUuid()));
     }
 }

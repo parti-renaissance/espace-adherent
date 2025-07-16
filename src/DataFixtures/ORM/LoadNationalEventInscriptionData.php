@@ -63,10 +63,26 @@ class LoadNationalEventInscriptionData extends Fixture
             $eventInscription->visitDay = 'jour_2';
             $eventInscription->transport = 'train';
 
-            $eventInscription->addPayment($payment = new Payment($uuid = Uuid::uuid4(), $eventInscription, ['orderID' => $uuid->toString()]));
+            $eventInscription->addPayment($payment = new Payment(
+                $uuid = Uuid::uuid4(),
+                $eventInscription,
+                $eventInscription->amount,
+                $eventInscription->transport,
+                $eventInscription->accommodation,
+                $eventInscription->withDiscount,
+                ['orderID' => $uuid->toString()]
+            ));
 
             if (0 === $i % 2) {
-                $eventInscription->addPayment($payment = new Payment($uuid = Uuid::uuid4(), $eventInscription, ['orderID' => $uuid->toString()]));
+                $eventInscription->addPayment($payment = new Payment(
+                    $uuid = Uuid::uuid4(),
+                    $eventInscription,
+                    $eventInscription->amount,
+                    $eventInscription->transport,
+                    $eventInscription->accommodation,
+                    $eventInscription->withDiscount,
+                    ['orderID' => $uuid->toString()]
+                ));
                 $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
                 $eventInscription->status = InscriptionStatusEnum::PENDING;
                 $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
