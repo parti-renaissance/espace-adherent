@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\InscriptionReminder;
 use App\Entity\NationalEvent\NationalEvent;
+use App\Entity\NationalEvent\Payment;
 use App\Entity\PushToken;
 use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
@@ -15,6 +16,7 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class EventInscriptionRepository extends ServiceEntityRepository
@@ -280,62 +282,42 @@ class EventInscriptionRepository extends ServiceEntityRepository
     {
         $results = [];
 
-        if ([] !== $transportModes) {
-            $qb = $this
-                ->createQueryBuilder('ei', 'ei.transport')
-                ->select('ei.transport, COUNT(ei) as count')
-                ->innerJoin('ei.event', 'e')
-                ->where('e.id = :event_id')
-                ->andWhere('ei.status IN (:statuses)')
-                ->setParameter('event_id', $eventId)
-                ->setParameter('statuses', [
-                    InscriptionStatusEnum::APPROVED_STATUSES,
-                    InscriptionStatusEnum::WAITING_PAYMENT,
-                    InscriptionStatusEnum::PENDING,
-                    InscriptionStatusEnum::INCONCLUSIVE,
-                ])
-                ->groupBy('ei.transport')
-            ;
+        foreach (
+            [
+                'transport' => $transportModes,
+                'accommodation' => $accommodationModes,
+            ] as $index => $modes) {
+            $column = 'ei.'.$index;
 
-            if (!empty($transportModes)) {
-                $qb
-                    ->andWhere('ei.transport IN (:transport_modes)')
-                    ->setParameter('transport_modes', $transportModes)
-                ;
-            } else {
-                $qb->andWhere('ei.transport IS NOT NULL');
+            if ([] !== $modes) {
+                $qb = $this->createCountByTransportOrAccommodationQueryBuilder($eventId, $column);
+
+                if (!empty($modes)) {
+                    $qb
+                        ->andWhere($column.' IN (:modes)')
+                        ->setParameter('modes', $modes)
+                    ;
+                }
+
+                $results = array_merge($results, array_column($qb->getQuery()->getResult(), 'count', $index));
+
+                $qb = $this->createCountByTransportOrAccommodationQueryBuilderWithPendingPayment($eventId, $column = 'p.'.$index);
+
+                if (!empty($modes)) {
+                    $qb
+                        ->andWhere($column.' IN (:modes)')
+                        ->setParameter('modes', $modes)
+                    ;
+                }
+
+                foreach (array_column($qb->getQuery()->getResult(), 'count', $index) as $mode => $count) {
+                    if (isset($results[$mode])) {
+                        $results[$mode] += $count;
+                    } else {
+                        $results[$mode] = $count;
+                    }
+                }
             }
-
-            $results = array_column($qb->getQuery()->getResult(), 'count', 'transport');
-        }
-
-        if ([] !== $accommodationModes) {
-            $qb = $this
-                ->createQueryBuilder('ei', 'ei.accommodation')
-                ->select('ei.accommodation, COUNT(ei) as count')
-                ->innerJoin('ei.event', 'e')
-                ->where('e.id = :event_id')
-                ->andWhere('ei.status IN (:statuses)')
-                ->setParameter('event_id', $eventId)
-                ->setParameter('statuses', [
-                    InscriptionStatusEnum::APPROVED_STATUSES,
-                    InscriptionStatusEnum::WAITING_PAYMENT,
-                    InscriptionStatusEnum::PENDING,
-                    InscriptionStatusEnum::INCONCLUSIVE,
-                ])
-                ->groupBy('ei.accommodation')
-            ;
-
-            if (!empty($accommodationModes)) {
-                $qb
-                    ->andWhere('ei.accommodation IN (:accommodation_modes)')
-                    ->setParameter('accommodation_modes', $accommodationModes)
-                ;
-            } else {
-                $qb->andWhere('ei.accommodation IS NOT NULL');
-            }
-
-            $results = array_merge($results, array_column($qb->getQuery()->getResult(), 'count', 'accommodation'));
         }
 
         return $results;
@@ -395,6 +377,51 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->setParameter('ids', $ids)
             ->getQuery()
             ->execute()
+        ;
+    }
+
+    private function createCountByTransportOrAccommodationQueryBuilder(int $eventId, string $index): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('ei', $index)
+            ->select($index)
+            ->addSelect('COUNT(ei) AS count')
+            ->where('ei.event = :event_id')
+            ->andWhere('ei.status IN (:statuses)')
+            ->andWhere($index.' IS NOT NULL')
+            ->setParameter('event_id', $eventId)
+            ->setParameter('statuses', [
+                InscriptionStatusEnum::APPROVED_STATUSES,
+                InscriptionStatusEnum::WAITING_PAYMENT,
+                InscriptionStatusEnum::PENDING,
+                InscriptionStatusEnum::INCONCLUSIVE,
+            ])
+            ->groupBy($index)
+        ;
+    }
+
+    private function createCountByTransportOrAccommodationQueryBuilderWithPendingPayment(int $eventId, string $index): QueryBuilder
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->from(Payment::class, 'p')
+            ->select($index)
+            ->addSelect('COUNT(p.id) AS count')
+            ->innerJoin('p.inscription', 'ei')
+            ->where('p.status = :payment_status')
+            ->andWhere('ei.event = :event_id')
+            ->andWhere('ei.status IN (:statuses)')
+            ->andWhere($index.' IS NOT NULL')
+            ->setParameter('event_id', $eventId)
+            ->setParameter('statuses', [
+                InscriptionStatusEnum::APPROVED_STATUSES,
+                InscriptionStatusEnum::WAITING_PAYMENT,
+                InscriptionStatusEnum::PENDING,
+                InscriptionStatusEnum::INCONCLUSIVE,
+            ])
+            ->setParameter('payment_status', PaymentStatusEnum::PENDING)
+            ->groupBy($index)
         ;
     }
 }

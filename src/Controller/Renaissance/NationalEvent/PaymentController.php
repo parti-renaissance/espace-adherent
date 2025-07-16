@@ -83,6 +83,8 @@ class PaymentController extends AbstractController
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Payment $payment,
     ): Response {
         if (!$payment->isPending()) {
+            $this->addFlash('error', 'Ce paiement n\'est pas valide ou a déjà été traité.');
+
             return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $payment->inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
         }
 

@@ -93,7 +93,6 @@ class CampusTransportType extends AbstractType
             ->add('accommodation', ChoiceType::class, [
                 'choices' => array_column($accommodations, 'id', 'titre'),
                 'expanded' => true,
-                'required' => false,
                 'choice_attr' => function ($key) use ($defaultOptions, $reservedPlaces, $accommodations): array {
                     $options = [
                         ':class' => \sprintf("accommodation === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),

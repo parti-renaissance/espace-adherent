@@ -1429,6 +1429,7 @@ national_event.type.campus: Campus
 national_event.payment.status.pending: En attente de paiement
 national_event.payment.status.confirmed: Paiement confirmé
 national_event.payment.status.error: Erreur de paiement
+national_event.payment.status.expired: Paiement expiré
 
 #
 # Administrators
