@@ -5,7 +5,6 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
-use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\Payment\RequestParamsBuilder;
 use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,7 +90,7 @@ class PaymentController extends AbstractController
 
         $inscription = $payment->inscription;
 
-        if (\in_array($inscription->status, [InscriptionStatusEnum::DUPLICATE, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::REFUSED], true)) {
+        if ($inscription->isRejectedState()) {
             return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
         }
 

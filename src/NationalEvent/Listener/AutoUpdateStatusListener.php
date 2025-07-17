@@ -82,7 +82,7 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
 
         if (
             \in_array($oldStatus, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE, InscriptionStatusEnum::REFUSED], true)
-            && !\in_array($newEventInscription->status, [InscriptionStatusEnum::REFUSED, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE], true)
+            && !$newEventInscription->isRejectedState()
         ) {
             $newEventInscription->status = $oldStatus;
             $newEventInscription->duplicateInscriptionForStatus = $oldEventInscription;

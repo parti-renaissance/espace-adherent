@@ -283,7 +283,7 @@ class EventInscription
 
     public function isPaymentRequired(): bool
     {
-        return $this->event->isPaymentEnabled() && $this->amount > 0;
+        return $this->event->isPaymentEnabled() && $this->amount > 0 && !$this->isRejectedState();
     }
 
     public function addPayment(Payment $payment): void
@@ -291,7 +291,7 @@ class EventInscription
         $this->payments->add($payment);
 
         if (null === $this->paymentStatus) {
-            if (InscriptionStatusEnum::PENDING === $this->status) {
+            if ($this->isPending()) {
                 $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
             }
             $this->paymentStatus = $payment->status;
@@ -398,6 +398,11 @@ class EventInscription
 
     public function allowEditInscription(): bool
     {
-        return $this->event->allowEditInscription() && !\in_array($this->status, InscriptionStatusEnum::REJECTED_STATUSES);
+        return $this->event->allowEditInscription() && !$this->isRejectedState();
+    }
+
+    public function isRejectedState(): bool
+    {
+        return \in_array($this->status, InscriptionStatusEnum::REJECTED_STATUSES, true);
     }
 }
