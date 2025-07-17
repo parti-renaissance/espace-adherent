@@ -50,6 +50,10 @@ class PaymentStatusUpdateCommandHandler
                 $inscription->status = InscriptionStatusEnum::PENDING;
             }
 
+            if ($inscription->visitDay !== $payment->visitDay) {
+                $inscription->visitDay = $payment->visitDay;
+            }
+
             if ($inscription->transport !== $payment->transport) {
                 $inscription->transport = $payment->transport;
             }

@@ -60,6 +60,7 @@ class PaymentController extends AbstractController
             $uuid,
             $inscription,
             $inscription->amount,
+            $inscription->visitDay,
             $inscription->transport,
             $inscription->accommodation,
             $inscription->withDiscount,

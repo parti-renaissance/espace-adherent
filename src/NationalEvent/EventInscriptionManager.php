@@ -88,6 +88,7 @@ class EventInscriptionManager
             $uuid,
             $eventInscription,
             $newAmount,
+            $inscriptionRequest->visitDay,
             $inscriptionRequest->transport,
             $inscriptionRequest->accommodation,
             $inscriptionRequest->withDiscount,
@@ -96,6 +97,7 @@ class EventInscriptionManager
 
         if (!$eventInscription->amount) {
             $eventInscription->amount = $newAmount;
+            $eventInscription->visitDay = $inscriptionRequest->visitDay;
             $eventInscription->transport = $inscriptionRequest->transport;
             $eventInscription->accommodation = $inscriptionRequest->accommodation;
             $eventInscription->withDiscount = $inscriptionRequest->withDiscount;

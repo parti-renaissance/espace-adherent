@@ -34,6 +34,9 @@ class Payment
     #[ORM\Column(nullable: true)]
     public ?string $accommodation = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $visitDay = null;
+
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $withDiscount = null;
 
@@ -53,6 +56,7 @@ class Payment
         UuidInterface $uuid,
         EventInscription $inscription,
         ?int $amount = null,
+        ?string $visitDay = null,
         ?string $transport = null,
         ?string $accommodation = null,
         ?bool $withDiscount = null,
@@ -60,6 +64,7 @@ class Payment
     ) {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
+        $this->visitDay = $visitDay;
         $this->amount = $amount;
         $this->transport = $transport;
         $this->accommodation = $accommodation;
