@@ -8,4 +8,8 @@
     &--info {
         @apply text-ui_blue-60 border-ui_blue-20 bg-ui_blue-5;
     }
+
+    &--error {
+        @apply text-ui_red-70 border-ui_red-50 bg-ui_red-5;
+    }
 }
