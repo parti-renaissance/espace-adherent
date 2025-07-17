@@ -422,6 +422,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $thirdInscription->status);
         self::assertSame(PaymentStatusEnum::PENDING, $thirdInscription->paymentStatus);
 
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus/'.$thirdInscription->getUuid());
+
+        self::assertStringContainsString('Aucun paiement n’a encore été enregistré.', $crawler->filter('body')->text());
+
         /** @var Payment $payment */
         $payment = $payments[0];
 
@@ -448,6 +452,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus/'.$thirdInscription->getUuid());
 
+        self::assertStringNotContainsString('Aucun paiement n’a encore été enregistré.', $crawler->filter('body')->text());
         self::assertStringContainsString('L’essentiel du Campus se déroule sur la deuxième journée.', $crawler->filter('body')->text());
         self::assertStringContainsString('Train (Paris >< Arras) Dimanche', $crawler->filter('body')->text());
         self::assertStringContainsString('50 € - Paiement accepté', $crawler->filter('body')->text());

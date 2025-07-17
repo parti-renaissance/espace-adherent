@@ -339,7 +339,7 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->andWhere('ei.createdAt < :since')
             ->setParameter('now', $now)
             ->setParameter('since', (clone $now)->modify('-10 minutes'))
-            ->setParameter('statuses', [InscriptionStatusEnum::REFUSED, InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE])
+            ->setParameter('statuses', InscriptionStatusEnum::REJECTED_STATUSES)
             ->setParameter('payment_status', PaymentStatusEnum::CONFIRMED)
             ->getQuery()
             ->getResult()

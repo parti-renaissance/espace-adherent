@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\NationalEvent\InscriptionStatusEnum;
+use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,8 +75,8 @@ class SyncEventInscriptionDuplicatesCommand extends Command
                     ->getResult()
                 ;
 
-                $duplicates = array_filter($inscriptions, fn ($i) => InscriptionStatusEnum::DUPLICATE === $i->status);
-                $mainEntries = array_filter($inscriptions, fn ($i) => InscriptionStatusEnum::DUPLICATE !== $i->status);
+                $duplicates = array_filter($inscriptions, static fn (EventInscription $i) => $i->isDuplicate());
+                $mainEntries = array_filter($inscriptions, static fn (EventInscription $i) => !$i->isDuplicate());
                 $mainInscription = array_values($mainEntries)[0];
 
                 usort($duplicates, fn ($a, $b) => $a->getCreatedAt() <=> $b->getCreatedAt());

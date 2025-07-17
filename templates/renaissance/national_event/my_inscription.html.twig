@@ -51,6 +51,12 @@
             <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} md:order-none">
                 {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
+                {% if inscription.isPaymentRequired() and not inscription.isPaymentSuccess() %}
+                    <twig:ReParagraphStatus status="warning" icon slim="true">
+                        Aucun paiement n’a encore été enregistré. Veuillez <a class="font-medium text-ui_blue-50" href="{{ path('app_national_event_new_payment', {slug: event.slug, uuid: inscription.uuid}) }}">procéder au règlement</a> pour valider votre inscription.
+                    </twig:ReParagraphStatus>
+                {% endif %}
+
                 <div class="flex justify-between items-center">
                     <h2 class="font-medium text-2xl">Mon inscription</h2>
 
