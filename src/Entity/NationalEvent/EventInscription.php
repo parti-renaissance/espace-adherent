@@ -395,4 +395,9 @@ class EventInscription
     {
         return InscriptionStatusEnum::PENDING === $this->status;
     }
+
+    public function allowEditInscription(): bool
+    {
+        return $this->event->allowEditInscription() && !\in_array($this->status, InscriptionStatusEnum::REJECTED_STATUSES);
+    }
 }

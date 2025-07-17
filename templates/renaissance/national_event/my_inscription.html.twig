@@ -96,7 +96,7 @@
                     </div>
                 </div>
 
-                {% if event.allowEditInscription() %}
+                {% if inscription.allowEditInscription() %}
                     <twig:ReButton stroke tag="a" href="{{ path('app_national_event_edit_inscription', {slug: event.getSlug(), uuid: inscription.getUuid().toString()}) }}">Modifier mes informations</twig:ReButton>
                 {% endif %}
 
@@ -205,7 +205,7 @@
                     {% endif %}
                 </div>
 
-                {% if event.allowEditInscription() %}
+                {% if inscription.allowEditInscription() %}
                     <twig:ReButton stroke tag="a" href="{{ path('app_national_event_edit_transport', {slug: event.getSlug(), uuid: inscription.getUuid().toString()}) }}">Changer de forfait</twig:ReButton>
                 {% endif %}
             </twig:Atoms:ReCard>

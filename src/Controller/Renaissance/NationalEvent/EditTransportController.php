@@ -36,7 +36,7 @@ class EditTransportController extends AbstractController
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
 
-        if (!$event->allowEditInscription()) {
+        if (!$inscription->allowEditInscription()) {
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
 
             if ($event->isCampus()) {

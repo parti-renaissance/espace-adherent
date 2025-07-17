@@ -31,7 +31,7 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
     {
         $eventInscription = $event->getEventInscription();
 
-        if (!$eventInscription->isDuplicate() && !$eventInscription->amount) {
+        if (!$eventInscription->isDuplicate() && !$eventInscription->amount && !$eventInscription->confirmationSentAt) {
             $this->sendConfirmationEmail($eventInscription);
         }
     }
@@ -43,10 +43,6 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
     private function sendConfirmationEmail(EventInscription $eventInscription): void
     {
-        if ($eventInscription->confirmationSentAt) {
-            return;
-        }
-
         $departmentCode = $eventInscription->postalCode ? substr($eventInscription->postalCode, 0, 2) : null;
 
         $zone = [];

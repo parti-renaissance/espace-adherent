@@ -46,6 +46,7 @@ class PaymentAdmin extends AbstractAdmin
             ->add('uuid', null, ['label' => 'Uuid'])
             ->add('inscription.event', null, ['label' => 'Event'])
             ->add('inscription', null, ['label' => 'Inscrit', 'template' => 'admin/national_event/list_identity.html.twig'])
+            ->add('visitDay', null, ['label' => 'Jour'])
             ->add('transport', null, ['label' => 'Forfait'])
             ->add('accommodation', null, ['label' => 'Hébergement'])
             ->add('amountInEuro', null, ['label' => 'Montant €'])
