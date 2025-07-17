@@ -53,6 +53,14 @@ class Manager
             );
         }
 
+        // Ensure lang attribute is set in <html> tag
+        $content = preg_replace_callback(
+            '/<html\b([^>]*)>/i',
+            static fn ($matches) => str_contains($matches[1], 'lang=') ? $matches[0] : '<html lang="fr"'.$matches[1].'>',
+            $content,
+            1
+        );
+
         return $content;
     }
 
