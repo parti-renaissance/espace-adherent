@@ -443,8 +443,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[0]->status);
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[1]->status);
 
-        self::assertNull($duplicatedInscriptions[0]->paymentStatus);
-        self::assertNull($duplicatedInscriptions[1]->paymentStatus);
+        self::assertSame(PaymentStatusEnum::PENDING, $duplicatedInscriptions[0]->paymentStatus);
+        self::assertSame(PaymentStatusEnum::PENDING, $duplicatedInscriptions[1]->paymentStatus);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus/'.$thirdInscription->getUuid());
 
@@ -453,6 +453,111 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertStringContainsString('50 € - Paiement accepté', $crawler->filter('body')->text());
         self::assertStringContainsString('Chambre partagée (à deux)', $crawler->filter('body')->text());
         self::assertStringContainsString('49 € - Paiement accepté', $crawler->filter('body')->text());
+    }
+
+    public function testPreviousCampusInscriptionWithFailedPaymentMarkedAsDuplicate(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['campus_event_inscription[acceptCgu]']->tick();
+        $form['campus_event_inscription[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_2',
+                'transport' => 'train',
+                'accommodation' => 'chambre_individuelle',
+                'utmSource' => 'inscription_1',
+            ],
+        ]);
+
+        /** @var EventInscription $firstInscription */
+        $firstInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_1']);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $firstInscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement-process', $firstInscription->getPayments()[0]->getUuid()), $this->client);
+        $this->client->followRedirect();
+
+        $this->client->submitForm('Continuer vers ma banque');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->client->submitForm('Continuer vers ma banque');
+
+        $this->em->clear();
+
+        /** @var EventInscription $firstInscription */
+        $firstInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_1']);
+
+        self::assertSame(1, $firstInscription->countPayments());
+        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $firstInscription->status);
+        self::assertSame(PaymentStatusEnum::PENDING, $firstInscription->paymentStatus);
+
+        $this->assertCountMails(0, NationalEventInscriptionConfirmationMessage::class);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['campus_event_inscription[acceptCgu]']->tick();
+        $form['campus_event_inscription[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'visitDay' => 'jour_1_et_2',
+                'transport' => 'gratuit',
+                'utmSource' => 'inscription_2',
+            ],
+        ]);
+
+        /** @var EventInscription $secondInscription */
+        $secondInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_2']);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s?confirmation=1', $secondInscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+
+        $this->em->clear();
+
+        /** @var EventInscription $secondInscription */
+        $secondInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_2']);
+
+        self::assertSame(0, $secondInscription->countPayments());
+        self::assertSame(InscriptionStatusEnum::PENDING, $secondInscription->status);
+        self::assertNull($secondInscription->paymentStatus);
+
+        $duplicatedInscriptions = $this->eventInscriptionRepository->findBy(['utmSource' => ['inscription_1', 'inscription_2']]);
+        self::assertCount(2, $duplicatedInscriptions);
+
+        self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[0]->status);
+        self::assertSame(InscriptionStatusEnum::PENDING, $duplicatedInscriptions[1]->status);
+
+        self::assertSame(PaymentStatusEnum::PENDING, $duplicatedInscriptions[0]->paymentStatus);
+        self::assertNull($duplicatedInscriptions[1]->paymentStatus);
+
+        self::assertSame('jour_1_et_2', $duplicatedInscriptions[1]->visitDay);
+        self::assertSame('gratuit', $duplicatedInscriptions[1]->transport);
     }
 
     public function testNewCampusInscriptionMarkedAsDuplicateAfterSuccessfulPaymentOfFirstOne(): void

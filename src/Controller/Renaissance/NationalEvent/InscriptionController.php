@@ -8,6 +8,7 @@ use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
@@ -92,7 +93,7 @@ class InscriptionController extends AbstractController
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
             $inscription = $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest);
 
-            if (PaymentStatusEnum::PENDING === $inscription->paymentStatus && $inscription->isPaymentRequired()) {
+            if (InscriptionStatusEnum::DUPLICATE !== $inscription->status && PaymentStatusEnum::PENDING === $inscription->paymentStatus && $inscription->isPaymentRequired()) {
                 return $this->redirectToRoute('app_national_event_new_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
             }
 
