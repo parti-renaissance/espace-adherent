@@ -64,6 +64,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                         return false;
                     }
 
+                    $qb->getQueryBuilder()->leftJoin($alias.'.adherent', 'adherent');
+
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
                         $value->getValue(),
@@ -78,6 +80,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                         [
                             "$alias.id",
                             "$alias.uuid",
+                            "$alias.publicId",
+                            'adherent.publicId',
                         ]
                     );
 
@@ -132,6 +136,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
             ->add('uuid', null, ['label' => 'Uuid', 'header_style' => 'min-width: 270px;'])
+            ->add('publicId', null, ['label' => 'Public ID', 'header_style' => 'min-width: 90px;'])
         ;
     }
 
@@ -157,6 +162,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
                 ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
+                ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
                 ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
                 ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
@@ -210,6 +216,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Événement national UUID' => $nationalEvent->getUuid()->toString(),
                 'Participant UUID' => $inscription->getUuid()->toString(),
                 'Email' => $inscription->addressEmail,
+                'PublicId' => $inscription->getPublicId(),
                 'Civilité' => $inscription->gender ? $translator->trans(array_search($inscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
                 'Prénom' => $inscription->firstName,
                 'Nom' => $inscription->lastName,

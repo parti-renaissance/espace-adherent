@@ -9,6 +9,7 @@ use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
 use App\NationalEvent\Payment\RequestParamsBuilder;
+use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +26,7 @@ class EventInscriptionManager
         private readonly AdherentRepository $adherentRepository,
         private readonly RequestParamsBuilder $requestParamsBuilder,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MeetingInscriptionPublicIdGenerator $meetingInscriptionPublicIdGenerator,
     ) {
     }
 
@@ -32,6 +34,10 @@ class EventInscriptionManager
     {
         $eventInscription = $existingInscription ?? new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
+
+        if (!$eventInscription->getPublicId()) {
+            $eventInscription->setPublicId($this->meetingInscriptionPublicIdGenerator->generate());
+        }
 
         if ($adherent = $this->adherentRepository->findOneByEmail($eventInscription->addressEmail)) {
             $eventInscription->adherent = $adherent;

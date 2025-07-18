@@ -3,7 +3,6 @@
 namespace App\Membership;
 
 use App\Address\PostAddressFactory;
-use App\Adherent\PublicIdGenerator;
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
@@ -13,6 +12,7 @@ use App\Entity\Administrator;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
+use App\PublicId\AdherentPublicIdGenerator;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
@@ -22,10 +22,10 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 class AdherentFactory
 {
     private PasswordHasherInterface $hasher;
-    private PublicIdGenerator $publicIdGenerator;
+    private AdherentPublicIdGenerator $publicIdGenerator;
     private PostAddressFactory $addressFactory;
 
-    public function __construct(PasswordHasherFactoryInterface $hasherFactory, PublicIdGenerator $publicIdGenerator, ?PostAddressFactory $addressFactory = null)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory, AdherentPublicIdGenerator $publicIdGenerator, ?PostAddressFactory $addressFactory = null)
     {
         $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
         $this->publicIdGenerator = $publicIdGenerator;

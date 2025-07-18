@@ -42,6 +42,7 @@ use App\Membership\MembershipSourceEnum;
 use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\PublicId\PublicIdRepositoryInterface;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -61,7 +62,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
+class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface, PublicIdRepositoryInterface
 {
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
@@ -1708,5 +1709,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function publicIdExists(string $publicId): bool
+    {
+        return $this->count(['publicId' => $publicId]) > 0;
     }
 }
