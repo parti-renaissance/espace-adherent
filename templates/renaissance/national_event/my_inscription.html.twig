@@ -82,6 +82,10 @@
                             {{ inscription.addressEmail }}
                         </div>
                         <div>
+                            <span class="font-medium">Votre code personnel :</span>
+                            {{ inscription.getPublicId() }}
+                        </div>
+                        <div>
                             <span class="font-medium">Code postal :</span>
                             {{ inscription.postalCode }}
                         </div>

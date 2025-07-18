@@ -12,6 +12,7 @@ use App\Entity\PushToken;
 use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
+use App\PublicId\PublicIdRepositoryInterface;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-class EventInscriptionRepository extends ServiceEntityRepository
+class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
@@ -442,5 +443,10 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+
+    public function publicIdExists(string $publicId): bool
+    {
+        return $this->count(['publicId' => $publicId]) > 0;
     }
 }

@@ -178,7 +178,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setBirthDay($eventInscription->birthdate)
             ->setAdherentTags(array_intersect(TagEnum::getAdherentTags(), $eventInscription->adherent?->tags ?? []))
             ->setElectTags(array_intersect(TagEnum::getElectTags(), $eventInscription->adherent?->tags ?? []))
-            ->setPublicId($eventInscription->adherent?->getPublicId())
+            ->setPublicId($eventInscription->getPublicId())
             ->setZipCode($eventInscription->postalCode)
             ->setInscriptionDate($eventInscription->getCreatedAt())
             ->setConfirmationDate($eventInscription->confirmedAt)

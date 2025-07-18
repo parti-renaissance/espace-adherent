@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
+use App\Entity\PublicIdTrait;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
@@ -33,6 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventInscription
 {
     use EntityIdentityTrait;
+    use PublicIdTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
@@ -404,5 +406,10 @@ class EventInscription
     public function isRejectedState(): bool
     {
         return \in_array($this->status, InscriptionStatusEnum::REJECTED_STATUSES, true);
+    }
+
+    public function getPublicId(): ?string
+    {
+        return $this->adherent?->getPublicId() ?? $this->publicId;
     }
 }
