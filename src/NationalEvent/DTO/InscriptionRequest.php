@@ -7,8 +7,8 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\NationalEventTransportMode;
-use App\Validator\PublicId;
 use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\RoommateIdentifier;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
@@ -69,7 +69,7 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     public bool $withDiscount = false;
 
     #[Assert\Length(min: 6, max: 7)]
-    #[PublicId]
+    #[RoommateIdentifier]
     public ?string $roommateIdentifier = null;
 
     public bool $transportNeeds = false;

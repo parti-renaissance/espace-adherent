@@ -449,4 +449,9 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     {
         return $this->count(['publicId' => $publicId]) > 0;
     }
+
+    public function findByPublicId(string $publicId): ?EventInscription
+    {
+        return $this->findOneBy(['publicId' => $publicId]);
+    }
 }
