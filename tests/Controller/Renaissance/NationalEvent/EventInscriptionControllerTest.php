@@ -337,8 +337,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'campus_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
-                'firstName' => 'John',
-                'lastName' => 'Doe',
+                'firstName' => 'Julien',
+                'lastName' => 'Dupont',
                 'birthPlace' => 'Paris',
                 'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
                 'postalCode' => '75001',
@@ -445,7 +445,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertCount(2, $duplicatedInscriptions);
 
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[0]->status);
-        self::assertSame(InscriptionStatusEnum::DUPLICATE, $duplicatedInscriptions[1]->status);
+        self::assertSame(InscriptionStatusEnum::CANCELED, $duplicatedInscriptions[1]->status);
 
         self::assertSame(PaymentStatusEnum::PENDING, $duplicatedInscriptions[0]->paymentStatus);
         self::assertSame(PaymentStatusEnum::PENDING, $duplicatedInscriptions[1]->paymentStatus);

@@ -424,4 +424,23 @@ class EventInscriptionRepository extends ServiceEntityRepository
             ->groupBy($index)
         ;
     }
+
+    public function closeWithWaitingPayment(EventInscription $eventInscription): void
+    {
+        $this->createQueryBuilder('ei')
+            ->update()
+            ->set('ei.status', ':new_status')
+            ->set('ei.canceledAt', ':canceled_at')
+            ->where('ei.status = :status')
+            ->andWhere('ei.addressEmail = :email')
+            ->andWhere('ei.event = :event')
+            ->setParameter('new_status', InscriptionStatusEnum::CANCELED)
+            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->setParameter('canceled_at', new \DateTime())
+            ->setParameter('email', $eventInscription->addressEmail)
+            ->setParameter('event', $eventInscription->event)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }
