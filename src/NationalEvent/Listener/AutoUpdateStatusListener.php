@@ -63,15 +63,13 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
     {
         $eventInscription = $event->eventInscription;
 
-        if (!$eventInscription->isPaymentSuccess()) {
-            return;
-        }
-
         $this->acceptInscription($eventInscription);
 
         while ($oldInscription = $this->eventInscriptionRepository->findDuplicate($eventInscription)) {
             $this->markAsDuplicatedOldInscription($oldInscription, $eventInscription);
         }
+
+        $this->eventInscriptionRepository->closeWithWaitingPayment($eventInscription);
     }
 
     public function markAsDuplicatedOldInscription(EventInscription $oldEventInscription, EventInscription $newEventInscription): void
