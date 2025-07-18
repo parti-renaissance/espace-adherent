@@ -77,6 +77,13 @@ class EventInscriptionManager
             return null;
         }
 
+        if ($eventInscription->isPaymentSuccess() && $newAmount === $eventInscription->amount) {
+            $eventInscription->updateTransportFromRequest($inscriptionRequest);
+            $this->entityManager->flush();
+
+            return null;
+        }
+
         $paymentParams = $this->requestParamsBuilder->build(
             $uuid = Uuid::uuid4(),
             $newAmount,
