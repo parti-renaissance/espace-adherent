@@ -28,17 +28,20 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
         if (!$data->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
-            $currentUser = $this->security->getUser();
-            $data->setAuthor($scope ? $scope->getMainUser() : $currentUser);
+            $data->setAuthor($scope ? $scope->getMainUser() : $this->security->getUser());
+        }
 
-            if ($scope && $data instanceof AuthorInstanceInterface) {
-                $data->setAuthor($currentUser);
-                $data->setAuthorScope($scope->getCode());
-                $data->setAuthorRole($scope->getRoleName());
-                $data->setAuthorInstance($scope->getScopeInstance());
-                $data->setAuthorZone(implode(', ', $scope->getZoneNames()) ?: null);
-                $data->setAuthorTheme($scope->getAttribute('theme'));
-            }
+        if (
+            $data instanceof AuthorInstanceInterface
+            && !$data->getAuthorInstance()
+            && ($scope = $this->scopeGeneratorResolver->generate())
+        ) {
+            $data->setAuthor($scope->getCurrentUser());
+            $data->setAuthorScope($scope->getCode());
+            $data->setAuthorRole($scope->getRoleName());
+            $data->setAuthorInstance($scope->getScopeInstance());
+            $data->setAuthorZone(implode(', ', $scope->getZoneNames()) ?: null);
+            $data->setAuthorTheme($scope->getAttribute('theme'));
         }
 
         return $data;

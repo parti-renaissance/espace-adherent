@@ -1126,16 +1126,16 @@ Feature:
                 "published": false,
                 "author": {
                     "uuid": "@uuid@",
-                    "first_name": "Bob",
-                    "last_name": "Senateur (59)"
+                    "first_name": "<first_name>",
+                    "last_name": "<last_name>"
                 }
             }
             """
 
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | scope                                          | first_name | last_name     |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario: As a logged-in user with National role I can update a news
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
