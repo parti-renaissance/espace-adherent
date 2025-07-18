@@ -73,7 +73,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?string $visitDay = null;
     private ?string $accessibility = null;
     private ?string $transport = null;
-    private ?string $accomodation = null;
+    private ?string $accommodation = null;
     private ?bool $isTransportNeeds = null;
     private ?bool $isWithDiscount = null;
     private ?UuidInterface $participantUuid = null;
@@ -178,6 +178,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setBirthDay($eventInscription->birthdate)
             ->setAdherentTags(array_intersect(TagEnum::getAdherentTags(), $eventInscription->adherent?->tags ?? []))
             ->setElectTags(array_intersect(TagEnum::getElectTags(), $eventInscription->adherent?->tags ?? []))
+            ->setPublicId($eventInscription->adherent?->getPublicId())
             ->setZipCode($eventInscription->postalCode)
             ->setInscriptionDate($eventInscription->getCreatedAt())
             ->setConfirmationDate($eventInscription->confirmedAt)
@@ -190,7 +191,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setAccessibility($eventInscription->accessibility)
             ->setIsTransportNeeds($eventInscription->transportNeeds)
             ->setTransport($eventInscription->transport)
-            ->setAccomodation($eventInscription->accommodation)
+            ->setAccommodation($eventInscription->accommodation)
             ->setIsWithDiscount($eventInscription->withDiscount)
             ->setParticipantUuid($eventInscription->getUuid())
             ->setStatus($eventInscription->status)
@@ -216,7 +217,7 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setPublicId(string $publicId): self
+    public function setPublicId(?string $publicId): self
     {
         $this->publicId = $publicId;
 
@@ -729,8 +730,8 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport;
         }
 
-        if (null !== $this->accomodation) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accomodation;
+        if (null !== $this->accommodation) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accommodation;
         }
 
         if (null !== $this->isWithDiscount) {
@@ -902,7 +903,7 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setAccessibility(?bool $accessibility = null): self
+    public function setAccessibility(?string $accessibility = null): self
     {
         $this->accessibility = $accessibility;
 
@@ -923,9 +924,9 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setAccomodation(?string $accomodation = null): self
+    public function setAccommodation(?string $accommodation = null): self
     {
-        $this->accomodation = $accomodation;
+        $this->accommodation = $accommodation;
 
         return $this;
     }
