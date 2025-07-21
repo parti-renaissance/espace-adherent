@@ -168,18 +168,16 @@ class AdherentMessage implements AdherentMessageInterface
      * @var string
      */
     #[Assert\Length(max: 255)]
-    #[Assert\NotBlank]
     #[Groups(['message_read', 'message_read_list', 'message_write'])]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private $label;
 
     /**
      * @var string
      */
     #[Assert\Length(max: 255)]
-    #[Assert\NotBlank]
     #[Groups(['message_read', 'message_read_list', 'message_write', 'message_read_content'])]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private $subject;
 
     /**
@@ -255,12 +253,12 @@ class AdherentMessage implements AdherentMessageInterface
         return $this->subject;
     }
 
-    public function setLabel(string $label): void
+    public function setLabel(?string $label): void
     {
         $this->label = $label;
     }
 
-    public function setSubject(string $subject): void
+    public function setSubject(?string $subject): void
     {
         $this->subject = $subject;
     }

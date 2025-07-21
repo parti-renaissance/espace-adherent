@@ -29,7 +29,7 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
-    public function setSubject(string $subject): self
+    public function setSubject(?string $subject): self
     {
         $this->subject = $subject;
 
