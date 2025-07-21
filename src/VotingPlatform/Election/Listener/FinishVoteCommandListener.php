@@ -4,13 +4,13 @@ namespace App\VotingPlatform\Election\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
-use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
+use App\Repository\VotingPlatform\ElectionPoolRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Election\Event\NewVote;
@@ -33,6 +33,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         private readonly CandidateGroupRepository $candidateGroupRepository,
         private readonly VoteCommandStorage $storage,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ElectionPoolRepository $poolRepository,
     ) {
     }
 
@@ -114,8 +115,9 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $voteResult = new VoteResult($electionRound, $voterKey, $zoneCode);
 
         foreach ($command->getChoicesByPools() as $poolId => $choice) {
-            /** @var ElectionPool $pool */
-            $pool = $this->entityManager->getPartialReference(ElectionPool::class, $poolId);
+            if (!$pool = $this->poolRepository->findForResult($poolId)) {
+                continue;
+            }
 
             if ($command->isMajorityVote()) {
                 foreach ($choice as $candidateGroupUuid => $mention) {

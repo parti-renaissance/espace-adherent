@@ -38,7 +38,10 @@ class Poll
     /** @return PollQuestion[] */
     public function getQuestions(): array
     {
-        return $this->questions->toArray();
+        $questions = $this->questions->toArray();
+        usort($questions, static fn (PollQuestion $a, PollQuestion $b) => $a->getPosition() <=> $b->getPosition());
+
+        return $questions;
     }
 
     public function addQuestion(PollQuestion $question): void

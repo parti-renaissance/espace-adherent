@@ -42,12 +42,13 @@ class VoteController extends AbstractController
             return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
         }
 
+        $candidateGroups = $currentPool->isSeparator ? [] : $currentPool->getCandidateGroups();
         $form = $this
             ->createForm(
                 VotePoolCollectionType::class,
                 $voteCommand,
                 [
-                    'candidate_groups' => $candidateGroups = $currentPool->getCandidateGroups(),
+                    'candidate_groups' => $candidateGroups,
                     'designation' => $election->getDesignation(),
                 ]
             )

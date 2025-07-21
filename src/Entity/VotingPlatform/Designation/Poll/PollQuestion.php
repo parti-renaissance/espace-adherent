@@ -11,6 +11,7 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\Expression('this.isSeparator or this.countChoices() >= 2')]
 #[ORM\Entity]
 #[ORM\Table(name: 'designation_poll_question')]
 class PollQuestion
@@ -27,11 +28,13 @@ class PollQuestion
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isSeparator = false;
+
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'questions')]
     public ?Poll $poll = null;
 
-    #[Assert\Count(min: 2)]
     #[Assert\Valid]
     #[Groups(['designation_read'])]
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionChoice::class, cascade: ['persist'], orphanRemoval: true)]
@@ -61,5 +64,10 @@ class PollQuestion
     public function removeChoice(QuestionChoice $choice): void
     {
         $this->choices->removeElement($choice);
+    }
+
+    public function countChoices(): int
+    {
+        return $this->choices->count();
     }
 }
