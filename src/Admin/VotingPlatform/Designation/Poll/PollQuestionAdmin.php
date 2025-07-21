@@ -15,6 +15,7 @@ class PollQuestionAdmin extends AbstractAdmin
     {
         $form
             ->add('content', null, ['label' => 'Question'])
+            ->add('isSeparator', null, ['label' => 'Question intercalaire', 'required' => false])
             ->add('choices', CollectionType::class, [
                 'label' => 'Choix de réponse',
                 'error_bubbling' => false,

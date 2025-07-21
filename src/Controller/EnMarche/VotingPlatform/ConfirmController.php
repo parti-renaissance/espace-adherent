@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPool;
 use App\Form\ConfirmActionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,7 @@ class ConfirmController extends AbstractController
         return $this->renderElectionTemplate('voting_platform/confirmation.html.twig', $election, [
             'form' => $form->createView(),
             'vote_command' => $voteCommand,
-            'pools' => $election->getCurrentRound()->getElectionPools(),
+            'pools' => array_filter($election->getCurrentRound()->getElectionPools(), static fn (ElectionPool $pool) => !$pool->isSeparator),
             'candidate_groups' => $this->candidateGroupRepository->findByUuids($voteCommand->getCandidateGroupUuids()),
         ]);
     }

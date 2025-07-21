@@ -7,6 +7,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,9 +24,15 @@ class VotePoolCollectionType extends AbstractType
                 'candidate_groups' => $options['candidate_groups'],
             ]);
         } else {
-            $builder->add('poolChoice', VoteChoiceType::class, [
-                'choices' => $this->getFilteredCandidates($designation, $options['candidate_groups']),
-            ]);
+            if (!empty($options['candidate_groups'])) {
+                $builder->add('poolChoice', VoteChoiceType::class, [
+                    'choices' => $this->getFilteredCandidates($designation, $options['candidate_groups']),
+                ]);
+            } else {
+                $builder->add('poolChoice', HiddenType::class, [
+                    'data' => -1,
+                ]);
+            }
         }
 
         $builder->add('confirm', SubmitType::class);
@@ -37,7 +44,7 @@ class VotePoolCollectionType extends AbstractType
             return $group->getUuid()->toString();
         }, $candidateGroups);
 
-        if ($designation->isBlankVoteEnabled()) {
+        if (!empty($choices) && $designation->isBlankVoteEnabled()) {
             $choices[] = VoteChoice::BLANK_VOTE_VALUE;
         }
 

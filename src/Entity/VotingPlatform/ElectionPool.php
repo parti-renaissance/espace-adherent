@@ -2,10 +2,11 @@
 
 namespace App\Entity\VotingPlatform;
 
+use App\Repository\VotingPlatform\ElectionPoolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ElectionPoolRepository::class)]
 #[ORM\Table(name: 'voting_platform_election_pool')]
 class ElectionPool
 {
@@ -45,10 +46,14 @@ class ElectionPool
     #[ORM\ManyToMany(targetEntity: ElectionRound::class, mappedBy: 'electionPools', cascade: ['all'], orphanRemoval: true)]
     private $electionRounds;
 
-    public function __construct(string $code, ?string $description = null)
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isSeparator = false;
+
+    public function __construct(string $code, ?string $description = null, bool $isSeparator = false)
     {
         $this->code = $code;
         $this->description = $description;
+        $this->isSeparator = $isSeparator;
         $this->candidateGroups = new ArrayCollection();
         $this->electionRounds = new ArrayCollection();
     }
