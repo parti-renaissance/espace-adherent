@@ -32,3 +32,5 @@ framework:
                     'client-secret': '%env(OHME_CLIENT_SECRET)%'
             google_place.client:
                 base_uri: 'https://maps.googleapis.com/maps/api/place/'
+            ogone.client:
+                base_uri: '%env(OGONE_DIRECT_URL)%'

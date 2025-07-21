@@ -61,6 +61,8 @@ services:
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
             $ogonePspId: '%env(OGONE_PSPID)%'
+            $ogoneUserId: '%env(OGONE_USER_ID)%'
+            $ogoneUserPwd: '%env(OGONE_USER_PWD)%'
             $ogoneShaInKey: '%env(OGONE_SHAINKEY)%'
             $ogoneWebhookKey: '%env(OGONE_WEBHOOK_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
