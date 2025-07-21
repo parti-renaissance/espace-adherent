@@ -18,6 +18,10 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('The message is not yet ready to send.');
         }
 
+        if (!$message->getSubject()) {
+            throw new BadRequestHttpException('Subject is required.');
+        }
+
         if (!$message->getRecipientCount()) {
             throw new BadRequestHttpException('Your message should have a filter');
         }
