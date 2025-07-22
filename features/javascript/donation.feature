@@ -39,15 +39,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I wait until I see "60.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
-            | NUMERO_CARTE | 1111222233334444 |
-        And I wait 2 seconds
-        And I click the "#pbx-card-button-choice1" selector
+            | NUMERO_CARTE | 4000000000002503 |
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I wait 1 seconds
+        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
+        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I click the ".textCenter:last-child a" selector
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
@@ -85,15 +83,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I wait until I see "60.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
-            | NUMERO_CARTE | 1111222233334444 |
-        And I wait 2 seconds
-        And I click the "#pbx-card-button-choice1" selector
+            | NUMERO_CARTE | 4000000000002503 |
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
+        And I wait 2 seconds
+        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I wait 1 seconds
         And I click the ".textCenter:last-child a" selector
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
@@ -150,15 +146,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I wait until I see "60.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
-            | NUMERO_CARTE | 1111222233334444 |
-        And I wait 2 seconds
-        And I click the "#pbx-card-button-choice1" selector
+            | NUMERO_CARTE | 4000000000002503 |
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I wait 1 seconds
+        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
+        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I click the ".textCenter:last-child a" selector
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
