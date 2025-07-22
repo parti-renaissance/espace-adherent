@@ -257,8 +257,20 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
-    protected function getAudience(mixed $object): ?array
+    protected function getAudience(mixed $object): array
     {
-        return null;
+        return [
+            'tag' => false,
+            'zone' => false,
+            'committee' => false,
+            'mandate_type' => false,
+            'declared_mandate' => false,
+            'first_membership_since' => false,
+            'first_membership_before' => false,
+            'last_membership_since' => false,
+            'last_membership_before' => false,
+            'registered_since' => false,
+            'registered_before' => false,
+        ];
     }
 }
