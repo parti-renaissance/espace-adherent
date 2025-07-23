@@ -888,6 +888,16 @@ Feature:
                 "total": 12
             }
             """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "contacts": 8,
+                "total": 12
+            }
+            """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
