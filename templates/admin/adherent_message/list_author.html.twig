@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set author = object.getAuthor() %}
+
+    {% if author %}
+        {{ include(('admin/adherent/display_fullname_certified.html.twig'), {object: author}) }}
+    {% endif %}
+{% endblock %}

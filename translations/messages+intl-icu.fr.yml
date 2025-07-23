@@ -908,6 +908,8 @@ payment.message.card_absent: Votre carte bancaire semble ne pas être reconnue p
 adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
 adherent_message.filter.role.CommitteeProvisionalSupervisors: 'Animateurs provisoire de comités locaux'
 adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'
+adherent_message.source.cadre: Cadre
+adherent_message.source.vox: VOX
 draft: Brouillon
 sent: Envoyé
 

@@ -1,0 +1,21 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% for campaign in object.mailchimpCampaigns %}
+        {% set report = campaign.report %}
+
+        {% if report %}
+            Contacts: {{ report.emailSent }}
+            <br />
+            Ouvertues: {{ report.openUnique }}
+            <br />
+            Clics: {{ report.clickUnique }}
+            <br />
+            Désabonnements: {{ report.unsubscribed }}
+        {% endif %}
+
+        {% if not loop.first %}
+            <br />
+        {% endif %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set sender = object.getSender() %}
+
+    {% if sender %}
+        {{ include(('admin/adherent/display_fullname_certified.html.twig'), {object: sender}) }}
+    {% endif %}
+{% endblock %}
