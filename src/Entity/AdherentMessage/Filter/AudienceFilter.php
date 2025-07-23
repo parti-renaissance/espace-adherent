@@ -13,7 +13,6 @@ use App\Validator\ManagedZone;
 use App\Validator\ValidScope;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     uriTemplate: '/v3/adherent_messages/{uuid}/filter',
@@ -46,7 +45,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     /**
      * @var Zone|null
      */
-    #[Assert\Expression('this.getSegment() or this.getZone() or this.getCommittee()', message: 'Cette valeur ne doit pas être vide.')]
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
@@ -54,7 +52,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     /**
      * @var string|null
      */
-    #[Assert\Expression('this.getSegment() or this.getScope()', message: 'Cette valeur ne doit pas être vide.')]
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column]
     #[ValidScope]
@@ -209,7 +206,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         return $this->committee;
     }
 
-    public function setCommittee(Committee $committee): void
+    public function setCommittee(?Committee $committee): void
     {
         $this->committee = $committee;
     }
