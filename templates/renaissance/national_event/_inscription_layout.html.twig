@@ -19,6 +19,42 @@
     {% endif %}
 {% endblock %}
 
+{% block head_javascripts %}
+    {{ parent() }}
+
+    {% if app.request.query.has('p') %}
+        <script>
+            window.axeptioSettings = {
+                clientId: "688098fa82b4b17eaa2085ea",
+                cookiesVersion: "utilisateur-fr-EU",
+            };
+
+            (function(d,s) {
+                var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+                e.async = true; e.src = "//static.axept.io/sdk.js";
+                t.parentNode.insertBefore(e, t);
+            })(document, "script");
+
+            void 0 === window._axcb && (window._axcb = []);
+
+            window._axcb.push(function(axeptio) {
+                axeptio.on("cookies:complete", function(choices) {
+                    !function(f,b,e,v,n,t,s) {
+                        if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                        n.queue=[];t=b.createElement(e);t.async=!0;
+                        t.src=v;s=b.getElementsByTagName(e)[0];
+                        s.parentNode.insertBefore(t,s)
+                    }(window, document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', '934128938863527');
+                    fbq('track', 'PageView');
+                })
+            })
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
 
