@@ -43,7 +43,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        And I wait 1 seconds
+        And I wait 3 seconds
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I click the ".textCenter:last-child a" selector
@@ -87,7 +87,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        And I wait 2 seconds
+        And I wait 3 seconds
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I click the ".textCenter:last-child a" selector
@@ -150,7 +150,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I select "12" from "MOIS_VALIDITE"
         And I select "35" from "AN_VALIDITE"
         And I press "Valider"
-        And I wait 1 seconds
+        And I wait 3 seconds
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
         And I click the ".textCenter:last-child a" selector
