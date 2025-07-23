@@ -47,9 +47,7 @@ class SendEventEmailReminderCommand extends Command
         $this->io->progressStart($total = \count($events));
 
         foreach ($events as $event) {
-            $eventRegistrations = $this->getEventRegistrations($event);
-
-            foreach ($eventRegistrations as $eventRegistration) {
+            foreach ($this->getEventRegistrations($event) as $eventRegistration) {
                 $this->bus->dispatch(new SendEmailReminderCommand($eventRegistration->getUuid()));
             }
 
@@ -74,6 +72,7 @@ class SendEventEmailReminderCommand extends Command
         return $qb
             ->select('PARTIAL r.{id,uuid}')
             ->where('r.event = :event')
+            ->andWhere('r.emailAddress IS NOT NULL')
             ->setParameter('event', $event)
             ->getQuery()
             ->getResult()
