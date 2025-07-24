@@ -71,9 +71,12 @@ class SendEventEmailReminderCommand extends Command
 
         return $qb
             ->select('PARTIAL r.{id,uuid}')
+            ->innerJoin('r.event', 'e')
             ->where('r.event = :event')
             ->andWhere('r.emailAddress IS NOT NULL')
+            ->andWhere('e.emailReminded = :false')
             ->setParameter('event', $event)
+            ->setParameter('false', false)
             ->getQuery()
             ->getResult()
         ;
