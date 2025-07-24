@@ -1,0 +1,19 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.senderName %}
+        Expéditeur: {{ object.senderName }}
+    {% endif %}
+    {% if object.subject %}
+        {% if object.senderName %}
+            <br />
+        {% endif %}
+        Titre: {{ object.subject }}
+    {% endif %}
+    {% if object.senderEmail %}
+        {% if object.senderName or object.subject %}
+            <br />
+        {% endif %}
+        Depuis: {{ object.senderEmail }}
+    {% endif %}
+{% endblock %}

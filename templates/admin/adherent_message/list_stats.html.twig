@@ -1,0 +1,27 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set totalEmailSent = 0 %}
+    {% set totalOpenUnique = 0 %}
+    {% set totalClickUnique = 0 %}
+    {% set totalUnsubscribed = 0 %}
+
+    {% for campaign in object.mailchimpCampaigns %}
+        {% set report = campaign.report %}
+
+        {% if report %}
+            {% set totalEmailSent = totalEmailSent + report.emailSent %}
+            {% set totalOpenUnique = totalOpenUnique + report.openUnique %}
+            {% set totalClickUnique = totalClickUnique + report.clickUnique %}
+            {% set totalUnsubscribed = totalUnsubscribed + report.unsubscribed %}
+        {% endif %}
+    {% endfor %}
+
+    Contacts: {{ totalEmailSent }}
+    <br />
+    Ouvertures: {{ totalOpenUnique }}
+    <br />
+    Clics: {{ totalClickUnique }}
+    <br />
+    Désabonnements: {{ totalUnsubscribed }}
+{% endblock %}

@@ -370,6 +370,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des états généraux',
             AdministratorRoleGroupEnum::IDEES
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_PUBLICATIONS',
+            'Administrateur des publications',
+            AdministratorRoleGroupEnum::TERRITOIRES
+        );
         // Application Mobile
         yield $this->createRole(
             'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',
