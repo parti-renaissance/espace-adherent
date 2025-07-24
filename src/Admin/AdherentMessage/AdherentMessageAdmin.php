@@ -18,6 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AdherentMessageAdmin extends AbstractAdmin
 {
+    protected function getAccessMapping(): array
+    {
+        return [
+            'display' => 'DISPLAY',
+        ];
+    }
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection

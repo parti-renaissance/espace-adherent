@@ -1,3 +1,5 @@
-<a href="{{ admin.generateObjectUrl('display', object) }}" class="btn btn-sm btn-default" title="Aperçu">
-    <i class="fa fa-ticket"></i> Voir
-</a>
+{% if object.getMailchimpId() is not null %}
+    <a href="{{ admin.generateObjectUrl('display', object) }}" class="btn btn-sm btn-default" title="Aperçu">
+        <i class="fa fa-ticket"></i> Voir
+    </a>
+{% endif %}
