@@ -41,7 +41,9 @@ class PaymentStatusUpdateCommandHandler
 
         $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload));
 
-        $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
+        if ($inscription->isCurrentPayment($payment)) {
+            $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
+        }
 
         $this->entityManager->flush();
 
@@ -71,7 +73,7 @@ class PaymentStatusUpdateCommandHandler
             }
 
             foreach ($inscription->getSuccessPayments() as $successPayment) {
-                if ($successPayment === $payment) {
+                if ($successPayment === $payment || $successPayment->toRefund) {
                     continue;
                 }
 

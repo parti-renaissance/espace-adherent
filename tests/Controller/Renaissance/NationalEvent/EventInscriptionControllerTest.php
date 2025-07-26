@@ -1107,7 +1107,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPaymentUuid = $payment->getUuid()->toString(), 'STATUS' => '9']));
 
         self::assertSame([
             'train' => 8,
@@ -1174,6 +1174,24 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame('123-789', $inscription->roommateIdentifier);
         self::assertFalse($inscription->withDiscount);
         self::assertTrue($payments[0]->isConfirmed());
+        self::assertTrue($payments[0]->toRefund);
+        self::assertTrue($payments[1]->isConfirmed());
+        self::assertFalse($payments[1]->toRefund);
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toString(), 'STATUS' => '8']));
+
+        $this->em->clear();
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertCount(2, $payments = $inscription->getPayments());
+        self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
+        self::assertSame(6900, $inscription->amount);
+        self::assertSame('bus', $inscription->transport);
+        self::assertSame('chambre_individuelle', $inscription->accommodation);
+        self::assertSame('123-789', $inscription->roommateIdentifier);
+        self::assertFalse($inscription->withDiscount);
+        self::assertSame(PaymentStatusEnum::REFUNDED, $payments[0]->status);
         self::assertTrue($payments[0]->toRefund);
         self::assertTrue($payments[1]->isConfirmed());
         self::assertFalse($payments[1]->toRefund);
