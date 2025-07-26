@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[IsGranted('ROLE_USER')]
-#[Route(path: '/election-sas/{uuid}', name: 'app_sas_election')]
+#[Route(path: '/election-sas/{uuid}', name: 'app_sas_election', requirements: ['uuid' => '%pattern_uuid%'])]
 class SasElectionController extends AbstractController
 {
     #[Route(path: '', name: '_index')]

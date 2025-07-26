@@ -64,6 +64,10 @@ class ResultCalculator
         $electionRoundResult = new ElectionRoundResult($electionRound);
 
         foreach ($electionRound->getElectionPools() as $pool) {
+            if ($pool->isSeparator) {
+                continue;
+            }
+
             $electionRoundResult->addElectionPoolResult($poolResult = new ElectionPoolResult($pool));
 
             foreach ($pool->getCandidateGroups() as $candidateGroup) {

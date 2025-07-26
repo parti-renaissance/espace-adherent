@@ -125,7 +125,7 @@
     <h3>Répartition des voix</h3>
 
     <div class="row">
-        {% for pool in round.getElectionPools() %}
+        {% for pool in round.getElectionPools()|filter(p => not p.isSeparator) %}
             {% set pool_results = aggregate_pool_results(pool) %}
             {% set votes = details_by_pool[pool.id] ?? [] %}
             {% set candidate_groups = pool.getCandidateGroups() %}
@@ -133,7 +133,8 @@
             <div class="col-md-6">
                 <div class="box box-success">
                     <div class="box-header">
-                        <h3 class="box-title">{{ loop.length > 1 ? '(' ~ loop.index ~ ' / ' ~ loop.length ~ ' étape)' }}</h3>
+                        <h3 class="box-title">{{ pool.code }}</h3>
+                        <p>{{ loop.length > 1 ? '(' ~ loop.index ~ ' / ' ~ loop.length ~ ' étape)' }}</p>
                     </div>
 
                     <div class="box-body">

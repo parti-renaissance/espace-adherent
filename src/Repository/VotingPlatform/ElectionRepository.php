@@ -234,6 +234,10 @@ class ElectionRepository extends ServiceEntityRepository
         $results = [];
 
         foreach ($electionRound->getElectionPools() as $pool) {
+            if ($pool->isSeparator) {
+                continue;
+            }
+
             $poolResult = $this->createQueryBuilder('el')
                 ->select(\sprintf(
                     '(SELECT COUNT(1) FROM %s AS t1
