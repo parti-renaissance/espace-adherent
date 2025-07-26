@@ -3,6 +3,7 @@
 namespace App\Entity\NationalEvent;
 
 use App\Entity\EntityTimestampableTrait;
+use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -31,6 +32,19 @@ class PaymentStatus
 
     public function isSuccess(): bool
     {
-        return isset($this->payload['STATUS']) && '9' === $this->payload['STATUS'];
+        return PaymentStatusEnum::CONFIRMED === $this->getStatus();
+    }
+
+    public function getStatus(): PaymentStatusEnum
+    {
+        if (empty($this->payload['STATUS'])) {
+            return PaymentStatusEnum::UNKNOWN;
+        }
+
+        return match ($this->payload['STATUS']) {
+            '8' => PaymentStatusEnum::REFUNDED,
+            '9' => PaymentStatusEnum::CONFIRMED,
+            default => PaymentStatusEnum::ERROR,
+        };
     }
 }

@@ -412,4 +412,16 @@ class EventInscription
     {
         return $this->adherent?->getPublicId() ?? $this->publicId;
     }
+
+    public function isCurrentPayment(Payment $payment): bool
+    {
+        if ($this->payments->isEmpty()) {
+            return true;
+        }
+
+        return $this->visitDay === $payment->visitDay
+            && $this->transport === $payment->transport
+            && $this->accommodation === $payment->accommodation
+            && $this->amount === $payment->amount;
+    }
 }

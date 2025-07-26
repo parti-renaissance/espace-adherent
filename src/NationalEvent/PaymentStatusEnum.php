@@ -7,10 +7,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 enum PaymentStatusEnum: string implements TranslatableInterface
 {
+    case UNKNOWN = 'unknown';
     case PENDING = 'pending';
     case CONFIRMED = 'confirmed';
     case ERROR = 'error';
     case EXPIRED = 'expired';
+    case REFUNDED = 'refunded';
 
     public static function all(): array
     {
