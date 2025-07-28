@@ -13,7 +13,7 @@ trait EntityNameSlugTrait
      * @var string
      */
     #[Assert\NotBlank(groups: ['api_committee_edition', 'Admin'])]
-    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'cause_write', 'event_read', 'committee:list', 'committee:write', 'committee:write_limited', 'national_event_inscription:webhook', 'profile_read', 'general_convention_read', 'profile_update', 'agora_read', 'admin_committee_update'])]
+    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'cause_write', 'event_read', 'committee:list', 'committee:write', 'committee:write_limited', 'national_event_inscription:webhook', 'profile_read', 'general_convention_read', 'profile_update', 'agora_read', 'admin_committee_update', 'adherent_message_read_filter'])]
     #[ORM\Column]
     protected $name;
 
@@ -27,7 +27,7 @@ trait EntityNameSlugTrait
      * @var string
      */
     #[Gedmo\Slug(fields: ['canonicalName'])]
-    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'event_list_read', 'event_read', 'general_convention_read', 'agora_read'])]
+    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'event_list_read', 'event_read', 'general_convention_read', 'agora_read', 'adherent_message_read_filter'])]
     #[ORM\Column]
     protected $slug;
 

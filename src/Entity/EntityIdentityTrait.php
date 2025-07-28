@@ -33,6 +33,7 @@ trait EntityIdentityTrait
         'adherent_autocomplete',
         'adherent_elect_read',
         'adherent_message_update_filter',
+        'adherent_message_read_filter',
         'audience_list_read',
         'audience_read',
         'committee_candidacies_group:write',
