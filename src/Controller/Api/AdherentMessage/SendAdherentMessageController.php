@@ -22,10 +22,6 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('Subject is required.');
         }
 
-        if (!$message->getRecipientCount()) {
-            throw new BadRequestHttpException('Your message should have a filter');
-        }
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
