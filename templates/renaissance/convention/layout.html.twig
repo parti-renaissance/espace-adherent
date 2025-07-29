@@ -1,9 +1,11 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title convention.title %}
+{% block page_title form.title %}
 {% block flash_message '' %}
 
 {% block body_classes 'h-screen' %}
+
+{% set utm_source = form.convention is defined and form.convention ? 'convention' : 'consultation' %}
 
 {% block content %}
     {% if app.user and adherent_access_granted %}
@@ -25,16 +27,22 @@
                                 <img class="mx-auto my-36" src="{{ asset('images/icons/lock.svg') }}" height="150" alt="Accès protégé"/>
                             </div>
                             <div class="sm:w-1/2 justify-center items-center flex flex-col p-10 text-sm flex-1">
-                                <p class="font-medium text-[#637381] text-sm text-center">Les conventions thématiques sont<br/>réservées aux adhérents à jour.<br/>Rejoignez-nous pour y participer.</p>
+                                <p class="font-medium text-[#637381] text-sm text-center">
+                                    {% if form.convention is defined and form.convention %}
+                                        Les conventions thématiques sont<br/>réservées aux adhérents à jour.<br/>Rejoignez-nous pour y participer.
+                                    {% else %}
+                                        Cette consultation est réservée aux adhérents à jour. Rejoignez-nous pour y participer.
+                                    {% endif %}
+                                </p>
 
                                 <div class="mt-5 flex gap-6 items-center">
                                     {% if not app.user %}
-                                        <a href="{{ login_path_for_anonymous_follower('app_convention', {slug: slug}) }}" class="font-medium text-[#212B36] hover:text-[#4b85be]">Me connecter</a>
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer</a>
+                                        <a href="{{ login_path_for_anonymous_follower() }}" class="font-medium text-[#212B36] hover:text-[#4b85be]">Me connecter</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('', [], {utm_source: utm_source, utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer</a>
                                     {% elseif app.user.isRenaissanceSympathizer() %}
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer pour participer</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('', [], {utm_source: utm_source, utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Adhérer pour participer</a>
                                     {% else %}
-                                        <a href="{{ adhesion_path_for_anonymous_follower('app_convention', {slug: slug}, {utm_source: 'convention', utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Me mettre à jour pour participer</a>
+                                        <a href="{{ adhesion_path_for_anonymous_follower('', [], {utm_source: utm_source, utm_campaign: slug}) }}" class="rounded-full font-medium px-4 w-fit py-2 border border-[#BF8C2A] text-[#BF8C2A] hover:border-[#4b85be] hover:text-[#4b85be]">Me mettre à jour pour participer</a>
                                     {% endif %}
                                 </div>
                             </div>

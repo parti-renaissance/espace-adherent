@@ -11,26 +11,34 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/formulaire/convention/{slug}', name: 'app_convention', requirements: ['slug' => '[a-zA-Z0-9\-]+'], methods: 'GET')]
+#[Route('/formulaire/{slug}', name: 'app_form', requirements: ['slug' => '[a-zA-Z0-9\-]+'], methods: 'GET')]
 class ConventionController extends AbstractController
 {
-    public const array CONVENTION = [
+    public const array FORMS = [
         'regalien' => [
             'title' => 'Régalien',
             'id' => 'n9MNK5',
+            'convention' => true,
         ],
         'economique-et-social' => [
             'title' => 'Économique et social',
             'id' => '3qvLXd',
+            'convention' => true,
         ],
         'transition-ecologique' => [
             'title' => 'Transition écologique',
             'id' => 'wav9EZ',
+            'convention' => true,
+        ],
+        'consultation-nom' => [
+            'title' => 'Consultation nom',
+            'id' => 'w4VPgb',
         ],
     ];
 
     public function __invoke(Request $request, ?UserInterface $user, string $slug, AnonymousFollowerSession $anonymousFollowerSession): Response
     {
-        if (empty(self::CONVENTION[$slug])) {
+        if (empty(self::FORMS[$slug])) {
             throw $this->createNotFoundException();
         }
 
@@ -40,7 +48,7 @@ class ConventionController extends AbstractController
 
         return $this->render('renaissance/convention/form.html.twig', [
             'adherent_access_granted' => $user instanceof Adherent && $user->hasActiveMembership(),
-            'convention' => self::CONVENTION[$slug],
+            'form' => self::FORMS[$slug],
             'slug' => $slug,
         ]);
     }
