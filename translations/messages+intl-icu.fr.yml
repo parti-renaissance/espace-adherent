@@ -1435,6 +1435,12 @@ national_event.payment.status.error: Erreur de paiement
 national_event.payment.status.expired: Paiement expiré
 national_event.payment.status.refunded: Remboursé
 
+alert.type.alert: Alerte
+alert.type.election: Élection
+alert.type.live: Live
+alert.type.live_announce: Annonce de live
+alert.type.meeting: Meeting
+
 #
 # Administrators
 #
