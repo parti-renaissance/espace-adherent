@@ -16,7 +16,7 @@ Feature:
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Voir",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=%2Felection-sas%2F@uuid@",
                     "image_url": null,
                     "data": null,
                     "share_url": null
@@ -27,7 +27,7 @@ Feature:
                     "title": "Élection en cours !!",
                     "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Consulter",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=http%3A%2F%2Ftest.renaissance.code%2Felection-sas%2F@uuid@",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=%2Felection-sas%2F@uuid@",
                     "image_url": null,
                     "data": null,
                     "share_url": null
@@ -53,6 +53,17 @@ Feature:
                     "image_url": "http://test.renaissance.code/assets/uploads/@string@",
                     "data": null,
                     "share_url": "http://test.renaissance.code/grand-rassemblement/campus/@string@?utm_source=app&utm_campaign=alerte"
+                },
+                {
+                    "type": "alert",
+                    "label": "Nouvelle consultation",
+                    "title": "Une nouvelle consultation est disponible !",
+                    "description": "Consultez la nouvelle proposition de loi et donnez votre avis.",
+                    "cta_label": "Voir la consultation",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=gisele-berthoux@caramail.com&expires=@string@&hash=@string@&_failure_path=%2Fconnexion&_target_path=%2Fconsultations%2F123",
+                    "image_url": null,
+                    "data": null,
+                    "share_url": null
                 }
             ]
             """

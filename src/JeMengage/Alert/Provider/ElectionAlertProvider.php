@@ -44,7 +44,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                     $designation->alertCtaLabel,
                     $this->loginLinkHandler->createLoginLink(
                         $adherent,
-                        targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
+                        targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_PATH)
                     )
                 );
                 $alert->date = $designation->getSortableAlertDate();
