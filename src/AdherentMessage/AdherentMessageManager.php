@@ -8,7 +8,9 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
+use App\JeMengage\Push\Command\AdherentMessageSentNotificationCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager
@@ -17,6 +19,7 @@ class AdherentMessageManager
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBusInterface $bus,
         private readonly iterable $senders,
     ) {
     }
@@ -53,6 +56,8 @@ class AdherentMessageManager
             $message->markAsSent();
             $this->em->flush();
         }
+
+        $this->bus->dispatch(new AdherentMessageSentNotificationCommand($message->getUuid()));
 
         return $status;
     }

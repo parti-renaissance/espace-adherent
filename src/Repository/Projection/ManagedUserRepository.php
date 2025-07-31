@@ -6,6 +6,9 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -49,6 +52,34 @@ class ManagedUserRepository extends ServiceEntityRepository
     public function getExportQueryBuilder(ManagedUsersFilter $filter): Query
     {
         return $this->createFilterQueryBuilder($filter)->getQuery();
+    }
+
+    public function createAdherentMessageQueryBuilder(AdherentMessage $adherentMessage): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->addSelect('zone')
+            ->addSelect('parent_zone')
+            ->leftJoin('u.zones', 'zone')
+            ->leftJoin('zone.parents', 'parent_zone')
+            ->where('u.status = :status')
+            ->setParameter('status', ManagedUser::STATUS_READY)
+        ;
+
+        $filter = $adherentMessage->getFilter();
+
+        if ($filter instanceof CommitteeFilter && $committee = $filter->getCommittee()) {
+            $qb
+                ->andWhere('FIND_IN_SET(:committee_uuid, u.committeeUuids) > 0')
+                ->setParameter('committee_uuid', $committee->getUuidAsString())
+            ;
+        } elseif ($filter instanceof AdherentGeoZoneFilter && $zone = $filter->getZone()) {
+            $qb
+                ->andWhere('FIND_IN_SET(:zone_id, u.zonesIds) > 0')
+                ->setParameter('zone_id', $zone->getId())
+            ;
+        }
+
+        return $qb;
     }
 
     private function createFilterQueryBuilder(ManagedUsersFilter $filter): QueryBuilder

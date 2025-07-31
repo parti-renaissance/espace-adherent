@@ -123,6 +123,17 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllForAdherentMessage(QueryBuilder $filteredAdherentsQueryBuilder): array
+    {
+        $filteredAdherentsQueryBuilder->select('DISTINCT u.originalId');
+
+        return $this->createIdentifierQueryBuilder('t')
+            ->andWhere(\sprintf('a.id IN (%s)', $filteredAdherentsQueryBuilder->getDQL()))
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
+
     public function findAllIdsForNational(): array
     {
         $result = $this->createIdentifierQueryBuilder('t')
