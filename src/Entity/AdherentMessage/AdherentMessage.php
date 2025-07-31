@@ -25,19 +25,25 @@ use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\UnlayerJsonContentTrait;
 use App\EntityListener\AlgoliaIndexListener;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
+use App\Utils\StringCleaner;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: AdherentMessageScopeFilter::class)]
@@ -137,7 +143,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(fields: ['source'])]
 #[ORM\Index(fields: ['instanceScope'])]
 #[ORM\Table(name: 'adherent_messages')]
-class AdherentMessage implements AdherentMessageInterface
+class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
@@ -475,5 +481,29 @@ class AdherentMessage implements AdherentMessageInterface
     public function isIndexable(): bool
     {
         return $this->isSent() && self::SOURCE_VOX === $this->source;
+    }
+
+    public function getCleanedCroppedText(?int $length = 512): ?string
+    {
+        $content = (new UnicodeString(StringCleaner::removeMarkdown($this->content)));
+
+        if ($length) {
+            $content = $content->truncate($length, '…', false);
+        }
+
+        return $content->toString();
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        $filter = $this->filter;
+
+        return $filter instanceof AdherentGeoZoneFilter
+            || $filter instanceof CommitteeFilter;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
+        return;
     }
 }
