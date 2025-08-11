@@ -64,6 +64,8 @@
     "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.2.0 || ^4.0.0",
     "@types/alpinejs": "^3.13.10",
     "@types/google.maps": "^3.55.9",
     "eslint": "^8.0.0",
