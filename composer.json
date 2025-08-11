@@ -210,11 +210,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/parti-renaissance/contexts"
+            "url": "https://github.com/parti-renaissance/contexts.git"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/parti-renaissance/LexikPayboxBundle"
+            "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git"
         }
     ],
     "conflict": {
