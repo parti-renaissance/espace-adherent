@@ -13,6 +13,7 @@ use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\PublicIdRepositoryInterface;
+use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -24,6 +25,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

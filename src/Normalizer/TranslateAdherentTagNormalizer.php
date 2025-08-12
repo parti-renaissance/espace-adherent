@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Adherent\Tag\TranslatedTagInterface;
+use App\Entity\NationalEvent\EventInscription;
 use App\Entity\ProcurationV2\AbstractProcuration;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -27,7 +28,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\is_array($data) && \array_key_exists('tags', $data)) {
-            if (empty($data['tags']) && $object instanceof AbstractProcuration) {
+            if (empty($data['tags']) && ($object instanceof AbstractProcuration || $object instanceof EventInscription)) {
                 $data['tags'] = ['citoyen'];
             }
 

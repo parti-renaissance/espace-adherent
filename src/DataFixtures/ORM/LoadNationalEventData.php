@@ -7,10 +7,13 @@ use App\Entity\UploadableFile;
 use App\NationalEvent\NationalEventTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadNationalEventData extends Fixture
 {
+    public const CAMPUS_EVENT_UUID = '97f62ed6-a72a-47d0-a174-4f2c26f4289c';
+
     public function load(ObjectManager $manager): void
     {
         $manager->persist($event = new NationalEvent());
@@ -46,7 +49,7 @@ class LoadNationalEventData extends Fixture
         $event->source = '123xyz';
         $this->setReference('event-national-2', $event);
 
-        $manager->persist($event = new NationalEvent());
+        $manager->persist($event = new NationalEvent(Uuid::fromString(self::CAMPUS_EVENT_UUID)));
 
         $event->setName('Campus');
         $event->alertEnabled = true;
@@ -87,20 +90,20 @@ class LoadNationalEventData extends Fixture
         $event->transportConfiguration = [
             'jours' => [
                 [
-                    'id' => 'jour_1_et_2',
+                    'id' => 'weekend',
                     'titre' => "Le {$startDate} et le {$endDate}",
                     'description' => 'L’hébergement reste à la charge des participants que nous vous invitons à réserver de votre côté.',
                 ],
                 [
-                    'id' => 'jour_2',
+                    'id' => 'dimanche',
                     'titre' => "Seulement le {$endDate}",
                     'description' => 'L’essentiel du Campus se déroule sur la deuxième journée.',
                 ],
             ],
             'transports' => [
                 [
-                    'id' => 'train',
-                    'jours_ids' => ['jour_2'],
+                    'id' => 'dimanche_train',
+                    'jours_ids' => ['dimanche'],
                     'recap_label' => 'Train aller-retour',
                     'quota' => 1000,
                     'titre' => 'Train (Paris >< Arras) Dimanche',
@@ -108,8 +111,8 @@ class LoadNationalEventData extends Fixture
                     'description' => 'Départ 7h45 à Paris gare du nord<br/>Retour à 17h45 à Paris gare du nord',
                 ],
                 [
-                    'id' => 'bus',
-                    'jours_ids' => ['jour_2'],
+                    'id' => 'dimanche_bus',
+                    'jours_ids' => ['dimanche'],
                     'recap_label' => 'Bus aller-retour',
                     'quota' => 600,
                     'titre' => 'Bus (Paris >< Arras) Dimanche',
@@ -118,7 +121,7 @@ class LoadNationalEventData extends Fixture
                 ],
                 [
                     'id' => 'train_aller',
-                    'jours_ids' => ['jour_2'],
+                    'jours_ids' => ['dimanche'],
                     'recap_label' => 'Train aller uniquement',
                     'quota' => 200,
                     'titre' => 'Train (Paris > Arras) Dimanche',
@@ -127,14 +130,14 @@ class LoadNationalEventData extends Fixture
                 ],
                 [
                     'id' => 'gratuit',
-                    'jours_ids' => ['jour_1_et_2', 'jour_2'],
+                    'jours_ids' => ['weekend', 'dimanche'],
                     'titre' => 'Je viens par mes propres moyens',
                 ],
             ],
             'hebergements' => [
                 [
                     'id' => 'chambre_individuelle',
-                    'jours_ids' => ['jour_2'],
+                    'jours_ids' => ['dimanche'],
                     'recap_label' => 'Chambre individuelle',
                     'titre' => 'Chambre individuelle',
                     'montant' => 49,
@@ -146,7 +149,7 @@ class LoadNationalEventData extends Fixture
                 ],
                 [
                     'id' => 'chambre_partagee',
-                    'jours_ids' => ['jour_2'],
+                    'jours_ids' => ['dimanche'],
                     'recap_label' => 'Chambre partagée (à deux)',
                     'titre' => 'Chambre partagée (à deux)',
                     'montant' => 49,
@@ -158,7 +161,7 @@ class LoadNationalEventData extends Fixture
                 ],
                 [
                     'id' => 'gratuit',
-                    'jours_ids' => ['jour_2'],
+                    'jours_ids' => ['dimanche'],
                     'titre' => 'Je n\'ai pas besoin d\'hébergement',
                     'description' => 'Je trouve un hébergement par mes propres moyens',
                 ],
