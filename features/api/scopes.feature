@@ -113,7 +113,8 @@ Feature:
                         "actions",
                         "featurebase",
                         "circonscriptions",
-                        "referrals"
+                        "referrals",
+                        "rentree"
                     ]
                 },
                 {
@@ -286,7 +287,8 @@ Feature:
                     "actions",
                     "featurebase",
                     "circonscriptions",
-                    "referrals"
+                    "referrals",
+                    "rentree"
                 ],
                 "attributes": {
                     "theme": {
@@ -621,7 +623,8 @@ Feature:
                     "actions",
                     "featurebase",
                     "circonscriptions",
-                    "referrals"
+                    "referrals",
+                    "rentree"
                 ],
                 "delegated_access": {
                     "delegator": {
@@ -684,7 +687,8 @@ Feature:
                     "actions",
                     "featurebase",
                     "circonscriptions",
-                    "referrals"
+                    "referrals",
+                    "rentree"
                 ],
                 "attributes": {
                     "theme": {

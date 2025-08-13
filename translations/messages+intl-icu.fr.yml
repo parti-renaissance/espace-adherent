@@ -1337,7 +1337,8 @@ scope.feature.documents: Documents
 scope.feature.committee: Comités locaux
 scope.feature.designation: Désignation
 scope.feature.actions: Actions
-scope.feature.featurebase: 🗣 Featurebase ️
+scope.feature.featurebase: 🗣 Featurebase
+scope.feature.rentree: Rentrée
 scope.feature.circonscriptions: Gestion des circonscriptions
 scope.feature.referrals: Parrainages
 
