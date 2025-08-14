@@ -7,6 +7,8 @@ use App\AppSession\SessionStatusEnum;
 use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AppSessionPushTokenLink;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
@@ -27,6 +29,7 @@ use Ramsey\Uuid\Uuid;
 class PushTokenRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
+    use AudienceFilterTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -123,6 +126,18 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllForAdherentMessage(AdherentMessage $message): array
+    {
+        /** @var AudienceFilter $filter */
+        $filter = $message->getFilter();
+
+        $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
+
+        $this->applyAudienceFilter($filter, $qb, $adherentAlias);
+
+        return $qb->getQuery()->getSingleColumnResult();
+    }
+
     public function findAllIdsForNational(): array
     {
         $result = $this->createIdentifierQueryBuilder('t')
@@ -134,14 +149,14 @@ class PushTokenRepository extends ServiceEntityRepository
         return array_column($result, 'id');
     }
 
-    private function createIdentifierQueryBuilder(string $alias): QueryBuilder
+    private function createIdentifierQueryBuilder(string $alias, string $adherentAlias = 'a'): QueryBuilder
     {
         return $this->createQueryBuilder($alias)
             ->select(\sprintf('DISTINCT %s.identifier', $alias))
             ->innerJoin(AppSessionPushTokenLink::class, 'link', Join::WITH, 'link.pushToken = '.$alias)
             ->innerJoin('link.appSession', 's', Join::WITH, 's.status = :session_status AND s.unsubscribedAt IS NULL')
-            ->innerJoin('s.adherent', 'a')
-            ->andWhere('a.status = :enabled')
+            ->innerJoin('s.adherent', $adherentAlias)
+            ->andWhere($adherentAlias.'.status = :enabled')
             ->setParameter('enabled', Adherent::ENABLED)
             ->setParameter('session_status', SessionStatusEnum::ACTIVE)
         ;

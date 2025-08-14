@@ -3,6 +3,7 @@
 namespace App\JeMengage;
 
 use App\Entity\Action\Action;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\Event\Event;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -12,16 +13,12 @@ class Router
     {
     }
 
-    public function generateLink(object $object): ?string
+    public function generateLink(object $object): string
     {
-        if (!$path = $this->getPath($object)) {
-            return null;
-        }
-
-        return $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).ltrim($path, '/');
+        return $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).ltrim($this->getPath($object), '/');
     }
 
-    private function getPath(object $object): ?string
+    private function getPath(object $object): string
     {
         if ($object instanceof Action) {
             return '/actions?uuid='.$object->getUuid();
@@ -29,6 +26,10 @@ class Router
 
         if ($object instanceof Event) {
             return '/evenements/'.$object->getSlug();
+        }
+
+        if ($object instanceof AdherentMessage) {
+            return '/publications/'.$object->getUuid();
         }
 
         return '/';

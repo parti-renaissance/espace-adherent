@@ -6,7 +6,7 @@ use App\Repository\PushTokenRepository;
 
 abstract class AbstractTokenProvider implements TokenProviderInterface
 {
-    public function __construct(protected readonly PushTokenRepository $pushTokenRepository)
+    final public function __construct(protected readonly PushTokenRepository $pushTokenRepository)
     {
     }
 

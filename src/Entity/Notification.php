@@ -90,9 +90,7 @@ class Notification
             $notification->getBody(),
             $notification->getData(),
             $notification->getScope(),
-            $notification instanceof TopicNotificationInterface
-                ? $notification->getTopic()
-                : null,
+            $notification instanceof TopicNotificationInterface ? $notification->getTopic() : null,
         );
     }
 

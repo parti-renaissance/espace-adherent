@@ -43,23 +43,23 @@ class AdherentMessageManager
         $this->em->flush();
     }
 
-    public function send(AdherentMessageInterface $message, array $recipients = []): bool
+    public function send(AdherentMessageInterface $message, array $recipients = []): void
     {
-        if (!$sender = $this->getSender($message)) {
-            return false;
+        foreach ($this->senders as $sender) {
+            if (!$sender->supports($message, false)) {
+                continue;
+            }
+
+            $sender->send($message, $recipients);
         }
 
-        if ($status = $sender->send($message, $recipients)) {
-            $message->markAsSent();
-            $this->em->flush();
-        }
-
-        return $status;
+        $message->markAsSent();
+        $this->em->flush();
     }
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool
     {
-        return ($sender = $this->getSender($message)) && $sender->sendTest($message, [$user]);
+        return ($sender = $this->getSender($message, true)) && $sender->sendTest($message, [$user]);
     }
 
     public function getRecipients(AdherentMessageInterface $message): array
@@ -77,10 +77,10 @@ class AdherentMessageManager
         return $this->em->getRepository(Adherent::class)->getAllInZones($filter->getZones()->toArray(), true, false);
     }
 
-    private function getSender(AdherentMessageInterface $message): ?SenderInterface
+    private function getSender(AdherentMessageInterface $message, bool $forTest): ?SenderInterface
     {
         foreach ($this->senders as $sender) {
-            if ($sender->supports($message)) {
+            if ($sender->supports($message, $forTest)) {
                 return $sender;
             }
         }

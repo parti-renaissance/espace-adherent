@@ -12,14 +12,14 @@ class CampaignSender implements SenderInterface
     {
     }
 
-    public function supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message, bool $forTest): bool
     {
         return !$message->isStatutory();
     }
 
-    public function send(AdherentMessageInterface $message, array $recipients = []): bool
+    public function send(AdherentMessageInterface $message, array $recipients = []): void
     {
-        return $this->manager->sendCampaign($message);
+        $this->manager->sendCampaign($message);
     }
 
     public function sendTest(AdherentMessageInterface $message, array $recipients = []): bool

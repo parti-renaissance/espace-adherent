@@ -28,8 +28,10 @@ use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\UnlayerJsonContentTrait;
 use App\EntityListener\AlgoliaIndexListener;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -137,7 +139,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(fields: ['source'])]
 #[ORM\Index(fields: ['instanceScope'])]
 #[ORM\Table(name: 'adherent_messages')]
-class AdherentMessage implements AdherentMessageInterface
+class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
@@ -475,5 +477,14 @@ class AdherentMessage implements AdherentMessageInterface
     public function isIndexable(): bool
     {
         return $this->isSent() && self::SOURCE_VOX === $this->source;
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return true;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
     }
 }

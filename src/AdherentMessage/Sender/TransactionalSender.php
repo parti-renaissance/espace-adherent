@@ -12,14 +12,14 @@ class TransactionalSender implements SenderInterface
     {
     }
 
-    public function supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message, bool $forTest): bool
     {
         return $message->isStatutory();
     }
 
-    public function send(AdherentMessageInterface $message, array $recipients = []): bool
+    public function send(AdherentMessageInterface $message, array $recipients = []): void
     {
-        return $this->doSend($message, $recipients);
+        $this->doSend($message, $recipients);
     }
 
     public function sendTest(AdherentMessageInterface $message, array $recipients = []): bool
