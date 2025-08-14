@@ -59,7 +59,7 @@ class AdherentMessageManager
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool
     {
-        return ($sender = $this->getSender($message)) && $sender->sendTest($message, [$user]);
+        return ($sender = $this->getSender($message, true)) && $sender->sendTest($message, [$user]);
     }
 
     public function getRecipients(AdherentMessageInterface $message): array
@@ -77,10 +77,10 @@ class AdherentMessageManager
         return $this->em->getRepository(Adherent::class)->getAllInZones($filter->getZones()->toArray(), true, false);
     }
 
-    private function getSender(AdherentMessageInterface $message): ?SenderInterface
+    private function getSender(AdherentMessageInterface $message, bool $forTest): ?SenderInterface
     {
         foreach ($this->senders as $sender) {
-            if ($sender->supports($message)) {
+            if ($sender->supports($message, $forTest)) {
                 return $sender;
             }
         }

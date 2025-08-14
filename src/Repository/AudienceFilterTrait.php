@@ -85,14 +85,14 @@ trait AudienceFilterTrait
             ;
         }
 
-        if ($lastMembershipSince = $filter->lastMembershipSince) {
+        if ($lastMembershipSince = $filter->getLastMembershipSince()) {
             $qb
                 ->andWhere($mainAlias.'.lastMembershipDonation >= :last_membership_since')
                 ->setParameter('last_membership_since', $lastMembershipSince->format('Y-m-d 00:00:00'))
             ;
         }
 
-        if ($lastMembershipBefore = $filter->lastMembershipBefore) {
+        if ($lastMembershipBefore = $filter->getLastMembershipBefore()) {
             $qb
                 ->andWhere($mainAlias.'.lastMembershipDonation <= :last_membership_before')
                 ->setParameter('last_membership_before', $lastMembershipBefore->format('Y-m-d 23:59:59'))
