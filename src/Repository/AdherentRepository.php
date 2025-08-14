@@ -70,6 +70,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
     use PaginatorTrait;
     use GeoZoneTrait;
+    use AudienceFilterTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -1615,49 +1616,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
         ;
 
-        $perimeterFilterWasApplied = false;
-
-        $zones = $messageFilter->getZones();
-        if (!$zones->isEmpty()) {
-            $this->withGeoZones($zones->toArray(), $qb, 'a', Adherent::class, 'a2', 'zones', 'z2', zoneParentAlias: 'zone_parent2');
-            $perimeterFilterWasApplied = true;
-        }
-
-        if ($messageFilter->getZone()) {
-            $this->withGeoZones([$messageFilter->getZone()], $qb, 'a', Adherent::class, 'a3', 'zones', 'z3', zoneParentAlias: 'zone_parent3');
-            $perimeterFilterWasApplied = true;
-        }
-
-        if ($messageFilter->getCommittee()) {
-            $qb
-                ->innerJoin('a.committeeMembership', 'cm', Join::WITH, 'cm.committee = :committee')
-                ->setParameter('committee', $messageFilter->getCommittee())
-            ;
-            $perimeterFilterWasApplied = true;
-        }
-
-        if (!$perimeterFilterWasApplied) {
-            return 0;
-        }
-
-        // Use different condition for adherentTags to improve performance with LIKE
-        if ($messageFilter->adherentTags) {
-            $operator = str_starts_with($messageFilter->adherentTags, '!') ? 'NOT LIKE' : 'LIKE';
-
-            $qb
-                ->andWhere('a.tags '.$operator.' :tag_adherent')
-                ->setParameter('tag_adherent', $messageFilter->adherentTags.'%')
-            ;
-        }
-
-        foreach (array_filter([$messageFilter->electTags, $messageFilter->staticTags]) as $index => $tag) {
-            $operator = str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE';
-
-            $qb
-                ->andWhere('a.tags '.$operator.' :tag_'.$index)
-                ->setParameter('tag_'.$index, '%'.$tag.'%')
-            ;
-        }
+        $this->applyAudienceFilter($messageFilter, $qb);
 
         if ($asUnion) {
             $condition = $qb->expr()->orX();

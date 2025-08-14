@@ -15,10 +15,7 @@ class NotificationFactory
     public function create(NotificationObjectInterface $object, Command\SendNotificationCommandInterface $command): NotificationInterface
     {
         $notification = $this->initiateNotification($object, $command);
-
-        if ($link = $this->router->generateLink($object)) {
-            $notification->addData('link', $link);
-        }
+        $notification->addData('link', $this->router->generateLink($object));
 
         return $notification;
     }
@@ -57,6 +54,10 @@ class NotificationFactory
 
         if ($command instanceof Command\NationalEventTicketAvailableNotificationCommand) {
             return Notification\NationalEventTicketNotification::create($object);
+        }
+
+        if ($command instanceof Command\AdherentMessageSentNotificationCommand) {
+            return Notification\AdherentMessageSentNotification::create($object);
         }
 
         throw new \RuntimeException('[Notification] Command not supported');

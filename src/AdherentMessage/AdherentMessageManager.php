@@ -8,9 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\JeMengage\Push\Command\AdherentMessageSentNotificationCommand;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager
@@ -19,7 +17,6 @@ class AdherentMessageManager
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly MessageBusInterface $bus,
         private readonly iterable $senders,
     ) {
     }
@@ -46,20 +43,18 @@ class AdherentMessageManager
         $this->em->flush();
     }
 
-    public function send(AdherentMessageInterface $message, array $recipients = []): bool
+    public function send(AdherentMessageInterface $message, array $recipients = []): void
     {
-        if (!$sender = $this->getSender($message)) {
-            return false;
+        foreach ($this->senders as $sender) {
+            if (!$sender->supports($message, false)) {
+                continue;
+            }
+
+            $sender->send($message, $recipients);
         }
 
-        if ($status = $sender->send($message, $recipients)) {
-            $message->markAsSent();
-            $this->em->flush();
-        }
-
-        $this->bus->dispatch(new AdherentMessageSentNotificationCommand($message->getUuid()));
-
-        return $status;
+        $message->markAsSent();
+        $this->em->flush();
     }
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool

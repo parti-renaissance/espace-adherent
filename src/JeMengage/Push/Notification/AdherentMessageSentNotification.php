@@ -9,9 +9,10 @@ class AdherentMessageSentNotification extends AbstractMulticastNotification
 {
     public static function create(AdherentMessage $adherentMessage): self
     {
-        return new self(
-            $adherentMessage->getSubject(),
-            $adherentMessage->getCleanedCroppedText(50),
-        );
+        if (!$sender = $adherentMessage->getSender()) {
+            throw new \LogicException('Publication must have a sender to create a notification');
+        }
+
+        return new self($sender->getFullName(), $adherentMessage->getSubject() ?? '');
     }
 }

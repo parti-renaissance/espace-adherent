@@ -25,8 +25,6 @@ use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -496,10 +494,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
     {
-        $filter = $this->filter;
-
-        return $filter instanceof AdherentGeoZoneFilter
-            || $filter instanceof CommitteeFilter;
+        return true;
     }
 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
