@@ -17,7 +17,6 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AppSession;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -37,7 +36,6 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Event\Request\CountInvitationsRequest;
-use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\MembershipSourceEnum;
 use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
@@ -49,7 +47,9 @@ use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -1604,70 +1604,182 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countAdherentsForMessage(AdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, bool $asUnion = false): int
     {
-        $messageFilter = $message->getFilter();
+        $filter = $message->getFilter();
 
-        if (!$messageFilter instanceof AudienceFilter) {
+        if (!$filter instanceof AudienceFilter) {
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('a')
-            ->select('COUNT(DISTINCT a.id)')
-            ->where('a.status = :status')
-            ->setParameter('status', Adherent::ENABLED)
-        ;
+        $params = [
+            'status_enabled' => 'ENABLED',
+            'mailchimp_subscribed' => 'subscribed',
+        ];
+        $types = [];
 
-        $this->applyAudienceFilter($messageFilter, $qb);
+        $zones = $filter->getZone() ? [$filter->getZone()] : $filter->getZones()->toArray();
+        $zoneIds = array_map(static fn ($z) => $z->getId(), $zones);
 
-        if ($asUnion) {
-            $condition = $qb->expr()->orX();
-        } else {
-            $condition = $qb->expr()->andX();
+        if (empty($zoneIds) && !$filter->getCommittee()) {
+            return 0;
         }
 
-        if (null !== $byPush) {
-            if ($byPush) {
-                $qb
-                    ->leftJoin('a.appSessions', 'session', Join::WITH, 'session.status = :session_status')
-                    ->leftJoin('session.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
-                ;
-                $condition->add('push_token_link IS NOT NULL');
-            } else {
-                $condition->add(\sprintf('NOT EXISTS (
-                    SELECT 1 FROM %s s
-                    JOIN s.pushTokenLinks p
-                    WHERE s.adherent = a
-                    AND s.status = :session_status
-                    AND p.unsubscribedAt IS NULL
-                )', AppSession::class));
-            }
-            $qb->setParameter('session_status', SessionStatusEnum::ACTIVE);
+        $cteParts = [];
+
+        if (!empty($zoneIds)) {
+            $cteParts[] = 'SELECT DISTINCT adherent_id FROM adherent_zone WHERE zone_id IN (:zones)';
+            $params['zones'] = $zoneIds;
+            $types['zones'] = ArrayParameterType::INTEGER;
         }
+
+        $zoneParentIds = array_values(array_filter(array_map(static fn (Zone $z) => $z->isCityGrouper() ? null : $z->getId(), $zones)));
+
+        if (!empty($zoneParentIds)) {
+            $cteParts[] = 'SELECT DISTINCT az.adherent_id
+               FROM adherent_zone az
+               JOIN geo_zone_parent gp ON gp.child_id = az.zone_id
+               WHERE gp.parent_id IN (:zones_parents)';
+            $params['zones_parents'] = $zoneParentIds;
+            $types['zones_parents'] = ArrayParameterType::INTEGER;
+        }
+
+        $fromJoin = [];
+        $where = [];
+        $with = '';
+        $joinPerimeter = '';
+
+        if (!empty($cteParts)) {
+            $with = 'WITH z_adherents AS ('.implode("\nUNION\n", $cteParts).')';
+            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
+        }
+
+        if ($filter->getCommittee()) {
+            $fromJoin[] = 'JOIN committees_memberships cm ON cm.adherent_id = a.id AND cm.committee_id = :committee_id';
+            $params['committee_id'] = $filter->getCommittee()->getId();
+            $types['committee_id'] = ParameterType::INTEGER;
+        }
+
+        $where[] = 'a.status = :status_enabled';
+
+        if ($rs = $filter->getRegisteredSince()) {
+            $where[] = 'a.registered_at >= :registered_since';
+            $params['registered_since'] = $rs->format('Y-m-d 00:00:00');
+        }
+        if ($ru = $filter->getRegisteredUntil()) {
+            $where[] = 'a.registered_at <= :registered_until';
+            $params['registered_until'] = $ru->format('Y-m-d 23:59:59');
+        }
+
+        if ($fs = $filter->firstMembershipSince) {
+            $where[] = 'a.first_membership_donation >= :first_membership_since';
+            $params['first_membership_since'] = $fs->format('Y-m-d 00:00:00');
+        }
+        if ($fb = $filter->firstMembershipBefore) {
+            $where[] = 'a.first_membership_donation <= :first_membership_before';
+            $params['first_membership_before'] = $fb->format('Y-m-d 23:59:59');
+        }
+
+        if ($ls = $filter->getLastMembershipSince()) {
+            $where[] = 'a.last_membership_donation >= :last_membership_since';
+            $params['last_membership_since'] = $ls->format('Y-m-d 00:00:00');
+        }
+        if ($lb = $filter->getLastMembershipBefore()) {
+            $where[] = 'a.last_membership_donation <= :last_membership_before';
+            $params['last_membership_before'] = $lb->format('Y-m-d 23:59:59');
+        }
+
+        if ($tagPrefix = $filter->adherentTags) {
+            $needle = ltrim($tagPrefix, '!');
+            $where[] = 'a.tags '.(str_starts_with($tagPrefix, '!') ? 'NOT LIKE' : 'LIKE').' :tag_prefix';
+            $params['tag_prefix'] = $needle.'%';
+        }
+
+        $idx = 0;
+        foreach (array_filter([$filter->electTags, $filter->staticTags]) as $tag) {
+            $needle = ltrim($tag, '!');
+            $where[] = 'a.tags '.(str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE')." :tag_contains_$idx";
+            $params["tag_contains_$idx"] = '%'.$needle.'%';
+            ++$idx;
+        }
+
+        $cnx = $this->getEntityManager()->getConnection();
+
+        $stId = null;
+        if (($scope = $filter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
+            $stCode = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope];
+            $stId = (int) $cnx->fetchOne('SELECT id FROM subscription_type WHERE code = ?', [$stCode]);
+            $params['st_id'] = $stId;
+            $types['st_id'] = ParameterType::INTEGER;
+        }
+
+        $branchEmailSql = null;
+        $branchPushSql = null;
 
         if (null !== $byEmail) {
             if ($byEmail) {
-                $subEmailCondition = $qb->expr()->andX()->add('a.mailchimpStatus = :mailchimp_status');
+                $emailConds = ['a.mailchimp_status = :mailchimp_subscribed'];
+                if ($stId) {
+                    $emailConds[] = 'EXISTS (
+                       SELECT 1
+                       FROM adherent_subscription_type ast
+                       WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
+                    )';
+                }
+                $branchEmailSql = '('.implode(' AND ', $emailConds).')';
             } else {
-                $subEmailCondition = $qb->expr()->orX()->add('a.mailchimpStatus != :mailchimp_status');
+                $emailConds = ['a.mailchimp_status <> :mailchimp_subscribed'];
+                if ($stId) {
+                    $emailConds[] = 'NOT EXISTS (
+                       SELECT 1
+                       FROM adherent_subscription_type ast
+                       WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
+                    )';
+                }
+                $branchEmailSql = '('.implode(' OR ', $emailConds).')';
             }
-
-            if (($scope = $messageFilter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
-                $qb
-                    ->leftJoin('a.subscriptionTypes', 'subscription_type', Join::WITH, 'subscription_type.code = :subscription_type_code')
-                    ->setParameter('subscription_type_code', SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])
-                ;
-
-                $subEmailCondition->add('subscription_type '.($byEmail ? 'IS NOT NULL' : 'IS NULL'));
-            }
-
-            $condition->add($subEmailCondition);
-            $qb->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED);
         }
 
-        if ($condition->count()) {
-            $qb->andWhere($condition);
+        if (null !== $byPush) {
+            $branchPushSql = ($byPush ? '' : 'NOT ').'EXISTS (
+                   SELECT 1
+                   FROM app_session s
+                   JOIN app_session_push_token_link p ON p.app_session_id = s.id AND p.unsubscribed_at IS NULL
+                   WHERE s.adherent_id = a.id AND s.status = :session_status
+                )';
+            $params['session_status'] = SessionStatusEnum::ACTIVE->value;
         }
 
-        return $qb->getQuery()->getSingleScalarResult();
+        $baseFrom = 'FROM adherents a'
+            .(!empty($cteParts) ? "\n$joinPerimeter" : '')
+            .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
+
+        $baseWhere = $where;
+
+        if ($asUnion && null !== $branchEmailSql && null !== $branchPushSql) {
+            $sql = ($with ? "$with\n" : '')."SELECT COUNT(*) AS cnt
+                FROM (
+                    SELECT DISTINCT a.id
+                    $baseFrom
+                    WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
+                    UNION
+                    SELECT DISTINCT a.id
+                    $baseFrom
+                    WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
+                ) u";
+
+            return (int) $cnx->fetchOne($sql, $params, $types);
+        }
+
+        if (null !== $branchEmailSql) {
+            $baseWhere[] = $branchEmailSql;
+        }
+
+        if (null !== $branchPushSql) {
+            $baseWhere[] = $branchPushSql;
+        }
+
+        $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT a.id) AS cnt $baseFrom WHERE ".implode(' AND ', $baseWhere);
+
+        return (int) $cnx->fetchOne($sql, $params, $types);
     }
 
     public function publicIdExists(string $publicId): bool
