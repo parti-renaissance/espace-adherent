@@ -8,7 +8,7 @@
     {{ include('admin/adherent/display_fullname_certified.html.twig') }}
 {% else %}
     <div style="white-space: nowrap;">
-        <p style="font-weight: bold;">{{ object.gender|civility_alias }} {{ object.firstName }} {{ object.lastName }}</p>
+        <p style="font-weight: bold;">{{ object.gender ? object.gender|civility_alias }} {{ object.firstName }} {{ object.lastName }}</p>
         <p>{{ object.addressEmail }}</p>
     </div>
 {% endif %}

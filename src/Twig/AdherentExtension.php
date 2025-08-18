@@ -27,7 +27,7 @@ class AdherentExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('civility_alias', static function (mixed $gender): string {
+            new TwigFilter('civility_alias', static function (mixed $gender): ?string {
                 return match ($gender) {
                     CivilityEnum::Monsieur, Genders::MALE => 'M',
                     CivilityEnum::Madame, Genders::FEMALE => 'Mme',
