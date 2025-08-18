@@ -134,9 +134,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('paymentStatus', 'enum', ['label' => 'Statut du paiement', 'use_value' => true, 'enum_translation_domain' => 'messages', 'header_style' => 'min-width: 160px;'])
             ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
+            ->add('createdAt', null, ['label' => 'Inscrit le', 'header_style' => 'min-width: 140px;'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
             ->add('uuid', null, ['label' => 'Uuid', 'header_style' => 'min-width: 270px;'])
             ->add('publicId', null, ['label' => 'Public ID', 'header_style' => 'min-width: 90px;'])
+            ->add('updatedAt', null, ['label' => 'Modifiée le', 'header_style' => 'min-width: 140px;'])
         ;
     }
 
@@ -164,6 +166,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                 ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
                 ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
+                ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
