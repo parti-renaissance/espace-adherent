@@ -882,7 +882,7 @@ Feature:
                 "push": 4,
                 "email": 6,
                 "push_email": 2,
-                "only_push": 4,
+                "only_push": 2,
                 "only_email": 4,
                 "contacts": 8,
                 "total": 12
