@@ -26,7 +26,7 @@ class AmqpTransport extends SymfonyAmqpTransport
     {
         try {
             return parent::send($envelope);
-        } catch (TransportException $e) {
+        } catch (TransportException|\AMQPConnectionException $e) {
             /** @var RetryAfterAMQPExceptionStamp|null $stamp */
             $stamp = $envelope->last(RetryAfterAMQPExceptionStamp::class);
 
