@@ -2,20 +2,13 @@
 
 namespace App\RepublicanSilence;
 
-use App\Entity\Geo\Zone;
 use App\Entity\RepublicanSilence;
-use App\Repository\Geo\ZoneRepository;
 use App\Repository\RepublicanSilenceRepository;
 
 class RepublicanSilenceManager
 {
-    private RepublicanSilenceRepository $repository;
-    private ZoneRepository $zoneRepository;
-
-    public function __construct(RepublicanSilenceRepository $repository, ZoneRepository $zoneRepository)
+    public function __construct(private readonly RepublicanSilenceRepository $repository)
     {
-        $this->repository = $repository;
-        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -32,30 +25,5 @@ class RepublicanSilenceManager
     public function getRepublicanSilencesFromDate(\DateTimeInterface $date): iterable
     {
         return $this->repository->findFromDate($date);
-    }
-
-    public function hasStartedSilence(?array $zones = null): bool
-    {
-        $silences = $this->getRepublicanSilencesForDate(new \DateTime());
-
-        if (null === $zones) {
-            return !empty(array_filter(
-                $silences,
-                fn (RepublicanSilence $silence) => $silence->getZones()->isEmpty() || !$silence->getZones()->filter(fn (Zone $zone) => 'FR' === $zone->getCode())->isEmpty()
-            ));
-        }
-
-        foreach ($silences as $silence) {
-            if ($this->matchSilence($silence, $zones)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function matchSilence(RepublicanSilence $silence, array $zones): bool
-    {
-        return $this->zoneRepository->isInZones($zones, $silence->getZones()->toArray());
     }
 }
