@@ -30,8 +30,11 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
         $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
-            $audienceFilter->setZones($scope->getZones());
-            if ($committeeUuids = $scope->getCommitteeUuids()) {
+            if ($audienceFilter->getZones()->isEmpty() && $scope->getZones()) {
+                $audienceFilter->setZones($scope->getZones());
+            }
+
+            if (!$audienceFilter->getCommittee() && $committeeUuids = $scope->getCommitteeUuids()) {
                 $audienceFilter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
             }
 
