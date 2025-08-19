@@ -101,8 +101,6 @@ services:
             tags: ['app.auth_app.url_generator']
         App\Recaptcha\RecaptchaApiClientInterface:
             tags: ['app.recaptcha_api_client']
-        App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface:
-            tags: ['app.republican_silence.zone_extractor']
         App\Adherent\Tag\TagGenerator\TagGeneratorInterface:
             tags: ['app.adherent.tag.generator']
         App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface:
@@ -340,9 +338,6 @@ services:
 
     App\Firebase\JeMarcheMessaging:
         lazy: true
-
-    App\RepublicanSilence\ZoneExtractorFactory:
-        arguments: [!tagged_iterator 'app.republican_silence.zone_extractor']
 
     App\Api\Serializer\ReferralGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
