@@ -7,6 +7,7 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
+use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
 class LockMiddleware implements MiddlewareInterface
 {
@@ -18,7 +19,7 @@ class LockMiddleware implements MiddlewareInterface
     {
         $message = $envelope->getMessage();
 
-        if (!$message instanceof LockableMessageInterface) {
+        if (!$message instanceof LockableMessageInterface || empty($envelope->all(ReceivedStamp::class))) {
             return $stack->next()->handle($envelope, $stack);
         }
 

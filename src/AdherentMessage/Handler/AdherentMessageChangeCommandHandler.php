@@ -43,6 +43,8 @@ class AdherentMessageChangeCommandHandler
                     $filter->setSynchronized(true);
                 }
 
+                $this->entityManager->flush();
+
                 if ($this->mailchimpManager->editCampaignContent($mailchimpCampaign)) {
                     $mailchimpCampaign->setSynchronized(true);
                 }
