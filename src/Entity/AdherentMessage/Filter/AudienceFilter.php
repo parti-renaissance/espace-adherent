@@ -144,51 +144,31 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
-    public function setAge(array $minMax): void
+    public function setAge(?array $minMax): void
     {
-        if (!empty($minMax['min'])) {
-            $this->setAgeMin($minMax['min']);
-        }
-
-        if (!empty($minMax['max'])) {
-            $this->setAgeMax($minMax['max']);
-        }
+        $this->setAgeMin(empty($minMax['min']) ? null : $minMax['min']);
+        $this->setAgeMax(empty($minMax['max']) ? null : $minMax['max']);
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
-    public function setRegistered(array $startEnd): void
+    public function setRegistered(?array $startEnd): void
     {
-        if (!empty($startEnd['start'])) {
-            $this->setRegisteredSince(new \DateTime($startEnd['start']));
-        }
-
-        if (!empty($startEnd['end'])) {
-            $this->setRegisteredUntil(new \DateTime($startEnd['end']));
-        }
+        $this->setRegisteredSince(empty($startEnd['start']) ? null : new \DateTime($startEnd['start']));
+        $this->setRegisteredUntil(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
-    public function setFirstMembership(array $startEnd): void
+    public function setFirstMembership(?array $startEnd): void
     {
-        if (!empty($startEnd['start'])) {
-            $this->firstMembershipSince = new \DateTime($startEnd['start']);
-        }
-
-        if (!empty($startEnd['end'])) {
-            $this->firstMembershipBefore = new \DateTime($startEnd['end']);
-        }
+        $this->firstMembershipSince = empty($startEnd['start']) ? null : new \DateTime($startEnd['start']);
+        $this->firstMembershipBefore = empty($startEnd['end']) ? null : new \DateTime($startEnd['end']);
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
-    public function setLastMembership(array $startEnd): void
+    public function setLastMembership(?array $startEnd): void
     {
-        if (!empty($startEnd['start'])) {
-            $this->setLastMembershipSince(new \DateTime($startEnd['start']));
-        }
-
-        if (!empty($startEnd['end'])) {
-            $this->setLastMembershipBefore(new \DateTime($startEnd['end']));
-        }
+        $this->setLastMembershipSince(empty($startEnd['start']) ? null : new \DateTime($startEnd['start']));
+        $this->setLastMembershipBefore(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
     }
 
     public function getAudienceType(): ?string

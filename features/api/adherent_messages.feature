@@ -965,6 +965,219 @@ Feature:
                 "last_membership_before": null
             }
             """
+        When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
+            """
+            {
+                "gender": null,
+                "registered": {
+                    "start": "2016-01-01T00:00:00",
+                    "end": "2030-01-01T00:00:00"
+                },
+                "first_membership": {
+                    "start": "2020-01-01T00:00:00",
+                    "end": "2030-01-01T00:00:00"
+                },
+                "last_membership": {
+                    "start": "2020-01-01T00:00:00",
+                    "end": "2030-01-01T00:00:00"
+                },
+                "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+            }
+            """
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "push": 1,
+                "email": 0,
+                "push_email": 0,
+                "only_push": 1,
+                "only_email": 0,
+                "contacts": 1,
+                "total": 4
+            }
+            """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "contacts": 1,
+                "total": 4
+            }
+            """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "is_certified": null,
+                "zone": {
+                    "type": "department",
+                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "code": "77",
+                    "name": "Seine-et-Marne"
+                },
+                "committee": null,
+                "is_committee_member": null,
+                "mandate_type": null,
+                "declared_mandate": null,
+                "is_campus_registered": null,
+                "donator_status": null,
+                "adherent_tags": null,
+                "elect_tags": null,
+                "static_tags": null,
+                "zones": [
+                    {
+                        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "77",
+                        "name": "Seine-et-Marne"
+                    },
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "76",
+                        "name": "Seine-Maritime"
+                    },
+                    {
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    },
+                    {
+                        "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "13",
+                        "name": "Bouches-du-Rhône"
+                    }
+                ],
+                "gender": null,
+                "age_min": null,
+                "age_max": null,
+                "first_name": null,
+                "last_name": null,
+                "registered_since": "2016-01-01T00:00:00+01:00",
+                "registered_until": "2030-01-01T00:00:00+01:00",
+                "first_membership_since": "2020-01-01T00:00:00+01:00",
+                "first_membership_before": "2030-01-01T00:00:00+01:00",
+                "last_membership_since": "2020-01-01T00:00:00+01:00",
+                "last_membership_before": "2030-01-01T00:00:00+01:00"
+            }
+            """
+        When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
+            """
+            {
+                "registered": null,
+                "first_membership": null,
+                "last_membership": null,
+                "zone": null,
+                "committee": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                "adherent_tags": "adherent"
+            }
+            """
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "push": 0,
+                "email": 0,
+                "push_email": 0,
+                "only_push": 0,
+                "only_email": 0,
+                "contacts": 0,
+                "total": 0
+            }
+            """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "contacts": 0,
+                "total": 0
+            }
+            """
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "is_certified": null,
+                "zone": null,
+                "committee": {
+                    "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                    "name": "Comité des 3 communes",
+                    "slug": "comite-des-3-communes"
+                },
+                "is_committee_member": null,
+                "mandate_type": null,
+                "declared_mandate": null,
+                "is_campus_registered": null,
+                "donator_status": null,
+                "adherent_tags": "adherent",
+                "elect_tags": null,
+                "static_tags": null,
+                "zones": [
+                    {
+                        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "77",
+                        "name": "Seine-et-Marne"
+                    },
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "76",
+                        "name": "Seine-Maritime"
+                    },
+                    {
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    },
+                    {
+                        "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "13",
+                        "name": "Bouches-du-Rhône"
+                    }
+                ],
+                "gender": null,
+                "age_min": null,
+                "age_max": null,
+                "first_name": null,
+                "last_name": null,
+                "registered_since": null,
+                "registered_until": null,
+                "first_membership_since": null,
+                "first_membership_before": null,
+                "last_membership_since": null,
+                "last_membership_before": null
+            }
+            """
 
         Examples:
             | user                      | scope                                          | image_url                                                         |
