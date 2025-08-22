@@ -17,6 +17,7 @@ use App\JMEFilter\Types\Text;
  * @method self setValueParam(string $valueParam)
  * @method self setLabelParam(string $labelParam)
  * @method self setMultiple(bool $multiple)
+ * @method self withEmptyChoice(bool $value, ?string $label)
  * @method self setRequired(bool $value)
  * @method self setFavorite(bool $value)
  * @method self setAdvanced(bool $value)

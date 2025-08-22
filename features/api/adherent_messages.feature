@@ -471,24 +471,11 @@ Feature:
                             "label": "Civilité",
                             "options": {
                                 "choices": {
-                                    "female": "Femme",
-                                    "male": "Homme",
-                                    "other": "Autre"
+                                    "female": "Madame",
+                                    "male": "Monsieur"
                                 }
                             },
                             "type": "select"
-                        },
-                        {
-                            "code": "firstName",
-                            "label": "Prénom",
-                            "options": null,
-                            "type": "text"
-                        },
-                        {
-                            "code": "lastName",
-                            "label": "Nom",
-                            "options": null,
-                            "type": "text"
                         },
                         {
                             "code": "age",
@@ -504,6 +491,18 @@ Feature:
                                 }
                             },
                             "type": "integer_interval"
+                        },
+                        {
+                            "code": "firstName",
+                            "label": "Prénom",
+                            "options": null,
+                            "type": "text"
+                        },
+                        {
+                            "code": "lastName",
+                            "label": "Nom",
+                            "options": null,
+                            "type": "text"
                         },
                         {
                             "code": "zone",
@@ -528,9 +527,10 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
-                                "placeholder": "Tous les militants",
+                                "placeholder": "Tous mes militants",
                                 "advanced": true,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2025": "Adhérent - À jour 2025",
@@ -563,8 +563,7 @@ Feature:
                                     "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes",
                                     "d648d486-fbb3-4394-b4b3-016fac3658af": "Antenne En Marche de Fontainebleau"
                                 },
-                                "multiple": false,
-                                "required": false
+                                "multiple": false
                             },
                             "type": "select"
                         },
@@ -594,6 +593,7 @@ Feature:
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "national_event:campus": "Campus",
                                     "national_event:event-national-1": "Event National 1",
@@ -660,6 +660,7 @@ Feature:
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "elu": "Élu",
                                     "elu:attente_declaration": "Élu - En attente de déclaration",
@@ -679,6 +680,227 @@ Feature:
                             "options": {
                                 "advanced": true,
                                 "choices": {
+                                    "depute_europeen": "Député européen",
+                                    "senateur": "Sénateur",
+                                    "depute": "Député",
+                                    "president_conseil_regional": "Président du Conseil régional",
+                                    "conseiller_regional": "Conseiller régional",
+                                    "president_conseil_departemental": "Président du Conseil départemental",
+                                    "conseiller_departemental": "Conseiller départemental",
+                                    "conseiller_territorial": "Conseiller territorial",
+                                    "president_conseil_communautaire": "Président du Conseil communautaire",
+                                    "conseiller_communautaire": "Conseiller communautaire",
+                                    "maire": "Maire",
+                                    "conseiller_municipal": "Conseiller municipal",
+                                    "conseiller_arrondissement": "Conseiller d'arrondissement",
+                                    "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                                    "ministre": "Ministre",
+                                    "conseiller_fde": "Conseiller FDE",
+                                    "delegue_consulaire": "Délégué consulaire"
+                                },
+                                "multiple": false
+                            },
+                            "type": "select"
+                        }
+                    ]
+                }
+            ]
+            """
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user with (delegated) referent role I can get filters list for publications feature
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=publications"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "label": "Zone géographique",
+                    "color": "#0E7490",
+                    "filters": [
+                        {
+                            "code": "zone",
+                            "label": "Zone géographique",
+                            "options": {
+                                "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district&types%5B8%5D=custom",
+                                "query_param": "q",
+                                "value_param": "uuid",
+                                "label_param": "name",
+                                "multiple": false,
+                                "required": true
+                            },
+                            "type": "zone_autocomplete"
+                        }
+                    ]
+                },
+                {
+                    "label": "Filtres militants",
+                    "color": "#0F766E",
+                    "filters": [
+                        {
+                            "code": "adherent_tags",
+                            "label": "Labels adhérent",
+                            "options": {
+                                "placeholder": "Tous mes militants",
+                                "advanced": true,
+                                "favorite": true,
+                                "required": true,
+                                "choices": {
+                                    "": "Tous mes militants",
+                                    "adherent": "Adhérent",
+                                    "adherent:a_jour_2025": "Adhérent - À jour 2025",
+                                    "adherent:a_jour_2025:primo": "Adhérent - À jour 2025 - Primo-adhérent",
+                                    "adherent:a_jour_2025:recotisation": "Adhérent - À jour 2025 - Recotisation",
+                                    "adherent:a_jour_2025:elu_a_jour": "Adhérent - À jour 2025 - Élu à jour",
+                                    "adherent:plus_a_jour": "Adhérent - Plus à jour",
+                                    "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
+                                    "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
+                                    "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
+                                    "sympathisant": "Sympathisant",
+                                    "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
+                                    "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                                    "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
+                                    "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                                    "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                                    "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "gender",
+                            "label": "Civilité",
+                            "options": {
+                                "choices": {
+                                    "": "Aucune sélection",
+                                    "female": "Madame",
+                                    "male": "Monsieur"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "age",
+                            "label": "Âge",
+                            "options": {
+                                "first": {
+                                    "min": 1,
+                                    "max": 200
+                                },
+                                "second": {
+                                    "min": 1,
+                                    "max": 200
+                                }
+                            },
+                            "type": "integer_interval"
+                        },
+                        {
+                            "code": "committee",
+                            "label": "Comités",
+                            "options": {
+                                "choices": {
+                                    "": "Aucune sélection",
+                                    "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
+                                    "508d4ac0-27d6-4635-8953-4cc8600018f9": "En Marche - Comité de Rouen",
+                                    "b0cd0e52-a5a4-410b-bba3-37afdd326a0a": "En Marche Dammarie-les-Lys",
+                                    "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes",
+                                    "d648d486-fbb3-4394-b4b3-016fac3658af": "Antenne En Marche de Fontainebleau"
+                                },
+                                "multiple": false
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "isCommitteeMember",
+                            "label": "Membre d'un comité",
+                            "options": {
+                                "choices": {
+                                    "": "Aucune sélection",
+                                    "0": "Non",
+                                    "1": "Oui"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "static_tags",
+                            "label": "Labels divers",
+                            "options": {
+                                "advanced": true,
+                                "favorite": true,
+                                "required": false,
+                                "choices": {
+                                    "": "Aucune sélection",
+                                    "national_event:campus": "Campus",
+                                    "national_event:event-national-1": "Event National 1",
+                                    "national_event:event-national-2": "Event National 2"
+                                }
+                            },
+                            "type": "select"
+                        }
+                    ]
+                },
+                {
+                    "label": "Filtres temporels",
+                    "color": "#0E7490",
+                    "filters": [
+                        {
+                            "code": "registered",
+                            "label": "Inscrit",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "firstMembership",
+                            "label": "Première cotisation",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "lastMembership",
+                            "label": "Dernière cotisation",
+                            "options": null,
+                            "type": "date_interval"
+                        }
+                    ]
+                },
+                {
+                    "label": "Filtres élus",
+                    "color": "#2563EB",
+                    "filters": [
+                        {
+                            "code": "elect_tags",
+                            "label": "Labels élu",
+                            "options": {
+                                "advanced": true,
+                                "favorite": true,
+                                "required": false,
+                                "choices": {
+                                    "": "Aucune sélection",
+                                    "elu": "Élu",
+                                    "elu:attente_declaration": "Élu - En attente de déclaration",
+                                    "elu:cotisation_ok": "Élu - À jour de cotisation",
+                                    "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
+                                    "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
+                                    "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
+                                    "elu:cotisation_nok": "Élu - Non à jour de cotisation",
+                                    "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "mandateType",
+                            "label": "Type de mandat",
+                            "options": {
+                                "advanced": true,
+                                "choices": {
+                                    "": "Aucune sélection",
                                     "depute_europeen": "Député européen",
                                     "senateur": "Sénateur",
                                     "depute": "Député",

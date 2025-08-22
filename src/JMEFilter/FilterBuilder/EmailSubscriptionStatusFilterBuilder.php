@@ -17,11 +17,12 @@ class EmailSubscriptionStatusFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('emailSubscription', 'Abonné email')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return PersonalInformationsFilterGroup::class;
     }

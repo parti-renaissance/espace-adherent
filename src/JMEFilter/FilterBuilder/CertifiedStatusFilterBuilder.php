@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
 class CertifiedStatusFilterBuilder implements FilterBuilderInterface
@@ -17,11 +18,12 @@ class CertifiedStatusFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('isCertified', 'Certifié')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return PersonalInformationsFilterGroup::class;
     }

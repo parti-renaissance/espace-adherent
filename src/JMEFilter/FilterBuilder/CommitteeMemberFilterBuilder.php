@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
 class CommitteeMemberFilterBuilder implements FilterBuilderInterface
@@ -17,11 +18,12 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
     }

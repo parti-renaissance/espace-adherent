@@ -24,10 +24,10 @@ class FiltersGenerator
 
         foreach ($this->builders as $builder) {
             if ($builder->supports($scope, $feature)) {
-                $groupClass = $builder->getGroup();
+                $groupClass = $builder->getGroup($scope, $feature);
 
                 if (!\array_key_exists($groupClass, $filters)) {
-                    $filters[$groupClass] = new $groupClass();
+                    $filters[$groupClass] = new $groupClass($scope, $feature);
                 }
 
                 /** @var FilterGroupInterface $filterGroup */

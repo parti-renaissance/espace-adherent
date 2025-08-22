@@ -30,6 +30,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
         return (new FilterCollectionBuilder())
             ->createSelect(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'committee' : 'committeeUuids', 'Comités')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices($this->getCommitteeChoices($scopeObject))
             ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
             ->getFilters()
@@ -51,7 +52,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         );
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
     }

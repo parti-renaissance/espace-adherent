@@ -19,6 +19,7 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createSelect('donatorStatus', 'Donateur')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices([
                 DonatorStatusEnum::DONATOR_N => 'Donateur année en cours',
                 DonatorStatusEnum::DONATOR_N_X => 'Donateur années passées uniquement',
@@ -28,7 +29,7 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
     }

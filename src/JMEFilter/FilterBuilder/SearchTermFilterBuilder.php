@@ -22,7 +22,7 @@ class SearchTermFilterBuilder implements FilterBuilderInterface
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return EmptyGroup::class;
     }

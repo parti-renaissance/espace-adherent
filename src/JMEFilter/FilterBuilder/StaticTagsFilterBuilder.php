@@ -22,7 +22,7 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->fullTag = false;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
     }
