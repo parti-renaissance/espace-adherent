@@ -769,24 +769,11 @@ Feature:
                             "label": "Civilité",
                             "options": {
                                 "choices": {
-                                    "female": "Femme",
-                                    "male": "Homme",
-                                    "other": "Autre"
+                                    "female": "Madame",
+                                    "male": "Monsieur"
                                 }
                             },
                             "type": "select"
-                        },
-                        {
-                            "code": "firstName",
-                            "label": "Prénom",
-                            "options": null,
-                            "type": "text"
-                        },
-                        {
-                            "code": "lastName",
-                            "label": "Nom",
-                            "options": null,
-                            "type": "text"
                         },
                         {
                             "code": "age",
@@ -810,6 +797,18 @@ Feature:
                                 "choices": ["Non", "Oui"]
                             },
                             "type": "select"
+                        },
+                        {
+                            "code": "firstName",
+                            "label": "Prénom",
+                            "options": null,
+                            "type": "text"
+                        },
+                        {
+                            "code": "lastName",
+                            "label": "Nom",
+                            "options": null,
+                            "type": "text"
                         },
                         {
                             "code": "smsSubscription",
@@ -842,9 +841,10 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
-                                "placeholder": "Tous les militants",
+                                "placeholder": "Tous mes militants",
                                 "advanced": false,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2025": "Adhérent - À jour 2025",
@@ -867,31 +867,12 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "committeeUuids",
-                            "label": "Comités",
-                            "options": {
-                                "choices": {
-                                    "515a56c0-bde8-56ef-b90c-4745b1c93818": "En Marche Paris 8"
-                                },
-                                "multiple": true,
-                                "required": false
-                            },
-                            "type": "select"
-                        },
-                        {
-                            "code": "isCommitteeMember",
-                            "label": "Membre d'un comité",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
-                        },
-                        {
                             "code": "static_tags",
                             "label": "Labels divers",
                             "options": {
                                 "advanced": false,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "national_event:campus": "Campus",
                                     "national_event:event-national-1": "Event National 1",
@@ -958,6 +939,7 @@ Feature:
                             "options": {
                                 "advanced": false,
                                 "favorite": true,
+                                "required": false,
                                 "choices": {
                                     "elu": "Élu",
                                     "elu:attente_declaration": "Élu - En attente de déclaration",

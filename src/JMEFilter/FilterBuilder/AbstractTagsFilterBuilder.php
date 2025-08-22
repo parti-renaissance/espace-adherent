@@ -26,11 +26,15 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
+        $isRequired = $this->isRequired($scope, $feature);
+
         $builder = (new FilterCollectionBuilder())
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS], true))
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature, $this->placeholder)
             ->setChoices($this->getTranslatedChoices())
+            ->setRequired($isRequired)
         ;
 
         if ($this->placeholder) {
@@ -51,4 +55,9 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     }
 
     abstract protected function init(): void;
+
+    protected function isRequired(string $scope, ?string $feature): bool
+    {
+        return false;
+    }
 }

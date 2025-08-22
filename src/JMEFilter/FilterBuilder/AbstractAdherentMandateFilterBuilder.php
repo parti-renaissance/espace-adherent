@@ -12,7 +12,7 @@ abstract class AbstractAdherentMandateFilterBuilder implements FilterBuilderInte
     {
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return ElectedRepresentativeFilterGroup::class;
     }

@@ -11,6 +11,6 @@ class GenderSelect extends Select
     {
         parent::__construct($options['code'] ?? 'gender', $options['label'] ?? 'Civilité');
 
-        $this->setChoices(Genders::CHOICES_LABELS);
+        $this->setChoices(Genders::CIVILITY_LABELS);
     }
 }

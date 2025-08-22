@@ -17,10 +17,16 @@ class AbstractFilterGroup implements FilterGroupInterface
 
     private array $filters = [];
 
-    final public function __construct()
+    final public function __construct(string $scope, ?string $feature = null)
     {
         $this->label = static::LABEL;
         $this->color = static::COLOR;
+
+        $this->initialize($scope, $feature);
+    }
+
+    protected function initialize(string $scope, ?string $feature = null): void
+    {
     }
 
     public function getPosition(): int

@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
+use App\Scope\FeatureEnum;
 
 class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
@@ -12,11 +13,16 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->tags = TagEnum::getAdherentTags();
         $this->fieldName = 'adherent_tags';
         $this->fieldLabel = 'Labels adhérent';
-        $this->placeholder = 'Tous les militants';
+        $this->placeholder = 'Tous mes militants';
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
+    }
+
+    protected function isRequired(string $scope, ?string $feature): bool
+    {
+        return FeatureEnum::PUBLICATIONS === $feature;
     }
 }

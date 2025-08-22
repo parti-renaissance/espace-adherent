@@ -8,5 +8,5 @@ interface FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array;
 
-    public function getGroup(): string;
+    public function getGroup(string $scope, ?string $feature = null): string;
 }

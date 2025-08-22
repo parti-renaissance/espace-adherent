@@ -21,6 +21,7 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
         return (new FilterCollectionBuilder())
             ->createSelect('audienceType', 'Audience')
             ->setRequired(true)
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices([
                 AudienceTypeEnum::ADHERENT => 'Adhérents',
                 AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER => 'Inscrit newsletter',
@@ -29,7 +30,7 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return MilitantFilterGroup::class;
     }

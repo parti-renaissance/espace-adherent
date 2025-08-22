@@ -17,11 +17,12 @@ class SmsSubscriptionStatusFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('smsSubscription', 'Abonné SMS')
+            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()
         ;
     }
 
-    public function getGroup(): string
+    public function getGroup(string $scope, ?string $feature = null): string
     {
         return PersonalInformationsFilterGroup::class;
     }
