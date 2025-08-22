@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
@@ -50,6 +51,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
         private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
+    }
+
+    public function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->clearExcept(['list', 'edit', 'export']);
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
