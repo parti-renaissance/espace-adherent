@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -15,6 +16,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PaymentAdmin extends AbstractAdmin
 {
+    public function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->clearExcept(['list', 'show', 'export']);
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
