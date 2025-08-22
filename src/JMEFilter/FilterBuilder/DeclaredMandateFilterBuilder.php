@@ -7,6 +7,11 @@ use App\Scope\FeatureEnum;
 
 class DeclaredMandateFilterBuilder extends AbstractAdherentMandateFilterBuilder
 {
+    public function supports(string $scope, ?string $feature = null): bool
+    {
+        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS], true);
+    }
+
     public function build(string $scope, ?string $feature = null): array
     {
         $multiple = FeatureEnum::CONTACTS === $feature;

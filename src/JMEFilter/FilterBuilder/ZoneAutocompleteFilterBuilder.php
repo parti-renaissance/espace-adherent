@@ -13,7 +13,7 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true);
+        return true;
     }
 
     public function build(string $scope, ?string $feature = null): array
