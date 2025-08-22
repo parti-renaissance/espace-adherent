@@ -10,7 +10,7 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true) && ScopeEnum::ANIMATOR !== $scope;
+        return \in_array($scope, [ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::NATIONAL], true);
     }
 
     public function build(string $scope, ?string $feature = null): array

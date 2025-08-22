@@ -21,19 +21,17 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true)
-            && ScopeEnum::ANIMATOR !== $scope;
+        return \in_array($scope, [ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::NATIONAL], true);
     }
 
     public function build(string $scope, ?string $feature = null): array
     {
-        $scope = $this->scopeGeneratorResolver->generate();
+        $scopeObject = $this->scopeGeneratorResolver->generate();
 
         return (new FilterCollectionBuilder())
             ->createSelect(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'committee' : 'committeeUuids', 'Comités')
-            ->setChoices($this->getCommitteeChoices($scope))
+            ->setChoices($this->getCommitteeChoices($scopeObject))
             ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
-            ->setRequired(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) && ScopeEnum::ANIMATOR === $scope->getCode())
             ->getFilters()
         ;
     }

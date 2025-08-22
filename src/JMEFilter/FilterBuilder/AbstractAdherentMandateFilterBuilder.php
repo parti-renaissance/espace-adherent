@@ -4,22 +4,12 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\MandateTypeEnum;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
-use App\Scope\FeatureEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractAdherentMandateFilterBuilder implements FilterBuilderInterface
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
-    }
-
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return \in_array($feature, [
-            FeatureEnum::CONTACTS,
-            FeatureEnum::MESSAGES,
-            FeatureEnum::PUBLICATIONS,
-        ], true);
     }
 
     public function getGroup(): string

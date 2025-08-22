@@ -4,13 +4,12 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
-use App\Scope\FeatureEnum;
 
 class ContributionDatesFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS, FeatureEnum::CONTACTS], true);
+        return true;
     }
 
     public function build(string $scope, ?string $feature = null): array

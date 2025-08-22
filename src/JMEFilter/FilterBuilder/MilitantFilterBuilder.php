@@ -10,7 +10,7 @@ class MilitantFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS, FeatureEnum::CONTACTS], true);
+        return true;
     }
 
     public function build(string $scope, ?string $feature = null): array
