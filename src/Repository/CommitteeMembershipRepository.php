@@ -181,8 +181,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
                 if ($filter->getAgeMax()) {
                     $qb
-                        ->andWhere('a.birthdate >= :min_birth_date')
-                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax()))))
+                        ->andWhere('a.birthdate >= :max_birth_date')
+                        ->setParameter('max_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax()))))
                     ;
                 }
             }

@@ -1652,13 +1652,46 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
         }
 
-        if ($filter->getCommittee()) {
-            $fromJoin[] = 'JOIN committees_memberships cm ON cm.adherent_id = a.id AND cm.committee_id = :committee_id';
-            $params['committee_id'] = $filter->getCommittee()->getId();
-            $types['committee_id'] = ParameterType::INTEGER;
+        if ($filter->getCommittee() || null !== $filter->getIsCommitteeMember()) {
+            $fromJoin[] = 'LEFT JOIN committees_memberships cm ON cm.adherent_id = a.id';
+
+            if ($filter->getCommittee()) {
+                $where[] = 'cm.committee_id = :committee_id';
+                $params['committee_id'] = $filter->getCommittee()->getId();
+                $types['committee_id'] = ParameterType::INTEGER;
+            }
+            if (null !== $filter->getIsCommitteeMember()) {
+                $where[] = 'cm.id '.($filter->getIsCommitteeMember() ? 'IS NOT NULL' : 'IS NULL');
+            }
+        }
+
+        if ($filter->getMandateType()) {
+            $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+
+            $params['mandate_join_type'] = 'elected_representative';
+            $params['mandate_type'] = $filter->getMandateType();
         }
 
         $where[] = 'a.status = :status_enabled';
+
+        if ($filter->getGender()) {
+            $where[] = 'a.gender = :gender';
+            $params['gender'] = $filter->getGender();
+        }
+
+        if ($filter->getAgeMin() || $filter->getAgeMax()) {
+            $now = new \DateTimeImmutable();
+
+            if ($filter->getAgeMin()) {
+                $where[] = 'a.birthdate <= :min_birth_date';
+                $params['min_birth_date'] = $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMin())))->format('Y-m-d');
+            }
+
+            if ($filter->getAgeMax()) {
+                $where[] = 'a.birthdate >= :max_birth_date';
+                $params['max_birth_date'] = $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax())))->format('Y-m-d');
+            }
+        }
 
         if ($rs = $filter->getRegisteredSince()) {
             $where[] = 'a.registered_at >= :registered_since';

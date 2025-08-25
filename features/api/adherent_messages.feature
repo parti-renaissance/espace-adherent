@@ -1092,6 +1092,11 @@ Feature:
             """
             {
                 "gender": "male",
+                "age": {
+                    "min": 18,
+                    "max": 70
+                },
+                "is_committee_member": true,
                 "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
             }
             """
@@ -1101,13 +1106,13 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "push": 4,
-                "email": 6,
-                "push_email": 2,
-                "only_push": 2,
-                "only_email": 4,
-                "contacts": 8,
-                "total": 12
+                "push": 2,
+                "email": 3,
+                "push_email": 1,
+                "only_push": 1,
+                "only_email": 2,
+                "contacts": 4,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
@@ -1116,8 +1121,8 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "contacts": 8,
-                "total": 12
+                "contacts": 4,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
@@ -1134,7 +1139,7 @@ Feature:
                     "name": "Seine-et-Marne"
                 },
                 "committee": null,
-                "is_committee_member": null,
+                "is_committee_member": true,
                 "mandate_type": null,
                 "declared_mandate": null,
                 "is_campus_registered": null,
@@ -1175,8 +1180,8 @@ Feature:
                     }
                 ],
                 "gender": "male",
-                "age_min": null,
-                "age_max": null,
+                "age_min": 18,
+                "age_max": 70,
                 "first_name": null,
                 "last_name": null,
                 "registered_since": null,
