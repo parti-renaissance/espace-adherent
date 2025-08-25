@@ -70,6 +70,13 @@ class GetTimelineFeedsController extends AbstractController
             $committeeClause = '(NOT type:publication OR audience.committee:false)';
         }
 
+        $ageCivilityClauses = [
+            '(audience.age_min = 0 OR audience.age_min <= '.($user->getAge() ?? 0).')',
+            '(audience.age_max = 0 OR audience.age_max >= '.($user->getAge() ?? 0).')',
+            '(NOT type:publication OR audience.civility:false OR audience.include:"gender:'.$user->getGender().'")',
+            '(NOT type:publication OR audience.committee_member:2 OR audience.committee_member:'.(null !== $user->getCommitteeMembership() ? 1 : 0).')',
+        ];
+
         $mandateTypes = array_map(fn (ElectedRepresentativeAdherentMandate $m) => $m->mandateType, $user->findElectedRepresentativeMandates(true));
         $excludeMandatClauses = [];
         $mandateClause = '(NOT type:publication OR audience.mandate_type:false)';
@@ -112,6 +119,7 @@ class GetTimelineFeedsController extends AbstractController
             $tagClause,
             ...array_unique($excludeTagConditions),
             $zoneClause,
+            ...$ageCivilityClauses,
             $committeeClause,
             $mandateClause,
             ...$excludeMandatClauses,

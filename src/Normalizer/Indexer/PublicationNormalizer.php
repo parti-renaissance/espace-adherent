@@ -54,9 +54,9 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
             if (str_starts_with($tag, '!')) {
                 $audienceExcludeKeys[] = 'tag:'.substr($tag, 1);
             } else {
-                $enabledFilters['tag'] = true;
                 $audienceKeys[] = 'tag:'.$tag;
             }
+            $enabledFilters['tag'] = true;
         }
 
         // Zones
@@ -86,8 +86,8 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                 $audienceExcludeKeys[] = 'mandate_type:'.substr($type, 1);
             } else {
                 $audienceKeys[] = 'mandate_type:'.$type;
-                $enabledFilters['mandate_type'] = true;
             }
+            $enabledFilters['mandate_type'] = true;
         }
 
         // Declared mandate
@@ -96,8 +96,26 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                 $audienceExcludeKeys[] = 'declared_mandate:'.substr($declared, 1);
             } else {
                 $audienceKeys[] = 'declared_mandate:'.$declared;
-                $enabledFilters['declared_mandate'] = true;
             }
+            $enabledFilters['declared_mandate'] = true;
+        }
+
+        if ($filter->getGender()) {
+            $audienceKeys[] = 'gender:'.$filter->getGender();
+            $enabledFilters['civility'] = true;
+        }
+
+        if ($filter->getAgeMin()) {
+            $enabledFilters['age_min'] = $filter->getAgeMin();
+        }
+
+        if ($filter->getAgeMax()) {
+            $enabledFilters['age_max'] = $filter->getAgeMax();
+        }
+
+        if (null !== $filter->getIsCommitteeMember()) {
+            $audienceKeys[] = 'is_committee_member:'.($filter->getIsCommitteeMember() ? '1' : '0');
+            $enabledFilters['committee_member'] = true;
         }
 
         // Dates
