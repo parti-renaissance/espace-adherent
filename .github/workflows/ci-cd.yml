@@ -196,8 +196,17 @@ jobs:
                   keys: true
                   cache-warmup: true
 
+            - name: Cache static assets
+              uses: actions/cache@v4
+              with:
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+                  path: |
+                      public/built/
+                      public/css/
+                      public/select2/
+
             - name: Prepare app (assets, cache, db, rabbitmq)
-              run: make tfp
+              run: make tfp-db
 
             - env:
                   PHPUNIT_ARGS: --log-junit ./phpunit/junit.xml
@@ -227,8 +236,17 @@ jobs:
                   keys: true
                   cache-warmup: true
 
+            - name: Cache static assets
+              uses: actions/cache@v4
+              with:
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+                  path: |
+                      public/built/
+                      public/css/
+                      public/select2/
+
             - name: Prepare app (assets, cache, db, rabbitmq)
-              run: make tfp
+              run: make tfp-db
 
             - env:
                   BEHAT_ARGS: --suite=default -vvv --colors -f progress -o std -f junit -o ./behat --
@@ -264,8 +282,17 @@ jobs:
                   extra-containers: db redis rabbitmq selenium
                   keys: true
 
+            - name: Cache static assets
+              uses: actions/cache@v4
+              with:
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+                  path: |
+                      public/built/
+                      public/css/
+                      public/select2/
+
             - name: Prepare app (assets, cache, db, rabbitmq)
-              run: make tfp
+              run: make tfp-db
 
             - env:
                   BEHAT_ARGS: --suite=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
@@ -299,15 +326,6 @@ jobs:
               with:
                   path: node_modules/
                   key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
-
-            - name: Cache static assets
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      public/built/
-                      public/css/
-                      public/select2/
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
             - name: Setup yarn
               uses: ./.github/actions/setup-yarn
