@@ -37,20 +37,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['event.type' => 'exact'])]
 #[ApiResource(
+    shortName: 'NationalEventInscription',
     operations: [
-        new GetCollection(
-            uriTemplate: '/v3/national_event_inscriptions',
-            order: ['createdAt' => 'DESC'],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'rentree')",
-        ),
+        new GetCollection(order: ['createdAt' => 'DESC']),
         new Put(requirements: ['uuid' => '%pattern_uuid%']),
     ],
+    routePrefix: '/v3',
     normalizationContext: [
         TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
         'groups' => ['event_inscription_read', ImageExposeNormalizer::NORMALIZATION_GROUP],
     ],
     denormalizationContext: ['groups' => ['event_inscription_update']],
-    paginationItemsPerPage: 50
+    paginationItemsPerPage: 50,
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'rentree')"
 )]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Table('national_event_inscription')]
@@ -228,6 +227,14 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
 
     #[ORM\OneToMany(mappedBy: 'inscription', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $payments;
+
+    #[Groups(['event_inscription_update'])]
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $validationComment = null;
+
+    #[Groups(['event_inscription_update'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $validationExpiresAt = null;
 
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {

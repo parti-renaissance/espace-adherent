@@ -152,7 +152,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     {
         $form
             ->with('Général', ['class' => 'col-md-6'])
-                ->add('status', ChoiceType::class, ['label' => 'Statut', 'choices' => array_combine(InscriptionStatusEnum::STATUSES, InscriptionStatusEnum::STATUSES)])
                 ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
                 ->add('firstName', null, ['label' => 'Prénom'])
                 ->add('lastName', null, ['label' => 'Nom'])
@@ -166,6 +165,16 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false])
                 ->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false])
                 ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
+            ->end()
+            ->with('Statut', ['class' => 'col-md-6'])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Statut',
+                    'choices' => InscriptionStatusEnum::STATUSES,
+                    'choice_label' => fn (string $status) => $status,
+                    'required' => true,
+                ])
+                ->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false])
+                ->add('validationExpiresAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])
