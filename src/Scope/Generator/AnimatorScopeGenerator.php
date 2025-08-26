@@ -40,9 +40,11 @@ class AnimatorScopeGenerator extends AbstractScopeGenerator
             )
         );
 
-        /** @var Zone[] $dptZones */
-        if ($dptZones = array_merge(...array_map(fn (Committee $committee) => $committee->getParentZonesOfType(Zone::DEPARTMENT), $adherent->getAnimatorCommittees()))) {
-            $scope->addAttribute('dpt', $dptZones[0]->getCode());
+        foreach ($adherent->getAnimatorCommittees() as $committee) {
+            if ($dpts = $committee->getParentZonesOfType(Zone::DEPARTMENT)) {
+                $scope->addAttribute('dpt', $dpts[0]->getCode());
+                break;
+            }
         }
 
         return $scope;

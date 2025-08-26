@@ -23,6 +23,8 @@ class ZoneAutocompleteFilter
     #[Groups(['filter_write'])]
     public bool $activeOnly = true;
 
+    public array $committeeUuids = [];
+
     #[Groups(['filter_write'])]
     private ?array $types = null;
 
