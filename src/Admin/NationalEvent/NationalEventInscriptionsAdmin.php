@@ -174,7 +174,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                     'required' => true,
                 ])
                 ->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false])
-                ->add('validationExpiresAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
+                ->add('validationStartedAt', null, ['label' => 'Date de début de validation', 'widget' => 'single_text', 'disabled' => true])
+                ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])
                 ->add('event', null, ['label' => 'Event', 'disabled' => true])

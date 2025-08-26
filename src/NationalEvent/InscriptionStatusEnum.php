@@ -13,6 +13,7 @@ class InscriptionStatusEnum extends Enum
     public const REFUSED = 'refused';
     public const DUPLICATE = 'duplicate';
     public const CANCELED = 'canceled';
+    public const IN_VALIDATION = 'in_validation';
 
     public const STATUSES = [
         self::PENDING,
@@ -22,6 +23,7 @@ class InscriptionStatusEnum extends Enum
         self::REFUSED,
         self::DUPLICATE,
         self::CANCELED,
+        self::IN_VALIDATION,
     ];
 
     public const APPROVED_STATUSES = [

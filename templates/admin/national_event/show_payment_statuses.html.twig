@@ -9,7 +9,7 @@
         <table class="table">
             {% for status in value|sort((a, b) => b.createdAt <=> a.createdAt) %}
                 <tr>
-                    <td>{{ status.isSuccess() ? 'Confirmé' : 'Échec' }}</td>
+                    <td>{{ status.getStatus()|trans }}</td>
                     <td>{{ status.createdAt|date('d/m/Y H:i:s') }}</td>
                     <td><pre>{{ status.payload|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></td>
                 </tr>

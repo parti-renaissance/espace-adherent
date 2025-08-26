@@ -456,4 +456,20 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     {
         return $this->findOneBy(['publicId' => $publicId]);
     }
+
+    public function findNextToValidate(?int $eventId): ?EventInscription
+    {
+        $qb = $this->createQueryBuilder('ei')
+            ->where('ei.status = :status')
+            ->setParameter('status', InscriptionStatusEnum::PENDING)
+            ->setMaxResults(1)
+            ->orderBy('ei.createdAt', 'ASC')
+        ;
+
+        if ($eventId) {
+            $qb->andWhere('ei.event = :event')->setParameter('event', $eventId);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
