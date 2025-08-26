@@ -38,6 +38,7 @@
     "queryLanguages": ["fr"],
     "attributesForFaceting": [
         "filterOnly(adherent_ids)",
+        "filterOnly(audience)",
         "filterOnly(is_national)",
         "filterOnly(type)",
         "filterOnly(zone_codes)"
