@@ -26,11 +26,11 @@ class AppHit
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
-    public ?Adherent $referent = null;
+    public ?Adherent $referrer = null;
 
     #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
-    public ?string $referentCode = null;
+    public ?string $referrerCode = null;
 
     #[ORM\ManyToOne]
     public ?AppSession $appSession = null;

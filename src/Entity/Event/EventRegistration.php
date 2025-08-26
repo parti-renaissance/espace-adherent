@@ -6,6 +6,7 @@ use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPersonNameTrait;
+use App\Entity\EntityUTMTrait;
 use App\Entity\ImageAwareInterface;
 use App\Entity\ImageExposeInterface;
 use App\Repository\EventRegistrationRepository;
@@ -22,6 +23,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
+    use EntityUTMTrait;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Event::class)]
@@ -54,6 +56,13 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[Groups(['event_registration_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $confirmedAt = null;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+    public ?Adherent $referrer = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $referrerCode = null;
 
     public function __construct(
         UuidInterface $uuid,

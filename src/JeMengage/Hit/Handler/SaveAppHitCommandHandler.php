@@ -29,8 +29,8 @@ class SaveAppHitCommandHandler
         $hit->adherent = $this->entityManager->getReference(Adherent::class, $command->userId);
         $hit->appSession = $command->sessionId ? $this->entityManager->getReference(AppSession::class, $command->sessionId) : null;
 
-        if ($hit->referentCode) {
-            $hit->referent = $this->adherentRepository->findByPublicId($hit->referentCode, true);
+        if ($hit->referrerCode) {
+            $hit->referrer = $this->adherentRepository->findByPublicId($hit->referrerCode, true);
         }
 
         $this->entityManager->persist($hit);
