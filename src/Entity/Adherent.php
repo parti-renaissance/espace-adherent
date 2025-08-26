@@ -891,11 +891,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getCivility(): ?CivilityEnum
     {
-        return match ($this->gender) {
-            Genders::FEMALE => CivilityEnum::Madame,
-            Genders::MALE => CivilityEnum::Monsieur,
-            default => null,
-        };
+        return CivilityEnum::fromGender($this->gender);
     }
 
     public function getCustomGender(): ?string

@@ -6,9 +6,12 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Controller\Api\NationalEvent\GetNextInscriptionForValidationController;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -18,6 +21,7 @@ use App\Entity\ImageAwareInterface;
 use App\Entity\ImageExposeInterface;
 use App\Entity\PublicIdTrait;
 use App\Entity\ZoneableEntityInterface;
+use App\Enum\CivilityEnum;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
@@ -41,6 +45,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(order: ['createdAt' => 'DESC']),
         new Put(requirements: ['uuid' => '%pattern_uuid%']),
+        new Post(
+            uriTemplate: '/national_event_inscriptions/next-to-validate',
+            controller: GetNextInscriptionForValidationController::class,
+            deserialize: false,
+        ),
     ],
     routePrefix: '/v3',
     normalizationContext: [
@@ -88,11 +97,11 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(length: 6)]
     public ?string $gender = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column]
     public ?string $firstName = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column]
     public ?string $lastName = null;
 
@@ -104,11 +113,11 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(nullable: true)]
     public ?string $postalCode = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(nullable: true)]
     public ?string $birthPlace = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(nullable: true)]
     public ?string $accessibility = null;
 
@@ -124,7 +133,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $birthdate = null;
 
@@ -170,7 +179,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $withDiscount = null;
 
-    #[Groups(['event_inscription_read'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $amount = null;
 
@@ -232,9 +241,12 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $validationComment = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $validationStartedAt = null;
+
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $validationExpiresAt = null;
+    public ?\DateTimeInterface $validationFinishedAt = null;
 
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
@@ -310,6 +322,12 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->withDiscount = $inscriptionRequest->withDiscount;
         $this->roommateIdentifier = $inscriptionRequest->roommateIdentifier;
         $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
+    }
+
+    #[Groups(['event_inscription_read_for_validation'])]
+    public function getCivility(): ?CivilityEnum
+    {
+        return CivilityEnum::fromGender($this->gender);
     }
 
     public function getFullName(): string
@@ -479,10 +497,55 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         return $this->adherent?->getImagePath();
     }
 
-    #[Groups('event_inscription_read')]
+    #[Groups(['event_inscription_read'])]
     #[SerializedName('tags')]
     public function getAdherentTags(): ?array
     {
         return $this->adherent?->tags;
+    }
+
+    #[Groups(['event_inscription_read_for_validation'])]
+    public function getMemberTags(): ?array
+    {
+        $tags = array_filter(array_map(
+            static fn (string $tag): ?string => \in_array($tag, TagEnum::getAdherentTags(), true) ? $tag : null,
+            $this->adherent?->tags ?? []
+        ));
+
+        return empty($tags) ? ['Externe'] : array_values($tags);
+    }
+
+    #[Groups(['event_inscription_read_for_validation'])]
+    public function getElectTags(): ?array
+    {
+        $tags = array_filter(array_map(
+            static fn (string $tag): ?string => \in_array($tag, TagEnum::getElectTags(), true) ? $tag : null,
+            $this->adherent?->tags ?? []
+        ));
+
+        return empty($tags) ? null : array_values($tags);
+    }
+
+    #[Groups(['event_inscription_read_for_validation'])]
+    public function getOtherTags(): ?array
+    {
+        $filteredTags = array_merge(TagEnum::getAdherentTags(), TagEnum::getElectTags());
+
+        $tags = array_filter(array_map(
+            static fn (string $tag): ?string => !\in_array($tag, $filteredTags, true) ? $tag : null,
+            $this->adherent?->tags ?? []
+        ));
+
+        return empty($tags) ? null : array_values($tags);
+    }
+
+    public function markAsInValidation(): void
+    {
+        if (!$this->isPending()) {
+            throw new \LogicException('Only pending inscription can be marked as in validation.');
+        }
+
+        $this->status = InscriptionStatusEnum::IN_VALIDATION;
+        $this->validationStartedAt = new \DateTime();
     }
 }

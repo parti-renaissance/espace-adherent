@@ -143,6 +143,7 @@ trait EntityIdentityTrait
         'jecoute_news_read_dc',
         'adherent_message_sender',
         'event_inscription_read',
+        'event_inscription_read_for_validation',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

@@ -41,7 +41,7 @@ class PaymentStatus
             return PaymentStatusEnum::UNKNOWN;
         }
 
-        return match ($this->payload['STATUS']) {
+        return match ((string) $this->payload['STATUS']) {
             '8' => PaymentStatusEnum::REFUNDED,
             '9' => PaymentStatusEnum::CONFIRMED,
             default => PaymentStatusEnum::ERROR,

@@ -2,6 +2,8 @@
 
 namespace App\Enum;
 
+use App\ValueObject\Genders;
+
 enum CivilityEnum: string
 {
     case Madame = 'Madame';
@@ -19,5 +21,14 @@ enum CivilityEnum: string
     public function value(): string
     {
         return $this->value;
+    }
+
+    public static function fromGender(?string $gender): ?self
+    {
+        return match ($gender) {
+            Genders::FEMALE => self::Madame,
+            Genders::MALE => self::Monsieur,
+            default => null,
+        };
     }
 }
