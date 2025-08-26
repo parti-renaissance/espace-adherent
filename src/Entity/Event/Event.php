@@ -822,16 +822,14 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
         return $this->createdAt;
     }
 
-    public function updateMembersCount(
-        bool $incrementAction,
-        ?Adherent $adherent = null,
-    ): void {
+    public function updateMembersCount(bool $incrementAction, ?Adherent $adherent = null): void
+    {
         if ($incrementAction) {
             $this->incrementParticipantsCount();
 
             if (!$adherent) {
                 $this->incrementCitizensCount();
-            } elseif ($adherent->isRenaissanceSympathizer()) {
+            } elseif ($adherent->isRenaissanceAdherent()) {
                 if ($adherent->hasActiveMembership()) {
                     $this->incrementAdherentsUpToDateCount();
                 } else {

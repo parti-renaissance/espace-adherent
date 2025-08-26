@@ -7,6 +7,7 @@ use App\Entity\Event\Event;
 use App\Entity\Event\RegistrationStatusEnum;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -50,6 +51,17 @@ class EventRegistrationCommand
     private $joinNewsletter = false;
 
     private $registrationUuid;
+
+    #[Assert\Length(max: 255)]
+    #[Groups(['event_registration_write'])]
+    public ?string $utmSource = null;
+
+    #[Assert\Length(max: 255)]
+    #[Groups(['event_registration_write'])]
+    public ?string $utmCampaign = null;
+
+    #[Groups(['event_registration_write'])]
+    public ?string $referrerCode = null;
 
     public function __construct(Event $event, ?Adherent $adherent = null, public readonly RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED)
     {
@@ -149,5 +161,12 @@ class EventRegistrationCommand
     public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    public function updateFromRequest(Request $request): void
+    {
+        $this->utmSource = $request->request->get('utm_source');
+        $this->utmCampaign = $request->request->get('utm_campaign');
+        $this->referrerCode = $request->request->get('referrer_code');
     }
 }

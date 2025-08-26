@@ -2416,7 +2416,10 @@ Feature:
                 "first_name": "Jean",
                 "last_name": "Dupont",
                 "email_address": "test@test.com",
-                "postal_code": "123455"
+                "postal_code": "123455",
+                "utm_source": "facebook",
+                "utm_campaign": "la-rentrée-25",
+                "referrer": "123-789"
             }
             """
         Then the response status code should be 201
@@ -2943,7 +2946,14 @@ Feature:
                 }
             }
             """
-        When I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe"
+        When I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe" with body:
+            """
+            {
+                "utm_source": "facebook",
+                "utm_campaign": "la-rentrée-25",
+                "referrer": "123-789"
+            }
+            """
         Then the response status code should be 201
         When I send a "GET" request to "/api/v3/events/:saved_response.uuid:"
         Then the response status code should be 200

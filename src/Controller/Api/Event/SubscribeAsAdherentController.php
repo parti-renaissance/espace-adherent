@@ -86,6 +86,8 @@ class SubscribeAsAdherentController extends AbstractController
             }
         }
 
+        $command->updateFromRequest($request);
+
         $errors = $this->validator->validate($command);
 
         if ($errors->count()) {
@@ -98,9 +100,7 @@ class SubscribeAsAdherentController extends AbstractController
             null
         );
 
-        $newRegistration = false;
-        if (!$registration) {
-            $newRegistration = true;
+        if ($newRegistration = !$registration) {
             $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
         }
 
