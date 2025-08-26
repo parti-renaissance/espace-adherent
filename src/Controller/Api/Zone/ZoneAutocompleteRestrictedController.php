@@ -33,6 +33,7 @@ class ZoneAutocompleteRestrictedController extends AbstractZoneAutocompleteContr
         if (!$filter->forMandateType) {
             if ($scope = $scopeGeneratorResolver->generate()) {
                 $managedZones = $scope->getZones();
+                $filter->committeeUuids = $scope->getCommitteeUuids();
             } else {
                 $scopeCode = $authorizationChecker->getScope($request);
                 $user = $this->getMainUser($request->getSession());

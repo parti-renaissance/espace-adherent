@@ -152,6 +152,16 @@ class ZoneRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($filter->committeeUuids) {
+            $qb
+                ->innerJoin(Committee::class, 'committee2', Join::WITH, 'committee2.uuid IN (:committee_uuids)')
+                ->innerJoin('committee2.zones', 'committee_zone2')
+                ->leftJoin('committee_zone2.children', 'committee_children_zone2')
+                ->setParameter('committee_uuids', $filter->committeeUuids)
+                ->andWhere('(zone.id = committee_zone2.id OR committee_children_zone2.id = zone.id)')
+            ;
+        }
+
         return $qb
             ->getQuery()
             ->setMaxResults($max)
