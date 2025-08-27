@@ -30,7 +30,7 @@ class LegislativeDistrictZoneRepository extends ServiceEntityRepository
             ->getResult()
         ;
 
-        /** @var $zone LegislativeDistrictZone */
+        /** @var LegislativeDistrictZone $zone */
         foreach ($zones as $zone) {
             $groupedZones[$zone->getAreaTypeLabel()][] = $zone;
         }
