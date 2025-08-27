@@ -174,7 +174,11 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $manager->persist($event8);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
-        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7', Adherent::class))));
+        $command = new EventRegistrationCommand($event1, $this->getReference('adherent-7', Adherent::class));
+        $command->referrerCode = '168-385';
+        $command->utmSource = 'newsletter';
+        $command->utmCampaign = 'emailing-mars';
+        $manager->persist($this->eventRegistrationFactory->createFromCommand($command));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('user-1', Adherent::class))));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event5, $adherent5)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event6, $adherent5)));

@@ -57,6 +57,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $confirmedAt = null;
 
+    #[Groups(['event_registration_list'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
     public ?Adherent $referrer = null;

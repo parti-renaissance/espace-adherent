@@ -2084,7 +2084,8 @@ Feature:
                         "email_address": "referent@en-marche-dev.fr",
                         "phone": "+33 6 73 65 43 49",
                         "image_url": null,
-                        "tags": []
+                        "tags": [],
+                        "referrer": null
                     },
                     {
                         "uuid": "@uuid@",
@@ -2097,7 +2098,13 @@ Feature:
                         "email_address": "francis.brioul@yahoo.com",
                         "image_url": null,
                         "phone": "+33 6 73 65 43 49",
-                        "tags": []
+                        "tags": [],
+                        "referrer": {
+                            "uuid": "@uuid@",
+                            "first_name": "Bob",
+                            "last_name": "Senateur (59)",
+                            "image_url": "@string@.isUrl()"
+                        }
                     },
                     {
                         "uuid": "@uuid@",
@@ -2110,7 +2117,8 @@ Feature:
                         "email_address": "simple-user@example.ch",
                         "phone": null,
                         "image_url": null,
-                        "tags": []
+                        "tags": [],
+                        "referrer": null
                     },
                     {
                         "uuid": "@uuid@",
@@ -2123,7 +2131,8 @@ Feature:
                         "email_address": "marie.claire@test.com",
                         "phone": null,
                         "image_url": null,
-                        "tags": []
+                        "tags": [],
+                        "referrer": null
                     }
                 ]
             }
@@ -3052,6 +3061,7 @@ Feature:
                         "first_name": "Carl",
                         "last_name": "Mirabeau",
                         "postal_code": "77190",
+                        "referrer": null,
                         "email_address": "carl999@example.fr",
                         "phone": "+33 1 11 22 33 44",
                         "image_url": null,
@@ -3072,6 +3082,7 @@ Feature:
                         "last_name": "Olivera",
                         "phone": "+33 7 27 36 36 43",
                         "postal_code": "75009",
+                        "referrer": null,
                         "status": "invited",
                         "tags": [
                             {
@@ -3091,6 +3102,7 @@ Feature:
                         "last_name": "Dufour",
                         "phone": null,
                         "postal_code": "8057",
+                        "referrer": null,
                         "status": "confirmed",
                         "tags": [
                             {
@@ -3110,6 +3122,7 @@ Feature:
                         "last_name": "Picard",
                         "phone": "+33 1 87 26 42 36",
                         "postal_code": "75008",
+                        "referrer": null,
                         "status": "confirmed",
                         "tags": [
                             {

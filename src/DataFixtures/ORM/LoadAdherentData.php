@@ -625,6 +625,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'position' => 'employed',
             'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
+            'public_id' => '168-385',
         ]);
         $senator_59->setImageName(new UploadedFile(
             __DIR__.'/../../../app/data/images/profile/example.jpg',
