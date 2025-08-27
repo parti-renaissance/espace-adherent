@@ -4198,7 +4198,7 @@ __metadata:
     interactjs: "npm:^1.10.27"
     js-cookie: "npm:^3.0.5"
     lodash: "npm:^4.17.21"
-    lucide: "npm:^0.541.0"
+    lucide: "npm:^0.542.0"
     mini-css-extract-plugin: "npm:^2.9.0"
     postcss: "npm:^8.4.38"
     postcss-loader: "npm:^8.1.1"
@@ -6519,10 +6519,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide@npm:^0.541.0":
-  version: 0.541.0
-  resolution: "lucide@npm:0.541.0"
-  checksum: 10c0/047d4e1e2e6c963a6862260ed2986d854a508d8f780999b09cf7f3992dcd426f1fff0584571dd1f912bf0801831538832cc7c55f35c58e9f13fd4db821bebdf0
+"lucide@npm:^0.542.0":
+  version: 0.542.0
+  resolution: "lucide@npm:0.542.0"
+  checksum: 10c0/f4e28e4695a8bb427d23c9ff3f83899bfce7ab0211f595dd7c498124d684e6db080b1d54561d612b35badd5c0425ae8249e44548893f25c9d44db9701d3bd2e6
   languageName: node
   linkType: hard
 
