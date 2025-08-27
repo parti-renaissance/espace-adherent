@@ -34,7 +34,7 @@ class EventLiveBeginEmailChunkNotificationCommandHandler
             return;
         }
 
-        /** @var $adherents Adherent[] */
+        /** @var Adherent[] $adherents */
         $adherents = $this->adherentRepository->findAllByIds($command->chunk, true);
 
         if (!empty($adherents)) {
