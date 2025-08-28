@@ -46,7 +46,7 @@
         "cocur/slugify": "^4.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "~2.15.0",
+        "doctrine/orm": "~2.20.6",
         "egulias/email-validator": "^4.0",
         "endroid/qr-code-bundle": "^6.0",
         "enmarche/majority-judgment": "^0.0.3",
