@@ -4,6 +4,7 @@ namespace App\JeMengage\Push\TokenProvider;
 
 use App\Entity\Action\Action;
 use App\Entity\Event\Event;
+use App\Entity\Event\EventRegistration;
 use App\Entity\Jecoute\News;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
@@ -13,6 +14,7 @@ use App\JeMengage\Push\Notification\ActionBeginNotification;
 use App\JeMengage\Push\Notification\ActionCancelledNotification;
 use App\JeMengage\Push\Notification\ActionUpdatedNotification;
 use App\JeMengage\Push\Notification\EventCreatedNotification;
+use App\JeMengage\Push\Notification\EventReferrerNotification;
 use App\JeMengage\Push\Notification\EventReminderNotification;
 use App\JeMengage\Push\Notification\NationalEventTicketNotification;
 use App\JeMengage\Push\Notification\NewsCreatedNotification;
@@ -25,6 +27,7 @@ class ObjectTokenProvider extends AbstractTokenProvider
         ActionUpdatedNotification::class,
         EventCreatedNotification::class,
         EventReminderNotification::class,
+        EventReferrerNotification::class,
         NewsCreatedNotification::class,
         NationalEventTicketNotification::class,
     ];
@@ -41,6 +44,7 @@ class ObjectTokenProvider extends AbstractTokenProvider
         } else {
             $notification->setScope(match ($object::class) {
                 Event::class => 'event:'.$object->getId(),
+                EventRegistration::class => 'event_registration:'.$object->getId(),
                 Action::class => 'action:'.$object->getId(),
                 NationalEvent::class => 'meeting:'.$object->getId(),
                 default => null,
