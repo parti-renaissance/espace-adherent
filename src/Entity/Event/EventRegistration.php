@@ -9,6 +9,8 @@ use App\Entity\EntityPersonNameTrait;
 use App\Entity\EntityUTMTrait;
 use App\Entity\ImageAwareInterface;
 use App\Entity\ImageExposeInterface;
+use App\Entity\NotificationObjectInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -19,7 +21,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Index(columns: ['email_address'])]
 #[ORM\Table(name: 'events_registrations')]
 #[ORM\UniqueConstraint(columns: ['adherent_id', 'event_id'])]
-class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface
+class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -210,5 +212,14 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public function isConfirmed(): bool
     {
         return RegistrationStatusEnum::CONFIRMED === $this->status;
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return null !== $this->referrer;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
     }
 }

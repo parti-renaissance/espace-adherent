@@ -60,6 +60,10 @@ class NotificationFactory
             return Notification\AdherentMessageSentNotification::create($object);
         }
 
+        if ($command instanceof Command\EventReferrerNotificationCommand) {
+            return Notification\EventReferrerNotification::create($object);
+        }
+
         throw new \RuntimeException('[Notification] Command not supported');
     }
 }

@@ -72,6 +72,14 @@ class PushTokenRepository extends ServiceEntityRepository
                 ->andWhere('er.event = :event')
                 ->setParameter('event', $object)
             ;
+        } elseif ($object instanceof EventRegistration) {
+            $filterEnabled = true;
+
+            $queryBuilder
+                ->innerJoin(EventRegistration::class, 'er', Join::WITH, 'er.adherent = a')
+                ->andWhere('er = :event_registration')
+                ->setParameter('event_registration', $object)
+            ;
         } elseif (($object instanceof Event && $object->getCommittee()) || $object instanceof News) {
             $filterEnabled = true;
 
