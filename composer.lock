@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb3c60d18f312f7a0262f9da551529ac",
+    "content-hash": "4671c550ea75073b7bfc7608cf77fab7",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -8818,16 +8818,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "4.5.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13"
+                "reference": "d88efcac2444cde18e17684178de02b25dff2050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/2ea9786632e6fac1aee601b6e426bcc723d8ce13",
-                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/d88efcac2444cde18e17684178de02b25dff2050",
+                "reference": "d88efcac2444cde18e17684178de02b25dff2050",
                 "shasum": ""
             },
             "require": {
@@ -8918,9 +8918,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.5.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/5.0.0"
             },
-            "time": "2025-07-24T05:15:59+00:00"
+            "time": "2025-08-10T06:18:27+00:00"
         },
         {
             "name": "psr/cache",
