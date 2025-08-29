@@ -29,7 +29,6 @@ parameters:
     router.request_context.host: '%app_host%'
     image_max_length: 450px
     national_event_ticket_host: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'
-    webhook.email_subscriptions_secret: '%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%'
 
 services:
     _defaults:
