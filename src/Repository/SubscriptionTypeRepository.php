@@ -27,12 +27,4 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['code' => $code]);
     }
-
-    /**
-     * Finds an SubscriptionType instance by external id.
-     */
-    public function findOneByExternalId(string $externalId): ?SubscriptionType
-    {
-        return $this->findOneBy(['externalId' => $externalId]);
-    }
 }
