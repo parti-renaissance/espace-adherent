@@ -52,9 +52,9 @@ Feature:
                         "id": "@string@",
                         "tags": [
                             {
-                                "code": "citoyen",
-                                "label": "Citoyen",
-                                "type": "citoyen"
+                                "code": "externe",
+                                "label": "Externe",
+                                "type": "externe"
                             }
                         ],
                         "vote_place_name": "Bureau de vote CLICHY 1",
@@ -187,9 +187,9 @@ Feature:
                         "id": "@string@",
                         "tags": [
                             {
-                                "code": "citoyen",
-                                "label": "Citoyen",
-                                "type": "citoyen"
+                                "code": "externe",
+                                "label": "Externe",
+                                "type": "externe"
                             }
                         ],
                         "vote_place_name": "Bureau de vote CLICHY 1",
@@ -275,9 +275,9 @@ Feature:
                         "id": "@string@",
                         "tags": [
                             {
-                                "code": "citoyen",
-                                "label": "Citoyen",
-                                "type": "citoyen"
+                                "code": "externe",
+                                "label": "Externe",
+                                "type": "externe"
                             }
                         ],
                         "vote_place_name": "Bureau de vote CLICHY 1",
@@ -352,9 +352,9 @@ Feature:
                         "id": "@string@",
                         "tags": [
                             {
-                                "code": "citoyen",
-                                "label": "Citoyen",
-                                "type": "citoyen"
+                                "code": "externe",
+                                "label": "Externe",
+                                "type": "externe"
                             }
                         ],
                         "vote_place_name": "Bureau de vote CLICHY 1",
