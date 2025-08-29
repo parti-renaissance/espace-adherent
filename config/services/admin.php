@@ -297,6 +297,10 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AppAlert::class, 'label' => 'Alertes', 'group' => 'App mobile'])
     ;
     $services
+        ->set('app.admin.private_message', App\Admin\TimelinePrivateMessageAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TimelineItemPrivateMessage::class, 'label' => 'Messages privés (timeline)', 'group' => 'App mobile'])
+    ;
+    $services
         ->set('app.admin.jecoute.news', App\Admin\Jecoute\NewsAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Jecoute\News::class, 'label' => 'Notifications', 'group' => 'App mobile'])
         ->call('setTemplate', ['edit', 'admin/jecoute/news/edit.html.twig'])
@@ -601,6 +605,7 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin.extension', ['target' => 'app.admin.agora'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.alert'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.private_message'])
     ;
 
     $services

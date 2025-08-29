@@ -32,7 +32,7 @@ class AppAlertAdmin extends AbstractAdmin
             ->add('endAt', null, ['label' => 'Date de fin'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
             ->add('createdAt', null, ['label' => 'Date de création'])
-            ->add('updatedAt', null, ['label' => 'Date de création'])
+            ->add('updatedAt', null, ['label' => 'Date de modification'])
         ;
     }
 

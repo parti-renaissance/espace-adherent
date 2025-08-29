@@ -60,8 +60,8 @@ class NotificationFactory
             return Notification\AdherentMessageSentNotification::create($object);
         }
 
-        if ($command instanceof Command\EventReferrerNotificationCommand) {
-            return Notification\EventReferrerNotification::create($object);
+        if ($command instanceof Command\PrivateMessageNotificationCommand) {
+            return Notification\PrivateMessageNotification::create($object);
         }
 
         throw new \RuntimeException('[Notification] Command not supported');

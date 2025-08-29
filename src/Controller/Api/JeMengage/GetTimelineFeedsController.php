@@ -6,22 +6,18 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
-use App\OAuth\Model\DeviceApiUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')]
 #[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
 class GetTimelineFeedsController extends AbstractController
 {
-    /**
-     * @param Adherent|DeviceApiUser $user
-     */
-    public function __invoke(UserInterface $user, Request $request, DataProvider $dataProvider): JsonResponse
+    public function __invoke(#[CurrentUser] Adherent $user, Request $request, DataProvider $dataProvider): JsonResponse
     {
         if (($page = $request->query->getInt('page')) < 0) {
             $page = 0;
@@ -133,6 +129,7 @@ class GetTimelineFeedsController extends AbstractController
             TimelineFeedTypeEnum::EVENT,
             TimelineFeedTypeEnum::ACTION,
             TimelineFeedTypeEnum::PUBLICATION,
+            TimelineFeedTypeEnum::PRIVATE_MASSAGE,
         ]];
 
         return $this->json($dataProvider->findItems($user, $page, $parts, $tagFilters));

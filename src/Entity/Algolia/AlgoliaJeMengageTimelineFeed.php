@@ -3,16 +3,8 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
-use App\Entity\Action\Action;
-use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\Event\Event;
 use App\Entity\IndexableEntityInterface;
-use App\Entity\Jecoute\LocalSurvey;
-use App\Entity\Jecoute\NationalSurvey;
-use App\Entity\Jecoute\News;
-use App\Entity\Jecoute\Riposte;
-use App\Entity\Pap\Campaign as PapCampaign;
-use App\Entity\Phoning\Campaign as PhoningCampaign;
+use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
@@ -41,17 +33,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
 
     public static function getEntities(): array
     {
-        return [
-            LocalSurvey::class,
-            NationalSurvey::class,
-            PapCampaign::class,
-            PhoningCampaign::class,
-            News::class,
-            Riposte::class,
-            Event::class,
-            Action::class,
-            AdherentMessage::class,
-        ];
+        return array_keys(TimelineFeedTypeEnum::CLASS_MAPPING);
     }
 
     public function isIndexable(): bool

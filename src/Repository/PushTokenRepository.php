@@ -18,6 +18,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\PushToken;
+use App\Entity\TimelineItemPrivateMessage;
 use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -72,13 +73,14 @@ class PushTokenRepository extends ServiceEntityRepository
                 ->andWhere('er.event = :event')
                 ->setParameter('event', $object)
             ;
-        } elseif ($object instanceof EventRegistration) {
+        } elseif ($object instanceof TimelineItemPrivateMessage) {
             $filterEnabled = true;
 
             $queryBuilder
-                ->innerJoin(EventRegistration::class, 'er', Join::WITH, 'er.referrer = a')
-                ->andWhere('er = :event_registration')
-                ->setParameter('event_registration', $object)
+                ->innerJoin(TimelineItemPrivateMessage::class, 'pm')
+                ->innerJoin('pm.adherents', 'a2', Join::WITH, 'a2 = a')
+                ->andWhere('pm = :private_message')
+                ->setParameter('private_message', $object)
             ;
         } elseif (($object instanceof Event && $object->getCommittee()) || $object instanceof News) {
             $filterEnabled = true;
