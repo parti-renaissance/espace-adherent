@@ -11,6 +11,7 @@ use App\Entity\NationalEvent\Payment;
 use App\Entity\PushToken;
 use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\PublicIdRepositoryInterface;
 use App\Repository\GeoZoneTrait;
@@ -471,5 +472,54 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         }
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return EventInscription[]
+     */
+    public function findAllForCurrentCampus(array $zones): array
+    {
+        $eventId = $this->getEntityManager()->createQueryBuilder()
+            ->select('e.id')
+            ->addSelect(
+                'CASE
+                    WHEN e.startDate <= :now AND e.endDate >= :now THEN 0
+                    WHEN e.startDate > :now THEN 1
+                    ELSE 2
+                END AS HIDDEN score'
+            )
+            ->from(NationalEvent::class, 'e')
+            ->where('e.type = :type')
+            ->orderBy('score', 'ASC')
+            ->setMaxResults(1)
+            ->setParameters(['type' => NationalEventTypeEnum::CAMPUS, 'now' => new \DateTime()])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if (!$eventId) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('ei')
+            ->addSelect('e', 'a')
+            ->innerJoin('ei.event', 'e')
+            ->leftJoin('ei.adherent', 'a')
+            ->where('e.id = :event_id')
+            ->setParameter('event_id', $eventId)
+            ->orderBy('ei.createdAt', 'DESC')
+        ;
+
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'ei',
+            EventInscription::class,
+            'ei2',
+            'zones',
+            'z2',
+        );
+
+        return $qb->getQuery()->getResult();
     }
 }

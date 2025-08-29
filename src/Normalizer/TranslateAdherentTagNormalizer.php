@@ -29,7 +29,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
 
         if (\is_array($data) && \array_key_exists('tags', $data)) {
             if (empty($data['tags']) && ($object instanceof AbstractProcuration || $object instanceof EventInscription)) {
-                $data['tags'] = ['citoyen'];
+                $data['tags'] = ['externe'];
             }
 
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
