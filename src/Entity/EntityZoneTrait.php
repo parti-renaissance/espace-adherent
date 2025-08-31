@@ -47,6 +47,7 @@ trait EntityZoneTrait
 
     public function setZones(array $zones): void
     {
+        $this->zones->clear();
         $this->zones = new ZoneCollection($zones);
     }
 
