@@ -269,6 +269,29 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame(PaymentStatusEnum::PENDING, $payment->status);
 
         $this->assertClientIsRedirectedTo('/grand-rassemblement/campus/'.$payment->getUuid().'/paiement-process', $this->client);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus/'.$inscription->getUuid().'/modifier-mes-informations');
+
+        $buttonCrawlerNode = $crawler->selectButton('Enregistrer les modifications');
+
+        $form = $buttonCrawlerNode->form();
+
+        $crawler = $this->client->submit($form, [
+            'campus_event_inscription' => [
+                'email' => 'john.doe@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75002',
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/campus/'.$inscription->getUuid(), $this->client);
+
+        $crawler = $this->client->followRedirect();
+        self::assertStringContainsString('Votre inscription a bien été mise à jour.', $crawler->filter('body')->text());
     }
 
     public function testPreviousCampusInscriptionMarkedAsDuplicateAfterSuccessfulPaymentOfLastOne(): void
