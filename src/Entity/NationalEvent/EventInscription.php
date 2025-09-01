@@ -2,6 +2,7 @@
 
 namespace App\Entity\NationalEvent;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -42,6 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['event.type' => 'exact'])]
+#[ApiFilter(filterClass: ExistsFilter::class, properties: ['adherent'])]
 #[ApiResource(
     shortName: 'NationalEventInscription',
     operations: [
