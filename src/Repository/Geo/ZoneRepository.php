@@ -90,6 +90,7 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter(':type', $type)
             ->orderBy('LENGTH(zone.code)')
             ->addOrderBy('zone.name')
+            ->groupBy('zone.id')
         ;
 
         if ($filter->activeOnly) {
