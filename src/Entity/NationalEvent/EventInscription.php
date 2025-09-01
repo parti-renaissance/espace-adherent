@@ -22,7 +22,9 @@ use App\Entity\ImageExposeInterface;
 use App\Entity\PublicIdTrait;
 use App\Entity\ZoneableEntityInterface;
 use App\Enum\CivilityEnum;
+use App\NationalEvent\Api\State\UpdateStatusPutProcessor;
 use App\NationalEvent\DTO\InscriptionRequest;
+use App\NationalEvent\DTO\RemainingStatsOutput;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Normalizer\ImageExposeNormalizer;
@@ -44,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     shortName: 'NationalEventInscription',
     operations: [
         new GetCollection(order: ['createdAt' => 'DESC']),
-        new Put(requirements: ['uuid' => '%pattern_uuid%']),
+        new Put(requirements: ['uuid' => '%pattern_uuid%'], normalizationContext: ['groups' => []], output: RemainingStatsOutput::class, processor: UpdateStatusPutProcessor::class),
         new Post(
             uriTemplate: '/national_event_inscriptions/next-to-validate',
             controller: GetNextInscriptionForValidationController::class,
