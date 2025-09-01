@@ -4,6 +4,7 @@ namespace App\Api\Filter;
 
 use App\Entity\Adherent;
 use App\Entity\ZoneableEntityInterface;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -12,6 +13,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class InZoneOfScopeFilter extends AbstractScopeFilter
 {
     private EntityManagerInterface $entityManager;
+    private ZoneRepository $zoneRepository;
 
     protected function needApplyFilter(string $property, string $resourceClass): bool
     {
@@ -31,7 +33,7 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
             ->entityManager
             ->getRepository($resourceClass)
             ->withGeoZones(
-                $scopeGenerator->generate($currentUser)->getZones(),
+                $this->getScopeZones($currentUser, $scopeGenerator),
                 $queryBuilder,
                 $alias,
                 $resourceClass,
@@ -47,5 +49,22 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
+    }
+
+    #[Required]
+    public function setZoneRepository(ZoneRepository $zoneRepository): void
+    {
+        $this->zoneRepository = $zoneRepository;
+    }
+
+    private function getScopeZones(Adherent $currentUser, ScopeGeneratorInterface $scopeGenerator): array
+    {
+        $scope = $scopeGenerator->generate($currentUser);
+
+        if ($scope->getCommitteeUuids()) {
+            return $this->zoneRepository->findZonesByCommitteesUuids($scope->getCommitteeUuids());
+        }
+
+        return $scope->getZones();
     }
 }

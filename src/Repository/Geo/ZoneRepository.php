@@ -494,4 +494,16 @@ class ZoneRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findZonesByCommitteesUuids(array $committeeUuids): array
+    {
+        return $this->createQueryBuilder('zone')
+            ->innerJoin(Committee::class, 'c')
+            ->innerJoin('c.zones', 'cz', Join::WITH, 'cz = zone')
+            ->where('c.uuid IN (:committee_uuids)')
+            ->setParameter('committee_uuids', $committeeUuids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
