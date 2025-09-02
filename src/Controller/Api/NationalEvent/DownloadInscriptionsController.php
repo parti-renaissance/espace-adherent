@@ -11,6 +11,7 @@ use Sonata\Exporter\ExporterInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -27,13 +28,26 @@ class DownloadInscriptionsController extends AbstractController
     ) {
     }
 
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        $inscriptionTypeFilter = $request->query->all('exists')['adherent'] ?? null;
+
+        $data = $this->repository->findAllForCurrentCampus(
+            $scope->getZones(),
+            $scope->getCommitteeUuids(),
+            null !== $inscriptionTypeFilter ? 'true' === $inscriptionTypeFilter : null,
+            trim($request->query->get('search', '')),
+        );
+
         return $this->exporter->getResponse(
             'xlsx',
             \sprintf('Inscriptions - %s.xlsx', date('d-m-Y H:i')),
             new IteratorCallbackSourceIterator(
-                new \ArrayIterator($this->repository->findAllForCurrentCampus($this->scopeGeneratorResolver->generate()->getZones())),
+                new \ArrayIterator($data),
                 fn (EventInscription $eventInscription) => [
                     'Numéro militant' => $eventInscription->adherent?->getPublicId(),
                     'Civilité' => $eventInscription->getCivility()->value,
