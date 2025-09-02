@@ -4,6 +4,8 @@ namespace App\Repository\NationalEvent;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\InscriptionReminder;
 use App\Entity\NationalEvent\NationalEvent;
@@ -14,6 +16,7 @@ use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\PublicIdRepositoryInterface;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
@@ -477,7 +480,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     /**
      * @return EventInscription[]
      */
-    public function findAllForCurrentCampus(array $zones): array
+    public function findAllForCurrentCampus(array $zones, array $committeeUuids, ?bool $withAdherent, ?string $search): array
     {
         $eventId = $this->getEntityManager()->createQueryBuilder()
             ->select('e.id')
@@ -506,9 +509,23 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->innerJoin('ei.event', 'e')
             ->leftJoin('ei.adherent', 'a')
             ->where('e.id = :event_id')
+            ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->setParameter('event_id', $eventId)
+            ->setParameter('excluded_statuses', [InscriptionStatusEnum::DUPLICATE, InscriptionStatusEnum::REFUSED])
             ->orderBy('ei.createdAt', 'DESC')
         ;
+
+        if ($committeeUuids) {
+            $zones = array_merge($zones, $this->getEntityManager()->createQueryBuilder()
+                ->from(Zone::class, 'z')
+                ->innerJoin(Committee::class, 'c')
+                ->innerJoin('c.zones', 'z2', Join::WITH, 'z2 = z')
+                ->where('c.uuid IN (:committee_uuids)')
+                ->setParameter('committee_uuids', $committeeUuids)
+                ->getQuery()
+                ->getResult()
+            );
+        }
 
         $this->withGeoZones(
             $zones,
@@ -519,6 +536,22 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             'zones',
             'z2',
         );
+
+        if (null !== $withAdherent) {
+            $qb->andWhere($withAdherent ? 'a IS NOT NULL' : 'a IS NULL');
+        }
+
+        if ($search) {
+            MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                $qb,
+                $search,
+                [
+                    ['ei.firstName', 'ei.lastName'],
+                    ['ei.lastName', 'ei.firstName'],
+                    ['ei.addressEmail', 'ei.addressEmail'],
+                ],
+            );
+        }
 
         return $qb->getQuery()->getResult();
     }

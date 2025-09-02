@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Put;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Api\Filter\OrTextSearchFilter;
 use App\Controller\Api\NationalEvent\GetNextInscriptionForValidationController;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
@@ -41,6 +42,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstName' => 'lastName', 'lastName' => 'firstName', 'addressEmail' => 'addressEmail'])]
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['event.type' => 'exact'])]
 #[ApiFilter(filterClass: ExistsFilter::class, properties: ['adherent'])]
