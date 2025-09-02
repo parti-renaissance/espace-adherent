@@ -39,7 +39,7 @@ class NationalEventUpdatePaymentCommand extends Command
 
     private function refreshPaymentStatus(): void
     {
-        foreach ($this->paymentRepository->findBy(['status' => PaymentStatusEnum::PENDING]) as $payment) {
+        foreach ($this->paymentRepository->findBy(['status' => [PaymentStatusEnum::PENDING, PaymentStatusEnum::UNKNOWN, PaymentStatusEnum::EXPIRED]]) as $payment) {
             $response = $this->direct->getStatus($payment->getUuid()->toString());
             sleep(1);
 
@@ -52,9 +52,13 @@ class NationalEventUpdatePaymentCommand extends Command
                 throw new \RuntimeException('Invalid XML');
             }
 
-            $payload = current(json_decode(json_encode($xml), true));
+            if (false === $content = json_encode($xml)) {
+                throw new \RuntimeException('Invalid XML/JSON conversion : '.$xml);
+            }
 
-            $this->messageBus->dispatch(new PaymentStatusUpdateCommand($payload));
+            $payload = current(json_decode($content, true, 512, \JSON_THROW_ON_ERROR));
+
+            $this->messageBus->dispatch(new PaymentStatusUpdateCommand($payload, $content));
         }
     }
 

@@ -454,7 +454,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
@@ -656,7 +656,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 8,
@@ -777,7 +777,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 8,
@@ -927,7 +927,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 8,
@@ -1027,7 +1027,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 8,
@@ -1132,7 +1132,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPaymentUuid = $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPaymentUuid = $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 8,
@@ -1182,7 +1182,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 7,
@@ -1203,7 +1203,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertTrue($payments[1]->isConfirmed());
         self::assertFalse($payments[1]->toRefund);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toString(), 'STATUS' => '8']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toString(), 'STATUS' => '8'], 'raw body'));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1304,7 +1304,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'], 'raw body'));
 
         self::assertSame([
             'dimanche_train' => 9,

@@ -24,10 +24,14 @@ class PaymentStatus
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
-    public function __construct(Payment $payment, array $payload = [])
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $rawBody = null;
+
+    public function __construct(Payment $payment, array $payload = [], ?string $rawBody = null)
     {
         $this->payment = $payment;
         $this->payload = $payload;
+        $this->rawBody = $rawBody;
     }
 
     public function isSuccess(): bool

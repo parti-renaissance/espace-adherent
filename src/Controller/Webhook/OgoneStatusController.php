@@ -20,7 +20,26 @@ class OgoneStatusController extends AbstractController
     public function __invoke(string $key, Request $request, MessageBusInterface $bus, LoggerInterface $logger): Response
     {
         if ($key === $this->ogoneWebhookKey && $request->isMethod(Request::METHOD_POST)) {
-            $bus->dispatch(new PaymentStatusUpdateCommand($request->request->all()));
+            $rawBody = $request->getContent();
+            $payload = $request->request->all();
+
+            $payloadDisplay = $payload;
+
+            array_walk_recursive($payloadDisplay, static function (&$v): void {
+                if (!\is_string($v)) {
+                    return;
+                }
+
+                if (!mb_check_encoding($v, 'UTF-8')) {
+                    $v = mb_convert_encoding($v, 'UTF-8', 'ISO-8859-1,Windows-1252,UTF-8');
+                }
+
+                $v = iconv('UTF-8', 'UTF-8//IGNORE', $v) ?: '';
+
+                $v = str_replace("\u{FFFD}", '', $v);
+            });
+
+            $bus->dispatch(new PaymentStatusUpdateCommand($payload, $rawBody));
         }
 
         return new Response('OK');

@@ -6,7 +6,7 @@ use App\Messenger\Message\AsynchronousMessageInterface;
 
 class PaymentStatusUpdateCommand implements AsynchronousMessageInterface
 {
-    public function __construct(public readonly array $payload)
+    public function __construct(public readonly array $payload, public readonly string $rawBody)
     {
     }
 }
