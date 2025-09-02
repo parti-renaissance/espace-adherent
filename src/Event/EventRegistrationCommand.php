@@ -165,8 +165,10 @@ class EventRegistrationCommand
 
     public function updateFromRequest(Request $request): void
     {
-        $this->utmSource = $request->request->get('utm_source');
-        $this->utmCampaign = $request->request->get('utm_campaign');
-        $this->referrerCode = $request->request->get('referrer_code');
+        $data = $request->toArray();
+
+        $this->utmSource = $data['utm_source'] ?? null;
+        $this->utmCampaign = $data['utm_campaign'] ?? null;
+        $this->referrerCode = $data['referrer_code'] ?? null;
     }
 }
