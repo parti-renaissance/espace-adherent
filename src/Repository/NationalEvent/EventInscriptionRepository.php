@@ -517,6 +517,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
 
         if ($committeeUuids) {
             $zones = array_merge($zones, $this->getEntityManager()->createQueryBuilder()
+                ->select('z')
                 ->from(Zone::class, 'z')
                 ->innerJoin(Committee::class, 'c')
                 ->innerJoin('c.zones', 'z2', Join::WITH, 'z2 = z')

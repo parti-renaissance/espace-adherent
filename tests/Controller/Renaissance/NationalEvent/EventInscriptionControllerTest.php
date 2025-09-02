@@ -325,7 +325,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var EventInscription $firstInscription */
         $firstInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_1']);
 
-        self::assertSame(['75'], $firstInscription->getZonesCodes());
+        self::assertSame(['75101'], $firstInscription->getZonesCodes());
 
         $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $firstInscription->getUuid()), $this->client);
         $this->client->followRedirect();
