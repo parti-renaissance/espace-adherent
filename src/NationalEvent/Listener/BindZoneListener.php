@@ -33,11 +33,13 @@ class BindZoneListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$dpt = $this->zoneRepository->findOneDepartmentByPostalCode($inscription->postalCode)) {
-            return;
+        if ($zone = $this->zoneRepository->findOneByPostalCode($inscription->postalCode)) {
+            $inscription->setZones([$zone]);
+        } elseif ($zone = $this->zoneRepository->findOneDepartmentByPostalCode($inscription->postalCode)) {
+            $inscription->setZones([$zone]);
+        } else {
+            $inscription->setZones([]);
         }
-
-        $inscription->setZones([$dpt]);
 
         $this->entityManager->flush();
     }
