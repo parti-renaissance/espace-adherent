@@ -32,9 +32,11 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -113,6 +115,53 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                     'multiple' => true,
                     'choices' => PaymentStatusEnum::all(),
                     'choice_label' => fn (PaymentStatusEnum $status) => $status,
+                ],
+            ])
+            ->add('volunteer', BooleanFilter::class, ['label' => 'Souhaite être bénévole'])
+            ->add('accessibility', NullFilter::class, ['label' => 'Handicap', 'inverse' => true])
+            ->add('visitDay', ChoiceFilter::class, [
+                'label' => 'Jour de présence',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choice_loader' => new CallbackChoiceLoader(function () {
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
+                        $qb->select('DISTINCT e.visitDay')->where('e.visitDay IS NOT NULL')->orderBy('e.visitDay', 'ASC');
+
+                        $choices = array_column($qb->getQuery()->getScalarResult(), 'visitDay');
+
+                        return array_combine($choices, $choices);
+                    }),
+                ],
+            ])
+            ->add('transport', ChoiceFilter::class, [
+                'label' => 'Forfait transport',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choice_loader' => new CallbackChoiceLoader(function () {
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
+                        $qb->select('DISTINCT e.transport')->where('e.transport IS NOT NULL')->orderBy('e.transport', 'ASC');
+
+                        $choices = array_column($qb->getQuery()->getScalarResult(), 'transport');
+
+                        return array_combine($choices, $choices);
+                    }),
+                ],
+            ])
+            ->add('accommodation', ChoiceFilter::class, [
+                'label' => 'Forfait hébergement',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choice_loader' => new CallbackChoiceLoader(function () {
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
+                        $qb->select('DISTINCT e.accommodation')->where('e.accommodation IS NOT NULL')->orderBy('e.accommodation', 'ASC');
+
+                        $choices = array_column($qb->getQuery()->getScalarResult(), 'accommodation');
+
+                        return array_combine($choices, $choices);
+                    }),
                 ],
             ])
         ;
