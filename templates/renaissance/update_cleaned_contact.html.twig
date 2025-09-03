@@ -1,0 +1,17 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Mailchimp' %}
+{% block content '' %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Bootstrap.onLoad(function () {
+            Main.runMailchimpResubscribeEmail({
+                signupPayload: {{ signup_payload|json_encode|raw }},
+                authenticated: false,
+                uuid: '{{ uuid }}',
+                apiKey: '{{ api_key }}',
+            });
+        });
+    </script>
+{% endblock %}

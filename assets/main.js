@@ -126,11 +126,20 @@ class Main {
         signupPayload = null,
         authenticated = true,
         callback = null,
+        uuid = null,
+        apiKey = null,
     }) {
-        import('pages/mc_resubscribe_email').catch((error) => {
-            throw error;
-        })
-            .then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback));
+        import('pages/mc_resubscribe_email')
+            .catch((error) => { throw error; })
+            .then((module) => module.default(
+                this.get('api'),
+                redirectUrl,
+                signupPayload,
+                authenticated,
+                callback,
+                uuid,
+                apiKey
+            ));
     }
 
     runCountdownClock(clockSelector, refreshPage = false) {

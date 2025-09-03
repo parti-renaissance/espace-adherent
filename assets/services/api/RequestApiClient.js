@@ -12,6 +12,17 @@ export default class RequestApiClient {
         });
     }
 
+    saveResubscribeStatus(uuid, response, apiKey) {
+        this._createRequest(() => {}, {
+            url: `/mailchimp/update-cleaned/${uuid}/save-last-response`,
+            method: 'put',
+            data: JSON.stringify({data: response}),
+            contentType: 'application/json',
+            headers: { 'X-API-KEY': apiKey },
+            type: 'json',
+        });
+    }
+
     sendResubscribeEmail(url, body, callback) {
         this._createRequest(callback, {
             url: `${url}/subscribe/post-json`,

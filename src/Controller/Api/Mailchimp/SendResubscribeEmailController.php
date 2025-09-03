@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Mailchimp;
 
 use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Entity\Adherent;
