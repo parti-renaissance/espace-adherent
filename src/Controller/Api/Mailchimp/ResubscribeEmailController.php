@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Mailchimp;
 
 use App\Entity\Adherent;
 use App\Mailchimp\SignUp\SignUpHandler;

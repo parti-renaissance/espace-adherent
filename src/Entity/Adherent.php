@@ -22,7 +22,7 @@ use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
-use App\Controller\Api\SendResubscribeEmailController;
+use App\Controller\Api\Mailchimp\SendResubscribeEmailController;
 use App\Controller\Api\UpdateImageController;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
@@ -569,6 +569,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AppSession::class, fetch: 'EXTRA_LAZY')]
     private Collection $appSessions;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $resubscribeEmailStartedAt = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $resubscribeResponse = null;
 
     public function __construct()
     {

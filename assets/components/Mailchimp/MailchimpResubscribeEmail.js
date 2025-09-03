@@ -30,7 +30,7 @@ const callMailchimp = ({
 };
 
 const MailchimpResubscribeEmail = ({
-    api, redirectUrl, authenticated, signupPayload, callback,
+    api, redirectUrl, authenticated, signupPayload, callback, uuid = null, apiKey = null,
 }) => {
     const [status, setStatus] = useState('loading');
     let count = 0;
@@ -47,6 +47,11 @@ const MailchimpResubscribeEmail = ({
                             { level: 'error', debug: true, extra: { response } }
                         );
                     }
+
+                    if (uuid) {
+                        api.saveResubscribeStatus(uuid, response, apiKey);
+                    }
+
                     setStatus(response.result && 'success' === response.result ? 'saved' : 'error');
                 },
             };

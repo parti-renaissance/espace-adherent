@@ -72,6 +72,8 @@ services:
             $telegramChatIdDeclaredMandates: '%env(TELEGRAM_CHAT_ID_DECLARED_MANDATES)%'
             $telegramChatIdNominations: '%env(TELEGRAM_CHAT_ID_NOMINATIONS)%'
             $referralHost: '%env(REFERRAL_HOST)%'
+            $updateCleanedContactToken: '%env(UPDATE_CLEANED_CONTACT_TOKEN)%'
+            $updateCleanedContactApiToken: '%env(UPDATE_CLEANED_CONTACT_API_TOKEN)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

@@ -36,6 +36,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Event\Request\CountInvitationsRequest;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\MembershipSourceEnum;
 use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
@@ -1818,5 +1819,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function publicIdExists(string $publicId): bool
     {
         return $this->count(['publicId' => $publicId]) > 0;
+    }
+
+    public function findNextCleaned(): ?Adherent
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('CASE WHEN a.tags LIKE :adherent_tag THEN 1 ELSE 2 END AS HIDDEN score')
+            ->where('a.mailchimpStatus = :status')
+            ->andWhere('a.resubscribeEmailStartedAt IS NULL OR (a.resubscribeEmailStartedAt < :date AND a.resubscribeResponse IS NULL)')
+            ->setParameter('status', ContactStatusEnum::CLEANED)
+            ->setParameter('date', (new \DateTime())->modify('-1 day'))
+            ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
+            ->orderBy('score', 'ASC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+        ;
     }
 }
