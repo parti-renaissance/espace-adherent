@@ -18574,16 +18574,16 @@
         },
         {
             "name": "vich/uploader-bundle",
-            "version": "v2.7.0",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dustin10/VichUploaderBundle.git",
-                "reference": "8a8cce134fc686caadf6828956f8ddd2b383fe74"
+                "reference": "caa3abb8685430da0b1668819784aac37b56f49e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/8a8cce134fc686caadf6828956f8ddd2b383fe74",
-                "reference": "8a8cce134fc686caadf6828956f8ddd2b383fe74",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/caa3abb8685430da0b1668819784aac37b56f49e",
+                "reference": "caa3abb8685430da0b1668819784aac37b56f49e",
                 "shasum": ""
             },
             "require": {
@@ -18676,9 +18676,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dustin10/VichUploaderBundle/issues",
-                "source": "https://github.com/dustin10/VichUploaderBundle/tree/v2.7.0"
+                "source": "https://github.com/dustin10/VichUploaderBundle/tree/v2.8.0"
             },
-            "time": "2025-06-12T06:59:34+00:00"
+            "time": "2025-09-01T07:16:57+00:00"
         },
         {
             "name": "willdurand/geocoder",
