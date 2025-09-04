@@ -7,6 +7,7 @@ use App\Entity\Event\Event;
 use App\Entity\Event\RegistrationStatusEnum;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -165,7 +166,11 @@ class EventRegistrationCommand
 
     public function updateFromRequest(Request $request): void
     {
-        $data = $request->toArray();
+        try {
+            $data = $request->toArray();
+        } catch (JsonException) {
+            return;
+        }
 
         $this->utmSource = $data['utm_source'] ?? null;
         $this->utmCampaign = $data['utm_campaign'] ?? null;
