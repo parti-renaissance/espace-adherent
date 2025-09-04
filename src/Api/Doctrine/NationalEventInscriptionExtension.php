@@ -29,6 +29,7 @@ class NationalEventInscriptionExtension implements QueryCollectionExtensionInter
             ->setParameter('forbidden_status', [
                 InscriptionStatusEnum::DUPLICATE,
                 InscriptionStatusEnum::REFUSED,
+                InscriptionStatusEnum::CANCELED,
             ])
         ;
     }
