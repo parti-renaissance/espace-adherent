@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" fill-rule="evenodd"><circle cx="9" cy="9" r="9" fill="#FFEB00"/><polygon fill="#000" points="9 11.029 6.061 13.045 7.071 9.627 4.245 7.455 7.808 7.359 9 4 10.192 7.359 13.755 7.455 10.929 9.627 11.939 13.045"/></g></svg>
+<svg viewBox="0 0 18 18"><g fill="none" fill-rule="evenodd"><circle cx="9" cy="9" r="9" fill="#FFEB00"/><path fill="#000" d="M9 11.029l-2.939 2.016 1.01-3.418-2.826-2.172 3.563-.096L9 4l1.192 3.359 3.563.096-2.826 2.172 1.01 3.418z"/></g></svg>
