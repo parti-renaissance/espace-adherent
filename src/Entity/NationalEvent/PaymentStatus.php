@@ -41,7 +41,7 @@ class PaymentStatus
 
     public function getStatus(): PaymentStatusEnum
     {
-        if (empty($this->payload['STATUS'])) {
+        if (!isset($this->payload['STATUS'])) {
             return PaymentStatusEnum::UNKNOWN;
         }
 

@@ -38,6 +38,10 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
     public function onSuccessPayment(SuccessPaymentEvent $event): void
     {
+        if ($event->eventInscription->confirmationSentAt) {
+            return;
+        }
+
         $this->sendConfirmationEmail($event->eventInscription);
     }
 
