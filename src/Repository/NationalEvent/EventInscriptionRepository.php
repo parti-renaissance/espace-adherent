@@ -511,7 +511,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->where('e.id = :event_id')
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->setParameter('event_id', $eventId)
-            ->setParameter('excluded_statuses', [InscriptionStatusEnum::DUPLICATE, InscriptionStatusEnum::REFUSED])
+            ->setParameter('excluded_statuses', [InscriptionStatusEnum::DUPLICATE, InscriptionStatusEnum::REFUSED, InscriptionStatusEnum::CANCELED])
             ->orderBy('ei.createdAt', 'DESC')
         ;
 
