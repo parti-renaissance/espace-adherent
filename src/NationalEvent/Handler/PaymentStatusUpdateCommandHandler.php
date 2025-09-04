@@ -39,7 +39,7 @@ class PaymentStatusUpdateCommandHandler
 
         $inscription = $payment->inscription;
 
-        $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload, $command->rawBody));
+        $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload));
 
         $this->entityManager->flush();
 
