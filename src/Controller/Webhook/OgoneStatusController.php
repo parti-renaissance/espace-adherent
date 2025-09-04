@@ -20,7 +20,6 @@ class OgoneStatusController extends AbstractController
     public function __invoke(string $key, Request $request, MessageBusInterface $bus, LoggerInterface $logger): Response
     {
         if ($key === $this->ogoneWebhookKey && $request->isMethod(Request::METHOD_POST)) {
-            $rawBody = $request->getContent();
             $payload = $request->request->all();
 
             $payloadDisplay = $payload;
@@ -39,7 +38,7 @@ class OgoneStatusController extends AbstractController
                 $v = str_replace("\u{FFFD}", '', $v);
             });
 
-            $bus->dispatch(new PaymentStatusUpdateCommand($payload, $rawBody));
+            $bus->dispatch(new PaymentStatusUpdateCommand($payload));
         }
 
         return new Response('OK');
