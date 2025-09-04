@@ -83,7 +83,7 @@ class PaymentStatusUpdateCommandHandler
 
         $this->entityManager->flush();
 
-        if ($inscription->isPaymentSuccess()) {
+        if ($paymentStatus->isSuccess()) {
             $this->eventDispatcher->dispatch(new SuccessPaymentEvent($inscription));
         }
     }
