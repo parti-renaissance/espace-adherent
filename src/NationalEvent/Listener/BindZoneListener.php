@@ -29,16 +29,20 @@ class BindZoneListener implements EventSubscriberInterface
     {
         $inscription = $event->getEventInscription();
 
-        if (empty($inscription->postalCode)) {
-            return;
-        }
-
-        if ($zone = $this->zoneRepository->findOneByPostalCode($inscription->postalCode)) {
-            $inscription->setZones([$zone]);
-        } elseif ($zone = $this->zoneRepository->findOneDepartmentByPostalCode($inscription->postalCode)) {
-            $inscription->setZones([$zone]);
+        if ($zones = $inscription->adherent?->getZones()?->toArray()) {
+            $inscription->setZones($zones);
         } else {
-            $inscription->setZones([]);
+            if (empty($inscription->postalCode)) {
+                return;
+            }
+
+            if ($zone = $this->zoneRepository->findOneByPostalCode($inscription->postalCode)) {
+                $inscription->setZones([$zone]);
+            } elseif ($zone = $this->zoneRepository->findOneDepartmentByPostalCode($inscription->postalCode)) {
+                $inscription->setZones([$zone]);
+            } else {
+                $inscription->setZones([]);
+            }
         }
 
         $this->entityManager->flush();
