@@ -9,6 +9,7 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\News;
 use App\Entity\Jecoute\Riposte;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
 use App\Entity\TimelineItemPrivateMessage;
@@ -31,6 +32,7 @@ class TimelineFeedTypeEnum extends Enum
         PapCampaign::class => self::PAP_CAMPAIGN,
         PhoningCampaign::class => self::PHONING_CAMPAIGN,
         Riposte::class => self::RIPOSTE,
+        Survey::class => self::SURVEY,
         LocalSurvey::class => self::SURVEY,
         NationalSurvey::class => self::SURVEY,
         Event::class => self::EVENT,
