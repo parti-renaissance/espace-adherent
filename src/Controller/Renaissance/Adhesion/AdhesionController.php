@@ -11,6 +11,7 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Entity\Referral;
 use App\Form\MembershipRequestType;
+use App\PublicId\AdherentPublicIdGenerator;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Utils\UtmParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
-#[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => '%pattern_pid%'], methods: ['GET', 'POST'])]
+#[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
 #[Route('/adhesion/{identifier}', name: 'app_adhesion_with_invitation', requirements: ['identifier' => 'P[A-Z0-9]{5}'], methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {

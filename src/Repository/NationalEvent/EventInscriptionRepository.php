@@ -556,4 +556,19 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllForAdherent(Adherent $roommateAdherent, NationalEvent $event, array $forbiddenStatuses): array
+    {
+        return $this->createQueryBuilder('ei')
+            ->where('ei.adherent = :adherent')
+            ->andWhere('ei.event = :event')
+            ->andWhere('ei.status NOT IN (:forbidden_statuses)')
+            ->setParameter('adherent', $roommateAdherent)
+            ->setParameter('event', $event)
+            ->setParameter('forbidden_statuses', $forbiddenStatuses)
+            ->orderBy('ei.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

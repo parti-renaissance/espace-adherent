@@ -5,10 +5,11 @@ namespace App\Command;
 use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
+use App\PublicId\AdherentPublicIdGenerator;
+use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Sonata\Exporter\Exporter;
-use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,29 +38,29 @@ class NationalEventExportValidateInscriptionCommand extends Command
             return Command::SUCCESS;
         }
 
-        $response = $this->exporter->getResponse('xlsx', 'export.xlsx', new IteratorCallbackSourceIterator(new \ArrayIterator($inscriptions), function (EventInscription $inscription) {
-            $roommate = $inscription->roommateIdentifier ? $this->adherentRepository->findByPublicId($inscription->roommateIdentifier) : null;
+        $rows = [];
+        $allColumnsAssoc = [];
 
-            return [
-                'Public ID' => $inscription->getPublicId(),
-                'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
-                'Date de dernière modification' => $inscription->getUpdatedAt()->format('d/m/Y H:i:s'),
-                'Statut d\'inscription' => $inscription->status,
-                'Civilité' => $inscription->getCivility()?->value,
-                'Prénom' => $inscription->firstName,
-                'Nom' => $inscription->lastName,
-                'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
-                'Forfait transport' => $inscription->getTransportConfig()['titre'] ?? null,
-                'Forfait hôtellerie' => $inscription->getAccommodationConfig()['titre'] ?? null,
-                'Champ handicap' => $inscription->accessibility,
-                'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
-                'Code partenaire' => $inscription->roommateIdentifier,
-                'Partenaire Public ID' => $roommate?->getPublicId(),
-                'Partenaire Civilité' => $roommate?->getCivility()?->value,
-                'Partenaire Prénom' => $roommate?->getFirstName(),
-                'Partenaire Nom' => $roommate?->getLastName(),
-            ];
-        }));
+        foreach ($inscriptions as $inscription) {
+            $row = $this->buildRow($inscription);
+            $rows[] = $row;
+            foreach (array_keys($row) as $k) {
+                $allColumnsAssoc[$k] = true;
+            }
+        }
+
+        $allColumns = array_keys($allColumnsAssoc);
+
+        $normalizedRows = array_map(function (array $row) use ($allColumns) {
+            $out = array_fill_keys($allColumns, null);
+            foreach ($row as $k => $v) {
+                $out[$k] = $v;
+            }
+
+            return $out;
+        }, $rows);
+
+        $response = $this->exporter->getResponse('xlsx', 'export.xlsx', new \ArrayIterator($normalizedRows));
 
         ob_start();
         $response->getCallback()();
@@ -73,6 +74,66 @@ class NationalEventExportValidateInscriptionCommand extends Command
         return Command::SUCCESS;
     }
 
+    private function buildRow(EventInscription $inscription): array
+    {
+        $roommateAdherent = null;
+        $roommateInscriptions = [];
+
+        if ($inscription->roommateIdentifier) {
+            if (preg_match(AdherentPublicIdGenerator::REGEX, $inscription->roommateIdentifier)) {
+                if ($roommateAdherent = $this->adherentRepository->findByPublicId($inscription->roommateIdentifier)) {
+                    $roommateInscriptions = $this->inscriptionRepository->findAllForAdherent(
+                        $roommateAdherent,
+                        $inscription->event,
+                        [InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE]
+                    );
+                }
+            } elseif (preg_match(MeetingInscriptionPublicIdGenerator::REGEX, $inscription->roommateIdentifier)) {
+                $one = $this->inscriptionRepository->findByPublicId($inscription->roommateIdentifier);
+                if ($one) {
+                    $roommateInscriptions = [$one];
+                }
+            }
+        }
+
+        $roommateRows = [];
+
+        if ($roommateInscriptions) {
+            foreach ($roommateInscriptions as $i => $roommateInscription) {
+                $id = $i + 1;
+
+                $roommateRows['Partenaire Public ID '.$id] = $roommateInscription->getPublicId();
+                $roommateRows['Partenaire Civilité '.$id] = $roommateInscription->getCivility()->value;
+                $roommateRows['Partenaire Prénom '.$id] = $roommateInscription->firstName;
+                $roommateRows['Partenaire Nom '.$id] = $roommateInscription->lastName;
+                $roommateRows['Partenaire Statut '.$id] = $roommateInscription->status;
+                $roommateRows['Forfait hébergement '.$id] = $roommateInscription->getAccommodationConfig()['titre'] ?? null;
+                $roommateRows['Code partenaire '.$id] = $roommateInscription->roommateIdentifier;
+            }
+        } elseif ($roommateAdherent) {
+            $roommateRows['Partenaire Public ID 1'] = $roommateAdherent->getPublicId();
+            $roommateRows['Partenaire Civilité 1'] = $roommateAdherent->getCivility()->value;
+            $roommateRows['Partenaire Prénom 1'] = $roommateAdherent->getFirstName();
+            $roommateRows['Partenaire Nom 1'] = $roommateAdherent->getLastName();
+            $roommateRows['Partenaire Statut 1'] = 'Non inscrit';
+        }
+
+        return [
+            'Public ID' => $inscription->getPublicId(),
+            'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
+            'Date de dernière modification' => $inscription->getUpdatedAt()->format('d/m/Y H:i:s'),
+            'Statut d\'inscription' => $inscription->status,
+            'Civilité' => $inscription->getCivility()?->value,
+            'Prénom' => $inscription->firstName,
+            'Nom' => $inscription->lastName,
+            'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
+            'Forfait transport' => $inscription->getTransportConfig()['titre'] ?? null,
+            'Forfait hôtellerie' => $inscription->getAccommodationConfig()['titre'] ?? null,
+            'Champ handicap' => $inscription->accessibility,
+            'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
+        ] + $roommateRows;
+    }
+
     private function getAllInscriptions(): array
     {
         return $this->inscriptionRepository->createQueryBuilder('i')
@@ -81,7 +142,14 @@ class NationalEventExportValidateInscriptionCommand extends Command
             ->leftJoin('i.adherent', 'a')
             ->where('i.status IN (:statuses)')
             ->andWhere('e.type = :type')
-            ->setParameter('statuses', InscriptionStatusEnum::APPROVED_STATUSES)
+            ->andWhere('i.accommodation IS NOT NULL AND i.accommodation != \'gratuit\'')
+            ->setParameter('statuses', [
+                InscriptionStatusEnum::ACCEPTED,
+                InscriptionStatusEnum::INCONCLUSIVE,
+                InscriptionStatusEnum::REFUSED,
+                InscriptionStatusEnum::PENDING,
+                InscriptionStatusEnum::IN_VALIDATION,
+            ])
             ->setParameter('type', NationalEventTypeEnum::CAMPUS)
             ->orderBy('i.createdAt', 'ASC')
             ->getQuery()
