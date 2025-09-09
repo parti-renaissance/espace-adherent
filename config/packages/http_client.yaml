@@ -5,6 +5,8 @@ framework:
         scoped_clients:
             national_event_webhook.client:
                 base_uri: '%env(NATIONAL_EVENT_WEBHOOK_HOST)%'
+            national_event_export.client:
+                base_uri: '%env(NATIONAL_EVENT_EXPORT_HOST)%'
             template_webhook.client:
                 base_uri: '%env(PRODUCTION_WEBHOOK_HOST)%'
                 auth_bearer: '%env(TEMPLATE_WEBHOOK_KEY)%'
