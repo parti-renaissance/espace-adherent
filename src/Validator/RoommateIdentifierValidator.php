@@ -2,6 +2,7 @@
 
 namespace App\Validator;
 
+use App\PublicId\AdherentPublicIdGenerator;
 use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -15,7 +16,6 @@ class RoommateIdentifierValidator extends ConstraintValidator
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly EventInscriptionRepository $eventInscriptionRepository,
-        private readonly string $patternPid,
     ) {
     }
 
@@ -33,7 +33,7 @@ class RoommateIdentifierValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (!preg_match('#'.$this->patternPid.'#', $value) && !preg_match('#'.MeetingInscriptionPublicIdGenerator::PATTERN.'#', $value)) {
+        if (!preg_match(AdherentPublicIdGenerator::REGEX, $value) && !preg_match(MeetingInscriptionPublicIdGenerator::REGEX, $value)) {
             $this->context
                 ->buildViolation($constraint->messageWrongFormat)
                 ->addViolation()
@@ -43,8 +43,8 @@ class RoommateIdentifierValidator extends ConstraintValidator
         }
 
         if (
-            (preg_match('#'.$this->patternPid.'#', $value) && !$this->adherentRepository->findByPublicId($value, true))
-            || (preg_match('#'.MeetingInscriptionPublicIdGenerator::PATTERN.'#', $value) && !$this->eventInscriptionRepository->findByPublicId($value))
+            (preg_match(AdherentPublicIdGenerator::REGEX, $value) && !$this->adherentRepository->findByPublicId($value, true))
+            || (preg_match(MeetingInscriptionPublicIdGenerator::REGEX, $value) && !$this->eventInscriptionRepository->findByPublicId($value))
         ) {
             $this->context
                 ->buildViolation($constraint->messageNotFound)

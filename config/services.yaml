@@ -2,7 +2,6 @@ parameters:
     locale: fr
     locales: [fr, en]
     pattern_uuid: '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'
-    pattern_pid: '^[0-9]{3}-[0-9]{3}$'
     pattern_sha1: '[0-9A-Fa-f]{40}'
     pattern_coordinate: '-?\d+(\.\d{1,7})?'
     search_max_results: 30
@@ -43,7 +42,6 @@ services:
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $patternUuid: '%pattern_uuid%'
-            $patternPid: '%pattern_pid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
             $renaissanceHost: '%app_renaissance_host%'

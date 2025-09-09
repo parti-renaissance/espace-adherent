@@ -13,8 +13,8 @@ class UpdateStatusPutProcessor implements ProcessorInterface
 {
     public function __construct(
         #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
-        private ProcessorInterface $persistProcessor,
-        private EventInscriptionRepository $repository,
+        private readonly ProcessorInterface $persistProcessor,
+        private readonly EventInscriptionRepository $repository,
     ) {
     }
 
@@ -23,7 +23,7 @@ class UpdateStatusPutProcessor implements ProcessorInterface
         $this->persistProcessor->process($data, $operation, $uriVariables, $context);
 
         return new RemainingStatsOutput(
-            $this->repository->count(['status' => InscriptionStatusEnum::PENDING]),
+            $this->repository->count(['status' => InscriptionStatusEnum::PENDING, 'event' => $data->event]),
             'Status successfully updated'
         );
     }
