@@ -51,7 +51,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
 
         $allColumns = array_keys($allColumnsAssoc);
 
-        $normalizedRows = array_map(function (array $row) use ($allColumns) {
+        $normalizedRows = array_map(static function (array $row) use ($allColumns) {
             $out = array_fill_keys($allColumns, null);
             foreach ($row as $k => $v) {
                 $out[$k] = $v;
@@ -77,6 +77,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
     private function buildRow(EventInscription $inscription): array
     {
         $roommateAdherent = null;
+        /** @var EventInscription[] $roommateInscriptions */
         $roommateInscriptions = [];
 
         if ($inscription->roommateIdentifier) {
@@ -107,8 +108,10 @@ class NationalEventExportValidateInscriptionCommand extends Command
                 $roommateRows['Partenaire Prénom '.$id] = $roommateInscription->firstName;
                 $roommateRows['Partenaire Nom '.$id] = $roommateInscription->lastName;
                 $roommateRows['Partenaire Statut '.$id] = $roommateInscription->status;
-                $roommateRows['Forfait hébergement '.$id] = $roommateInscription->getAccommodationConfig()['titre'] ?? null;
-                $roommateRows['Code partenaire '.$id] = $roommateInscription->roommateIdentifier;
+                $roommateRows['Partenaire Dpt '.$id] = $roommateInscription->getAssemblyZone()?->getCode();
+                $roommateRows['Partenaire Forfait hébergement '.$id] = $roommateInscription->getAccommodationConfig()['titre'] ?? null;
+                $roommateRows['Partenaire Code '.$id] = $roommateInscription->roommateIdentifier;
+                $roommateRows['Partenaire JAM '.$id] = $roommateInscription->isJAM ? 'Oui' : 'Non';
             }
         } elseif ($roommateAdherent) {
             $roommateRows['Partenaire Public ID 1'] = $roommateAdherent->getPublicId();
@@ -116,6 +119,10 @@ class NationalEventExportValidateInscriptionCommand extends Command
             $roommateRows['Partenaire Prénom 1'] = $roommateAdherent->getFirstName();
             $roommateRows['Partenaire Nom 1'] = $roommateAdherent->getLastName();
             $roommateRows['Partenaire Statut 1'] = 'Non inscrit';
+            $roommateRows['Partenaire Dpt 1'] = $roommateAdherent->getAssemblyZone()?->getCode();
+            $roommateRows['Partenaire Forfait hébergement 1'] = null;
+            $roommateRows['Partenaire Code 1'] = null;
+            $roommateRows['Partenaire JAM 1'] = null;
         }
 
         return [
@@ -127,9 +134,12 @@ class NationalEventExportValidateInscriptionCommand extends Command
             'Prénom' => $inscription->firstName,
             'Nom' => $inscription->lastName,
             'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
+            'Age' => $inscription->getAge(new \DateTime('2025-09-20 23:59:59')),
+            'Dpt' => $inscription->getAssemblyZone()?->getCode(),
             'Forfait transport' => $inscription->getTransportConfig()['titre'] ?? null,
             'Forfait hôtellerie' => $inscription->getAccommodationConfig()['titre'] ?? null,
             'Champ handicap' => $inscription->accessibility,
+            'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
             'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
         ] + $roommateRows;
     }
