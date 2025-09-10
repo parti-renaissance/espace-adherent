@@ -2,6 +2,10 @@ services:
     Sentry\Integration\FrameContextifierIntegration: ~
     Sentry\Integration\RequestIntegration: ~
 
+    Sentry\SentryBundle\Monolog\LogsHandler:
+        arguments:
+            - !php/const Monolog\Logger::INFO
+
     Sentry\Monolog\BreadcrumbHandler:
         arguments:
             - '@Sentry\State\HubInterface'
@@ -24,3 +28,4 @@ sentry:
             - Sentry\Integration\RequestIntegration
         environment: '%env(APP_ENVIRONMENT)%'
         release: '%env(APP_VERSION)%'
+        enable_logs: true
