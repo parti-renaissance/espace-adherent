@@ -554,4 +554,13 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->status = InscriptionStatusEnum::IN_VALIDATION;
         $this->validationStartedAt = new \DateTime();
     }
+
+    public function getAge(\DateTime $from = new \DateTime()): ?int
+    {
+        if ($this->adherent && $this->adherent->getAge()) {
+            return $this->adherent->getAge($from);
+        }
+
+        return $this->birthdate?->diff($from)->y;
+    }
 }

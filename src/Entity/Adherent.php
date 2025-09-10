@@ -936,9 +936,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     #[Groups(['export', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
-    public function getAge(): ?int
+    public function getAge(\DateTime $from = new \DateTime()): ?int
     {
-        return $this->birthdate?->diff(new \DateTime())->y;
+        return $this->birthdate?->diff($from)->y;
     }
 
     public function isMinor(?\DateTime $date = null): bool
