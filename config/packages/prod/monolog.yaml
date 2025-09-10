@@ -10,6 +10,9 @@ monolog:
                 - 403
                 - 404
                 - 405
+        sentry_logs:
+            type: service
+            id: Sentry\SentryBundle\Monolog\LogsHandler
         sentry_breadcrumbs:
             type: service
             channels: ['!deprecation']
