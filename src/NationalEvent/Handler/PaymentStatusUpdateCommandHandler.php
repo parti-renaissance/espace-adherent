@@ -43,41 +43,47 @@ class PaymentStatusUpdateCommandHandler
 
         $this->entityManager->flush();
 
+        $isLastPayment = true;
+
+        foreach ($inscription->getSuccessPayments() as $successPayment) {
+            $isLastPayment = $successPayment === $payment || $payment->getCreatedAt() > $successPayment->getCreatedAt();
+
+            if (!$paymentStatus->isSuccess() || $successPayment === $payment || $successPayment->toRefund) {
+                continue;
+            }
+
+            $successPayment->markAsToRefund($payment);
+        }
+
         if ($paymentStatus->isSuccess()) {
             if (InscriptionStatusEnum::WAITING_PAYMENT === $inscription->status) {
                 $inscription->status = InscriptionStatusEnum::PENDING;
             }
 
-            if ($inscription->visitDay !== $payment->visitDay) {
-                $inscription->visitDay = $payment->visitDay;
-            }
-
-            if ($inscription->transport !== $payment->transport) {
-                $inscription->transport = $payment->transport;
-            }
-
-            if ($inscription->accommodation !== $payment->accommodation) {
-                $inscription->accommodation = $payment->accommodation;
-            }
-
-            if ($inscription->withDiscount !== $payment->withDiscount) {
-                $inscription->withDiscount = $payment->withDiscount;
-            }
-
-            if ($inscription->amount !== $payment->amount) {
-                $inscription->amount = $payment->amount;
-            }
-
-            foreach ($inscription->getSuccessPayments() as $successPayment) {
-                if ($successPayment === $payment || $successPayment->toRefund) {
-                    continue;
+            if ($isLastPayment) {
+                if ($inscription->visitDay !== $payment->visitDay) {
+                    $inscription->visitDay = $payment->visitDay;
                 }
 
-                $successPayment->markAsToRefund($payment);
+                if ($inscription->transport !== $payment->transport) {
+                    $inscription->transport = $payment->transport;
+                }
+
+                if ($inscription->accommodation !== $payment->accommodation) {
+                    $inscription->accommodation = $payment->accommodation;
+                }
+
+                if ($inscription->withDiscount !== $payment->withDiscount) {
+                    $inscription->withDiscount = $payment->withDiscount;
+                }
+
+                if ($inscription->amount !== $payment->amount) {
+                    $inscription->amount = $payment->amount;
+                }
             }
         }
 
-        if ($inscription->isCurrentPayment($payment)) {
+        if ($inscription->isCurrentPayment($payment) && ($isLastPayment || PaymentStatusEnum::PENDING === $inscription->paymentStatus)) {
             $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
         }
 

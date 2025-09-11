@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
 use App\NationalEvent\Payment\Direct;
-use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\PaymentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +20,7 @@ class NationalEventUpdatePaymentCommand extends Command
         private readonly PaymentRepository $paymentRepository,
         private readonly Direct $direct,
         private readonly MessageBusInterface $messageBus,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }
@@ -39,9 +40,14 @@ class NationalEventUpdatePaymentCommand extends Command
 
     private function refreshPaymentStatus(): void
     {
-        foreach ($this->paymentRepository->findBy(['status' => [PaymentStatusEnum::PENDING, PaymentStatusEnum::UNKNOWN, PaymentStatusEnum::EXPIRED]]) as $payment) {
+        foreach ($this->paymentRepository->findToCheck() as $payment) {
             $response = $this->direct->getStatus($payment->getUuid()->toString());
             sleep(1);
+
+            if ($payment->isExpired()) {
+                $payment->expiredCheckedAt = new \DateTime();
+                $this->entityManager->flush();
+            }
 
             if (str_contains($response, 'STATUS=""')) {
                 continue;
