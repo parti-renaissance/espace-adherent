@@ -16,7 +16,7 @@
 {% block content %}
     <main class="max-w-screen-lg flex justify-center mx-auto pb-10">
         <section class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 p-4 md:p-1">
-            {% if inscription.isPaymentRequired() and not inscription.isPaymentSuccess() %}
+            {% if inscription.isWaitingPayment() %}
                 <div class="md:col-span-2 order-first">
                     <twig:ReParagraphStatus status="error" icon slim="true">
                         Aucun paiement n’a encore été enregistré. Veuillez <a class="font-medium text-ui_blue-50" href="{{ path('app_national_event_new_payment', {slug: event.slug, uuid: inscription.uuid}) }}">procéder au règlement</a> pour valider votre inscription.
@@ -62,10 +62,16 @@
                 <div class="flex justify-between items-center">
                     <h2 class="font-medium text-2xl">Mon inscription</h2>
 
-                    {% if inscription.isPaymentRequired() and not inscription.isPaymentSuccess() %}
-                        <twig:Molecules:ReBadge status="error" icon="error">Paiement en attente</twig:Molecules:ReBadge>
-                    {% elseif not inscription.isApproved %}
+                    {% if inscription.isApproved() %}
+                        <twig:Molecules:ReBadge status="success" icon="success-outline">Inscription validée</twig:Molecules:ReBadge>
+                    {% elseif inscription.isPending() %}
                         <twig:Molecules:ReBadge status="info" icon="clock">En attente de validation</twig:Molecules:ReBadge>
+                    {% elseif inscription.isCanceled() %}
+                        <twig:Molecules:ReBadge status="error" icon="error">Inscription annulée</twig:Molecules:ReBadge>
+                    {% elseif inscription.isRefused() %}
+                        <twig:Molecules:ReBadge status="error" icon="error">Inscription refusée</twig:Molecules:ReBadge>
+                    {% else %}
+                        <twig:Molecules:ReBadge status="error" icon="error">Inscription incomplète</twig:Molecules:ReBadge>
                     {% endif %}
                 </div>
 
@@ -194,18 +200,14 @@
                                     </p>
                                     <p class="text-[#919EAB]">
                                         {% if inscription.accommodation == 'chambre_individuelle' %}
-                                            {% if inscription.roommateIdentifier %}
-                                                {% if roommate %}
-                                                    Lors de votre inscription vous avez sélectionné <span class="font-bold">{{ roommate }} ({{ roommate.publicId }})</span> pour partager le lit double de votre chambre.
-                                                {% endif %}
+                                            {% if roommate %}
+                                                Lors de votre inscription vous avez sélectionné <span class="font-bold">{{ roommate.first_name }} {{ roommate.last_name }} ({{ roommate.public_id }})</span> pour partager le lit double de votre chambre.
                                             {% else %}
                                                 Lors de votre inscription vous n’avez pas déclaré partager cette chambre en couple.
                                             {% endif %}
                                         {% elseif inscription.accommodation == 'chambre_partagee' %}
-                                            {% if inscription.roommateIdentifier %}
-                                                {% if roommate %}
-                                                    Lors de votre inscription vous avez déclaré vouloir partager votre chambre avec <span class="font-bold">{{ roommate }} ({{ roommate.publicId }})</span>. Vous disposerez chacun d’un lit simple.
-                                                {% endif %}
+                                            {% if roommate %}
+                                                Lors de votre inscription vous avez déclaré vouloir partager votre chambre avec <span class="font-bold">{{ roommate.first_name }} {{ roommate.last_name }} ({{ roommate.public_id }})</span>. Vous disposerez chacun d’un lit simple.
                                             {% else %}
                                                 Lors de votre inscription vous n’avez pas fléché d’autre participant pour partager votre chambre.
                                                 <br/><br/>
