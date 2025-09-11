@@ -49,7 +49,11 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
             }
 
             // Mark as duplicate the old inscription
-            $this->markAsDuplicatedOldInscription($oldEventInscription, $newEventInscription);
+            if (!$oldEventInscription->isPaymentSuccess()) {
+                $this->markAsDuplicatedOldInscription($oldEventInscription, $newEventInscription);
+
+                return;
+            }
         }
 
         $this->acceptInscription($newEventInscription);
@@ -75,11 +79,8 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
         $oldEventInscription->status = InscriptionStatusEnum::DUPLICATE;
 
         if (
-            (
-                \in_array($oldStatus, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE], true)
-                && $newEventInscription->isPending()
-            )
-            || InscriptionStatusEnum::REFUSED === $oldStatus
+            \in_array($oldStatus, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE, InscriptionStatusEnum::REFUSED], true)
+            && !$newEventInscription->isRejectedState()
         ) {
             $newEventInscription->status = $oldStatus;
             $newEventInscription->duplicateInscriptionForStatus = $oldEventInscription;

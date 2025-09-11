@@ -58,9 +58,9 @@ class InscriptionController extends AbstractController
         $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
 
         if ($user) {
-            if ($existingInscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($user, $event)) {
+            if ($existingInscription = $this->eventInscriptionRepository->findOneForAdherent($user, $event)) {
                 if ($event->isCampus()) {
-                    return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscriptions[0]->getUuid()->toString(), 'app_domain' => $app_domain]);
+                    return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscription->getUuid()->toString(), 'app_domain' => $app_domain]);
                 }
 
                 return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain, 'already-registered' => true]);

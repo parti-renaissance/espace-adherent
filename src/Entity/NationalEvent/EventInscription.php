@@ -461,21 +461,6 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         return InscriptionStatusEnum::PENDING === $this->status;
     }
 
-    public function isCanceled(): bool
-    {
-        return InscriptionStatusEnum::CANCELED === $this->status;
-    }
-
-    public function isRefused(): bool
-    {
-        return InscriptionStatusEnum::REFUSED === $this->status;
-    }
-
-    public function isWaitingPayment(): bool
-    {
-        return InscriptionStatusEnum::WAITING_PAYMENT === $this->status;
-    }
-
     public function allowEditInscription(): bool
     {
         return $this->event->allowEditInscription() && !$this->isRejectedState();
