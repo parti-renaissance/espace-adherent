@@ -16,6 +16,7 @@ class ScopeEnum extends Enum
     public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
     public const CORRESPONDENT = 'correspondent';
     public const PAP = 'pap';
+    public const MEETING_SCANNER = 'meeting_scanner';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
     public const REGIONAL_COORDINATOR = 'regional_coordinator';
     public const REGIONAL_DELEGATE = 'regional_delegate';
@@ -32,10 +33,8 @@ class ScopeEnum extends Enum
         self::CANDIDATE,
         self::NATIONAL,
         self::NATIONAL_COMMUNICATION,
-        self::PHONING,
         self::PHONING_NATIONAL_MANAGER,
         self::PAP_NATIONAL_MANAGER,
-        self::PAP,
         self::CORRESPONDENT,
         self::LEGISLATIVE_CANDIDATE,
         self::REGIONAL_COORDINATOR,
@@ -46,6 +45,10 @@ class ScopeEnum extends Enum
         self::FDE_COORDINATOR,
         self::AGORA_PRESIDENT,
         self::AGORA_GENERAL_SECRETARY,
+
+        self::PHONING,
+        self::PAP,
+        self::MEETING_SCANNER,
     ];
 
     public const NATIONAL_SCOPES = [

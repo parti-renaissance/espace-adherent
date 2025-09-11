@@ -81,6 +81,12 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $qb->setParameter('papUserRole', true);
                 }
 
+                // Meeting scanner user Role
+                if (\in_array(ScopeEnum::MEETING_SCANNER, $value, true)) {
+                    $where->add("$alias.meetingScanner = :meeting_scanner");
+                    $qb->setParameter('meeting_scanner', true);
+                }
+
                 // Agora roles Role
                 if (\in_array(AdherentRoleEnum::AGORA_PRESIDENT, $value, true)) {
                     $qb->innerJoin("$alias.presidentOfAgoras", 'agora_president');
