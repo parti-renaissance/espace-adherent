@@ -17,7 +17,7 @@ env:
     NODE_VERSION: 20.x
     PHP_VERSION: 8.4
 
-    REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
+    REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ vars.GCR_PROJECT_NAME }}
     REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
     GCP_SA_KEY_GCR_PUSHER: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
