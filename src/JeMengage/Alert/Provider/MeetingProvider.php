@@ -5,7 +5,6 @@ namespace App\JeMengage\Alert\Provider;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\JeMengage\Alert\Alert;
-use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -47,7 +46,7 @@ class MeetingProvider implements AlertProviderInterface
                 $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->ogImage))]);
             }
 
-            if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event, InscriptionStatusEnum::REFUSED)) {
+            if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event)) {
                 if ($event->logoImage) {
                     $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->logoImage))]);
                 }
@@ -60,15 +59,17 @@ class MeetingProvider implements AlertProviderInterface
                     $ctaUrl = null;
                 }
 
-                $data = [
-                    'first_name' => null,
-                    'last_name' => null,
-                    'ticket_custom_detail' => null,
-                    'ticket_url' => null,
-                    'info_url' => null,
-                ];
+                if (current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->isApproved() || $inscription->isPending()))) {
+                    $data = [
+                        'first_name' => null,
+                        'last_name' => null,
+                        'ticket_custom_detail' => null,
+                        'ticket_url' => null,
+                        'info_url' => null,
+                    ];
+                }
 
-                $ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->ticketSentAt));
+                $ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->isApproved() && $inscription->ticketSentAt));
 
                 if ($ticketSent instanceof EventInscription && $ticketSent->ticketQRCodeFile) {
                     $ctaLabel = 'Mon billet';

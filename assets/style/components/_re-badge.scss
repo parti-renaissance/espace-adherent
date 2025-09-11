@@ -12,4 +12,8 @@
     &--error {
         @apply text-ui_red-70 border-ui_red-50 bg-ui_red-5;
     }
+
+    &--success {
+        @apply text-ui_green-60 border-ui_green-20 bg-ui_green-5;
+    }
 }

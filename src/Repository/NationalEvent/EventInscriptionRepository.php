@@ -56,7 +56,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     /**
      * @return EventInscription[]
      */
-    public function findAllForAdherentAndEvent(Adherent $adherent, NationalEvent $event, string $excludedStatus): array
+    public function findAllForAdherentAndEvent(Adherent $adherent, NationalEvent $event): array
     {
         return $this->createQueryBuilder('ei')
             ->addSelect('CASE WHEN ei.status = :status_accepted THEN 1
@@ -64,11 +64,11 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                 ELSE 3 END AS HIDDEN score')
             ->where('ei.adherent = :adherent')
             ->andWhere('ei.event = :event')
-            ->andWhere('ei.status != :excluded_status')
+            ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->setParameters([
                 'adherent' => $adherent,
                 'event' => $event,
-                'excluded_status' => $excludedStatus,
+                'excluded_statuses' => [InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE],
                 'status_accepted' => InscriptionStatusEnum::ACCEPTED,
                 'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
             ])
@@ -230,21 +230,6 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->getResult(),
             'count',
             'status');
-    }
-
-    public function findOneForAdherent(Adherent $adherent, NationalEvent $event): ?EventInscription
-    {
-        return $this->createQueryBuilder('ei')
-            ->where('ei.adherent = :adherent')
-            ->andWhere('ei.event = :event')
-            ->andWhere('ei.status != :canceled_status')
-            ->setParameter('adherent', $adherent)
-            ->setParameter('event', $event)
-            ->setParameter('canceled_status', InscriptionStatusEnum::CANCELED)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     public function findDuplicate(EventInscription $eventInscription): ?EventInscription
