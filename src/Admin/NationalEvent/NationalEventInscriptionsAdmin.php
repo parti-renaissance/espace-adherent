@@ -98,6 +98,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 },
             ])
             ->add('event', null, ['label' => 'Event', 'show_filter' => true])
+            ->add('ticketUuid', null, ['label' => 'Uuid billet'])
             ->add('firstTicketScannedAt', NullFilter::class, ['label' => 'Présent', 'inverse' => true, 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
@@ -201,64 +202,82 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->with('Général', ['class' => 'col-md-6'])
-                ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
-                ->add('firstName', null, ['label' => 'Prénom'])
-                ->add('lastName', null, ['label' => 'Nom'])
-                ->add('postalCode', null, ['label' => 'Code postal'])
-                ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
-                ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
-                ->add('isJAM', null, ['label' => 'Jeunes avec Macron', 'required' => false])
-                ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
-                ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
-                ->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false])
-                ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false])
-                ->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false])
-                ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
+            ->tab('Inscription ❤️')
+                ->with('Général', ['class' => 'col-md-6'])
+                    ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
+                    ->add('firstName', null, ['label' => 'Prénom'])
+                    ->add('lastName', null, ['label' => 'Nom'])
+                    ->add('postalCode', null, ['label' => 'Code postal'])
+                    ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
+                    ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
+                    ->add('isJAM', null, ['label' => 'Jeunes avec Macron', 'required' => false])
+                    ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
+                    ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
+                    ->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false])
+                    ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false])
+                    ->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false])
+                    ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
+                ->end()
+                ->with('Statut', ['class' => 'col-md-6'])
+                    ->add('status', ChoiceType::class, [
+                        'label' => 'Statut',
+                        'choices' => InscriptionStatusEnum::STATUSES,
+                        'choice_label' => fn (string $status) => $status,
+                        'required' => true,
+                    ])
+                    ->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false])
+                    ->add('validationStartedAt', null, ['label' => 'Date de début de validation', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
+                ->end()
+                ->with('Informations additionnelles', ['class' => 'col-md-6'])
+                    ->add('event', null, ['label' => 'Event', 'disabled' => true])
+                    ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
+                    ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
+                    ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
+                    ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
+                    ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
+                ->end()
             ->end()
-            ->with('Statut', ['class' => 'col-md-6'])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Statut',
-                    'choices' => InscriptionStatusEnum::STATUSES,
-                    'choice_label' => fn (string $status) => $status,
-                    'required' => true,
-                ])
-                ->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false])
-                ->add('validationStartedAt', null, ['label' => 'Date de début de validation', 'widget' => 'single_text', 'disabled' => true])
-                ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
+            ->tab('Forfait ✅')
+                ->with('', ['class' => 'col-md-6'])
+                    ->add('paymentStatus', ChoiceType::class, [
+                        'label' => 'Statut du paiement',
+                        'choices' => PaymentStatusEnum::all(),
+                        'choice_label' => fn (PaymentStatusEnum $status) => $status,
+                        'disabled' => true,
+                        'required' => false,
+                    ])
+                    ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
+                    ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
+                    ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false, 'disabled' => true])
+                    ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
+                    ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false, 'disabled' => true])
+                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
+                ->end()
             ->end()
-            ->with('Informations additionnelles', ['class' => 'col-md-6'])
-                ->add('event', null, ['label' => 'Event', 'disabled' => true])
-                ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
-                ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
-                ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
-                ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
-                ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
+            ->tab('Billet 🎟️')
+                ->with('', ['class' => 'col-md-6'])
+                    ->add('ticketUuid', null, ['label' => 'Uuid ticket', 'disabled' => true])
+                    ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
+                    ->add('ticketCustomDetailColor', ColorType::class, ['label' => 'Couleur du badge', 'required' => false])
+                    ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
+                    ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
+                ->end()
             ->end()
-            ->with('Forfait', ['class' => 'col-md-6'])
-                ->add('paymentStatus', ChoiceType::class, [
-                    'label' => 'Statut du paiement',
-                    'choices' => PaymentStatusEnum::all(),
-                    'choice_label' => fn (PaymentStatusEnum $status) => $status,
-                    'disabled' => true,
-                    'required' => false,
-                ])
-                ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
-                ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
-                ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false, 'disabled' => true])
-                ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
-                ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false, 'disabled' => true])
-                ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
-            ->end()
-            ->with('Billet', ['class' => 'col-md-6'])
-                ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
-                ->add('ticketCustomDetailColor', ColorType::class, ['label' => 'Couleur du badge', 'required' => false])
-                ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
+            ->tab('Détails 📝')
+                ->with('Détail du transport', ['class' => 'col-md-6'])
+                    ->add('transportDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
+                ->end()
+                ->with('Détail d\'hébergement', ['class' => 'col-md-6'])
+                    ->add('accommodationDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
+                ->end()
+                ->with('Détails additionnels', ['class' => 'col-md-6'])
+                    ->add('customDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
+                ->end()
             ->end()
         ;
     }

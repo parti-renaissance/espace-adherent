@@ -8,6 +8,7 @@ use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionDuplicateMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionPaymentReminderMessage;
 use App\Mailer\Message\Renaissance\NationalEventTicketMessage;
+use App\Repository\OAuth\ClientRepository;
 use App\ValueObject\Genders;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -18,6 +19,7 @@ class Notifier
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslatorInterface $translator,
+        private readonly ClientRepository $clientRepository,
     ) {
     }
 
@@ -45,7 +47,12 @@ class Notifier
 
     public function sendTicket(EventInscription $eventInscription): void
     {
-        $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create($eventInscription), false);
+        $message = NationalEventTicketMessage::create(
+            $eventInscription,
+            !empty($eventInscription->adherent?->findAppSessions($this->clientRepository->getVoxClient(), true))
+        );
+
+        $this->transactionalMailer->sendMessage($message, false);
     }
 
     public function sendInscriptionConfirmation(EventInscription $eventInscription, array $zone): void
