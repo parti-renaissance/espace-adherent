@@ -342,6 +342,8 @@ role.pap: >-
       other {Porte-à-porteur}
     }
 
+role.meeting_scanner: Meeting scanneur
+
 role.phoning: >-
     {gender, select,
       female {Appelante}

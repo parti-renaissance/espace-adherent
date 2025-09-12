@@ -416,6 +416,12 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                             'required' => false,
                         ])
                     ->end()
+                    ->with('Meeting', ['class' => 'col-md-6'])
+                        ->add('meetingScanner', null, [
+                            'label' => 'Meeting scanneur',
+                            'required' => false,
+                        ])
+                    ->end()
                 ->end()
             ;
         }

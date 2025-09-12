@@ -463,32 +463,23 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Embedded(class: PostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $voteInspector = false;
+    private bool $voteInspector = false;
 
     #[ORM\Column(nullable: true)]
     private ?string $mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $phoningManagerRole = false;
+    private bool $phoningManagerRole = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $papNationalManagerRole = false;
+    private bool $papNationalManagerRole = false;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $papUserRole = false;
+    private bool $papUserRole = false;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $meetingScanner = false;
 
     #[Groups(['profile_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -794,6 +785,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasPapUserRole()) {
             $roles[] = 'ROLE_PAP_USER';
+        }
+
+        if ($this->meetingScanner) {
+            $roles[] = 'ROLE_MEETING_SCANNER';
         }
 
         if ($this->isCorrespondent()) {

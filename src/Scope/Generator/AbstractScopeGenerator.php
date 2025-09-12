@@ -74,7 +74,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         return $role ? $role->getZones()->toArray() : [];
     }
 
-    private function findScope(string $code): ?ScopeEntity
+    private function findScope(string $code): ScopeEntity
     {
         $scope = $this->scopeRepository->findOneByCode($code);
 

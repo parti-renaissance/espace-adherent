@@ -35,7 +35,7 @@ class LoadScopeData extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach (ScopeEnum::ALL as $code) {
-            $manager->persist($this->createScope($code, \in_array($code, [ScopeEnum::PHONING, ScopeEnum::PAP]) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));
+            $manager->persist($this->createScope($code, \in_array($code, [ScopeEnum::PHONING, ScopeEnum::PAP, ScopeEnum::MEETING_SCANNER]) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));
         }
 
         $manager->flush();
@@ -66,6 +66,7 @@ class LoadScopeData extends Fixture
             ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
             ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
             ScopeEnum::PAP,
+            ScopeEnum::MEETING_SCANNER,
             ScopeEnum::PHONING => [],
             ScopeEnum::PHONING_NATIONAL_MANAGER => [FeatureEnum::TEAM, FeatureEnum::PHONING_CAMPAIGN],
             ScopeEnum::PAP_NATIONAL_MANAGER => [FeatureEnum::PAP],
