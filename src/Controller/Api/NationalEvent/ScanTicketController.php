@@ -19,15 +19,18 @@ class ScanTicketController extends AbstractController
     {
         if (!$inscription) {
             return $this->json([
-                'status' => 'unknown',
-                'status_label' => 'Inconnu',
-                'status_type' => 'error',
-                'message' => 'Ce billet n’existe pas. Intervention SO et sortie de l’évent.',
+                'status' => [
+                    'code' => 'unknown',
+                    'label' => 'Inconnu',
+                    'type' => 'error',
+                    'message' => 'Ce billet n’existe pas. Intervention SO et sortie de l’évent.',
+                ],
             ]);
         }
 
         if ($inscription->isApproved()) {
             $scanHistory = $inscription->getTicketScans();
+            $lastScanDate = $inscription->lastTicketScannedAt;
 
             if (!$inscription->lastTicketScannedAt || $inscription->lastTicketScannedAt < new \DateTimeImmutable('-1 minute')) {
                 $inscription->addTicketScan(new TicketScan($adherent));
@@ -35,33 +38,40 @@ class ScanTicketController extends AbstractController
             }
 
             return $this->json([
-                'status' => 'valid',
-                'status_label' => 'Valide',
-                'status_type' => 'success',
-                'message' => 'Personne autorisée à entrer',
-                'data' => [
-                    'uuid' => $inscription->getUuid()->toString(),
-                    'user' => $normalizer->normalize($inscription, context: [
-                        TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
-                        'groups' => ['event_inscription_scan', ImageExposeNormalizer::NORMALIZATION_GROUP,
-                        ]]),
-                    'visit_day' => $inscription->getVisitDayConfig()['titre'] ?? $inscription->visitDay,
-                    'transport' => $inscription->getTransportConfig()['titre'] ?? $inscription->transport,
-                    'accommodation' => $inscription->getAccommodationConfig()['titre'] ?? $inscription->accommodation,
-                    'scan_history' => array_map(static fn (TicketScan $scan) => [
-                        'date' => $scan->getCreatedAt()->format('Y-m-d H:i:s'),
-                        'name' => $scan->scannedBy?->getFullName(),
-                        'public_id' => $scan->scannedBy?->getPublicId(),
-                    ], $scanHistory),
+                'status' => [
+                    'code' => 'valid',
+                    'label' => 'Valide',
+                    'type' => 'success',
+                    'message' => 'Personne autorisée à entrer',
                 ],
+                'type' => [
+                    'color' => $inscription->ticketCustomDetailColor,
+                    'label' => $inscription->ticketCustomDetail,
+                ],
+                'alert' => $lastScanDate?->format('d/m/Y') === date('d/m/Y') ? 'Déjà scannée aujourd’hui' : null,
+                'uuid' => $inscription->getUuid()->toString(),
+                'user' => $normalizer->normalize($inscription, context: [
+                    TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
+                    'groups' => ['event_inscription_scan', ImageExposeNormalizer::NORMALIZATION_GROUP],
+                ]),
+                'visit_day' => $inscription->getVisitDayConfig()['titre'] ?? $inscription->visitDay,
+                'transport' => $inscription->getTransportConfig()['titre'] ?? $inscription->transport,
+                'accommodation' => $inscription->getAccommodationConfig()['titre'] ?? $inscription->accommodation,
+                'scan_history' => array_map(static fn (TicketScan $scan) => [
+                    'date' => $scan->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'name' => $scan->scannedBy?->getFullName(),
+                    'public_id' => $scan->scannedBy?->getPublicId(),
+                ], $scanHistory),
             ]);
         }
 
         return $this->json([
-            'status' => 'invalid',
-            'status_label' => 'Invalide',
-            'status_type' => 'error',
-            'message' => 'Ce billet n’existe pas. Intervention SO et sortie de l’évent.',
+            'status' => [
+                'code' => 'invalid',
+                'label' => 'Invalide',
+                'type' => 'error',
+                'message' => 'Ce billet n’existe pas. Intervention SO et sortie de l’évent.',
+            ],
         ]);
     }
 }

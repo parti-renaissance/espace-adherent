@@ -160,6 +160,11 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['data_corner'],
             ],
             [
+                'code' => 'meeting_scanner',
+                'zones' => [],
+                'apps' => ['jemarche'],
+            ],
+            [
                 'code' => 'president_departmental_assembly',
                 'zones' => [[
                     'code' => '92',

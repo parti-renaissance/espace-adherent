@@ -237,6 +237,10 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;
 
+    #[Groups(['event_inscription_update'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $ticketCustomDetailColor = null;
+
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketQRCodeFile = null;
