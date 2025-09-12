@@ -417,3 +417,13 @@
         </li>
     </ul>
 {% endblock %}
+
+{% block sonata_page_content_header %}
+    {{ parent() }}
+
+    {% if not app.user.zones.isEmpty() %}
+        <div class="callout callout-warning" style="margin: 10px 0 0 0;">
+            <p>Les résultats affichés correspondent uniquement au périmètre géographique que vous gérez : {{ app.user.zones|join(', ') }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['emailAddress'])]
 class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
+    use EntityZoneTrait;
+
     /**
      * @var int
      */
@@ -64,6 +66,7 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     public function __construct()
     {
         $this->administratorRoles = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function __toString()
