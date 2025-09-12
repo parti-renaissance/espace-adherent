@@ -10600,16 +10600,16 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "5.4.1",
+            "version": "5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "5a52fb16fb8743e1f84aa1072075bdabeb56e2de"
+                "reference": "8cb52299b0b5538f759a596f2a411edbc46c642a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/5a52fb16fb8743e1f84aa1072075bdabeb56e2de",
-                "reference": "5a52fb16fb8743e1f84aa1072075bdabeb56e2de",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/8cb52299b0b5538f759a596f2a411edbc46c642a",
+                "reference": "8cb52299b0b5538f759a596f2a411edbc46c642a",
                 "shasum": ""
             },
             "require": {
@@ -10686,7 +10686,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-symfony/issues",
-                "source": "https://github.com/getsentry/sentry-symfony/tree/5.4.1"
+                "source": "https://github.com/getsentry/sentry-symfony/tree/5.5.0"
             },
             "funding": [
                 {
@@ -10698,7 +10698,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-09-09T12:12:59+00:00"
+            "time": "2025-09-11T14:31:09+00:00"
         },
         {
             "name": "sonata-project/admin-bundle",
