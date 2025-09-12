@@ -31,4 +31,18 @@ class PaymentRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
+    /**
+     * @return Payment[]
+     */
+    public function findToCheck(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.status IN (:statuses) OR (p.status = :expired_status AND p.expiredCheckedAt IS NULL)')
+            ->setParameter('statuses', [PaymentStatusEnum::PENDING, PaymentStatusEnum::UNKNOWN])
+            ->setParameter('expired_status', PaymentStatusEnum::EXPIRED)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

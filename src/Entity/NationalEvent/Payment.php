@@ -52,6 +52,9 @@ class Payment
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $replacement = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $expiredCheckedAt = null;
+
     public function __construct(
         UuidInterface $uuid,
         EventInscription $inscription,
@@ -104,5 +107,10 @@ class Payment
     public function isPending(): bool
     {
         return PaymentStatusEnum::PENDING === $this->status;
+    }
+
+    public function isExpired(): bool
+    {
+        return PaymentStatusEnum::EXPIRED === $this->status;
     }
 }
