@@ -939,6 +939,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'is_adherent' => true,
         ]));
         $adherent->canaryTester = true;
+        $adherent->meetingScanner = true;
         $adherent->tags = [TagEnum::getAdherentYearTag()];
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));

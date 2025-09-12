@@ -12,6 +12,7 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
+use App\Form\ColorType;
 use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
@@ -255,6 +256,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->end()
             ->with('Billet', ['class' => 'col-md-6'])
                 ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
+                ->add('ticketCustomDetailColor', ColorType::class, ['label' => 'Couleur du badge', 'required' => false])
                 ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
                 ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
             ->end()
