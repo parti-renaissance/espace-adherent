@@ -7,6 +7,7 @@ use App\Adherent\Tag\TagTranslator;
 use App\Admin\AbstractAdmin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Admin\ZoneableAdminInterface;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
@@ -44,7 +45,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class NationalEventInscriptionsAdmin extends AbstractAdmin
+class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
     use IterableCallbackDataSourceTrait;
 

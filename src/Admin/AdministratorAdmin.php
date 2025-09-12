@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Administrator;
 use App\Entity\AdministratorRole;
+use App\Entity\Geo\Zone;
 use App\Repository\AdministratorRoleRepository;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -11,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -86,7 +88,18 @@ class AdministratorAdmin extends AbstractAdmin
                     'disabled' => $isCreation,
                 ])
             ->end()
-            ->with('Permissions', ['class' => 'col-md-6'])
+            ->with('Périmètre géographique', ['class' => 'col-md-6'])
+                ->add('zones', ModelAutocompleteType::class, [
+                    'callback' => [$this, 'prepareAutocompleteFilterCallback'],
+                    'multiple' => true,
+                    'property' => ['name', 'code'],
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'btn_add' => false,
+                    'label' => false,
+                ])
+            ->end()
+            ->with('Permissions')
                 ->add('administratorRoles', null, [
                     'label' => false,
                     'expanded' => true,
@@ -142,6 +155,10 @@ class AdministratorAdmin extends AbstractAdmin
                 'label' => 'Rôles',
                 'template' => 'admin/admin/list_administrator_roles.html.twig',
             ])
+            ->add('zones', null, [
+                'label' => 'Zones géographiques',
+                'template' => 'admin/scope/list_zones.html.twig',
+            ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -161,5 +178,27 @@ class AdministratorAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
+    }
+
+    public static function prepareAutocompleteFilterCallback(
+        AbstractAdmin $admin,
+        array $properties,
+        string $value,
+    ): void {
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+
+        $qb
+            ->andWhere($orx)
+            ->andWhere($alias.'.type = :dpt_type')
+            ->setParameter('dpt_type', Zone::DEPARTMENT)
+        ;
     }
 }
