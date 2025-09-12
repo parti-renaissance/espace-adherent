@@ -14,6 +14,7 @@ use App\Adherent\Tag\TranslatedTagInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Controller\Api\NationalEvent\GetNextInscriptionForValidationController;
+use App\Controller\Api\NationalEvent\ScanTicketController;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -56,6 +57,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             controller: GetNextInscriptionForValidationController::class,
             deserialize: false,
         ),
+        new Post(
+            uriTemplate: '/national_event_inscriptions/{uuid}/scan',
+            controller: ScanTicketController::class,
+            security: 'is_granted("ROLE_MEETING_SCANNER")',
+            read: false,
+            deserialize: false,
+        ),
     ],
     routePrefix: '/v3',
     normalizationContext: [
@@ -76,7 +84,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     use EntityUTMTrait;
     use EntityZoneTrait;
 
-    public const int CANCELLATION_DELAY_IN_HOUR = 336;
+    public const int CANCELLATION_DELAY_IN_HOUR = 72;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
@@ -103,11 +111,11 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(length: 6)]
     public ?string $gender = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $firstName = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $lastName = null;
 
@@ -216,7 +224,10 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     public ?\DateTime $confirmationSentAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $ticketScannedAt = null;
+    public ?\DateTimeInterface $firstTicketScannedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $lastTicketScannedAt = null;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -243,6 +254,10 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\OneToMany(mappedBy: 'inscription', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $payments;
 
+    #[ORM\OneToMany(mappedBy: 'inscription', targetEntity: TicketScan::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    private Collection $scans;
+
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $validationComment = null;
@@ -260,6 +275,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->event = $event;
         $this->payments = new ArrayCollection();
         $this->zones = new ArrayCollection();
+        $this->scans = new ArrayCollection();
     }
 
     public function updateFromDuplicate(EventInscription $eventInscription): void
@@ -330,7 +346,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
     }
 
-    #[Groups(['event_inscription_read_for_validation'])]
+    #[Groups(['event_inscription_read_for_validation', 'event_inscription_scan'])]
     public function getCivility(): ?CivilityEnum
     {
         return CivilityEnum::fromGender($this->gender);
@@ -486,6 +502,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         return \in_array($this->status, InscriptionStatusEnum::REJECTED_STATUSES, true);
     }
 
+    #[Groups(['event_inscription_scan'])]
     public function getPublicId(): ?string
     {
         return $this->adherent?->getPublicId() ?? $this->publicId;
@@ -518,7 +535,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         return $this->adherent?->getImagePath();
     }
 
-    #[Groups(['event_inscription_read'])]
+    #[Groups(['event_inscription_read', 'event_inscription_scan'])]
     #[SerializedName('tags')]
     public function getAdherentTags(): ?array
     {
@@ -570,6 +587,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->validationStartedAt = new \DateTime();
     }
 
+    #[Groups(['event_inscription_scan'])]
     public function getAge(\DateTime $from = new \DateTime()): ?int
     {
         if ($this->adherent && $this->adherent->getAge()) {
@@ -577,5 +595,22 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         }
 
         return $this->birthdate?->diff($from)->y;
+    }
+
+    public function getTicketScans(): array
+    {
+        return $this->scans->toArray();
+    }
+
+    public function addTicketScan(TicketScan $scan): void
+    {
+        $scan->inscription = $this;
+        $this->scans->add($scan);
+
+        if (!$this->firstTicketScannedAt) {
+            $this->firstTicketScannedAt = $scan->getCreatedAt();
+        }
+
+        $this->lastTicketScannedAt = $scan->getCreatedAt();
     }
 }

@@ -4,7 +4,7 @@
     {% if object.adherent %}
         {{ include('admin/adherent/_tags.html.twig', {tags: object.adherent.tags}) }}
     {% endif %}
-    {% if object.ticketScannedAt %}
+    {% if object.firstTicketScannedAt %}
         {% if object.adherent and object.adherent.tags %}<br/>{% endif %}
         <span class="label label-success">Présent</span>
     {% endif %}
