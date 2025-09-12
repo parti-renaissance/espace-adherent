@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class NationalEventTicketMessage extends AbstractRenaissanceMessage
 {
-    public static function create(EventInscription $eventInscription): self
+    public static function create(EventInscription $eventInscription, bool $useAppMobile): self
     {
         $event = $eventInscription->event;
 
@@ -23,6 +23,12 @@ class NationalEventTicketMessage extends AbstractRenaissanceMessage
                 'header_ticket_image' => $event->imageTicketEmail,
                 'event_mail_details' => $eventInscription->event->textTicketEmail,
                 'ticket_custom_detail' => $eventInscription->ticketCustomDetail,
+                'transport_info' => nl2br(self::escape((string) $eventInscription->transportDetail)),
+                'accommodation_info' => nl2br(self::escape((string) $eventInscription->accommodationDetail)),
+                'custom_info' => nl2br(self::escape((string) $eventInscription->customDetail)),
+                'is_member' => $isMember = (null !== $eventInscription->adherent),
+                'is_external' => !$isMember,
+                'has_app_mobile' => $useAppMobile,
             ],
         );
     }

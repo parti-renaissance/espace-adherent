@@ -58,7 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             deserialize: false,
         ),
         new Post(
-            uriTemplate: '/national_event_inscriptions/{uuid}/scan',
+            uriTemplate: '/national_event_inscriptions/{ticketUuid}/scan',
             controller: ScanTicketController::class,
             security: 'is_granted("ROLE_MEETING_SCANNER")',
             read: false,
@@ -233,6 +233,9 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $pushSentAt = null;
 
+    #[ORM\Column(type: 'uuid', unique: true)]
+    public UuidInterface $ticketUuid;
+
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;
@@ -240,6 +243,15 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetailColor = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $transportDetail = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $accommodationDetail = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $customDetail = null;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
@@ -276,6 +288,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->ticketUuid = Uuid::uuid4();
         $this->event = $event;
         $this->payments = new ArrayCollection();
         $this->zones = new ArrayCollection();
