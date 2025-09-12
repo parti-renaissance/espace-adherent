@@ -242,7 +242,11 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
 
     #[Groups(['event_inscription_update'])]
     #[ORM\Column(nullable: true)]
-    public ?string $ticketCustomDetailColor = null;
+    public ?string $ticketBracelet = null;
+
+    #[Groups(['event_inscription_update'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $ticketBraceletColor = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $transportDetail = null;

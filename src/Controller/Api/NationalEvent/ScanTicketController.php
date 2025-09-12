@@ -45,8 +45,9 @@ class ScanTicketController extends AbstractController
                     'message' => 'Personne autorisée à entrer',
                 ],
                 'type' => [
-                    'color' => $inscription->ticketCustomDetailColor,
-                    'label' => $inscription->ticketCustomDetail,
+                    'label' => $inscription->ticketBracelet,
+                    'color' => $inscription->ticketBraceletColor,
+                    'door' => $inscription->ticketCustomDetail,
                 ],
                 'alert' => $lastScanDate?->format('d/m/Y') === date('d/m/Y') ? 'Déjà scannée aujourd’hui' : null,
                 'uuid' => $inscription->getUuid()->toString(),
