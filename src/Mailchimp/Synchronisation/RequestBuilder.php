@@ -183,7 +183,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setInscriptionDate($eventInscription->getCreatedAt())
             ->setConfirmationDate($eventInscription->confirmedAt)
             ->setTicketSentAt($eventInscription->ticketSentAt)
-            ->setTicketScannedAt($eventInscription->ticketScannedAt)
+            ->setTicketScannedAt($eventInscription->firstTicketScannedAt)
             ->setTicketCustomDetail($eventInscription->ticketCustomDetail)
             ->setIsVolunteer($eventInscription->volunteer)
             ->setIsJAM($eventInscription->isJAM)

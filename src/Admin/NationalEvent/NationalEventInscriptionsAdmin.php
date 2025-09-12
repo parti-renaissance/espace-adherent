@@ -97,7 +97,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 },
             ])
             ->add('event', null, ['label' => 'Event', 'show_filter' => true])
-            ->add('ticketScannedAt', NullFilter::class, ['label' => 'Présent', 'inverse' => true, 'show_filter' => true])
+            ->add('firstTicketScannedAt', NullFilter::class, ['label' => 'Présent', 'inverse' => true, 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -187,7 +187,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('status', 'trans', ['label' => 'Statut', 'header_style' => 'min-width: 160px;'])
             ->add('amount', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_amount.html.twig'])
             ->add('paymentStatus', 'enum', ['label' => 'Statut du paiement', 'use_value' => true, 'enum_translation_domain' => 'messages', 'header_style' => 'min-width: 160px;'])
-            ->add('ticketScannedAt', null, ['label' => 'Billet scanné le'])
+            ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le'])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
             ->add('createdAt', null, ['label' => 'Inscrit le', 'header_style' => 'min-width: 140px;'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
@@ -256,7 +256,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->with('Billet', ['class' => 'col-md-6'])
                 ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
                 ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
-                ->add('ticketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
             ->end()
         ;
     }
@@ -329,7 +329,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Billet champ libre' => $inscription->ticketCustomDetail,
-                'Billet scanné le' => $inscription->ticketScannedAt?->format('d/m/Y H:i:s'),
+                'Billet scanné le' => $inscription->firstTicketScannedAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
                 'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',
