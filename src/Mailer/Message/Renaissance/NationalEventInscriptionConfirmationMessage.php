@@ -28,7 +28,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
                 'phone' => PhoneNumberUtils::format($eventInscription->phone),
                 'region' => self::escape((string) $region),
                 'department' => self::escape((string) $department),
-                'birthdate' => self::escape($eventInscription->birthdate->format('d/m/Y')),
+                'birthdate' => self::escape($eventInscription->birthdate?->format('d/m/Y')),
                 'birth_place' => self::escape((string) $eventInscription->birthPlace),
                 'inscription_uuid' => $eventInscription->getUuid()->toString(),
                 'roommate_identifier' => $eventInscription->roommateIdentifier,
