@@ -82,7 +82,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Intl\Countries;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-abstract class AbstractAdherentAdmin extends AbstractAdmin
+abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
     use IterableCallbackDataSourceTrait;
 

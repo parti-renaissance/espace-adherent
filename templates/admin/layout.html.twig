@@ -417,3 +417,13 @@
         </li>
     </ul>
 {% endblock %}
+
+{% block sonata_page_content_header %}
+    {{ parent() }}
+
+    {% if action is defined and action == 'list' and admin is instanceof('App\\Admin\\ZoneableAdminInterface') and not app.user.zones.isEmpty() %}
+        <div class="callout callout-info" style="margin: 10px 0 0 0;background-color: #ccc !important; color: #000 !important; padding: 10px; border-radius: 3px;">
+            <p>Les résultats affichés correspondent uniquement au périmètre géographique que vous gérez : {{ app.user.zones|join(', ') }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

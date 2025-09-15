@@ -582,6 +582,12 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin.extension', ['target' => 'app.admin.report'])
     ;
     $services
+        ->set('app.admin.filter_by_zone_extension', App\Admin\Extension\FilterByZonesAdminExtension::class)
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent_elected_representative'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_inscriptions'])
+    ;
+    $services
         ->set('app.admin.entity_administrator_blameable_extension', App\Admin\Extension\EntityAdministratorBlameableAdminExtension::class)
         ->tag('sonata.admin.extension', ['priority' => '-256'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent'])
