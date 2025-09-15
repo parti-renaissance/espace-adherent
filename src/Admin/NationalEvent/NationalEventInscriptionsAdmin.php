@@ -127,12 +127,21 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choice_loader' => new CallbackChoiceLoader(function () {
-                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
-                        $qb->select('DISTINCT e.visitDay')->where('e.visitDay IS NOT NULL')->orderBy('e.visitDay', 'ASC');
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'i')
+                            ->select('e.name, i.visitDay')
+                            ->innerJoin('i.event', 'e')
+                            ->where('i.visitDay IS NOT NULL')
+                            ->groupBy('e.id, i.visitDay')
+                        ;
 
-                        $choices = array_column($qb->getQuery()->getScalarResult(), 'visitDay');
+                        $choices = [];
+                        foreach ($qb->getQuery()->getScalarResult() as $row) {
+                            $choices[$row['name'].' : '.$row['visitDay']] = $row['visitDay'];
+                        }
 
-                        return array_combine($choices, $choices);
+                        ksort($choices);
+
+                        return $choices;
                     }),
                 ],
             ])
@@ -142,12 +151,21 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choice_loader' => new CallbackChoiceLoader(function () {
-                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
-                        $qb->select('DISTINCT e.transport')->where('e.transport IS NOT NULL')->orderBy('e.transport', 'ASC');
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'i')
+                            ->select('e.name, i.transport')
+                            ->innerJoin('i.event', 'e')
+                            ->where('i.transport IS NOT NULL')
+                            ->groupBy('e.id, i.transport')
+                        ;
 
-                        $choices = array_column($qb->getQuery()->getScalarResult(), 'transport');
+                        $choices = [];
+                        foreach ($qb->getQuery()->getScalarResult() as $row) {
+                            $choices[$row['name'].' : '.$row['transport']] = $row['transport'];
+                        }
 
-                        return array_combine($choices, $choices);
+                        ksort($choices);
+
+                        return $choices;
                     }),
                 ],
             ])
@@ -157,12 +175,21 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choice_loader' => new CallbackChoiceLoader(function () {
-                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'e');
-                        $qb->select('DISTINCT e.accommodation')->where('e.accommodation IS NOT NULL')->orderBy('e.accommodation', 'ASC');
+                        $qb = $this->getModelManager()->createQuery(EventInscription::class, 'i')
+                            ->select('e.name, i.accommodation')
+                            ->innerJoin('i.event', 'e')
+                            ->where('i.accommodation IS NOT NULL')
+                            ->groupBy('e.id, i.accommodation')
+                        ;
 
-                        $choices = array_column($qb->getQuery()->getScalarResult(), 'accommodation');
+                        $choices = [];
+                        foreach ($qb->getQuery()->getScalarResult() as $row) {
+                            $choices[$row['name'].' : '.$row['accommodation']] = $row['accommodation'];
+                        }
 
-                        return array_combine($choices, $choices);
+                        ksort($choices);
+
+                        return $choices;
                     }),
                 ],
             ])
@@ -248,15 +275,14 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                         'label' => 'Statut du paiement',
                         'choices' => PaymentStatusEnum::all(),
                         'choice_label' => fn (PaymentStatusEnum $status) => $status,
-                        'disabled' => true,
                         'required' => false,
                     ])
-                    ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false, 'disabled' => true])
-                    ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false, 'disabled' => true])
-                    ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false, 'disabled' => true])
+                    ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false])
+                    ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false])
+                    ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false])
                     ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
-                    ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false, 'disabled' => true])
-                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false, 'disabled' => true])
+                    ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false])
+                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false])
                 ->end()
             ->end()
             ->tab('Billet 🎟️')
