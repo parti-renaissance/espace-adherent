@@ -154,7 +154,7 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
         $amount = 0;
 
         if ($transport) {
-            foreach ($this->transportConfiguration['transports'] ?? [] as $transportConfig) {
+            foreach ($this->getTransports() as $transportConfig) {
                 if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
                     $amount += (int) $transportConfig['montant'];
                     break;
@@ -163,7 +163,7 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
         }
 
         if ($accommodation) {
-            foreach ($this->transportConfiguration['hebergements'] ?? [] as $accommodationConfig) {
+            foreach ($this->getAccommodations() as $accommodationConfig) {
                 if ($accommodationConfig['id'] === $accommodation && !empty($accommodationConfig['montant'])) {
                     $amount += (int) $accommodationConfig['montant'];
                     break;
@@ -186,5 +186,20 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     public function getSortableAlertDate(): \DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function getVisitDays(): array
+    {
+        return $this->transportConfiguration['jours'] ?? [];
+    }
+
+    public function getTransports(): array
+    {
+        return $this->transportConfiguration['transports'] ?? [];
+    }
+
+    public function getAccommodations(): array
+    {
+        return $this->transportConfiguration['hebergements'] ?? [];
     }
 }

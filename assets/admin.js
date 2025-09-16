@@ -1,6 +1,6 @@
 import setupTipTap from 'admin/tiptap';
 import setupLucide from 'admin/lucide';
-import setupTooltips from './admin/tooltip';
+import setupTooltips from 'admin/tooltip';
 
 const setupAdmin = () => {
     setupTipTap();

@@ -26,7 +26,7 @@ class NationalEventInscriptionPaymentReminderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->eventInscriptionRepository->cancelWaitingPayments($now = new \DateTime());
+        $this->eventInscriptionRepository->cancelAllWithWaitingPayments($now = new \DateTime());
 
         foreach ($this->getInscriptions($now) as $inscription) {
             $this->bus->dispatch(new SendPaymentReminderCommand($inscription->getUuid()));

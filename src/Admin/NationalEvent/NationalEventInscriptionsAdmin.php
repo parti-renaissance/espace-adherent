@@ -13,6 +13,7 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Form\ColorType;
 use App\Form\GenderCivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
@@ -229,6 +230,16 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
     protected function configureFormFields(FormMapper $form): void
     {
+        /** @var NationalEvent[] $campusEvents */
+        $campusEvents = $this->getModelManager()->createQuery(NationalEvent::class, 'e')
+            ->select('e')
+            ->where('e.transportConfiguration IS NOT NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $currentEvent = $this->getSubject()?->event;
+
         $form
             ->tab('Inscription ❤️')
                 ->with('Général', ['class' => 'col-md-6'])
@@ -271,16 +282,61 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 ->end()
             ->end()
             ->tab('Forfait ✅')
-                ->with('', ['class' => 'col-md-6'])
+                ->with('', ['class' => 'col-md-6', 'description' => '⚠️ Attention, si vous modifiez le forfait en tant qu\'admin, le prix ne changera pas automatiquement et le statut ne changera pas non plus. Pour obliger une personne à repayer, il faut la passer "En attente de paiement"'])
                     ->add('paymentStatus', ChoiceType::class, [
                         'label' => 'Statut du paiement',
                         'choices' => PaymentStatusEnum::all(),
                         'choice_label' => fn (PaymentStatusEnum $status) => $status,
                         'required' => false,
                     ])
-                    ->add('visitDay', TextType::class, ['label' => 'Jour de visite', 'required' => false])
-                    ->add('transport', TextType::class, ['label' => 'Choix de transport', 'required' => false])
-                    ->add('accommodation', TextType::class, ['label' => 'Choix d\'hébergement', 'required' => false])
+                    ->add('visitDay', ChoiceType::class, [
+                        'label' => 'Jour de visite',
+                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                            $choices = [];
+                            foreach ($campusEvents as $event) {
+                                foreach ($event->getVisitDays() as $config) {
+                                    $choices[$event->getName().' : '.$config['titre']] = $config['id'];
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
+                    ->add('transport', ChoiceType::class, [
+                        'label' => 'Choix de transport',
+                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                            $choices = [];
+                            foreach ($campusEvents as $event) {
+                                foreach ($event->getTransports() as $config) {
+                                    $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
+                    ->add('accommodation', ChoiceType::class, [
+                        'label' => 'Choix d\'hébergement',
+                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                            $choices = [];
+                            foreach ($campusEvents as $event) {
+                                foreach ($event->getAccommodations() as $config) {
+                                    $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
                     ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
                     ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false])
                     ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false])

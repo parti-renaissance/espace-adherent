@@ -340,7 +340,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         ;
     }
 
-    public function cancelWaitingPayments(\DateTime $now): void
+    public function cancelAllWithWaitingPayments(\DateTime $now): void
     {
         $ids = $this
             ->getEntityManager()
@@ -362,7 +362,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->set('ei.status', ':new_status')
             ->set('ei.canceledAt', ':canceled_at')
             ->where('ei.status = :status')
-            ->andWhere('ei.createdAt < :since')
+            ->andWhere('ei.updatedAt < :since')
             ->andWhere('ei.id IN (:ids)')
             ->setParameter('new_status', InscriptionStatusEnum::CANCELED)
             ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
