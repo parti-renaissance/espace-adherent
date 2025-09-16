@@ -421,7 +421,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
             return null;
         }
 
-        foreach ($this->event->transportConfiguration['jours'] ?? [] as $day) {
+        foreach ($this->event->getVisitDays() as $day) {
             if ($day['id'] === $this->visitDay) {
                 return $day;
             }
@@ -436,7 +436,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
             return null;
         }
 
-        foreach ($this->event->transportConfiguration['transports'] ?? [] as $transport) {
+        foreach ($this->event->getTransports() as $transport) {
             if ($transport['id'] === $this->transport) {
                 return $transport;
             }
@@ -451,7 +451,7 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
             return null;
         }
 
-        foreach ($this->event->transportConfiguration['hebergements'] ?? [] as $accommodation) {
+        foreach ($this->event->getAccommodations() as $accommodation) {
             if ($accommodation['id'] === $this->accommodation) {
                 return $accommodation;
             }

@@ -56,6 +56,56 @@
                 </twig:Atoms:ReCard>
             {% endif %}
 
+            <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
+                <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 h-full m-[1px] rounded-[calc(theme(borderRadius.2xl)+3px)]">
+                    <div class="flex gap-6">
+                        <img src="{{ asset('images/renaissance/meeting/billet.png') }}" alt="Billet" class="w-[150px]"/>
+
+                        <div class="flex flex-col gap-4">
+                            <h2 class="font-medium text-2xl text-ui_gray-80">Mon billet</h2>
+                            <p class="text-ui_gray-80">Votre billet sera envoyé avant le grand jour. Il sera demandé pour accéder à l’événement.</p>
+                        </div>
+                    </div>
+
+                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
+                        Billet bientôt disponible
+                    </button>
+                </div>
+            </twig:Atoms:ReCard>
+
+            <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
+                <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 m-[1px] h-full rounded-[calc(theme(borderRadius.2xl)+3px)]">
+                    <div class="flex gap-6">
+                        <img src="{{ asset('images/renaissance/meeting/programme.png') }}" alt="Programme" class="w-[150px]"/>
+
+                        <div class="flex flex-col gap-4">
+                            <h2 class="font-medium text-2xl text-ui_gray-80">Programme</h2>
+                            <p class="text-ui_gray-80">Découvrez les temps forts, ateliers et invités de l’événement : consultez le programme !</p>
+                        </div>
+                    </div>
+
+                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
+                        Programme bientôt disponible
+                    </button>
+                </div>
+            </twig:Atoms:ReCard>
+
+            {% if inscription.transportDetail %}
+                <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} h-fit !gap-2">
+                    <span class="flex items-center justify-center rounded-full bg-ui_blue-1 w-12 h-12 text-ui_blue-40"><i data-lucide="tram-front"></i></span>
+                    <h3 class="text-2xl text-ui_blue-40 font-bold">Mon transport</h3>
+                    <div class="pt-2">{{ inscription.transportDetail|raw|nl2br }}</div>
+                </twig:Atoms:ReCard>
+            {% endif %}
+
+            {% if inscription.accommodationDetail %}
+                <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} h-fit !gap-2">
+                    <span class="flex items-center justify-center rounded-full bg-ui_blue-1 w-12 h-12 text-ui_blue-40"><i data-lucide="bed"></i></span>
+                    <h3 class="text-2xl text-ui_blue-40 font-bold">Mon hébergement</h3>
+                    <div class="pt-2">{{ inscription.accommodationDetail|raw|nl2br }}</div>
+                </twig:Atoms:ReCard>
+            {% endif %}
+
             <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} md:order-none">
                 {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
@@ -239,40 +289,6 @@
                     <div class="flex items-center justify-center gap-[40px]">
                         {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
                     </div>
-                </div>
-            </twig:Atoms:ReCard>
-
-            <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
-                <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 h-full m-[1px] rounded-[calc(theme(borderRadius.2xl)+3px)]">
-                    <div class="flex gap-6">
-                        <img src="{{ asset('images/renaissance/meeting/billet.png') }}" alt="Billet" class="w-[150px]"/>
-
-                        <div class="flex flex-col gap-4">
-                            <h2 class="font-medium text-2xl text-ui_gray-80">Mon billet</h2>
-                            <p class="text-ui_gray-80">Votre billet sera envoyé avant le grand jour. Il sera demandé pour accéder à l’événement.</p>
-                        </div>
-                    </div>
-
-                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
-                        Billet bientôt disponible
-                    </button>
-                </div>
-            </twig:Atoms:ReCard>
-
-            <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
-                <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 m-[1px] h-full rounded-[calc(theme(borderRadius.2xl)+3px)]">
-                    <div class="flex gap-6">
-                        <img src="{{ asset('images/renaissance/meeting/programme.png') }}" alt="Programme" class="w-[150px]"/>
-
-                        <div class="flex flex-col gap-4">
-                            <h2 class="font-medium text-2xl text-ui_gray-80">Programme</h2>
-                            <p class="text-ui_gray-80">Découvrez les temps forts, ateliers et invités de l’événement : consultez le programme !</p>
-                        </div>
-                    </div>
-
-                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
-                        Programme bientôt disponible
-                    </button>
                 </div>
             </twig:Atoms:ReCard>
         </section>

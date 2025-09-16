@@ -12,7 +12,7 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
         $event = $eventInscription->event;
 
         $selectedTransportConfig = null;
-        foreach ($event->transportConfiguration['transports'] ?? [] as $transport) {
+        foreach ($event->getTransports() as $transport) {
             if ($transport['id'] === $eventInscription->transport) {
                 $selectedTransportConfig = $transport;
                 break;
@@ -20,7 +20,7 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
         }
 
         $selectedAccommodationConfig = null;
-        foreach ($event->transportConfiguration['hebergements'] ?? [] as $accommodation) {
+        foreach ($event->getAccommodations() as $accommodation) {
             if ($accommodation['id'] === $eventInscription->accommodation) {
                 $selectedAccommodationConfig = $accommodation;
                 break;

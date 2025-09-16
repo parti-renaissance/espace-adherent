@@ -4,6 +4,7 @@ import registerServices from './services';
 import amountChooser from './listeners/amount-chooser';
 import addressAutocomplete from './listeners/address-autocomplete';
 import confirmModal from './listeners/confirm-modal';
+import setupLucide from './listeners/lucide';
 
 import alpine from './listeners/alpine';
 
@@ -15,6 +16,7 @@ class Main {
             addressAutocomplete,
             confirmModal,
             alpine,
+            setupLucide,
         ];
     }
 
