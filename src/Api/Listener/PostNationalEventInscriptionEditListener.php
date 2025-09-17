@@ -6,7 +6,6 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -24,12 +23,11 @@ class PostNationalEventInscriptionEditListener implements EventSubscriberInterfa
 
     public function onNationalEventInscriptionEdit(ViewEvent $viewEvent): void
     {
-        $eventInscription = $viewEvent->getControllerResult();
+        $eventInscription = $viewEvent->controllerArgumentsEvent->getArguments()[0] ?? null;
 
         if (
-            !$viewEvent->isMainRequest()
+            '_api_/v3/national_event_inscriptions/{uuid}{._format}_put' !== $viewEvent->getRequest()->attributes->get('_api_operation_name')
             || !$eventInscription instanceof EventInscription
-            || !\in_array($viewEvent->getRequest()->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
         ) {
             return;
         }
