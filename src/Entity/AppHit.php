@@ -32,6 +32,7 @@ class AppHit
     #[ORM\Column(nullable: true)]
     public ?string $referrerCode = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
     public ?AppSession $appSession = null;
 
