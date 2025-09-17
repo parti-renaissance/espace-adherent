@@ -38,7 +38,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->getUuid()->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
@@ -55,7 +55,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->getUuid()->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';

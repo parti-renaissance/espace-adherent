@@ -17,11 +17,15 @@
     <main class="max-w-screen-lg flex justify-center mx-auto pb-10">
         <section class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 p-4 md:p-1">
             {% if inscription.isWaitingPayment() %}
-                <div class="md:col-span-2 order-first">
+                <div class="md:col-span-2">
                     <twig:ReParagraphStatus status="error" icon slim="true">
                         Aucun paiement n’a encore été enregistré. Veuillez <a class="font-medium text-ui_blue-50" href="{{ path('app_national_event_new_payment', {slug: event.slug, uuid: inscription.uuid}) }}">procéder au règlement</a> pour valider votre inscription.
                     </twig:ReParagraphStatus>
                 </div>
+            {% endif %}
+
+            {% if inscription.isTicketReady() %}
+                <p class="text-ui_red-50 w-1/2 text-center md:col-span-2 mx-auto">Pour accéder à l’événement, <strong>vous devrez obligatoirement le présenter accompagné d’une pièce d’identité en cours de validité.</strong></p>
             {% endif %}
 
             {% if is_confirmation %}
@@ -56,24 +60,38 @@
                 </twig:Atoms:ReCard>
             {% endif %}
 
-            <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
+            <twig:Atoms:ReCard class="bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0 h-fit">
                 <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 h-full m-[1px] rounded-[calc(theme(borderRadius.2xl)+3px)]">
-                    <div class="flex gap-6">
-                        <img src="{{ asset('images/renaissance/meeting/billet.png') }}" alt="Billet" class="w-[150px]"/>
+                    {% if inscription.isTicketReady() %}
+                        <div class="flex flex-col gap-8">
+                            <p class="text-[#183E65] font-bold text-3xl">{{ inscription.firstName }}<br/>{{ inscription.lastName|upper }}</p>
 
-                        <div class="flex flex-col gap-4">
-                            <h2 class="font-medium text-2xl text-ui_gray-80">Mon billet</h2>
-                            <p class="text-ui_gray-80">Votre billet sera envoyé avant le grand jour. Il sera demandé pour accéder à l’événement.</p>
+                            {% if inscription.ticketCustomDetail %}
+                                <p class="text-[#A725D7] font-bold text-4xl">{{ inscription.ticketCustomDetail }}</p>
+                            {% endif %}
+
+                            <img class="w-[200px] border-2 border-[#DDE4EB] rounded-lg" src="{{ path('app_national_event_ticket', {file: inscription.ticketQRCodeFile}) }}" alt="Mon billet" />
+
+                            <p class="text-ui_gray-90">Présentez ce QR code à l’entrée de l’événement directement depuis votre smartphone. Vous pouvez également présenter une impression.</p>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="flex gap-6">
+                            <img src="{{ asset('images/renaissance/meeting/billet.png') }}" alt="Billet" class="w-[150px]"/>
 
-                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
-                        Billet bientôt disponible
-                    </button>
+                            <div class="flex flex-col gap-4">
+                                <h2 class="font-medium text-2xl text-ui_gray-80">Mon billet</h2>
+                                <p class="text-ui_gray-80">Votre billet sera envoyé avant le grand jour. Il sera demandé pour accéder à l’événement.</p>
+                            </div>
+                        </div>
+
+                        <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
+                            Billet bientôt disponible
+                        </button>
+                    {% endif %}
                 </div>
             </twig:Atoms:ReCard>
 
-            <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0">
+            <twig:Atoms:ReCard class="bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0 h-fit">
                 <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 m-[1px] h-full rounded-[calc(theme(borderRadius.2xl)+3px)]">
                     <div class="flex gap-6">
                         <img src="{{ asset('images/renaissance/meeting/programme.png') }}" alt="Programme" class="w-[150px]"/>
@@ -84,14 +102,14 @@
                         </div>
                     </div>
 
-                    <button disabled class="w-full border cursor-not-allowed p-2 border-ui_gray-30 bg-white text-ui_gray-40 rounded-[10px]">
-                        Programme bientôt disponible
-                    </button>
+                    <a href="https://doc.parti.re/Programme_Arras_mobile.pdf" target="_blank" class="w-full border p-2 border-ui_gray-30 bg-white text-ui_gray-80 font-medium text-center rounded-[10px]">
+                        Découvrir le programme
+                    </a>
                 </div>
             </twig:Atoms:ReCard>
 
             {% if inscription.transportDetail %}
-                <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} h-fit !gap-2">
+                <twig:Atoms:ReCard class="h-fit !gap-2">
                     <span class="flex items-center justify-center rounded-full bg-ui_blue-1 w-12 h-12 text-ui_blue-40"><i data-lucide="tram-front"></i></span>
                     <h3 class="text-2xl text-ui_blue-40 font-bold">Mon transport</h3>
                     <div class="pt-2">{{ inscription.transportDetail|raw|nl2br }}</div>
@@ -99,14 +117,14 @@
             {% endif %}
 
             {% if inscription.accommodationDetail %}
-                <twig:Atoms:ReCard class="{{ not is_confirmation ? 'order-first' }} h-fit !gap-2">
+                <twig:Atoms:ReCard class="h-fit !gap-2">
                     <span class="flex items-center justify-center rounded-full bg-ui_blue-1 w-12 h-12 text-ui_blue-40"><i data-lucide="bed"></i></span>
                     <h3 class="text-2xl text-ui_blue-40 font-bold">Mon hébergement</h3>
                     <div class="pt-2">{{ inscription.accommodationDetail|raw|nl2br }}</div>
                 </twig:Atoms:ReCard>
             {% endif %}
 
-            <twig:Atoms:ReCard class="{{ is_confirmation ? 'order-last' : 'order-first' }} md:order-none">
+            <twig:Atoms:ReCard>
                 {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
                 <div class="flex justify-between items-center">

@@ -186,7 +186,7 @@
                                         {% for row in event_inscriptions %}
                                             <tr>
                                                 <td>
-                                                    {% set image_url = row.ticketQRCodeFile ? url('app_national_event_ticket', {file: row.ticketQRCodeFile}) %}
+                                                    {% set image_url = row.isTicketReady() ? url('app_national_event_ticket', {file: row.ticketQRCodeFile}) : null %}
                                                     <a href="{{ image_url }}" target="_blank" style="display: flex;align-items:center;gap:8px;white-space: nowrap;">
                                                         <img src="{{ image_url }}" style="height: 40px;width: auto;" />
                                                         {{ row.uuid }}
