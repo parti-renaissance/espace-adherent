@@ -20,7 +20,7 @@ class NationalEventTicketMessage extends AbstractRenaissanceMessage
                 'uuid' => $eventInscription->getUuid()->toString(),
                 'first_name' => $eventInscription->firstName,
                 'last_name' => $eventInscription->lastName,
-                'qr_code_img' => $eventInscription->ticketQRCodeFile,
+                'qr_code_img' => $eventInscription->isTicketReady() ? $eventInscription->ticketQRCodeFile : null,
                 'header_ticket_image' => $event->imageTicketEmail,
                 'event_mail_details' => $eventInscription->event->textTicketEmail,
                 'ticket_custom_detail' => $eventInscription->ticketCustomDetail,

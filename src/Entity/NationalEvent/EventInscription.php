@@ -618,6 +618,11 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         return $this->birthdate?->diff($from)->y;
     }
 
+    public function isTicketReady(): bool
+    {
+        return $this->isApproved() && null !== $this->ticketQRCodeFile;
+    }
+
     public function getTicketScans(): array
     {
         return $this->scans->toArray();

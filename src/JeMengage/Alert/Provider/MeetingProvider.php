@@ -71,7 +71,7 @@ class MeetingProvider implements AlertProviderInterface
 
                 $ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->isApproved() && $inscription->ticketSentAt));
 
-                if ($ticketSent instanceof EventInscription && $ticketSent->ticketQRCodeFile) {
+                if ($ticketSent instanceof EventInscription && $ticketSent->isTicketReady()) {
                     $ctaLabel = 'Mon billet';
                     $ctaUrl = $this->generateUrl('app_national_event_ticket', ['file' => $ticketSent->ticketQRCodeFile]);
 
