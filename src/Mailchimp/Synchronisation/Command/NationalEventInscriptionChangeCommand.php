@@ -2,10 +2,10 @@
 
 namespace App\Mailchimp\Synchronisation\Command;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
+use App\Mailchimp\SynchronizeMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class NationalEventInscriptionChangeCommand implements AsynchronousMessageInterface
+class NationalEventInscriptionChangeCommand implements SynchronizeMessageInterface
 {
     public function __construct(
         public readonly UuidInterface $uuid,

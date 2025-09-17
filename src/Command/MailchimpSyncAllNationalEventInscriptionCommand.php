@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
+use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,7 +24,6 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
 
     public function __construct(
         private readonly EventInscriptionRepository $eventInscriptionRepository,
-        private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
@@ -33,8 +32,7 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
-            ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
+            ->addOption('event-id', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
     }
@@ -46,43 +44,31 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $batchSize = (int) $input->getOption('batch-size');
-        $limit = (int) $input->getOption('limit');
-
-        $paginator = $this->getQueryBuilder(
-            $input->getOption('emails')
-        );
+        $paginator = $this->getQueryBuilder($input->getOption('emails'), $input->getOption('event-id'));
 
         $count = $paginator->count();
-        $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(\sprintf('Are you sure to sync %d event inscriptions?', $total), false)) {
+        if (0 === $count) {
+            $this->io->warning('No event inscription to sync');
+
+            return self::SUCCESS;
+        }
+
+        if (false === $this->io->confirm(\sprintf('Are you sure to sync %d event inscriptions?', $count), false)) {
             return self::FAILURE;
         }
 
-        $paginator->getQuery()->setMaxResults($limit && $limit < $batchSize ? $limit : $batchSize);
+        $this->io->progressStart($count);
 
-        $this->io->progressStart($total);
-        $offset = 0;
+        foreach ($paginator as $i => $eventInscription) {
+            $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
 
-        do {
-            foreach ($paginator as $eventInscription) {
-                $this->bus->dispatch(new NationalEventInscriptionChangeCommand(
-                    $eventInscription->getUuid(),
-                    $eventInscription->addressEmail
-                ));
+            $this->io->progressAdvance();
 
-                $this->io->progressAdvance();
-                ++$offset;
-                if ($limit && $limit <= $offset) {
-                    break 2;
-                }
+            if (0 === $i % 2) {
+                usleep(500);
             }
-
-            $paginator->getQuery()->setFirstResult($offset);
-
-            $this->entityManager->clear();
-        } while ($offset < $count && (!$limit || $offset < $limit));
+        }
 
         $this->io->progressFinish();
 
@@ -92,19 +78,46 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
     /**
      * @return Paginator|EventInscription[]
      */
-    private function getQueryBuilder(array $emails): Paginator
+    private function getQueryBuilder(array $emails, ?int $eventId): Paginator
     {
         $queryBuilder = $this->eventInscriptionRepository
-            ->createQueryBuilder('event_inscription')
-            ->select('PARTIAL event_inscription.{id, uuid, addressEmail}')
-            ->innerJoin('event_inscription.event', 'event')
-            ->andWhere('event.mailchimpSync = :true')
+            ->createQueryBuilder('ei')
+            ->select('PARTIAL ei.{id, uuid, addressEmail}')
+            ->addSelect(
+                'CASE WHEN ei.status IN (:first_statuses) THEN 1
+                WHEN ei.status = :waiting_payment THEN 6
+                WHEN ei.status IN (:pending_statuses) THEN 9
+                WHEN ei.status IN (:approved_statuses) THEN 10
+                ELSE 3 END AS HIDDEN score'
+            )
+            ->innerJoin('ei.event', 'e')
+            ->andWhere('e.mailchimpSync = :true')
+            ->andWhere('ei.status != :cancelled')
             ->setParameter('true', true)
+            ->setParameter('waiting_payment', InscriptionStatusEnum::WAITING_PAYMENT)
+            ->setParameter('first_statuses', [
+                InscriptionStatusEnum::DUPLICATE,
+                InscriptionStatusEnum::REFUSED,
+            ])
+            ->setParameter('pending_statuses', [
+                InscriptionStatusEnum::PENDING,
+                InscriptionStatusEnum::IN_VALIDATION,
+            ])
+            ->setParameter('approved_statuses', InscriptionStatusEnum::APPROVED_STATUSES)
+            ->setParameter('cancelled', InscriptionStatusEnum::CANCELED)
+            ->orderBy('score', 'ASC')
         ;
+
+        if ($eventId) {
+            $queryBuilder
+                ->andWhere('e.id = :eventId')
+                ->setParameter('eventId', $eventId)
+            ;
+        }
 
         if ($emails) {
             $queryBuilder
-                ->andWhere('event_inscription.addressEmail IN (:emails)')
+                ->andWhere('ei.addressEmail IN (:emails)')
                 ->setParameter('emails', $emails)
             ;
         }
