@@ -69,9 +69,8 @@ class MeetingProvider implements AlertProviderInterface
                     ];
                 }
 
-                $ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->isApproved() && $inscription->ticketSentAt));
-
-                if ($ticketSent instanceof EventInscription && $ticketSent->isTicketReady()) {
+                /** @var EventInscription|false $ticketSent */
+                if ($ticketSent = current(array_filter($inscriptions, static fn (EventInscription $inscription) => $inscription->isTicketReady()))) {
                     $data = [
                         'first_name' => $ticketSent->firstName,
                         'last_name' => $ticketSent->lastName,
