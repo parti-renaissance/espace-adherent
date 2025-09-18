@@ -25,7 +25,7 @@ class MyInscriptionController extends AbstractController
         #[MapEntity(mapping: ['uuid' => 'uuid'])] EventInscription $inscription,
         AdherentRepository $adherentRepository,
     ): Response {
-        if ($inscription->event !== $event || $event->endDate < new \DateTimeImmutable('+3 days')) {
+        if ($inscription->event !== $event) {
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
 
