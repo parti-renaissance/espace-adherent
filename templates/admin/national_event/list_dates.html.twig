@@ -1,0 +1,16 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <div>
+        <span>Inscription :</span> <b>{{ object.createdAt|date('d/m/Y H:i') }}</b>
+    </div>
+    <div>
+        <span>Dernier billet mail :</span> <b>{{ object.ticketSentAt ? object.ticketSentAt|date('d/m/Y H:i') : '~' }}</b>
+    </div>
+    <div>
+        <span>Premier scan :</span> <b>{{ object.firstTicketScannedAt ? object.firstTicketScannedAt|date('d/m/Y H:i') : '~' }}</b>
+    </div>
+    <div>
+        <span>Dernier scan :</span> <b>{{ object.lastTicketScannedAt ? object.lastTicketScannedAt|date('d/m/Y H:i') : '~' }}</b>
+    </div>
+{% endblock %}

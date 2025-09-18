@@ -75,7 +75,7 @@ class MeetingProvider implements AlertProviderInterface
                         'last_name' => $ticketSent->lastName,
                         'ticket_custom_detail' => $ticketSent->ticketCustomDetail,
                         'ticket_url' => $this->generateUrl('app_national_event_ticket', ['file' => $ticketSent->ticketQRCodeFile]),
-                        'info_url' => 'https://parti.re/LP4T',
+                        'info_url' => $ctaUrl,
                     ];
                 }
             } else {
