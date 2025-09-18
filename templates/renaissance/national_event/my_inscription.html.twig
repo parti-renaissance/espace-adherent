@@ -24,7 +24,7 @@
                 </div>
             {% endif %}
 
-            {% if inscription.isTicketReady() %}
+            {% if inscription.isTicketReady() and inscription.ticketSentAt %}
                 <p class="text-ui_red-50 w-1/2 text-center md:col-span-2 mx-auto">Pour accéder à l’événement, <strong>vous devrez obligatoirement le présenter accompagné d’une pièce d’identité en cours de validité.</strong></p>
             {% endif %}
 
@@ -62,7 +62,7 @@
 
             <twig:Atoms:ReCard class="bg-gradient-to-r from-[#AE2EE0] to-[#EA9818] !p-0 !border-0 h-fit">
                 <div class="flex flex-col gap-6 bg-white bg-opacity-95 p-8 h-full m-[1px] rounded-[calc(theme(borderRadius.2xl)+3px)]">
-                    {% if inscription.isTicketReady() %}
+                    {% if inscription.isTicketReady() and inscription.ticketSentAt %}
                         <div class="flex flex-col gap-8">
                             <p class="text-[#183E65] font-bold text-3xl">{{ inscription.firstName }}<br/>{{ inscription.lastName|upper }}</p>
 
