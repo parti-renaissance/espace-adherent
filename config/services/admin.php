@@ -103,7 +103,7 @@ return static function (ContainerConfigurator $configurator) {
     ;
     $services
         ->set('app.admin.national_event_inscriptions', App\Admin\NationalEvent\NationalEventInscriptionsAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'label' => 'Inscrits', 'group' => 'Meetings'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'controller' => App\Controller\Admin\AdminNationalEventInscriptionCRUDController::class, 'label' => 'Inscrits', 'group' => 'Meetings'])
     ;
     $services
         ->set('app.admin.national_event_inscription_payments', App\Admin\NationalEvent\PaymentAdmin::class)

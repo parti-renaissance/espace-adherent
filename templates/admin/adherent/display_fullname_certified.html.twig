@@ -14,9 +14,11 @@
         <span style="display: flex;align-items: center;gap: 5px;">
             {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
                 <a href="{{ path('admin_app_adherent_edit', {id: object.id}) }}" class="sonata-link-identifier">
+                    {{ object.gender ? object.gender|civility_alias }}
                     {{ object.fullName }}
                 </a>
             {% else %}
+                {{ object.gender ? object.gender|civility_alias }}
                 {{ object.fullName }}
             {% endif %}
 
@@ -25,6 +27,7 @@
             {% endif %}
         </span>
 
+        <span>{{ object.publicId }}</span>
         <span>{{ object.emailAddress }}</span>
 
         {% if object.phone %}

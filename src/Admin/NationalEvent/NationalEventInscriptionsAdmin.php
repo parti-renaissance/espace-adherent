@@ -38,7 +38,11 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
+use Sonata\Form\Type\DateRangePickerType;
+use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -60,7 +64,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
     public function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept(['list', 'edit', 'export']);
+        $collection
+            ->clearExcept(['list', 'edit', 'export'])
+            ->add('sendTicket', $this->getRouterIdParameter().'/send-ticket')
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -101,7 +108,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ])
             ->add('event', null, ['label' => 'Event', 'show_filter' => true])
             ->add('ticketUuid', null, ['label' => 'Uuid billet'])
-            ->add('firstTicketScannedAt', NullFilter::class, ['label' => 'Présent', 'inverse' => true, 'show_filter' => true])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -123,6 +129,18 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ])
             ->add('volunteer', BooleanFilter::class, ['label' => 'Souhaite être bénévole'])
             ->add('accessibility', NullFilter::class, ['label' => 'Handicap', 'inverse' => true])
+            ->add('ticketSentAt', DateTimeRangeFilter::class, [
+                'label' => 'Billets envoyés le',
+                'field_type' => DateTimeRangePickerType::class,
+            ])
+            ->add('firstTicketScannedAt', DateRangeFilter::class, [
+                'label' => 'Date de premier scan',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastTicketScannedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernier scan',
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('visitDay', ChoiceFilter::class, [
                 'label' => 'Jour de présence',
                 'show_filter' => true,
@@ -208,7 +226,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'virtual_field' => true,
             ])
             ->add('adherent.tags', null, ['label' => 'Labels', 'template' => 'admin/national_event/list_adherent_tags.html.twig'])
-            ->add('postalCode', null, ['label' => 'Code postal'])
+            ->add('subscriptionStatus', null, [
+                'label' => 'Abonnement',
+                'virtual_field' => true,
+                'template' => 'admin/national_event/list_subscription_status.html.twig',
+            ])
             ->add('details', null, [
                 'label' => 'Détails',
                 'virtual_field' => true,
@@ -216,15 +238,25 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'header_style' => 'min-width: 300px;',
             ])
             ->add('status', 'trans', ['label' => 'Statut', 'header_style' => 'min-width: 160px;'])
-            ->add('amount', null, ['label' => 'Montant', 'template' => 'admin/national_event/list_amount.html.twig'])
-            ->add('paymentStatus', 'enum', ['label' => 'Statut du paiement', 'use_value' => true, 'enum_translation_domain' => 'messages', 'header_style' => 'min-width: 160px;'])
-            ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le'])
+            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
+                'edit' => [],
+                'inscription_page' => ['template' => 'admin/national_event/list_action_inscription_page.html.twig'],
+                'send_ticket' => ['template' => 'admin/national_event/list_action_send_ticket.html.twig'],
+            ]])
+            ->add('payment', null, [
+                'label' => 'Paiement',
+                'virtual_field' => true,
+                'template' => 'admin/national_event/list_payment.html.twig',
+                'header_style' => 'min-width: 180px;',
+            ])
+            ->add('postalCode', null, ['label' => 'Code postal'])
+            ->add('dates', null, [
+                'label' => 'Dates',
+                'virtual_field' => true,
+                'template' => 'admin/national_event/list_dates.html.twig',
+                'header_style' => 'min-width: 250px;',
+            ])
             ->add('referrerCode', null, ['label' => 'Parrain', 'template' => 'admin/national_event/list_referrer_code.html.twig'])
-            ->add('createdAt', null, ['label' => 'Inscrit le', 'header_style' => 'min-width: 140px;'])
-            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
-            ->add('uuid', null, ['label' => 'Uuid', 'header_style' => 'min-width: 270px;'])
-            ->add('publicId', null, ['label' => 'Public ID', 'header_style' => 'min-width: 90px;'])
-            ->add('updatedAt', null, ['label' => 'Modifiée le', 'header_style' => 'min-width: 140px;'])
         ;
     }
 
@@ -272,7 +304,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('event', null, ['label' => 'Event', 'disabled' => true])
                     ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                     ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
-                    ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
+                    ->add('addressEmail', null, ['label' => 'E-mail'])
                     ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
                     ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
                     ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])

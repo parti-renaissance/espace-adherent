@@ -1,0 +1,14 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% if object.amount > 0 %}
+        <div>
+            <a href="{{ path('admin_app_nationalevent_payment_list', {filter: {inscription: {value: object.id}}}) }}">
+                {{ object.amountInEuro }} € ({{ object.countPayments() }})
+            </a>
+        </div>
+    {% endif %}
+    <div>
+        {{ object.paymentStatus|trans }}
+    </div>
+{% endblock %}

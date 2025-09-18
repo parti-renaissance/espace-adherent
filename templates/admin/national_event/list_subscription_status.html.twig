@@ -1,0 +1,7 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% if object.adherent %}
+        {{ include('admin/adherent/partial/_subscription_status.html.twig', {object: object.adherent}) }}
+    {% endif %}
+{% endblock %}

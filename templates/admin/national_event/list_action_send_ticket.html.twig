@@ -1,0 +1,5 @@
+{% if object.isApproved %}
+    <a href="{{ admin.generateObjectUrl('sendTicket', object) }}" class="btn btn-sm btn-success" target="_blank" title="Envoyer le billet">
+        <i class="fa fa-ticket"></i> Envoyer le billet
+    </a>
+{% endif %}
