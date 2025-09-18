@@ -289,7 +289,7 @@
                     {% endif %}
                 </div>
 
-                {% if inscription.allowEditInscription() %}
+                {% if inscription.allowEditInscription() or (event.startDate > date('now') and not inscription.amount) %}
                     <twig:ReButton stroke tag="a" href="{{ path('app_national_event_edit_transport', {slug: event.getSlug(), uuid: inscription.getUuid().toString()}) }}">Changer de forfait</twig:ReButton>
                 {% endif %}
             </twig:Atoms:ReCard>
