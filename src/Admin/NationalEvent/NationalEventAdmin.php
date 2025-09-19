@@ -10,6 +10,7 @@ use App\NationalEvent\NationalEventTypeEnum;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -24,6 +25,16 @@ class NationalEventAdmin extends AbstractAdmin
             ->add('sendPush', $this->getRouterIdParameter().'/send-push')
             ->add('generateTicketQRCodes', $this->getRouterIdParameter().'/generate-ticket-qrcodes')
         ;
+    }
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'inscriptions' => AdminPermissionMap::PERMISSION_EDIT,
+            'sendTickets' => AdminPermissionMap::PERMISSION_EDIT,
+            'sendPush' => AdminPermissionMap::PERMISSION_EDIT,
+            'generateTicketQRCodes' => AdminPermissionMap::PERMISSION_EDIT,
+        ];
     }
 
     protected function configureListFields(ListMapper $list): void

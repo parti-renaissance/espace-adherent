@@ -34,6 +34,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -68,6 +69,13 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ->clearExcept(['list', 'edit', 'export'])
             ->add('sendTicket', $this->getRouterIdParameter().'/send-ticket')
         ;
+    }
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'sendTicket' => AdminPermissionMap::PERMISSION_EDIT,
+        ];
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -132,14 +140,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ->add('ticketSentAt', DateTimeRangeFilter::class, [
                 'label' => 'Billets envoyés le',
                 'field_type' => DateTimeRangePickerType::class,
-            ])
-            ->add('firstTicketScannedAt', DateRangeFilter::class, [
-                'label' => 'Date de premier scan',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('lastTicketScannedAt', DateRangeFilter::class, [
-                'label' => 'Date de dernier scan',
-                'field_type' => DateRangePickerType::class,
             ])
             ->add('visitDay', ChoiceFilter::class, [
                 'label' => 'Jour de présence',
@@ -214,6 +214,19 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 ],
             ])
         ;
+
+        if ($this->isGranted('ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_INSCRIPTIONS_ADVANCED')) {
+            $filter
+                ->add('firstTicketScannedAt', DateRangeFilter::class, [
+                    'label' => 'Date de premier scan',
+                    'field_type' => DateRangePickerType::class,
+                ])
+                ->add('lastTicketScannedAt', DateRangeFilter::class, [
+                    'label' => 'Date de dernier scan',
+                    'field_type' => DateRangePickerType::class,
+                ])
+            ;
+        }
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -238,6 +251,12 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'header_style' => 'min-width: 300px;',
             ])
             ->add('status', 'trans', ['label' => 'Statut', 'header_style' => 'min-width: 160px;'])
+            ->add('details_access', null, [
+                'label' => 'Accès',
+                'virtual_field' => true,
+                'template' => 'admin/national_event/list_details_access.html.twig',
+                'header_style' => 'min-width: 200px;',
+            ])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
                 'edit' => [],
                 'inscription_page' => ['template' => 'admin/national_event/list_action_inscription_page.html.twig'],
@@ -465,7 +484,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Date de confirmation' => $inscription->confirmedAt?->format('d/m/Y H:i:s'),
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
-                'Billet champ libre' => $inscription->ticketCustomDetail,
+                'Billet champ libre / Porte' => $inscription->ticketCustomDetail,
+                'Label bracelet' => $inscription->ticketBracelet,
+                'Couleur bracelet' => $inscription->ticketBraceletColor,
                 'Billet scanné le' => $inscription->firstTicketScannedAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
@@ -477,6 +498,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Jour de visite' => $inscription->visitDay,
                 'Choix de transport' => $inscription->transport,
                 'Choix d\'hébergement' => $inscription->accommodation,
+                'Transport info' => $inscription->transportDetail,
+                'Hébergement info' => $inscription->accommodationDetail,
                 'Numéro du partenaire' => $inscription->roommateIdentifier,
                 'Bénéficie de -50%' => true === $inscription->withDiscount ? 'Oui' : 'Non',
                 'UTM source' => $inscription->utmSource,
