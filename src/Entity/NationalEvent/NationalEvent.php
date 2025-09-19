@@ -111,6 +111,15 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $mailchimpSync = false;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $defaultAccess = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $defaultBracelet = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $defaultBraceletColor = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

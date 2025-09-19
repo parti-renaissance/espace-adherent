@@ -5,6 +5,7 @@ namespace App\Admin\NationalEvent;
 use App\Admin\AbstractAdmin;
 use App\Form\Admin\UploadableFileType;
 use App\Form\CkEditorType;
+use App\Form\ColorType;
 use App\Form\JsonType;
 use App\NationalEvent\NationalEventTypeEnum;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -114,6 +115,11 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
                     ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
                     ->add('textTicketEmail', CkEditorType::class, ['label' => 'Détail', 'required' => true])
+                ->end()
+                ->with('Options pour les inscriptions', ['class' => 'col-md-6', 'description' => 'Options appliquées par défaut aux nouvelles inscriptions.'])
+                    ->add('defaultAccess', null, ['label' => 'Porte par défaut', 'required' => false])
+                    ->add('defaultBracelet', null, ['label' => 'Bracelet par défaut', 'required' => false])
+                    ->add('defaultBraceletColor', ColorType::class, ['label' => 'Couleur bracelet par défaut', 'required' => false])
                 ->end()
             ->end()
             ->tab('Configuration Campus  🛠️')
