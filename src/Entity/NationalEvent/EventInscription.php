@@ -297,6 +297,16 @@ class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, 
         $this->payments = new ArrayCollection();
         $this->zones = new ArrayCollection();
         $this->scans = new ArrayCollection();
+
+        if ($event->defaultAccess) {
+            $this->ticketCustomDetail = $event->defaultAccess;
+        }
+        if ($event->defaultBracelet) {
+            $this->ticketBracelet = $event->defaultBracelet;
+        }
+        if ($event->defaultBraceletColor) {
+            $this->ticketBraceletColor = $event->defaultBraceletColor;
+        }
     }
 
     public function updateFromDuplicate(EventInscription $eventInscription): void
