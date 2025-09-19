@@ -14,6 +14,8 @@ class AdminNationalEventInscriptionCRUDController extends CRUDController
 {
     public function sendTicketAction(Request $request, EventInscription $inscription, MessageBusInterface $messageBus): Response
     {
+        $this->admin->checkAccess('sendTicket', $inscription);
+
         if (!$inscription->isApproved()) {
             $this->addFlash('sonata_flash_error', 'Le statut de l\'inscription doit être "approuvée" pour envoyer un billet.');
 

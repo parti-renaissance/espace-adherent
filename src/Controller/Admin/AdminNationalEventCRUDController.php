@@ -17,6 +17,8 @@ class AdminNationalEventCRUDController extends CRUDController
 {
     public function inscriptionsAction(Request $request, NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository): Response
     {
+        $this->admin->checkAccess('inscriptions', $event);
+
         return $this->renderWithExtraParams('admin/national_event/inscriptions.html.twig', [
             'national_event' => $event,
             'action' => 'inscriptions',

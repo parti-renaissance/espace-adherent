@@ -1,0 +1,15 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <div>
+        <span>Porte :</span> <b>{{ object.ticketCustomDetail ?? '~' }}</b>
+    </div>
+    <div>
+        <span>Bracelet :</span>
+        {% if object.ticketBraceletColor %}
+            <span style="background-color: {{ object.ticketBraceletColor }};padding: 2px 6px;border-radius: 4px;font-weight: bold;">{{ object.ticketBracelet ?? '~' }}</span>
+        {% else %}
+            <b>{{ object.ticketBracelet ?? '~' }}</b>
+        {% endif %}
+    </div>
+{% endblock %}
