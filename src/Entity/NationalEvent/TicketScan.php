@@ -19,14 +19,18 @@ class TicketScan
     #[ORM\ManyToOne(inversedBy: 'scans')]
     public EventInscription $inscription;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $inscriptionStatus = null;
+
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $scannedBy = null;
 
-    public function __construct(Adherent $scannedBy)
+    public function __construct(Adherent $scannedBy, string $inscriptionStatus)
     {
         $this->uuid = Uuid::uuid4();
         $this->scannedBy = $scannedBy;
+        $this->inscriptionStatus = $inscriptionStatus;
         $this->createdAt = new \DateTimeImmutable();
     }
 }
