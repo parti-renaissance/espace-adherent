@@ -141,6 +141,26 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'label' => 'Billets envoyés le',
                 'field_type' => DateTimeRangePickerType::class,
             ])
+            ->add('ticketAvailable', CallbackFilter::class, [
+                'label' => 'Billet envoyé ?',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Oui' => 1,
+                        'Non' => 0,
+                    ],
+                    'multiple' => false,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->getQueryBuilder()->andWhere($alias.'.ticketSentAt '.($value->getValue() ? 'IS NOT NULL' : 'IS NULL'));
+
+                    return true;
+                },
+            ])
             ->add('visitDay', ChoiceFilter::class, [
                 'label' => 'Jour de présence',
                 'show_filter' => true,
