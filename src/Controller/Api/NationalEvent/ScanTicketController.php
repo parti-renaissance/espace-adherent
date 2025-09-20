@@ -28,15 +28,15 @@ class ScanTicketController extends AbstractController
             ]);
         }
 
+        $scanHistory = $inscription->getTicketScans();
+        $lastScanDate = $inscription->lastTicketScannedAt;
+
+        if (!$inscription->lastTicketScannedAt || $inscription->lastTicketScannedAt < new \DateTimeImmutable('-1 minute')) {
+            $inscription->addTicketScan(new TicketScan($adherent, $inscription->status));
+            $entityManager->flush();
+        }
+
         if ($inscription->isApproved()) {
-            $scanHistory = $inscription->getTicketScans();
-            $lastScanDate = $inscription->lastTicketScannedAt;
-
-            if (!$inscription->lastTicketScannedAt || $inscription->lastTicketScannedAt < new \DateTimeImmutable('-1 minute')) {
-                $inscription->addTicketScan(new TicketScan($adherent));
-                $entityManager->flush();
-            }
-
             return $this->json([
                 'status' => [
                     'code' => 'valid',

@@ -24,6 +24,7 @@ use App\NationalEvent\PaymentStatusEnum;
 use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\Geo\ZoneRepository;
+use App\Repository\NationalEvent\NationalEventRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
@@ -114,7 +115,18 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     return true;
                 },
             ])
-            ->add('event', null, ['label' => 'Event', 'show_filter' => true])
+            ->add('event', null, [
+                'label' => 'Event',
+                'show_filter' => true,
+                'field_options' => [
+                    'query_builder' => function (NationalEventRepository $er): QueryBuilder {
+                        return $er
+                            ->createQueryBuilder('e')
+                            ->orderBy('e.startDate', 'DESC')
+                        ;
+                    },
+                ],
+            ])
             ->add('ticketUuid', null, ['label' => 'Uuid billet'])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',

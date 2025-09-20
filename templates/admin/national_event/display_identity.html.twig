@@ -1,4 +1,4 @@
-{% if object is instanceof('App\\Entity\\NationalEvent\\Payment') %}
+{% if object is instanceof('App\\Entity\\NationalEvent\\Payment') or object is instanceof('App\\Entity\\NationalEvent\\TicketScan') %}
     {% set object = object.inscription %}
 {% endif %}
 

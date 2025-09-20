@@ -4,6 +4,8 @@ namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
 use App\NationalEvent\PaymentStatusEnum;
+use App\Repository\NationalEvent\NationalEventRepository;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -30,7 +32,18 @@ class PaymentAdmin extends AbstractAdmin
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => ['property' => ['search'], 'minimum_input_length' => 1],
             ])
-            ->add('inscription.event', null, ['label' => 'Event', 'show_filter' => true])
+            ->add('inscription.event', null, [
+                'label' => 'Event',
+                'show_filter' => true,
+                'field_options' => [
+                    'query_builder' => function (NationalEventRepository $er): QueryBuilder {
+                        return $er
+                            ->createQueryBuilder('e')
+                            ->orderBy('e.startDate', 'DESC')
+                        ;
+                    },
+                ],
+            ])
             ->add('transport', null, ['label' => 'Forfait', 'show_filter' => true])
             ->add('accommodation', null, ['label' => 'Hébergement', 'show_filter' => true])
             ->add('toRefund', null, ['label' => 'À rembourser', 'show_filter' => true])

@@ -110,6 +110,10 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\Payment::class, 'label' => 'Paiements', 'group' => 'Meetings'])
     ;
     $services
+        ->set('app.admin.national_event_scan', App\Admin\NationalEvent\NationalEventScanAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\TicketScan::class, 'label' => 'Scans', 'group' => 'Meetings'])
+    ;
+    $services
         ->set('app.admin.committee', App\Admin\CommitteeAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Committee::class, 'controller' => App\Controller\Admin\AdminCommitteeCRUDController::class, 'label' => 'Comités', 'group' => 'Territoires'])
         ->call('setTemplate', ['show', 'admin/committee/show.html.twig'])
