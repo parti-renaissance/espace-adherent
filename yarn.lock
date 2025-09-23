@@ -2123,11 +2123,11 @@ __metadata:
   linkType: hard
 
 "@tiptap/core@npm:^2.11.5, @tiptap/core@npm:^2.26.1":
-  version: 2.26.1
-  resolution: "@tiptap/core@npm:2.26.1"
+  version: 2.26.2
+  resolution: "@tiptap/core@npm:2.26.2"
   peerDependencies:
     "@tiptap/pm": ^2.7.0
-  checksum: 10c0/2646dbcea9a07d46df39a19f05e5e2639e2673cb4cfde81ceac86b18fcc851aae14e0ee021ba4d5fef4d3e7b01ab69a2cec58530f77e7f8428bec4690f99f255
+  checksum: 10c0/d81afd7d569437136ec77244e1c868942fcd4d98cd2161eb202eb5a01a5b0f0d7168a3e7b6aebfc76a06ba76cd0f82905ea8ded10f2b195b675f8ff2a3f0880a
   languageName: node
   linkType: hard
 
