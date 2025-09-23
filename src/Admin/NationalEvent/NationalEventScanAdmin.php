@@ -3,6 +3,7 @@
 namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
+use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +13,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class NationalEventScanAdmin extends AbstractAdmin
@@ -46,7 +49,19 @@ class NationalEventScanAdmin extends AbstractAdmin
                 'label' => 'Inscrit',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
-                'field_options' => ['property' => ['search'], 'minimum_input_length' => 1],
+                'field_options' => [
+                    'property' => ['search'],
+                    'minimum_input_length' => 1,
+                    'to_string_callback' => function (EventInscription $inscription): string {
+                        return \sprintf(
+                            '%s %s (%s, %s)',
+                            $inscription->firstName,
+                            $inscription->lastName,
+                            $inscription->event->getName(),
+                            $this->getTranslator()->trans($inscription->status)
+                        );
+                    },
+                ],
             ])
             ->add('inscription.event', null, [
                 'label' => 'Event',
@@ -68,6 +83,11 @@ class NationalEventScanAdmin extends AbstractAdmin
                     'multiple' => true,
                     'choices' => array_combine(InscriptionStatusEnum::STATUSES, InscriptionStatusEnum::STATUSES),
                 ],
+            ])
+            ->add('createdAt', DateTimeRangeFilter::class, [
+                'label' => 'Date de scan',
+                'show_filter' => true,
+                'field_type' => DateTimeRangePickerType::class,
             ])
         ;
     }
