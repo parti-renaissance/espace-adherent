@@ -3598,9 +3598,9 @@ __metadata:
   linkType: hard
 
 "copy-text-to-clipboard@npm:^3.2.0":
-  version: 3.2.1
-  resolution: "copy-text-to-clipboard@npm:3.2.1"
-  checksum: 10c0/411f47a59111f7888526a3396124f2ebcfb3e51c5e0f996dd8c0da7d5ea5eadef027d8c3f82ac7caa5e54a0852e0d2b8cfb5735bdda9782d1ddfdba770ce5b5a
+  version: 3.2.2
+  resolution: "copy-text-to-clipboard@npm:3.2.2"
+  checksum: 10c0/451796734a380f7da7b0af27c4d94e449719d3a2f2170e99c7e46eeee54cf3c4b4fdeabc185f6d6e8cbdf932e350831d05e8387c4bae8dcedb7fb961c600ddd4
   languageName: node
   linkType: hard
 
