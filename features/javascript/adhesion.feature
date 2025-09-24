@@ -55,20 +55,11 @@ Feature:
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "50.00 EUR"
-        When I fill in the following:
-            | CVVX         | 123              |
-            | NUMERO_CARTE | 4000000000002503 |
-        And I select "12" from "MOIS_VALIDITE"
-        And I select "35" from "AN_VALIDITE"
-        And I press "Valider"
-        And I wait 3 seconds
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
-        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I click the ".textCenter:last-child a" selector
-        And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "adherent@renaissance.code"
+        And I am on payment status page for the last donation of "adherent@renaissance.code"
         Then I should be on "/adhesion/confirmation-email" wait otherwise
         And I should see "Votre paiement a bien été validé !"
+        And User "adherent@renaissance.code" should have tag "adherent:a_jour_2025:primo"
         And I should see "Confirmer votre adresse email"
         And I should see "adherent@renaissance.code"
         And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "adherent@renaissance.code" with payload:
@@ -434,19 +425,10 @@ Feature:
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "60.00 EUR"
-        When I fill in the following:
-            | CVVX         | 123              |
-            | NUMERO_CARTE | 4000000000002503 |
-        And I select "12" from "MOIS_VALIDITE"
-        And I select "35" from "AN_VALIDITE"
-        And I press "Valider"
-        And I wait 3 seconds
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
-        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I click the ".textCenter:last-child a" selector
-        And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
+        And I am on payment status page for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
+        And User "renaissance-user-4@en-marche-dev.fr" should have tag "adherent:a_jour_2025:recotisation"
         And I should have 1 email "RenaissanceReAdhesionConfirmationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
             """
             {
@@ -547,20 +529,11 @@ Feature:
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "50.00 EUR"
-        When I fill in the following:
-            | CVVX         | 123              |
-            | NUMERO_CARTE | 4000000000002503 |
-        And I select "12" from "MOIS_VALIDITE"
-        And I select "35" from "AN_VALIDITE"
-        And I press "Valider"
-        And I wait 3 seconds
-        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction3dpbxc_ip.cgi" wait otherwise
-        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I click the ".textCenter:last-child a" selector
-        And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
+        And I am on payment status page for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/carte-adherent" wait otherwise
         And I should see "Votre paiement a bien été validé !"
+        And User "carl999@example.fr" should have tag "adherent:a_jour_2025:primo"
         And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "carl999@example.fr" with payload:
             """
             {

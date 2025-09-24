@@ -8,10 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractWebTestCase extends WebTestCase
 {
-    /** @var KernelBrowser */
-    protected $client;
-    /** @var EntityManagerInterface */
-    protected $manager;
+    protected ?KernelBrowser $client;
+    protected ?EntityManagerInterface $manager;
 
     protected function setUp(): void
     {
