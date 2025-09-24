@@ -54,6 +54,18 @@ class AdherentContext extends RawMinkContext
         }
     }
 
+    /**
+     * @Given User :email should have tag :tag
+     */
+    public function userShouldHaveTag(string $email, string $tag): void
+    {
+        $adherent = $this->findAdherent($email);
+
+        if (false === $adherent->hasTag($tag)) {
+            $this->raiseException(\sprintf('User %s does not have tag %s (tags: %s)', $email, $tag, implode(', ', $adherent->tags)));
+        }
+    }
+
     private function findAdherent(string $email): Adherent
     {
         if (!$adherent = $this->adherentRepository->findOneByEmail($email)) {

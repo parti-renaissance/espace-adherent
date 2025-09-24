@@ -2,17 +2,22 @@
 
 namespace Tests\App\Behat\Context;
 
+use App\Donation\Command\ReceivePayboxIpnResponseCommand;
 use App\Entity\Donation;
 use App\Repository\DonationRepository;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\Test\Payment\PayboxProvider;
 
 class DonationContext extends RawMinkContext
 {
     private const DEFAULT_SESSION_NAME = 'default';
+
+    public function __construct(private readonly MessageBusInterface $bus)
+    {
+    }
 
     /**
      * @When I simulate IPN call with :status code for the last donation of :email
@@ -30,21 +35,30 @@ class DonationContext extends RawMinkContext
         $payboxProvider = $this->getService(PayboxProvider::class);
         $data = $payboxProvider->prepareCallbackParameters($donation->getUuid()->toString(), $status);
 
-        HttpClient::create()->request('POST', 'http://'.$this->getParameter('webhook_renaissance_host').'/paybox/payment-ipn/'.time(), [
-            'body' => $data,
-        ]);
+        $this->bus->dispatch(new ReceivePayboxIpnResponseCommand($data));
 
         $this->getMink()->setDefaultSessionName($sessionName);
+    }
+
+    /**
+     * @When I am on payment status page for the last donation of :email
+     */
+    public function IAmOnPaymentStatusPage(string $email): void
+    {
+        $sessionName = $this->getMink()->getDefaultSessionName();
+        $this->getMink()->setDefaultSessionName(self::DEFAULT_SESSION_NAME);
+
+        if (!$donation = $this->getDonation($email)) {
+            throw new \Exception(\sprintf('Donation not found for email %s', $email));
+        }
+
+        $this->getMink()->setDefaultSessionName($sessionName);
+        $this->visitPath('/paiement?result='.$donation->getTransactions()->first()->getPayboxResultCode().'&uuid='.$donation->getUuid()->toString());
     }
 
     private function getService(string $name)
     {
         return $this->getContainer()->get($name);
-    }
-
-    private function getParameter(string $name)
-    {
-        return $this->getContainer()->getParameter($name);
     }
 
     private function getDonation(string $email): ?Donation
