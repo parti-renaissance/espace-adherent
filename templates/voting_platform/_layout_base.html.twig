@@ -15,13 +15,20 @@
     </div>
 {% endblock %}
 
-{% block election_sub_title '' %}
 {% block vote_step_pool_title '' %}
 
 {% block voting_platform_result_tab_votes_list_title 'Bulletins dépouillés' %}
 
 {% block voting_platform_result_tab_pool_title %}
     Résultats {{ get_election_pool_title_key(pool_result.electionPool)|trans }}
+{% endblock %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_sas_election_index', {uuid: designation.uuid}) }}" class="btn btn--blue">
+            Retour
+        </a>
+    </div>
 {% endblock %}
 
 {% block header %}

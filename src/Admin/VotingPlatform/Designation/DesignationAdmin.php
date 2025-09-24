@@ -45,6 +45,34 @@ class DesignationAdmin extends AbstractAdmin
         $form
             ->tab('Général 📜')
                 ->with('Général 📜', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
+                    ->add('type', DesignationTypeType::class, [
+                        'label' => 'Type',
+                        'disabled' => !$this->isCreation(),
+                        'help_html' => true,
+                        'choice_attr' => function ($choice, $label, $value) {
+                            return [
+                                'data-help' => match ($value) {
+                                    DesignationTypeEnum::LOCAL_ELECTION => DesignationTypeEnum::TITLES[DesignationTypeEnum::LOCAL_ELECTION].', attachée à une zone (dpt), nécessite la <a href="'.$this->getRouteGenerator()->generate('admin_app_localelection_candidaciesgroup_list').'" target="_blank">création des listes de candidatures</a>. Seulement les adhérents du département dont le compte a été créé avant la date de début du vote (ou avant la date d\'initialisation de l\'élection si elle est renseignée) pourront voter.',
+                                    DesignationTypeEnum::TERRITORIAL_ANIMATOR => DesignationTypeEnum::TITLES[DesignationTypeEnum::TERRITORIAL_ANIMATOR].', attachée à une zone (dpt), nécessite la <a href="'.$this->getRouteGenerator()->generate('admin_app_votingplatform_designation_candidacypool_candidacypool_list').'" target="_blank">création des listes de candidatures</a>. Seulement les adhérents du département à jour de cotisation et dont la date de la dernière cotisation est antérieure à la date limite pourront voter.',
+                                    default => '',
+                                },
+                            ];
+                        },
+                        'help' => '<div id="type-help" class="help-block text-muted"></div>
+                            <script>
+                                $(function() {
+                                    var $select = $("#'.$this->getUniqid().'_type");
+                                    var $help = $("#type-help");
+
+                                    function updateHelp() {
+                                        $help.html($select.find("option:selected").data("help") || "");
+                                    }
+
+                                    $select.on("change", updateHelp);
+                                    updateHelp();
+                                });
+                            </script>',
+                    ])
                     ->add('label', null, [
                         'label' => 'Label',
                         'help' => 'Visible uniquement sur l\'interface d\'administration.',
@@ -53,10 +81,6 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => 'Titre',
                         'required' => false,
                         'help' => 'Optionnel, un titre par défaut en fonction du type de la designation sera affiché',
-                    ])
-                    ->add('type', DesignationTypeType::class, [
-                        'label' => 'Type d’élection',
-                        'disabled' => !$this->isCreation(),
                     ])
                     ->add('denomination', ChoiceType::class, [
                         'label' => 'Dénomination',
@@ -82,13 +106,22 @@ class DesignationAdmin extends AbstractAdmin
                         ],
                         'label' => 'Zones locales',
                         'multiple' => true,
-                        'help' => 'Obligatoire pour les élections départementales',
+                        'help' => 'Obligatoire pour l\'élection départementale et animateur territorial',
                         'btn_add' => false,
                     ])
                     ->add('targetYear', ChoiceType::class, [
                         'required' => false,
                         'label' => 'Collège électoral : Adhérent à jour à partir de :',
                         'choices' => array_combine($years = range(2022, date('Y')), $years),
+                        'help' => 'Utilisé pour les élections de types : "Consultation nationale", "Vote", "Animateur territorial"',
+                    ])
+                    ->add('membershipDeadline', DateTimeType::class, [
+                        'label' => 'Date limite de cotisation',
+                        'required' => false,
+                        'widget' => 'single_text',
+                        'with_seconds' => false,
+                        'attr' => ['step' => 30],
+                        'help' => 'Utilisé pour les élections de types : "Animateur territorial"',
                     ])
                     ->add('accountCreationDeadline', DateTimeType::class, [
                         'label' => 'Date limite de création de compte',

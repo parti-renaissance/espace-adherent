@@ -89,6 +89,8 @@ class ConfigureCommand extends Command
                 $this->configurePoll($designation);
             } elseif ($designation->isLocalElectionType()) {
                 $this->configureLocalElection($designation);
+            } elseif ($designation->isTerritorialAnimatorType()) {
+                $this->configureTerritorialAnimator($designation);
             } elseif ($designation->isLocalPollType()) {
                 $this->configureLocalPoll($designation);
             } elseif ($designation->isConsultationType() || $designation->isVoteType()) {
@@ -274,7 +276,7 @@ class ConfigureCommand extends Command
 
         $this->entityManager->persist($this->createVoterList(
             $election,
-            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
+            $this->adherentRepository->findAllAdherentsForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
         ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
@@ -316,7 +318,7 @@ class ConfigureCommand extends Command
 
         $this->entityManager->persist($this->createVoterList(
             $election,
-            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
+            $this->adherentRepository->findAllAdherentsForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
         ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
@@ -400,6 +402,55 @@ class ConfigureCommand extends Command
         $adherents = $this->adherentRepository->findAllWithActifLocalMandates();
 
         $this->entityManager->persist($this->createVoterList($election, $adherents));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        if ($election->isVotePeriodStarted()) {
+            $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        }
+    }
+
+    private function configureTerritorialAnimator(Designation $designation): void
+    {
+        if (!\count($designation->getCandidacyPools())) {
+            return;
+        }
+
+        if ($election = $this->electionRepository->findOneByDesignation($designation)) {
+            if (
+                !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
+                && $election->isVotePeriodStarted()
+            ) {
+                $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+            }
+
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+
+        foreach ($designation->getCandidacyPools() as $candidacyPool) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool(''));
+            $election->addElectionPool($pool);
+
+            foreach ($candidacyPool->getCandidaciesGroups() as $candidaciesGroup) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+
+                foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                    $group->addCandidate(new Candidate($candidacy->getFirstName(), $candidacy->getLastName(), $candidacy->getGender(), null, null, $candidacy->isSubstitute));
+                }
+            }
+        }
+
+        $this->entityManager->persist($this->createVoterList(
+            $election,
+            $this->adherentRepository->findAllAdherentsForLocalElection(
+                $designation->getZones()->toArray(),
+                null,
+                $designation->membershipDeadline,
+                $designation->targetYear
+            ),
+        ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 

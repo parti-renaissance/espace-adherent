@@ -39,7 +39,9 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
-        $designation = $subject->getDesignation();
+        if (!$designation = $subject->getDesignation()) {
+            return false;
+        }
 
         if ($designation->isCongressCNType()) {
             if (self::PERMISSION_RESULTS === $attribute) {
@@ -68,7 +70,11 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             return $adherent->hasActiveMembership();
         }
 
-        if ($designation->isConsultationType() || $designation->isVoteType()) {
+        if (
+            $designation->isConsultationType()
+            || $designation->isVoteType()
+            || $designation->isTerritorialAnimatorType()
+        ) {
             if (
                 ($designation->accountCreationDeadline && $adherent->getRegisteredAt() > $designation->accountCreationDeadline)
                 || (
@@ -77,6 +83,10 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
                     && $adherent->getRegisteredAt() > $designation->getElectionCreationDate()
                 )
             ) {
+                return false;
+            }
+
+            if ($designation->isTerritorialAnimatorType() && $designation->membershipDeadline && $adherent->getLastMembershipDonation() > $designation->membershipDeadline) {
                 return false;
             }
 
@@ -116,7 +126,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 
         if (!$adherentIsInVotersList) {
             // Allow to vote adherent who are not on the list for CONSULTATION election
-            if ($designation->isConsultationType() || $designation->isVoteType()) {
+            if ($designation->isConsultationType() || $designation->isVoteType() || $designation->isTerritorialAnimatorType()) {
                 return true;
             }
 

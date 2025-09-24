@@ -7,10 +7,6 @@
     {{ cms_block(pool.code)|markdown_to_html }}
 {% endblock %}
 
-{% block election_sub_title %}
-    <h2>Bienvenue sur la plateforme de vote électronique de Renaissance !</h2>
-{% endblock %}
-
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
         <a href="{{ path('app_sas_election_index', {uuid: designation.getUuid()}) }}" class="btn btn--blue">

@@ -1,0 +1,100 @@
+{% extends 'voting_platform/_layout_base.html.twig' %}
+
+{% set start_button_label = 'J\'accède au vote' %}
+
+{% block voting_platform_subtitle %}
+    {{ designation.getZones()|join(', ') }}<br>
+    {{ parent() }}
+{% endblock %}
+
+{% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
+
+{% block voting_platform_result_tab_pool_title '' %}
+
+{% block voting_platform_result_header %}
+    <div>
+        <h1 class="text-xl font-bold">{{ designation.title }}</h1>
+        <p class="text--muted italic">
+            Du {{ designation.voteStartDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }} au
+            {{ designation.voteEndDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
+        </p>
+        {% if designation.targetYear %}
+            <div class="text--muted">
+                Collège électoral :<br/>
+                <ul>
+                    {% if designation.targetYear %}
+                        <li>- à partir des adhérents à jour {{ designation.targetYear }}</li>
+                    {% endif %}
+
+                    {% if designation.membershipDeadline %}
+                        <li>- cotisés au plus tard le {{ designation.membershipDeadline|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% set pool_result = election_round_result.getElectionPoolResults|first %}
+        {% set voters = pool_result.participated ?? 0 %}
+        {% set participated = pool_result.getBulletinCount() ?? 0 %}
+
+        <div class="inline-block min-w-full py-2 align-middle mt-2">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                <table class="min-w-full divide-y divide-gray-300">
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tr>
+                        <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Taux de participation</td>
+                        <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }} %</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block voting_platform_content %}
+    {% set display_blank_vote = designation.isResultBlankVoteEnabled() %}
+    {% for pool_result in election_round_result.getElectionPoolResults %}
+        <div>
+            <h2 class="text-xl font-bold mb-2">{{ pool_result.getElectionPool().getCode() }}</h2>
+
+            <div class="inline-block min-w-full py-2 align-middle">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">
+                                Bulletin
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                % de bulletins
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for candidate_group_result in pool_result.getCandidateGroupResults() %}
+                            {% set candidate_group = candidate_group_result.getCandidateGroup() %}
+                            {% set candidate = candidate_group.getCandidates|first %}
+                            <tr>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }}</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate(display_blank_vote) }} %</td>
+                            </tr>
+                        {% endfor %}
+                        {% if display_blank_vote %}
+                            <tr>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ vote_blanc_label }}</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBlankRate() }} %</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div>
+        <p class="text--muted">Les résultats sont disponibles en ligne aux adhérents jusqu’à J+{{ designation.getResultDisplayDelay() }} ({{ designation.getResultEndDate()|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}).</p>
+        <p class="text--muted">Une question, un problème ? Contactez-nous par email <a href="mailto:contact@parti-renaissance.fr" class="text-ui_blue-50">contact@parti-renaissance.fr</a>.</p>
+    </div>
+{% endblock %}

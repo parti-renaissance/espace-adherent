@@ -708,33 +708,60 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findForLocalElection(array $electionZones, \DateTime $startDate): array
-    {
+    public function findAllAdherentsForLocalElection(
+        array $electionZones,
+        ?\DateTime $registerDeadline = null,
+        ?\DateTime $membershipDeadline = null,
+        ?int $membershipFromYear = null,
+    ): array {
         if (!$electionZones) {
             return [];
         }
 
-        $queryBuilder = $this->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
-            ->where('adherent.status = :status AND adherent.activatedAt IS NOT NULL')
-            ->andWhere('adherent.tags like :adherent_tag')
-            ->andWhere('adherent.registeredAt <= :date')
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, emailAddress, firstName, lastName}')
+            ->where('a.status = :status')
+            ->andWhere('a.tags LIKE :adherent_tag')
             ->setParameters([
                 'status' => Adherent::ENABLED,
                 'adherent_tag' => TagEnum::ADHERENT.'%',
-                'date' => $startDate,
             ])
         ;
 
         $this->withGeoZones(
             $electionZones,
             $queryBuilder,
-            'adherent',
+            'a',
             Adherent::class,
             'a2',
             'zones',
             'z2'
         );
+
+        if ($registerDeadline) {
+            $queryBuilder
+                ->andWhere('a.registeredAt <= :date')
+                ->setParameter('date', $registerDeadline)
+            ;
+        }
+
+        if ($membershipDeadline) {
+            $queryBuilder
+                ->andWhere('a.lastMembershipDonation <= :last_membership_donation')
+                ->setParameter('last_membership_donation', $membershipDeadline)
+            ;
+        }
+
+        if ($membershipFromYear) {
+            $condition = new Orx();
+
+            foreach (range($membershipFromYear, date('Y')) as $key => $year) {
+                $condition->add('a.tags LIKE :tag'.$key);
+                $queryBuilder->setParameter('tag'.$key, TagEnum::getAdherentYearTag($year).'%');
+            }
+
+            $queryBuilder->andWhere($condition);
+        }
 
         return $queryBuilder->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->getResult();
     }

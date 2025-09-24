@@ -156,6 +156,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $accountCreationDeadline = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $membershipDeadline = null;
+
     /**
      * @var \DateTime|null
      */
@@ -253,6 +256,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var CandidacyPool[]|Collection
      */
+    #[Assert\Expression('!this.isTerritorialAnimatorType() or this.getCandidacyPools()', message: 'Vous devez ajouter au moins une liste de candidature pour ce type d\'élection.', groups: ['Admin'])]
     #[ORM\OneToMany(mappedBy: 'designation', targetEntity: CandidacyPool::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     private $candidacyPools;
 
@@ -524,7 +528,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
         return
             ($this->isCommitteeTypes() && !empty($this->globalZones))
-            || ($this->isLocalElectionType() && !$this->zones->isEmpty());
+            || ($this->isLocalElectionType() && !$this->zones->isEmpty())
+            || ($this->isTerritorialAnimatorType() && !$this->zones->isEmpty());
     }
 
     public function isOngoing(): bool
@@ -614,6 +619,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return DesignationTypeEnum::LOCAL_ELECTION === $this->type;
     }
 
+    public function isTerritorialAnimatorType(): bool
+    {
+        return DesignationTypeEnum::TERRITORIAL_ANIMATOR === $this->type;
+    }
+
     public function isLocalElectionTypes(): bool
     {
         return \in_array($this->type, [
@@ -621,7 +631,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::LOCAL_ELECTION,
             DesignationTypeEnum::CONSULTATION,
             DesignationTypeEnum::VOTE,
-        ]);
+            DesignationTypeEnum::TERRITORIAL_ANIMATOR,
+        ], true);
     }
 
     public function isLocalPollType(): bool
@@ -793,9 +804,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isCandidacyPeriodEnabled(): bool
     {
-        return
-            !$this->isLocalElectionTypes()
-            && !$this->isCongressCNType();
+        return !$this->isLocalElectionTypes() && !$this->isCongressCNType();
     }
 
     public function getElectionEntityIdentifier(): ?UuidInterface
