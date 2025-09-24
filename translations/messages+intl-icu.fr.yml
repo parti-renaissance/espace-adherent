@@ -1125,6 +1125,7 @@ voting_platform.designation.type_local_poll: Sondage local
 voting_platform.designation.type_consultation: Consultation
 voting_platform.designation.type_vote: Vote
 voting_platform.designation.type_territorial_assembly: Élection du Bureau de l'Assemblée des territoires
+voting_platform.designation.type_territorial_animator: Élection d'un animateur territorial
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer

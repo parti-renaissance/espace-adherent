@@ -21,6 +21,7 @@ final class DesignationTypeEnum extends Enum
     public const POLL = 'poll';
     public const LOCAL_POLL = 'local_poll';
     public const LOCAL_ELECTION = 'local_election';
+    public const TERRITORIAL_ANIMATOR = 'territorial_animator';
     public const TERRITORIAL_ASSEMBLY = 'territorial_assembly';
 
     public const CONSULTATION = 'consultation';
@@ -42,6 +43,7 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_POLL => 'Élection locale',
         self::CONSULTATION => 'Consultation nationale',
         self::TERRITORIAL_ASSEMBLY => 'Élection du Bureau de l’Assemblée des territoires',
+        self::TERRITORIAL_ANIMATOR => 'Élection d’un animateur territorial',
         self::CONGRESS_CN => 'Élection des représentants des adhérents au Conseil National',
     ];
 
@@ -57,6 +59,7 @@ final class DesignationTypeEnum extends Enum
         self::CONSULTATION,
         self::TERRITORIAL_ASSEMBLY,
         self::CONGRESS_CN,
+        self::TERRITORIAL_ANIMATOR,
     ];
 
     public const NATIONAL_TYPES = [
