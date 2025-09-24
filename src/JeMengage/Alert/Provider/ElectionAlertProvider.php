@@ -27,6 +27,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                 DesignationTypeEnum::CONSULTATION,
                 DesignationTypeEnum::VOTE,
                 DesignationTypeEnum::CONGRESS_CN,
+                DesignationTypeEnum::TERRITORIAL_ANIMATOR,
             ],
         );
 
