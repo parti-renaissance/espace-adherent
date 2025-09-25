@@ -1226,7 +1226,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "adherent": 6,
+                "adherent": 7,
                 "sympathizer": 3
             }
             """
@@ -1235,8 +1235,8 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "adherent": 6,
-                "adherent_since": 5,
+                "adherent": 7,
+                "adherent_since": 6,
                 "sympathizer": 3
             }
             """

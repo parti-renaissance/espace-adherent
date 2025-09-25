@@ -19,6 +19,7 @@ use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Entity\VotingPlatform\VotersList;
+use App\Repository\CommitteeMembershipRepository;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ResultCalculator;
@@ -55,8 +56,10 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     private $manager;
     private $voters = [];
 
-    public function __construct(private readonly ResultCalculator $resultCalculator)
-    {
+    public function __construct(
+        private readonly ResultCalculator $resultCalculator,
+        private readonly CommitteeMembershipRepository $committeeMembershipRepository,
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -82,14 +85,13 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election = new Election(
             $this->getReference('designation-2', Designation::class),
             Uuid::fromString(self::ELECTION_UUID2),
-            [$round = new ElectionRound()]
+            [new ElectionRound()]
         );
         $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
-        $votersList = $this->loadVoters($election);
-        $this->loadResults($round, $votersList);
+        $this->loadVoters($election);
 
         // -------------------------------------------
 
@@ -335,6 +337,13 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $list->addVoter($this->voters[$adherent1->getId()] ?? $this->voters[$adherent1->getId()] = new Voter($adherent1));
         $list->addVoter($this->voters[$adherent2->getId()] ?? $this->voters[$adherent2->getId()] = new Voter($adherent2));
         $list->addVoter($this->voters[$adherent3->getId()] ?? $this->voters[$adherent3->getId()] = new Voter($adherent3));
+
+        if ($committee = $election->getElectionEntity()?->getCommittee()) {
+            foreach ($this->committeeMembershipRepository->findCommitteeMemberships($committee) as $member) {
+                $adherent = $member->getAdherent();
+                $list->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
+            }
+        }
 
         for ($i = 1; $i <= 9; ++$i) {
             $list->addVoter(new Voter());

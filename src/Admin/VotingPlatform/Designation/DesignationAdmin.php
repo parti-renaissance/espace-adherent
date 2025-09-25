@@ -100,10 +100,7 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                     ->add('zones', ModelAutocompleteType::class, [
                         'callback' => [$this, 'prepareZoneAutocompleteCallback'],
-                        'property' => [
-                            'name',
-                            'code',
-                        ],
+                        'property' => ['name', 'code'],
                         'label' => 'Zones locales',
                         'multiple' => true,
                         'help' => 'Obligatoire pour l\'élection départementale et animateur territorial',
@@ -121,7 +118,6 @@ class DesignationAdmin extends AbstractAdmin
                         'widget' => 'single_text',
                         'with_seconds' => false,
                         'attr' => ['step' => 30],
-                        'help' => 'Utilisé pour les élections de types : "Animateur territorial"',
                     ])
                     ->add('accountCreationDeadline', DateTimeType::class, [
                         'label' => 'Date limite de création de compte',

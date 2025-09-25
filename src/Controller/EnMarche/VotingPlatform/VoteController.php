@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
 use App\Form\VotingPlatform\VotePoolCollectionType;
+use App\Security\Voter\VotingPlatformAbleToVoteVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +17,10 @@ class VoteController extends AbstractController
         // Get voteCommand from the session
         $voteCommand = $this->storage->getVoteCommand($election);
 
-        if (!$this->processor->canVote($voteCommand)) {
+        if (
+            !$this->processor->canVote($voteCommand)
+            || (!$this->isGranted('ROLE_VOTE_INSPECTOR') && !$this->isGranted(VotingPlatformAbleToVoteVoter::PERMISSION, $election))
+        ) {
             return $this->redirectToRoute('vox_app');
         }
 
