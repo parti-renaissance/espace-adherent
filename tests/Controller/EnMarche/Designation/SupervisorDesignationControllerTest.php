@@ -69,12 +69,12 @@ class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
 
         // Voter box
         $votersBox = $overviewCards->eq(0);
-        $this->assertStringContainsString('12', trim($votersBox->filter('.manager-overview__case--value')->text()));
+        $this->assertStringContainsString('15', trim($votersBox->filter('.manager-overview__case--value')->text()));
         $this->assertStringContainsString('Inscrits', trim($votersBox->filter('.manager-overview__case--title')->text()));
 
         // Vote box
         $votesBox = $overviewCards->eq(1);
-        $this->assertStringContainsString('83.33%', trim($votesBox->filter('.manager-overview__case--value')->text()));
+        $this->assertStringContainsString('80%', trim($votesBox->filter('.manager-overview__case--value')->text()));
         $this->assertStringContainsString('Participants', trim($votesBox->filter('.manager-overview__case--title')->text()));
 
         // Candidate box
@@ -87,7 +87,7 @@ class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertStringContainsString('Liste des inscrits / émargements', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
         $this->assertMatchesRegularExpression('#/liste-emargement/[\d\w-]{36}#', $crawler->getUri());
-        $this->assertCount(12, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(15, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertStringContainsString('Bob Assesseur', $crawler->filter('.datagrid__table-manager tbody')->text());
     }
 
@@ -129,6 +129,6 @@ class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertStringContainsString('Liste des bulletins dépouillés', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
-        $this->assertCount(10, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(12, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 }

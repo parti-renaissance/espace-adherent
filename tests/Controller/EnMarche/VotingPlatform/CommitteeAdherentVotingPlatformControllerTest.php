@@ -17,11 +17,9 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 
     private const ELECTION_URI_1 = '/elections/'.LoadVotingPlatformElectionData::ELECTION_UUID2.'/vote';
 
-    private const VOTER_1 = 'assesseur@en-marche-dev.fr';
-
     public function testAsConnectedUserICannotAccessToVotingPlatformIfIAmNotInVotersList(): void
     {
-        self::authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
@@ -30,7 +28,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 
     public function testAsAdherentVoterICanAccessToVotingPlatform(): void
     {
-        self::authenticateAsAdherent($this->client, self::VOTER_1);
+        $this->authenticateAsAdherent($this->client, 'laura@deloche.com');
 
         $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
@@ -41,7 +39,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
     {
         $this->client->followRedirects();
 
-        self::authenticateAsAdherent($this->client, self::VOTER_1);
+        $this->authenticateAsAdherent($this->client, 'laura@deloche.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 

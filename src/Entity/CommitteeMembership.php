@@ -286,6 +286,11 @@ class CommitteeMembership implements UuidEntityInterface
         return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());
     }
 
+    public function getJoinedAt(): \DateTimeInterface
+    {
+        return $this->joinedAt;
+    }
+
     public function matches(Adherent $adherent, Committee $committee): bool
     {
         return $adherent->equals($this->getAdherent()) && $this->committee->getUuid()->equals($committee->getUuid());

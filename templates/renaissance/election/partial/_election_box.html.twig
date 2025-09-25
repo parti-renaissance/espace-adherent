@@ -36,6 +36,22 @@
                             J'accède au vote
                         </a>
                     </p>
+                {% elseif is_granted('POTENTIALLY_ABLE_TO_VOTE', voting_platform_election) %}
+                    {% if app.user.isEligibleForMembershipPayment() %}
+                        <div class="flex flex-col items-start md:flex-row md:justify-between md:items-center">
+                            {% if app.user.isRenaissanceSympathizer() %}
+                                <span class="mb-5 md:mb-0">Seuls les adhérents peuvent participer</span>
+                                <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="banner-btn">
+                                    Adhérer
+                                </a>
+                            {% elseif not app.user.hasActiveMembership() %}
+                                <span class="mb-5 md:mb-0">Seuls les adhérents à jour {{ 'now'|date('Y') }} peuvent participer</span>
+                                <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="rounded-full px-4 py-2 bg-[#c89533] text-white">
+                                    Me mettre à jour
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 {% else %}
                     {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election.currentRound) %}
 
@@ -62,32 +78,8 @@
                             <p>Vous ne pouvez pas voter lors de cette élection.<br/><br/>Seuls les adhérents au 4 novembre 2024, à jour de cotisation sont en capacité de participer à cette élection.<br/>
                             <a href="https://doc.parti.re/congres/circulaire-congres-et-cn-2024-et-annexes.pdf" target="_blank" class="text-blue-600">Voir la circulaire</a></p>
                         {% endif %}
-                    {% elseif
-                        (designation.isConsultationType() or designation.isVoteType())
-                        and (
-                            (designation.accountCreationDeadline and app.user.getRegisteredAt() > designation.accountCreationDeadline)
-                            or (not designation.accountCreationDeadline and designation.getElectionCreationDate() and app.user.getRegisteredAt() > designation.getElectionCreationDate())
-                        )
-                    %}
-                        <span>Vous ne pouvez pas participer.</span>
-                    {% elseif app.user.isRenaissanceSympathizer() or not app.user.hasActiveMembership() %}
-                        {% if app.user.isEligibleForMembershipPayment() %}
-                            <div class="flex flex-col items-start md:flex-row md:justify-between md:items-center">
-                                {% if app.user.isRenaissanceSympathizer() %}
-                                    <span class="mb-5 md:mb-0">Vous devez adhérer pour participer à la consultation.</span>
-                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="banner-btn">
-                                        J'adhère
-                                    </a>
-                                {% else %}
-                                    <span class="mb-5 md:mb-0">Seuls les adhérents à jour {{ 'now'|date('Y') }} peuvent participer.</span>
-                                    <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}, {utm_source: designation.type, utm_campaign: designation.getUuid().toString()}) }}" class="rounded-full px-4 py-2 bg-[#c89533] text-white">
-                                        Me mettre à jour
-                                    </a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
                     {% else %}
-                        <span>Vous ne pouvez pas participer.</span>
+                        <span>Vous ne faites pas partie du collège électoral, vous ne pouvez donc pas participer.</span>
                     {% endif %}
                 {% endif %}
             {% elseif voting_platform_election.isResultPeriodActive %}

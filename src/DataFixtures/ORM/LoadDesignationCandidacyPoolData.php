@@ -75,6 +75,31 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
             $designation->addCandidacyPool($pool);
         }
 
+        $manager->persist($pool = new CandidacyPool());
+        $pool->label = 'Candidatures pour Animateur territorial';
+
+        $pool->addCandidaciesGroup($group = new CandidaciesGroup());
+        $group->label = 'A';
+        $group->addCandidacy($candidacy = new Candidacy());
+        $candidacy->setFirstName('Albert');
+        $candidacy->setLastName('Dupont');
+        $candidacy->setGender(Genders::MALE);
+
+        $pool->addCandidaciesGroup($group = new CandidaciesGroup());
+        $group->label = 'B';
+        $group->addCandidacy($candidacy = new Candidacy());
+        $candidacy->setFirstName('Marie');
+        $candidacy->setLastName('Dupont');
+        $candidacy->setGender(Genders::FEMALE);
+
+        $pool->addCandidaciesGroup($group = new CandidaciesGroup());
+        $group->label = 'C';
+        $group->addCandidacy($candidacy = new Candidacy());
+        $candidacy->setFirstName('Jack');
+        $candidacy->setLastName('Dupont');
+        $candidacy->setGender(Genders::MALE);
+        $this->getReference('designation-18', Designation::class)->addCandidacyPool($pool);
+
         $manager->flush();
     }
 

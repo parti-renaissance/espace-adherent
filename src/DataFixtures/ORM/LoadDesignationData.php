@@ -21,6 +21,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public const DESIGNATION_15_UUID = '18341df4-1654-432b-90f1-a432cda56d08';
     public const DESIGNATION_16_UUID = 'aa7b270a-51e7-4d74-8140-57a516da3084';
     public const DESIGNATION_17_UUID = '39325008-4baf-4628-a909-96f0e6b66e65';
+    public const DESIGNATION_18_UUID = 'f4e2d1b3-2dcb-4f0c-8a5f-1e3c9a5f6b7e';
 
     public function load(ObjectManager $manager): void
     {
@@ -40,6 +41,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation avec les votes ouverts');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV1Data::COMMITTEE_5_UUID));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
         $designation->setVoteStartDate(new \DateTime('-1 hour'));
@@ -296,6 +298,21 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->alertCtaLabel = 'Voir';
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $this->setReference('designation-17', $designation);
+
+        $manager->persist($designation = new Designation('Élection Animateur territorial', Uuid::fromString(self::DESIGNATION_18_UUID)));
+        $designation->setType(DesignationTypeEnum::TERRITORIAL_ANIMATOR);
+        $designation->setVoteStartDate(new \DateTime('-1 day'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->targetYear = (int) date('Y');
+        $designation->setIsBlankVoteEnabled(false);
+        $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
+        $designation->membershipDeadline = new \DateTime('+1 day');
+        $designation->alertTitle = 'Élection AT en cours !!';
+        $designation->alertBeginAt = new \DateTime('-3 day');
+        $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
+        $designation->alertCtaLabel = 'Voir';
+        $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $this->setReference('designation-18', $designation);
 
         $manager->flush();
     }

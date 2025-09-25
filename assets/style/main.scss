@@ -42,8 +42,8 @@
   }
 
   &.voting-platform {
-    @apply relative bg-gradient-to-b from-re-blue-50 via-blue-50 to-white h-full flex items-center justify-center;
-    min-height: calc(100vh - 72px);
+    min-height: calc(100vh - 152px);
+    @apply relative bg-gradient-to-b from-re-blue-50 via-blue-50 to-white h-full flex items-center justify-center md:min-h-[calc(100vh-120px)];
 
     .voting-platform {
       &__ornaments {

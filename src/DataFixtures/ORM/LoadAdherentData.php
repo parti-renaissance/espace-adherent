@@ -273,6 +273,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
+        $adherent9->tags = [TagEnum::getAdherentYearTag(2022)];
         $adherent9->setSubscriptionTypes($subscriptionTypes);
         $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $adherent9->addCharter(new CommitteeHostCharter());
