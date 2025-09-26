@@ -21,13 +21,13 @@ class TagBuilder
     {
         return array_merge(
             array_map([$this, 'buildForEvent'], $this->nationalEventRepository->findAllSince(new \DateTime('-6 months'))),
-            array_map(fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
+            array_map(static fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
         );
     }
 
-    public function buildForEvent(NationalEvent $event): string
+    public function buildForEvent(NationalEvent $event, bool $isPresent = false): string
     {
-        return TagEnum::getNationalEventTag($event->getSlug());
+        return TagEnum::getNationalEventTag($event->getSlug(), $event->startDate < new \DateTime() && $isPresent);
     }
 
     public function buildLabelFromSlug(string $slug): string
