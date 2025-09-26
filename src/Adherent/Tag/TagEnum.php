@@ -37,6 +37,7 @@ class TagEnum extends Enum
 
     public const NATIONAL_EVENT = 'national_event';
     public const NATIONAL_EVENT_PATTERN = self::NATIONAL_EVENT.':%s';
+    public const NATIONAL_EVENT_PRESENT_PATTERN = self::NATIONAL_EVENT.':present:%s';
 
     public static function getAdherentTags(bool $adherentOnly = false): array
     {
@@ -113,8 +114,8 @@ class TagEnum extends Enum
         return explode(':', $tag)[0];
     }
 
-    public static function getNationalEventTag(string $eventSlug): string
+    public static function getNationalEventTag(string $eventSlug, bool $isPresent): string
     {
-        return \sprintf(self::NATIONAL_EVENT_PATTERN, $eventSlug);
+        return \sprintf($isPresent ? self::NATIONAL_EVENT_PRESENT_PATTERN : self::NATIONAL_EVENT_PATTERN, $eventSlug);
     }
 }

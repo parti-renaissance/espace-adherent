@@ -42,12 +42,20 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     public function findAllForTags(Adherent $adherent): array
     {
         return $this->createQueryBuilder('ei')
+            ->select('PARTIAL ei.{id, uuid, status, createdAt, firstTicketScannedAt}')
             ->addSelect('e')
             ->innerJoin('ei.event', 'e')
             ->where('ei.adherent = :adherent')
             ->andWhere('e.startDate >= :start_date')
+            ->andWhere('ei.status NOT IN (:excluded_statuses)')
+            ->andWhere('(e.endDate <= :now AND ei.firstTicketScannedAt IS NOT NULL) OR e.endDate > :now')
             ->setParameter('adherent', $adherent)
             ->setParameter('start_date', new \DateTime('-6 months'))
+            ->setParameter('excluded_statuses', [
+                InscriptionStatusEnum::CANCELED,
+                InscriptionStatusEnum::DUPLICATE,
+                InscriptionStatusEnum::REFUSED,
+            ])
             ->getQuery()
             ->getResult()
         ;
