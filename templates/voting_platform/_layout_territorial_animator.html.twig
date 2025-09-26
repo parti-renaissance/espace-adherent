@@ -23,11 +23,11 @@
                 Collège électoral :<br/>
                 <ul>
                     {% if designation.targetYear %}
-                        <li>- à partir des adhérents à jour {{ designation.targetYear }}</li>
+                        <li>- À partir des adhérents à jour {{ designation.targetYear }}</li>
                     {% endif %}
 
                     {% if designation.membershipDeadline %}
-                        <li>- cotisés au plus tard le {{ designation.membershipDeadline|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}</li>
+                        <li>- À jour au plus tard le {{ designation.membershipDeadline|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}</li>
                     {% endif %}
                 </ul>
             </div>
@@ -76,7 +76,7 @@
                             {% set candidate_group = candidate_group_result.getCandidateGroup() %}
                             {% set candidate = candidate_group.getCandidates|first %}
                             <tr>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }}</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }} {{ candidate.getLastName() }}</td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate_group_result.getRate(display_blank_vote) }} %</td>
                             </tr>
                         {% endfor %}
