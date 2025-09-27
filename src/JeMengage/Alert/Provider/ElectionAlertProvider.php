@@ -39,14 +39,16 @@ class ElectionAlertProvider implements AlertProviderInterface
 
         foreach ($designations as $designation) {
             if ($designation->alertTitle && $designation->alertDescription) {
+                $url = $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
+                if ($urlParts = parse_url($url)) {
+                    $targetPath = $urlParts['path'].($urlParts['query'] ?? '' ? '?'.$urlParts['query'] : '');
+                }
+
                 $alerts[] = $alert = Alert::createElection(
                     $designation->alertTitle,
                     $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,
-                    $this->loginLinkHandler->createLoginLink(
-                        $adherent,
-                        targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_PATH)
-                    )
+                    $this->loginLinkHandler->createLoginLink($adherent, targetPath: $targetPath ?? null)
                 );
                 $alert->date = $designation->getSortableAlertDate();
             }
