@@ -65,7 +65,13 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             $designation->membershipDeadline
             && (
                 $adherent->getLastMembershipDonation() > $designation->membershipDeadline
-                || new \DateTime() > $designation->membershipDeadline
+                || (
+                    new \DateTime() > $designation->membershipDeadline
+                    && (
+                        !$adherent->getLastMembershipDonation()
+                        || (int) $adherent->getLastMembershipDonation()->format('Y') < (int) $designation->membershipDeadline->format('Y')
+                    )
+                )
             )
         ) {
             return false;
