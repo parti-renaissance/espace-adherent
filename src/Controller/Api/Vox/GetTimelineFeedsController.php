@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\JeMengage;
+namespace App\Controller\Api\Vox;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;

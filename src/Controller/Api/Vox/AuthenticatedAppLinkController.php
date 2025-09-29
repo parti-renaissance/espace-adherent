@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\AppLink;
+namespace App\Controller\Api\Vox;
 
 use App\Controller\Renaissance\Adhesion\AdhesionController;
 use App\Entity\Adherent;

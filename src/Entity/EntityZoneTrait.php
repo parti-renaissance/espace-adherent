@@ -23,7 +23,6 @@ trait EntityZoneTrait
     #[Groups([
         'phoning_campaign_read',
         'phoning_campaign_write',
-        'read_api',
         'managed_users_list',
         'managed_user_read',
         'zone_based_role_read',

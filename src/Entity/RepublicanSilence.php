@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Collection\ZoneCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -24,7 +23,6 @@ class RepublicanSilence
      * @var \DateTime
      */
     #[Assert\NotBlank]
-    #[Groups(['read_api'])]
     #[ORM\Column(type: 'datetime')]
     private $beginAt;
 
@@ -33,7 +31,6 @@ class RepublicanSilence
      */
     #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     #[Assert\NotBlank]
-    #[Groups(['read_api'])]
     #[ORM\Column(type: 'datetime')]
     private $finishAt;
 
