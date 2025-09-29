@@ -353,7 +353,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     /**
      * @var ZoneCollection|Zone[]
      */
-    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'managed_users_list', 'managed_user_read'])]
     #[ORM\JoinTable(name: 'projection_managed_users_zone')]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;

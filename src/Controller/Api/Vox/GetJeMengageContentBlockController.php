@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\JeMengage;
+namespace App\Controller\Api\Vox;
 
 use App\CmsBlock\CmsBlockManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
