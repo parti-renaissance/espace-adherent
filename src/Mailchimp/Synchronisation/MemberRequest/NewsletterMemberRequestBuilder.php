@@ -12,6 +12,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
 {
     private $zipCode;
     private $firstName;
+    private $lastName;
     private $countryName;
     private $type;
     private $siteCode;
@@ -27,6 +28,13 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -64,6 +72,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
         return $this
             ->setEmail($newsletter->getEmail())
             ->setFirstName($newsletter->getFirstName())
+            ->setLastName($newsletter->getLastName())
             ->setZipCode($newsletter->getZipCode())
             ->setCountryName($newsletter->getCountryName())
             ->setType($newsletter->getType())
@@ -82,6 +91,10 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
 
         if ($this->firstName) {
             $mergeFields[MemberRequest::MERGE_FIELD_FIRST_NAME] = $this->firstName;
+        }
+
+        if ($this->lastName) {
+            $mergeFields[MemberRequest::MERGE_FIELD_LAST_NAME] = $this->lastName;
         }
 
         if ($this->countryName) {
@@ -118,6 +131,10 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
         switch ($this->type) {
             case NewsletterTypeEnum::MAIN_SITE:
                 $request->addTag('EM!');
+                break;
+
+            case NewsletterTypeEnum::SITE_NRP:
+                $request->addTag('Nouvelle République');
                 break;
 
             case NewsletterTypeEnum::MAIN_SITE_FROM_EVENT:
