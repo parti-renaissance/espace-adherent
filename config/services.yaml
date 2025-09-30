@@ -54,6 +54,7 @@ services:
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
             $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
+            $friendlyCaptchaNRPSiteKey: '%env(FRIENDLY_CAPTCHA_NRP_SITE_KEY)%'
             $systemPayMode: '%env(SYSTEMPAY_MODE)%'
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
