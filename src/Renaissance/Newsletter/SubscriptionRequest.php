@@ -39,6 +39,7 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     {
         return [
             NewsletterTypeEnum::SITE_RENAISSANCE,
+            NewsletterTypeEnum::SITE_NRP,
             NewsletterTypeEnum::SITE_EU,
             NewsletterTypeEnum::SITE_ENSEMBLE,
         ];

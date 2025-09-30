@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Newsletter;
 
+use App\Newsletter\NewsletterTypeEnum;
 use App\Renaissance\Newsletter\NewsletterManager;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,7 @@ class SaveNewsletterController extends AbstractController
         private readonly ValidatorInterface $validator,
         private readonly NewsletterManager $newsletterManager,
         private readonly string $friendlyCaptchaEuropeSiteKey,
+        private readonly string $friendlyCaptchaNRPSiteKey,
     ) {
     }
 
@@ -29,7 +31,12 @@ class SaveNewsletterController extends AbstractController
         $subscription = $this->serializer->deserialize($request->getContent(), SubscriptionRequest::class, JsonEncoder::FORMAT, [
             AbstractNormalizer::GROUPS => ['newsletter:write'],
         ]);
-        $subscription->setRecaptchaSiteKey($this->friendlyCaptchaEuropeSiteKey);
+
+        $subscription->setRecaptchaSiteKey(match ($subscription->source) {
+            NewsletterTypeEnum::SITE_EU => $this->friendlyCaptchaEuropeSiteKey,
+            NewsletterTypeEnum::SITE_NRP => $this->friendlyCaptchaNRPSiteKey,
+            default => null,
+        });
 
         $errors = $this->validator->validate($subscription);
 
