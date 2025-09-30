@@ -13,6 +13,7 @@ class NewsletterValueObject
     private $email;
     private $zipCode;
     private $firstName;
+    private $lastName;
     private $countryName;
     private $siteCode;
     private $type;
@@ -27,6 +28,11 @@ class NewsletterValueObject
     public function getFirstName(): ?string
     {
         return $this->firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
     }
 
     public function isSubscribed(): bool
@@ -76,14 +82,14 @@ class NewsletterValueObject
         return $object;
     }
 
-    public static function createFromRenaissanceNewsletterSubscription(
-        RenaissanceNewsletterSubscription $newsletter,
-    ): self {
+    public static function createFromRenaissanceNewsletterSubscription(RenaissanceNewsletterSubscription $newsletter): self
+    {
         $object = new self();
 
         $object->email = $newsletter->getEmail();
         $object->zipCode = $newsletter->zipCode;
         $object->firstName = $newsletter->firstName;
+        $object->lastName = $newsletter->lastName;
         $object->type = $newsletter->source ?? NewsletterTypeEnum::SITE_RENAISSANCE;
         $object->subscribed = $newsletter->isConfirmed();
 

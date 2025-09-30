@@ -22,6 +22,9 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     public ?string $firstName = null;
 
     #[ORM\Column(nullable: true)]
+    public ?string $lastName = null;
+
+    #[ORM\Column(nullable: true)]
     public ?string $zipCode = null;
 
     #[ORM\Column(nullable: true)]
@@ -46,6 +49,8 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     {
         $object = new self();
 
+        $object->firstName = $request->firstName;
+        $object->lastName = $request->lastName;
         $object->zipCode = $request->postalCode;
         $object->email = $request->email;
         $object->source = $request->source;
