@@ -525,7 +525,7 @@ services:
                 },
             ]
 
-    App\Api\Doctrine\AuthoredItemsCollectionExtension:
+    App\Api\Doctrine\AdherentMessageCollectionExtension:
         tags:
             [
                 {
