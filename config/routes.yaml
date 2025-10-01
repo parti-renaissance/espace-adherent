@@ -301,3 +301,9 @@ vox_app_elect:
     host: '%user_vox_host%'
     path: '/app/profil/informations-elu'
     controller: App\Controller\OAuth\RedirectAppController::redirectToState
+app_renaissance_path:
+    host: '%user_vox_host%'
+    path: '/app/{path}'
+    requirements:
+        path: '.+'
+    controller: App\Controller\OAuth\RedirectAppController::redirectToState
