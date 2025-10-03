@@ -56,7 +56,7 @@ class LoadNationalEventData extends Fixture
         $event->type = NationalEventTypeEnum::CAMPUS;
         $event->alertTitle = 'Venez nombreux !';
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('+1 month');
+        $event->startDate = new \DateTime('-1 hour');
         $event->endDate = (new \DateTime())->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
@@ -169,6 +169,18 @@ class LoadNationalEventData extends Fixture
         ];
 
         $this->setReference('event-national-3', $event);
+
+        $manager->persist($event = new NationalEvent());
+        $event->setName('Event passé');
+        $event->startDate = new \DateTime('-10 days');
+        $event->endDate = new \DateTime('-8 days');
+        $event->ticketStartDate = new \DateTime('-11 days');
+        $event->ticketEndDate = new \DateTime('-10 days');
+        $event->textIntro = '<p>Voici un event passé</p>';
+        $event->textHelp = '<p>Il suffit de remplir le formulaire</p>';
+        $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->textTicketEmail = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $this->setReference('event-national-4', $event);
 
         $manager->flush();
     }

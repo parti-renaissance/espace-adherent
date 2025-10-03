@@ -17,9 +17,23 @@ class EventTagGenerator extends AbstractTagGenerator
 
     public function generate(Adherent $adherent, array $previousTags): array
     {
-        return array_map(
-            fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event),
-            $this->eventInscriptionRepository->findAllForTags($adherent)
-        );
+        $inscriptions = $this->eventInscriptionRepository->findAllForTags($adherent);
+
+        return array_values(array_unique(array_merge(
+            array_map(
+                fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event),
+                array_filter(
+                    $inscriptions,
+                    static fn (EventInscription $inscription) => $inscription->event->endDate > new \DateTime()
+                )
+            ),
+            array_map(
+                fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event, true),
+                array_filter(
+                    $inscriptions,
+                    static fn (EventInscription $inscription) => $inscription->firstTicketScannedAt && $inscription->event->startDate < new \DateTime()
+                )
+            ),
+        )));
     }
 }
