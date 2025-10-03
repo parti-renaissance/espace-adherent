@@ -172,6 +172,7 @@
     {% for tag in object.tags %}
         {% if tag not in displayed_tags %}
             {{ ui.label(translate_tag(tag, false), bgColor, textColor) }}
+            {% set displayed_tags = displayed_tags|merge([tag]) %}
         {% endif %}
     {% endfor %}
 
@@ -179,6 +180,7 @@
         {% set tagCode = staticLabel.category.code ~ ':' ~ staticLabel.code %}
         {% if tagCode not in displayed_tags %}
             {{ ui.label(staticLabel.label, bgColor, textColor) }}
+            {% set displayed_tags = displayed_tags|merge([tag]) %}
         {% endif %}
     {% endfor %}
 </div>

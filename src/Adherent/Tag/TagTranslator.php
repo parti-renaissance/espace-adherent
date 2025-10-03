@@ -45,9 +45,18 @@ class TagTranslator
                     $year = $matches[1];
                     $parts[$index] = $this->translate(str_replace('_'.$year, '_%s', $part), $domain, $part, ['year' => $year]);
                 }
-                // Matches a national_event tag in the format national_event:slug
+                // Matches a national_event tag in the format national_event:slug or national_event:present:slug
                 elseif (TagEnum::NATIONAL_EVENT === TagEnum::getMainLevel($tag) && $index > 0) {
+                    if (str_starts_with($tag, TagEnum::NATIONAL_EVENT_PRESENT) && 1 === $index) {
+                        continue;
+                    }
+
                     $parts[$index] = $this->tagBuilder->buildLabelFromSlug($part);
+
+                    if (str_starts_with($tag, TagEnum::NATIONAL_EVENT_PRESENT)) {
+                        $parts[$index] = $this->translate($parts[$index - 1], $domain).' '.$parts[$index];
+                        unset($parts[$index - 1]);
+                    }
                 } else {
                     $parts[$index] = $this->translate($part, $domain);
                 }

@@ -51,6 +51,7 @@ class NationalEventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('event')
             ->where('event.startDate >= :start_date')
             ->setParameter('start_date', $since)
+            ->orderBy('event.startDate', 'DESC')
             ->getQuery()
             ->getResult()
         ;

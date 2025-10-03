@@ -2,6 +2,7 @@
 
 namespace App\Admin\Filter;
 
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
@@ -55,7 +56,7 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
                 'choice_label' => function (string $tag) {
                     $label = $this->tagTranslator->trans($tag, false, '_filter_');
 
-                    if ($count = substr_count($tag, ':')) {
+                    if ($count = (substr_count($tag, ':') - substr_count($tag, TagEnum::NATIONAL_EVENT_PRESENT) * 2)) {
                         return \sprintf('%s• %s', str_repeat("\u{a0}", $count * 3), $label);
                     }
 
