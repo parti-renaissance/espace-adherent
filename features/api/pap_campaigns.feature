@@ -1288,6 +1288,7 @@ Feature:
                 "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
                 "id": @integer@,
                 "type": "national",
+                "created_at": "@string@.isDateTime()",
                 "name": "Les enjeux des 10 prochaines années",
                 "questions": [
                     {

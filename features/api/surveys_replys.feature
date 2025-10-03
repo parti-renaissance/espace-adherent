@@ -3,7 +3,7 @@
 Feature:
 
     Scenario: As a logged-in user I can reply to a national survey for phoning campaign (new body structure)
-        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/reply" with body:
             """
             {
@@ -53,7 +53,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply to a survey for permanent phoning campaign
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/phoning_campaign_histories/a80248ff-384a-4f80-972a-177c3d0a77c4/reply" with body:
             """
             {
@@ -77,7 +77,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply partially to a survey for permanent phoning campaign
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/phoning_campaign_histories/a80248ff-384a-4f80-972a-177c3d0a77c4/reply" with body:
             """
             {
@@ -101,7 +101,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply to a national survey for Jemarche data survey (new body structure)
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/jemarche_data_surveys/5191f388-ccb0-4a93-b7f9-a15f107287fb/reply" with body:
             """
             {
@@ -127,7 +127,7 @@ Feature:
         And I should have 0 email
 
     Scenario: As a logged-in user I cannot reply to a national survey with invalid data
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/jemarche_data_surveys" with body:
             """
             {
@@ -166,7 +166,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply to a national survey
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/jemarche_data_surveys" with body:
             """
             {

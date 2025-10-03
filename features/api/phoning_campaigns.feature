@@ -18,7 +18,7 @@ Feature:
             | GET    | /api/v3/phoning_campaigns/tutorial                                                    |
 
     Scenario Outline: As a logged-in user with no correct rights I cannot get regular phoning campaigns (only permanent)
-        Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile"
         When I send a "<method>" request to "<url>"
         Then the response status code should be 403
 
@@ -1244,6 +1244,7 @@ Feature:
               "id": @integer@,
               "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
               "type": "national",
+              "created_at": "@string@.isDateTime()",
               "questions":[
                 {
                   "id": @integer@,

@@ -123,7 +123,7 @@ class LoadClientData extends Fixture
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client8->setAskUserForAuthorization(false);
-        $client8->addSupportedScope(Scope::JECOUTE_SURVEYS);
+        $client8->addSupportedScope(Scope::JEMARCHE_APP);
 
         $manager->persist($client8);
 

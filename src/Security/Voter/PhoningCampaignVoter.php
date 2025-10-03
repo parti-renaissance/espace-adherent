@@ -12,11 +12,7 @@ class PhoningCampaignVoter extends AbstractAdherentVoter
     /** @param Campaign $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if (!$team = $subject->getTeam()) {
-            return false;
-        }
-
-        return $team->hasAdherent($adherent);
+        return (bool) $subject->getTeam()?->hasAdherent($adherent);
     }
 
     protected function supports(string $attribute, $subject): bool

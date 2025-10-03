@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/ripostes/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['riposte_read']],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new Put(
             uriTemplate: '/v3/ripostes/{uuid}',
@@ -45,13 +45,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/ripostes/{uuid}/action/{action}',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: IncrementRiposteStatsCounterController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
             deserialize: false,
         ),
         new GetCollection(
             uriTemplate: '/v3/ripostes',
             normalizationContext: ['groups' => ['riposte_list_read']],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'ripostes') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new Post(uriTemplate: '/v3/ripostes'),
     ],
