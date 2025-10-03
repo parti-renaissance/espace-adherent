@@ -1,5 +1,6 @@
 @api
 @renaissance
+@debug
 Feature:
 
     Scenario: As a logged-in VOX user I can get my alerts
@@ -38,10 +39,10 @@ Feature:
                     "title": "Venez nombreux !",
                     "description": "",
                     "cta_label": "Je réserve ma place",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
-                    "image_url": null,
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fcampus",
+                    "image_url": "http://test.renaissance.code/assets/uploads/@string@",
                     "data": null,
-                    "share_url": "http://test.renaissance.code/grand-rassemblement/event-national-1/@string@?utm_source=app&utm_campaign=alerte"
+                    "share_url": "http://test.renaissance.code/grand-rassemblement/campus/@string@?utm_source=app&utm_campaign=alerte"
                 },
                 {
                     "type": "meeting",
@@ -49,10 +50,10 @@ Feature:
                     "title": "Venez nombreux !",
                     "description": "",
                     "cta_label": "Je réserve ma place",
-                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fcampus",
-                    "image_url": "http://test.renaissance.code/assets/uploads/@string@",
+                    "cta_url": "http://test.renaissance.code/connexion-avec-un-lien-magique?@string@&_target_path=%2Fgrand-rassemblement%2Fevent-national-1",
+                    "image_url": null,
                     "data": null,
-                    "share_url": "http://test.renaissance.code/grand-rassemblement/campus/@string@?utm_source=app&utm_campaign=alerte"
+                    "share_url": "http://test.renaissance.code/grand-rassemblement/event-national-1/@string@?utm_source=app&utm_campaign=alerte"
                 },
                 {
                     "type": "alert",
