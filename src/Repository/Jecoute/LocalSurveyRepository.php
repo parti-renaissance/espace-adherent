@@ -88,7 +88,6 @@ class LocalSurveyRepository extends ServiceEntityRepository
             ->where('(zone IN (:zones) OR child IN (:zones))')
             ->setParameter('zones', $zones)
             ->andWhere('survey.published = true')
-            ->orderBy('survey.id')
         ;
     }
 }

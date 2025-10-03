@@ -11,7 +11,6 @@ use MyCLabs\Enum\Enum;
  * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
  * @method static READ_STATS()
- * @method static JECOUTE_SURVEYS()
  * @method static JEMARCHE_APP()
  * @method static CRM_PARIS()
  * @method static READ_PROFILE()
@@ -27,7 +26,6 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const READ_TYPEFORMS = 'read:typeforms';
     public const READ_STATS = 'read:stats';
 
-    public const JECOUTE_SURVEYS = 'jecoute_surveys';
     public const JEMARCHE_APP = 'jemarche_app';
     public const JEMENGAGE_ADMIN = 'jemengage_admin';
     public const CRM_PARIS = 'crm_paris';

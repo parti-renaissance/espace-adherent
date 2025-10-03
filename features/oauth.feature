@@ -43,7 +43,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
             | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE= |
             | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b        |
             | grant_type    | password                                    |
-            | scope         | jecoute_surveys                             |
+            | scope         | jemarche_app                                |
             | device_id     | dd4SOCS-4UlCtO-gZiQGDA                      |
             | username      | carl999@example.fr                          |
             | password      | bad_password                                |
@@ -62,7 +62,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
             | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE= |
             | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b        |
             | grant_type    | password                                    |
-            | scope         | jecoute_surveys                             |
+            | scope         | jemarche_app                                |
             | device_id     | dd4SOCS-4UlCtO-gZiQGDA                      |
             | username      | carl999@example.fr                          |
             | password      | secret!12345                                |
@@ -113,7 +113,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
             | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE= |
             | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b        |
             | grant_type    | password                                    |
-            | scope         | jecoute_surveys                             |
+            | scope         | jemarche_app                                |
             | username      | je-mengage-user-1@en-marche-dev.fr          |
             | password      | secret!12345                                |
         Then the response should be in JSON

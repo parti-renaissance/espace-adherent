@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Form\Jecoute\JemarcheDataSurveyFormType;
 use App\Jecoute\JemarcheDataSurveyAnswerHandler;
 use App\OAuth\Model\DeviceApiUser;
-use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,48 +16,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("(is_granted('ROLE_USER') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"))]
+#[IsGranted(new Expression("is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"))]
 #[Route(path: '/jecoute/survey')]
 class SurveyController extends AbstractController
 {
     #[Route(name: 'api_public_surveys_list', methods: ['GET'])]
     public function surveyListAction(
-        Request $request,
+        #[CurrentUser] Adherent $user,
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
-        ZoneRepository $zoneRepository,
     ): Response {
-        $postalCode = null;
-        /** @var Adherent|DeviceApiUser $user */
-        $user = $this->getUser();
-
-        if ($user instanceof DeviceApiUser) {
-            if (!$postalCode = $request->get('postalCode')) {
-                return $this->json(['error' => 'Parameter "postalCode" missing when using a Device token.'], 400);
-            }
-
-            if (!preg_match('/\d{5}/', $postalCode)) {
-                return $this->json(['error' => 'Parameter "postalCode" must be 5 numbers.'], 400);
-            }
-        }
-
-        if ($user instanceof Adherent) {
-            $zones = $user->getZones()->toArray();
-        } else {
-            $zones = $zoneRepository->findByPostalCode($postalCode);
-        }
-
-        $localSurveys = $localSurveyRepository->findAllByZones($zones);
-
-        return $this->json(
-            array_merge(
-                $localSurveys,
-                $nationalSurveyRepository->findAllPublished()
-            ),
-            context: ['groups' => ['survey_list']]
+        $surveys = array_merge(
+            $localSurveyRepository->findAllByZones($user->getZones()->toArray()),
+            $nationalSurveyRepository->findAllPublished()
         );
+
+        usort($surveys, static fn ($a, $b) => $b->getCreatedAt() <=> $a->getCreatedAt());
+
+        return $this->json($surveys, context: ['groups' => ['survey_list']]);
     }
 
     #[Route(path: '/reply', name: 'api_survey_reply', methods: ['POST'])]

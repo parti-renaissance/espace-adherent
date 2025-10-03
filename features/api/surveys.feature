@@ -10,12 +10,12 @@ Feature:
         Then the response status code should be 401
 
     Scenario: As a simple logged-in user I can get the surveys
-        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "GET" request to "/api/jecoute/survey"
         Then the response status code should be 200
 
     Scenario: As a logged-in user I can get the surveys of my referent(s) and the national surveys
-        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "GET" request to "/api/jecoute/survey"
         Then the response status code should be 200
         And the response should be in JSON
@@ -26,10 +26,12 @@ Feature:
                 "id": @integer@,
                 "uuid": "@uuid@",
                 "type": "local",
+                "created_at": "@string@.isDateTime()",
                 "name": "Questionnaire numéro 1",
                 "zone":{
                    "code": "77",
-                   "name": "Seine-et-Marne"
+                   "name": "Seine-et-Marne",
+                   "created_at": "@string@.isDateTime()"
                 },
                 "questions": [
                   {
@@ -80,6 +82,7 @@ Feature:
                 "id": @integer@,
                 "uuid": "@uuid@",
                 "type": "national",
+                "created_at": "@string@.isDateTime()",
                 "name": "Les enjeux des 10 prochaines années",
                 "questions": [
                   {
@@ -117,6 +120,7 @@ Feature:
                 "id": @integer@,
                 "uuid":"@uuid@",
                 "type":"national",
+                "created_at": "@string@.isDateTime()",
                 "name": "Le deuxième questionnaire national",
                 "questions":[
                   {
@@ -144,203 +148,14 @@ Feature:
                 "id": @integer@,
                 "uuid": "@uuid@",
                 "type": "national",
+                "created_at": "@string@.isDateTime()",
                 "name": "Questionnaire national numéro 1",
                 "questions": [
                   {
                     "id": @integer@,
                     "type": "simple_field",
                     "content": "Une première question du 1er questionnaire national ?",
-                    "choices": [
-
-                    ]
-                  },
-                  {
-                    "id": @integer@,
-                    "type": "multiple_choice",
-                    "content": "Une deuxième question du 1er questionnaire national ?",
-                    "choices": [
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale A"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale B"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale C"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale D"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-            """
-
-    Scenario: As a logged-in device I can not get the surveys with an invalid postal code
-        Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "GET" request to "/api/jecoute/survey"
-        Then the response status code should be 400
-        And the JSON should be equal to:
-            """
-            {
-                "error": "Parameter \"postalCode\" missing when using a Device token."
-            }
-            """
-        Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "GET" request to "/api/jecoute/survey?postalCode=76"
-        Then the response status code should be 400
-        And the JSON should be equal to:
-            """
-            {
-                "error": "Parameter \"postalCode\" must be 5 numbers."
-            }
-            """
-
-    Scenario: As a logged-in device I can get the surveys of my postal code and the national surveys
-        Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "GET" request to "/api/jecoute/survey?postalCode=77300"
-        Then the response status code should be 200
-        And the response should be in JSON
-        And the JSON should be equal to:
-            """
-            [
-              {
-                "id": @integer@,
-                "uuid": "@uuid@",
-                "type": "local",
-                "name": "Questionnaire numéro 1",
-                "zone":{
-                   "code": "77",
-                   "name": "Seine-et-Marne"
-                },
-                "questions": [
-                  {
-                    "id": @integer@,
-                    "type": "simple_field",
-                    "content": "Ceci est-il un champ libre ?",
                     "choices": []
-                  },
-                  {
-                    "id": @integer@,
-                    "type": "multiple_choice",
-                    "content": "Est-ce une question à choix multiple ?",
-                    "choices": [
-                      {
-                        "id": @integer@,
-                        "content": "Réponse A"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse B"
-                      }
-                    ]
-                  },
-                  {
-                    "id": @integer@,
-                    "type": "unique_choice",
-                    "content": "Est-ce une question à choix unique ?",
-                    "choices": [
-                      {
-                        "id": @integer@,
-                        "content": "Réponse unique 1"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse unique 2"
-                      }
-                    ]
-                  },
-                  {
-                    "id": @integer@,
-                    "type": "simple_field",
-                    "content": "Ceci est-il un champ libre d'une question suggérée ?",
-                    "choices": []
-                  }
-                ]
-              },
-              {
-                "uuid": "@uuid@",
-                "id": @integer@,
-                "type": "national",
-                "name": "Les enjeux des 10 prochaines années",
-                "questions": [
-                  {
-                    "id": @integer@,
-                    "type": "simple_field",
-                    "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
-                    "choices": []
-                  },
-                  {
-                    "id": @integer@,
-                    "type": "multiple_choice",
-                    "content": "L'écologie est selon vous, importante pour :",
-                    "choices": [
-                      {
-                        "id": @integer@,
-                        "content": "L'héritage laissé aux générations futures"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Le bien-être sanitaire"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "L'aspect financier"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "La préservation de l'environnement"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": @integer@,
-                "uuid": "@uuid@",
-                "type": "national",
-                "name": "Le deuxième questionnaire national",
-                "questions": [
-                  {
-                    "id": @integer@,
-                    "type": "unique_choice",
-                    "content": "La question du 2eme questionnaire national ?",
-                    "choices": [
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale E"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale F"
-                      },
-                      {
-                        "id": @integer@,
-                        "content": "Réponse nationale G"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": @integer@,
-                "uuid": "@uuid@",
-                "type": "national",
-                "name": "Questionnaire national numéro 1",
-                "questions": [
-                  {
-                    "id": @integer@,
-                    "type": "simple_field",
-                    "content": "Une première question du 1er questionnaire national ?",
-                    "choices": [
-
-                    ]
                   },
                   {
                     "id": @integer@,
@@ -371,7 +186,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply to a national survey (new body structure)
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -437,7 +252,7 @@ Feature:
             """
 
     Scenario Outline: As a logged-in user I can reply to a national survey
-        Given I am logged with "<email>" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "<email>" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -507,7 +322,7 @@ Feature:
             | simple-user@example.ch     |
 
     Scenario: As a logged-in user I can reply to a national survey without agreeing to join
-        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -548,7 +363,7 @@ Feature:
         And I should have 0 email
 
     Scenario: As a logged-in user I can reply to a local survey
-        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -617,7 +432,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I cannot reply to a local survey with errors
-        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -677,7 +492,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I cannot reply to a local survey with errors (new body structure)
-        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -735,7 +550,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can reply to a local survey with custom validations errors
-        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+        Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "POST" request to "/api/jecoute/survey/reply" with body:
             """
             {
@@ -790,16 +605,6 @@ Feature:
                 },
                 "items": [
                     {
-                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-                        "type": "national",
-                        "name": "Questionnaire national numéro 1",
-                        "created_at": "@string@.isDateTime()",
-                        "published": true,
-                        "creator": null,
-                        "nb_questions": 2,
-                        "nb_answers": 14
-                    },
-                    {
                         "uuid": "@uuid@",
                         "type": "national",
                         "name": "Le deuxième questionnaire national",
@@ -808,6 +613,16 @@ Feature:
                         "creator": null,
                         "nb_questions": 1,
                         "nb_answers": 0
+                    },
+                    {
+                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+                        "type": "national",
+                        "name": "Questionnaire national numéro 1",
+                        "created_at": "@string@.isDateTime()",
+                        "published": true,
+                        "creator": null,
+                        "nb_questions": 2,
+                        "nb_answers": 14
                     }
                 ]
             }
@@ -829,14 +644,14 @@ Feature:
                 },
                 "items": [
                     {
-                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+                        "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
                         "type": "national",
-                        "name": "Questionnaire national numéro 1",
+                        "name": "Les enjeux des 10 prochaines années",
                         "created_at": "@string@.isDateTime()",
                         "published": true,
                         "creator": null,
                         "nb_questions": 2,
-                        "nb_answers": 14
+                        "nb_answers": 6
                     },
                     {
                         "uuid": "@uuid@",
@@ -849,14 +664,14 @@ Feature:
                         "nb_answers": 0
                     },
                     {
-                        "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
                         "type": "national",
-                        "name": "Les enjeux des 10 prochaines années",
+                        "name": "Questionnaire national numéro 1",
                         "created_at": "@string@.isDateTime()",
                         "published": true,
                         "creator": null,
                         "nb_questions": 2,
-                        "nb_answers": 6
+                        "nb_answers": 14
                     }
                 ]
             }
@@ -882,36 +697,6 @@ Feature:
                     "last_page": 1
                 },
                 "items": [
-                    {
-                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-                        "created_at": "@string@.isDateTime()",
-                        "type": "national",
-                        "name": "Questionnaire national numéro 1",
-                        "published": true,
-                        "nb_questions": 2,
-                        "creator": null,
-                        "nb_answers": 14
-                    },
-                    {
-                        "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
-                        "created_at": "@string@.isDateTime()",
-                        "type": "national",
-                        "name": "Le deuxième questionnaire national",
-                        "published": true,
-                        "nb_questions": 1,
-                        "creator": null,
-                        "nb_answers": 0
-                    },
-                    {
-                        "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-                        "created_at": "@string@.isDateTime()",
-                        "type": "national",
-                        "name": "Les enjeux des 10 prochaines années",
-                        "published": true,
-                        "nb_questions": 2,
-                        "creator": null,
-                        "nb_answers": 6
-                    },
                     {
                         "zone": {
                             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -991,6 +776,36 @@ Feature:
                             "uuid": "@uuid@"
                         },
                         "nb_answers": 0
+                    },
+                    {
+                        "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                        "created_at": "@string@.isDateTime()",
+                        "type": "national",
+                        "name": "Les enjeux des 10 prochaines années",
+                        "published": true,
+                        "nb_questions": 2,
+                        "creator": null,
+                        "nb_answers": 6
+                    },
+                    {
+                        "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
+                        "created_at": "@string@.isDateTime()",
+                        "type": "national",
+                        "name": "Le deuxième questionnaire national",
+                        "published": true,
+                        "nb_questions": 1,
+                        "creator": null,
+                        "nb_answers": 0
+                    },
+                    {
+                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+                        "created_at": "@string@.isDateTime()",
+                        "type": "national",
+                        "name": "Questionnaire national numéro 1",
+                        "published": true,
+                        "nb_questions": 2,
+                        "creator": null,
+                        "nb_answers": 14
                     }
                 ]
             }
@@ -1017,17 +832,17 @@ Feature:
                 },
                 "items": [
                     {
-                        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+                        "uuid": "@uuid@",
                         "type": "national",
-                        "name": "Questionnaire national numéro 1",
+                        "name": "Les enjeux des 10 prochaines années",
                         "created_at": "@string@.isDateTime()",
                         "published": true,
                         "creator": null,
                         "nb_questions": 2,
-                        "nb_answers": 14
+                        "nb_answers": 6
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
                         "type": "national",
                         "name": "Le deuxième questionnaire national",
                         "created_at": "@string@.isDateTime()",

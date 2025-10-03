@@ -27,7 +27,6 @@ class NationalSurveyRepository extends ServiceEntityRepository
             ->innerJoin('survey_question.question', 'question')
             ->leftJoin('question.choices', 'choice')
             ->andWhere('survey.published = true')
-            ->orderBy('survey.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
