@@ -43,13 +43,7 @@ class ScopeFeatureVoter extends Voter
             $subject = [$subject];
         }
 
-        foreach ($subject as $feature) {
-            if ($scope->hasFeature($feature)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $scope->containsFeatures($subject);
     }
 
     protected function supports(string $attribute, $subject): bool

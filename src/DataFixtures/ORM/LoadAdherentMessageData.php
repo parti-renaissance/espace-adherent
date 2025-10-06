@@ -7,6 +7,7 @@ use App\AdherentMessage\Listener\AdherentMessageChangeSubscriber;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\Committee;
@@ -59,7 +60,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message1->setLabel($faker->sentence(2));
 
         $message1->addMailchimpCampaign(new MailchimpCampaign($message1));
-        $message1->setFilter(new MessageFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75')]));
+        $message1->setFilter(new AudienceFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
 
         // message sent
         $message2 = AdherentMessage::createFromAdherent(
@@ -73,7 +74,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message2->setLabel($faker->sentence(2));
 
         $message2->addMailchimpCampaign(new MailchimpCampaign($message2));
-        $message2->setFilter(new MessageFilter([$parisZone]));
+        $message2->setFilter(new AudienceFilter([$parisZone]));
         $message2->markAsSent();
 
         $manager->persist($message1);
@@ -85,7 +86,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(2);
-        $message->setFilter(new MessageFilter([$parisZone]));
+        $message->setFilter(new AudienceFilter([$parisZone]));
         $message->markAsSent();
         $message->setContent($faker->randomHtml());
         $message->setSubject($faker->sentence(5));
@@ -156,12 +157,12 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         switch ($instanceScope) {
             case ScopeEnum::ANIMATOR:
-                $filter = new MessageFilter();
+                $filter = new AudienceFilter();
                 $filter->setCommittee($this->getReference('committee-10', Committee::class));
 
                 return $filter;
             case ScopeEnum::DEPUTY:
-                return new MessageFilter([LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')]);
+                return new AudienceFilter([LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')]);
         }
 
         return null;
