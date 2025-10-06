@@ -19,19 +19,22 @@ class TagBuilder
 
     public function buildAll(): array
     {
-        return array_merge(
-            array_map([$this, 'buildForEvent'], $this->nationalEventRepository->findAllSince(new \DateTime('-6 months'))),
-            array_map(fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
-        );
+        $events = $this->nationalEventRepository->findAllSince(new \DateTime('-6 months'));
+
+        return array_values(array_unique(array_merge(
+            array_map([$this, 'buildForEvent'], array_filter($events, static fn (NationalEvent $event) => $event->endDate > new \DateTime())),
+            array_map(fn (NationalEvent $event) => $this->buildForEvent($event, true), array_filter($events, static fn (NationalEvent $event) => $event->startDate < new \DateTime())),
+            array_map(static fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
+        )));
     }
 
-    public function buildForEvent(NationalEvent $event): string
+    public function buildForEvent(NationalEvent $event, bool $isPresent = false): string
     {
-        return TagEnum::getNationalEventTag($event->getSlug());
+        return TagEnum::getNationalEventTag($event->getSlug(), $event->startDate < new \DateTime() && $isPresent);
     }
 
     public function buildLabelFromSlug(string $slug): string
     {
-        return $this->nationalEventRepository->findOneBySlug($slug)?->name ?? (new UnicodeString(str_replace('-', ' ', $slug)))->title(true);
+        return $this->nationalEventRepository->findOneBySlug($slug)?->getName() ?? (new UnicodeString(str_replace('-', ' ', $slug)))->title(true);
     }
 }

@@ -596,8 +596,10 @@ Feature:
                                 "required": false,
                                 "choices": {
                                     "national_event:campus": "Campus",
-                                    "national_event:event-national-1": "Event National 1",
-                                    "national_event:event-national-2": "Event National 2"
+                                    "national_event:event-national-1": "Event national 1",
+                                    "national_event:event-national-2": "Event national 2",
+                                    "national_event:present:campus": "Présent Campus",
+                                    "national_event:present:event-passe": "Présent Event passé"
                                 }
                             },
                             "type": "select"
@@ -837,8 +839,10 @@ Feature:
                                 "choices": {
                                     "": "Aucune sélection",
                                     "national_event:campus": "Campus",
-                                    "national_event:event-national-1": "Event National 1",
-                                    "national_event:event-national-2": "Event National 2"
+                                    "national_event:event-national-1": "Event national 1",
+                                    "national_event:event-national-2": "Event national 2",
+                                    "national_event:present:campus": "Présent Campus",
+                                    "national_event:present:event-passe": "Présent Event passé"
                                 }
                             },
                             "type": "select"
