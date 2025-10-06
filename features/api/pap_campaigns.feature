@@ -1409,7 +1409,7 @@ Feature:
                                     "choices": {
                                         "employees": "Employé",
                                         "workers": "Ouvrier",
-                                        "managerial staff": "Cadre",
+                                        "managerial_staff": "Cadre",
                                         "intermediate_professions": "Profession intermédiaire",
                                         "self_contractor": "Indépendant et professions libérales",
                                         "retirees": "Retraité",
