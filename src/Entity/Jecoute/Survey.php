@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Put;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
 use App\Api\Filter\SurveyTypeFilter;
 use App\Controller\Api\Jecoute\GetSurveysKpiController;
+use App\Controller\Api\Jecoute\SurveyReplyController;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -53,6 +54,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => ['survey_read_dc']],
             denormalizationContext: ['groups' => ['survey_write_dc']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'survey')"
+        ),
+        new Post(
+            uriTemplate: '/v3/surveys/{uuid}/reply',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: SurveyReplyController::class,
+            deserialize: false
         ),
         new GetCollection(
             uriTemplate: '/v3/surveys',

@@ -7,6 +7,7 @@ use App\Entity\Jecoute\DataSurveyAwareInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,23 +19,20 @@ abstract class AbstractReplyController extends AbstractController implements Log
 {
     use LoggerAwareTrait;
 
-    protected $entityManager;
-    protected $validator;
-    protected $serializer;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        SerializerInterface $serializer,
+        protected readonly EntityManagerInterface $entityManager,
+        protected readonly ValidatorInterface $validator,
+        protected readonly SerializerInterface $serializer,
+        ?LoggerInterface $logger = null,
     ) {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->serializer = $serializer;
+        if ($logger) {
+            $this->setLogger($logger);
+        }
     }
 
-    public function handleRequest(Request $request, DataSurveyAwareInterface $object): Response
+    public function handleRequest(Request $request, ?DataSurveyAwareInterface $object = null): Response
     {
-        if ($object->getDataSurvey()) {
+        if ($object?->getDataSurvey()) {
             return $this->json([
                 'code' => 'already_replied',
                 'message' => 'La réponse a été déjà envoyée',
@@ -43,7 +41,7 @@ abstract class AbstractReplyController extends AbstractController implements Log
 
         $this->serializer->deserialize($request->getContent(), DataSurvey::class, 'json', [
             AbstractObjectNormalizer::GROUPS => array_merge(['data_survey_write'], $this->getCustomDeserializeGroups()),
-            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $dataSurvey = $this->initializeDataSurvey($object),
+            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $dataSurvey = $this->initializeDataSurvey($request, $object),
         ]);
 
         $errors = $this->validator->validate($dataSurvey);
@@ -58,7 +56,7 @@ abstract class AbstractReplyController extends AbstractController implements Log
 
         $this->entityManager->persist($dataSurvey);
 
-        $object->setDataSurvey($dataSurvey);
+        $object?->setDataSurvey($dataSurvey);
         $this->postHandleAction();
 
         $this->entityManager->flush();
@@ -76,7 +74,7 @@ abstract class AbstractReplyController extends AbstractController implements Log
     {
     }
 
-    protected function initializeDataSurvey(DataSurveyAwareInterface $object): DataSurvey
+    protected function initializeDataSurvey(Request $request, ?DataSurveyAwareInterface $object = null): DataSurvey
     {
         return new DataSurvey();
     }
