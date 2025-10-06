@@ -8,7 +8,7 @@ class ProfessionEnum extends Enum
 {
     public const FARMERS = 'farmers';
     public const CRAFTSMEN = 'craftsmen';
-    public const MANAGERIAL_STAFF = 'managerial staff';
+    public const MANAGERIAL_STAFF = 'managerial_staff';
     public const INTERMEDIATE_PROFESSIONS = 'intermediate_professions';
     public const EMPLOYEES = 'employees';
     public const WORKERS = 'workers';
