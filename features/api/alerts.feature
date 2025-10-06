@@ -1,6 +1,5 @@
 @api
 @renaissance
-@debug
 Feature:
 
     Scenario: As a logged-in VOX user I can get my alerts

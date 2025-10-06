@@ -48,30 +48,21 @@ class DataSurvey implements AuthorInterface
     private $answers;
 
     #[Assert\NotBlank]
-    #[Groups(['data_survey_write', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Survey::class)]
     private $survey;
 
-    /**
-     * @var JemarcheDataSurvey|null
-     */
-    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: JemarcheDataSurvey::class)]
-    private $jemarcheDataSurvey;
+    #[ORM\OneToOne(mappedBy: 'dataSurvey')]
+    private ?JemarcheDataSurvey $jemarcheDataSurvey = null;
 
-    /**
-     * @var PhoningCampaignHistory|null
-     */
-    #[Groups(['phoning_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: PhoningCampaignHistory::class)]
-    private $phoningCampaignHistory;
+    #[Groups(['data_survey_write', 'phoning_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\OneToOne(mappedBy: 'dataSurvey')]
+    private ?PhoningCampaignHistory $phoningCampaignHistory = null;
 
-    /**
-     * @var PapCampaignHistory|null
-     */
-    #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: PapCampaignHistory::class)]
-    private $papCampaignHistory;
+    #[Groups(['data_survey_write', 'pap_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\OneToOne(mappedBy: 'dataSurvey')]
+    private ?PapCampaignHistory $papCampaignHistory = null;
 
     public function __construct(?Survey $survey = null)
     {
@@ -156,5 +147,17 @@ class DataSurvey implements AuthorInterface
     public function isOfPapCampaignHistory(): bool
     {
         return (bool) $this->papCampaignHistory;
+    }
+
+    public function setPhoningCampaignHistory(?PhoningCampaignHistory $phoningCampaignHistory): void
+    {
+        $this->phoningCampaignHistory = $phoningCampaignHistory;
+        $this->phoningCampaignHistory->setDataSurvey($this);
+    }
+
+    public function setPapCampaignHistory(?PapCampaignHistory $papCampaignHistory): void
+    {
+        $this->papCampaignHistory = $papCampaignHistory;
+        $this->papCampaignHistory->setDataSurvey($this);
     }
 }

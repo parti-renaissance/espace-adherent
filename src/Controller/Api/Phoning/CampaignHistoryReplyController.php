@@ -28,10 +28,12 @@ class CampaignHistoryReplyController extends AbstractReplyController
     /**
      * @param CampaignHistory|DataSurveyAwareInterface $object
      */
-    protected function initializeDataSurvey(DataSurveyAwareInterface $object): DataSurvey
+    protected function initializeDataSurvey(Request $request, ?DataSurveyAwareInterface $object = null): DataSurvey
     {
-        $dataSurvey = parent::initializeDataSurvey($object);
-        $dataSurvey->setSurvey($object->getCampaign()->getSurvey());
+        $dataSurvey = parent::initializeDataSurvey($request, $object);
+        if ($object) {
+            $dataSurvey->setSurvey($object->getCampaign()->getSurvey());
+        }
 
         return $dataSurvey;
     }
