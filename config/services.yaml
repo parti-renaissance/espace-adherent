@@ -109,6 +109,8 @@ services:
             tags: ['app.alert_provider']
         App\JeMengage\Push\TokenProvider\TokenProviderInterface:
             tags: ['app.token_provider']
+        App\JeMengage\Hit\Stats\Provider\ProviderInterface:
+            tags: ['app.hit.stats_provider']
 
     # Imports
     App\:
@@ -180,6 +182,10 @@ services:
     App\JeMengage\Push\SendNotificationHandler:
         arguments:
             $tokenProviders: !tagged_iterator 'app.token_provider'
+
+    App\JeMengage\Hit\Stats\Aggregator:
+        arguments:
+            $providers: !tagged_iterator 'app.hit.stats_provider'
 
     App\Adherent\Tag\TagAggregator:
         arguments:

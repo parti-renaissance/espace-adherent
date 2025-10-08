@@ -4,33 +4,53 @@ namespace App\JeMengage\Hit\Stats\DTO;
 
 class StatsOutput implements \JsonSerializable
 {
-    public function __construct(
-        public readonly ?int $uniqueImpressions,
-        public readonly ?int $uniqueImpressionsFromList,
-        public readonly ?int $uniqueImpressionsFromTimeline,
-        public readonly ?int $uniqueOpens,
-        public readonly ?int $uniqueOpensFromTimeline,
-        public readonly ?int $uniqueOpensFromNotification,
-        public readonly ?int $uniqueOpensFromDirectLink,
-        public readonly ?int $uniqueOpensFromList,
-    ) {
+    private array $data = [];
+
+    public function push(array $stats): void
+    {
+        $this->data = array_merge($this->data, $stats);
     }
 
     public function jsonSerialize(): array
     {
-        return [
-            'unique_impressions' => [
-                'total' => $this->uniqueImpressions,
-                'timeline' => $this->uniqueImpressionsFromTimeline,
-                'list' => $this->uniqueImpressionsFromList,
-            ],
-            'unique_opens' => [
-                'total' => $this->uniqueOpens,
-                'timeline' => $this->uniqueOpensFromTimeline,
-                'notification' => $this->uniqueOpensFromNotification,
-                'direct_link' => $this->uniqueOpensFromDirectLink,
-                'list' => $this->uniqueOpensFromList,
-            ],
-        ];
+        $result = [];
+
+        $allKeys = array_keys($this->data);
+
+        foreach ($this->data as $key => $value) {
+            $recurrenceCount = 0;
+            array_walk($allKeys, static function (string $k) use ($key, &$recurrenceCount) {
+                if (str_starts_with($k, $key)) {
+                    ++$recurrenceCount;
+                }
+            });
+
+            if (str_contains($key, '__')) {
+                [$base, $sub] = explode('__', $key, 2);
+                $result[$base][$sub] = $value;
+                continue;
+            }
+
+            if (1 === $recurrenceCount) {
+                $result[$key] = $value;
+                continue;
+            }
+
+            $result[$key]['total'] = $value;
+        }
+
+        $this->recursiveSort($result);
+
+        return $result;
+    }
+
+    private function recursiveSort(array &$array): void
+    {
+        ksort($array);
+        foreach ($array as &$value) {
+            if (\is_array($value)) {
+                $this->recursiveSort($value);
+            }
+        }
     }
 }

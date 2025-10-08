@@ -22,19 +22,29 @@ class AppHitRepository extends ServiceEntityRepository
     public function countImpressionAndOpenStats(TargetTypeEnum $type, UuidInterface $objectUuid): array
     {
         $qb = $this->createQueryBuilder('h')
+            // Impressions
             ->select('COUNT(DISTINCT IF(h.eventType = :event_type_impression, h.adherent, null)) as unique_impressions')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_impression AND h.source = :source_timeline, h.adherent, null)) as unique_impressions_from_timeline')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_impression AND h.source = :source_timeline, h.adherent, null)) as unique_impressions__timeline')
+
+            // Opens
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open, h.adherent, null)) as unique_opens')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_timeline, h.adherent, null)) as unique_opens_from_timeline')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_push, h.adherent, null)) as unique_opens_from_notification')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_direct_link, h.adherent, null)) as unique_opens_from_direct_link')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_impression AND h.source = :source_list, h.id, null)) as unique_impressions_from_list')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_list, h.adherent, null)) as unique_opens_from_list')
+            ->addSelect('CAST(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_open, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_impression, h.adherent, null)), 0), 2) AS FLOAT) as unique_opens__total_rate')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_timeline, h.adherent, null)) as unique_opens__timeline')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_push, h.adherent, null)) as unique_opens__notification')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_direct_link, h.adherent, null)) as unique_opens__direct_link')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_impression AND h.source = :source_list, h.id, null)) as unique_impressions__list')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_list, h.adherent, null)) as unique_opens__list')
+
+            // Clicks
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click, h.adherent, null)) as unique_clicks')
+            ->addSelect('CAST(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open, h.adherent, null)), 0), 2) AS FLOAT) as unique_clicks__total_rate')
+
             ->where('h.objectId = :object_id')
             ->setParameters([
                 'object_id' => $objectUuid,
                 'event_type_impression' => EventTypeEnum::Impression,
                 'event_type_open' => EventTypeEnum::Open,
+                'event_type_click' => EventTypeEnum::Click,
                 'source_timeline' => 'page_timeline',
                 'source_push' => 'push_notification',
                 'source_direct_link' => 'direct_link',
@@ -48,13 +58,16 @@ class AppHitRepository extends ServiceEntityRepository
 
         return array_merge(array_fill_keys([
             'unique_impressions',
-            'unique_impressions_from_list',
-            'unique_impressions_from_timeline',
+            'unique_impressions__list',
+            'unique_impressions__timeline',
             'unique_opens',
-            'unique_opens_from_timeline',
-            'unique_opens_from_notification',
-            'unique_opens_from_direct_link',
-            'unique_opens_from_list',
+            'unique_opens__total_rate',
+            'unique_opens__timeline',
+            'unique_opens__notification',
+            'unique_opens__direct_link',
+            'unique_opens__list',
+            'unique_clicks',
+            'unique_clicks__total_rate',
         ], 0), $qb->getQuery()->getOneOrNullResult() ?? []);
     }
 

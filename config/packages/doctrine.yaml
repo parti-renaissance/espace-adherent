@@ -68,6 +68,7 @@ doctrine:
                 concat_ws: DoctrineExtensions\Query\Mysql\ConcatWs
                 replace: DoctrineExtensions\Query\Mysql\Replace
                 if: DoctrineExtensions\Query\Mysql\IfElse
+                cast: DoctrineExtensions\Query\Mysql\Cast
 
         hydrators:
             EventHydrator: App\Doctrine\Hydrators\EventHydrator
