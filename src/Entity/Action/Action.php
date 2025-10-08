@@ -30,6 +30,7 @@ use App\Entity\NotificationObjectInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
+use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Action\ActionRepository;
@@ -84,7 +85,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'vox_action')]
-class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface, NotificationObjectInterface
+class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface, NotificationObjectInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
