@@ -50,6 +50,7 @@ use App\EntityListener\AlgoliaIndexListener;
 use App\Event\EventVisibilityEnum;
 use App\Geocoder\GeoPointInterface;
 use App\JeMengage\Alert\AlertOwnerInterface;
+use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
@@ -168,7 +169,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: '`events`')]
-class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface
+class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;

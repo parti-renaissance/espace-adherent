@@ -7,7 +7,9 @@ use App\Entity\AppHit;
 use App\Entity\AppSession;
 use App\JeMengage\Hit\Command\SaveAppHitCommand;
 use App\Repository\AdherentRepository;
+use App\Repository\Event\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -18,6 +20,7 @@ class SaveAppHitCommandHandler
         private readonly DenormalizerInterface $serializer,
         private readonly EntityManagerInterface $entityManager,
         private readonly AdherentRepository $adherentRepository,
+        private readonly EventRepository $eventRepository,
     ) {
     }
 
@@ -31,6 +34,15 @@ class SaveAppHitCommandHandler
 
         if ($hit->referrerCode) {
             $hit->referrer = $this->adherentRepository->findByPublicId($hit->referrerCode, true);
+        }
+
+        if (
+            'event' === $hit->objectType
+            && $hit->objectId
+            && !Uuid::isValid($hit->objectId)
+            && $event = $this->eventRepository->findOneBySlug($hit->objectId)
+        ) {
+            $hit->objectId = $event->getUuidAsString();
         }
 
         $this->entityManager->persist($hit);

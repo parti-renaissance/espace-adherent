@@ -31,6 +31,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\UnlayerJsonContentTrait;
 use App\EntityListener\AlgoliaIndexListener;
+use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
@@ -139,7 +140,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(fields: ['source'])]
 #[ORM\Index(fields: ['instanceScope'])]
 #[ORM\Table(name: 'adherent_messages')]
-class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface
+class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;

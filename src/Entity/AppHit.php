@@ -4,12 +4,19 @@ namespace App\Entity;
 
 use App\AppSession\SystemEnum;
 use App\JeMengage\Hit\EventTypeEnum;
+use App\JeMengage\Hit\TargetTypeEnum;
+use App\Repository\AppHitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AppHitRepository::class)]
+#[ORM\Index(fields: ['eventType'])]
+#[ORM\Index(fields: ['source'])]
+#[ORM\Index(fields: ['eventType', 'source'])]
+#[ORM\Index(fields: ['objectType'])]
+#[ORM\Index(fields: ['objectId'])]
 class AppHit
 {
     use EntityIdentityTrait;
@@ -20,6 +27,7 @@ class AppHit
     #[ORM\Column(enumType: EventTypeEnum::class)]
     public EventTypeEnum $eventType;
 
+    #[Groups(['hit:read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne]
     public ?Adherent $adherent = null;
@@ -45,22 +53,22 @@ class AppHit
     public ?string $openType = null;
 
     #[Groups(['hit:write'])]
-    #[ORM\Column(nullable: true)]
-    public ?string $objectType = null;
+    #[ORM\Column(nullable: true, enumType: TargetTypeEnum::class)]
+    public ?TargetTypeEnum $objectType = null;
 
     #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
     public ?string $objectId = null;
 
-    #[Groups(['hit:write'])]
+    #[Groups(['hit:write', 'hit:open:read'])]
     #[ORM\Column(nullable: true)]
     public ?string $source = null;
 
-    #[Groups(['hit:write'])]
+    #[Groups(['hit:write', 'hit:click:read'])]
     #[ORM\Column(nullable: true)]
     public ?string $buttonName = null;
 
-    #[Groups(['hit:write'])]
+    #[Groups(['hit:write', 'hit:click:read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $targetUrl = null;
 
@@ -68,7 +76,7 @@ class AppHit
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $userAgent = null;
 
-    #[Groups(['hit:write'])]
+    #[Groups(['hit:write', 'hit:read'])]
     #[ORM\Column(nullable: true, enumType: SystemEnum::class)]
     public ?SystemEnum $appSystem = null;
 

@@ -28,6 +28,7 @@ use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
 use App\EntityListener\AlgoliaIndexListener;
+use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Scope\ScopeVisibilityEnum;
 use App\Utils\StringCleaner;
@@ -91,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_news')]
 #[ScopeVisibility]
-class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface
+class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
