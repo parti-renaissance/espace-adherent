@@ -2254,14 +2254,14 @@ __metadata:
   linkType: hard
 
 "@tiptap/extension-link@npm:^2.11.5":
-  version: 2.26.2
-  resolution: "@tiptap/extension-link@npm:2.26.2"
+  version: 2.26.3
+  resolution: "@tiptap/extension-link@npm:2.26.3"
   dependencies:
-    linkifyjs: "npm:^4.2.0"
+    linkifyjs: "npm:^4.3.2"
   peerDependencies:
     "@tiptap/core": ^2.7.0
     "@tiptap/pm": ^2.7.0
-  checksum: 10c0/aba952c5f3f90197999a02dd284d32e01bdd94c393ba09e44edb486e6c07134f3f4ab4d23f4af7bf5e8a4d6f13aaf1c781c519ac20cf4d7d0b6c4cbe869777c9
+  checksum: 10c0/e30f1ebebc4d21ea417599beb39f1d679088180686aca729a16a7c1fa1c9b04c057754403db0fc1a1cc913ecab615294f9f86c1151912d3e4427a898018e3b93
   languageName: node
   linkType: hard
 
@@ -6445,7 +6445,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"linkifyjs@npm:^4.2.0":
+"linkifyjs@npm:^4.3.2":
   version: 4.3.2
   resolution: "linkifyjs@npm:4.3.2"
   checksum: 10c0/1a85e6b368304a4417567fe5e38651681e3e82465590836942d1b4f3c834cc35532898eb1e2479f6337d9144b297d418eb708b6be8ed0b3dc3954a3588e07971
