@@ -7,8 +7,6 @@ use App\Entity\AdministratorRole;
 use App\Entity\Geo\Zone;
 use App\Repository\AdministratorRoleRepository;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -57,19 +55,11 @@ class AdministratorAdmin extends AbstractAdmin
         $this->administratorRoleHistoryHandler->handleChanges($object, $this->rolesBeforeUpdate);
     }
 
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'id';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
     protected function configureFormFields(FormMapper $form): void
     {
         /** @var Administrator $admin */
         $admin = $this->getSubject();
-        $isCreation = null === $admin->getId();
+        $isCreation = $this->isCreation();
 
         $form
             ->with('Informations', ['class' => 'col-md-6'])
@@ -131,6 +121,10 @@ class AdministratorAdmin extends AbstractAdmin
         $filter
             ->add('emailAddress', null, [
                 'label' => 'Email',
+                'show_filter' => true,
+            ])
+            ->add('activated', null, [
+                'label' => 'Activé',
                 'show_filter' => true,
             ])
             ->add('administratorRoles', null, [
