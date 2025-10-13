@@ -11,79 +11,43 @@ class MailchimpCampaignReport implements Timestampable
 {
     use TimestampableEntity;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     #[ORM\Id]
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $openTotal = 0;
+    private int $openTotal = 0;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $openUnique = 0;
+    private int $openUnique = 0;
 
-    /**
-     * @var int
-     */
-    #[ORM\Column(type: 'integer')]
-    private $openRate = 0;
+    #[ORM\Column(type: 'float')]
+    private float $openRate = 0;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastOpen;
+    private ?\DateTime $lastOpen = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $clickTotal = 0;
+    private int $clickTotal = 0;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $clickUnique = 0;
+    private int $clickUnique = 0;
 
-    /**
-     * @var int
-     */
-    #[ORM\Column(type: 'integer')]
-    private $clickRate = 0;
+    #[ORM\Column(type: 'float')]
+    private float $clickRate = 0;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastClick;
+    private ?\DateTime $lastClick = null;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $emailSent = 0;
+    private int $emailSent = 0;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'integer')]
-    private $unsubscribed = 0;
+    private int $unsubscribed = 0;
 
-    /**
-     * @var int
-     */
-    #[ORM\Column(type: 'integer')]
-    private $unsubscribedRate = 0;
+    #[ORM\Column(type: 'float')]
+    private float $unsubscribedRate = 0;
 
     public function getId(): ?int
     {
@@ -110,12 +74,12 @@ class MailchimpCampaignReport implements Timestampable
         $this->openUnique = $openUnique;
     }
 
-    public function getOpenRate(): int
+    public function getOpenRate(): float
     {
         return $this->openRate;
     }
 
-    public function setOpenRate(int $openRate): void
+    public function setOpenRate(float $openRate): void
     {
         $this->openRate = $openRate;
     }
@@ -150,12 +114,12 @@ class MailchimpCampaignReport implements Timestampable
         $this->clickUnique = $clickUnique;
     }
 
-    public function getClickRate(): int
+    public function getClickRate(): float
     {
         return $this->clickRate;
     }
 
-    public function setClickRate(int $clickRate): void
+    public function setClickRate(float $clickRate): void
     {
         $this->clickRate = $clickRate;
     }
@@ -190,12 +154,12 @@ class MailchimpCampaignReport implements Timestampable
         $this->unsubscribed = $unsubscribed;
     }
 
-    public function getUnsubscribedRate(): int
+    public function getUnsubscribedRate(): float
     {
         return $this->unsubscribedRate;
     }
 
-    public function setUnsubscribedRate(int $unsubscribedRate): void
+    public function setUnsubscribedRate(float $unsubscribedRate): void
     {
         $this->unsubscribedRate = $unsubscribedRate;
     }

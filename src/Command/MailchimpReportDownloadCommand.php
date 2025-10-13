@@ -73,10 +73,11 @@ class MailchimpReportDownloadCommand extends Command
             foreach ($paginator->getIterator() as $campaign) {
                 $this->io->progressAdvance();
                 $this->updateReport($campaign);
+                $this->entityManager->flush();
+                usleep(500);
                 ++$offset;
             }
 
-            $this->entityManager->flush();
             $this->entityManager->clear();
 
             $paginator->getQuery()->setFirstResult($offset);
@@ -118,7 +119,7 @@ class MailchimpReportDownloadCommand extends Command
 
         $report->setOpenTotal($this->propertyAccessor->getValue($data, '[opens][opens_total]'));
         $report->setOpenUnique($this->propertyAccessor->getValue($data, '[opens][unique_opens]'));
-        $report->setOpenRate($this->propertyAccessor->getValue($data, '[opens][open_rate]'));
+        $report->setOpenRate(($rate = $this->propertyAccessor->getValue($data, '[opens][open_rate]')) ? round($rate * 100.0, 2) : 0);
         $report->setLastOpen(
             ($date = $this->propertyAccessor->getValue($data, '[opens][last_open]')) ?
                 new \DateTime($date) :
@@ -127,16 +128,16 @@ class MailchimpReportDownloadCommand extends Command
 
         $report->setClickTotal($this->propertyAccessor->getValue($data, '[clicks][clicks_total]'));
         $report->setClickUnique($this->propertyAccessor->getValue($data, '[clicks][unique_clicks]'));
-        $report->setClickRate($this->propertyAccessor->getValue($data, '[clicks][click_rate]'));
+        $report->setClickRate(($rate = $this->propertyAccessor->getValue($data, '[clicks][click_rate]')) ? round($rate * 100.0, 2) : 0);
         $report->setLastClick(
             ($date = $this->propertyAccessor->getValue($data, '[clicks][last_click]')) ?
                 new \DateTime($date) :
                 null
         );
 
-        $report->setEmailSent($this->propertyAccessor->getValue($data, '[emails_sent]'));
-        $report->setUnsubscribed($this->propertyAccessor->getValue($data, '[unsubscribed]'));
-        $report->setUnsubscribedRate($this->propertyAccessor->getValue($data, '[list_stats][unsub_rate]'));
+        $report->setEmailSent($emailSent = $this->propertyAccessor->getValue($data, '[emails_sent]'));
+        $report->setUnsubscribed($unsub = $this->propertyAccessor->getValue($data, '[unsubscribed]'));
+        $report->setUnsubscribedRate($emailSent > 0 ? round($unsub * 100.0 / $emailSent, 2) : 0);
 
         $campaign->setReport($report);
     }
