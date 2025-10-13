@@ -1706,6 +1706,7 @@
                     "type": "tidelift"
                 }
             ],
+            "abandoned": true,
             "time": "2022-05-20T20:07:39+00:00"
         },
         {
@@ -1887,16 +1888,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.10.2",
+            "version": "3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "c6c16cf787eaba3112203dfcd715fa2059c62282"
+                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c6c16cf787eaba3112203dfcd715fa2059c62282",
-                "reference": "c6c16cf787eaba3112203dfcd715fa2059c62282",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/65edaca19a752730f290ec2fb89d593cb40afb43",
+                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43",
                 "shasum": ""
             },
             "require": {
@@ -1912,14 +1913,14 @@
             },
             "require-dev": {
                 "doctrine/cache": "^1.11|^2.0",
-                "doctrine/coding-standard": "13.0.1",
+                "doctrine/coding-standard": "14.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "2.1.22",
+                "phpstan/phpstan": "2.1.30",
                 "phpstan/phpstan-strict-rules": "^2",
-                "phpunit/phpunit": "9.6.23",
-                "slevomat/coding-standard": "8.16.2",
-                "squizlabs/php_codesniffer": "3.13.1",
+                "phpunit/phpunit": "9.6.29",
+                "slevomat/coding-standard": "8.24.0",
+                "squizlabs/php_codesniffer": "4.0.0",
                 "symfony/cache": "^5.4|^6.0|^7.0",
                 "symfony/console": "^4.4|^5.4|^6.0|^7.0"
             },
@@ -1981,7 +1982,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.10.2"
+                "source": "https://github.com/doctrine/dbal/tree/3.10.3"
             },
             "funding": [
                 {
@@ -1997,7 +1998,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-04T23:51:27+00:00"
+            "time": "2025-10-09T09:05:12+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -2787,16 +2788,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "0ea965320cec355dba75031c1b23d4c78362e3ff"
+                "reference": "23069c8cfc19d7825e9fbe3341227d8c51eff2bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/0ea965320cec355dba75031c1b23d4c78362e3ff",
-                "reference": "0ea965320cec355dba75031c1b23d4c78362e3ff",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/23069c8cfc19d7825e9fbe3341227d8c51eff2bc",
+                "reference": "23069c8cfc19d7825e9fbe3341227d8c51eff2bc",
                 "shasum": ""
             },
             "require": {
@@ -2863,7 +2864,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.4.0"
+                "source": "https://github.com/doctrine/persistence/tree/3.4.1"
             },
             "funding": [
                 {
@@ -2879,7 +2880,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-30T19:48:12+00:00"
+            "time": "2025-09-29T06:33:58+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
@@ -19879,21 +19880,21 @@
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "a06db6b81ff20a2980bf92063d80c013bb8b4b7c"
+                "reference": "cd58d7738fe1fea1dbfd3e3f3bb421ee92d45e10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/a06db6b81ff20a2980bf92063d80c013bb8b4b7c",
-                "reference": "a06db6b81ff20a2980bf92063d80c013bb8b4b7c",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/cd58d7738fe1fea1dbfd3e3f3bb421ee92d45e10",
+                "reference": "cd58d7738fe1fea1dbfd3e3f3bb421ee92d45e10",
                 "shasum": ""
             },
             "require": {
                 "doctrine/data-fixtures": "^2.0",
-                "doctrine/doctrine-bundle": "^2.2",
+                "doctrine/doctrine-bundle": "^2.2 || ^3.0",
                 "doctrine/orm": "^2.14.0 || ^3.0",
                 "doctrine/persistence": "^2.4 || ^3.0 || ^4.0",
                 "php": "^8.1",
@@ -19909,7 +19910,7 @@
                 "doctrine/dbal": "< 3"
             },
             "require-dev": {
-                "doctrine/coding-standard": "13.0.0",
+                "doctrine/coding-standard": "14.0.0",
                 "phpstan/phpstan": "2.1.11",
                 "phpunit/phpunit": "^10.5.38 || 11.4.14"
             },
@@ -19945,7 +19946,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineFixturesBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineFixturesBundle/tree/4.1.0"
+                "source": "https://github.com/doctrine/DoctrineFixturesBundle/tree/4.2.0"
             },
             "funding": [
                 {
@@ -19961,7 +19962,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-26T10:56:26+00:00"
+            "time": "2025-10-12T16:50:54+00:00"
         },
         {
             "name": "evenement/evenement",
