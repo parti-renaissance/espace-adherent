@@ -125,6 +125,11 @@ class MembershipRequest implements DonationRequestInterface
         return $this->amount;
     }
 
+    public function setAmount(?string $amount): void
+    {
+        $this->amount = null !== $amount ? (int) $amount : null;
+    }
+
     public function getEmailAddress(): ?string
     {
         return $this->email;
