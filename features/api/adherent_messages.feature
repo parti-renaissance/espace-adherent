@@ -946,10 +946,6 @@ Feature:
             """
             [
                 {
-                    "uuid": "@uuid@",
-                    "image_url": null,
-                    "first_name": "Referent",
-                    "last_name": "Referent",
                     "instance": "Assemblée départementale",
                     "role": "Président",
                     "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
@@ -958,7 +954,56 @@ Feature:
                         "soft": "#E8F0FF",
                         "hover": "#2F6FE0",
                         "active": "#1C5CD8"
-                    }
+                    },
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent",
+                    "image_url": null
+                },
+                {
+                    "instance": "Assemblée départementale",
+                    "role": "Responsable mobilisation",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
+                    },
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "image_url": null
+                },
+                {
+                    "instance": "Assemblée départementale",
+                    "role": "Responsable communication",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
+                    },
+                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                    "first_name": "Gisele",
+                    "last_name": "Berthoux",
+                    "image_url": null
+                },
+                {
+                    "instance": "Assemblée départementale",
+                    "role": "Responsable mobilisation",
+                    "zone": "Seine-et-Marne, Hauts-de-Seine, Seine-Maritime, Nord, Bouches-du-Rhône",
+                    "theme": {
+                        "primary": "#3A7DFF",
+                        "soft": "#E8F0FF",
+                        "hover": "#2F6FE0",
+                        "active": "#1C5CD8"
+                    },
+                    "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
+                    "first_name": "Bob",
+                    "last_name": "Senateur (59)",
+                    "image_url": "http://test.renaissance.code/assets/images/profile/9c08a772fa1b36dc5ca3152bc3b1749d.jpg"
                 }
             ]
             """

@@ -17,6 +17,9 @@ class MyTeamRepository extends ServiceEntityRepository
     public function findOneByAdherentAndScope(Adherent $adherent, string $scope): ?MyTeam
     {
         return $this->createQueryBuilder('my_team')
+            ->select('my_team, owner, members')
+            ->leftJoin('my_team.owner', 'owner')
+            ->leftJoin('my_team.members', 'members')
             ->where('my_team.owner = :adherent AND my_team.scope = :scope')
             ->setParameters([
                 'adherent' => $adherent,
