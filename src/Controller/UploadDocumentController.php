@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\UserDocument;
+use App\Security\Voter\FileUploadVoter;
 use App\UserDocument\UserDocumentManager;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemException;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UploadDocumentController extends AbstractController
 {
-    #[IsGranted('FILE_UPLOAD', subject: 'type')]
+    #[IsGranted(FileUploadVoter::FILE_UPLOAD, subject: 'type')]
     #[Route(path: '/api/v3/upload/{type}', name: 'api_filebrowser_upload_v3', methods: ['POST'])]
     public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
     {

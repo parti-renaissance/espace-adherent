@@ -2,7 +2,6 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Documents\DocumentPermissions;
 use App\Entity\Adherent;
 use App\Entity\UserDocument;
 use App\Scope\ScopeGeneratorResolver;
@@ -17,7 +16,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     public static function provideAnonymousCases(): iterable
     {
         foreach (UserDocument::ALL_TYPES as $type) {
-            yield [false, true, DocumentPermissions::FILE_UPLOAD, $type];
+            yield [false, true, FileUploadVoter::FILE_UPLOAD, $type];
         }
     }
 
@@ -48,7 +47,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     {
         $adherent = $this->getAdherentMock(false);
 
-        $this->assertGrantedForAdherent(false, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
+        $this->assertGrantedForAdherent(false, true, $adherent, FileUploadVoter::FILE_UPLOAD, $type);
     }
 
     /**

@@ -21,6 +21,7 @@ class UserDocument
     public const TYPE_EVENT = 'event';
     public const TYPE_REFERENT = 'referent';
     public const TYPE_ADHERENT_MESSAGE = 'adherent_message';
+    public const TYPE_PUBLICATION = 'publication';
     public const TYPE_NEWS = 'news';
 
     public const ALL_TYPES = [
