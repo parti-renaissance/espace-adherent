@@ -8,12 +8,12 @@ use MyCLabs\Enum\Enum;
 /**
  * @method static WRITE_USERS()
  * @method static READ_USERS()
- * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
  * @method static READ_STATS()
  * @method static JEMARCHE_APP()
  * @method static CRM_PARIS()
  * @method static READ_PROFILE()
+ * @method static READ_PROFILE_ROLE()
  * @method static WRITE_PROFILE()
  */
 final class Scope extends Enum implements ScopeEntityInterface
@@ -22,7 +22,6 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const WRITE_EVENT = 'write:event';
 
     public const READ_USERS = 'read:users';
-    public const READ_UNSUBCRIPTIONS = 'read:unsubscriptions';
     public const READ_TYPEFORMS = 'read:typeforms';
     public const READ_STATS = 'read:stats';
 
@@ -30,6 +29,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const JEMENGAGE_ADMIN = 'jemengage_admin';
     public const CRM_PARIS = 'crm_paris';
     public const READ_PROFILE = 'read:profile';
+    public const READ_PROFILE_ROLE = 'read:profile:role';
     public const WRITE_PROFILE = 'write:profile';
 
     public const WRITE_GENERAL_CONVENTIONS = 'write:general_conventions';
