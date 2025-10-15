@@ -129,7 +129,6 @@ class GetTimelineFeedsController extends AbstractController
             TimelineFeedTypeEnum::EVENT,
             TimelineFeedTypeEnum::ACTION,
             TimelineFeedTypeEnum::PUBLICATION,
-            TimelineFeedTypeEnum::PRIVATE_MASSAGE,
         ]];
 
         return $this->json($dataProvider->findItems($user, $page, $parts, $tagFilters));
