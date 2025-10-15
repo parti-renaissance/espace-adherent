@@ -47,30 +47,29 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
             $message->setLabel($message->getSubject());
         }
 
-        if (!$message->getInstanceScope()) {
-            $message->setInstanceScope($scope->getMainCode());
-        }
-
         $message->setSource(PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? AdherentMessageInterface::SOURCE_CADRE : AdherentMessageInterface::SOURCE_VOX);
 
-        if (!$message->getSender() && $scope) {
-            $message->setSender($scope->getMainUser());
-        }
+        if ($scope) {
+            if (!$message->getInstanceScope()) {
+                $message->setInstanceScope($scope->getMainCode());
+            }
 
-        if ($message->getSender() && $message->getSender() !== $message->getAuthor()) {
-            $message->setAuthorRole(null);
-            $sender = $message->getSender();
+            if (!$message->teamOwner) {
+                $message->teamOwner = $scope->getMainUser();
+            }
+
+            if (!$message->getSender()) {
+                $message->setSender($scope->getMainUser());
+            }
+
+            $message->updateSenderDataFromScope($scope);
 
             if (
-                $sender
-                && $scope
-                && ($team = $this->myTeamRepository->findOneByAdherentAndScope($teamOwner = $scope->getMainUser(), $scope->getMainCode()))
+                ($team = $this->myTeamRepository->findOneByAdherentAndScope($teamOwner = $scope->getMainUser(), $scope->getMainCode()))
+                && $teamOwner !== $message->getSender()
+                && ($member = $this->memberRepository->findMemberInTeam($team, $message->getSender()))
             ) {
-                if ($teamOwner === $sender) {
-                    $message->setAuthorRole($scope->getMainRoleName());
-                } elseif ($member = $this->memberRepository->findMemberInTeam($team, $sender)) {
-                    $message->setAuthorRole(RoleEnum::LABELS[$member->getRole()] ?? $member->getRole());
-                }
+                $message->senderRole = RoleEnum::LABELS[$member->getRole()] ?? $member->getRole();
             }
         }
 

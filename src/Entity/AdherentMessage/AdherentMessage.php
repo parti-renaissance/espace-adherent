@@ -35,6 +35,7 @@ use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
+use App\Scope\Scope;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,6 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherent_messages/available-senders',
             controller: GetAvailableSendersController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])",
             read: false,
         ),
         new Put(
@@ -156,6 +158,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    public ?Adherent $teamOwner = null;
+
     #[Groups(['message_read_list', 'message_read', 'message_write'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
@@ -165,7 +171,19 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public ?string $senderEmail = null;
 
     #[ORM\Column(nullable: true)]
+    public ?string $senderRole = null;
+
+    #[ORM\Column(nullable: true)]
     public ?string $senderName = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $senderInstance = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $senderZone = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $senderTheme = null;
 
     /**
      * @var string
@@ -352,6 +370,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     #[Groups('message_read_list')]
     public function getFromName(): ?string
     {
+        if ($this->senderName) {
+            return trim($this->senderName).$this->getFromNameSuffix();
+        }
+
         if ($this->sender) {
             return trim($this->sender->getFullName()).$this->getFromNameSuffix();
         }
@@ -363,7 +385,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         return null;
     }
 
-    protected function getFromNameSuffix(): string
+    private function getFromNameSuffix(): string
     {
         return ' | Renaissance';
     }
@@ -421,7 +443,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         return null;
     }
 
-    protected function getScope(): ?string
+    private function getScope(): ?string
     {
         return null;
     }
@@ -429,6 +451,14 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function getSender(): ?Adherent
     {
         return $this->sender;
+    }
+
+    public function updateSenderDataFromScope(Scope $scope): void
+    {
+        $this->senderInstance = $scope->getScopeInstance();
+        $this->senderRole = $scope->getMainRoleName();
+        $this->senderTheme = $scope->getAttribute('theme');
+        $this->senderZone = implode(', ', $scope->getZoneNames());
     }
 
     public function setSender(Adherent $sender): void

@@ -32,11 +32,10 @@ class AdherentMessageCollectionExtension implements QueryCollectionExtensionInte
         }
 
         $queryBuilder
-            ->andWhere(\sprintf('%1$s.author = :author OR (%1$s.status = :draft AND %1$s.instanceScope = :instance_code AND %1$s.authorZone = :zone)', $queryBuilder->getRootAliases()[0]))
+            ->andWhere(\sprintf('%1$s.author = :author OR (%1$s.status = :draft AND %1$s.teamOwner = :team_owner)', $queryBuilder->getRootAliases()[0]))
             ->setParameter('author', $scope->getCurrentUser())
             ->setParameter('draft', AdherentMessageStatusEnum::DRAFT)
-            ->setParameter('instance_code', $scope->getMainCode())
-            ->setParameter('zone', implode(', ', $scope->getZoneNames()))
+            ->setParameter('team_owner', $scope->getMainUser())
         ;
     }
 }
