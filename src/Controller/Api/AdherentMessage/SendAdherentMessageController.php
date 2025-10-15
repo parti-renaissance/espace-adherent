@@ -26,7 +26,7 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        if ($adherent->sandboxMode || $message->getAuthor()?->sandboxMode) {
+        if ($adherent->sandboxMode || $message->getAuthor()?->sandboxMode || $message->getSender()?->sandboxMode) {
             throw new \RuntimeException('An error occurred. Please try again later.');
         }
 
