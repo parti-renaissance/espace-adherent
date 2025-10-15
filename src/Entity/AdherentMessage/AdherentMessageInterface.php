@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\IndexableEntityInterface;
+use App\Scope\Scope;
 use Ramsey\Uuid\UuidInterface;
 
 interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEntityInterface
@@ -73,6 +74,10 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
     public function getSender(): ?Adherent;
 
     public function setSender(Adherent $sender): void;
+
+    public function updateSenderDataFromScope(Scope $scope): void;
+
+    public function setInstanceScope(?string $instanceScope): void;
 
     public function isStatutory(): bool;
 }

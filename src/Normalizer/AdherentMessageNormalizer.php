@@ -33,10 +33,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
             if (!empty($data['sender'])) {
                 $data['sender'] = array_merge($data['sender'], [
-                    'instance' => $object->getAuthorInstance(),
-                    'role' => $object->getAuthorRole(),
-                    'zone' => $object->getAuthorZone(),
-                    'theme' => $object->getAuthorTheme(),
+                    'instance' => $object->senderInstance,
+                    'role' => $object->senderRole,
+                    'zone' => $object->senderZone,
+                    'theme' => $object->senderTheme,
                 ]);
             }
 

@@ -413,6 +413,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     private function preparedMessage(string $instanceScope): AdherentMessageInterface
     {
         $message = new AdherentMessage(Uuid::uuid4(), $this->adherentDummy);
+        $message->setSender($this->adherentDummy);
         $message->setSubject('Subject');
         $message->setContent('Content');
         $message->setInstanceScope($instanceScope);

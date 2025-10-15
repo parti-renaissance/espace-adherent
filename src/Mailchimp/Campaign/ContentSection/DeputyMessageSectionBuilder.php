@@ -17,17 +17,17 @@ class DeputyMessageSectionBuilder implements ContentSectionBuilderInterface
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
     {
         $request
-            ->addSection('full_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFullName()))
-            ->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()))
-            ->addSection('district_name', (string) $message->getAuthor()->getDeputyZone())
-            ->addSection('reply_to_button', \sprintf(
+            ->addSection('full_name', StringCleaner::htmlspecialchars((string) $message->getSender()?->getFullName()))
+            ->addSection('first_name', StringCleaner::htmlspecialchars((string) $message->getSender()?->getFirstName()))
+            ->addSection('district_name', (string) $message->senderZone)
+            ->addSection('reply_to_button', $message->senderEmail ? \sprintf(
                 '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
-                $email = $message->getAuthor()->getEmailAddress()
-            ))
-            ->addSection('reply_to_link', \sprintf(
+                $message->senderEmail
+            ) : '')
+            ->addSection('reply_to_link', $message->senderEmail ? \sprintf(
                 '<a title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
-                $email
-            ))
+                $message->senderEmail
+            ) : '')
         ;
     }
 }

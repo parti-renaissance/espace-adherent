@@ -39,14 +39,14 @@ class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface
                 ),
                 StringCleaner::htmlspecialchars($committee->getName())
             ))
-            ->addSection('reply_to_button', \sprintf(
+            ->addSection('reply_to_button', $message->senderEmail ? \sprintf(
                 '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
-                $email = $message->getAuthor()->getEmailAddress()
-            ))
-            ->addSection('reply_to_link', \sprintf(
+                $message->senderEmail
+            ) : '')
+            ->addSection('reply_to_link', $message->senderEmail ? \sprintf(
                 '<a title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
-                $email
-            ))
+                $message->senderEmail
+            ) : '')
         ;
     }
 }

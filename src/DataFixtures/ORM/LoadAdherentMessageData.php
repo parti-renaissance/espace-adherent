@@ -50,10 +50,11 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
         // message draft
         $message1 = AdherentMessage::createFromAdherent(
-            $this->getAuthor(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY),
+            $author = $this->getAuthor(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY),
             Uuid::fromString(self::MESSAGE_01_UUID)
         );
-
+        $message1->teamOwner = $author;
+        $message1->setSender($author);
         $message1->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $message1->setContent($faker->randomHtml());
         $message1->setSubject($faker->sentence(5));

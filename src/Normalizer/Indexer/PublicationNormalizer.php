@@ -5,6 +5,7 @@ namespace App\Normalizer\Indexer;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -35,6 +36,51 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthorObject(object $object): ?Adherent
     {
         return $object->getSender();
+    }
+
+    /**
+     * 'role' => $this->getAuthorRole($object),
+     * 'instance' => $this->getAuthorInstance($object),
+     * 'zone' => $this->getAuthorZone($object),
+     * 'scope' => $this->getAuthorScope($object),
+     * 'image_url' => $this->getAuthorImageUrl($object),
+     * 'theme' => $this->getAuthorTheme($object),
+     */
+
+    /** @param AdherentMessage $object */
+    protected function getAuthorRole(object $object): ?string
+    {
+        return $object->senderRole;
+    }
+
+    /** @param AdherentMessage $object */
+    protected function getAuthorInstance(object $object): ?string
+    {
+        return $object->senderInstance;
+    }
+
+    /** @param AdherentMessage $object */
+    protected function getAuthorZone(object $object): ?string
+    {
+        return $object->senderZone;
+    }
+
+    /** @param AdherentMessage $object */
+    protected function getAuthorTheme(object $object): ?array
+    {
+        return $object->senderTheme;
+    }
+
+    /** @param AdherentMessage $object */
+    protected function getAuthorImageUrl(object $object): ?string
+    {
+        $sender = $object->getSender();
+
+        return $sender?->getImageName() ? $this->urlGenerator->generate(
+            'asset_url',
+            ['path' => $sender->getImagePath()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ) : null;
     }
 
     /** @param AdherentMessage $object */
