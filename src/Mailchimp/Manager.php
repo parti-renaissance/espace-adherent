@@ -13,6 +13,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
@@ -32,6 +33,8 @@ use App\Newsletter\NewsletterValueObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements LoggerAwareInterface
@@ -47,21 +50,16 @@ class Manager implements LoggerAwareInterface
     public const INTEREST_KEY_COORDINATOR = 'COORDINATOR';
     public const INTEREST_KEY_PROCURATION_MANAGER = 'PROCURATION_MANAGER';
 
-    private $driver;
     private $requestBuildersLocator;
-    private $eventDispatcher;
-    private $mailchimpObjectIdMapping;
 
     public function __construct(
-        Driver $driver,
+        private readonly Driver $driver,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        private readonly MessageBusInterface $bus,
         ContainerInterface $requestBuildersLocator,
-        EventDispatcherInterface $eventDispatcher,
-        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
     ) {
-        $this->driver = $driver;
         $this->requestBuildersLocator = $requestBuildersLocator;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     /**
@@ -299,6 +297,8 @@ class Manager implements LoggerAwareInterface
             $success ? $campaign->markAsSent() : $campaign->markAsError($this->driver->getLastError());
         }
 
+        $this->bus->dispatch(new SyncReportCommand($message->getUuid()), [new DelayStamp(300_000)]);
+
         return $globalStatus;
     }
 
@@ -431,6 +431,20 @@ class Manager implements LoggerAwareInterface
         $this->checkMessageExternalId($campaign);
 
         return $this->driver->getReportData($campaign->getExternalId());
+    }
+
+    public function getReportOpenData(MailchimpCampaign $campaign, int $offset): array
+    {
+        $this->checkMessageExternalId($campaign);
+
+        return $this->driver->getReportOpenData($campaign->getExternalId(), $offset);
+    }
+
+    public function getReportClickData(MailchimpCampaign $campaign, int $offset): array
+    {
+        $this->checkMessageExternalId($campaign);
+
+        return $this->driver->getReportClickData($campaign->getExternalId(), $offset);
     }
 
     private function checkMessageExternalId(MailchimpCampaign $campaign): void

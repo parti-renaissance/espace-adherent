@@ -1863,4 +1863,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getOneOrNullResult()
         ;
     }
+
+    public function mapIdsByEmails(array $emails): array
+    {
+        if (empty($emails)) {
+            return [];
+        }
+
+        $result = $this->createQueryBuilder('a')
+            ->select('a.id, a.emailAddress')
+            ->where('a.emailAddress IN (:emails)')
+            ->setParameter('emails', $emails)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_column($result, 'id', 'emailAddress');
+    }
 }
