@@ -81,14 +81,17 @@ class AppHit
     public ?SystemEnum $appSystem = null;
 
     #[Groups(['hit:write'])]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     public ?string $appVersion = null;
 
     #[Groups(['hit:write'])]
     #[ORM\Column(type: 'datetime')]
     public \DateTimeInterface $appDate;
 
-    #[ORM\Column(type: 'json', options: ['jsonb' => true])]
+    #[ORM\Column(unique: true, nullable: true)]
+    public ?string $fingerprint = null;
+
+    #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
     public array $raw = [];
 
     public function __construct()

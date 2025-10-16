@@ -43,6 +43,7 @@ use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -493,13 +494,16 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     private function createHandler(AdherentMessageInterface $message): AdherentMessageChangeCommandHandler
     {
+        $serviceLocator = $this->creatRequestBuildersLocator();
+
         return new AdherentMessageChangeCommandHandler(
             $this->createRepositoryMock($message),
             new Manager(
                 new Driver($this->clientMock, 'test_main'),
-                $this->creatRequestBuildersLocator(),
                 $this->createEventDispatcher(),
-                $this->mailchimpMapping
+                $this->mailchimpMapping,
+                $this->createBus(),
+                $serviceLocator,
             ),
             $this->createMock(ObjectManager::class)
         );
@@ -511,6 +515,11 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $eventDispatcher->addSubscriber(new UpdateCampaignSubjectSubscriber());
 
         return $eventDispatcher;
+    }
+
+    private function createBus(): MessageBusInterface
+    {
+        return $this->createMock(MessageBusInterface::class);
     }
 
     private function createMockResponse(string $content, int $statusCode = 200): ResponseInterface

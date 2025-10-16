@@ -215,9 +215,23 @@ class Driver implements LoggerAwareInterface
 
     public function getReportData(string $campaignId): array
     {
-        $response = $this->send('GET', \sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
+        $response = $this->send('GET', \sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId));
 
         return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
+    }
+
+    public function getReportOpenData(string $campaignId, int $offset): array
+    {
+        $response = $this->send('GET', \sprintf('/reports/%s/open-details?count=1000&offset=%d&fields=members.email_address,members.opens_count,members.proxy_excluded_opens_count,members.opens', $campaignId, $offset));
+
+        return $this->isSuccessfulResponse($response) ? $response->toArray()['members'] : [];
+    }
+
+    public function getReportClickData(string $campaignId, int $offset): array
+    {
+        $response = $this->send('GET', \sprintf('/reports/%s/email-activity?count=1000&offset=%d&fields=emails.email_address,emails.activity', $campaignId, $offset));
+
+        return $this->isSuccessfulResponse($response) ? $response->toArray()['emails'] : [];
     }
 
     public function getLastError(): ?string

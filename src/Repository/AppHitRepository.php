@@ -34,6 +34,7 @@ class AppHitRepository extends ServiceEntityRepository
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_direct_link, h.adherent, null)) as unique_opens__direct_link')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_impression AND h.source = :source_list, h.id, null)) as unique_impressions__list')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_list, h.adherent, null)) as unique_opens__list')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_email, h.adherent, null)) as unique_opens__email')
 
             // Clicks
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click, h.adherent, null)) as unique_clicks')
@@ -48,6 +49,7 @@ class AppHitRepository extends ServiceEntityRepository
                 'source_timeline' => 'page_timeline',
                 'source_push' => 'push_notification',
                 'source_direct_link' => 'direct_link',
+                'source_email' => 'email',
                 'source_list' => match ($type) {
                     TargetTypeEnum::Event => 'page_events',
                     TargetTypeEnum::Action => 'page_actions',
@@ -66,6 +68,7 @@ class AppHitRepository extends ServiceEntityRepository
             'unique_opens__notification',
             'unique_opens__direct_link',
             'unique_opens__list',
+            'unique_opens__email',
             'unique_clicks',
             'unique_clicks__total_rate',
         ], 0), $qb->getQuery()->getOneOrNullResult() ?? []);
