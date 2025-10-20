@@ -22,6 +22,7 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
 
         $faker = Factory::create('fr_FR');
         $pushTokenRepository = $manager->getRepository(PushToken::class);
+        $pushTokens = $pushTokenRepository->findAll();
 
         foreach ([
             'adherent-1',
@@ -38,7 +39,6 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
             'president-ad-1',
         ] as $i => $ref) {
             $user = $this->getReference($ref, Adherent::class);
-            $pushTokens = $pushTokenRepository->findBy(['adherent' => $user]);
 
             $client = $clientVox;
             $appSystem = SystemEnum::all()[random_int(0, 2)];
@@ -54,8 +54,8 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
             $session->userAgent = $faker->userAgent();
             $session->ip = $faker->ipv4();
 
-            if ($pushTokens) {
-                $session->addPushToken($pushTokens[0]);
+            foreach ($pushTokens as $token) {
+                $session->addPushToken($token);
             }
 
             $nbPast = random_int(0, 3);

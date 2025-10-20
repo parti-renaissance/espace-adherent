@@ -20,7 +20,7 @@ class Aggregator
         /** @var ProviderInterface $provider */
         foreach ($this->providers as $provider) {
             if ($provider->support($type)) {
-                $output->push($provider->provide($type, $objectUuid));
+                $output->push($provider->provide($type, $objectUuid, $output));
             }
         }
 

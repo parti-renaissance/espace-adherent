@@ -2,7 +2,9 @@
 
 namespace App\Mailchimp\Campaign\Report\Handler;
 
+use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpCampaignReport;
 use App\JeMengage\Hit\EventTypeEnum;
@@ -43,6 +45,10 @@ class SyncReportCommandHandler
             return;
         }
 
+        if ($command->firstRun && AdherentMessageInterface::SOURCE_VOX === $adherentMessage->getSource()) {
+            $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
+        }
+
         foreach ($adherentMessage->getMailchimpCampaigns() as $campaign) {
             $this->saveOpens($adherentMessage, $campaign);
             $this->saveClicks($adherentMessage, $campaign);
@@ -54,7 +60,7 @@ class SyncReportCommandHandler
         }
     }
 
-    private function calculateDelay(\DateTimeInterface $originTs): int
+    private function calculateDelay(\DateTimeInterface $originTs): ?int
     {
         $age = (new \DateTime())->getTimestamp() - $originTs->getTimestamp();
 
