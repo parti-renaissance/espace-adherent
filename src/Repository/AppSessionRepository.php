@@ -60,4 +60,17 @@ class AppSessionRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
+    public function findByPushToken(string $pushToken): ?AppSession
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect('a')
+            ->innerJoin('s.adherent', 'a')
+            ->innerJoin('s.pushTokenLinks', 'link')
+            ->innerJoin('link.pushToken', 'token', Join::WITH, 'token.token = :push_token')
+            ->setParameter('push_token', $pushToken)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

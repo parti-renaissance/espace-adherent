@@ -30,7 +30,7 @@ class AppSessionPushTokenLink
         $this->uuid = Uuid::uuid4();
         $this->appSession = $appSession;
         $this->pushToken = $pushToken;
-        $this->lastActivityDate = new \DateTime();
+        $this->lastActivityDate = $this->createdAt = new \DateTime();
     }
 
     public function unsubscribe(\DateTime $dateTime): void
