@@ -3,12 +3,14 @@
 namespace App\Firebase;
 
 use App\Entity\Notification as NotificationEntity;
+use App\Firebase\Event\PushNotificationSentEvent;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreait\Firebase\Contract\Messaging as BaseMessaging;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JeMarcheMessaging
 {
@@ -17,6 +19,7 @@ class JeMarcheMessaging
     public function __construct(
         private readonly BaseMessaging $messaging,
         private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -40,6 +43,8 @@ class JeMarcheMessaging
 
                 $notificationEntity->setDelivered();
                 $this->entityManager->flush();
+
+                $this->eventDispatcher->dispatch(new PushNotificationSentEvent($notificationEntity));
             }
         } else {
             throw new \InvalidArgumentException(\sprintf('%s" is neither a topic nor a multicast notification.', $notification::class));

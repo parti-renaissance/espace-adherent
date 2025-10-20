@@ -69,8 +69,6 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function setSource(string $source): void;
 
-    public function isCompatibleWithScope(string $scope): bool;
-
     public function getSender(): ?Adherent;
 
     public function setSender(Adherent $sender): void;

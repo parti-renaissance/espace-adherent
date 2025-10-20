@@ -6,19 +6,13 @@ use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\GeneratedValue]
-    #[ORM\Id]
-    private $id;
 
     /**
      * @var string
@@ -50,11 +44,8 @@ class Notification
     #[ORM\Column(nullable: true)]
     private $topic;
 
-    /**
-     * @var string|null
-     */
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    private $tokens;
+    private ?array $tokens;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $data;
@@ -71,6 +62,7 @@ class Notification
         ?string $topic = null,
         ?array $tokens = null,
     ) {
+        $this->uuid = Uuid::uuid4();
         $this->notificationClass = $notificationClass;
         $this->title = $title;
         $this->body = $body;

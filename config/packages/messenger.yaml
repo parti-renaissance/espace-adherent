@@ -133,13 +133,27 @@ framework:
                         }
                     queues:
                         cronjob: { binding_keys: ['async.cronjob'] }
+            sequential:
+                dsn: '%env(RABBITMQ_DSN)%'
+                retry_strategy:
+                    delay: 10000
+                options:
+                    exchange:
+                        {
+                            name: 'sequential-topic',
+                            type: 'topic',
+                            default_publish_routing_key: 'async.sequential',
+                        }
+                    queues:
+                        cronjob: { binding_keys: ['async.sequential'] }
         routing:
-            App\Messenger\Message\CronjobMessageInterface: cronjob
             App\Chatbot\Command\RefreshThreadCommand: chatbot
+            App\Event\Command\EventNotificationCommandInterface: event
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
-            App\Pap\Command\AsynchronousMessageInterface: pap
             App\Mailer\Command\AsyncSendMessageCommand: notification
             App\Messenger\Message\AsynchronousMessageInterface: default
+            App\Messenger\Message\CronjobMessageInterface: cronjob
+            App\Messenger\Message\SequentialMessageInterface: sequential
             App\Notifier\AsyncNotificationInterface: notification
-            App\Event\Command\EventNotificationCommandInterface: event
+            App\Pap\Command\AsynchronousMessageInterface: pap

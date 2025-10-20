@@ -319,7 +319,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
         $status &= (!$this->filter || $this->filter->isSynchronized());
 
-        return $status;
+        return (bool) $status;
     }
 
     public function setSynchronized(bool $value): void
@@ -427,11 +427,6 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->source = $source;
     }
 
-    public function isCompatibleWithScope(string $scope): bool
-    {
-        return $scope === $this->getScope();
-    }
-
     public function getMailchimpId(): ?string
     {
         foreach ($this->mailchimpCampaigns as $campaign) {
@@ -440,11 +435,6 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
             }
         }
 
-        return null;
-    }
-
-    private function getScope(): ?string
-    {
         return null;
     }
 
@@ -517,5 +507,13 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
+    }
+
+    public function getUnsubscribedCount(): int
+    {
+        return (int) array_sum(array_filter(array_map(
+            static fn (MailchimpCampaign $campaign) => $campaign->getReport()?->getUnsubscribed(),
+            $this->getMailchimpCampaigns()
+        )));
     }
 }

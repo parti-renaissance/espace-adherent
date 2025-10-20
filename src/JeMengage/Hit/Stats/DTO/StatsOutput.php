@@ -53,4 +53,9 @@ class StatsOutput implements \JsonSerializable
             }
         }
     }
+
+    public function get(string $key): int|float|null
+    {
+        return $this->data[$key] ?? null;
+    }
 }

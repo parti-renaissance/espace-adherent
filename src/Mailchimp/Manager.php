@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp;
 
+use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -297,7 +298,8 @@ class Manager implements LoggerAwareInterface
             $success ? $campaign->markAsSent() : $campaign->markAsError($this->driver->getLastError());
         }
 
-        $this->bus->dispatch(new SyncReportCommand($message->getUuid()), [new DelayStamp(300_000)]);
+        $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
+        $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true), [new DelayStamp(300_000)]);
 
         return $globalStatus;
     }
@@ -438,6 +440,13 @@ class Manager implements LoggerAwareInterface
         $this->checkMessageExternalId($campaign);
 
         return $this->driver->getReportOpenData($campaign->getExternalId(), $offset);
+    }
+
+    public function getReportSentData(MailchimpCampaign $campaign, int $offset): array
+    {
+        $this->checkMessageExternalId($campaign);
+
+        return $this->driver->getReportSentData($campaign->getExternalId(), $offset);
     }
 
     public function getReportClickData(MailchimpCampaign $campaign, int $offset): array

@@ -98,4 +98,22 @@ class AppHit
     {
         $this->uuid = Uuid::uuid4();
     }
+
+    public function isImpression(): bool
+    {
+        return EventTypeEnum::Impression === $this->eventType;
+    }
+
+    public function updateFingerprintHash(): void
+    {
+        $this->fingerprint = hash('sha256', implode('|', array_filter([
+            $this->adherent?->getId(),
+            $this->activitySessionUuid->toString(),
+            $this->eventType->value,
+            $this->objectType?->value,
+            $this->objectId,
+            $this->source,
+            $this->appDate->format('Y-m-d H:i:s'),
+        ])));
+    }
 }

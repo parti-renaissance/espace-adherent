@@ -3,6 +3,7 @@
 namespace App\JeMengage\Hit\Stats\Provider;
 
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
@@ -16,18 +17,35 @@ class PublicationProvider extends AbstractProvider
     ) {
     }
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid): array
+    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output): array
     {
         /** @var AdherentMessage $message */
         $message = $this->adherentMessageRepository->findOneByUuid($objectUuid);
 
-        return [
+        $totalReach = $this->adherentMessageRepository->countReach($message->getId());
+        $totalReachByEmailAndPush = $this->adherentMessageRepository->countReach($message->getId(), ['push', 'email']);
+        $totalReachByEmail = $this->adherentMessageRepository->countReach($message->getId(), ['email']);
+        $totalReachByPush = $this->adherentMessageRepository->countReach($message->getId(), ['push']);
+        $uniqueImpressions = $output->get('unique_impressions');
+
+        $result = [
             'sent_at' => $message->getSentAt(),
             'visible_count' => $this->adherentRepository->countAdherentsForMessage($message),
-            'contacts' => $this->adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true, asUnion: true),
-            'unique_notifications' => $this->adherentRepository->countAdherentsForMessage($message, byPush: true),
-            'unique_emails' => $this->adherentRepository->countAdherentsForMessage($message, byEmail: true),
+            'contacts' => $totalReachByEmailAndPush,
+            'unique_notifications' => $totalReachByPush,
+            'unique_emails' => $totalReachByEmail,
+            'unique_opens__notification_rate' => $totalReachByPush > 0 ? ($output->get('unique_opens__notification') * 100.0 / $totalReachByPush) : 0.0,
+            'unique_opens__timeline_rate' => $uniqueImpressions > 0 ? ($output->get('unique_opens__timeline') * 100.0 / $uniqueImpressions) : 0.0,
+            'unique_opens__email_rate' => $totalReachByEmail > 0 ? ($output->get('unique_opens__email') * 100.0 / $totalReachByEmail) : 0.0,
+            'unsubscribed' => $unsubscribed = $message->getUnsubscribedCount(),
+            'unsubscribed__total_rate' => $totalReachByEmail > 0 ? ($unsubscribed * 100.0 / $totalReachByEmail) : 0.0,
         ];
+
+        if ($totalReach > 0) {
+            $result['unique_opens__total_rate'] = $output->get('unique_opens') * 100.0 / $totalReach;
+        }
+
+        return $result;
     }
 
     public function support(TargetTypeEnum $targetType): bool
