@@ -227,6 +227,13 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? $response->toArray()['members'] : [];
     }
 
+    public function getReportSentData(string $campaignId, int $offset): array
+    {
+        $response = $this->send('GET', \sprintf('/reports/%s/sent-to?count=1000&offset=%d&fields=sent_to.email_address', $campaignId, $offset));
+
+        return $this->isSuccessfulResponse($response) ? $response->toArray()['sent_to'] : [];
+    }
+
     public function getReportClickData(string $campaignId, int $offset): array
     {
         $response = $this->send('GET', \sprintf('/reports/%s/email-activity?count=1000&offset=%d&fields=emails.email_address,emails.activity', $campaignId, $offset));

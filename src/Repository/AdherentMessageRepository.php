@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageReach;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -69,5 +70,24 @@ class AdherentMessageRepository extends ServiceEntityRepository
         ;
 
         return $this;
+    }
+
+    public function countReach(int $messageId, ?array $sources = null): int
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->innerJoin(AdherentMessageReach::class, 'r', 'WITH', 'r.message = m')
+            ->select('COUNT(DISTINCT r.adherent)')
+            ->where('m = :message')
+            ->setParameter('message', $messageId)
+        ;
+
+        if (null !== $sources) {
+            $qb
+                ->andWhere('r.source IN (:sources)')
+                ->setParameter('sources', $sources)
+            ;
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

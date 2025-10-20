@@ -48,7 +48,7 @@ class ContainingUserDocumentListener
         preg_match_all($this->patternUuid, $object->getContentContainingDocuments(), $documentUuids);
         $documentUuids = $this->prepareUuidsArray($documentUuids);
 
-        $entityManager = $args->getEntityManager();
+        $entityManager = $args->getObjectManager();
         if ($documents = $entityManager->getRepository(UserDocument::class)->findBy(['uuid' => $documentUuids])) {
             $object->setDocuments(new ArrayCollection($documents));
         }

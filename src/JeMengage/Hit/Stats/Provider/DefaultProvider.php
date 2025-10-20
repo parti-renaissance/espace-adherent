@@ -2,6 +2,7 @@
 
 namespace App\JeMengage\Hit\Stats\Provider;
 
+use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AppHitRepository;
 use Ramsey\Uuid\UuidInterface;
@@ -12,7 +13,7 @@ class DefaultProvider extends AbstractProvider
     {
     }
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid): array
+    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $statsOutput): array
     {
         return $this->hitRepository->countImpressionAndOpenStats($type, $objectUuid);
     }

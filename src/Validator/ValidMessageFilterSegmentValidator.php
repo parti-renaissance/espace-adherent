@@ -28,8 +28,10 @@ class ValidMessageFilterSegmentValidator extends ConstraintValidator
             return;
         }
 
-        if ($value->getMessage()->getAuthor() !== $segment->getAuthor()
-            || !$value->getMessage()->isCompatibleWithScope($filter->getScope())) {
+        if (
+            $value->getMessage()->getAuthor() !== $segment->getAuthor()
+            || $value->getMessage()->getInstanceScope() !== $filter->getScope()
+        ) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('segment')
