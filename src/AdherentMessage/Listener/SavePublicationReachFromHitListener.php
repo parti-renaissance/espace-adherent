@@ -35,10 +35,9 @@ class SavePublicationReachFromHitListener implements EventSubscriberInterface
             return;
         }
 
-        $this->entityManager->persist(new AdherentMessageReach(
+        $this->entityManager->persist(AdherentMessageReach::createApp(
             $adherentMessage,
             $hit->adherent,
-            'app',
             $hit->getCreatedAt(),
         ));
 

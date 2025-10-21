@@ -30,11 +30,11 @@ class CreatePublicationReachFromPushCommandHandler
             return;
         }
 
-        $this->entityManager->persist(new AdherentMessageReach(
+        $this->entityManager->persist(AdherentMessageReach::createPush(
             $adherentMessage,
             $session->adherent,
-            'push',
             $adherentMessage->getSentAt(),
+            $session->appSystem
         ));
 
         try {

@@ -22,16 +22,15 @@ class PublicationProvider extends AbstractProvider
         /** @var AdherentMessage $message */
         $message = $this->adherentMessageRepository->findOneByUuid($objectUuid);
 
-        $totalReach = $this->adherentMessageRepository->countReach($message->getId());
-        $totalReachByEmailAndPush = $this->adherentMessageRepository->countReach($message->getId(), ['push', 'email']);
-        $totalReachByEmail = $this->adherentMessageRepository->countReach($message->getId(), ['email']);
-        $totalReachByPush = $this->adherentMessageRepository->countReach($message->getId(), ['push']);
+        $allReach = $this->adherentMessageRepository->countReachAll($message->getId());
+        $totalReachByEmail = $allReach['email'];
+        $totalReachByPush = $allReach['push'];
         $uniqueImpressions = $output->get('unique_impressions');
 
         $result = [
             'sent_at' => $message->getSentAt(),
             'visible_count' => $this->adherentRepository->countAdherentsForMessage($message),
-            'contacts' => $totalReachByEmailAndPush,
+            'contacts' => $allReach['email_push'],
             'unique_notifications' => $totalReachByPush,
             'unique_emails' => $totalReachByEmail,
             'unique_opens__notification_rate' => $totalReachByPush > 0 ? ($output->get('unique_opens__notification') * 100.0 / $totalReachByPush) : 0.0,
@@ -39,10 +38,15 @@ class PublicationProvider extends AbstractProvider
             'unique_opens__email_rate' => $totalReachByEmail > 0 ? ($output->get('unique_opens__email') * 100.0 / $totalReachByEmail) : 0.0,
             'unsubscribed' => $unsubscribed = $message->getUnsubscribedCount(),
             'unsubscribed__total_rate' => $totalReachByEmail > 0 ? ($unsubscribed * 100.0 / $totalReachByEmail) : 0.0,
+            'notifications' => [
+                'web' => $allReach['push_web'],
+                'ios' => $allReach['push_ios'],
+                'android' => $allReach['push_android'],
+            ],
         ];
 
-        if ($totalReach > 0) {
-            $result['unique_opens__total_rate'] = $output->get('unique_opens') * 100.0 / $totalReach;
+        if ($allReach['total'] > 0) {
+            $result['unique_opens__total_rate'] = $output->get('unique_opens') * 100.0 / $allReach['total'];
         }
 
         return $result;
