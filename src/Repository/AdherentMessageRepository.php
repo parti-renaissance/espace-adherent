@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageReach;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,22 +73,36 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $this;
     }
 
-    public function countReach(int $messageId, ?array $sources = null): int
+    public function countReachAll(int $messageId): array
     {
         $qb = $this->createQueryBuilder('m')
             ->innerJoin(AdherentMessageReach::class, 'r', 'WITH', 'r.message = m')
-            ->select('COUNT(DISTINCT r.adherent)')
             ->where('m = :message')
             ->setParameter('message', $messageId)
+            ->select([
+                'COUNT(DISTINCT r.adherent) AS total',
+                'COUNT(DISTINCT IF(r.source = :email OR r.source LIKE :push, r.adherent, NULL)) AS email_push',
+                'COUNT(DISTINCT IF(r.source = :email, r.adherent, NULL)) AS email',
+                'COUNT(DISTINCT IF(r.source LIKE :push, r.adherent, NULL)) AS push',
+                'COUNT(DISTINCT IF(r.source = :push_web, r.adherent, NULL)) AS push_web',
+                'COUNT(DISTINCT IF(r.source = :push_ios, r.adherent, NULL)) AS push_ios',
+                'COUNT(DISTINCT IF(r.source = :push_android, r.adherent, NULL)) AS push_android',
+            ])
+            ->setParameter('email', 'email')
+            ->setParameter('push', 'push%')
+            ->setParameter('push_web', 'push:web')
+            ->setParameter('push_ios', 'push:ios')
+            ->setParameter('push_android', 'push:android')
         ;
 
-        if (null !== $sources) {
-            $qb
-                ->andWhere('r.source IN (:sources)')
-                ->setParameter('sources', $sources)
-            ;
-        }
-
-        return $qb->getQuery()->getSingleScalarResult();
+        return $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY) ?? [
+            'total' => 0,
+            'email' => 0,
+            'push' => 0,
+            'email_push' => 0,
+            'push_web' => 0,
+            'push_ios' => 0,
+            'push_android' => 0,
+        ];
     }
 }
