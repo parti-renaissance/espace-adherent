@@ -827,6 +827,7 @@ Feature:
                                 "value_param": "uuid",
                                 "label_param": "name",
                                 "multiple": true,
+                                "help": "<strong>Toutes les zones incluses dans votre zone de gestion sont filtrables.</strong> Exemple : Arrondissement, Canton, Ville",
                                 "required": false
                             },
                             "type": "zone_autocomplete"
