@@ -4337,16 +4337,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.65.0",
+            "version": "v1.67.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "9fb652318c24db43be8bcbc813a315a2e5731502"
+                "reference": "2405b8116dcc4ec50756cc44486c149e34b1b4e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/9fb652318c24db43be8bcbc813a315a2e5731502",
-                "reference": "9fb652318c24db43be8bcbc813a315a2e5731502",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/2405b8116dcc4ec50756cc44486c149e34b1b4e5",
+                "reference": "2405b8116dcc4ec50756cc44486c149e34b1b4e5",
                 "shasum": ""
             },
             "require": {
@@ -4397,9 +4397,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.65.0"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.67.0"
             },
-            "time": "2025-10-01T16:57:30+00:00"
+            "time": "2025-10-10T18:34:03+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -4729,16 +4729,16 @@
         },
         {
             "name": "google/longrunning",
-            "version": "0.5.0",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/php-longrunning.git",
-                "reference": "715519ab4aaf3c4268adb2b551ee0f34135c8c5f"
+                "reference": "226d3b5166eaa13754cc5e452b37872478e23375"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/715519ab4aaf3c4268adb2b551ee0f34135c8c5f",
-                "reference": "715519ab4aaf3c4268adb2b551ee0f34135c8c5f",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/226d3b5166eaa13754cc5e452b37872478e23375",
+                "reference": "226d3b5166eaa13754cc5e452b37872478e23375",
                 "shasum": ""
             },
             "require-dev": {
@@ -4767,22 +4767,22 @@
             ],
             "description": "Google LongRunning Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/php-longrunning/tree/v0.5.0"
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.6.0"
             },
-            "time": "2025-09-20T01:29:44+00:00"
+            "time": "2025-10-07T18:41:09+00:00"
         },
         {
             "name": "google/protobuf",
-            "version": "v4.32.1",
+            "version": "v4.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "c4ed1c1f9bbc1e91766e2cd6c0af749324fe87cb"
+                "reference": "b50269e23204e5ae859a326ec3d90f09efe3047d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/c4ed1c1f9bbc1e91766e2cd6c0af749324fe87cb",
-                "reference": "c4ed1c1f9bbc1e91766e2cd6c0af749324fe87cb",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/b50269e23204e5ae859a326ec3d90f09efe3047d",
+                "reference": "b50269e23204e5ae859a326ec3d90f09efe3047d",
                 "shasum": ""
             },
             "require": {
@@ -4811,9 +4811,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.32.1"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.33.0"
             },
-            "time": "2025-09-14T05:14:52+00:00"
+            "time": "2025-10-15T20:10:28+00:00"
         },
         {
             "name": "grpc/grpc",
@@ -6436,16 +6436,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.30.0",
+            "version": "3.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "2203e3151755d874bb2943649dae1eb8533ac93e"
+                "reference": "c139fd65c1f796b926f4aec0df37f6caa959a8da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/2203e3151755d874bb2943649dae1eb8533ac93e",
-                "reference": "2203e3151755d874bb2943649dae1eb8533ac93e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c139fd65c1f796b926f4aec0df37f6caa959a8da",
+                "reference": "c139fd65c1f796b926f4aec0df37f6caa959a8da",
                 "shasum": ""
             },
             "require": {
@@ -6513,9 +6513,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.30.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.30.1"
             },
-            "time": "2025-06-25T13:29:59+00:00"
+            "time": "2025-10-20T15:35:26+00:00"
         },
         {
             "name": "league/flysystem-bundle",
@@ -6590,16 +6590,16 @@
         },
         {
             "name": "league/flysystem-google-cloud-storage",
-            "version": "3.30.0",
+            "version": "3.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-google-cloud-storage.git",
-                "reference": "54a317aa1f6b6ef1b19e14ccf12930d8f95c75a7"
+                "reference": "2d36f1a050fe70bf21d8aa75275963f9ca2e16ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-google-cloud-storage/zipball/54a317aa1f6b6ef1b19e14ccf12930d8f95c75a7",
-                "reference": "54a317aa1f6b6ef1b19e14ccf12930d8f95c75a7",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-google-cloud-storage/zipball/2d36f1a050fe70bf21d8aa75275963f9ca2e16ea",
+                "reference": "2d36f1a050fe70bf21d8aa75275963f9ca2e16ea",
                 "shasum": ""
             },
             "require": {
@@ -6632,9 +6632,9 @@
                 "google cloud storage"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-google-cloud-storage/tree/3.30.0"
+                "source": "https://github.com/thephpleague/flysystem-google-cloud-storage/tree/3.30.1"
             },
-            "time": "2025-01-26T14:03:02+00:00"
+            "time": "2025-10-20T15:27:33+00:00"
         },
         {
             "name": "league/flysystem-local",
