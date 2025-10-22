@@ -1084,7 +1084,12 @@ Feature:
             """
             {
                 "is_certified": null,
-                "zone": null,
+                "zone": {
+                    "code": "77",
+                    "name": "Seine-et-Marne",
+                    "type": "department",
+                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+                },
                 "committee": null,
                 "is_committee_member": null,
                 "mandate_type": null,
