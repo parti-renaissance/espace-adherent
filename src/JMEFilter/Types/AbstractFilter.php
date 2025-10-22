@@ -52,6 +52,11 @@ abstract class AbstractFilter implements FilterInterface
         return $this->options;
     }
 
+    public function setHelp(?string $message): void
+    {
+        $this->addOption('help', $message);
+    }
+
     public function setRequired(bool $value): void
     {
         $this->addOption('required', $value);
