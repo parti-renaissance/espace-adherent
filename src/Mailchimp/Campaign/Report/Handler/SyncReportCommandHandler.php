@@ -8,6 +8,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpCampaignReport;
 use App\JeMengage\Hit\EventTypeEnum;
+use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Manager;
@@ -126,15 +127,12 @@ class SyncReportCommandHandler
         );
     }
 
-    private function saveEvents(
-        AdherentMessage $adherentMessage,
-        callable $fetchPage,
-        callable $extractRows,
-    ): void {
+    private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage, callable $extractRows): void
+    {
         $conn = $this->entityManager->getConnection();
         $objectId = $adherentMessage->getUuid()->toString();
         $offset = 0;
-        $now = (new \DateTimeImmutable('now', $utc = new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+        $utc = new \DateTimeZone('UTC');
 
         while (true) {
             /** @var array<array> $members */
@@ -164,14 +162,7 @@ class SyncReportCommandHandler
                 }
 
                 foreach ($eventRows as $r) {
-                    $rows[] = [
-                        'uuid' => Uuid::uuid4()->toString(),
-                        'activity_session_uuid' => Uuid::uuid4()->toString(),
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                        'adherent_id' => $adherentId,
-                        ...$r,
-                    ];
+                    $rows[] = ['adherent_id' => $adherentId, ...$r];
                 }
             }
 
@@ -211,6 +202,7 @@ class SyncReportCommandHandler
                 'activity_session_uuid' => Uuid::uuid4()->toString(),
                 'created_at' => $nowUtc,
                 'updated_at' => $nowUtc,
+                'source_group' => SourceGroupEnum::Email->value,
             ];
 
             $placeholders[] = '('.implode(',', array_fill(0, \count($cols), '?')).')';

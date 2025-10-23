@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\AppSession\SystemEnum;
 use App\JeMengage\Hit\EventTypeEnum;
+use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AppHitRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: AppHitRepository::class)]
 #[ORM\Index(fields: ['eventType'])]
 #[ORM\Index(fields: ['source'])]
+#[ORM\Index(fields: ['sourceGroup'])]
 #[ORM\Index(fields: ['eventType', 'source'])]
+#[ORM\Index(fields: ['eventType', 'sourceGroup'])]
 #[ORM\Index(fields: ['objectType'])]
 #[ORM\Index(fields: ['objectId'])]
 class AppHit
@@ -63,6 +66,9 @@ class AppHit
     #[Groups(['hit:write', 'hit:open:read'])]
     #[ORM\Column(nullable: true)]
     public ?string $source = null;
+
+    #[ORM\Column(nullable: true, enumType: SourceGroupEnum::class)]
+    public ?SourceGroupEnum $sourceGroup = SourceGroupEnum::App;
 
     #[Groups(['hit:write', 'hit:click:read'])]
     #[ORM\Column(nullable: true)]
