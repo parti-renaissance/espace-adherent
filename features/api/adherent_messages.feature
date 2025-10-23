@@ -29,6 +29,7 @@ Feature:
                         "recipient_count": 0,
                         "source": "cadre",
                         "synchronized": false,
+                        "editable": true,
                         "from_name": "Referent Referent | Renaissance",
                         "created_at": "@string@.isDateTime()",
                         "sent_at": null,
@@ -68,6 +69,7 @@ Feature:
                         "recipient_count": 0,
                         "source": "cadre",
                         "synchronized": false,
+                        "editable": true,
                         "preview_link": null,
                         "from_name": "Referent Referent | Renaissance",
                         "created_at": "@string@.isDateTime()",
@@ -167,6 +169,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
@@ -217,6 +220,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",
@@ -284,6 +288,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Bob",
@@ -345,6 +350,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "<first_name>",
@@ -418,6 +424,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "Coordinateur",
@@ -1040,6 +1047,7 @@ Feature:
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
+                "editable": true,
                 "author": {
                     "uuid": "@uuid@",
                     "first_name": "@string@",

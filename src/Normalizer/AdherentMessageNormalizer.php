@@ -6,6 +6,8 @@ use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Scope\ScopeGeneratorResolver;
+use App\Security\Voter\PublicationVoter;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,6 +20,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly StatisticsAggregator $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -40,7 +43,11 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
                 ]);
             }
 
-            if ($this->scopeGeneratorResolver->generate()) {
+            $scope = $this->scopeGeneratorResolver->generate();
+
+            $data['editable'] = $this->authorizationChecker->isGranted(PublicationVoter::PERMISSION, $object);
+
+            if ($scope) {
                 $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
                 $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
             } else {

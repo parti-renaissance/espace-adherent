@@ -60,13 +60,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}/content',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read_content']],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)"
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)"
         ),
         new Get(
             uriTemplate: '/adherent_messages/{uuid}/count-recipients',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetAdherentMessageRecipientsCountController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)",
         ),
         new Get(
             uriTemplate: '/adherent_messages/available-senders',
@@ -78,14 +78,14 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)"
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)"
         ),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/adherent_messages/{uuid}/send',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendAdherentMessageController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)",
             deserialize: false,
         ),
         new HttpOperation(
@@ -93,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}/send-test',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendTestAdherentMessageController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)",
             deserialize: false,
         ),
         new HttpOperation(
@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}/filter',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: UpdateAdherentMessageFilterController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)",
             deserialize: false
         ),
         new HttpOperation(
@@ -109,13 +109,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}/duplicate',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: DuplicateMessageController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "is_granted('CAN_EDIT_PUBLICATION', object)",
             deserialize: false,
         ),
         new Delete(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)"
+            security: "not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)"
         ),
         new GetCollection(
             uriTemplate: '/adherent_messages',
