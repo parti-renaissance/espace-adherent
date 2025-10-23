@@ -10,6 +10,7 @@ use App\Scope\ScopeGeneratorResolver;
 class PublicationVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_EDIT_PUBLICATION';
+    public const PERMISSION_ITEM = 'CAN_EDIT_PUBLICATION_ITEM';
 
     public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
     {
@@ -22,19 +23,29 @@ class PublicationVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if (!$scope->hasFeature(FeatureEnum::MESSAGES) && !$scope->hasFeature(FeatureEnum::PUBLICATIONS)) {
+        if (!$scope->containsFeatures([FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS])) {
             return false;
         }
 
-        if ($subject->getAuthor() === $adherent) {
-            return true;
+        $authorId = $teamOwnerId = $isSent = null;
+
+        if ($subject instanceof AdherentMessage) {
+            $authorId = $subject->getAuthor()?->getId();
+            $teamOwnerId = $subject->teamOwner?->getId();
+            $isSent = $subject->isSent();
+        } elseif (\is_array($subject)) {
+            $isSent = true;
+            $authorId = $subject['author_id'] ?? null;
+            $teamOwnerId = $subject['team_owner_id'] ?? null;
         }
 
-        return !$subject->isSent() && $subject->teamOwner === $scope->getMainUser();
+        return $authorId === $adherent->getId() || (false === $isSent && $teamOwnerId === $scope->getMainUser()?->getId());
     }
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof AdherentMessage;
+        return
+            (self::PERMISSION === $attribute && $subject instanceof AdherentMessage)
+            || (self::PERMISSION_ITEM === $attribute && \is_array($subject));
     }
 }

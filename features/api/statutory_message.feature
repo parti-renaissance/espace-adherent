@@ -55,6 +55,7 @@ Feature:
                         "uuid": "@string@",
                         "created_at": "@string@.isDateTime()",
                         "synchronized": true,
+                        "editable": true,
                         "preview_link": null,
                         "author": {
                             "uuid": "@string@",
@@ -94,6 +95,7 @@ Feature:
                         "uuid": "@string@",
                         "created_at": "@string@.isDateTime()",
                         "synchronized": true,
+                        "editable": true,
                         "preview_link": null,
                         "author": {
                             "uuid": "@string@",
@@ -152,6 +154,7 @@ Feature:
             {
                 "uuid": "@string@",
                 "synchronized": true,
+                "editable": true,
                 "label": "Message statutaire de test",
                 "subject": "Voici un message statutaire",
                 "status": "draft",

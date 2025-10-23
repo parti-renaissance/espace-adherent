@@ -44,6 +44,10 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'cta_link' => $this->getCtaLink($object),
             'committee_uuid' => $this->getCommitteeUuid($object),
             'agora_uuid' => $this->getAgoraUuid($object),
+            'access' => [
+                'author_id' => $this->getAccessAuthorId($object),
+                'team_owner_id' => $this->getAccessTeamOwnerId($object),
+            ],
             'audience' => $this->getAudience($object),
         ];
     }
@@ -216,7 +220,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
-    /** @param Adherent $object */
+    /** @param AuthorInstanceInterface $object */
     protected function getAuthorImageUrl(object $object): ?string
     {
         if (!$object instanceof AuthorInstanceInterface) {
@@ -253,6 +257,16 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getLiveUrl(mixed $object): ?string
+    {
+        return null;
+    }
+
+    protected function getAccessAuthorId(object $object): ?int
+    {
+        return null;
+    }
+
+    protected function getAccessTeamOwnerId(object $object): ?int
     {
         return null;
     }

@@ -84,6 +84,18 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param AdherentMessage $object */
+    protected function getAccessAuthorId(object $object): ?int
+    {
+        return $object->getAuthor()?->getId();
+    }
+
+    /** @param AdherentMessage $object */
+    protected function getAccessTeamOwnerId(object $object): ?int
+    {
+        return $object->teamOwner?->getId();
+    }
+
+    /** @param AdherentMessage $object */
     public function getAudience(mixed $object): array
     {
         $enabledFilters = parent::getAudience($object);
