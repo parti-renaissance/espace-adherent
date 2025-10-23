@@ -7,7 +7,7 @@ use App\Entity\AppHit;
 use App\Entity\AppSession;
 use App\JeMengage\Hit\Command\SaveAppHitCommand;
 use App\JeMengage\Hit\Event\NewHitSavedEvent;
-use App\JeMengage\Hit\EventTypeEnum;
+use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\Event\EventRepository;
@@ -43,8 +43,8 @@ class SaveAppHitCommandHandler
             $hit->referrer = $this->adherentRepository->findByPublicId($hit->referrerCode, true);
         }
 
-        if (EventTypeEnum::Click === $hit->eventType && empty($hit->source)) {
-            $hit->source = 'app';
+        if (str_contains($hit->source, 'notification')) {
+            $hit->sourceGroup = SourceGroupEnum::Notification;
         }
 
         if (

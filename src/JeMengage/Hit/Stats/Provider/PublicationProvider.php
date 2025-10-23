@@ -11,6 +11,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class PublicationProvider extends AbstractProvider
 {
+    private int $tryCount = 0;
+
     public function __construct(
         private readonly AdherentMessageRepository $adherentMessageRepository,
         private readonly AdherentRepository $adherentRepository,
@@ -24,6 +26,13 @@ class PublicationProvider extends AbstractProvider
 
         $allReach = $this->adherentMessageRepository->countReachAll($message->getId());
         $totalReachByEmail = $allReach['email'];
+
+        if (!$totalReachByEmail && ++$this->tryCount < 10) {
+            sleep(1);
+
+            return $this->provide($type, $objectUuid, $output);
+        }
+
         $totalReachByPush = $allReach['push'];
         $uniqueImpressions = $output->get('unique_impressions');
 
@@ -34,7 +43,7 @@ class PublicationProvider extends AbstractProvider
             'unique_notifications' => $totalReachByPush,
             'unique_emails' => $totalReachByEmail,
             'unique_opens__notification_rate' => $totalReachByPush > 0 ? ($output->get('unique_opens__notification') * 100.0 / $totalReachByPush) : 0.0,
-            'unique_opens__timeline_rate' => $uniqueImpressions > 0 ? ($output->get('unique_opens__timeline') * 100.0 / $uniqueImpressions) : 0.0,
+            'unique_opens__app_rate' => $uniqueImpressions > 0 ? ($output->get('unique_opens__app') * 100.0 / $uniqueImpressions) : 0.0,
             'unique_opens__email_rate' => $totalReachByEmail > 0 ? ($output->get('unique_opens__email') * 100.0 / $totalReachByEmail) : 0.0,
             'unsubscribed' => $unsubscribed = $message->getUnsubscribedCount(),
             'unsubscribed__total_rate' => $totalReachByEmail > 0 ? ($unsubscribed * 100.0 / $totalReachByEmail) : 0.0,
