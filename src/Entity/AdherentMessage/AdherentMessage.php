@@ -72,14 +72,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherent_messages/available-senders',
             controller: GetAvailableSendersController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])",
             read: false,
         ),
         new Put(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
-            security: "is_granted('CAN_EDIT_PUBLICATION', object)"
+            security: "not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)",
         ),
         new HttpOperation(
             method: 'POST',
