@@ -3,6 +3,7 @@
 namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
@@ -10,6 +11,8 @@ use App\Repository\AdherentRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 #[AsMessageHandler]
 class CreatePublicationReachFromEmailCommandHandler
@@ -19,6 +22,7 @@ class CreatePublicationReachFromEmailCommandHandler
         private readonly AdherentRepository $adherentRepository,
         private readonly Manager $manager,
         private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -28,11 +32,18 @@ class CreatePublicationReachFromEmailCommandHandler
             return;
         }
 
+        /** @var AdherentMessage $adherentMessage */
         foreach ($adherentMessage->getMailchimpCampaigns() as $campaign) {
-            $this->saveEvents(
-                $adherentMessage,
-                fn (int $offset) => $this->manager->getReportSentData($campaign, $offset),
-            );
+            if (MailchimpStatusEnum::Sent !== $campaign->status && ($status = $this->manager->getCampaignStatus($campaign)) && $campaign->status !== $status) {
+                $campaign->status = $status;
+                $this->entityManager->flush();
+            }
+
+            if (MailchimpStatusEnum::Sent === $campaign->status) {
+                $this->saveEvents($adherentMessage, fn (int $offset) => $this->manager->getReportSentData($campaign, $offset));
+            } elseif ($command->countRetry < 5) {
+                $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($command->getUuid(), $command->countRetry + 1), [new DelayStamp(5000)]);
+            }
         }
     }
 

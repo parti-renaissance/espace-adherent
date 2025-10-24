@@ -98,6 +98,13 @@ class Driver implements LoggerAwareInterface
         return '';
     }
 
+    public function getCampaignStatus(string $campaignId): ?string
+    {
+        $response = $this->send('GET', \sprintf('/campaigns/%s?fields=status', $campaignId));
+
+        return $this->isSuccessfulResponse($response) ? ($response->toArray()['status'] ?? null) : null;
+    }
+
     public function createCampaign(EditCampaignRequest $request): array
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());
