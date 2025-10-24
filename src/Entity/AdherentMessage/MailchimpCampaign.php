@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,10 +16,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, Timestampable
 {
     use TimestampableEntity;
-
-    public const STATUS_SENT = 'sent';
-    public const STATUS_ERROR = 'error';
-    public const STATUS_DRAFT = 'draft';
 
     /**
      * @var int|null
@@ -71,11 +68,8 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\Column(nullable: true)]
     private $label;
 
-    /**
-     * @var string
-     */
-    #[ORM\Column]
-    private $status = self::STATUS_DRAFT;
+    #[ORM\Column(enumType: MailchimpStatusEnum::class)]
+    public MailchimpStatusEnum $status = MailchimpStatusEnum::Save;
 
     /**
      * @var string|null
@@ -182,30 +176,14 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         $this->mailchimpSegments->removeElement($mailchimpSegment);
     }
 
-    public function markAsSent(): void
+    public function markAsSending(): void
     {
-        $this->status = self::STATUS_SENT;
+        $this->status = MailchimpStatusEnum::Sending;
     }
 
     public function markAsError(?string $errorMessage = null): void
     {
-        $this->status = self::STATUS_ERROR;
         $this->detail = $errorMessage;
-    }
-
-    public function isError(): bool
-    {
-        return self::STATUS_ERROR === $this->status;
-    }
-
-    public function isDraft(): bool
-    {
-        return self::STATUS_DRAFT === $this->status;
-    }
-
-    public function isSent(): bool
-    {
-        return self::STATUS_SENT === $this->status;
     }
 
     public function reset(): void

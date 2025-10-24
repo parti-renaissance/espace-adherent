@@ -11,8 +11,6 @@ use Ramsey\Uuid\UuidInterface;
 
 class PublicationProvider extends AbstractProvider
 {
-    private int $tryCount = 0;
-
     public function __construct(
         private readonly AdherentMessageRepository $adherentMessageRepository,
         private readonly AdherentRepository $adherentRepository,
@@ -25,12 +23,10 @@ class PublicationProvider extends AbstractProvider
         $message = $this->adherentMessageRepository->findOneByUuid($objectUuid);
 
         $allReach = $this->adherentMessageRepository->countReachAll($message->getId());
-        $totalReachByEmail = $allReach['email'];
 
-        if (!$totalReachByEmail && ++$this->tryCount < 10) {
-            sleep(1);
-
-            return $this->provide($type, $objectUuid, $output);
+        $totalReachByEmail = null;
+        if ($message->isFullySent() && ($allReach['email'] > 0 || !$message->getRecipientCount())) {
+            $totalReachByEmail = $allReach['email'];
         }
 
         $totalReachByPush = $allReach['push'];

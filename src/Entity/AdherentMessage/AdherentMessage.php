@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Controller\Api\AdherentMessage\DuplicateMessageController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
@@ -318,6 +319,17 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         }
 
         $status &= (!$this->filter || $this->filter->isSynchronized());
+
+        return (bool) $status;
+    }
+
+    public function isFullySent(): bool
+    {
+        $status = true;
+
+        foreach ($this->getMailchimpCampaigns() as $campaign) {
+            $status &= (MailchimpStatusEnum::Sent === $campaign->status);
+        }
 
         return (bool) $status;
     }

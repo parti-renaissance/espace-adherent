@@ -145,7 +145,7 @@ framework:
                             default_publish_routing_key: 'async.sequential',
                         }
                     queues:
-                        cronjob: { binding_keys: ['async.sequential'] }
+                        sequential: { binding_keys: ['async.sequential'] }
         routing:
             App\Chatbot\Command\RefreshThreadCommand: chatbot
             App\Event\Command\EventNotificationCommandInterface: event

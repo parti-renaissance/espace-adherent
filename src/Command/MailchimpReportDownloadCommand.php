@@ -2,10 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -89,12 +90,12 @@ class MailchimpReportDownloadCommand extends Command
         return self::SUCCESS;
     }
 
-    private function createBaseQuery(?\DateTimeInterface $from): \Doctrine\ORM\QueryBuilder
+    private function createBaseQuery(?\DateTimeInterface $from): QueryBuilder
     {
         $qb = $this->adherentMessageRepository
             ->createQueryBuilder('am')
             ->where('am.status = :status')
-            ->setParameter('status', MailchimpCampaign::STATUS_SENT)
+            ->setParameter('status', AdherentMessageStatusEnum::SENT_SUCCESSFULLY)
         ;
 
         if ($from) {
