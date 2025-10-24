@@ -11,6 +11,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class PublicationProvider extends AbstractProvider
 {
+    private int $tryCount = 0;
+
     public function __construct(
         private readonly AdherentMessageRepository $adherentMessageRepository,
         private readonly AdherentRepository $adherentRepository,
@@ -30,6 +32,13 @@ class PublicationProvider extends AbstractProvider
         }
 
         $totalReachByPush = $allReach['push'];
+
+        if (!$totalReachByPush && ++$this->tryCount < 10) {
+            sleep(1);
+
+            return $this->provide($type, $objectUuid, $output);
+        }
+
         $uniqueImpressions = $output->get('unique_impressions');
 
         $result = [
