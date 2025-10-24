@@ -16,14 +16,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     uriTemplate: '/v3/adherent_messages/{uuid}/filter',
-    operations: [
-        new Get(security: "is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications']) and (object.getMessage().getAuthor() == user or user.hasDelegatedFromUser(object.getMessage().getAuthor(), 'messages') or user.hasDelegatedFromUser(object.getMessage().getAuthor(), 'publications'))"),
-    ],
+    operations: [new Get(security: "is_granted('CAN_EDIT_PUBLICATION', object.getMessage())")],
     uriVariables: [
-        'uuid' => new Link(
-            fromProperty: 'filter',
-            fromClass: AdherentMessage::class
-        ),
+        'uuid' => new Link(fromProperty: 'filter', fromClass: AdherentMessage::class),
     ],
     normalizationContext: ['groups' => ['adherent_message_read_filter']],
 )]
