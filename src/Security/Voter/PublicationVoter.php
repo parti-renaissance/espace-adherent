@@ -38,7 +38,19 @@ class PublicationVoter extends AbstractAdherentVoter
                 return false;
             }
 
-            return $subject['author_id'] === $adherent->getId();
+            if ($adherent->getId() === ($subject['author_id'] ?? null)) {
+                return true;
+            }
+
+            $teamOwnerId = $subject['team_owner_id'] ?? null;
+
+            foreach ($scopes as $scope) {
+                if ($scope->getMainUser()?->getId() === $teamOwnerId) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
@@ -49,7 +61,7 @@ class PublicationVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $subject->getAuthor() === $adherent || (false === $subject->isSent() && $subject->teamOwner === $scope->getMainUser());
+        return $subject->getAuthor() === $adherent || $subject->teamOwner === $scope->getMainUser();
     }
 
     protected function supports(string $attribute, $subject): bool
