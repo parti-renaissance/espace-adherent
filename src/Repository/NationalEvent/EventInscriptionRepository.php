@@ -3,6 +3,7 @@
 namespace App\Repository\NationalEvent;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Adherent\Tag\TagGenerator\EventTagGenerator;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
@@ -52,7 +53,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->setParameters([
                 'now' => new \DateTime(),
                 'adherent' => $adherent,
-                'start_date' => new \DateTime('-6 months'),
+                'start_date' => new \DateTime(EventTagGenerator::PERIOD),
                 'excluded_statuses' => [
                     InscriptionStatusEnum::CANCELED,
                     InscriptionStatusEnum::DUPLICATE,

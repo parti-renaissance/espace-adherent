@@ -9,6 +9,8 @@ use App\Repository\NationalEvent\EventInscriptionRepository;
 
 class EventTagGenerator extends AbstractTagGenerator
 {
+    public const PERIOD = '-12 months';
+
     public function __construct(
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly TagBuilder $eventTagBuilder,
