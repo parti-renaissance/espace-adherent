@@ -272,7 +272,7 @@ jobs:
               run: |-
                   make test-behat
 
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v5
               if: failure()
               with:
                   name: behat-selenium-screenshots-${{ matrix.tags }}
