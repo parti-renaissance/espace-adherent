@@ -48,7 +48,7 @@ class Department
      * @var Region|null
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Region::class, fetch: 'EAGER', inversedBy: 'departments')]
+    #[ORM\ManyToOne(targetEntity: Region::class, inversedBy: 'departments')]
     private $region;
 
     /**

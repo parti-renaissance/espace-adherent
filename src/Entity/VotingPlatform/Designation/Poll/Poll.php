@@ -24,7 +24,7 @@ class Poll
 
     #[Assert\Count(min: 1)]
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollQuestion::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollQuestion::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $questions;
 

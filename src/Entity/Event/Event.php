@@ -254,7 +254,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
 
     #[Groups(['event_read', 'event_write_creation'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Committee::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;
 
     #[Groups(['event_read', 'event_write_creation'])]

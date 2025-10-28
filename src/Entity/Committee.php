@@ -209,7 +209,7 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     #[Groups(['committee:list', 'committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER', inversedBy: 'animatorCommittees')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
     public ?Adherent $animator = null;
 
     public function __construct(

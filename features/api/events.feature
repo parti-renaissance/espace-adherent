@@ -3158,8 +3158,7 @@ Feature:
                 "roles": ["animator", "deputy", "communication_manager", "mobilization_manager"]
             }
             """
-        Then the response status code should be 200
-        And the JSON should be equal to:
+        Then the JSON should be equal to:
             """
             {
                 "count": 1

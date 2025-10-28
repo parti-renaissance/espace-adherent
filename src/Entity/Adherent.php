@@ -228,7 +228,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[AssertZoneBasedRoles]
     #[Groups(['profile_update'])]
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $zoneBasedRoles;
 
     /**

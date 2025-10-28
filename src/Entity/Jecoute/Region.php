@@ -118,7 +118,7 @@ class Region
      * @var Adherent|null
      */
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     public function __construct(
