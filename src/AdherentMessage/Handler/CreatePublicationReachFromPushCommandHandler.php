@@ -33,7 +33,7 @@ class CreatePublicationReachFromPushCommandHandler
         $this->entityManager->persist(AdherentMessageReach::createPush(
             $adherentMessage,
             $session->adherent,
-            $adherentMessage->getSentAt(),
+            $adherentMessage->getSentAt() ?? new \DateTime(),
             $session->appSystem
         ));
 
