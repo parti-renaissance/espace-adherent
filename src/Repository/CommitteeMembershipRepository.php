@@ -114,7 +114,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             $qb
                 ->innerJoin('cm.adherent', 'adherent')
                 ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', ($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
+                ->setParameter('adherent_tag', ($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).':%')
             ;
         }
 
