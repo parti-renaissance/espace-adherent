@@ -17,6 +17,8 @@ class CommandHistoryRepository extends ServiceEntityRepository
     public function findLastOfType(CommandHistoryTypeEnum $type): ?CommandHistory
     {
         return $this->createQueryBuilder('ch')
+            ->andWhere('ch.type = :type')
+            ->setParameter('type', $type)
             ->setMaxResults(1)
             ->orderBy('ch.createdAt', 'DESC')
             ->getQuery()
