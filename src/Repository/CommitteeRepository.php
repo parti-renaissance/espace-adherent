@@ -435,7 +435,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
             ->innerJoin('election.candidacies', 'candidacy', Join::WITH, 'candidacy.status = :candidacy_status AND candidacy.createdAt >= :candidacy_date')
             ->innerJoin('candidacy.committeeMembership', 'membership', Join::WITH, 'membership.adherent = :adherent')
-            ->where('committee.status = :status')
+            ->andWhere('committee.status = :status')
             ->setParameters([
                 'designation_type' => $designation->getType(),
                 'candidacy_status' => CandidacyInterface::STATUS_CONFIRMED,
@@ -458,7 +458,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->innerJoin('election.electionRounds', 'election_round')
             ->innerJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = :adherent')
             ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = election_round AND vote.votedAt >= :vote_date')
-            ->where('committee.status = :status')
+            ->andWhere('committee.status = :status')
             ->setParameters([
                 'designation_type' => $designation->getType(),
                 'adherent' => $adherent,

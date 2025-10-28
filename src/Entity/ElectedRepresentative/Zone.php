@@ -34,7 +34,7 @@ class Zone
      * @var ZoneCategory|null
      */
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: ZoneCategory::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: ZoneCategory::class)]
     private $category;
 
     /**

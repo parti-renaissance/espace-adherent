@@ -258,6 +258,9 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
             'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $data['access_token']),
             'CONTENT_TYPE' => 'application/json',
         ]);
+
+        var_dump($this->client->getResponse()->getContent());
+
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
 

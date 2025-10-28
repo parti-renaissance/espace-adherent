@@ -47,7 +47,7 @@ class City
     /**
      * @var Department|null
      */
-    #[ORM\ManyToOne(targetEntity: Department::class, fetch: 'EAGER', inversedBy: 'cities')]
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'cities')]
     private $department;
 
     public function __construct(

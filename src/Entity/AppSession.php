@@ -48,7 +48,7 @@ class AppSession
     #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AccessToken::class)]
     private Collection $accessTokens;
 
-    #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'], fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'])]
     private Collection $pushTokenLinks;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

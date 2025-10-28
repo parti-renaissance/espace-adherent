@@ -42,7 +42,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
      * @var Floor[]|Collection
      */
     #[Groups(['pap_building_block_list'])]
-    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: Floor::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: Floor::class, cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['number' => 'ASC'])]
     private Collection $floors;
 
