@@ -48,7 +48,6 @@ use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query;
@@ -1643,42 +1642,83 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'mailchimp_subscribed' => 'subscribed',
         ];
         $types = [];
+        $joinPerimeter = $with = '';
 
-        $zones = $filter->getZone() ? [$filter->getZone()] : $filter->getZones()->toArray();
-        $zoneIds = array_map(static fn ($z) => $z->getId(), $zones);
+        $managedZoneIds = $filter->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
+        $filterZoneId = $filter->getZone()?->getId();
 
-        if (empty($zoneIds) && !$filter->getCommittee()) {
+        if (empty($managedZoneIds) && !$filter->getCommittee()) {
             return 0;
         }
 
-        $cteParts = [];
+        if (\count($managedZoneIds)) {
+            $z1Seeds = [];
+            foreach ($managedZoneIds as $i => $id) {
+                $key = "mgr_$i";
+                $z1Seeds[] = "SELECT :$key AS id";
+                $params[$key] = $id;
+                $types[$key] = ParameterType::INTEGER;
+            }
+            $z1SeedSql = implode("\nUNION ALL\n", $z1Seeds);
 
-        if (!empty($zoneIds)) {
-            $cteParts[] = 'SELECT DISTINCT adherent_id FROM adherent_zone WHERE zone_id IN (:zones)';
-            $params['zones'] = $zoneIds;
-            $types['zones'] = ArrayParameterType::INTEGER;
-        }
+            $cteZ1 = <<<SQL
+                    z1(id) AS (
+                        $z1SeedSql
+                        UNION ALL
+                        SELECT gp.child_id
+                        FROM geo_zone_parent gp
+                        JOIN z1 ON gp.parent_id = z1.id
+                    )
+                SQL;
 
-        $zoneParentIds = array_values(array_filter(array_map(static fn (Zone $z) => $z->isCityGrouper() ? null : $z->getId(), $zones)));
+            $cteBlocks = [$cteZ1];
 
-        if (!empty($zoneParentIds)) {
-            $cteParts[] = 'SELECT DISTINCT az.adherent_id
-               FROM adherent_zone az
-               JOIN geo_zone_parent gp ON gp.child_id = az.zone_id
-               WHERE gp.parent_id IN (:zones_parents)';
-            $params['zones_parents'] = $zoneParentIds;
-            $types['zones_parents'] = ArrayParameterType::INTEGER;
+            if ($filterZoneId) {
+                $cteZ2 = <<<SQL
+                        z2(id) AS (
+                            SELECT :flt
+                            UNION ALL
+                            SELECT gp.child_id
+                            FROM geo_zone_parent gp
+                            JOIN z2 ON gp.parent_id = z2.id
+                        )
+                    SQL;
+                $cteBlocks[] = $cteZ2;
+
+                $params['flt'] = $filterZoneId;
+                $types['flt'] = ParameterType::INTEGER;
+
+                $cteZA = <<<SQL
+                        z_adherents AS (
+                            SELECT DISTINCT a.adherent_id
+                            FROM adherent_zone a
+                            WHERE EXISTS (SELECT 1 FROM z1 WHERE z1.id = a.zone_id)
+                            AND EXISTS (
+                                SELECT 1
+                                FROM adherent_zone b
+                                WHERE b.adherent_id = a.adherent_id
+                                AND EXISTS (SELECT 1 FROM z2 WHERE z2.id = b.zone_id)
+                            )
+                        )
+                    SQL;
+            } else {
+                $cteZA = <<<SQL
+                        z_adherents AS (
+                          SELECT DISTINCT a.adherent_id
+                          FROM adherent_zone a
+                          JOIN z1 ON z1.id = a.zone_id
+                        )
+                    SQL;
+            }
+
+            $cteBlocks[] = $cteZA;
+
+            $with = "WITH RECURSIVE\n".implode(",\n", $cteBlocks);
+            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
         }
 
         $fromJoin = [];
         $where = [];
-        $with = '';
-        $joinPerimeter = '';
-
-        if (!empty($cteParts)) {
-            $with = 'WITH z_adherents AS ('.implode("\nUNION\n", $cteParts).')';
-            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
-        }
 
         if ($filter->getCommittee() || null !== $filter->getIsCommitteeMember()) {
             $fromJoin[] = 'LEFT JOIN committees_memberships cm ON cm.adherent_id = a.id';
@@ -1810,7 +1850,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $baseFrom = 'FROM adherents a'
-            .(!empty($cteParts) ? "\n$joinPerimeter" : '')
+            .(!empty($cteBlocks) ? "\n$joinPerimeter" : '')
             .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
 
         $baseWhere = $where;
