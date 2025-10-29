@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Vox;
 
+use App\AdherentMessage\PublicationZone;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\JeMengage\Timeline\DataProvider;
@@ -57,7 +58,20 @@ class GetTimelineFeedsController extends AbstractController
         $tagClause .= ')';
 
         // Bloc 3 : zone
-        $zoneClause = $zoneCode ? '(NOT type:publication OR audience.zone:false OR audience.include:"zone:'.$zoneCode.'")' : null;
+        $userZonesByType = $this->zonesForUserGroupedByType($user);
+
+        $zoneClauses = [];
+        foreach (PublicationZone::ZONE_TYPES as $type) {
+            $codes = $userZonesByType[$type] ?? [];
+
+            $zoneCond = ['NOT type:publication', 'audience.zone:false', 'audience.include:"zone:'.$type.':none"'];
+
+            foreach ($codes as $code) {
+                $zoneCond[] = 'audience.include:"zone:'.$type.':'.$code.'"';
+            }
+
+            $zoneClauses[] = '('.implode(' OR ', $zoneCond).')';
+        }
 
         if ($membership = $user->getCommitteeMembership()) {
             $committeeUuid = $membership->getCommittee()->getUuid()->toString();
@@ -114,7 +128,7 @@ class GetTimelineFeedsController extends AbstractController
             $baseClause,
             $tagClause,
             ...array_unique($excludeTagConditions),
-            $zoneClause,
+            ...$zoneClauses,
             ...$ageCivilityClauses,
             $committeeClause,
             $mandateClause,
@@ -132,5 +146,24 @@ class GetTimelineFeedsController extends AbstractController
         ]];
 
         return $this->json($dataProvider->findItems($user, $page, $parts, $tagFilters));
+    }
+
+    private function zonesForUserGroupedByType(Adherent $user): array
+    {
+        $byType = array_fill_keys(PublicationZone::ZONE_TYPES, []);
+
+        foreach ($user->getDeepZones() as $zone) {
+            $type = $zone->getType();
+            $code = $zone->getCode();
+            if (isset($byType[$type]) && $code) {
+                $byType[$type][] = $code;
+            }
+        }
+
+        foreach ($byType as $t => $list) {
+            $byType[$t] = array_values(array_unique(array_filter($list)));
+        }
+
+        return $byType;
     }
 }

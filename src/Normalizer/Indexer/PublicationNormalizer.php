@@ -2,9 +2,11 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\AdherentMessage\PublicationZone;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\Geo\Zone;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -37,15 +39,6 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $object->getSender();
     }
-
-    /**
-     * 'role' => $this->getAuthorRole($object),
-     * 'instance' => $this->getAuthorInstance($object),
-     * 'zone' => $this->getAuthorZone($object),
-     * 'scope' => $this->getAuthorScope($object),
-     * 'image_url' => $this->getAuthorImageUrl($object),
-     * 'theme' => $this->getAuthorTheme($object),
-     */
 
     /** @param AdherentMessage $object */
     protected function getAuthorRole(object $object): ?string
@@ -117,19 +110,20 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
             $enabledFilters['tag'] = true;
         }
 
-        // Zones
-        $zones = [];
+        /* @var Zone[] $zones */
+        $zones = $filter->getZones()->toArray();
         if ($filter->getZone()) {
-            $zones = [$filter->getZone()];
-        } elseif (!$filter->getZones()->isEmpty()) {
-            $zones = $filter->getZones()->toArray();
+            $zones[] = $filter->getZone();
         }
 
+        $zoneTypeFilter = array_fill_keys(PublicationZone::ZONE_TYPES, false);
         foreach ($zones as $zone) {
-            foreach ($this->buildZoneCodes($zone) as $code) {
-                $audienceKeys[] = 'zone:'.$code;
-            }
-            $enabledFilters['zone'] = true;
+            $zoneTypeFilter[$zone->getType()] = $zone->getCode();
+        }
+
+        foreach ($zoneTypeFilter as $type => $code) {
+            $audienceKeys[] = \sprintf('zone:%s:%s', $type, false === $code ? 'none' : $code);
+            $enabledFilters['zone'] = $enabledFilters['zone'] || false !== $code;
         }
 
         // Committee
