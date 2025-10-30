@@ -7,6 +7,7 @@ use App\Entity\AdministratorRole;
 use App\Entity\Geo\Zone;
 use App\Repository\AdministratorRoleRepository;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
+use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -175,7 +176,7 @@ class AdministratorAdmin extends AbstractAdmin
     }
 
     public static function prepareAutocompleteFilterCallback(
-        AbstractAdmin $admin,
+        SonataAbstractAdmin $admin,
         array $properties,
         string $value,
     ): void {
