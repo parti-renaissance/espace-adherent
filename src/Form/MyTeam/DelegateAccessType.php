@@ -105,13 +105,9 @@ class DelegateAccessType extends AbstractType
 
     protected function addRoleField($builder, string $type, ?string $role): void
     {
-        if ('referent' === $type) {
-            $roles = DelegatedAccess::DEFAULT_REFERENT_ROLES;
-        } else {
-            $roles = DelegatedAccess::DEFAULT_ROLES;
-            if ($role && !\in_array($role, $roles, true)) {
-                $roles[] = $role;
-            }
+        $roles = DelegatedAccess::DEFAULT_ROLES;
+        if ($role && !\in_array($role, $roles, true)) {
+            $roles[] = $role;
         }
 
         $builder

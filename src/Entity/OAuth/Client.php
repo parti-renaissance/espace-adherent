@@ -61,6 +61,9 @@ class Client implements EntitySoftDeletedInterface
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $requestedRoles;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $sessionEnabled = true;
+
     public function __construct(
         ?UuidInterface $uuid = null,
         string $name = '',
@@ -107,6 +110,7 @@ class Client implements EntitySoftDeletedInterface
         if (!\in_array($redirectUri, $this->redirectUris, true)) {
             $this->redirectUris[] = $redirectUri;
         }
+        $this->redirectUris = array_values(array_unique($this->redirectUris));
     }
 
     public function removeRedirectUri(string $redirectUri): void
@@ -114,6 +118,7 @@ class Client implements EntitySoftDeletedInterface
         if (false !== ($key = array_search($redirectUri, $this->redirectUris, true))) {
             unset($this->redirectUris[$key]);
         }
+        $this->redirectUris = array_values(array_unique($this->redirectUris));
     }
 
     public function getRedirectUris(): array

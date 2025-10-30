@@ -16,6 +16,11 @@ framework:
                 base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%'
             geo_gouv.client:
                 base_uri: 'https://geo.api.gouv.fr'
+            moodle.client:
+                base_uri: '%env(MOODLE_WS_URL)%'
+                query:
+                    wstoken: '%env(MOODLE_WS_TOKEN)%'
+                    moodlewsrestformat: json
             mandrill.client:
                 base_uri: 'https://mandrillapp.com/api/1.0/'
                 timeout: 60

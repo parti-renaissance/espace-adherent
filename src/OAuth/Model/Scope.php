@@ -8,13 +8,13 @@ use MyCLabs\Enum\Enum;
 /**
  * @method static WRITE_USERS()
  * @method static READ_USERS()
- * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
  * @method static READ_STATS()
  * @method static JEMARCHE_APP()
  * @method static CRM_PARIS()
  * @method static READ_PROFILE()
  * @method static WRITE_PROFILE()
+ * @method static FORMATION()
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {
@@ -22,7 +22,6 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const WRITE_EVENT = 'write:event';
 
     public const READ_USERS = 'read:users';
-    public const READ_UNSUBCRIPTIONS = 'read:unsubscriptions';
     public const READ_TYPEFORMS = 'read:typeforms';
     public const READ_STATS = 'read:stats';
 
@@ -35,6 +34,8 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const WRITE_GENERAL_CONVENTIONS = 'write:general_conventions';
 
     public const IMPERSONATOR = 'impersonator';
+
+    public const FORMATION = 'formation';
 
     public static function generateRole(string $scope): string
     {
