@@ -94,8 +94,9 @@ class MailchimpReportDownloadCommand extends Command
     {
         $qb = $this->adherentMessageRepository
             ->createQueryBuilder('am')
-            ->where('am.status = :status')
+            ->where('am.status = :status AND am.isStatutory = :false')
             ->setParameter('status', AdherentMessageStatusEnum::SENT_SUCCESSFULLY)
+            ->setParameter('false', false)
         ;
 
         if ($from) {
