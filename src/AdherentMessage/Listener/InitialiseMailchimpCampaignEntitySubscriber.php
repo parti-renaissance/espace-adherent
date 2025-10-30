@@ -29,7 +29,7 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
     {
         $message = $event->getMessage();
 
-        if ($message->isSent()) {
+        if ($message->isSent() || $message->isStatutory()) {
             return;
         }
 
