@@ -33,7 +33,7 @@ class Manager
             return;
         }
 
-        if ($tokenEntity->hasScope(Scope::IMPERSONATOR)) {
+        if (!$tokenEntity->getClient()->sessionEnabled || $tokenEntity->hasScope(Scope::IMPERSONATOR)) {
             return;
         }
 

@@ -10,21 +10,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ScopeGeneratorResolver
 {
-    private RequestStack $requestStack;
-    private Security $security;
-    private AuthorizationChecker $authorizationChecker;
-
     private ?Scope $currentScope = null;
     private ?ScopeGeneratorInterface $currentScopeGenerator = null;
 
     public function __construct(
-        RequestStack $requestStack,
-        Security $security,
-        AuthorizationChecker $authorizationChecker,
+        private readonly RequestStack $requestStack,
+        private readonly Security $security,
+        private readonly AuthorizationChecker $authorizationChecker,
     ) {
-        $this->requestStack = $requestStack;
-        $this->security = $security;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function resolve(): ?ScopeGeneratorInterface
