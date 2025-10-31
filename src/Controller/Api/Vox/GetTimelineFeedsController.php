@@ -115,11 +115,11 @@ class GetTimelineFeedsController extends AbstractController
             'registered_' => $user->getRegisteredAt(),
         ] as $key => $date) {
             if ($date) {
-                $dateClauses[] = \sprintf('(audience.%1$ssince = 0 OR audience.include.%1$ssince <= '.($timestamp = $date->getTimestamp()).')', $key);
-                $dateClauses[] = \sprintf('(audience.%1$sbefore = 0 OR audience.include.%1$sbefore >= '.$timestamp.')', $key);
+                $dateClauses[] = \sprintf('(audience.%1$ssince = 0 OR audience.%1$ssince <= '.($timestamp = $date->getTimestamp()).')', $key);
+                $dateClauses[] = \sprintf('(audience.%1$sbefore = 0 OR audience.%1$sbefore >= '.$timestamp.')', $key);
             } else {
-                $dateClauses[] = 'audience.first_membership_since = 0';
-                $dateClauses[] = 'audience.first_membership_before = 0';
+                $dateClauses[] = \sprintf('audience.%ssince = 0', $key);
+                $dateClauses[] = \sprintf('audience.%sbefore = 0', $key);
             }
         }
 
