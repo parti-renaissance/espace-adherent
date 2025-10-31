@@ -55,9 +55,9 @@ class FilterByZonesAdminExtension extends AbstractAdminExtension
                 $query->getQueryBuilder(),
                 $alias,
                 $resourceClass,
-                'api_zone_filter_resource_alias',
+                'admin_extension_filter_by_zones',
                 $resourceClass::getZonesPropertyName(),
-                'api_zone_filter_zone_alias',
+                'admin_extension_filter_by_zones_param',
                 [$resourceClass, 'alterQueryBuilderForZones']
             )
         ;

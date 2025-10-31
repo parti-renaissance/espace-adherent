@@ -3,7 +3,7 @@
 {% block field %}
     <div style="display: flex;flex-direction: column;">
         <span>
-            {% if admin.hasAccess('edit') %}
+            {% if admin.hasAccess('edit', object) %}
                 <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
                     {{ object.civility.value }} {{ object.fullName }}
                 </a>
