@@ -333,6 +333,7 @@ Feature:
                                     "procurations",
                                     "actions",
                                     "featurebase",
+                                    "eaggle",
                                     "circonscriptions",
                                     "referrals",
                                     "rentree"
@@ -422,6 +423,7 @@ Feature:
                                     "procurations",
                                     "actions",
                                     "featurebase",
+                                    "eaggle",
                                     "circonscriptions",
                                     "referrals",
                                     "rentree"

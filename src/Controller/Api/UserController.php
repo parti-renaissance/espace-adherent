@@ -10,6 +10,7 @@ use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
 use App\Normalizer\ImageExposeNormalizer;
+use App\Normalizer\ProfileManagedZoneNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
@@ -56,6 +57,10 @@ class UserController extends AbstractController
             $context['groups'] = ['jemarche_user_profile'];
             $context[TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR] = true;
             $context[TranslateAdherentTagNormalizer::NO_STATIC_TAGS] = true;
+        }
+
+        if ($this->isGranted(Scope::generateRole(Scope::READ_PROFILE_MANAGED_ZONE))) {
+            $context['groups'][] = ProfileManagedZoneNormalizer::GROUP;
         }
 
         $context['groups'][] = 'user_profile';
