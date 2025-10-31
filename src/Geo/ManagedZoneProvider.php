@@ -59,13 +59,10 @@ class ManagedZoneProvider
 
     public function zoneBelongsToSome(Zone $zone, array $managedIds): bool
     {
-        $ids = array_map(static function (Zone $zone): int {
-            return $zone->getId();
-        }, $zone->getParents());
-
-        $ids[] = $zone->getId();
-
-        $intersect = array_intersect($ids, $managedIds);
+        $intersect = array_intersect(
+            array_map(static fn (Zone $zone) => $zone->getId(), $zone->getWithParents()),
+            $managedIds
+        );
 
         return \count($intersect) > 0;
     }

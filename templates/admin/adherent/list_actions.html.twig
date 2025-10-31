@@ -30,11 +30,11 @@
     </div>
 
     <div style="width: 160px; margin-top: 5px;">
-        {% if admin.hasAccess('edit') %}
-        <a href="{{ admin.generateObjectUrl('edit', object) }}" class="btn btn-xs btn-default" title="Éditer">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Éditer
-        </a>
+        {% if admin.hasAccess('edit', object) %}
+            <a href="{{ admin.generateObjectUrl('edit', object) }}" class="btn btn-xs btn-default" title="Éditer">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Éditer
+            </a>
         {% endif %}
 
         <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-xs btn-default" title="Afficher">
