@@ -37,6 +37,7 @@ class FeatureEnum extends Enum
     public const REFERRALS = 'referrals';
     public const AGORAS = 'agoras';
     public const RENTREE = 'rentree';
+    public const EAGGLE = 'eaggle';
 
     public const ALL = [
         self::DASHBOARD,
@@ -66,6 +67,7 @@ class FeatureEnum extends Enum
         self::PROCURATIONS,
         self::ACTIONS,
         self::FEATUREBASE,
+        self::EAGGLE,
         self::CIRCONSCRIPTIONS,
         self::REFERRALS,
         self::RENTREE,

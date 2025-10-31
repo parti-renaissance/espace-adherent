@@ -29,6 +29,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const JEMENGAGE_ADMIN = 'jemengage_admin';
     public const CRM_PARIS = 'crm_paris';
     public const READ_PROFILE = 'read:profile';
+    public const READ_PROFILE_MANAGED_ZONE = 'read:profile_managed_zone';
     public const WRITE_PROFILE = 'write:profile';
 
     public const WRITE_GENERAL_CONVENTIONS = 'write:general_conventions';
