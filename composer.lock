@@ -962,16 +962,16 @@
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "7d9af08f3ef777b88c2dba44f059382e2b389435"
+                "reference": "1e417fdd4a3c6602b6c4634cf54aa9b065127fa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/7d9af08f3ef777b88c2dba44f059382e2b389435",
-                "reference": "7d9af08f3ef777b88c2dba44f059382e2b389435",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/1e417fdd4a3c6602b6c4634cf54aa9b065127fa2",
+                "reference": "1e417fdd4a3c6602b6c4634cf54aa9b065127fa2",
                 "shasum": ""
             },
             "require": {
@@ -1017,7 +1017,7 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2025-10-27T16:57:07+00:00"
+            "time": "2025-10-30T13:08:23+00:00"
         },
         {
             "name": "clue/stream-filter",
