@@ -352,6 +352,7 @@ class EventRepository extends ServiceEntityRepository
         ;
 
         $adherentZonesCondition = $this->createGeoZonesQueryBuilder(
+            'adherent',
             $zones,
             $qb,
             Adherent::class,
@@ -364,6 +365,7 @@ class EventRepository extends ServiceEntityRepository
         );
 
         $committeeZoneCondition = $this->createGeoZonesQueryBuilder(
+            'committee',
             $zones,
             $qb,
             Committee::class,
@@ -377,8 +379,8 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb
             ->andWhere((new Orx())
-                ->add(\sprintf('committee IS NOT NULL AND committee.id IN (%s)', $committeeZoneCondition->getDQL()))
-                ->add(\sprintf('committee IS NULL AND adherent.id IN (%s)', $adherentZonesCondition->getDQL()))
+                ->add(\sprintf('committee IS NOT NULL AND EXISTS (%s)', $committeeZoneCondition->getDQL()))
+                ->add(\sprintf('committee IS NULL AND EXISTS (%s)', $adherentZonesCondition->getDQL()))
             )
             ->getQuery()
             ->getResult()
