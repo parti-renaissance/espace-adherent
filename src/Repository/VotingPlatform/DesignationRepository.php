@@ -165,6 +165,7 @@ class DesignationRepository extends ServiceEntityRepository
 
         if ($zones = $adherent->getParentZones()) {
             $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(
+                'designation',
                 $zones,
                 $queryBuilder,
                 Designation::class,
@@ -175,7 +176,7 @@ class DesignationRepository extends ServiceEntityRepository
                 false
             );
 
-            $conditions->add(\sprintf('designation.id IN (%s)', $zoneQueryBuilder->getDQL()));
+            $conditions->add($queryBuilder->expr()->exists($zoneQueryBuilder->getDQL()));
         }
 
         $votingPlatformElectionQueryBuilder = $this->getEntityManager()->createQueryBuilder()

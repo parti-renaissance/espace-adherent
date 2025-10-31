@@ -24,6 +24,7 @@ trait GeoZoneTrait
         }
 
         $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(
+            $rootAlias,
             $zones,
             $queryBuilder,
             $entityClass,
@@ -32,15 +33,16 @@ trait GeoZoneTrait
             $zoneRelationAlias,
             $queryModifier,
             $withParents,
-            $zoneParentAlias
+            $zoneParentAlias,
         );
 
-        $queryBuilder->andWhere(\sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
+        $queryBuilder->andWhere($queryBuilder->expr()->exists($zoneQueryBuilder->getDQL()));
 
         return $queryBuilder;
     }
 
     public function createGeoZonesQueryBuilder(
+        string $rootAlias,
         array $zones,
         QueryBuilder $queryBuilder,
         string $entityClass,
@@ -58,7 +60,7 @@ trait GeoZoneTrait
         $zoneQueryBuilder = $queryBuilder
             ->getEntityManager()
             ->createQueryBuilder()
-            ->select($select = \sprintf('%s.id', $entityClassAlias))
+            ->select('1')
             ->from($entityClass, $entityClassAlias)
         ;
 
@@ -66,22 +68,21 @@ trait GeoZoneTrait
             $queryModifier($zoneQueryBuilder, $entityClassAlias);
         }
 
-        $zoneQueryBuilder
-            ->innerJoin(str_contains($zoneRelation, '.') ? $zoneRelation : \sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
-            ->groupBy($select)
-        ;
+        $zoneQueryBuilder->innerJoin(
+            str_contains($zoneRelation, '.') ? $zoneRelation : \sprintf('%s.%s', $entityClassAlias, $zoneRelation),
+            $zoneRelationAlias
+        );
 
         $orX = $queryBuilder->expr()->orX();
         $orX->add(\sprintf('%s IN (:%s_zone_ids)', $zoneRelationAlias, $zoneRelationAlias));
 
-        $queryBuilder->setParameter(\sprintf('%s_zone_ids', $zoneRelationAlias), array_map(static function (Zone $zone): int {
-            return $zone->getId();
-        }, $zones));
+        $queryBuilder->setParameter(
+            \sprintf('%s_zone_ids', $zoneRelationAlias),
+            array_map(static fn (Zone $zone) => $zone->getId(), $zones)
+        );
 
         if ($withParents) {
-            $parents = array_filter(array_map(static function (Zone $zone): ?int {
-                return $zone->isCityGrouper() ? null : $zone->getId();
-            }, $zones));
+            $parents = array_filter(array_map(static fn (Zone $zone) => $zone->isCityGrouper() ? null : $zone->getId(), $zones));
 
             if ($parents) {
                 if (!\in_array($zoneParentAlias, $queryBuilder->getAllAliases(), true)) {
@@ -93,9 +94,10 @@ trait GeoZoneTrait
             }
         }
 
-        $zoneQueryBuilder->where($orX);
-
-        return $zoneQueryBuilder;
+        return $zoneQueryBuilder
+            ->andWhere($entityClassAlias.'.id = '.$rootAlias.'.id')
+            ->andWhere($orX)
+        ;
     }
 
     public function createEntityInGeoZonesQueryBuilder(
@@ -111,22 +113,17 @@ trait GeoZoneTrait
             ->getEntityManager()
             ->createQueryBuilder()
             ->from($entityClass, $entityClassAlias)
-            ->select($select = \sprintf('%s.id', $entityClassAlias))
+            ->select(\sprintf('DISTINCT %s.id', $entityClassAlias))
             ->innerJoin(\sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
-            ->groupBy($select)
         ;
 
         $orX = $zoneQueryBuilder->expr()->orX();
         $orX->add(\sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
 
-        $zoneQueryBuilder->setParameter('zone_ids', array_map(static function (Zone $zone): int {
-            return $zone->getId();
-        }, $zones));
+        $zoneQueryBuilder->setParameter('zone_ids', array_map(static fn (Zone $zone) => $zone->getId(), $zones));
 
         if ($withParents) {
-            $parents = array_filter(array_map(static function (Zone $zone): ?int {
-                return $zone->isCityGrouper() ? null : $zone->getId();
-            }, $zones));
+            $parents = array_filter(array_map(static fn (Zone $zone) => $zone->isCityGrouper() ? null : $zone->getId(), $zones));
 
             if ($parents) {
                 if (!\in_array($zoneParentAlias, $zoneQueryBuilder->getAllAliases(), true)) {
@@ -138,8 +135,6 @@ trait GeoZoneTrait
             }
         }
 
-        $zoneQueryBuilder->where($orX);
-
-        return $zoneQueryBuilder;
+        return $zoneQueryBuilder->where($orX);
     }
 }

@@ -143,10 +143,12 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'email' => 'admin@renaissance.code',
             'password' => 'renaissance',
             'roles' => $this->getRoles([
+                'ROLE_ADMIN_ADHERENT_ADHERENTS',
                 'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
                 'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
             ]),
         ]));
+        $renaissanceAdmin->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->setReference('administrator-renaissance', $renaissanceAdmin);
 
         $manager->persist($superAdmin2fa);
@@ -169,6 +171,7 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            LoadGeoZoneData::class,
             LoadAdministratorRoleData::class,
         ];
     }

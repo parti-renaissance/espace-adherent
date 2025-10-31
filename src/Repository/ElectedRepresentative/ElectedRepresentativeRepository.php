@@ -290,6 +290,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         }
 
         $zoneConditionQueryBuilder = $this->createGeoZonesQueryBuilder(
+            'mandate',
             $zones,
             $qb,
             Mandate::class,
@@ -298,10 +299,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             'mandate_zone_2'
         );
 
-        $qb->andWhere(
-            ($condition ?? new Orx())
-                ->add(\sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
-        );
+        $qb->andWhere(($condition ?? new Orx())->add($qb->expr()->exists($zoneConditionQueryBuilder->getDQL())));
 
         return $qb;
     }
