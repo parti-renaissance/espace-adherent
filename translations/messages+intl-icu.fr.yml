@@ -328,6 +328,18 @@ role.delegated_president_departmental_assembly: >-
       other {Président d'assemblée départementale délégué}
     }
 
+role.municipal_candidate: >-
+    {gender, select,
+      female {Candidate aux municipales}
+      other {Candidat aux municipales}
+    }
+
+role.delegated_municipal_candidate: >-
+    {gender, select,
+      female {Candidate aux municipales déléguée}
+      other {Candidat aux municipales délégué}
+    }
+
 role.procurations_manager: Responsable procurations
 
 role.fde_coordinator: >-

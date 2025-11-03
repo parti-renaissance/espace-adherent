@@ -29,6 +29,7 @@ class AdherentRoles
             ScopeEnum::CORRESPONDENT,
             ScopeEnum::PROCURATIONS_MANAGER,
             ScopeEnum::LEGISLATIVE_CANDIDATE,
+            ScopeEnum::MUNICIPAL_CANDIDATE,
         ],
         self::GROUP_NATIONAL => [
             ScopeEnum::NATIONAL,

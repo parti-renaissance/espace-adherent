@@ -1873,6 +1873,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
     }
 
+    public function isMunicipalCandidate(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE);
+    }
+
     public function getDeputyZone(): ?Zone
     {
         return $this->isDeputy() ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first() : null;
@@ -1907,6 +1912,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getPresidentDepartmentalAssemblyZones(): array
     {
         return $this->isPresidentDepartmentalAssembly() ? $this->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)->getZones()->toArray() : [];
+    }
+
+    public function getMunicipalCandidateZone(): ?Zone
+    {
+        return $this->isMunicipalCandidate() ? $this->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE)?->getZones()->toArray()[0] ?? null : null;
     }
 
     public function getFacebookPageUrl(): ?string
