@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\UserDocument;
+use App\Scope\ScopeGeneratorResolver;
+use App\Security\Voter\FileUploadVoter;
 use App\UserDocument\UserDocumentManager;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemException;
@@ -17,9 +19,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UploadDocumentController extends AbstractController
 {
-    #[IsGranted('FILE_UPLOAD', subject: 'type')]
+    #[IsGranted(FileUploadVoter::FILE_UPLOAD, subject: 'type')]
     #[Route(path: '/api/v3/upload/{type}', name: 'api_filebrowser_upload_v3', methods: ['POST'])]
-    public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
+    public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager, ScopeGeneratorResolver $scopeGeneratorResolver): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             return $this->json(
@@ -37,7 +39,7 @@ class UploadDocumentController extends AbstractController
 
         $message = 'Le document a été téléchargé avec succès.';
         try {
-            $document = $manager->createAndSave($request->files->get('upload'), $type);
+            $document = $manager->createAndSave($request->files->get('upload'), $type, $scopeGeneratorResolver->generate());
             $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
         } catch (\Exception $e) {
             $url = '';

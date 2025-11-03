@@ -20,7 +20,7 @@ class LoadUserDocumentData extends Fixture
             'image/png',
             'png_document.png',
             'png',
-            '1024'
+            1024
         );
 
         $userDocumentJpeg = UserDocument::create(
@@ -29,7 +29,7 @@ class LoadUserDocumentData extends Fixture
             'image/jpeg',
             'jpeg_document.jpeg',
             'jpeg',
-            '2048'
+            2048
         );
 
         $manager->persist($userDocumentPng);

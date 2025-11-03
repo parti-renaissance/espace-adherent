@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Scope\Scope as ScopeValueObject;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -28,6 +29,9 @@ trait AuthorInstanceTrait
     #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $authorTheme = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $instanceKey = null;
 
     public function getAuthorScope(): ?string
     {
@@ -77,5 +81,17 @@ trait AuthorInstanceTrait
     public function setAuthorTheme(?array $authorTheme): void
     {
         $this->authorTheme = $authorTheme;
+    }
+
+    public function updateFromScope(ScopeValueObject $scope): void
+    {
+        $this->setAuthor($scope->getCurrentUser());
+        $this->setAuthorScope($scope->getCode());
+        $this->setAuthorRole($scope->getRoleName());
+        $this->setAuthorInstance($scope->getScopeInstance());
+        $this->setAuthorZone(implode(', ', $scope->getZoneNames()) ?: null);
+        $this->setAuthorTheme($scope->getAttribute('theme'));
+
+        $this->instanceKey = $scope->generateInstanceKey();
     }
 }
