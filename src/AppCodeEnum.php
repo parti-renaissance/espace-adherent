@@ -13,6 +13,7 @@ final class AppCodeEnum extends Enum
     public const VOX = 'vox';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
+    public const FORMATION = 'formation';
 
     public static function isRenaissanceApp(?string $code): bool
     {

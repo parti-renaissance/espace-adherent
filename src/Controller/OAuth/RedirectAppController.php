@@ -22,6 +22,7 @@ class RedirectAppController extends AbstractController
 
         $client = match ($clientCode) {
             AppCodeEnum::JEMENGAGE_WEB => $clientRepository->getCadreClient(),
+            AppCodeEnum::FORMATION => $clientRepository->getFormationClient(),
             default => $clientRepository->getVoxClient(),
         };
 

@@ -22,6 +22,11 @@ class ClientRepository extends ServiceEntityRepository
         return $this->findOneBy(['code' => AppCodeEnum::JEMENGAGE_WEB]);
     }
 
+    public function getFormationClient(): Client
+    {
+        return $this->findOneBy(['code' => AppCodeEnum::FORMATION]);
+    }
+
     public function getVoxClient(): Client
     {
         return $this->findOneBy(['code' => AppCodeEnum::BESOIN_D_EUROPE]);

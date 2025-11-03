@@ -218,6 +218,14 @@ cadre_app_redirect:
     defaults:
         clientCode: jemengage_web
 
+formation_app_redirect:
+    methods: GET
+    host: '%user_vox_host%'
+    path: /formation
+    controller: App\Controller\OAuth\RedirectAppController
+    defaults:
+        clientCode: formation
+
 user_renaissance_redirect:
     host: '%user_vox_host%'
     path: /
