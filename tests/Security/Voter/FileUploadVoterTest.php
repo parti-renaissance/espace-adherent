@@ -2,7 +2,6 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Documents\DocumentPermissions;
 use App\Entity\Adherent;
 use App\Entity\UserDocument;
 use App\Scope\ScopeGeneratorResolver;
@@ -10,14 +9,13 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\FileUploadVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 {
     public static function provideAnonymousCases(): iterable
     {
         foreach (UserDocument::ALL_TYPES as $type) {
-            yield [false, true, DocumentPermissions::FILE_UPLOAD, $type];
+            yield [false, true, FileUploadVoter::FILE_UPLOAD, $type];
         }
     }
 
@@ -37,10 +35,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new FileUploadVoter(
-            $this->createConfiguredMock(AuthorizationCheckerInterface::class, ['isGranted' => false]),
-            $this->createMock(ScopeGeneratorResolver::class)
-        );
+        return new FileUploadVoter($this->createMock(ScopeGeneratorResolver::class));
     }
 
     #[DataProvider('provideDocumentTypes')]
@@ -48,7 +43,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     {
         $adherent = $this->getAdherentMock(false);
 
-        $this->assertGrantedForAdherent(false, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
+        $this->assertGrantedForAdherent(false, true, $adherent, FileUploadVoter::FILE_UPLOAD, $type);
     }
 
     /**

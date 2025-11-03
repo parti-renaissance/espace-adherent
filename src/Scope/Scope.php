@@ -182,4 +182,19 @@ class Scope
     {
         return array_intersect([FeatureEnum::FEATUREBASE], $this->features);
     }
+
+    public function generateInstanceKey(): string
+    {
+        $parts = [$this->getMainCode()];
+
+        if ($zones = $this->getZones()) {
+            $parts[] = $zones[0]->getCode();
+        } elseif ($committees = $this->getCommitteeUuids()) {
+            $parts[] = $committees[0];
+        } elseif ($agoras = $this->getAgoraUuids()) {
+            $parts[] = $agoras[0];
+        }
+
+        return implode(':', $parts);
+    }
 }

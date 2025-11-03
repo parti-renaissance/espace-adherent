@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Scope\Scope;
+
 interface AuthorInstanceInterface extends AuthorInterface
 {
     public function getAuthorScope(): ?string;
@@ -23,4 +25,6 @@ interface AuthorInstanceInterface extends AuthorInterface
     public function getAuthorTheme(): ?array;
 
     public function setAuthorTheme(?array $theme): void;
+
+    public function updateFromScope(Scope $scope): void;
 }

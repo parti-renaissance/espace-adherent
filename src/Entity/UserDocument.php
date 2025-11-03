@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -12,15 +11,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserDocumentRepository::class)]
 #[ORM\Table(name: 'user_documents')]
-class UserDocument
+class UserDocument implements AuthorInstanceInterface
 {
     use EntityIdentityTrait;
+    use AuthorInstanceTrait;
+    use EntityTimestampableTrait;
 
     public const TYPE_COMMITTEE_CONTACT = 'committee_contact';
     public const TYPE_COMMITTEE_FEED = 'committee_feed';
     public const TYPE_EVENT = 'event';
     public const TYPE_REFERENT = 'referent';
     public const TYPE_ADHERENT_MESSAGE = 'adherent_message';
+    public const TYPE_PUBLICATION = 'publication';
     public const TYPE_NEWS = 'news';
 
     public const ALL_TYPES = [
@@ -30,6 +32,7 @@ class UserDocument
         self::TYPE_REFERENT,
         self::TYPE_ADHERENT_MESSAGE,
         self::TYPE_NEWS,
+        self::TYPE_PUBLICATION,
     ];
 
     /**
@@ -66,21 +69,13 @@ class UserDocument
     #[ORM\Column(length: 25)]
     private $type;
 
-    /**
-     * @var \DateTime
-     */
-    #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    private function __construct(string $type, string $name, string $extension, int $size, string $createdAt = 'now')
+    private function __construct(string $type, string $name, string $extension, int $size)
     {
         $this->uuid = Uuid::uuid4();
         $this->originalName = $name;
         $this->extension = $extension;
         $this->size = $size;
         $this->mimeType = $type;
-        $this->createdAt = new \DateTimeImmutable($createdAt);
     }
 
     public function __toString()
@@ -131,20 +126,6 @@ class UserDocument
     public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        if ($this->createdAt instanceof \DateTime) {
-            $this->createdAt = \DateTimeImmutable::createFromMutable($this->createdAt);
-        }
-
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
     }
 
     public function setType(string $type): void
