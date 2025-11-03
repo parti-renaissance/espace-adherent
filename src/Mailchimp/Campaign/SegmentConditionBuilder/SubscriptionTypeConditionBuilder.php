@@ -41,6 +41,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
             case ScopeEnum::LEGISLATIVE_CANDIDATE:
             case ScopeEnum::CANDIDATE:
+            case ScopeEnum::MUNICIPAL_CANDIDATE:
                 if ($campaign->getMailchimpListType()) {
                     return [];
                 }

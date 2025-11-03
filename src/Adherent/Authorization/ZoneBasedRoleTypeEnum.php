@@ -19,6 +19,8 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::PROCURATIONS_MANAGER,
         ScopeEnum::FDE_COORDINATOR,
         ScopeEnum::SENATOR,
+        ScopeEnum::CANDIDATE,
+        ScopeEnum::MUNICIPAL_CANDIDATE,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
@@ -32,6 +34,10 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::LEGISLATIVE_CANDIDATE => [
             Zone::DISTRICT,
             Zone::FOREIGN_DISTRICT,
+        ],
+        ScopeEnum::MUNICIPAL_CANDIDATE => [
+            Zone::CITY,
+            Zone::BOROUGH,
         ],
         ScopeEnum::DEPUTY => [
             Zone::DISTRICT,
