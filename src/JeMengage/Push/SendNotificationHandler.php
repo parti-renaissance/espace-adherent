@@ -33,7 +33,10 @@ class SendNotificationHandler
 
         $notification = $this->notificationFactory->create($object, $command);
 
-        $notification->setTokens($this->findTokensForNotification($notification, $object, $command));
+        $tokens = $this->findTokensForNotification($notification, $object, $command);
+        sort($tokens);
+
+        $notification->setTokens($tokens);
 
         $this->messaging->send($notification);
 

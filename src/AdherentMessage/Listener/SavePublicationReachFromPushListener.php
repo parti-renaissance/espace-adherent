@@ -20,6 +20,10 @@ class SavePublicationReachFromPushListener implements EventSubscriberInterface
 
     public function onPushNotificationSentEvent(PushNotificationSentEvent $event): void
     {
+        if (!str_starts_with($event->notificationEntity->getScope(), 'publication:')) {
+            return;
+        }
+
         $this->bus->dispatch(new InitiatePublicationReachFromPushCommand($event->notificationEntity->getUuid()));
     }
 }
