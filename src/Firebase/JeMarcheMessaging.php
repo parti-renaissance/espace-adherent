@@ -6,6 +6,7 @@ use App\Entity\Notification as NotificationEntity;
 use App\Firebase\Event\PushNotificationSentEvent;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreait\Firebase\Contract\Messaging as BaseMessaging;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -14,11 +15,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JeMarcheMessaging
 {
-    public const MULTICAST_MAX_TOKENS = 500;
+    public const MULTICAST_MAX_TOKENS = 300;
 
     public function __construct(
         private readonly BaseMessaging $messaging,
         private readonly EntityManagerInterface $entityManager,
+        private readonly NotificationRepository $notificationRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -36,10 +38,23 @@ class JeMarcheMessaging
             ;
 
             foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {
-                $this->entityManager->persist($notificationEntity = $notificationEntityTemplate->withTokens($chunk));
+                $notificationEntity = $notificationEntityTemplate->withTokens($chunk);
+
+                if ($this->notificationRepository->keyExists($notificationEntity->notificationKey)) {
+                    continue;
+                }
+
+                $this->entityManager->persist($notificationEntity);
                 $this->entityManager->flush();
 
-                $this->messaging->sendMulticast($message, $chunk);
+                try {
+                    $this->messaging->sendMulticast($message, $chunk);
+                } catch (\Exception $e) {
+                    $this->entityManager->remove($notificationEntity);
+                    $this->entityManager->flush();
+
+                    throw $e;
+                }
 
                 $notificationEntity->setDelivered();
                 $this->entityManager->flush();

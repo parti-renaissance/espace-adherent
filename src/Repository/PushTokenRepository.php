@@ -167,6 +167,7 @@ class PushTokenRepository extends ServiceEntityRepository
             ->innerJoin('link.appSession', 's', Join::WITH, 's.status = :session_status AND s.unsubscribedAt IS NULL')
             ->innerJoin('s.adherent', $adherentAlias)
             ->andWhere($adherentAlias.'.status = :enabled')
+            ->orderBy($alias.'.identifier')
             ->setParameter('enabled', Adherent::ENABLED)
             ->setParameter('session_status', SessionStatusEnum::ACTIVE)
         ;

@@ -53,6 +53,9 @@ class Notification
     #[ORM\Column(nullable: true)]
     private ?string $scope;
 
+    #[ORM\Column(unique: true, nullable: true)]
+    public ?string $notificationKey = null;
+
     public function __construct(
         string $notificationClass,
         string $title,
@@ -70,6 +73,8 @@ class Notification
         $this->scope = $scope;
         $this->topic = $topic;
         $this->tokens = $tokens;
+
+        $this->notificationKey = $this->generateNotificationKey();
     }
 
     public static function create(NotificationInterface $notification): self
@@ -146,6 +151,25 @@ class Notification
         $copy = clone $this;
         $copy->tokens = $tokens;
 
+        $copy->notificationKey = $copy->generateNotificationKey();
+
         return $copy;
+    }
+
+    private function generateNotificationKey(): string
+    {
+        $tokens = $this->tokens;
+
+        $tokens && sort($tokens);
+
+        $data = [
+            'class' => $this->notificationClass,
+            'title' => $this->title,
+            'body' => $this->body,
+            'scope' => $this->scope,
+            'tokens' => $tokens,
+        ];
+
+        return hash('sha256', json_encode($data, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES));
     }
 }

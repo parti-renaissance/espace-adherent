@@ -17,4 +17,15 @@ class NotificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notification::class);
     }
+
+    public function keyExists(string $notificationKey): bool
+    {
+        return $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->andWhere('n.notificationKey = :notification_key')
+            ->setParameter('notification_key', $notificationKey)
+            ->getQuery()
+            ->getSingleScalarResult() > 0
+        ;
+    }
 }
