@@ -29,9 +29,7 @@ class ReferralInformationsValidator extends ConstraintValidator
         $filledCount = 0;
         foreach (self::PREREGISTRATION_FIELDS as $field) {
             if ('postAddress' === $field) {
-                $postAddress = $value->getPostAddress();
-
-                if ($postAddress && !$postAddress->isEmpty()) {
+                if ($value->getPostAddress()?->isFilled()) {
                     ++$filledCount;
                 }
 

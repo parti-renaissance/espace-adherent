@@ -188,10 +188,10 @@ class Referral implements ZoneableEntityInterface
 
     public function hasFullInformations(): bool
     {
-        return null !== $this->lastName
-            && !$this->postAddress?->isEmpty()
-            && null !== $this->civility
-            && null !== $this->nationality;
+        return !empty($this->lastName)
+            && !empty($this->civility)
+            && !empty($this->nationality)
+            && $this->getPostAddress()?->isFilled();
     }
 
     public function isAdhesion(): bool

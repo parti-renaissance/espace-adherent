@@ -249,28 +249,25 @@ trait EntityAddressTrait
 
     public function getInlineFormattedAddress(?string $locale = 'fr_FR'): string
     {
-        if ($this->isEmpty()) {
+        if (!$this->isFilled()) {
             return '';
         }
 
         $parts[] = str_replace(',', '', $this->address);
         $parts[] = \sprintf('%s %s', $this->postalCode, $this->getCityName());
 
-        if (!$this->isFrenchAddress() && $this->country) {
+        if ($this->country && !$this->isFrenchAddress()) {
             $parts[] = $this->getCountryName($locale);
         }
 
         return implode(', ', array_map('trim', $parts));
     }
 
-    public function isEmpty(): bool
+    public function isFilled(): bool
     {
-        return empty(implode('', array_map('trim', [
-            $this->address,
-            $this->postalCode,
-            $this->city,
-            $this->country,
-        ])));
+        return !empty(trim((string) $this->address))
+            && !empty(trim((string) $this->cityName))
+            && !empty(trim((string) $this->country));
     }
 
     protected function isFrenchAddress(): bool
