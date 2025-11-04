@@ -2,7 +2,6 @@
 
 namespace Tests\App\Mailer;
 
-use App\Mailer\EmailClientInterface;
 use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\Event\MailerEvents;
@@ -40,14 +39,13 @@ class MailerServiceTest extends TestCase
         ;
 
         $service = new MailerService(
-            $dispatcher,
             new NullTransport(),
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
                 $this->createMock(Manager::class)
             ),
-            $this->createMock(EmailClientInterface::class)
+            $dispatcher,
         );
 
         $this->assertTrue($service->sendMessage(DummyMessage::create()));
@@ -77,14 +75,13 @@ class MailerServiceTest extends TestCase
         ;
 
         $service = new MailerService(
-            $dispatcher,
             new FailingTransport(),
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
                 $this->createMock(Manager::class)
             ),
-            $this->createMock(EmailClientInterface::class)
+            $dispatcher,
         );
 
         $this->assertFalse($service->sendMessage(DummyMessage::create()));
