@@ -184,14 +184,18 @@ class Client implements EntitySoftDeletedInterface
         return \in_array($scope, $this->supportedScopes, true);
     }
 
-    public function getSupportedScopes(): array
+    public function getSupportedScopes(bool $skipIntern = false): array
     {
+        if ($skipIntern) {
+            return array_values(array_filter($this->supportedScopes, static fn (string $scope) => !str_starts_with($scope, 'scope:')));
+        }
+
         return $this->supportedScopes;
     }
 
-    public function getUserScopes(): array
+    public function getUserScopes(bool $skipIntern = false): array
     {
-        return array_diff($this->supportedScopes, [Scope::IMPERSONATOR]);
+        return array_diff($this->getSupportedScopes($skipIntern), [Scope::IMPERSONATOR]);
     }
 
     public function verifySecret(string $secret): bool

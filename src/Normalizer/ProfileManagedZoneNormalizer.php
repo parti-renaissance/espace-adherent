@@ -3,7 +3,9 @@
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
+use App\OAuth\Model\Scope;
 use App\Scope\ScopeEnum;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,6 +16,10 @@ class ProfileManagedZoneNormalizer implements NormalizerInterface, NormalizerAwa
 
     public const GROUP = 'profile_managed_zone';
 
+    public function __construct(private readonly AuthorizationCheckerInterface $authorizationChecker)
+    {
+    }
+
     /**
      * @param Adherent $object
      */
@@ -22,9 +28,20 @@ class ProfileManagedZoneNormalizer implements NormalizerInterface, NormalizerAwa
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $managedZone = null;
 
-        if ($role = $object->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)) {
+        if (
+            $this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_PAD))
+            && $role = $object->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)
+        ) {
             $managedZone = [
                 'type' => 'departement',
+                'code' => $role->getZonesCodes()[0],
+            ];
+        } elseif (
+            $this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_MUNICIPAL_CANDIDATE))
+            && $role = $object->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE)
+        ) {
+            $managedZone = [
+                'type' => 'commune',
                 'code' => $role->getZonesCodes()[0],
             ];
         }
