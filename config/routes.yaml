@@ -218,6 +218,14 @@ cadre_app_redirect:
     defaults:
         clientCode: jemengage_web
 
+eaggle_app_redirect:
+    methods: GET
+    host: '%user_vox_host%'
+    path: /eaggle
+    controller: App\Controller\OAuth\RedirectAppController
+    defaults:
+        clientCode: eaggle
+
 formation_redirect:
     methods: GET
     host: '%user_vox_host%'

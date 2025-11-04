@@ -30,7 +30,7 @@ class UploadDocumentController extends AbstractController
             );
         }
 
-        if (0 === $request->files->count()) {
+        if (0 === $request->files->count() || !$request->files->get('upload')) {
             return $this->json(
                 ['message' => 'Aucun document téléchargé.'],
                 Response::HTTP_BAD_REQUEST

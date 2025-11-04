@@ -2,9 +2,9 @@
 
 namespace App\Controller\OAuth;
 
-use App\AppCodeEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\OAuth\ClientRepository;
+use App\Scope\ScopeEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,21 +19,38 @@ class RedirectAppController extends AbstractController
     {
         $currentApp = $appUrlManager->getAppCodeFromRequest($request);
         $urlGenerator = $appUrlManager->getUrlGenerator($currentApp ?? '');
+        $client = null;
 
-        $client = match ($clientCode) {
-            AppCodeEnum::JEMENGAGE_WEB => $clientRepository->getCadreClient(),
-            AppCodeEnum::FORMATION => $clientRepository->getFormationClient(),
-            default => $clientRepository->getVoxClient(),
-        };
+        if ($clientCode) {
+            $client = $clientRepository->findOneBy(['code' => $clientCode]);
+        }
+
+        if (!$client) {
+            $client = $clientRepository->getVoxClient();
+        }
+
+        $isAdmin = $this->isGranted('IS_IMPERSONATOR');
+        $supportedScopes = $client->getSupportedScopes();
+        $scopesToUse = $isAdmin ? $client->getSupportedScopes(true) : $client->getUserScopes(true);
+
+        if (($requestedScope = $request->query->get('scope')) && ScopeEnum::isValid($requestedScope)) {
+            $requestedScope = 'scope:'.$requestedScope;
+            if (\in_array($requestedScope, $supportedScopes, true)) {
+                $scopesToUse[] = $requestedScope;
+            }
+        }
+
+        var_dump($supportedScopes);
+        var_dump($scopesToUse);
 
         $redirectUri = current($client->getRedirectUris());
 
         return $this->redirectToRoute('app_front_oauth_authorize', [
-            'app_domain' => ($isAdmin = $this->isGranted('IS_IMPERSONATOR')) ? $this->adminRenaissanceHost : $urlGenerator->getAppHost(),
+            'app_domain' => $isAdmin ? $this->adminRenaissanceHost : $urlGenerator->getAppHost(),
             'response_type' => 'code',
             'client_id' => $client->getUuid(),
             'redirect_uri' => $redirectUri,
-            'scope' => implode(' ', $isAdmin ? $client->getSupportedScopes() : $client->getUserScopes()),
+            'scope' => implode(' ', $scopesToUse),
             'state' => $request->query->get('state'),
         ]);
     }

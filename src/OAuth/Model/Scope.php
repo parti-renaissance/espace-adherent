@@ -2,6 +2,7 @@
 
 namespace App\OAuth\Model;
 
+use App\Scope\ScopeEnum;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use MyCLabs\Enum\Enum;
 
@@ -37,6 +38,9 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const IMPERSONATOR = 'impersonator';
 
     public const FORMATION = 'formation';
+
+    public const SCOPE_PAD = 'scope:'.ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY;
+    public const SCOPE_MUNICIPAL_CANDIDATE = 'scope:'.ScopeEnum::MUNICIPAL_CANDIDATE;
 
     public static function generateRole(string $scope): string
     {
