@@ -564,7 +564,7 @@ class EventRepository extends ServiceEntityRepository
             ->setParameters([
                 'status' => Event::STATUS_SCHEDULED,
                 'live_url' => 'https://vimeo.com/%',
-                'now' => $now = new \DateTime('now'),
+                'now' => new \DateTime('now'),
             ])
             ->getQuery()
             ->getResult()

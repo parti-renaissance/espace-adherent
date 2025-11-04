@@ -13,21 +13,11 @@ class MailerService
 {
     public const PAYLOAD_MAXSIZE = 50;
 
-    private $dispatcher;
-    private $transport;
-    private $factory;
-    private $emailClient;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        TransportInterface $transport,
-        EmailTemplateFactory $factory,
-        EmailClientInterface $emailClient,
+        private readonly TransportInterface $transport,
+        private readonly EmailTemplateFactory $factory,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->transport = $transport;
-        $this->factory = $factory;
-        $this->emailClient = $emailClient;
     }
 
     public function sendMessage(Message $message, bool $async = true): bool
