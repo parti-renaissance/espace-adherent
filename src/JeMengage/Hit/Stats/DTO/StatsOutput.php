@@ -2,7 +2,7 @@
 
 namespace App\JeMengage\Hit\Stats\DTO;
 
-class StatsOutput implements \JsonSerializable
+class StatsOutput implements \JsonSerializable, \ArrayAccess
 {
     private array $data = [];
 
@@ -57,5 +57,25 @@ class StatsOutput implements \JsonSerializable
     public function get(string $key): int|float|null
     {
         return $this->data[$key] ?? null;
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return \array_key_exists($offset, $this->data);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->data[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        throw new \LogicException('StatsOutput is read-only.');
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        throw new \LogicException('StatsOutput is read-only.');
     }
 }

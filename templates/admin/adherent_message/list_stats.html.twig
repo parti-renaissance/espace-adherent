@@ -1,27 +1,15 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% set totalEmailSent = 0 %}
-    {% set totalOpenUnique = 0 %}
-    {% set totalClickUnique = 0 %}
-    {% set totalUnsubscribed = 0 %}
+    {% set stats = get_publication_stats(object) %}
 
-    {% for campaign in object.mailchimpCampaigns %}
-        {% set report = campaign.report %}
-
-        {% if report %}
-            {% set totalEmailSent = totalEmailSent + report.emailSent %}
-            {% set totalOpenUnique = totalOpenUnique + report.openUnique %}
-            {% set totalClickUnique = totalClickUnique + report.clickUnique %}
-            {% set totalUnsubscribed = totalUnsubscribed + report.unsubscribed %}
-        {% endif %}
-    {% endfor %}
-
-    Contacts: {{ totalEmailSent }}
-    <br />
-    Ouvertures: {{ totalOpenUnique }}
-    <br />
-    Clics: {{ totalClickUnique }}
-    <br />
-    Désabonnements: {{ totalUnsubscribed }}
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+        <li><strong>Contacts : </strong>{{ stats.contacts }}</li>
+        <li><strong>Emails : </strong>{{ stats.unique_emails }}</li>
+        <li><strong>Notifications : </strong>{{ stats.unique_notifications }}</li>
+        <li><strong>Impressions : </strong>{{ stats.unique_impressions }}</li>
+        <li>&nbsp;</li>
+        <li><strong>Ouvertures : </strong>{{ stats.unique_opens__total_rate|round(2) }} %</li>
+        <li><strong>Clics : </strong>{{ stats.unique_clicks__total_rate|round(2) }} %</li>
+    </ul>
 {% endblock %}

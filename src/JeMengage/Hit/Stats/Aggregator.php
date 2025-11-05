@@ -13,14 +13,14 @@ class Aggregator
     {
     }
 
-    public function getStats(TargetTypeEnum $type, UuidInterface $objectUuid): StatsOutput
+    public function getStats(TargetTypeEnum $type, UuidInterface $objectUuid, bool $wait = false): StatsOutput
     {
         $output = new StatsOutput();
 
         /** @var ProviderInterface $provider */
         foreach ($this->providers as $provider) {
             if ($provider->support($type)) {
-                $output->push($provider->provide($type, $objectUuid, $output));
+                $output->push($provider->provide($type, $objectUuid, $output, $wait));
             }
         }
 

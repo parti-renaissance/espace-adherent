@@ -13,7 +13,7 @@ class DefaultProvider extends AbstractProvider
     {
     }
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $statsOutput): array
+    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output, bool $wait = false): array
     {
         return $this->hitRepository->countImpressionAndOpenStats($type, $objectUuid);
     }

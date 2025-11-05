@@ -1,13 +1,8 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% set filter = object.filter %}
-
-    {% if filter %}
-        {% set assembly = filter.getAssemblyZone() %}
-
-        {% if assembly %}
-            {{ assembly }}
-        {% endif %}
-    {% endif %}
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+        <li class="text-bold">{{ object.authorInstance }}</li>
+        <li>{{ object.authorZone }}</li>
+    </ul>
 {% endblock %}

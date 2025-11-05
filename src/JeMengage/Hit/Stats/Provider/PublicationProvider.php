@@ -19,7 +19,7 @@ class PublicationProvider extends AbstractProvider
     ) {
     }
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output): array
+    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output, bool $wait = false): array
     {
         /** @var AdherentMessage $message */
         $message = $this->adherentMessageRepository->findOneByUuid($objectUuid);
@@ -33,17 +33,17 @@ class PublicationProvider extends AbstractProvider
 
         $totalReachByPush = $allReach['push'];
 
-        if (!$totalReachByPush && ++$this->tryCount < 10) {
+        if ($wait && !$totalReachByPush && ++$this->tryCount < 10) {
             sleep(1);
 
-            return $this->provide($type, $objectUuid, $output);
+            return $this->provide($type, $objectUuid, $output, $wait);
         }
 
         $uniqueImpressions = $output->get('unique_impressions');
 
         $result = [
             'sent_at' => $message->getSentAt(),
-            'visible_count' => $this->adherentRepository->countAdherentsForMessage($message),
+            'visible_count' => $wait ? $this->adherentRepository->countAdherentsForMessage($message) : null,
             'contacts' => $allReach['email_push'],
             'unique_notifications' => $totalReachByPush,
             'unique_emails' => $totalReachByEmail,
