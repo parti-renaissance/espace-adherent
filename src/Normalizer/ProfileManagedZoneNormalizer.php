@@ -26,20 +26,36 @@ class ProfileManagedZoneNormalizer implements NormalizerInterface, NormalizerAwa
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
-        $managedZone = null;
+        $data['managed_zone'] = $managedZone = null;
 
-        if (
-            $this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_PAD))
-            && $role = $object->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)
-        ) {
+        if ($this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_PAD))) {
+            $role = $object->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+
+            if (!$role) {
+                $delegatedAccesses = $object->getReceivedDelegatedAccessOfType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+                if ($delegatedAccesses->isEmpty()) {
+                    return $data;
+                }
+
+                $role = $delegatedAccesses->first()->getDelegator()->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+            }
+
             $managedZone = [
                 'type' => 'departement',
                 'code' => $role->getZonesCodes()[0],
             ];
-        } elseif (
-            $this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_MUNICIPAL_CANDIDATE))
-            && $role = $object->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE)
-        ) {
+        } elseif ($this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_MUNICIPAL_CANDIDATE))) {
+            $role = $object->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE);
+
+            if (!$role) {
+                $delegatedAccesses = $object->getReceivedDelegatedAccessOfType(ScopeEnum::MUNICIPAL_CANDIDATE);
+                if ($delegatedAccesses->isEmpty()) {
+                    return $data;
+                }
+
+                $role = $delegatedAccesses->first()->getDelegator()->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE);
+            }
+
             $managedZone = [
                 'type' => 'commune',
                 'code' => $role->getZonesCodes()[0],

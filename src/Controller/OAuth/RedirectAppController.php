@@ -40,9 +40,6 @@ class RedirectAppController extends AbstractController
             }
         }
 
-        var_dump($supportedScopes);
-        var_dump($scopesToUse);
-
         $redirectUri = current($client->getRedirectUris());
 
         return $this->redirectToRoute('app_front_oauth_authorize', [
