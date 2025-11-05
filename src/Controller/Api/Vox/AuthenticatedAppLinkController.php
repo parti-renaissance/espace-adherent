@@ -25,6 +25,7 @@ class AuthenticatedAppLinkController extends AbstractController
         'donation' => ['route_name' => 'app_donation_index', 'allowed_options' => ['duration']],
         'contribution' => 'app_renaissance_contribution_fill_revenue',
         'cadre' => ['route_name' => 'cadre_app_redirect', 'allowed_options' => ['state']],
+        'formation' => ['route_name' => 'formation_redirect', 'allowed_options' => ['state']],
     ];
 
     private const ALLOWED_QUERY_PARAMS = [
