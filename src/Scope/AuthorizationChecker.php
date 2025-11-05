@@ -79,6 +79,7 @@ class AuthorizationChecker
             FeatureEnum::ACTIONS,
             FeatureEnum::MESSAGES,
             FeatureEnum::PUBLICATIONS,
+            FeatureEnum::EAGGLE,
         ]));
     }
 }
