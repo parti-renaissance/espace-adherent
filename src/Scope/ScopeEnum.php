@@ -62,7 +62,7 @@ class ScopeEnum extends Enum
 
     public const ROLE_NAMES = [
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président',
-        self::MUNICIPAL_CANDIDATE => 'Candidat aux municipales',
+        self::MUNICIPAL_CANDIDATE => 'Candidat',
         self::DEPUTY => 'Délégué',
         self::REGIONAL_DELEGATE => 'Délégué',
         self::ANIMATOR => 'Responsable',
@@ -77,6 +77,7 @@ class ScopeEnum extends Enum
     public const SCOPE_INSTANCES = [
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Assemblée départementale',
         self::DEPUTY => 'Circonscription',
+        self::MUNICIPAL_CANDIDATE => 'Municipales',
         self::REGIONAL_DELEGATE => 'Région',
         self::ANIMATOR => 'Comité local',
         self::NATIONAL => 'National',
