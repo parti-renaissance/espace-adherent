@@ -292,12 +292,12 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function markAsSent(): void
     {
         $this->sentAt = new \DateTime();
-        $this->status = AdherentMessageStatusEnum::SENT_SUCCESSFULLY;
+        $this->status = AdherentMessageStatusEnum::SENT;
     }
 
     public function isSent(): bool
     {
-        return AdherentMessageStatusEnum::SENT_SUCCESSFULLY === $this->status;
+        return AdherentMessageStatusEnum::SENT === $this->status;
     }
 
     #[Groups(['message_read_status', 'message_read', 'message_read_list'])]

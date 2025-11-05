@@ -10,5 +10,5 @@ interface ProviderInterface
 {
     public function support(TargetTypeEnum $targetType): bool;
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output): array;
+    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output, bool $wait = false): array;
 }

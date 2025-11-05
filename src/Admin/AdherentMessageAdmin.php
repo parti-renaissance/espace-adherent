@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\AdherentMessage;
+namespace App\Admin;
 
-use App\Admin\AbstractAdmin;
+use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -28,7 +28,7 @@ class AdherentMessageAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
-            ->clearExcept(['list', 'export'])
+            ->clearExcept(['list'])
             ->add('display', $this->getRouterIdParameter().'/display')
         ;
     }
@@ -36,7 +36,29 @@ class AdherentMessageAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('subject', null, ['label' => 'Event', 'show_filter' => true])
+            ->add('source', ChoiceFilter::class, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Legacy' => AdherentMessageInterface::SOURCE_CADRE,
+                        'Publication' => AdherentMessageInterface::SOURCE_VOX,
+                    ],
+                ],
+            ])
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Statut',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Brouillon' => AdherentMessageStatusEnum::DRAFT,
+                        'Envoyé' => AdherentMessageStatusEnum::SENT,
+                    ],
+                ],
+            ])
+            ->add('subject', null, ['label' => 'Titre', 'show_filter' => true])
             ->add('filter.zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone géographique',
                 'show_filter' => true,
@@ -45,10 +67,7 @@ class AdherentMessageAdmin extends AbstractAdmin
                     'multiple' => true,
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
+                    'property' => ['name', 'code'],
                 ],
             ])
             ->add('sender', ModelFilter::class, [
@@ -96,27 +115,11 @@ class AdherentMessageAdmin extends AbstractAdmin
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Créé le',
                 'field_type' => DateRangePickerType::class,
-                'show_filter' => true,
             ])
             ->add('sentAt', DateRangeFilter::class, [
                 'label' => 'Envoyé le',
                 'field_type' => DateRangePickerType::class,
                 'show_filter' => true,
-            ])
-            ->add('source', ChoiceFilter::class, [
-                'label' => 'Source',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'multiple' => true,
-                    'choices' => [
-                        AdherentMessageInterface::SOURCE_CADRE,
-                        AdherentMessageInterface::SOURCE_VOX,
-                    ],
-                    'choice_label' => function (string $choice) {
-                        return 'adherent_message.source.'.$choice;
-                    },
-                ],
             ])
         ;
     }
@@ -124,23 +127,17 @@ class AdherentMessageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('assembly', null, [
-                'label' => 'Assemblée',
+            ->add('source', null, [
+                'label' => 'Type',
+                'template' => 'admin/adherent_message/list_source.html.twig',
+            ])
+            ->add('instance', null, [
+                'label' => 'Instance',
                 'virtual_field' => true,
                 'template' => 'admin/adherent_message/list_assembly.html.twig',
                 'header_style' => 'min-width: 200px',
             ])
-            ->add('authorInstance', null, [
-                'label' => 'Instance',
-            ])
-            ->add('informations', null, [
-                'label' => 'Informations',
-                'virtual_field' => true,
-                'template' => 'admin/adherent_message/list_informations.html.twig',
-            ])
-            ->add('subject', null, [
-                'label' => 'Titre',
-            ])
+            ->add('subject', null, ['label' => 'Titre'])
             ->add('sender', null, [
                 'label' => 'Expéditeur',
                 'virtual_field' => true,

@@ -54,7 +54,7 @@ class GetHitStatsController extends AbstractController
             return $response;
         }
 
-        return $this->json($this->aggregator->getStats(TargetTypeEnum::from($type), Uuid::fromString($uuid)));
+        return $this->json($this->aggregator->getStats(TargetTypeEnum::from($type), Uuid::fromString($uuid), true));
     }
 
     #[Route('/{eventType}')]

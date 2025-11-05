@@ -187,7 +187,7 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Agora::class, 'label' => 'Agoras', 'group' => 'Territoires'])
     ;
     $services
-        ->set('app.admin.adherent_message', App\Admin\AdherentMessage\AdherentMessageAdmin::class)
+        ->set('app.admin.adherent_message', App\Admin\AdherentMessageAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AdherentMessage\AdherentMessage::class, 'controller' => App\Controller\Admin\AdminAdherentMessageCRUDController::class, 'label' => 'Publications locales', 'group' => 'Territoires'])
     ;
     $services
