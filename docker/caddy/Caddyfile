@@ -8,13 +8,13 @@
 {$CADDY_EXTRA_CONFIG}
 
 test.*.code:80 {
-    root * /srv/app/public
+	root * /srv/app/public
 
-    php_fastcgi unix//var/run/php/php-fpm.sock {
-        env APP_ENV test
-        trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
-    }
-    file_server
+	php_fastcgi unix//var/run/php/php-fpm.sock {
+		env APP_ENV test
+		trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
+	}
+	file_server
 }
 
 :80
@@ -34,7 +34,7 @@ route {
 	header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
 	@noLiveEvent not path /live-event/*
-    header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+	header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
 
 	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
 	header X-Content-Type-Options "nosniff"
