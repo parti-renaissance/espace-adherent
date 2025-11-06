@@ -342,7 +342,6 @@ report.invalid_reasons: Afin de valider votre signalement, veuillez sélectionne
 # UserDocument
 #
 document.validation.filename_length: Le nom du document (avec l'extension) ne peut pas dépasser 255 caractères.
-document.validation.max_filesize: Le fichier est trop grand. La taille maximum autorisée est 5 Mo.
 
 #
 # Mooc

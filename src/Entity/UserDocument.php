@@ -52,7 +52,6 @@ class UserDocument implements AuthorInstanceInterface
     /**
      * @var int|null
      */
-    #[Assert\LessThan(value: 5242880, message: 'document.validation.max_filesize')]
     #[ORM\Column(type: 'integer')]
     private $size;
 
