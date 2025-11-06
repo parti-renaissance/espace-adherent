@@ -55,6 +55,7 @@ class UserManager
         }
 
         $adherentJobs = $this->prepareAdherentJobs($adherent);
+
         foreach ($moodleUser->getJobs() as $moodleJob) {
             if (isset($adherentJobs[$moodleJob->jobKey])) {
                 unset($adherentJobs[$moodleJob->jobKey]);
@@ -80,8 +81,8 @@ class UserManager
         $startData = (new \DateTime('2022-01-01 00:00:00'))->getTimestamp();
 
         if ($adherent->isRenaissanceAdherent()) {
-            $endDate = null;
-            $assemblyCode = 75;
+            $endDate = $assemblyCode = null;
+
             if ($assembly = $adherent->getAssemblyZone()) {
                 $assemblyCode = $assembly->getCode();
             } else {
@@ -94,18 +95,25 @@ class UserManager
                 $endDate = (new \DateTime())->setDate((int) $year, 12, 31)->setTime(23, 59, 59)->getTimestamp();
             }
 
-            $key = [
-                $department = 'departement:'.$assemblyCode,
-                $position = 'adherent',
-                $year,
+            $zones = [
+                $assemblyCode ? 'departement:'.$assemblyCode : null,
+                $adherent->getCommitteeMembership()?->getCommitteeUuid()->toString(),
             ];
 
-            $jobs[implode('-', $key)] = [
-                'jobdepartment' => $department,
-                'jobposition' => $position,
-                'startdate' => $startData,
-                'enddate' => $endDate,
-            ];
+            foreach (array_filter($zones) as $zone) {
+                $key = [
+                    $zone,
+                    $position = 'adherent',
+                    $year,
+                ];
+
+                $jobs[implode('-', $key)] = [
+                    'jobdepartment' => $zone,
+                    'jobposition' => $position,
+                    'startdate' => $startData,
+                    'enddate' => $endDate,
+                ];
+            }
         }
 
         foreach ($adherent->getZoneBasedRoles() as $role) {
@@ -130,23 +138,50 @@ class UserManager
             ];
         }
 
+        foreach ($adherent->getAnimatorCommittees() as $committee) {
+            $zone = $committee->getUuidAsString();
+
+            $key = [
+                $zone,
+                $position = ScopeEnum::ANIMATOR,
+            ];
+
+            $jobs[implode('-', $key)] = [
+                'jobdepartment' => $zone,
+                'jobposition' => $position,
+                'startdate' => $startData,
+            ];
+        }
+
         foreach ($adherent->getReceivedDelegatedAccesses() as $access) {
-            if (!\in_array($access->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY], true)) {
+            if (!\in_array($access->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::ANIMATOR], true)) {
                 continue;
             }
 
-            if (!$assemblyZone = $access->getDelegator()?->findZoneBasedRole($access->getType())?->getAssemblyZone()) {
+            $zone = null;
+
+            if (ScopeEnum::ANIMATOR === $access->getType()) {
+                if ($committees = $access->getDelegator()?->getAnimatorCommittees()) {
+                    $zone = $committees[0]->getUuidAsString();
+                }
+            } else {
+                if ($assemblyZone = $access->getDelegator()?->findZoneBasedRole($access->getType())?->getAssemblyZone()) {
+                    $zone = 'departement:'.$assemblyZone->getCode();
+                }
+            }
+
+            if (!$zone) {
                 $this->logger->error('Assembly zone is missing for adherent role', ['adherentId' => $access->getDelegator()->getId(), 'roleType' => $access->getType()]);
                 continue;
             }
 
             $key = [
-                $department = 'departement:'.$assemblyZone->getCode(),
+                $zone,
                 $position = 'team:'.$access->getType(),
             ];
 
             $jobs[implode('-', $key)] = [
-                'jobdepartment' => $department,
+                'jobdepartment' => $zone,
                 'jobposition' => $position,
                 'startdate' => $startData,
             ];
