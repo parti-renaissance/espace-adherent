@@ -24,7 +24,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "message": "Aucun document téléchargé."
+                "message": "Aucun document téléchargé ou son poids dépasse la limite autorisée (100 Mo)."
             }
             """
 
