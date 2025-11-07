@@ -30,7 +30,7 @@ class UploadDocumentController extends AbstractController
             );
         }
 
-        if (0 === $request->files->count() || !$request->files->get('upload')) {
+        if (0 === $request->files->count() || !$file = $request->files->get('upload')) {
             return $this->json(
                 ['message' => 'Aucun document téléchargé ou son poids dépasse la limite autorisée (100 Mo).'],
                 Response::HTTP_BAD_REQUEST
@@ -39,7 +39,7 @@ class UploadDocumentController extends AbstractController
 
         $message = 'Le document a été téléchargé avec succès.';
         try {
-            $document = $manager->createAndSave($request->files->get('upload'), $type, $scopeGeneratorResolver->generate());
+            $document = $manager->createAndSave($file, $type, $scopeGeneratorResolver->generate());
             $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
         } catch (\Exception $e) {
             $url = '';
