@@ -12049,20 +12049,20 @@
         },
         {
             "name": "symfony/clock",
-            "version": "v6.4.24",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/clock.git",
-                "reference": "5e15a9c9aeeb44a99f7cf24aa75aa9607795f6f8"
+                "reference": "b81435fbd6648ea425d1ee96a2d8e68f4ceacd24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/clock/zipball/5e15a9c9aeeb44a99f7cf24aa75aa9607795f6f8",
-                "reference": "5e15a9c9aeeb44a99f7cf24aa75aa9607795f6f8",
+                "url": "https://api.github.com/repos/symfony/clock/zipball/b81435fbd6648ea425d1ee96a2d8e68f4ceacd24",
+                "reference": "b81435fbd6648ea425d1ee96a2d8e68f4ceacd24",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "psr/clock": "^1.0",
                 "symfony/polyfill-php83": "^1.28"
             },
@@ -12103,7 +12103,7 @@
                 "time"
             ],
             "support": {
-                "source": "https://github.com/symfony/clock/tree/v6.4.24"
+                "source": "https://github.com/symfony/clock/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -12115,15 +12115,11 @@
                     "type": "github"
                 },
                 {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-10T08:14:14+00:00"
+            "time": "2024-09-25T14:21:43+00:00"
         },
         {
             "name": "symfony/config",
@@ -14178,16 +14174,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v6.4.25",
+            "version": "v6.4.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "4fef4c925e026cad3697ea13283e9b7a99a4d119"
+                "reference": "6a758210a2392c4a326de84a6c8c70e7e18296f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/4fef4c925e026cad3697ea13283e9b7a99a4d119",
-                "reference": "4fef4c925e026cad3697ea13283e9b7a99a4d119",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/6a758210a2392c4a326de84a6c8c70e7e18296f9",
+                "reference": "6a758210a2392c4a326de84a6c8c70e7e18296f9",
                 "shasum": ""
             },
             "require": {
@@ -14245,7 +14241,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v6.4.25"
+                "source": "https://github.com/symfony/messenger/tree/v6.4.28"
             },
             "funding": [
                 {
@@ -14265,7 +14261,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-13T09:41:44+00:00"
+            "time": "2025-11-06T11:12:43+00:00"
         },
         {
             "name": "symfony/mime",
