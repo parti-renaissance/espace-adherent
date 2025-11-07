@@ -8,6 +8,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -118,24 +119,23 @@ class NewsAdmin extends AbstractAdmin
                     'multiple' => true,
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
+                    'property' => ['name', 'code'],
+                    'callback' => static function (AdminInterface $admin, array $property, $value): void {
+                        $datagrid = $admin->getDatagrid();
+                        $qb = $datagrid->getQuery();
+                        $alias = $qb->getRootAlias();
+
+                        $qb
+                            ->andWhere($alias.'.type IN (:types)')
+                            ->andWhere($alias.'.name LIKE :search OR '.$alias.'.code LIKE :search')
+                            ->setParameter('types', [
+                                Zone::REGION,
+                                Zone::DEPARTMENT,
+                            ])
+                            ->setParameter('search', '%'.$value.'%')
+                        ;
+                    },
                 ],
-                'callback' => function ($admin, $property, $value) {
-                    $datagrid = $admin->getDatagrid();
-                    $qb = $datagrid->getQuery();
-                    $alias = $qb->getRootAlias();
-                    $qb
-                        ->andWhere($alias.'.type IN (:types)')
-                        ->setParameter('types', [
-                            Zone::REGION,
-                            Zone::DEPARTMENT,
-                        ])
-                    ;
-                    $datagrid->setValue($property, null, $value);
-                },
             ])
             ->add('title', null, [
                 'label' => 'Titre',
