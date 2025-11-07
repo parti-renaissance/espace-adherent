@@ -117,7 +117,7 @@ class UserManager
         }
 
         foreach ($adherent->getZoneBasedRoles() as $role) {
-            if (!\in_array($role->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY], true)) {
+            if (!\in_array($role->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::MUNICIPAL_CANDIDATE], true)) {
                 continue;
             }
 
@@ -154,7 +154,7 @@ class UserManager
         }
 
         foreach ($adherent->getReceivedDelegatedAccesses() as $access) {
-            if (!\in_array($access->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::ANIMATOR], true)) {
+            if (!\in_array($access->getType(), [ScopeEnum::DEPUTY, ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::ANIMATOR, ScopeEnum::MUNICIPAL_CANDIDATE], true)) {
                 continue;
             }
 
