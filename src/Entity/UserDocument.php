@@ -2,16 +2,32 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact', 'originalName' => 'partial'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/v3/upload'),
+    ],
+    normalizationContext: ['groups' => ['user_document:read']],
+    order: ['createdAt' => 'DESC'],
+    paginationItemsPerPage: 30,
+)]
 #[ORM\Entity(repositoryClass: UserDocumentRepository::class)]
+#[ORM\Index(fields: ['instanceKey'])]
 #[ORM\Table(name: 'user_documents')]
-class UserDocument implements AuthorInstanceInterface
+class UserDocument implements InstanceOwnerInterface
 {
     use EntityIdentityTrait;
     use AuthorInstanceTrait;
@@ -39,6 +55,7 @@ class UserDocument implements AuthorInstanceInterface
      * @var string|null
      */
     #[Assert\Length(max: 200, maxMessage: 'document.validation.filename_length')]
+    #[Groups(['user_document:read'])]
     #[ORM\Column(length: 200)]
     private $originalName;
 
@@ -112,11 +129,33 @@ class UserDocument implements AuthorInstanceInterface
         return $this->size;
     }
 
+    #[Groups(['user_document:read'])]
+    #[SerializedName('size')]
+    public function getHSize(): string
+    {
+        $bytes = $this->size;
+
+        if ($bytes < 1024) {
+            return $bytes.' o';
+        }
+
+        if ($bytes < 1048576) {
+            return round($bytes / 1024, 1).' Ko';
+        }
+
+        if ($bytes < 1073741824) {
+            return round($bytes / 1048576, 1).' Mo';
+        }
+
+        return round($bytes / 1073741824, 1).' Go';
+    }
+
     public function setSize(int $size): void
     {
         $this->size = $size;
     }
 
+    #[Groups(['user_document:read'])]
     public function getMimeType(): string
     {
         return $this->mimeType;

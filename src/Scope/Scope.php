@@ -183,7 +183,7 @@ class Scope
         return array_intersect([FeatureEnum::FEATUREBASE], $this->features);
     }
 
-    public function generateInstanceKey(): string
+    public function getInstanceKey(): string
     {
         $parts = [$this->getMainCode()];
 

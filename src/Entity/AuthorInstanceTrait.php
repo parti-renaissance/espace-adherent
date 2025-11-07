@@ -92,6 +92,6 @@ trait AuthorInstanceTrait
         $this->setAuthorZone(implode(', ', $scope->getZoneNames()) ?: null);
         $this->setAuthorTheme($scope->getAttribute('theme'));
 
-        $this->instanceKey = $scope->generateInstanceKey();
+        $this->instanceKey = $scope->getInstanceKey();
     }
 }
