@@ -6,7 +6,6 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Link;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
 use App\Validator\ManagedZone;
@@ -58,11 +57,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     #[Groups(['adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
     private $audienceType;
-
-    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Committee::class)]
-    private ?Committee $committee = null;
 
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
@@ -174,16 +168,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     public function setAudienceType(?string $audienceType): void
     {
         $this->audienceType = $audienceType;
-    }
-
-    public function getCommittee(): ?Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(?Committee $committee): void
-    {
-        $this->committee = $committee;
     }
 
     public function getMandateType(): ?string

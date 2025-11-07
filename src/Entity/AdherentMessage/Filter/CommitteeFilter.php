@@ -14,22 +14,12 @@ class CommitteeFilter extends AbstractUserFilter
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
-    private ?Committee $committee = null;
+    protected ?Committee $committee;
 
     public function __construct(?Committee $committee = null)
     {
         parent::__construct();
 
-        $this->committee = $committee;
-    }
-
-    public function getCommittee(): ?Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(Committee $committee): void
-    {
         $this->committee = $committee;
     }
 }

@@ -3,13 +3,18 @@
 namespace App\Admin;
 
 use App\AdherentMessage\AdherentMessageStatusEnum;
-use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\Geo\Zone;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -59,7 +64,7 @@ class AdherentMessageAdmin extends AbstractAdmin
                 ],
             ])
             ->add('subject', null, ['label' => 'Titre', 'show_filter' => true])
-            ->add('filter.zones', ZoneAutocompleteFilter::class, [
+            ->add('filter.zones', CallbackFilter::class, [
                 'label' => 'Zone géographique',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
@@ -69,6 +74,42 @@ class AdherentMessageAdmin extends AbstractAdmin
                     'items_per_page' => 20,
                     'property' => ['name', 'code'],
                 ],
+                'callback' => static function (ProxyQuery $qb, string $alias, string $field, FilterData $data): bool {
+                    if (!$data->hasValue()) {
+                        return false;
+                    }
+
+                    $zones = $data->getValue();
+
+                    if ($zones instanceof Collection) {
+                        $zones = $zones->toArray();
+                    } elseif (!\is_array($zones)) {
+                        $zones = [$zones];
+                    }
+
+                    $ids = array_map(static function (Zone $zone) {
+                        return $zone->getId();
+                    }, $zones);
+
+                    /* @var QueryBuilder $qb */
+                    $qb
+                        ->leftJoin("$alias.$field", 'zone_filter')
+                        ->leftJoin('zone_filter.parents', 'zone_parent_filter')
+                        ->leftJoin("$alias.committee", 'committee')
+                        ->leftJoin('committee.zones', 'committee_zone')
+                        ->leftJoin('committee_zone.parents', 'committee_zone_parent')
+                        ->andWhere(
+                            $qb->expr()->orX(
+                                $qb->expr()->in('zone_filter.id', $ids),
+                                $qb->expr()->in('zone_parent_filter.id', $ids),
+                                $qb->expr()->in('committee_zone.id', $ids),
+                                $qb->expr()->in('committee_zone_parent.id', $ids),
+                            )
+                        )
+                    ;
+
+                    return true;
+                },
             ])
             ->add('sender', ModelFilter::class, [
                 'label' => 'Expéditeur',

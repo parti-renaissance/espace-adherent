@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
 trait BasicUserFiltersTrait
@@ -36,10 +35,6 @@ trait BasicUserFiltersTrait
      */
     #[ORM\Column(type: 'boolean')]
     private $includeCommitteeHosts;
-
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Committee::class)]
-    private ?Committee $committee = null;
 
     public function includeAdherentsNoCommittee(): ?bool
     {
@@ -89,15 +84,5 @@ trait BasicUserFiltersTrait
     public function setIncludeCommitteeHosts(?bool $value): void
     {
         $this->includeCommitteeHosts = $value;
-    }
-
-    public function getCommittee(): ?Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(Committee $committee): void
-    {
-        $this->committee = $committee;
     }
 }

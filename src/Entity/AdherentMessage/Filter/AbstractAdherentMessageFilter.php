@@ -8,6 +8,7 @@ use App\Collection\ZoneCollection;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
+use App\Entity\Committee;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Validator\ValidMessageFilterSegment;
@@ -33,6 +34,11 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
      */
     #[ORM\OneToOne(mappedBy: 'filter', targetEntity: AdherentMessage::class)]
     private $message;
+
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+    protected ?Committee $committee = null;
 
     /**
      * @var AudienceSegment|null
@@ -77,5 +83,15 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
         $this->segment = null;
 
         parent::reset();
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(?Committee $committee): void
+    {
+        $this->committee = $committee;
     }
 }
