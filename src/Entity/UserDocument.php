@@ -12,7 +12,6 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact', 'originalName' => 'partial'])]
@@ -124,30 +123,10 @@ class UserDocument implements InstanceOwnerInterface
         $this->extension = $extension;
     }
 
+    #[Groups(['user_document:read'])]
     public function getSize(): int
     {
         return $this->size;
-    }
-
-    #[Groups(['user_document:read'])]
-    #[SerializedName('size')]
-    public function getHSize(): string
-    {
-        $bytes = $this->size;
-
-        if ($bytes < 1024) {
-            return $bytes.' o';
-        }
-
-        if ($bytes < 1048576) {
-            return round($bytes / 1024, 1).' Ko';
-        }
-
-        if ($bytes < 1073741824) {
-            return round($bytes / 1048576, 1).' Mo';
-        }
-
-        return round($bytes / 1073741824, 1).' Go';
     }
 
     public function setSize(int $size): void
