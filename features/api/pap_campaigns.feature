@@ -817,8 +817,8 @@ Feature:
                 "title": "Nouvelle campagne PAP",
                 "brief": "**NOUVEAU**",
                 "goal": 10,
-                "begin_at": "2025-12-01 00:00:00",
-                "finish_at": "2025-12-20 00:00:00",
+                "begin_at": "2026-12-01 00:00:00",
+                "finish_at": "2026-12-20 00:00:00",
                 "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
                 "vote_places": [
                     "dcaec65c-0856-4c27-adf5-6d51593601e3",
