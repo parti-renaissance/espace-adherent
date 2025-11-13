@@ -302,7 +302,7 @@ return static function (ContainerConfigurator $configurator) {
     ;
     $services
         ->set('app.admin.private_message', App\Admin\TimelinePrivateMessageAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TimelineItemPrivateMessage::class, 'label' => 'Messages privés (timeline)', 'group' => 'App mobile'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TimelineItemPrivateMessage::class, 'label' => 'Messages transactionnels (timeline)', 'group' => 'App mobile'])
     ;
     $services
         ->set('app.admin.jecoute.news', App\Admin\Jecoute\NewsAdmin::class)
