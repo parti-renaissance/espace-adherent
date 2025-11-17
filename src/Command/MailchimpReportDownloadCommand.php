@@ -77,7 +77,7 @@ class MailchimpReportDownloadCommand extends Command
 
             foreach ($paginator->getIterator() as $am) {
                 $this->io->progressAdvance();
-                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid()));
+                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false));
             }
 
             $this->entityManager->clear();

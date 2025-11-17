@@ -56,7 +56,7 @@ class SyncReportCommandHandler
             $this->saveGeneralStats($campaign);
         }
 
-        if ($nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
+        if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
             $this->bus->dispatch(new SyncReportCommand($command->getUuid()), [new DelayStamp($nextRunDelay)]);
         }
     }
@@ -171,7 +171,6 @@ class SyncReportCommandHandler
             }
 
             $offset += \count($members);
-            $this->entityManager->clear();
             sleep(1);
         }
     }

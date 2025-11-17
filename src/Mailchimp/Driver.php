@@ -222,7 +222,7 @@ class Driver implements LoggerAwareInterface
 
     public function getReportData(string $campaignId): array
     {
-        $response = $this->send('GET', \sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId));
+        $response = $this->send('GET', \sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks', $campaignId));
 
         return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
