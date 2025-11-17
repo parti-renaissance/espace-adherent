@@ -346,6 +346,9 @@ services:
     App\Firebase\JeMarcheMessaging:
         lazy: true
 
+    App\Api\Provider\EventsFallbackProvider:
+        arguments: ['@api_platform.doctrine.orm.state.collection_provider']
+
     App\Api\Serializer\ReferralGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@.inner']

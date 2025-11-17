@@ -21,6 +21,7 @@ use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Api\Provider\EventProvider;
+use App\Api\Provider\EventsFallbackProvider;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Event\CancelEventController;
 use App\Controller\Api\Event\CountInvitationsController;
@@ -132,11 +133,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/v3/events',
-            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
+            provider: EventsFallbackProvider::class,
         ),
         new GetCollection(
             uriTemplate: '/events',
-            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['event_list_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
+            provider: EventsFallbackProvider::class,
         ),
         new Post(
             uriTemplate: '/v3/events',
@@ -908,5 +911,13 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function decrementCitizensCount(): void
     {
         $this->citizensCount = $this->citizensCount < 1 ? 0 : $this->citizensCount - 1;
+    }
+
+    #[Groups(['event_list_read:region'])]
+    public function getRegion(): ?Zone
+    {
+        $regions = $this->getParentZonesOfType(Zone::REGION);
+
+        return empty($regions) ? null : $regions[0];
     }
 }

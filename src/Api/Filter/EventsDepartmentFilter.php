@@ -36,7 +36,17 @@ final class EventsDepartmentFilter extends AbstractFilter
             return;
         }
 
-        if (!$zone = $this->zoneRepository->findOneBy(['code' => is_numeric($value) ? str_pad($value, 2, '0', \STR_PAD_LEFT) : $value, 'type' => [Zone::DEPARTMENT, Zone::CUSTOM]])) {
+        $type = [Zone::DEPARTMENT, Zone::CUSTOM];
+
+        if (\is_array($value)) {
+            $value = current($value);
+        }
+
+        if (str_contains($value, '_')) {
+            [$type, $value] = explode('_', $value, 2);
+        }
+
+        if (!$zone = $this->zoneRepository->findOneBy(['code' => is_numeric($value) ? str_pad($value, 2, '0', \STR_PAD_LEFT) : $value, 'type' => $type])) {
             return;
         }
 
