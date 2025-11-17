@@ -11,6 +11,7 @@ class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageIn
     public function __construct(
         UuidInterface $uuid,
         public readonly bool $firstRun = false,
+        public readonly bool $autoReschedule = true,
     ) {
         parent::__construct($uuid);
     }
