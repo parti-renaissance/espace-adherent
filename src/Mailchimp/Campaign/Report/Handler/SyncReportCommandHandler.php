@@ -51,12 +51,12 @@ class SyncReportCommandHandler
         }
 
         foreach ($adherentMessage->getMailchimpCampaigns() as $campaign) {
+            $this->saveGeneralStats($campaign);
             $this->saveOpens($adherentMessage, $campaign);
             $this->saveClicks($adherentMessage, $campaign);
-            $this->saveGeneralStats($campaign);
         }
 
-        if ($nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
+        if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
             $this->bus->dispatch(new SyncReportCommand($command->getUuid()), [new DelayStamp($nextRunDelay)]);
         }
     }
