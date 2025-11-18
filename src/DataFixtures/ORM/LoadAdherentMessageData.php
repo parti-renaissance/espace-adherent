@@ -24,6 +24,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 {
     public const MESSAGE_01_UUID = '969b1f08-53ec-4a7d-8d6e-7654a001b13f';
     public const MESSAGE_02_UUID = '65f6cdbf-0707-4940-86d8-cc1755aab17e';
+    public const MESSAGE_03_UUID = '75f6cdbf-0707-4940-86d8-cc1755aab17e';
 
     public function load(ObjectManager $manager): void
     {
@@ -65,7 +66,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
         // message sent
         $message2 = AdherentMessage::createFromAdherent(
-            $this->getAuthor(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY),
+            $pad = $this->getAuthor(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY),
             Uuid::fromString(self::MESSAGE_02_UUID)
         );
 
@@ -81,8 +82,17 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $manager->persist($message1);
         $manager->persist($message2);
 
-        $manager->persist($message = AdherentMessage::createFromAdherent($this->getAuthor('', true)));
+        $manager->persist($message = AdherentMessage::createFromAdherent($pad, Uuid::fromString(self::MESSAGE_03_UUID)));
+        $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $message->setSource(AdherentMessageInterface::SOURCE_VOX);
+        $message->setRecipientCount(2);
+        $message->setFilter(new AudienceFilter([$parisZone]));
+        $message->markAsSent();
+        $message->setContent($faker->randomHtml());
+        $message->setSubject($faker->sentence(5));
+        $message->setLabel($faker->sentence(2));
+
+        $manager->persist($message = AdherentMessage::createFromAdherent($this->getAuthor('', true)));
         $message->setIsStatutory(true);
         $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);

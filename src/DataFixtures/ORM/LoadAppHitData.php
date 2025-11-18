@@ -80,10 +80,15 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
         $now = new \DateTimeImmutable();
 
         foreach ($events as $event) {
-            $sessionsCount = $faker->numberBetween(8, 18);
+            $copyAdherents = $adherents;
+            $eventUuid = (string) $event->getUuid();
+            $random = LoadEventData::EVENT_8_UUID !== $eventUuid;
+
+            $sessionsCount = $random ? $faker->numberBetween(8, 18) : 10;
 
             for ($s = 0; $s < $sessionsCount; ++$s) {
-                $adherent = $adherents[array_rand($adherents)];
+                shuffle($copyAdherents);
+                $adherent = array_shift($copyAdherents);
                 $maybeRef = $adherents[array_rand($adherents)];
                 $referrer = $maybeRef !== $adherent ? $maybeRef : null;
 
@@ -117,7 +122,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                 ));
 
                 // 2) impression (sur la page événements, puis parfois timeline)
-                $impressions = $faker->numberBetween(1, 3);
+                $impressions = $random ? $faker->numberBetween(1, 3) : 2;
                 for ($i = 0; $i < $impressions; ++$i) {
                     $when = $sessionStart->add(new \DateInterval('PT'.($i * $faker->numberBetween(5, 60)).'M'));
                     $manager->persist(self::makeHit(
@@ -125,13 +130,13 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                         adherent: $adherent,
                         referrer: $referrer,
                         objectType: TargetTypeEnum::Event,
-                        objectId: (string) $event->getUuid(),
-                        source: 0 === $i ? 'page_events' : $faker->randomElement(['page_timeline', 'reload']),
+                        objectId: $eventUuid,
+                        source: 0 === $i || !$random ? 'page_events' : $faker->randomElement(['page_timeline', 'reload']),
                         activitySessionUuid: $activityUuid,
                         appSystem: $appSystem,
                         appVersion: $appVersion,
                         appDate: $when,
-                        targetUrl: '/evenements/'.$event->getUuid(),
+                        targetUrl: '/evenements/'.$eventUuid,
                         buttonName: null,
                         faker: $faker,
                         appSession: $appSessionForSessionStart,
@@ -139,20 +144,20 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                 }
 
                 // 3) open
-                if ($faker->boolean(70)) {
+                if (!$random || $faker->boolean(70)) {
                     $when = $sessionStart->add(new \DateInterval('PT'.$faker->numberBetween(1, 90).'M'));
                     $manager->persist(self::makeHit(
                         eventType: EventTypeEnum::Open,
                         adherent: $adherent,
                         referrer: $referrer,
                         objectType: TargetTypeEnum::Event,
-                        objectId: (string) $event->getUuid(),
-                        source: $faker->randomElement(['push_notification', 'direct_link']),
+                        objectId: $eventUuid,
+                        source: $random ? $faker->randomElement(['push_notification', 'direct_link']) : 'direct_link',
                         activitySessionUuid: $activityUuid,
                         appSystem: $appSystem,
                         appVersion: $appVersion,
                         appDate: $when,
-                        targetUrl: '/evenements/'.$event->getUuid().'?utm_source=push',
+                        targetUrl: '/evenements/'.$eventUuid.'?utm_source=push',
                         buttonName: null,
                         faker: $faker,
                         appSession: $appSessionForSessionStart,
@@ -160,20 +165,20 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                 }
 
                 // 4) click
-                if ($faker->boolean(55)) {
+                if (!$random || $faker->boolean(55)) {
                     $when = $sessionStart->add(new \DateInterval('PT'.$faker->numberBetween(2, 120).'M'));
                     $manager->persist(self::makeHit(
                         eventType: EventTypeEnum::Click,
                         adherent: $adherent,
                         referrer: $referrer,
                         objectType: TargetTypeEnum::Event,
-                        objectId: (string) $event->getUuid(),
-                        source: $faker->randomElement($sources),
+                        objectId: $eventUuid,
+                        source: $random ? $faker->randomElement($sources) : 'page_events',
                         activitySessionUuid: $activityUuid,
                         appSystem: $appSystem,
                         appVersion: $appVersion,
                         appDate: $when,
-                        targetUrl: '/evenements/'.$event->getUuid().'/inscription',
+                        targetUrl: '/evenements/'.$eventUuid.'/inscription',
                         buttonName: $faker->randomElement(['cta_register', 'cta_share', 'cta_remind_me']),
                         faker: $faker,
                         appSession: $appSessionForSessionStart,
