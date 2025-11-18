@@ -24,13 +24,17 @@ use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
+use App\Doctrine\Utils\QueryChecker;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\UnlayerJsonContentTrait;
+use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\JeMengage\Hit\HitTargetInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
@@ -40,6 +44,7 @@ use App\Scope\Scope;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -142,7 +147,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(fields: ['source'])]
 #[ORM\Index(fields: ['instanceScope'])]
 #[ORM\Table(name: 'adherent_messages')]
-class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface, HitTargetInterface
+class AdherentMessage implements AdherentMessageInterface, NotificationObjectInterface, HitTargetInterface, ZoneableEntityInterface
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
@@ -526,5 +531,41 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
             static fn (MailchimpCampaign $campaign) => $campaign->getReport()?->getUnsubscribed(),
             $this->getMailchimpCampaigns()
         )));
+    }
+
+    public function getZones(): Collection
+    {
+        if ($this->filter instanceof AudienceFilter) {
+            return $this->filter->getZones();
+        }
+
+        return new ArrayCollection();
+    }
+
+    public function addZone(Zone $zone): void
+    {
+        throw new \LogicException('Not implemented yet.');
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        throw new \LogicException('Not implemented yet.');
+    }
+
+    public function clearZones(): void
+    {
+        throw new \LogicException('Not implemented yet.');
+    }
+
+    public static function getZonesPropertyName(): string
+    {
+        return 'filter.zones';
+    }
+
+    public static function alterQueryBuilderForZones(QueryBuilder $queryBuilder, string $rootAlias): void
+    {
+        if (!QueryChecker::hasJoin($queryBuilder, $rootAlias, 'filter')) {
+            $queryBuilder->innerJoin("$rootAlias.filter", 'filter');
+        }
     }
 }

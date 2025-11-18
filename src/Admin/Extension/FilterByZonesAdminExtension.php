@@ -2,10 +2,14 @@
 
 namespace App\Admin\Extension;
 
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\Administrator;
+use App\Entity\Committee;
 use App\Entity\ZoneableEntityInterface;
 use App\Security\Voter\Admin\ZoneableEntityVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -37,30 +41,71 @@ class FilterByZonesAdminExtension extends AbstractAdminExtension
             return;
         }
 
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $query->getQueryBuilder();
+
         if (!is_a($resourceClass = $admin->getModelClass(), ZoneableEntityInterface::class, true)) {
-            $query->andWhere('1 = 0');
+            $queryBuilder->andWhere('1 = 0');
 
             return;
         }
 
-        $alias = $query->getRootAliases()[0];
-
+        $rootAlias = $queryBuilder->getRootAliases()[0];
         $zones = $user->getZones()->toArray();
+        $repository = $this->entityManager->getRepository($resourceClass);
 
-        $this
-            ->entityManager
-            ->getRepository($resourceClass)
-            ->withGeoZones(
-                $zones,
-                $query->getQueryBuilder(),
-                $alias,
-                $resourceClass,
-                'admin_extension_filter_by_zones',
-                $resourceClass::getZonesPropertyName(),
-                'admin_extension_filter_by_zones_param',
-                [$resourceClass, 'alterQueryBuilderForZones']
-            )
-        ;
+        if (AdherentMessage::class === $resourceClass) {
+            $queryBuilder
+                ->innerJoin($rootAlias.'.filter', 'filter')
+                ->leftJoin('filter.committee', 'publication_committee')
+            ;
+
+            $expr = $queryBuilder->expr();
+
+            $condition = $expr
+                ->orX(
+                    $expr->exists($repository->createGeoZonesQueryBuilder(
+                        'filter',
+                        $zones,
+                        $queryBuilder,
+                        AudienceFilter::class,
+                        'admin_extension_filter_by_zones',
+                        'zones',
+                        'admin_extension_filter_by_zones_param',
+                        null,
+                        true,
+                        'admin_extension_filter_by_zones_parents'
+                    )->getDQL()),
+                    $expr->exists($repository->createGeoZonesQueryBuilder(
+                        'publication_committee',
+                        $zones,
+                        $queryBuilder,
+                        Committee::class,
+                        'admin_extension_filter_by_committee_zones',
+                        'zones',
+                        'admin_extension_filter_by_committee_zones_param',
+                        null,
+                        true,
+                        'admin_extension_filter_by_committee_zones_parents'
+                    )->getDQL()),
+                )
+            ;
+
+            $queryBuilder->andWhere($condition);
+
+            return;
+        }
+
+        $repository->withGeoZones(
+            $zones,
+            $queryBuilder,
+            $rootAlias,
+            $resourceClass,
+            'admin_extension_filter_by_zones',
+            $resourceClass::getZonesPropertyName(),
+            'admin_extension_filter_by_zones_param',
+            [$resourceClass, 'alterQueryBuilderForZones']
+        );
     }
 
     private function getAdministrator(): Administrator
