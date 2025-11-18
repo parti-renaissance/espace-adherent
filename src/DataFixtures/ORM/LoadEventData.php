@@ -21,7 +21,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
     private const EVENT_5_UUID = 'f4c66254-f6d3-4c28-bcb1-6e254d0d329c';
     private const EVENT_6_UUID = 'e770cda4-b215-4ea2-85e5-03fc3e4423e3';
     private const EVENT_7_UUID = '06d88cb2-d254-4ba3-9e00-b9d4611d90fc';
-    private const EVENT_8_UUID = 'b4938d40-337b-4bdf-83ac-f84dd182eefb';
+    public const EVENT_8_UUID = 'b4938d40-337b-4bdf-83ac-f84dd182eefb';
 
     public function loadEvents(ObjectManager $manager): void
     {

@@ -32,7 +32,14 @@ trait ApiControllerTestTrait
 
         $this->client->request('POST', '/oauth/v2/token', $params);
 
-        return json_decode($this->client->getResponse()->getContent(), true)['access_token'] ?? null;
+        $response = $this->client->getResponse();
+        $content = $response->getContent();
+
+        if (($code = $response->getStatusCode()) !== 200) {
+            throw new \RuntimeException('Failed to get access token (code '.$code.'): '.$content);
+        }
+
+        return json_decode($content, true, 512, \JSON_THROW_ON_ERROR)['access_token'] ?? null;
     }
 
     protected function assertEachJsonItemContainsKey($key, $json, array $excluding = [])
