@@ -7,6 +7,8 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
+use App\Repository\Geo\ZoneRepository;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
 class GetTimelineFeedsController extends AbstractController
 {
+    public function __construct(private readonly ZoneRepository $zoneRepository)
+    {
+    }
+
     public function __invoke(#[CurrentUser] Adherent $user, Request $request, DataProvider $dataProvider): JsonResponse
     {
         if (($page = $request->query->getInt('page')) < 0) {
@@ -123,8 +129,22 @@ class GetTimelineFeedsController extends AbstractController
             }
         }
 
+        $userFilter = [];
+        if ($zone = $request->query->get('zone')) {
+            $zoneFilter = 'is_national:true';
+            if (Uuid::isValid($zone) && $zone = $this->zoneRepository->findOneByUuid($zone)) {
+                $zoneFilter = 'zone_codes:'.$zone->getTypeCode();
+            }
+            $userFilter[] = $zoneFilter;
+        }
+
+        if (($committee = $request->query->get('committee')) && Uuid::isValid($committee)) {
+            $userFilter[] = 'committee_uuid:'.$committee;
+        }
+
         // Construction finale
         $parts = array_filter([
+            ...$userFilter,
             $baseClause,
             $tagClause,
             ...array_unique($excludeTagConditions),
