@@ -4,9 +4,10 @@
     "hitsPerPage": 20,
     "maxValuesPerFacet": 100,
     "version": 2,
-    "searchableAttributes": ["unordered(title)", "unordered(description)"],
+    "searchableAttributes": ["unordered(title)"],
     "numericAttributesToIndex": null,
     "attributesToRetrieve": [
+        "access",
         "address",
         "agora_uuid",
         "author",
@@ -39,6 +40,7 @@
     "attributesForFaceting": [
         "filterOnly(adherent_ids)",
         "filterOnly(audience)",
+        "filterOnly(committee_uuid)",
         "filterOnly(is_national)",
         "filterOnly(type)",
         "filterOnly(zone_codes)"
