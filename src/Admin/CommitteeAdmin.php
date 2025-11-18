@@ -39,7 +39,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class CommitteeAdmin extends AbstractAdmin
+class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
     use IterableCallbackDataSourceTrait;
 

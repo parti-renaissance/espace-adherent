@@ -42,7 +42,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EventAdmin extends AbstractAdmin
+class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
     use IterableCallbackDataSourceTrait;
     private $beforeUpdate;

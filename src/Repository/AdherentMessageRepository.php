@@ -14,6 +14,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

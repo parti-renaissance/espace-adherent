@@ -21,7 +21,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class AdherentMessageAdmin extends AbstractAdmin
+class AdherentMessageAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
     protected function getAccessMapping(): array
     {
