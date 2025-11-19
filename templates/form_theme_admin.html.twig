@@ -749,13 +749,14 @@
             unlayer.exportHtml(
                 function (data) {
                     jsonContentElement.value = JSON.stringify(data.design);
-                    contentElement.value = data.html.substring(
-                        data.html.indexOf('<style'),
-                        data.html.indexOf('</style>') + 8
-                    ) + data.html.substring(
-                        data.html.indexOf('<body>') + 6,
-                        data.html.indexOf('</body>')
-                    )
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data.html, 'text/html');
+
+                    const styles = Array.from(doc.querySelectorAll('style'))
+                        .map((node) => node.outerHTML)
+                        .join('\n');
+
+                    contentElement.value = styles + (doc.body ? doc.body.innerHTML : '');
                     event.target.submit();
                 },
                 { minify: true }
