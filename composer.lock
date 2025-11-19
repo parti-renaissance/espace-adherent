@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f997714c250dff20375998023781ade4",
+    "content-hash": "51a4634c40a1f5680a350dfec7d6207a",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -17919,28 +17919,28 @@
         },
         {
             "name": "tales-from-a-dev/twig-tailwind-extra",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tales-from-a-dev/twig-tailwind-extra.git",
-                "reference": "ba2d24668bb293092faa4fc4c118d47f9c6c00fa"
+                "reference": "07768540ee7dde1c72b14376bdd4d35f4c9ebce8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/ba2d24668bb293092faa4fc4c118d47f9c6c00fa",
-                "reference": "ba2d24668bb293092faa4fc4c118d47f9c6c00fa",
+                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/07768540ee7dde1c72b14376bdd4d35f4c9ebce8",
+                "reference": "07768540ee7dde1c72b14376bdd4d35f4c9ebce8",
                 "shasum": ""
             },
             "require": {
                 "gehrisandro/tailwind-merge-php": "^1.0",
                 "php": ">=8.1",
-                "symfony/cache": "^6.4 || ^7.0",
-                "symfony/framework-bundle": "^6.4 || ^7.0",
+                "symfony/cache": "^6.4 || ^7.0 || ^8.0",
+                "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
                 "twig/twig": "^3.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.38",
-                "symfony/phpunit-bridge": "^6.4 || ^7.0"
+                "symfony/phpunit-bridge": "^6.4 || ^7.0 || ^8.0"
             },
             "type": "twig",
             "autoload": {
@@ -17968,9 +17968,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tales-from-a-dev/twig-tailwind-extra/issues",
-                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.5.0"
+                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.6.0"
             },
-            "time": "2025-06-16T13:27:13+00:00"
+            "time": "2025-11-16T11:30:25+00:00"
         },
         {
             "name": "telegram-bot/api",
