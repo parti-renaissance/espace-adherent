@@ -12,6 +12,11 @@ class ScopeEnum extends Enum
     public const MUNICIPAL_CANDIDATE = 'municipal_candidate';
     public const NATIONAL = 'national';
     public const NATIONAL_COMMUNICATION = 'national_communication';
+    public const NATIONAL_TERRITORIES_DIVISION = 'national_territories_division';
+    public const NATIONAL_ELECTED_REPRESENTATIVES_DIVISION = 'national_elected_representatives_division';
+    public const NATIONAL_FORMATION_DIVISION = 'national_formation_division';
+    public const NATIONAL_IDEAS_DIVISION = 'national_ideas_division';
+    public const NATIONAL_TECH_DIVISION = 'national_tech_division';
     public const PHONING = 'phoning';
     public const PHONING_NATIONAL_MANAGER = 'phoning_national_manager';
     public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
@@ -33,8 +38,15 @@ class ScopeEnum extends Enum
         self::SENATOR,
         self::CANDIDATE,
         self::MUNICIPAL_CANDIDATE,
+
         self::NATIONAL,
         self::NATIONAL_COMMUNICATION,
+        self::NATIONAL_TERRITORIES_DIVISION,
+        self::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
+        self::NATIONAL_FORMATION_DIVISION,
+        self::NATIONAL_IDEAS_DIVISION,
+        self::NATIONAL_TECH_DIVISION,
+
         self::PHONING_NATIONAL_MANAGER,
         self::PAP_NATIONAL_MANAGER,
         self::CORRESPONDENT,
@@ -58,6 +70,11 @@ class ScopeEnum extends Enum
         self::NATIONAL_COMMUNICATION,
         self::PAP_NATIONAL_MANAGER,
         self::PHONING_NATIONAL_MANAGER,
+        self::NATIONAL_TERRITORIES_DIVISION,
+        self::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
+        self::NATIONAL_FORMATION_DIVISION,
+        self::NATIONAL_IDEAS_DIVISION,
+        self::NATIONAL_TECH_DIVISION,
     ];
 
     public const ROLE_NAMES = [
@@ -81,6 +98,12 @@ class ScopeEnum extends Enum
         self::REGIONAL_DELEGATE => 'Région',
         self::ANIMATOR => 'Comité local',
         self::NATIONAL => 'National',
+        self::NATIONAL_COMMUNICATION => 'National',
+        self::NATIONAL_TERRITORIES_DIVISION => 'Pôle Territoires',
+        self::NATIONAL_FORMATION_DIVISION => 'Pôle Formations',
+        self::NATIONAL_IDEAS_DIVISION => 'Pôle Idées',
+        self::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION => 'Pôle Élus',
+        self::NATIONAL_TECH_DIVISION => 'Pôle Tech',
         self::FDE_COORDINATOR => 'Français de l\'Étranger',
         self::REGIONAL_COORDINATOR => 'Région',
         self::LEGISLATIVE_CANDIDATE => 'Circonscription',

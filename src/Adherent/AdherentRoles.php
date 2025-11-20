@@ -12,7 +12,7 @@ class AdherentRoles
     public const GROUP_NATIONAL = 'role.group.national';
     public const GROUP_OTHER = 'role.group.other';
 
-    public const ALL = [
+    private const ALL = [
         self::GROUP_LOCAL => [
             ScopeEnum::REGIONAL_DELEGATE,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
@@ -34,6 +34,11 @@ class AdherentRoles
         self::GROUP_NATIONAL => [
             ScopeEnum::NATIONAL,
             ScopeEnum::NATIONAL_COMMUNICATION,
+            ScopeEnum::NATIONAL_TERRITORIES_DIVISION,
+            ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
+            ScopeEnum::NATIONAL_FORMATION_DIVISION,
+            ScopeEnum::NATIONAL_IDEAS_DIVISION,
+            ScopeEnum::NATIONAL_TECH_DIVISION,
             ScopeEnum::PAP_NATIONAL_MANAGER,
             ScopeEnum::PHONING_NATIONAL_MANAGER,
         ],

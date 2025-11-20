@@ -70,8 +70,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'folder_id' => '12',
-                    'template_id' => 12,
+                    'folder_id' => '17',
+                    'template_id' => 17,
                     'subject_line' => '[Comité] Subject',
                     'title' => date('Y/m/d').' - Full Name : Subject',
                     'reply_to' => 'contact@parti-renaissance.fr',
@@ -100,7 +100,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/123/content', ['json' => [
                 'template' => [
-                    'id' => 12,
+                    'id' => 17,
                     'sections' => [
                         'content' => 'Content',
                         'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
@@ -270,8 +270,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'folder_id' => '8',
-                    'template_id' => 8,
+                    'folder_id' => '13',
+                    'template_id' => 13,
                     'subject_line' => '[Responsable local] Subject',
                     'title' => date('Y/m/d').' - Full Name : Subject',
                     'reply_to' => 'contact@parti-renaissance.fr',
@@ -300,7 +300,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/id1/content', ['json' => [
                 'template' => [
-                    'id' => 8,
+                    'id' => 13,
                     'sections' => [
                         'content' => 'Content',
                     ],
@@ -333,8 +333,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ['POST', '/3.0/campaigns', ['json' => [
                 'type' => 'regular',
                 'settings' => [
-                    'folder_id' => '10',
-                    'template_id' => 10,
+                    'folder_id' => '15',
+                    'template_id' => 15,
                     'subject_line' => '[Coordinateur Régional] Subject',
                     'title' => date('Y/m/d').' - Full Name : Subject',
                     'reply_to' => 'contact@parti-renaissance.fr',
@@ -363,7 +363,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ]]],
             ['PUT', '/3.0/campaigns/id1/content', ['json' => [
                 'template' => [
-                    'id' => 10,
+                    'id' => 15,
                     'sections' => [
                         'content' => 'Content',
                     ],

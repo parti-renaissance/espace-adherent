@@ -396,9 +396,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $nationalRole = false;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private bool $nationalCommunicationRole = false;
-
     /**
      * @var Collection|AdherentCharterInterface[]
      */
@@ -1569,16 +1566,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->nationalRole = $nationalRole;
     }
 
-    public function hasNationalCommunicationRole(): bool
-    {
-        return $this->nationalCommunicationRole;
-    }
-
-    public function setNationalCommunicationRole(bool $nationalCommunicationRole): void
-    {
-        $this->nationalCommunicationRole = $nationalCommunicationRole;
-    }
-
     public function isPhoningCampaignTeamMember(): bool
     {
         return !$this->teamMemberships->isEmpty();
@@ -1866,6 +1853,36 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isSenator(): bool
     {
         return $this->hasZoneBasedRole(ScopeEnum::SENATOR);
+    }
+
+    public function hasNationalCommunicationRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_COMMUNICATION);
+    }
+
+    public function hasNationalTerritoriesDivisionRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_TERRITORIES_DIVISION);
+    }
+
+    public function hasNationalElectedRepresentativesDivisionRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION);
+    }
+
+    public function hasNationalFormationDivisionRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_FORMATION_DIVISION);
+    }
+
+    public function hasNationalIdeasDivisionRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_IDEAS_DIVISION);
+    }
+
+    public function hasNationalTechDivisionRole(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::NATIONAL_TECH_DIVISION);
     }
 
     public function isPresidentDepartmentalAssembly(): bool

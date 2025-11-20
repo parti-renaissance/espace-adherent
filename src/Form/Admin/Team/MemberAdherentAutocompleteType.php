@@ -20,29 +20,26 @@ class MemberAdherentAutocompleteType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'quiet_millis' => 500,
-                'placeholder' => '...',
-                'label' => false,
-                'minimum_input_length' => 1,
-                'items_per_page' => 20,
-                'property' => [
-                    'id',
-                    'firstName',
-                    'lastName',
-                    'emailAddress',
-                ],
-                'class' => Adherent::class,
-                'to_string_callback' => [self::class, 'toStringCallback'],
-                'template' => 'admin/form/sonata_type_model_autocomplete.html.twig',
-                'req_params' => [
-                    'field' => 'adherent',
-                    '_context' => 'form',
-                ],
-                'callback' => [self::class, 'filterCallback'],
-            ]
-        );
+        $resolver->setDefaults([
+            'quiet_millis' => 500,
+            'placeholder' => '...',
+            'label' => false,
+            'minimum_input_length' => 1,
+            'items_per_page' => 20,
+            'property' => [
+                'id',
+                'firstName',
+                'lastName',
+                'emailAddress',
+            ],
+            'class' => Adherent::class,
+            'to_string_callback' => [self::class, 'toStringCallback'],
+            'req_params' => [
+                'field' => 'adherent',
+                '_context' => 'form',
+            ],
+            'callback' => [self::class, 'filterCallback'],
+        ]);
     }
 
     public static function toStringCallback(Adherent $adherent): string

@@ -49,7 +49,7 @@ Feature:
                 },
                 {
                     "code": "national_communication",
-                    "name": "Rôle national communication",
+                    "name": "Directeur général adjoint",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",

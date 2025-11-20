@@ -21,6 +21,7 @@ use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipSourceEnum;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -568,7 +569,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-06-01 09:26:31',
         ]);
         $deputy_75_1->setNationalRole(true);
-        $deputy_75_1->setNationalCommunicationRole(true);
+        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createNational(ScopeEnum::NATIONAL_COMMUNICATION, LoadGeoZoneData::getZoneReference($manager, 'zone_country_FR')));
+        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')));
         $deputy_75_1->setPhoningManagerRole(true);
         $deputy_75_1->setPapNationalManagerRole(true);
         $deputy_75_1->setSubscriptionTypes($subscriptionTypes);
@@ -577,7 +579,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $deputy_75_1->certify();
         $deputy_75_1->setPapUserRole(true);
-        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([

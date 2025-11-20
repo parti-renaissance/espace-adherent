@@ -1030,6 +1030,11 @@ Feature:
                         "tags": [
                             {
                                 "type": "role",
+                                "label": "Directeur général adjoint",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
                                 "label": "Délégué de circonscription",
                                 "tooltip": null
                             },

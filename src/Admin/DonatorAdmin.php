@@ -105,10 +105,8 @@ class DonatorAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-6'])
-                ->add('city', null, [
-                    'label' => 'Ville',
-                ])
-                ->add('country', ReCountryType::class)
+                ->add('city', null, ['label' => 'Ville'])
+                ->add('country', ReCountryType::class, ['label' => 'Pays'])
             ->end()
             ->with('Administration', ['class' => 'col-md-6'])
                 ->add('tags', null, [

@@ -103,6 +103,11 @@ class AdherentZoneBasedRole
         return static::create(ScopeEnum::FDE_COORDINATOR, $zones);
     }
 
+    public static function createNational(string $nationalScope, Zone $zone): self
+    {
+        return static::create($nationalScope, [$zone]);
+    }
+
     private static function create(string $scope, array $zones): self
     {
         $role = new self($scope);

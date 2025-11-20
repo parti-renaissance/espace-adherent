@@ -28,6 +28,7 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
             'to_string_callback' => [$this, 'toStringCallback'],
             'property' => ['name', 'code'],
             'btn_add' => false,
+            'minimum_input_length' => 1,
         ]);
     }
 

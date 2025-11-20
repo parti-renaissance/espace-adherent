@@ -12,14 +12,11 @@ use App\Scope\Scope;
 
 abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 {
-    private $scopeRepository;
-
     /** @var DelegatedAccess|null */
     private $delegatedAccess;
 
-    public function __construct(ScopeRepository $scopeRepository)
+    public function __construct(private readonly ScopeRepository $scopeRepository)
     {
-        $this->scopeRepository = $scopeRepository;
     }
 
     final public function generate(Adherent $adherent): Scope

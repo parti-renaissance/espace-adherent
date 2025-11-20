@@ -19,7 +19,7 @@ class AdminZoneAutocompleteType extends AbstractType
         $resolver->setDefaults([
             'property' => 'name',
             'class' => Zone::class,
-            'template' => 'admin/form/sonata_type_model_autocomplete.html.twig',
+            'minimum_input_length' => 1,
         ]);
     }
 }
