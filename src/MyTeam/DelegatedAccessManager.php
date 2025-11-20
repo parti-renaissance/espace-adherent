@@ -31,7 +31,7 @@ class DelegatedAccessManager
             $delegatedAccess->setDelegator($member->getTeam()->getOwner());
             $delegatedAccess->setDelegated($member->getAdherent());
             $delegatedAccess->setType($member->getTeam()->getScope());
-            $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()]);
+            $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()] ?? $member->getRole());
 
             $this->entityManager->persist($delegatedAccess);
         }

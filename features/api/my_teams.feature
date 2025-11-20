@@ -62,32 +62,6 @@ Feature:
             }
             """
 
-    Scenario: As a referent I cannot add a new member in my team with invalid data
-        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "POST" request to "/api/v3/my_team_members?scope=president_departmental_assembly" with body:
-            """
-            {
-                "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
-                "adherent": "7dd297ad-a84c-4bbd-9fd2-d1152ebc3044",
-                "role": "invalid",
-                "scope_features": ["my_team", "mobile_app"]
-            }
-            """
-        Then the response status code should be 400
-        And the JSON should be equal to:
-            """
-            {
-                "message": "Validation Failed",
-                "status": "error",
-                "violations": [
-                    {
-                        "propertyPath": "role",
-                        "message": "Ce poste n'est pas valide."
-                    }
-                ]
-            }
-            """
-
     Scenario: As a correspondent I cannot add a new member in my team with invalid data (no user and not correspondent features)
         Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "POST" request to "/api/v3/my_team_members?scope=correspondent" with body:
@@ -313,6 +287,7 @@ Feature:
                                     "publications",
                                     "events",
                                     "my_team",
+                                    "my_team_custom_role",
                                     "mobile_app",
                                     "news",
                                     "elections",
@@ -403,6 +378,7 @@ Feature:
                                     "publications",
                                     "events",
                                     "my_team",
+                                    "my_team_custom_role",
                                     "mobile_app",
                                     "news",
                                     "elections",

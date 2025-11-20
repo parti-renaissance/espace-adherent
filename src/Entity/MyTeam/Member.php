@@ -10,7 +10,6 @@ use ApiPlatform\Metadata\Put;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\MemberRepository;
 use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
@@ -68,7 +67,6 @@ class Member
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
     private ?Adherent $adherent;
 
-    #[Assert\Choice(callback: [RoleEnum::class, 'getAll'], message: 'my_team.member.role.invalid_choice')]
     #[Assert\NotBlank(message: 'my_team.member.role.not_blank')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column]

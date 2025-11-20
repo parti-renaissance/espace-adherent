@@ -1368,6 +1368,7 @@ scope.feature.messages: Messagerie
 scope.feature.publications: Publications (beta)
 scope.feature.events: Événements
 scope.feature.my_team: Mon équipe
+scope.feature.my_team_custom_role: 'Mon équipe : rôle personnalisé'
 scope.feature.mobile_app: Application Mobile
 scope.feature.elections: Élections
 scope.feature.ripostes: Ripostes
