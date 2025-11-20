@@ -498,7 +498,6 @@ scope.address.not_in_zones: L'adresse saisie ne fait pas partie de la zone géog
 my_team.member.adherent.already_in_collection: Le militant fait déjà partie de cette équipe.
 my_team.member.adherent.not_blank: Veuillez sélectionner un militant.
 my_team.member.role.not_blank: Veuillez sélectionner un poste.
-my_team.member.role.invalid_choice: Ce poste n'est pas valide.
 my_team.member.scope_features.invalid_choice: Une ou plusieurs des accès délégués ne sont pas valides.
 
 #
