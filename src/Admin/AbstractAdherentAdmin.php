@@ -395,10 +395,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                             'label' => 'Rôle National',
                             'required' => false,
                         ])
-                        ->add('nationalCommunicationRole', null, [
-                            'label' => 'Rôle National communication',
-                            'required' => false,
-                        ])
                     ->end()
                     ->with('Responsable d\'appel', ['class' => 'col-md-6'])
                         ->add('phoningManagerRole', null, [

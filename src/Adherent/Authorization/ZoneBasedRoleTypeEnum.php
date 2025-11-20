@@ -21,6 +21,12 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::SENATOR,
         ScopeEnum::CANDIDATE,
         ScopeEnum::MUNICIPAL_CANDIDATE,
+        ScopeEnum::NATIONAL_COMMUNICATION,
+        ScopeEnum::NATIONAL_TERRITORIES_DIVISION,
+        ScopeEnum::NATIONAL_FORMATION_DIVISION,
+        ScopeEnum::NATIONAL_IDEAS_DIVISION,
+        ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
+        ScopeEnum::NATIONAL_TECH_DIVISION,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
@@ -61,6 +67,24 @@ final class ZoneBasedRoleTypeEnum
         ],
         ScopeEnum::SENATOR => [
             Zone::DEPARTMENT,
+        ],
+        ScopeEnum::NATIONAL_COMMUNICATION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::NATIONAL_FORMATION_DIVISION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::NATIONAL_IDEAS_DIVISION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::NATIONAL_TERRITORIES_DIVISION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::NATIONAL_TECH_DIVISION => [
+            Zone::COUNTRY => [AddressInterface::FRANCE],
         ],
     ];
 }

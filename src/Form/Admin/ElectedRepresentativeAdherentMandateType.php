@@ -25,7 +25,6 @@ class ElectedRepresentativeAdherentMandateType extends AbstractType
                 'model_manager' => $options['model_manager'],
                 'admin_code' => ElectedRepresentativeAdherentMandateAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/elected_representative_adherent_mandate_autocomplete.html.twig',
-                'minimum_input_length' => 1,
             ])
             ->add('delegation', TextType::class, [
                 'label' => 'Délégation',

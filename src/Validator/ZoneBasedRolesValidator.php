@@ -73,11 +73,13 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 continue;
             }
 
+            $roleType = (isset(ScopeEnum::SCOPE_INSTANCES[$role->getType()]) ? ScopeEnum::SCOPE_INSTANCES[$role->getType()].' : ' : '').$this->translator->trans('role.'.$role->getType(), ['gender' => 'male']);
+
             if ($role->getZones()->isEmpty()) {
                 $this->context
                     ->buildViolation($constraint->emptyZoneMessage)
                     ->atPath('['.$key.'].zones')
-                    ->setParameter('{{role_type}}', $role->getType())
+                    ->setParameter('{{role_type}}', $roleType)
                     ->addViolation()
                 ;
 
@@ -116,7 +118,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                         ->atPath('['.$key.'].zones')
                         ->setParameter('{{zone_type}}', $zone->getType())
                         ->setParameter('{{zone_code}}', $zone->getCode())
-                        ->setParameter('{{role_type}}', $role->getType())
+                        ->setParameter('{{role_type}}', $roleType)
                         ->addViolation()
                     ;
 
@@ -135,13 +137,10 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                         ->atPath('['.$key.'].zones')
                         ->setParameter('{{zone_code}}', $zone->getCode())
                         ->setParameter('{{zone_name}}', $zone->getName())
-                        ->setParameter('{{role_type}}', $this->translator->trans('role.'.$role->getType(), ['gender' => 'male']))
+                        ->setParameter('{{role_type}}', $roleType)
                         ->setParameter('{{adherent_full_name}}', $adherent->getFullName())
                         ->setParameter('{{adherent_public_id}}', $adherent->getPublicId())
-                        ->setParameter('{{adherent_edit_url}}', $this->urlGenerator->generate(
-                            'admin_app_adherent_edit',
-                            ['id' => $adherent->getId()],
-                        ))
+                        ->setParameter('{{adherent_edit_url}}', $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()]))
                         ->addViolation()
                     ;
 

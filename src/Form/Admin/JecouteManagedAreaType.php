@@ -21,7 +21,6 @@ class JecouteManagedAreaType extends AbstractType
                 'label' => false,
                 'model_manager' => $options['model_manager'],
                 'admin_code' => JecouteManagedAreaAdmin::SERVICE_ID,
-                'minimum_input_length' => 1,
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var JecouteManagedArea $data */

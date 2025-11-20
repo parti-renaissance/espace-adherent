@@ -222,7 +222,41 @@ role.user: >-
 
 role.national: Rôle national
 
-role.national_communication: Rôle national communication
+role.national_communication: >-
+    {gender, select,
+      female {Directrice générale adjointe}
+      other {Directeur général adjoint}
+    }
+
+role.national_ideas_division: >-
+    {gender, select,
+      female {Directrice générale adjointe}
+      other {Directeur général adjoint}
+    }
+
+role.national_territories_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+role.national_elected_representatives_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+role.national_formation_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+role.national_tech_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
 
 role.election_results_reporter: >-
     {gender, select,

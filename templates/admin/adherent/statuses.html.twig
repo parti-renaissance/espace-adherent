@@ -39,7 +39,14 @@
 
     {% for zone_based_role in object.getZoneBasedRoles() %}
         {% set label %}
-            {{ ('role.' ~ zone_based_role.getType())|trans({gender: object.gender}) }}
+            {% set role_label = ('role.' ~ zone_based_role.getType())|trans({gender: object.gender}) %}
+            {% set instance = '' %}
+
+            {% if zone_based_role.getType() starts with ('national_') %}
+                {% set instance = constant('App\\Scope\\ScopeEnum::SCOPE_INSTANCES')[zone_based_role.getType()] ?? '' %}
+            {% endif %}
+
+            {{ instance ? instance ~ ' :' }} {{ role_label }}
 
             {% if zone_based_role.zones is not empty %}
                 {% set codes = [] %}
@@ -121,7 +128,6 @@
         object.isDelegatedDepartmentalCandidate ? 'delegated_candidate_departmental',
         object.isElectionResultsReporter ? 'election_results_reporter',
         object.hasNationalRole ? 'national',
-        object.hasNationalCommunicationRole ? 'national_communication',
         object.hasPhoningManagerRole ? 'phoning_national_manager',
         object.hasPapNationalManagerRole ? 'pap_national_manager',
         object.isPresidentOfAgora ? 'agora_president',

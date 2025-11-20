@@ -29,9 +29,9 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
             'field_type' => ChoiceType::class,
             'show_filter' => true,
             'field_options' => [
-                'choices' => AdherentRoles::ALL,
-                'choice_label' => function (string $value) {
-                    return $this->translator->trans("role.$value", ['gender' => 'male']);
+                'choices' => AdherentRoles::getZoneBasedRoles(),
+                'choice_label' => function (string $label): string {
+                    return (isset(ScopeEnum::SCOPE_INSTANCES[$label]) ? ScopeEnum::SCOPE_INSTANCES[$label].' : ' : '').$this->translator->trans("role.$label", ['gender' => 'male']);
                 },
                 'multiple' => true,
             ],
@@ -55,12 +55,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 if (\in_array(ScopeEnum::NATIONAL, $value, true)) {
                     $where->add("$alias.nationalRole = :nationalRole");
                     $qb->setParameter('nationalRole', true);
-                }
-
-                // National Communication Role
-                if (\in_array(ScopeEnum::NATIONAL_COMMUNICATION, $value, true)) {
-                    $where->add("$alias.nationalCommunicationRole = :nationalCommunicationRole");
-                    $qb->setParameter('nationalCommunicationRole', true);
                 }
 
                 // PAP national Role
