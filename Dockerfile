@@ -51,7 +51,6 @@ RUN set -eux; \
         bcmath \
         pdo \
         pdo_mysql \
-        amqp \
         zip \
         redis \
         sockets \

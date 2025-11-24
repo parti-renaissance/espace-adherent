@@ -454,10 +454,6 @@ services:
             $apiKey: '%env(MANDRILL_API_KEY)%'
             $testApiKey: '%env(MANDRILL_TEST_API_KEY)%'
 
-    App\Messenger\AmqpTransport\AmqpTransportFactory:
-        decorates: 'messenger.transport.amqp.factory'
-        arguments: ['@.inner']
-
     League\Glide\Responses\SymfonyResponseFactory: ~
 
     League\Glide\Server:

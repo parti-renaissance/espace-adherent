@@ -135,6 +135,9 @@
             "config/packages/fos_ckeditor.yaml"
         ]
     },
+    "jwage/phpamqplib-messenger": {
+        "version": "0.9.0"
+    },
     "knplabs/doctrine-behaviors": {
         "version": "2.1.0"
     },

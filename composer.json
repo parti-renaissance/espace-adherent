@@ -26,7 +26,6 @@
     },
     "require": {
         "php": "^8.4",
-        "ext-amqp": "*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-ctype": "*",
@@ -61,6 +60,7 @@
         "google/cloud-recaptcha-enterprise": "^1.2",
         "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
+        "jwage/phpamqplib-messenger": "^0.9.0",
         "knplabs/knp-time-bundle": "^2.0",
         "kreait/firebase-bundle": "^5.0",
         "league/commonmark": "^2.5",
@@ -89,7 +89,6 @@
         "sonata-project/doctrine-orm-admin-bundle": "^4.15",
         "sonata-project/exporter": "3.4.0",
         "stof/doctrine-extensions-bundle": "^1.9",
-        "symfony/amqp-messenger": "^6.4",
         "symfony/asset": "^6.4",
         "symfony/cache": "^6.4",
         "symfony/config": "^6.4",
