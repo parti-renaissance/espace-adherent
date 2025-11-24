@@ -5,6 +5,7 @@ namespace App\Controller\Api\Vox;
 use App\AdherentMessage\PublicationZone;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\Geo\ZoneRepository;
@@ -140,6 +141,33 @@ class GetTimelineFeedsController extends AbstractController
 
         if (($committee = $request->query->get('committee')) && Uuid::isValid($committee)) {
             $userFilter[] = 'committee_uuid:'.$committee;
+        }
+
+        if ($instance = $request->query->get('instance')) {
+            $filterValue = match ($instance) {
+                'committee' => $user->getCommitteeMembership()?->getCommitteeUuid(),
+                'circonscription' => ($user->isForeignResident()
+                    ? $user->getZonesOfType(Zone::FOREIGN_DISTRICT)
+                    : $user->getZonesOfType(Zone::DISTRICT))[0]?->getTypeCode(),
+
+                'assembly' => $user->getAssemblyZone()?->getTypeCode(),
+                'agora' => ($m = $user->agoraMemberships->first())
+                    ? $m->getAgora()->getUuid()->toString()
+                    : null,
+
+                default => null,
+            };
+
+            $filterKey = match ($instance) {
+                'committee' => 'committee_uuid',
+                'circonscription', 'assembly' => 'zone_codes',
+                'agora' => 'agora_uuid',
+                default => null,
+            };
+
+            if ($filterKey && $filterValue) {
+                $userFilter[] = \sprintf('%s:%s', $filterKey, $filterValue);
+            }
         }
 
         // Construction finale
