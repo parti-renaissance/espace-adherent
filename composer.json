@@ -87,7 +87,7 @@
         "sentry/sentry-symfony": "^5.0",
         "sonata-project/admin-bundle": "^4.32",
         "sonata-project/doctrine-orm-admin-bundle": "^4.15",
-        "sonata-project/exporter": "3.3.1",
+        "sonata-project/exporter": "3.4.0",
         "stof/doctrine-extensions-bundle": "^1.9",
         "symfony/amqp-messenger": "^6.4",
         "symfony/asset": "^6.4",
