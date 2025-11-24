@@ -18,6 +18,7 @@ use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use App\Repository\AdherentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +26,29 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminAdherentCRUDController extends CRUDController
 {
-    public function __construct(private readonly AdherentRepository $adherentRepository)
+    public function __construct(
+        private readonly AdherentRepository $adherentRepository,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+    }
+
+    public function listAction(Request $request): Response
     {
+        $this->admin->checkAccess('list');
+
+        $datagrid = $this->admin->getDatagrid();
+        $formView = $datagrid->getForm()->createView();
+        $results = $datagrid->getResults();
+
+        $this->primeUsers($results);
+
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('list'), [
+            'action' => 'list',
+            'form' => $formView,
+            'datagrid' => $datagrid,
+            'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'export_formats' => $this->admin->getExportFormats(),
+        ]);
     }
 
     public function refreshTagsAction(Request $request, MessageBusInterface $bus): Response
@@ -331,5 +353,40 @@ class AdminAdherentCRUDController extends CRUDController
             'object' => $command,
             'form' => $form->createView(),
         ]);
+    }
+
+    private function primeUsers(iterable $users): void
+    {
+        $ids = [];
+        foreach ($users as $user) {
+            $ids[] = $user->getId();
+        }
+
+        if (empty($ids)) {
+            return;
+        }
+
+        $this->entityManager->createQueryBuilder()
+            ->select('u, _static_labels, _delegated_access, _zone_based_role, _zone_based_role_zone, _subscription_type', '_adherent_zones')
+            ->addSelect('u, _agora_membership, _adherent_mandate, _agora_president, _agora_general_secretary, _committee_membership, _committee_membership_committee, _animator_committees')
+            ->from(Adherent::class, 'u')
+            ->leftJoin('u.staticLabels', '_static_labels')
+            ->leftJoin('u.receivedDelegatedAccesses', '_delegated_access')
+            ->leftJoin('u.zoneBasedRoles', '_zone_based_role')
+            ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
+            ->leftJoin('u.subscriptionTypes', '_subscription_type')
+            ->leftJoin('u.zones', '_adherent_zones')
+            ->leftJoin('u.agoraMemberships', '_agora_membership')
+            ->leftJoin('u.presidentOfAgoras', '_agora_president')
+            ->leftJoin('u.generalSecretaryOfAgoras', '_agora_general_secretary')
+            ->leftJoin('u.committeeMembership', '_committee_membership')
+            ->leftJoin('_committee_membership.committee', '_committee_membership_committee')
+            ->leftJoin('u.animatorCommittees', '_animator_committees')
+            ->leftJoin('u.adherentMandates', '_adherent_mandate')
+            ->where('u.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

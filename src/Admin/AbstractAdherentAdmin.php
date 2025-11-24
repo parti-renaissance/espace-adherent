@@ -50,12 +50,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -125,6 +123,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
+            ->remove('batch')
             ->remove('create')
             ->remove('delete')
         ;
@@ -1125,39 +1124,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
     protected function isGrantedAdherentAdminRole(): bool
     {
         return $this->isGranted('ROLE_ADMIN_ADHERENT_ADHERENTS');
-    }
-
-    /** @param QueryBuilder|ProxyQueryInterface $query */
-    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
-    {
-        $alias = $query->getRootAliases()[0];
-
-        $query
-            ->addSelect(
-                '_static_labels',
-                '_delegated_access',
-                '_zone_based_role',
-                '_agora_membership',
-                '_agora_president',
-                '_agora_general_secretary',
-                '_adherent_mandate',
-                '_committee_membership',
-                '_animator_committees',
-                '_subscription_type',
-            )
-            ->leftJoin($alias.'.staticLabels', '_static_labels')
-            ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
-            ->leftJoin($alias.'.committeeMembership', '_committee_membership')
-            ->leftJoin($alias.'.agoraMemberships', '_agora_membership')
-            ->leftJoin($alias.'.presidentOfAgoras', '_agora_president')
-            ->leftJoin($alias.'.generalSecretaryOfAgoras', '_agora_general_secretary')
-            ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
-            ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
-            ->leftJoin($alias.'.animatorCommittees', '_animator_committees')
-            ->leftJoin($alias.'.subscriptionTypes', '_subscription_type')
-        ;
-
-        return $query;
     }
 
     private function getAdministrator(): Administrator

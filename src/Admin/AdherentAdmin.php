@@ -7,7 +7,6 @@ use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\Agora;
 use App\Entity\AppSession;
-use App\Entity\Committee;
 use App\Entity\OAuth\Client;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -15,6 +14,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
@@ -104,9 +104,12 @@ class AdherentAdmin extends AbstractAdherentAdmin
             ->add('committeeMembership.committee', CallbackFilter::class, [
                 'label' => 'Comité',
                 'show_filter' => true,
-                'field_type' => EntityType::class,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'class' => Committee::class,
+                    'multiple' => true,
+                    'minimum_input_length' => 0,
+                    'items_per_page' => 50,
+                    'property' => ['name'],
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {

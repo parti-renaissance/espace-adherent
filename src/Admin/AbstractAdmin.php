@@ -17,7 +17,7 @@ class AbstractAdmin extends SonataAdmin
 
     protected function isCreation(): bool
     {
-        return !$this->getSubject()->getId();
+        return !$this->getSubject()?->getId();
     }
 
     protected function configureBatchActions(array $actions): array
