@@ -226,14 +226,6 @@ eaggle_app_redirect:
     defaults:
         clientCode: eaggle
 
-formation_redirect:
-    methods: GET
-    host: '%user_vox_host%'
-    path: /formation
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        path: '%formation_host%'
-
 formation_app_redirect:
     methods: GET
     host: '%user_vox_host%'
