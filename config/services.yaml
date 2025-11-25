@@ -11,7 +11,7 @@ parameters:
     app_host: '%env(APP_HOST)%'
     national_event_host: '%env(NATIONAL_EVENT_HOST)%'
     user_vox_host: '%env(USER_VOX_HOST)%'
-    formation_host: '%env(FORMATION_URL)%'
+    formation_auth_start_url: '%env(FORMATION_URL)%/auth/oauth2/login.php?id=1&wantsurl=%2F'
     legislative_host: '%env(LEGISLATIVE_HOST)%'
     vox_host: '%env(VOX_HOST)%'
     besoindeurope_host: '%env(BESOINDEUROPE_HOST)%'
