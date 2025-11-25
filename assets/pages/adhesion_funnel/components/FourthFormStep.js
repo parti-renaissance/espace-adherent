@@ -6,7 +6,7 @@ import CommonFormStep from './CommonFormStep';
  * First Step component for funnel
  * @return {AlpineComponent}
  */
-const FourthForm = (props) => ({
+const FourthForm = () => ({
     ...CommonFormStep(),
     value: '2',
     price: 60,

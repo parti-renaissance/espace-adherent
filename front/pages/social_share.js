@@ -14,7 +14,9 @@ export default (urlAll, urlCategory) => {
             show(item);
             on(item, 'click', () => {
                 addClass(confirmMessage, 'je-partage__copy--flash');
-                setTimeout(() => { removeClass(confirmMessage, 'je-partage__copy--flash'); }, 700);
+                setTimeout(() => {
+                    removeClass(confirmMessage, 'je-partage__copy--flash');
+                }, 700);
             });
         });
     }
@@ -23,6 +25,6 @@ export default (urlAll, urlCategory) => {
 
     on(categoryChooser, 'change', () => {
         const category = categoryChooser.options[categoryChooser.selectedIndex].value;
-        window.location.href = ('all' === category) ? urlAll : urlCategory.replace('slug', category);
+        window.location.href = 'all' === category ? urlAll : urlCategory.replace('slug', category);
     });
 };

@@ -23,8 +23,7 @@ const Form = () => ({
     },
 
     triggerValidateOnAllField() {
-        this.$refs.form.querySelectorAll('input')
-            .forEach((x) => x.dispatchEvent(new Event('change')));
+        this.$refs.form.querySelectorAll('input').forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     handleSubmit(e) {
@@ -37,10 +36,8 @@ const Form = () => ({
     },
 
     checkValidity() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
-
 });
 
 export default Form;

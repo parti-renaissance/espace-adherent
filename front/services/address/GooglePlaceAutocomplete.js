@@ -22,7 +22,9 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     createAutocomplete() {
         this.createInputElement();
 
-        this._autocomplete = new google.maps.places.Autocomplete(this._input, { types: ['address'] });
+        this._autocomplete = new google.maps.places.Autocomplete(this._input, {
+            types: ['address'],
+        });
         this._autocomplete.setFields(['address_components']);
 
         // Avoid form submit action when `Enter` (13) key is pressed in autocomplete select
@@ -109,30 +111,23 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     }
 
     updateFields() {
-        this._address.setAddress([
-            (this._state.street_number && this._state.street_number.long_name || ''),
-            (this._state.route && this._state.route.long_name || ''),
-        ].join(' '));
+        this._address.setAddress([(this._state.street_number && this._state.street_number.long_name) || '', (this._state.route && this._state.route.long_name) || ''].join(' '));
 
         this._address.setCity(
-            (this._state.locality && this._state.locality.long_name)
-            || (this._state.sublocality_level_1 && this._state.sublocality_level_1.long_name)
-            || (this._state.postal_town && this._state.postal_town.long_name)
-            || ''
+            (this._state.locality && this._state.locality.long_name) ||
+                (this._state.sublocality_level_1 && this._state.sublocality_level_1.long_name) ||
+                (this._state.postal_town && this._state.postal_town.long_name) ||
+                ''
         );
         this._address.setPostalCode(
-            (this._state.postal_code && this._state.postal_code.long_name)
-            || (this._state.postal_code_prefix && this._state.postal_code_prefix.long_name)
-            || ''
+            (this._state.postal_code && this._state.postal_code.long_name) || (this._state.postal_code_prefix && this._state.postal_code_prefix.long_name) || ''
         );
 
         if (this._state.country && this._state.country.short_name) {
             this._address.setCountry(this._state.country.short_name);
 
             if ('FR' !== this._state.country.short_name) {
-                this._address.setRegion(
-                    this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name || ''
-                );
+                this._address.setRegion((this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name) || '');
             }
         } else if (!this._address.getCountry()) {
             this._address.setCountry('FR');

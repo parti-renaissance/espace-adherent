@@ -18,9 +18,7 @@ const Form = () => ({
             const countryInput = document.querySelector(`#${this.formId}_country`);
             return 'FR' !== countryInput.value;
         };
-        const addressInputs = document.querySelectorAll(
-            `input[id^=${this.formId}_]:not(#${this.formId}_autocomplete)`
-        );
+        const addressInputs = document.querySelectorAll(`input[id^=${this.formId}_]:not(#${this.formId}_autocomplete)`);
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
@@ -38,8 +36,7 @@ const Form = () => ({
     },
 
     isFormValid() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
 
     checkFormValidity() {
@@ -57,7 +54,6 @@ const Form = () => ({
         const form = document.querySelector('form');
         form.submit();
     },
-
 });
 
 export default Form;

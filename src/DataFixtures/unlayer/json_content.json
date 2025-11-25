@@ -15,9 +15,7 @@
         "rows": [
             {
                 "id": "DMh_l2dtba",
-                "cells": [
-                    1
-                ],
+                "cells": [1],
                 "columns": [
                     {
                         "id": "aB6ZyNEmC9",
@@ -339,10 +337,7 @@
                         "repeat": "no-repeat",
                         "size": "custom",
                         "position": "top-center",
-                        "customPosition": [
-                            "50%",
-                            "0%"
-                        ]
+                        "customPosition": ["50%", "0%"]
                     },
                     "padding": "0px",
                     "anchor": "",
@@ -379,10 +374,7 @@
                 "repeat": "no-repeat",
                 "size": "cover",
                 "position": "top-center",
-                "customPosition": [
-                    "50%",
-                    "0%"
-                ]
+                "customPosition": ["50%", "0%"]
             },
             "popupOverlay_backgroundColor": "rgba(0, 0, 0, 0.1)",
             "popupCloseButton_position": "top-right",
@@ -403,10 +395,7 @@
                 "repeat": "no-repeat",
                 "size": "custom",
                 "position": "top-center",
-                "customPosition": [
-                    "50%",
-                    "0%"
-                ]
+                "customPosition": ["50%", "0%"]
             },
             "preheaderText": "",
             "linkStyle": {

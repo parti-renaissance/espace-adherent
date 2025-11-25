@@ -19,17 +19,10 @@ export default class Modal extends React.Component {
 
     render() {
         return (
-            <div className={`em-modal ${this.props.side ? `em-modal--side-${this.props.side}` : ''}`}
-                style={{ display: this.state.display ? 'block' : 'none' }}>
-                <div
-                    className="modal-background"
-                    {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}
-                ></div>
+            <div className={`em-modal ${this.props.side ? `em-modal--side-${this.props.side}` : ''}`} style={{ display: this.state.display ? 'block' : 'none' }}>
+                <div className="modal-background" {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}></div>
                 <div className="modal-content">
-                    {this.props.withClose
-                        ? <span className="close" onClick={() => this.hideModal({ closed: true })}/>
-                        : ''
-                    }
+                    {this.props.withClose ? <span className="close" onClick={() => this.hideModal({ closed: true })} /> : ''}
                     {this.renderContent()}
                 </div>
             </div>
@@ -46,7 +39,7 @@ export default class Modal extends React.Component {
 
     renderContent() {
         if (this.state.content) {
-            return (<div dangerouslySetInnerHTML={{ __html: this.state.content }}/>);
+            return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />;
         }
 
         return this.contentCallback();
@@ -61,6 +54,7 @@ Modal.propTypes = {
     content: PropTypes.string,
     side: PropTypes.oneOf(['left', 'right']),
     display: PropTypes.bool,
+    withClose: PropTypes.bool,
     closeCallback: PropTypes.func,
     contentCallback: PropTypes.func,
 };

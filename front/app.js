@@ -15,15 +15,7 @@ import AddressObject from './services/address/AddressObject';
 class App {
     constructor() {
         this._di = null;
-        this._listeners = [
-            donationBanner,
-            progressiveBackground,
-            externalLinks,
-            noJsRecaptcha,
-            confirmModal,
-            emModal,
-            emDateTimePicker,
-        ];
+        this._listeners = [donationBanner, progressiveBackground, externalLinks, noJsRecaptcha, confirmModal, emModal, emDateTimePicker];
     }
 
     addListener(listener) {
@@ -91,59 +83,93 @@ class App {
     }
 
     runReport() {
-        import('pages/report').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
+        import('pages/report')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default();
+            });
     }
 
     runManagedList(columns, items) {
-        import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
-            module.default(columns, items);
-        });
+        import('pages/managed_list')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(columns, items);
+            });
     }
 
     runSocialShare(urlAll, urlCategory) {
-        import('pages/social_share').catch((error) => { throw error; }).then((module) => {
-            module.default(urlAll, urlCategory);
-        });
+        import('pages/social_share')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(urlAll, urlCategory);
+            });
     }
 
     runManageParticipants() {
-        import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
+        import('pages/manage_participants')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default();
+            });
     }
 
     runCandidacyModal(triggerSelector) {
-        import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
-            module.default(triggerSelector, this.get('api'));
-        });
+        import('pages/committee_candidacies')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(triggerSelector, this.get('api'));
+            });
     }
 
     runProfileUpdatePage() {
-        import('pages/profile_update').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
+        import('pages/profile_update')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default();
+            });
     }
 
     runImageCropper(inputFileElement, inputCroppedImageElement, inputsContainerElement, options = { ratio: 1, width: 500, height: 500 }) {
-        import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
-            module.default(inputFileElement, inputCroppedImageElement, inputsContainerElement, options);
-        });
+        import('services/utils/imageCropper')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(inputFileElement, inputCroppedImageElement, inputsContainerElement, options);
+            });
     }
 
     runCommitteeCandidacy(slug, submitButtonSelector, wrapperSelector) {
-        import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);
-        });
+        import('pages/committee_candidacy')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);
+            });
     }
 
-    runResubscribeEmail({
-        redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
-    }) {
-        import('pages/resubscribe_email').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback);
-        });
+    runResubscribeEmail({ redirectUrl = null, signupPayload = null, authenticated = true, callback = null }) {
+        import('pages/resubscribe_email')
+            .catch((error) => {
+                throw error;
+            })
+            .then((module) => {
+                module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback);
+            });
     }
 }
 

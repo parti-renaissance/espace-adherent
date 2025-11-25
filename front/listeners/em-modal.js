@@ -15,13 +15,7 @@ export default () => {
             }
 
             const root = createRoot(modalWrapper);
-            root.render(
-                <Modal
-                    side={element.dataset.modalSide || null}
-                    content={dom(element.dataset.contentElement).innerHTML}
-                    closeCallback={() => root.unmount()}
-                />
-            );
+            root.render(<Modal side={element.dataset.modalSide || null} content={dom(element.dataset.contentElement).innerHTML} closeCallback={() => root.unmount()} />);
         });
     });
 };

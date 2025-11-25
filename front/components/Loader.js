@@ -10,10 +10,12 @@ export default class Loader extends React.Component {
     }
 
     render() {
-        return <div className={this.wrapperClassName}>
-            <div className="spin-loader" />
-            {this.title}
-        </div>;
+        return (
+            <div className={this.wrapperClassName}>
+                <div className="spin-loader" />
+                {this.title}
+            </div>
+        );
     }
 }
 

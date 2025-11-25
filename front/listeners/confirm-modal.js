@@ -12,20 +12,16 @@ function cancelCallback(event) {
 function contentCallback(element) {
     return (
         <div className="font-roboto">
-            {element.dataset.confirmTitle
-                ? <div className="text--bold text--default-large">{element.dataset.confirmTitle}</div> : ''
-            }
-            <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">
-                {element.dataset.confirmContent || 'Êtes-vous sûr ?'}
-            </p>
+            {element.dataset.confirmTitle ? <div className="text--bold text--default-large">{element.dataset.confirmTitle}</div> : ''}
+            <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">{element.dataset.confirmContent || 'Êtes-vous sûr ?'}</p>
             <div>
-                <a href={'#'} onClick={(event) => cancelCallback(event)}
-                    className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
-                >
+                <a href={'#'} onClick={(event) => cancelCallback(event)} className="btn btn--ghosting--blue toggleModal b__nudge--right-small">
                     Annuler
                 </a>
 
-                <a href={element.href} className={'btn btn--blue'}>{element.dataset.confirmAction || 'Confirmer'}</a>
+                <a href={element.href} className={'btn btn--blue'}>
+                    {element.dataset.confirmAction || 'Confirmer'}
+                </a>
             </div>
         </div>
     );
@@ -53,7 +49,9 @@ export default () => {
             <Modal
                 ref={modalRef}
                 contentCallback={() => contentCallback(element)}
-                closeCallback={() => { root.unmount(); }}
+                closeCallback={() => {
+                    root.unmount();
+                }}
             />
         );
     });

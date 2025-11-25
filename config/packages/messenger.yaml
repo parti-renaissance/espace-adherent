@@ -31,12 +31,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.command',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
                         default: { binding_keys: ['async.command'] }
             pap:
@@ -44,12 +39,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.pap',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.pap' }
                     queues:
                         pap: { binding_keys: ['async.pap'] }
             mailchimp_sync:
@@ -57,12 +47,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'mailchimp.sync',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
                         mailchimp_sync: { binding_keys: ['mailchimp.sync'] }
             mailchimp_campaign:
@@ -70,26 +55,15 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'mailchimp.campaign',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
-                        mailchimp_campaign:
-                            { binding_keys: ['mailchimp.campaign'] }
+                        mailchimp_campaign: { binding_keys: ['mailchimp.campaign'] }
             notification:
                 dsn: '%env(RABBITMQ_DSN)%'
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.notification',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.notification' }
                     queues:
                         notification: { binding_keys: ['async.notification'] }
             chatbot:
@@ -99,12 +73,7 @@ framework:
                     delay: 3000
                     multiplier: 1
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.chatbot',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.chatbot' }
                     queues:
                         chatbot: { binding_keys: ['async.chatbot'] }
             event:
@@ -112,12 +81,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.event',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.event' }
                     queues:
                         event: { binding_keys: ['async.event'] }
             cronjob:
@@ -125,12 +89,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.cronjob',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.cronjob' }
                     queues:
                         cronjob: { binding_keys: ['async.cronjob'] }
             sequential:
@@ -138,12 +97,7 @@ framework:
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange:
-                        {
-                            name: 'messenger-topic',
-                            type: 'topic',
-                            default_publish_routing_key: 'async.sequential',
-                        }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.sequential' }
                     queues:
                         sequential: { binding_keys: ['async.sequential'] }
         routing:

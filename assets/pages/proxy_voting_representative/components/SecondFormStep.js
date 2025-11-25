@@ -33,9 +33,7 @@ const SecondForm = (props) => ({
     },
 
     init() {
-        const addressInputs = document.querySelectorAll(
-            'input[id^="procuration_"]'
-        );
+        const addressInputs = document.querySelectorAll('input[id^="procuration_"]');
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id.toLowerCase()}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
@@ -64,11 +62,14 @@ const SecondForm = (props) => ({
         const boroughCodeCityToExclude = ['75056', '69123', '13055', 'FR']; // Paris, Lyon, Marseille, France
         return fetch(`${props.zoneApi}?q=${query}&types[]=city&types[]=borough&types[]=country`)
             .then((response) => response.json())
-            .then((data) => data.filter((x) => !boroughCodeCityToExclude.includes(x.code))
-                .map((x) => ({
-                    label: `${x.name} | ${'country' === x.type ? x.code : x.postal_code}`,
-                    value: `${x.uuid}__${x.type}__${x.code}`,
-                })));
+            .then((data) =>
+                data
+                    .filter((x) => !boroughCodeCityToExclude.includes(x.code))
+                    .map((x) => ({
+                        label: `${x.name} | ${'country' === x.type ? x.code : x.postal_code}`,
+                        value: `${x.uuid}__${x.type}__${x.code}`,
+                    }))
+            );
     },
 
     /**
@@ -98,10 +99,7 @@ const SecondForm = (props) => ({
                 this.isVotePlacesEmpty = 0 === options.length;
                 if (1 === options.length) {
                     setTimeout(() => {
-                        this.$dispatch(
-                            `x-inject-option:procuration_${proxyOrRequest}_votePlace`.toLowerCase(),
-                            options[0]
-                        );
+                        this.$dispatch(`x-inject-option:procuration_${proxyOrRequest}_votePlace`.toLowerCase(), options[0]);
                     }, 0);
                 }
 
@@ -118,17 +116,18 @@ const SecondForm = (props) => ({
     getVotePlace(uuid) {
         return fetch(`${props.zoneApi}?noLimit&types[]=vote_place&parent_zone=${uuid}&searchEvenEmptyTerm=true`)
             .then((response) => response.json())
-            .then((data) => data.map((x) => ({
-                label: `${x.name}`,
-                value: x.uuid,
-            })));
+            .then((data) =>
+                data.map((x) => ({
+                    label: `${x.name}`,
+                    value: x.uuid,
+                }))
+            );
     },
 
     async handleOnSubmit(e) {
         if (!this.checkFormValidity(e)) return;
         this.handleNextStep();
     },
-
 });
 
 export const isFranceCountry = () => {

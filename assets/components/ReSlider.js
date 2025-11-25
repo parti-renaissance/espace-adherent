@@ -16,14 +16,9 @@ import { range } from 'lodash';
  * }} props
  * @returns {AlpineComponent}
  */
-const xReSlider = ({
-    onChange,
-    pipe,
-    syncValue,
-    ...props
-}) => {
+const xReSlider = ({ onChange, pipe, syncValue, ...props }) => {
     const _defaultStep = props.step ?? (props.stepBy ? (props.max - props.min) / props.stepBy : 1);
-    return ({
+    return {
         ...props,
         defaultStep: _defaultStep,
         step: _defaultStep,
@@ -42,7 +37,7 @@ const xReSlider = ({
 
         setValue(value) {
             this.step = 0;
-            this.value = (!value || value < props.min) ? props.min : value;
+            this.value = !value || value < props.min ? props.min : value;
         },
 
         getValue() {
@@ -54,7 +49,7 @@ const xReSlider = ({
             if (!props.stepBy) return [];
             return range(0, props.stepBy);
         },
-    });
+    };
 };
 
 export default {

@@ -38,13 +38,9 @@ const Page = (props) => ({
             const parseNumberId = (id) => Number(id.split('_')[1]) - 1;
 
             if ([1, 2].includes(step)) {
-                stepsEl
-                    .filter((el) => parseNumberId(el.id) > step)
-                    .forEach((el) => el.classList.add('re-step--disabled'));
+                stepsEl.filter((el) => parseNumberId(el.id) > step).forEach((el) => el.classList.add('re-step--disabled'));
             } else {
-                document
-                    .querySelectorAll(`.re-step:not(#step_${step + 1})`)
-                    .forEach((el) => el.classList.add('re-step--disabled'));
+                document.querySelectorAll(`.re-step:not(#step_${step + 1})`).forEach((el) => el.classList.add('re-step--disabled'));
             }
         }
     },
@@ -54,30 +50,30 @@ const Page = (props) => ({
         if (data) {
             const parsedData = JSON.parse(data);
             const form = document.querySelector('form[name="membership_request"]');
-            Object.entries(parsedData)
-                .forEach(([key, value]) => {
-                    form.querySelectorAll(`[name="${key}"]`)
-                        .forEach((el) => {
-                            if ('radio' === el.type) {
-                                el.checked = el.value === value;
-                            } else if ('checkbox' === el.type) {
-                                el.checked = value;
-                            } else if (!el.value) {
-                                if ('membership_request_address_autocomplete' === el.id) {
-                                    const fullAddress = parsedData['membership_request[address][address]'];
-                                    if (fullAddress) {
-                                        el.value = 'prefilled';
-                                        window[`options_${el.id}`] = [{
-                                            label: fullAddress,
-                                            value: 'prefilled',
-                                        }];
-                                    }
-                                } else {
-                                    el.value = value;
-                                }
+            Object.entries(parsedData).forEach(([key, value]) => {
+                form.querySelectorAll(`[name="${key}"]`).forEach((el) => {
+                    if ('radio' === el.type) {
+                        el.checked = el.value === value;
+                    } else if ('checkbox' === el.type) {
+                        el.checked = value;
+                    } else if (!el.value) {
+                        if ('membership_request_address_autocomplete' === el.id) {
+                            const fullAddress = parsedData['membership_request[address][address]'];
+                            if (fullAddress) {
+                                el.value = 'prefilled';
+                                window[`options_${el.id}`] = [
+                                    {
+                                        label: fullAddress,
+                                        value: 'prefilled',
+                                    },
+                                ];
                             }
-                        });
+                        } else {
+                            el.value = value;
+                        }
+                    }
                 });
+            });
         }
     },
 

@@ -23,8 +23,7 @@ const CommonFormStep = () => ({
     },
 
     triggerValidateOnAllField() {
-        document.querySelectorAll(`#${this.id} input`)
-            .forEach((x) => x.dispatchEvent(new Event('change')));
+        document.querySelectorAll(`#${this.id} input`).forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     isNotifResponse(payload) {
@@ -66,11 +65,7 @@ const CommonFormStep = () => ({
     },
 
     setStepData(namespaces = [], pipe = (x, y) => y) {
-        const data = Array.from(
-            document.querySelectorAll(
-                `#${this.id} input, #${this.id} textarea, #${this.id} select`
-            )
-        )
+        const data = Array.from(document.querySelectorAll(`#${this.id} input, #${this.id} textarea, #${this.id} select`))
             .filter((x) => x.id.startsWith('membership_request_'))
             .reduce((acc, x) => {
                 const [a, b, ...fieldnames] = x.id.split('_');
@@ -103,15 +98,12 @@ const CommonFormStep = () => ({
     },
 
     handleNextStep() {
-        dom(`#${this.nextStepId}`)
-            .classList
-            .remove('re-step--disabled');
+        dom(`#${this.nextStepId}`).classList.remove('re-step--disabled');
         reScrollTo(this.nextStepId);
     },
 
     checkValidity() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
 
     /**

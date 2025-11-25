@@ -20,10 +20,15 @@ export function postAccount(data) {
  * @param {{ error: string }} opt
  * @return {Promise<Response>}
  */
-export function handlePostAccountResponse(response, onSuccess, opt = {
-    error: 'Une erreur est survenue lors de la création de votre compte',
-}) {
-    return response.json()
+export function handlePostAccountResponse(
+    response,
+    onSuccess,
+    opt = {
+        error: 'Une erreur est survenue lors de la création de votre compte',
+    }
+) {
+    return response
+        .json()
         .then((payload) => {
             if (this.isNotifResponse(payload)) {
                 if ('success' === payload.status) {

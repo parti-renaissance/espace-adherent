@@ -24,9 +24,7 @@ const SecondForm = () => ({
     },
 
     init() {
-        const addressInputs = document.querySelectorAll(
-            'input[id^="inscription_request_"]'
-        );
+        const addressInputs = document.querySelectorAll('input[id^="inscription_request_"]');
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id.toLowerCase()}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
@@ -54,7 +52,6 @@ const SecondForm = () => ({
 
         this.handleNextStep();
     },
-
 });
 
 export const isFranceCountry = () => {

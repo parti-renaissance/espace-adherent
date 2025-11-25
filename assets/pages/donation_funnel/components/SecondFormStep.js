@@ -24,9 +24,7 @@ const SecondForm = () => ({
     },
 
     init() {
-        const addressInputs = document.querySelectorAll(
-            'input[id^="donation_request_address_"]:not(#membership_request_address_autocomplete)'
-        );
+        const addressInputs = document.querySelectorAll('input[id^="donation_request_address_"]:not(#membership_request_address_autocomplete)');
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
@@ -51,7 +49,6 @@ const SecondForm = () => ({
         if (!this.checkFormValidity(e)) return;
         this.handleNextStep();
     },
-
 });
 
 export const isFranceCountry = () => {

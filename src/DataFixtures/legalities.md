@@ -15,8 +15,8 @@ Julien Tassy
 
 Ce site est hébergé par :
 
-* NBS System, 8 rue Bernard Buffet 75017 PARIS  
-* Google Cloud Platform, 8 rue de Londres, 75009 Paris
+- NBS System, 8 rue Bernard Buffet 75017 PARIS
+- Google Cloud Platform, 8 rue de Londres, 75009 Paris
 
 ### Donnés nominatives
 
@@ -46,16 +46,17 @@ d'affiner l'analyse de la fréquentation de notre site. Tous les résultats obte
 anonymes. Dans tous les cas, vous avez le contrôle de ces cookies. Vous avez la possibilité de les lire, de les
 filtrer, de les refuser et de les détruire dans la configuration de votre navigateur interne comme suit :
 
-*   Sous
-Internet Explorer : Menu « Outils > Options Internet ». Cliquez sur « Confidentialité » et choisissez « Bloquer
-tous les cookies ». Validez sur « OK »
-*   Sous Firefox : Menu « Outils > Options ». Cliquez sur l'option « Vie
-privée » puis désactivez les cookies dans la rubrique « Cookies »
-*   Sous Chrome : Menu « Outils ». Cliquez sur
-« Effacer les données de navigation » et choisissez « Supprimer les cookies et autres données de site et de plug-in
-». Validez sur « Effacer les données de navigation ».
+- Sous
+  Internet Explorer : Menu « Outils > Options Internet ». Cliquez sur « Confidentialité » et choisissez « Bloquer
+  tous les cookies ». Validez sur « OK »
+- Sous Firefox : Menu « Outils > Options ». Cliquez sur l'option « Vie
+  privée » puis désactivez les cookies dans la rubrique « Cookies »
+- Sous Chrome : Menu « Outils ». Cliquez sur
+  « Effacer les données de navigation » et choisissez « Supprimer les cookies et autres données de site et de plug-in
+  ». Validez sur « Effacer les données de navigation ».
 
 ### Conditions générales d’utilisation du site
+
 en-marche.fr
 
 #### ARTICLE 1 : Objet
@@ -87,17 +88,18 @@ est hébergé par NBS System, 8 rue Bernard Buffet 75017 PARIS
 La présente clause a
 pour objet de définir les différents termes essentiels du contrat :
 
-*   Utilisateur : ce terme désigne toute
-personne qui utilise le site ou l’un des services proposés par le site.
+- Utilisateur : ce terme désigne toute
+  personne qui utilise le site ou l’un des services proposés par le site.
 
-*   Contenu utilisateur : ce sont les
-données transmises par l’Utilisateur au sein du site.
+- Contenu utilisateur : ce sont les
+  données transmises par l’Utilisateur au sein du site.
 
-*   Identifiant et mot de passe : c’est l’ensemble des
-informations nécessaires à l’identification d’un Utilisateur sur le site. L’identifiant et le mot de passe
-permettent à l’Utilisateur d’accéder à des contenus spécifiques. Le mot de passe est confidentiel.
+- Identifiant et mot de passe : c’est l’ensemble des
+  informations nécessaires à l’identification d’un Utilisateur sur le site. L’identifiant et le mot de passe
+  permettent à l’Utilisateur d’accéder à des contenus spécifiques. Le mot de passe est confidentiel.
 
 ####
+
 ARTICLE 4 : accès aux services
 
 Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant un accès
@@ -160,6 +162,7 @@ L'Utilisateur régulièrement inscrit pourra à tout moment demander sa désinsc
 adressant un message à contact@en-marche.fr ou en écrivant par voie postale à l'association En Marche.
 
 ####
+
 ARTICLE 6 : Propriété intellectuelle
 
 Les marques, logos, signes et tout autre contenu du site font l’objet
@@ -182,6 +185,7 @@ moment et pour n’importe quelle raison supprimé ou modifié par le site. L’
 justification et notification préalablement à la suppression ou à la modification du contenu Utilisateur.
 
 ####
+
 ARTICLE 7 : Données personnelles
 
 L'utilisateur est informé que, lors de sa navigation sur le site
@@ -255,6 +259,7 @@ L’Utilisateur s’interdit donc à engager la responsabilité du
 site concernant le contenu et les ressources relatives à ces liens hypertextes sortants.
 
 #### ARTICLE 10 :
+
 Évolution du contrat
 
 Le site se réserve à tout moment le droit de modifier les clauses stipulées dans le présent
@@ -266,6 +271,7 @@ La durée du présent contrat est indéterminée. Le contrat produit ses effets
 à l’égard de l’Utilisateur à compter de l’utilisation du service.
 
 #### ARTICLE 12 : Publication par
+
 l'Utilisateur
 
 Dans ses éventuelles publications sur le site, l'Utilisateur s'engage à respecter les règles de

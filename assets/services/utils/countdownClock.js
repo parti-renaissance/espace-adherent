@@ -54,10 +54,10 @@ function initializeTimer(element, refreshPage) {
             }
 
             // show how many hours, minutes and seconds are left
-            days.innerHTML = (`00${d}`).slice(-2);
-            hours.innerHTML = (`00${h}`).slice(-2);
-            minutes.innerHTML = (`00${m}`).slice(-2);
-            seconds.innerHTML = (`00${s}`).slice(-2);
+            days.innerHTML = `00${d}`.slice(-2);
+            hours.innerHTML = `00${h}`.slice(-2);
+            minutes.innerHTML = `00${m}`.slice(-2);
+            seconds.innerHTML = `00${s}`.slice(-2);
         }, interval);
     }
 }

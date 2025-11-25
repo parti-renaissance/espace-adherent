@@ -7,26 +7,23 @@
  * Replace Caps, Diacritics for a string
  * @param {string} string
  */
-const normaliseString = (string) => string.toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '');
+const normaliseString = (string) =>
+    string
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '');
 
 /**
  * Search for option in the label of the options
  * @param {string} query
  * @param {Option[]} options
  */
-const filterOptions = (query, options) => options
-    .filter((option) => normaliseString(option.label)
-        .includes(normaliseString(query)));
+const filterOptions = (query, options) => options.filter((option) => normaliseString(option.label).includes(normaliseString(query)));
 
 const scrollIntoViewWithOffset = (el, offset) => {
     window.scrollTo({
         behavior: 'smooth',
-        top:
-            el.getBoundingClientRect().top
-            - document.body.getBoundingClientRect().top
-            - offset,
+        top: el.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
     });
 };
 /**
@@ -43,15 +40,15 @@ const scrollIntoViewWithOffset = (el, offset) => {
  * @returns {AlpineComponent}
  */
 const xReSelect = (props) => {
-    const options = [
-        ...props.preferredOptions,
-        ...props.options.filter((o) => !props.preferredOptions.find((p) => p.value === o.value)),
-    ];
+    const options = [...props.preferredOptions, ...props.options.filter((o) => !props.preferredOptions.find((p) => p.value === o.value))];
     const firstOption = options[0];
-    const defaultOption = !props.placeholder && firstOption ? firstOption : {
-        value: '',
-        label: '',
-    };
+    const defaultOption =
+        !props.placeholder && firstOption
+            ? firstOption
+            : {
+                  value: '',
+                  label: '',
+              };
 
     const placeholder = props.placeholder || defaultOption.label;
 
@@ -209,14 +206,13 @@ const xReSelect = (props) => {
                     status: 'loading',
                     message: 'Chargement en cours...',
                 });
-                return props.onQuery(query)
-                    .then((opts) => {
-                        this.$dispatch(`x-validate:${props.id.toLowerCase()}`, {
-                            status: 'default',
-                            message: '',
-                        });
-                        return opts;
+                return props.onQuery(query).then((opts) => {
+                    this.$dispatch(`x-validate:${props.id.toLowerCase()}`, {
+                        status: 'default',
+                        message: '',
                     });
+                    return opts;
+                });
             }
             return filterOptions(query, options);
         },

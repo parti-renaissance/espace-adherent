@@ -10,9 +10,7 @@ export default (triggerSelector, api) => {
             event.preventDefault();
             nbClick += 1;
 
-            createRoot(dom('#modal-wrapper')).render(
-                <CandidaciesListWidget api={api} committeeUuid={element.dataset.uuid} key={`modal-${nbClick}`}/>
-            );
+            createRoot(dom('#modal-wrapper')).render(<CandidaciesListWidget api={api} committeeUuid={element.dataset.uuid} key={`modal-${nbClick}`} />);
         });
     });
 };

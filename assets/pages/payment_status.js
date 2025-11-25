@@ -29,8 +29,7 @@ async function isBankHasReceivedPayment(paymentCheckUrl, retry = 0) {
         })
         .then((payload) => {
             if (!payload.is_success) {
-                return wait(3000)
-                    .then(() => isBankHasReceivedPayment(paymentCheckUrl, retry + 1));
+                return wait(3000).then(() => isBankHasReceivedPayment(paymentCheckUrl, retry + 1));
             }
             if (payload.redirect_uri) {
                 window.location.href = payload.redirect_uri;

@@ -20,10 +20,7 @@ export default class CandidaciesListWidget extends Modal {
 
     componentDidMount() {
         if (null === this.state.data) {
-            this.props.api.getCommitteeCandidacies(
-                this.props.committeeUuid,
-                this.handleApiResponse
-            );
+            this.props.api.getCommitteeCandidacies(this.props.committeeUuid, this.handleApiResponse);
         }
     }
 
@@ -38,28 +35,29 @@ export default class CandidaciesListWidget extends Modal {
 
     getModalContent() {
         if (!this.state.isLoaded) {
-            return <Loader wrapperClassName={'text--center space--30-0'}/>;
+            return <Loader wrapperClassName={'text--center space--30-0'} />;
         }
 
         const col1 = [];
         const col2 = [];
 
         this.state.data.candidacies.forEach((candidacy, index) => {
-            const template = <div key={index} className={'text--dark b__nudge--bottom-medium l__row'}>
-                <div className='avatar-initials avatar--small avatar--style-01'>
-                    {candidacy.photo
-                        ? <img src={candidacy.photo} alt="photo" />
-                        : (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()
-                    }
-                </div>
-                <div className='l__col b__nudge--left-small'>
-                    <div>{candidacy.first_name} {candidacy.last_name}</div>
-                    <div className='text--smallest'>
-                        Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
-                        candidat{'female' === candidacy.gender ? 'e ' : ' '}
+            const template = (
+                <div key={index} className={'text--dark b__nudge--bottom-medium l__row'}>
+                    <div className="avatar-initials avatar--small avatar--style-01">
+                        {candidacy.photo ? <img src={candidacy.photo} alt="photo" /> : (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()}
+                    </div>
+                    <div className="l__col b__nudge--left-small">
+                        <div>
+                            {candidacy.first_name} {candidacy.last_name}
+                        </div>
+                        <div className="text--smallest">
+                            Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
+                            candidat{'female' === candidacy.gender ? 'e ' : ' '}
+                        </div>
                     </div>
                 </div>
-            </div>;
+            );
 
             if (0 === index % 2) {
                 col1.push(template);
@@ -84,12 +82,9 @@ export default class CandidaciesListWidget extends Modal {
                         <div className="text--data-label">dont hommes</div>
                         <div className="b__nudge--top-10">
                             <span className="text--data-value">{this.state.data.metadata.males}</span>
-                            <span className="text--dark"> ({numberFormat(
-                                0 === this.state.data.metadata.total ? 0
-                                    : Math.round(
-                                        (this.state.data.metadata.males * 100) / this.state.data.metadata.total
-                                    )
-                            )} %)
+                            <span className="text--dark">
+                                {' '}
+                                ({numberFormat(0 === this.state.data.metadata.total ? 0 : Math.round((this.state.data.metadata.males * 100) / this.state.data.metadata.total))} %)
                             </span>
                         </div>
                     </div>
@@ -98,12 +93,9 @@ export default class CandidaciesListWidget extends Modal {
                         <div className="text--data-label">dont femmes</div>
                         <div className="b__nudge--top-10">
                             <span className="text--data-value">{this.state.data.metadata.females}</span>
-                            <span className="text--dark"> ({numberFormat(
-                                0 === this.state.data.metadata.total ? 0
-                                    : Math.round(
-                                        (this.state.data.metadata.females * 100) / this.state.data.metadata.total
-                                    )
-                            )} %)
+                            <span className="text--dark">
+                                {' '}
+                                ({numberFormat(0 === this.state.data.metadata.total ? 0 : Math.round((this.state.data.metadata.females * 100) / this.state.data.metadata.total))} %)
                             </span>
                         </div>
                     </div>

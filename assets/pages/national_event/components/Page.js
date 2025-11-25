@@ -42,10 +42,12 @@ const Page = (props) => ({
                 this.fieldsValid.captcha = true;
             }
 
-            const firstError = Array.from(findAll(document, '.re-text-status--error'))
-                .find((el) => '' !== el.textContent.trim());
+            const firstError = Array.from(findAll(document, '.re-text-status--error')).find((el) => '' !== el.textContent.trim());
             if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                });
             }
             this.selectedTransportConfig = this.getSelectedTransportConfig();
             this.selectedAccommodationConfig = this.getSelectedAccommodationConfig();
@@ -93,9 +95,7 @@ const Page = (props) => ({
             return;
         }
 
-        this.availableTransports = (this.transportConfig.transports ?? []).filter(
-            (transport) => transport.jours_ids.includes(this.visitDay)
-        );
+        this.availableTransports = (this.transportConfig.transports ?? []).filter((transport) => transport.jours_ids.includes(this.visitDay));
 
         if (uncheckInputs) {
             this.transport = null;
@@ -112,9 +112,7 @@ const Page = (props) => ({
             return;
         }
 
-        this.availableAccommodations = (this.transportConfig.hebergements ?? []).filter(
-            (accommodation) => accommodation.jours_ids.includes(this.visitDay)
-        );
+        this.availableAccommodations = (this.transportConfig.hebergements ?? []).filter((accommodation) => accommodation.jours_ids.includes(this.visitDay));
 
         if (uncheckInputs) {
             this.accommodation = null;
@@ -129,9 +127,7 @@ const Page = (props) => ({
             return null;
         }
 
-        const configs = (this.transportConfig?.transports ?? []).filter(
-            (transport) => transport.id === this.transport
-        );
+        const configs = (this.transportConfig?.transports ?? []).filter((transport) => transport.id === this.transport);
 
         return 0 < configs.length ? configs[0] : null;
     },
@@ -175,9 +171,7 @@ const Page = (props) => ({
             return null;
         }
 
-        const configs = (this.transportConfig?.hebergements ?? []).filter(
-            (accommodation) => accommodation.id === this.accommodation
-        );
+        const configs = (this.transportConfig?.hebergements ?? []).filter((accommodation) => accommodation.id === this.accommodation);
 
         return 0 < configs.length ? configs[0] : null;
     },
@@ -205,8 +199,7 @@ const Page = (props) => ({
     },
 
     checkValidity() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
 
     isFromPayedToFreeUpdate() {

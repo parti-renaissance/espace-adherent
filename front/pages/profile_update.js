@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
 
@@ -17,13 +16,7 @@ export default () => {
     const autocompleteWidget = new AutocompletedAddressForm(
         autocompleteWrapper,
         dom('.address-block'),
-        new AddressObject(
-            addressField,
-            postalCodeField,
-            cityNameField,
-            null,
-            countryField
-        ),
+        new AddressObject(addressField, postalCodeField, cityNameField, null, countryField),
         dom('#address-autocomplete-help-message'),
         true
     );
@@ -31,13 +24,15 @@ export default () => {
     autocompleteWidget.on('changed', () => {
         findOne(autocompleteWrapper, 'input.form').value = addressField.value;
 
-        countryField.dispatchEvent(new CustomEvent('change', {
-            target: countryField,
-            detail: {
-                zipCode: postalCodeField.value,
-                cityName: cityNameField.value,
-            },
-        }));
+        countryField.dispatchEvent(
+            new CustomEvent('change', {
+                target: countryField,
+                detail: {
+                    zipCode: postalCodeField.value,
+                    cityName: cityNameField.value,
+                },
+            })
+        );
     });
 
     autocompleteWidget.buildWidget();

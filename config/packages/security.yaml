@@ -525,29 +525,10 @@ security:
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
         - { path: '^/espace-adherent', roles: [ROLE_USER] }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/login/(2fa|logout)',
-              role: [IS_AUTHENTICATED_2FA_IN_PROGRESS],
-          }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/login',
-              roles: [PUBLIC_ACCESS],
-          }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/robots.txt',
-              roles: [PUBLIC_ACCESS],
-          }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/(?!(oauth|vox))',
-              roles: [ROLE_ADMIN_DASHBOARD],
-          }
+        - { host: '%admin_renaissance_host%', path: '^/login/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
+        - { host: '%admin_renaissance_host%', path: '^/login', roles: [PUBLIC_ACCESS] }
+        - { host: '%admin_renaissance_host%', path: '^/robots.txt', roles: [PUBLIC_ACCESS] }
+        - { host: '%admin_renaissance_host%', path: '^/(?!(oauth|vox))', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_USER] }
-        - {
-              path: '^/(adhesion|don|espace-elus)',
-              allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')",
-          }
+        - { path: '^/(adhesion|don|espace-elus)', allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')" }

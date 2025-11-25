@@ -5,7 +5,7 @@
  * @param {AlpineEl} el
  * @return {(e: Event)=>void
  */
-const resizeTextArea = (el) => (e) => {
+const resizeTextArea = (el) => () => {
     el.style.height = 'auto';
     el.style.height = `${el.scrollHeight}px`;
 };

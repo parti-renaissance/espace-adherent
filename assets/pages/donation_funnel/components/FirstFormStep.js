@@ -21,7 +21,7 @@ function closest(num, arr) {
  */
 const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}) => {
     const monthlyAmounts = [5, 10, 20, 30, 60, 100];
-    return ({
+    return {
         ...CommonFormStep(),
         fieldsValid: {},
         nextStepId: 'step_2',
@@ -50,25 +50,19 @@ const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}
         },
 
         animateSvg(value) {
-            let index = this.getAmounts()
-                .indexOf(Number(value));
+            let index = this.getAmounts().indexOf(Number(value));
             if (-1 === index) {
-                index = this.getAmounts()
-                    .indexOf(closest(Number(value), this.getAmounts()));
+                index = this.getAmounts().indexOf(closest(Number(value), this.getAmounts()));
             }
-            const indexesToAnimate = Array.from(Array(index + 1)
-                .keys());
-            document.querySelectorAll('[id^="p_"]')
-                .forEach((el) => {
-                    const elIndex = Number(el.id.split('_')[1]) - 1;
-                    if (indexesToAnimate.includes(elIndex)) return;
-                    el.classList.remove('active');
-                });
+            const indexesToAnimate = Array.from(Array(index + 1).keys());
+            document.querySelectorAll('[id^="p_"]').forEach((el) => {
+                const elIndex = Number(el.id.split('_')[1]) - 1;
+                if (indexesToAnimate.includes(elIndex)) return;
+                el.classList.remove('active');
+            });
             indexesToAnimate.forEach((i) => {
                 setTimeout(() => {
-                    document.querySelector(`#p_${i + 1}`)
-                        .classList
-                        .add('active');
+                    document.querySelector(`#p_${i + 1}`).classList.add('active');
                 }, i * 100);
             });
         },
@@ -84,11 +78,11 @@ const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}
         getCustomAmount() {
             return uniqAmounts.includes(Number(this.amount)) ? '' : this.amount;
         },
-        async handleOnSubmit(e, $dispatch) {
+        async handleOnSubmit(e) {
             e.preventDefault();
             this.handleNextStep();
         },
-    });
+    };
 };
 
 export default FirstForm;

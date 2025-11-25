@@ -154,19 +154,10 @@ services:
         arguments: [!tagged_iterator 'app.redirection.handler']
 
     App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
-        arguments:
-            [
-                !tagged_iterator {
-                    tag: 'app.adherent_message.mailchimp.campaign.handler',
-                    default_priority_method: getPriority,
-                },
-            ]
+        arguments: [!tagged_iterator { tag: 'app.adherent_message.mailchimp.campaign.handler', default_priority_method: getPriority }]
 
     App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
-        arguments:
-            [
-                !tagged_iterator 'app.adherent_message.transaction.message_modifier',
-            ]
+        arguments: [!tagged_iterator 'app.adherent_message.transaction.message_modifier']
 
     App\AdherentMessage\AdherentMessageManager:
         arguments:
@@ -193,13 +184,7 @@ services:
             $generators: !tagged_iterator { tag: 'app.adherent.tag.generator' }
 
     App\OAuth\App\AuthAppUrlManager:
-        arguments:
-            [
-                !tagged_iterator {
-                    tag: 'app.auth_app.url_generator',
-                    default_index_method: 'getAppCode',
-                },
-            ]
+        arguments: [!tagged_iterator { tag: 'app.auth_app.url_generator', default_index_method: 'getAppCode' }]
 
     app.ssl_private_key:
         class: League\OAuth2\Server\CryptKey
@@ -332,13 +317,7 @@ services:
         arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']
 
     App\VotingPlatform\Election\ResultCalculator:
-        arguments:
-            [
-                !tagged_iterator {
-                    tag: 'app.voting_platform.result_calculator',
-                    default_priority_method: 'getPriority',
-                },
-            ]
+        arguments: [!tagged_iterator { tag: 'app.voting_platform.result_calculator', default_priority_method: 'getPriority' }]
 
     App\JMEFilter\FiltersGenerator:
         arguments: [!tagged_iterator 'app.filter.builder']
@@ -496,76 +475,28 @@ services:
               arguments: ['@App\Search\EventSearchResultsProvider']
 
     App\Api\Doctrine\JecouteNewsExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\EventExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\EventOrderExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: -35,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: -35 }]
 
     App\Api\Doctrine\GeoZoneExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\AdherentMessageCollectionExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\LoadActivePapCampaignExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\EmailTemplateExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Api\Doctrine\ReferralExtension:
-        tags:
-            [
-                {
-                    name: 'api_platform.doctrine.orm.query_extension.collection',
-                    priority: 9,
-                },
-            ]
+        tags: [{ name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9 }]
 
     App\Entity\Listener\ContainingUserDocumentListener:
         public: true
@@ -573,30 +504,10 @@ services:
             - '@App\UserDocument\UserDocumentManager'
             - '%pattern_uuid%'
         tags:
-            - {
-                  name: 'doctrine.orm.entity_listener',
-                  entity: 'App\Entity\Jecoute\News',
-                  event: 'prePersist',
-              }
-            - {
-                  name: 'doctrine.orm.entity_listener',
-                  entity: 'App\Entity\Jecoute\News',
-                  event: 'preUpdate',
-              }
-            - {
-                  name: 'doctrine.orm.entity_listener',
-                  entity: 'App\Entity\Jecoute\News',
-                  event: 'postUpdate',
-              }
-            - {
-                  name: 'doctrine.orm.entity_listener',
-                  entity: 'App\Entity\Jecoute\News',
-                  event: 'preRemove',
-              }
-            - {
-                  name: 'doctrine.orm.entity_listener',
-                  entity: 'App\Entity\Jecoute\News',
-                  event: 'postRemove',
-              }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Jecoute\News', event: 'prePersist' }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Jecoute\News', event: 'preUpdate' }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Jecoute\News', event: 'postUpdate' }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Jecoute\News', event: 'preRemove' }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Jecoute\News', event: 'postRemove' }
 
     Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface: '@Vich\UploaderBundle\Templating\Helper\UploaderHelper'

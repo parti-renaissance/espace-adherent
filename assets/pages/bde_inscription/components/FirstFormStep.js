@@ -81,29 +81,29 @@ const FirstForm = (props) => ({
     },
 
     _handleBadRequest($dispatch) {
-        return (data) => data.violations.forEach((x) => {
-            if ('email' === x.propertyPath) {
-                $dispatch('x-validate:inscription_request_email', {
-                    status: data.status,
-                    message: x.message,
-                });
-            }
+        return (data) =>
+            data.violations.forEach((x) => {
+                if ('email' === x.propertyPath) {
+                    $dispatch('x-validate:inscription_request_email', {
+                        status: data.status,
+                        message: x.message,
+                    });
+                }
 
-            if ('recaptcha' === x.propertyPath) {
-                this.captchaToken = null;
-                this.fieldsValid.captcha = false;
-                this.generalNotification = {
-                    status: data.status,
-                    message: x.message,
-                };
-            }
-        });
+                if ('recaptcha' === x.propertyPath) {
+                    this.captchaToken = null;
+                    this.fieldsValid.captcha = false;
+                    this.generalNotification = {
+                        status: data.status,
+                        message: x.message,
+                    };
+                }
+            });
     },
 
     async handleOnSubmit(e, $dispatch) {
         if (!this._handleOnSubmitBase(e)) {
-            return new Promise(() => {
-            });
+            return new Promise(() => {});
         }
 
         this.loading = true;

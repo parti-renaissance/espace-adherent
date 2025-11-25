@@ -25,17 +25,7 @@
     "paginationLimitedTo": 1000,
     "attributeForDistinct": null,
     "exactOnSingleWordQuery": "attribute",
-    "ranking": [
-        "desc(id)",
-        "typo",
-        "geo",
-        "words",
-        "filters",
-        "proximity",
-        "attribute",
-        "exact",
-        "custom"
-    ],
+    "ranking": ["desc(id)", "typo", "geo", "words", "filters", "proximity", "attribute", "exact", "custom"],
     "customRanking": null,
     "separatorsToIndex": "",
     "removeWordsIfNoResults": "none",

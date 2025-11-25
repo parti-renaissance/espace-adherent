@@ -16,7 +16,7 @@ export default class RequestApiClient {
         this._createRequest(() => {}, {
             url: `/mailchimp/update-cleaned/${uuid}/save-last-response`,
             method: 'put',
-            data: JSON.stringify({data: response}),
+            data: JSON.stringify({ data: response }),
             contentType: 'application/json',
             headers: { 'X-API-KEY': apiKey },
             type: 'json',
