@@ -35,7 +35,6 @@ use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
 use App\Entity\Transaction;
-use App\Entity\UserListDefinition;
 use App\FranceCities\FranceCities;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentActivationTokenRepository;
@@ -64,7 +63,6 @@ use App\Repository\Pap\CampaignHistoryRepository;
 use App\Repository\Pap\CampaignRepository as PapCampaignRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
@@ -250,11 +248,6 @@ trait TestHelperTrait
     public function getSubscriptionTypeRepository(): SubscriptionTypeRepository
     {
         return $this->getRepository(SubscriptionType::class);
-    }
-
-    public function getUserListDefinitionRepository(): UserListDefinitionRepository
-    {
-        return $this->getRepository(UserListDefinition::class);
     }
 
     public function getElectedRepresentativeRepository(): ElectedRepresentativeRepository

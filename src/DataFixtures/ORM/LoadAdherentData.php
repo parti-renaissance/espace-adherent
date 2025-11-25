@@ -650,7 +650,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $assessor->certify();
-        $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
 
         $senatorialCandidate = $this->adherentFactory->createFromArray([
@@ -1235,7 +1234,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     {
         return [
             LoadSubscriptionTypeData::class,
-            LoadCityData::class,
             LoadGeoZoneData::class,
         ];
     }

@@ -6,7 +6,6 @@ use App\Adherent\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\MailchimpSegment;
-use App\Entity\UserListDefinitionEnum;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -72,12 +71,6 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 
         foreach (LabelNameEnum::ALL as $label) {
             $this->initTag($this->tagsBuilder->translateKey($label));
-
-            $this->io->progressAdvance();
-        }
-
-        foreach (UserListDefinitionEnum::CODES_ELECTED_REPRESENTATIVE as $userListDefinition) {
-            $this->initTag($this->tagsBuilder->translateKey($userListDefinition));
 
             $this->io->progressAdvance();
         }

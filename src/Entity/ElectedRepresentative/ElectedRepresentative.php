@@ -15,7 +15,6 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -64,7 +63,6 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
-    use EntityUserListDefinitionTrait;
 
     /**
      * @var string
@@ -225,7 +223,6 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $this->politicalFunctions = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->sponsorships = new ArrayCollection();
-        $this->userListDefinitions = new ArrayCollection();
         $this->contributions = new ArrayCollection();
         $this->payments = new ArrayCollection();
 

@@ -14,7 +14,6 @@ use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use App\Entity\ElectedRepresentative\SocialNetworkLink;
-use App\Entity\UserListDefinition;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -59,7 +58,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
         );
         $erAdherent92->setAdherent($this->getReference('adherent-5', Adherent::class));
-        $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member', UserListDefinition::class));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
             if (2012 === $sponsorship->getPresidentialElectionYear()) {
                 $sponsorship->setCandidate(CandidateNameEnum::FRANCOIS_HOLLANDE, $erAdherent92);
@@ -118,8 +116,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
         $erCityCouncilWithFinishedFunction->setContactPhone(PhoneNumberUtils::create('+330999887766'));
-        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem', UserListDefinition::class));
-        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member', UserListDefinition::class));
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $erCityCouncilWithFinishedFunction,
@@ -180,7 +176,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             null,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
-        $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem', UserListDefinition::class));
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $er2Mandates,
@@ -530,7 +525,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
     {
         return [
             LoadAdherentData::class,
-            LoadUserListDefinitionData::class,
         ];
     }
 }

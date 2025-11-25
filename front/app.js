@@ -90,12 +90,6 @@ class App {
         autocompleteAddressForm.buildWidget();
     }
 
-    runProgrammaticFoundation() {
-        import('pages/programmatic_foundation').catch((error) => { throw error; }).then((module) => {
-            module.default('.programmatic-foundation-widget-wrapper', this.get('api'));
-        });
-    }
-
     runReport() {
         import('pages/report').catch((error) => { throw error; }).then((module) => {
             module.default();
@@ -117,27 +111,6 @@ class App {
     runManageParticipants() {
         import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
             module.default();
-        });
-    }
-
-    runUserListDefinitions(
-        memberType,
-        type,
-        wrapperSelector,
-        checkboxSelector,
-        mainCheckboxSelector,
-        postApplyCallback
-    ) {
-        import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
-            module.default(
-                memberType,
-                type,
-                wrapperSelector,
-                checkboxSelector,
-                mainCheckboxSelector,
-                this.get('api'),
-                postApplyCallback
-            );
         });
     }
 

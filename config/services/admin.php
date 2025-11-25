@@ -492,14 +492,6 @@ return static function (ContainerConfigurator $configurator) {
         ->call('setTemplate', ['outer_list_rows_mosaic', 'admin/media/mosaic.html.twig'])
     ;
     $services
-        ->set('app.admin.city', App\Admin\CityAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\City::class, 'label' => 'Communes', 'group' => 'Archives (à dépublier)'])
-    ;
-    $services
-        ->set('app.admin.user_list_definition', App\Admin\UserListDefinitionAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\UserListDefinition::class, 'label' => 'Tech » Labels', 'group' => 'Archives (à dépublier)'])
-    ;
-    $services
         ->set('app.admin.petition_signature', App\Admin\PetitionSignatureAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\PetitionSignature::class, 'label' => 'Signatures', 'group' => 'Pétitions'])
     ;
@@ -555,26 +547,6 @@ return static function (ContainerConfigurator $configurator) {
     $services
         ->set('app.admin.legislative_district_zone', App\Admin\LegislativeDistrictZoneAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\LegislativeDistrictZone::class, 'label' => 'Zones géographiques', 'group' => 'Archives'])
-    ;
-    $services
-        ->set('app.admin.approach', App\Admin\ProgrammaticFoundation\ApproachAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProgrammaticFoundation\Approach::class, 'label' => 'Grand axes', 'group' => 'Archives » Socle programmatique'])
-    ;
-    $services
-        ->set('app.admin.approach_sub', App\Admin\ProgrammaticFoundation\SubApproachAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProgrammaticFoundation\SubApproach::class, 'label' => 'Axes secondaires', 'group' => 'Archives » Socle programmatique'])
-    ;
-    $services
-        ->set('app.admin.approach_measure', App\Admin\ProgrammaticFoundation\MeasureAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProgrammaticFoundation\Measure::class, 'label' => 'Mesures', 'group' => 'Archives » Socle programmatique'])
-    ;
-    $services
-        ->set('app.admin.approach_project', App\Admin\ProgrammaticFoundation\ProjectAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProgrammaticFoundation\Project::class, 'label' => 'Projets', 'group' => 'Archives » Socle programmatique'])
-    ;
-    $services
-        ->set('app.admin.programmatic_foundation_tag', App\Admin\ProgrammaticFoundation\TagAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProgrammaticFoundation\Tag::class, 'label' => 'Tags', 'group' => 'Archives » Socle programmatique'])
     ;
     $services
         ->set('app.admin.algolia_indexed_entity_extension', App\Admin\Extension\AlgoliaIndexedEntityAdminExtension::class)

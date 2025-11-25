@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use App\Entity\UserListDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,12 +45,6 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
      */
     #[ORM\Column(nullable: true)]
     private $label;
-
-    /**
-     * @var UserListDefinition|null
-     */
-    #[ORM\ManyToOne(targetEntity: UserListDefinition::class)]
-    private $userListDefinition;
 
     public function getGender(): ?string
     {
@@ -111,15 +104,5 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     public function setLabel(?string $label = null): void
     {
         $this->label = $label;
-    }
-
-    public function getUserListDefinition(): ?UserListDefinition
-    {
-        return $this->userListDefinition;
-    }
-
-    public function setUserListDefinition(?UserListDefinition $userListDefinition): void
-    {
-        $this->userListDefinition = $userListDefinition;
     }
 }

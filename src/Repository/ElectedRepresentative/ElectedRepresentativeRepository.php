@@ -141,12 +141,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $qb
             ->addSelect('mandate', 'zone', 'politicalFunction', 'label')
-            ->addSelect('sponsorship', 'socialNetworkLink', 'userListDefinition')
+            ->addSelect('sponsorship', 'socialNetworkLink')
             ->leftJoin('er.labels', 'label')
             ->leftJoin('er.sponsorships', 'sponsorship')
             ->leftJoin('er.socialNetworkLinks', 'socialNetworkLink')
             ->leftJoin('er.politicalFunctions', 'politicalFunction')
-            ->leftJoin('er.userListDefinitions', 'userListDefinition')
         ;
 
         if ($lastName = $filter->getLastName()) {
@@ -197,13 +196,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 ->andWhere('politicalFunction.onGoing = 1')
                 ->andWhere('politicalFunction.finishAt IS NULL')
                 ->setParameter('politicalFunctions', $politicalFunctions)
-            ;
-        }
-
-        if ($userListDefinitions = $filter->getUserListDefinitions()) {
-            $qb
-                ->andWhere('userListDefinition.id in (:userListDefinitions)')
-                ->setParameter('userListDefinitions', $userListDefinitions)
             ;
         }
 

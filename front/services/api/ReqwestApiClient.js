@@ -61,13 +61,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    getApproaches(callback) {
-        this._createRequest(callback, {
-            url: '/api/programmatic-foundation/approaches',
-            type: 'json',
-        });
-    }
-
     getCandidates(callback) {
         this._createRequest(callback, {
             url: '/api/candidates',
@@ -143,24 +136,6 @@ export default class ReqwestApiClient {
         this._createRequest(callback, {
             url: `/api/committees/${uuid}/candidacies`,
             type: 'json',
-        });
-    }
-
-    saveUserListDefinitionMembers(memberType, type, data, callback) {
-        this._createRequest(callback, {
-            method: 'post',
-            type: 'json',
-            url: `/api/${memberType}/user-list-definitions/members/save`,
-            data,
-        });
-    }
-
-    getUserListDefinitionsForType(memberType, type, data, callback) {
-        this._createRequest(callback, {
-            method: 'post',
-            type: 'json',
-            url: `/api/${memberType}/user-list-definitions/${type}/members`,
-            data,
         });
     }
 
