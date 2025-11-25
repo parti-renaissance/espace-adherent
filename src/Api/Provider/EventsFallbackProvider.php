@@ -41,7 +41,7 @@ class EventsFallbackProvider implements ProviderInterface
             }
         }
 
-        if ($hasLocal) {
+        if ($hasLocal || empty($dptCode)) {
             return $result;
         }
 
@@ -49,7 +49,7 @@ class EventsFallbackProvider implements ProviderInterface
         $region = $zone?->getParentsOfType(Zone::REGION)[0] ?? null;
 
         if (!$region) {
-            return $events;
+            return $result;
         }
 
         $contextFallback = $context;
