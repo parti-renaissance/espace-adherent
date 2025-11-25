@@ -516,11 +516,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::TECH
         );
         yield $this->createRole(
-            'ROLE_ADMIN_TECH_USER_LIST_DEFINITIONS',
-            'Administrateur des labels',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_TECH_OAUTH_CLIENTS',
             'Administrateur des clients OAuth',
             AdministratorRoleGroupEnum::TECH
@@ -571,12 +566,6 @@ class LoadAdministratorRoleData extends Fixture
             'ROLE_ADMIN_ARCHIVES_JE_MARCHE',
             'Administrateur JeMarche',
             AdministratorRoleGroupEnum::ARCHIVES
-        );
-        // Socle programmatique
-        yield $this->createRole(
-            'ROLE_ADMIN_SOCLE_PROGRAMMATIQUE_ALL',
-            'Administrateur du socle programmatique',
-            AdministratorRoleGroupEnum::SOCLE_PROGRAMMATIQUE
         );
         // Communautés thématiques
         yield $this->createRole(

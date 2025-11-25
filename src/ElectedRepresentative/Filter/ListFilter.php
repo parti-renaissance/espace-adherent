@@ -5,7 +5,6 @@ namespace App\ElectedRepresentative\Filter;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
-use App\Entity\UserListDefinition;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,11 +47,6 @@ class ListFilter
      */
     #[Groups(['filter_write'])]
     private $cities = [];
-
-    /**
-     * @var array|null
-     */
-    private $userListDefinitions = [];
 
     /**
      * @var string|null
@@ -161,16 +155,6 @@ class ListFilter
     public function setPoliticalFunctions(?array $politicalFunctions): void
     {
         $this->politicalFunctions = $politicalFunctions;
-    }
-
-    public function getUserListDefinitions(): ?array
-    {
-        return $this->userListDefinitions;
-    }
-
-    public function setUserListDefinitions(?array $userListDefinitions): void
-    {
-        $this->userListDefinitions = $userListDefinitions;
     }
 
     public function getContactType(): ?string
@@ -282,9 +266,6 @@ class ListFilter
             'cities' => array_values($this->cities),
             'labels' => $this->labels,
             'politicalFunctions' => $this->politicalFunctions,
-            'userListDefinitions' => array_map(function (UserListDefinition $label) {
-                return $label->getId();
-            }, $this->userListDefinitions),
             'zones' => array_map(static function (Zone $zone) {
                 return $zone->getId();
             }, $this->zones),

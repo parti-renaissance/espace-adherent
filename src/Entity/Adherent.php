@@ -403,12 +403,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $charters;
 
     /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $electionResultsReporter = false;
-
-    /**
      * @var \DateTime|null
      */
     #[Groups(['certification_request_read'])]
@@ -748,10 +742,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_NATIONAL';
         }
 
-        if ($this->isElectionResultsReporter()) {
-            $roles[] = 'ROLE_ELECTION_RESULTS_REPORTER';
-        }
-
         foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
             $roles[] = 'ROLE_DELEGATED_'.strtoupper($delegatedAccess->getType());
         }
@@ -825,7 +815,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isHost()
             || $this->isDeputy()
             || $this->isDelegatedDeputy()
-            || $this->isElectionResultsReporter()
             || $this->isHeadedRegionalCandidate()
             || $this->isLeaderRegionalCandidate()
             || $this->isDepartmentalCandidate()
@@ -1594,16 +1583,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isEqualTo(UserInterface $user): bool
     {
         return $this->id === $user->getId() && $this->roles === $user->getRoles();
-    }
-
-    public function isElectionResultsReporter(): bool
-    {
-        return $this->electionResultsReporter;
-    }
-
-    public function setElectionResultsReporter(bool $electionResultsReporter): void
-    {
-        $this->electionResultsReporter = $electionResultsReporter;
     }
 
     public function markAsToDelete(): void

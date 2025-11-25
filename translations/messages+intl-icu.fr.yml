@@ -258,12 +258,6 @@ role.national_tech_division: >-
       other {Chef de pôle}
     }
 
-role.election_results_reporter: >-
-    {gender, select,
-      female {Rapporteuse des résultats}
-      other {Rapporteur des résultats}
-    }
-
 role.senatorial_candidate: >-
     {gender, select,
       female {Candidate Sénatoriales 2020}
@@ -988,35 +982,20 @@ retirement_simulator.profession.independant: indépendant
 retirement_simulator.profession.other: autre
 
 #
-# UserListDefinition
-#
-user_list_definition.type.elected_representative.label: Élu
-user_list_definition.type.adherent.label: Adhérent
-
-#
 # ElectedRepresentative
 #
 elected_representative.mandate.larem_support.invested: Investi
 elected_representative.mandate.larem_support.official: Soutien officiel
 elected_representative.mandate.larem_support.informal: Soutien informel
 elected_representative.mandate.larem_support.not_supported: Pas soutenu
-elected_representative.labels: Étiquettes
 elected_representative.mandates: Mandats
-elected_representative.political_functions: Fonctions
 elected_representative.cities: Villes
 elected_representative.zones: Zones
-elected_representative.user_list_definitions: Labels
 elected_representative.filter.labels: Choisissez des étiquettes
 elected_representative.filter.mandates: Choisissez des mandates
 elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
 elected_representative.filter.zones: Choisissez des zones
-elected_representative.filter.user_list_definitions: Choisissez des labels
-elected_representative.filter.contact_type.adherent: Adhérent
-elected_representative.filter.contact_type.contact: Contact
-elected_representative.filter.contact_type.other: Autre
-elected_representative.filter.email_subscription.subscribed: Abonné(e)
-elected_representative.filter.email_subscription.unsubscribed: Non-abonné(e)
 
 elected_representative:
     contribution:
@@ -1063,10 +1042,6 @@ elected_representative:
         vice_president_of_epci: "[F] Vice-président(e) d'EPCI"
         other_member_of_standing_committee: '[F] Autre membre commission permanente'
         other_member: '[F] Autre membre'
-        # UserListDefinition
-        supporting_la_rem: '[L] Majorité Présidentielle'
-        instances_member: '[L] Conseil territorial'
-        in-progress: '[L] En cours'
         # ElectedRepresentativeLabel
         LFI: '[E] LFI'
         PCF: '[E] PCF'
@@ -1517,7 +1492,6 @@ administrator:
             archives_a_garder: Archives (à garder)
             archives_a_depublier: Archives (à dépublier)
             archives: Archives
-            socle_programmatique: Socle programmatique
             communautes_thematiques: Communautés thématiques
             petition: Pétition
             re_site_web: Re site web

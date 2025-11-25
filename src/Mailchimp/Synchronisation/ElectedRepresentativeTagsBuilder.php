@@ -27,15 +27,6 @@ class ElectedRepresentativeTagsBuilder
             $tags[] = $politicalFunction->getName();
         }
 
-        foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
-            $trad = $this->translateKey($userListDefinition->getCode());
-            if ($trad === $userListDefinition->getCode()) {
-                $trad = \sprintf('[L] %s', $userListDefinition->getLabel());
-            }
-
-            $translatedTags[] = $trad;
-        }
-
         foreach ($electedRepresentative->getCurrentLabels() as $label) {
             $tags[] = $label->getName();
         }

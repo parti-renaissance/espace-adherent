@@ -62,7 +62,6 @@ class DelegatedAccessEnum extends Enum
             'coordinator_committees' => 'app_coordinator_committees',
             'senatorial_candidate_elected_representatives' => 'app_senatorial_candidate_elected_representatives_list',
             'jecoute_manager_local_surveys' => 'app_jecoute_manager_local_surveys_list',
-            'election_results_reporter_space_cities' => 'app_election_results_reporter_space_cities_list',
         ][$type] ?? "app_{$type}_managed_users_list";
     }
 }

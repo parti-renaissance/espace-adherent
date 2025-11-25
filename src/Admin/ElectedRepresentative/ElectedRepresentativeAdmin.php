@@ -7,19 +7,15 @@ use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
-use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\UserListDefinition;
-use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\AdherentMandateType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Form\TelNumberType;
 use App\ValueObject\Genders;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -33,7 +29,6 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\CollectionType as SonataCollectionType;
 use Sonata\Form\Type\DatePickerType;
@@ -46,16 +41,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ElectedRepresentativeAdmin extends AbstractAdmin
 {
-    /**
-     * @var UserListDefinition[]|array
-     */
-    private $userListDefinitionsBeforeUpdate;
     private $beforeUpdate;
 
-    public function __construct(
-        private readonly EventDispatcherInterface $dispatcher,
-        private readonly UserListDefinitionHistoryManager $userListDefinitionHistoryManager,
-    ) {
+    public function __construct(private readonly EventDispatcherInterface $dispatcher)
+    {
         parent::__construct();
     }
 
@@ -213,20 +202,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Lieu de naissance',
                 ])
         ;
-
-        if ($this->isGranted('LABELS')) {
-            $form->add('userListDefinitions', null, [
-                'label' => 'Labels',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('uld')
-                        ->andWhere('uld.type IN (:type)')
-                        ->setParameter('type', [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE])
-                        ->orderBy('uld.label', 'ASC')
-                    ;
-                },
-            ]);
-        }
 
         $form
                 ->add('hasFollowedTraining', null, [
@@ -458,29 +433,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     }
                 },
             ])
-            ->add('userListDefinitions', ModelFilter::class, [
-                'label' => 'Labels',
-                'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 0,
-                    'items_per_page' => 20,
-                    'multiple' => true,
-                    'property' => 'label',
-                    'callback' => function ($admin, $property, $value) {
-                        $datagrid = $admin->getDatagrid();
-                        $qb = $datagrid->getQuery();
-                        $alias = $qb->getRootAlias();
-                        $qb
-                            ->andWhere($alias.'.type IN (:type)')
-                            ->setParameter('type', [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE])
-                            ->orderBy($alias.'.label', 'ASC')
-                        ;
-                        $datagrid->setValue($property, null, $value);
-                    },
-                ],
-            ])
             ->add('labelsName', CallbackFilter::class, [
                 'label' => 'Étiquettes',
                 'show_filter' => true,
@@ -560,10 +512,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
      */
     protected function alterObject(object $object): void
     {
-        if (null === $this->userListDefinitionsBeforeUpdate) {
-            $this->userListDefinitionsBeforeUpdate = $object->getUserListDefinitions()->toArray();
-        }
-
         if (null === $this->beforeUpdate) {
             $this->beforeUpdate = clone $object;
         }
@@ -579,8 +527,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         }
 
         parent::preUpdate($object);
-
-        $this->userListDefinitionHistoryManager->handleChanges($object, $this->userListDefinitionsBeforeUpdate);
     }
 
     /**
