@@ -60,7 +60,7 @@ export default class AddressForm {
         this.resetCity();
 
         // Display City name field if the country is not FR or the zip code is unknown
-        if ('FR' !== this._state.country || Array.isArray(this._state.cities) && 0 === this._state.cities.length) {
+        if ('FR' !== this._state.country || (Array.isArray(this._state.cities) && 0 === this._state.cities.length)) {
             show(this._cityName);
             if (null !== this._region) {
                 show(this._region);

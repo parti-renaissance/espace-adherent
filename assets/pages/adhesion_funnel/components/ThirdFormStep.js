@@ -59,7 +59,11 @@ const ThirdForm = (props) => ({
 
     createAccount(data) {
         this.loading = true;
-        return postAccount({...data, referrer: this.pid, referral: this.referral});
+        return postAccount({
+            ...data,
+            referrer: this.pid,
+            referral: this.referral,
+        });
     },
 
     async handleOnSubmit(e) {
@@ -84,14 +88,14 @@ const ThirdForm = (props) => ({
             return value;
         });
 
-        await this.createAccount(this.formData)
-            .then((res) => handlePostAccountResponse.call(this, res, (payload) => {
+        await this.createAccount(this.formData).then((res) =>
+            handlePostAccountResponse.call(this, res, () => {
                 this.stepToFill = 3;
                 this.handleNextStep();
                 this.clearLocalStorage();
-            }));
+            })
+        );
     },
-
 });
 
 export default ThirdForm;

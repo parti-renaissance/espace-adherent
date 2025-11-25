@@ -1,4 +1,4 @@
-import {Editor} from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Images from '../editor-icons';
@@ -49,7 +49,6 @@ const setupTipTap = () => {
             image: () => Images.link,
         },
     ];
-
 
     document.querySelectorAll('.tiptap-editor').forEach((element) => {
         const container = element.parentElement;

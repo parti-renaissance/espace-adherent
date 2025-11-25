@@ -8,14 +8,7 @@ import DataGridFactory from '../services/datagrid/DataGridFactory';
  */
 export default (columns, items) => {
     const dataGridFactory = new DataGridFactory(new SearchEngine());
-    const dataGrid = dataGridFactory.createDataGrid(
-        columns,
-        items,
-        50,
-        null,
-        'managed__list',
-        'name'
-    );
+    const dataGrid = dataGridFactory.createDataGrid(columns, items, 50, null, 'managed__list', 'name');
 
     createRoot(dom('#datagrid')).render(dataGrid);
 };

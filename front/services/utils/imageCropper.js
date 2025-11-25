@@ -56,22 +56,19 @@ function getModalContent(url, options) {
             </div>
 
             <div className="b__nudge--top-15 text--center">
-                <a className={'btn'} onClick={handleCancelAction}>Annuler</a>
-                <a className="btn btn--blue b__nudge--left-small" onClick={ () => handleCropAction(options) }>Valider</a>
+                <a className={'btn'} onClick={handleCancelAction}>
+                    Annuler
+                </a>
+                <a className="btn btn--blue b__nudge--left-small" onClick={() => handleCropAction(options)}>
+                    Valider
+                </a>
             </div>
         </div>
     );
 }
 
 function displayCropperModal(url, options) {
-    createRoot(dom('#modal-wrapper')).render(
-        <Modal
-            ref={modalRef}
-            key={url}
-            contentCallback={() => getModalContent(url, options)}
-            withClose={false}
-        />
-    );
+    createRoot(dom('#modal-wrapper')).render(<Modal ref={modalRef} key={url} contentCallback={() => getModalContent(url, options)} withClose={false} />);
 
     cropper = new Cropper(dom('.image-cropper--container img'), {
         aspectRatio: options.ratio,
@@ -84,7 +81,7 @@ export default (inputFileElement, inputCroppedImageElement, inputsContainer, opt
     croppedImageElement = inputCroppedImageElement;
     container = inputsContainer;
 
-    const {files} = inputFileElement;
+    const { files } = inputFileElement;
 
     if (!files || 1 > files.length) {
         return;

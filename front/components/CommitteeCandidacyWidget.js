@@ -22,15 +22,13 @@ export default class CommitteeCandidacyWidget extends React.Component {
     render() {
         let content;
 
-        this.submitButton.innerText = 'Envoyer l\'invitation';
+        this.submitButton.innerText = "Envoyer l'invitation";
         hide(this.submitButton);
 
         if (this.state.isLoading) {
             content = <Loader wrapperClassName={'text--center space--30-0'} />;
         } else if (this.state.error) {
-            content = <p className={'text--body text--gray text--small text--center'}>
-                {this.state.error}
-            </p>;
+            content = <p className={'text--body text--gray text--small text--center'}>{this.state.error}</p>;
         } else {
             if (0 !== this.state.memberships.length) {
                 show(this.submitButton);
@@ -43,21 +41,21 @@ export default class CommitteeCandidacyWidget extends React.Component {
                             <input
                                 type="radio"
                                 name={'candidacy_binome[invitations][0][membership]'}
-                                required="required" id={`membership_${membership.uuid}`} value={membership.uuid} />
+                                required="required"
+                                id={`membership_${membership.uuid}`}
+                                value={membership.uuid}
+                            />
 
                             <label className="form form__label required" htmlFor={`membership_${membership.uuid}`}>
                                 <div className="l__row identity">
-                                    <div
-                                        className="avatar-initials avatar--small avatar--style-02 b__nudge--right-small"
-                                    >
-                                        {membership.adherent.initials}
-                                    </div>
+                                    <div className="avatar-initials avatar--small avatar--style-02 b__nudge--right-small">{membership.adherent.initials}</div>
                                     <div>
                                         <div className="font-roboto">{membership.adherent.full_name}</div>
                                     </div>
                                 </div>
                             </label>
-                        </div>))}
+                        </div>
+                    ))}
                 </div>
             );
         }
@@ -66,7 +64,9 @@ export default class CommitteeCandidacyWidget extends React.Component {
             <div>
                 <div className="em-form__group">
                     <div className="em-form__field--ctn">
-                        <input type="search" placeholder="Rechercher un membre..."
+                        <input
+                            type="search"
+                            placeholder="Rechercher un membre..."
                             id="member-search"
                             className="em-form__field form form__field"
                             onKeyPress={(event) => 'Enter' === event.key && event.preventDefault()}
@@ -93,7 +93,7 @@ export default class CommitteeCandidacyWidget extends React.Component {
                 if (!Array.isArray(data) || 1 > data.length) {
                     this.setState({
                         isLoading: false,
-                        error: 'Impossible de constituer un binôme, aucun membre n\'est disponible.',
+                        error: "Impossible de constituer un binôme, aucun membre n'est disponible.",
                         memberships: [],
                         success: true,
                     });

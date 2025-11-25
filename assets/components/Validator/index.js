@@ -39,9 +39,9 @@ const validateEmail = (email) => {
             }
             return 'OK' === data
                 ? {
-                    status: 'success',
-                    message: '',
-                }
+                      status: 'success',
+                      message: '',
+                  }
                 : data;
         })
         .catch((error) => {
@@ -59,9 +59,7 @@ const validateEmail = (email) => {
  * @return {(bool: boolean, opt?: (Array<string>)) => ValidateTuple}
  */
 function setSuccessOrError(type) {
-    return (bool, opt) => [
-        type, bool ? 'success' : `error${opt ? (`.${opt.join('.')}`) : ''}`,
-    ];
+    return (bool, opt) => [type, bool ? 'success' : `error${opt ? `.${opt.join('.')}` : ''}`];
 }
 
 /**
@@ -83,8 +81,7 @@ const isTypeConditionPassed = (type, value, cb) => {
         return successOrError(!!value);
     }
     if ('email' === typeLabel) {
-        validateEmail(value)
-            .then(cb);
+        validateEmail(value).then(cb);
         return /** @type {ValidateTuple} */ ['email', 'loading'];
     }
     if ('min' === typeLabel) {
@@ -173,13 +170,14 @@ function getValue(domEl) {
             value = domEl.value;
             break;
         case 'radio':
-        case 'radio-group': {
-            const name = domEl.getAttribute('name');
-            if (!name) throw new Error('Missing name attribute');
-            const allRadios = document.querySelectorAll(`input[name="${name}"]`);
-            const radios = [...allRadios].find((r) => r.checked);
-            value = radios ? radios.value : null;
-        }
+        case 'radio-group':
+            {
+                const name = domEl.getAttribute('name');
+                if (!name) throw new Error('Missing name attribute');
+                const allRadios = document.querySelectorAll(`input[name="${name}"]`);
+                const radios = [...allRadios].find((r) => r.checked);
+                value = radios ? radios.value : null;
+            }
             break;
         case 'hidden':
             return;
@@ -207,10 +205,7 @@ const validateField = (validateTypes, domEl, setState) => {
     const vTypes = useValidationOptional(validateTypes, domEl);
 
     const newState = vTypes.map((t) => isTypeConditionPassed(t, value, setState) ?? []);
-    const path = newState.find(([, s]) => s.startsWith('error'))
-        || newState.find(([, s]) => 'loading' === s)
-        || newState.find(([, s]) => 'valid' === s)
-        || undefined;
+    const path = newState.find(([, s]) => s.startsWith('error')) || newState.find(([, s]) => 'loading' === s) || newState.find(([, s]) => 'valid' === s) || undefined;
     if (!path) {
         setState(successState);
     } else {

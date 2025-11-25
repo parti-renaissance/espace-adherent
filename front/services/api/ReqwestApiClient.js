@@ -143,6 +143,8 @@ export default class ReqwestApiClient {
         this._reqwest({
             url: `/api/committee/${slug}/candidacy/available-memberships?${query ? `query=${query}` : ''}`,
             type: 'json',
-        }).then((response) => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+        })
+            .then((response) => callback(response))
+            .fail((response) => errorCallback(JSON.parse(response.response)));
     }
 }

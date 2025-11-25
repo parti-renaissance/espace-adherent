@@ -1,4 +1,3 @@
-import React from 'react';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
 

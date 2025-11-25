@@ -820,11 +820,7 @@ Feature:
                 "begin_at": "2026-12-01 00:00:00",
                 "finish_at": "2026-12-20 00:00:00",
                 "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-                "vote_places": [
-                    "dcaec65c-0856-4c27-adf5-6d51593601e3",
-                    "8788d1df-9807-45db-a79a-3e1c03df141b",
-                    "e4eaed49-5cd1-4e0a-986a-d981433a50a4"
-                ]
+                "vote_places": ["dcaec65c-0856-4c27-adf5-6d51593601e3", "8788d1df-9807-45db-a79a-3e1c03df141b", "e4eaed49-5cd1-4e0a-986a-d981433a50a4"]
             }
             """
         Then the response status code should be 400

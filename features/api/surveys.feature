@@ -476,9 +476,7 @@ Feature:
                         "survey": ["Il n'existe aucun sondage correspondant à cet ID."],
                         "answers": {
                             "2": {
-                                "surveyQuestion": [
-                                    "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
-                                ]
+                                "surveyQuestion": ["La question 3 est une question à choix unique et ne doit pas contenir de champ texte."]
                             }
                         }
                     },
@@ -535,9 +533,7 @@ Feature:
                         "survey": ["Il n'existe aucun sondage correspondant à cet ID."],
                         "answers": {
                             "2": {
-                                "surveyQuestion": [
-                                    "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
-                                ]
+                                "surveyQuestion": ["La question 3 est une question à choix unique et ne doit pas contenir de champ texte."]
                             }
                         }
                     },

@@ -3,10 +3,7 @@
 /**
  * @returns {AlpineComponent}
  */
-const Form = ({
-    isJam = false,
-    isElu = false,
-}) => ({
+const Form = ({ isJam = false, isElu = false }) => ({
     fieldsValid: {
         birthDay: false,
         birthMonth: false,
@@ -70,10 +67,9 @@ const Form = ({
     },
 
     clearEluCheckboxes() {
-        document.querySelectorAll('#elu-form input:checked')
-            .forEach((x) => {
-                x.checked = false;
-            });
+        document.querySelectorAll('#elu-form input:checked').forEach((x) => {
+            x.checked = false;
+        });
     },
 
     handlePasswordInput(e) {
@@ -81,8 +77,7 @@ const Form = ({
     },
 
     triggerValidateOnAllField() {
-        this.$refs.form.querySelectorAll('input')
-            .forEach((x) => x.dispatchEvent(new Event('change')));
+        this.$refs.form.querySelectorAll('input').forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     handleSubmit(e) {
@@ -95,10 +90,8 @@ const Form = ({
     },
 
     checkValidity() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
-
 });
 
 export default Form;

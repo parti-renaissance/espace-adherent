@@ -22,8 +22,7 @@ const CommonFormStep = () => ({
     },
 
     triggerValidateOnAllField() {
-        document.querySelectorAll(`#${this.id} input`)
-            .forEach((x) => x.dispatchEvent(new Event('change')));
+        document.querySelectorAll(`#${this.id} input`).forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     isNotifResponse(payload) {
@@ -44,15 +43,12 @@ const CommonFormStep = () => ({
     },
 
     handleNextStep() {
-        dom(`#${this.nextStepId}`)
-            .classList
-            .remove('re-step--disabled');
+        dom(`#${this.nextStepId}`).classList.remove('re-step--disabled');
         reScrollTo(this.nextStepId);
     },
 
     checkValidity() {
-        return Object.values(this.fieldsValid)
-            .every((x) => x);
+        return Object.values(this.fieldsValid).every((x) => x);
     },
 
     /**

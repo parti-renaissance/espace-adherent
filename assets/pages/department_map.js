@@ -112,8 +112,7 @@ const DepartmentMap = () => {
         typingTimer = setTimeout(() => {
             // eslint-disable-next-line no-plusplus
             for (let i = 0; i < links.length; i++) {
-                if (links[i].textContent.toLowerCase()
-                    .includes(search.value.toLowerCase())) {
+                if (links[i].textContent.toLowerCase().includes(search.value.toLowerCase())) {
                     links[i].classList.remove('hidden');
                 } else {
                     links[i].classList.add('hidden');

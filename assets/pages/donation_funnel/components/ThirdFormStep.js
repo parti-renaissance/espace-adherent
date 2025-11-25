@@ -15,7 +15,7 @@ const ThirdForm = () => ({
     },
     captchaToken: null,
     loading: false,
-    handleOnSubmit(e) {
+    handleOnSubmit() {
         this.loading = true;
     },
 

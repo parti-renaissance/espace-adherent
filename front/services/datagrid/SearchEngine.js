@@ -49,7 +49,8 @@ export default class SearchEngine {
         results.sort((item1, item2) => {
             if (item1.score > item2.score) {
                 return -1;
-            } if (item1.score < item2.score) {
+            }
+            if (item1.score < item2.score) {
                 return 1;
             }
 

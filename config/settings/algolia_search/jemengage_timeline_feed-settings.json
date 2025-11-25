@@ -50,17 +50,7 @@
     "paginationLimitedTo": 1000,
     "attributeForDistinct": null,
     "exactOnSingleWordQuery": "attribute",
-    "ranking": [
-        "desc(date)",
-        "typo",
-        "geo",
-        "words",
-        "filters",
-        "proximity",
-        "attribute",
-        "exact",
-        "custom"
-    ],
+    "ranking": ["desc(date)", "typo", "geo", "words", "filters", "proximity", "attribute", "exact", "custom"],
     "customRanking": null,
     "separatorsToIndex": "",
     "removeWordsIfNoResults": "none",
@@ -69,13 +59,6 @@
     "highlightPostTag": "<\/em>",
     "snippetEllipsisText": "",
     "alternativesAsExact": ["ignorePlurals", "singleWordSynonym"],
-    "responseFields": [
-        "hits",
-        "hitsPerPage",
-        "params",
-        "page",
-        "nbPages",
-        "nbHits"
-    ],
+    "responseFields": ["hits", "hitsPerPage", "params", "page", "nbPages", "nbHits"],
     "indexLanguages": ["fr"]
 }

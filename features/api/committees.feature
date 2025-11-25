@@ -354,11 +354,7 @@ Feature:
             {
                 "name": "test 1",
                 "description": "my desc",
-                "zones": [
-                    "e3f154b1-906e-11eb-a875-0242ac150002",
-                    "e3f2c5ec-906e-11eb-a875-0242ac150002",
-                    "e3f2cb17-906e-11eb-a875-0242ac150002"
-                ]
+                "zones": ["e3f154b1-906e-11eb-a875-0242ac150002", "e3f2c5ec-906e-11eb-a875-0242ac150002", "e3f2cb17-906e-11eb-a875-0242ac150002"]
             }
             """
         Then the response status code should be 201

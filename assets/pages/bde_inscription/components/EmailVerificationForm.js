@@ -4,10 +4,7 @@
  * @param {{email: string, step: string}} props
  * @returns {AlpineComponent}
  */
-const EmailVerificationForm = ({
-    email,
-    step,
-}) => ({
+const EmailVerificationForm = ({ email, step }) => ({
     fieldsValid: {
         code: false,
         email: false,
@@ -27,9 +24,8 @@ const EmailVerificationForm = ({
     handleCodeInput(e) {
         const { target } = e;
         // replace spaces and non-numeric characters by empty string and slice to 4 characters
-        target.value = target.value.replace(/[^0-9]/g, '')
-            .slice(0, 4);
-        if (4 === target.value.length || 4 < target.value.length) {
+        target.value = target.value.replace(/[^0-9]/g, '').slice(0, 4);
+        if (4 <= target.value.length) {
             target.dispatchEvent(new Event('change'));
         }
     },
@@ -48,14 +44,11 @@ const EmailVerificationForm = ({
     },
 
     triggerValidateOnAllField() {
-        this.$refs.form.querySelectorAll('input')
-            .forEach((x) => x.dispatchEvent(new Event('change')));
+        this.$refs.form.querySelectorAll('input').forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     checkValidity() {
-        return this.isChangeMailMode
-            ? this.fieldsValid.email && this.fieldsValid.confirmEmail
-            : this.fieldsValid.code;
+        return this.isChangeMailMode ? this.fieldsValid.email && this.fieldsValid.confirmEmail : this.fieldsValid.code;
     },
 });
 

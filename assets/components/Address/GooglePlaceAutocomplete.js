@@ -17,7 +17,9 @@ export default class GooglePlaceAutocomplete {
     createAutocomplete() {
         this.configureAutocompleteInput();
 
-        this._autocomplete = new google.maps.places.Autocomplete(this._input, { types: ['address'] });
+        this._autocomplete = new google.maps.places.Autocomplete(this._input, {
+            types: ['address'],
+        });
         this._autocomplete.setFields(['address_components']);
         this._input.value = this._addressForm ? this._addressForm.getAddressString() : '';
     }

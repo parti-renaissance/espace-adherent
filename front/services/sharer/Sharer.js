@@ -13,14 +13,10 @@ export default class Sharer {
 
         const windowLeft = window.screenLeft ? window.screenLeft : window.screenX;
         const windowTop = window.screenTop ? window.screenTop : window.screenY;
-        const left = windowLeft + ((window.innerWidth / 2) - (dialog.getWidth() / 2));
-        const top = windowTop + ((window.innerHeight / 2) - (dialog.getHeight() / 2));
+        const left = windowLeft + (window.innerWidth / 2 - dialog.getWidth() / 2);
+        const top = windowTop + (window.innerHeight / 2 - dialog.getHeight() / 2);
 
-        const popup = window.open(
-            dialog.getUrl(),
-            title,
-            `width=${dialog.getWidth()}, height=${dialog.getHeight()}, top=${top}, left=${left}`
-        );
+        const popup = window.open(dialog.getUrl(), title, `width=${dialog.getWidth()}, height=${dialog.getHeight()}, top=${top}, left=${left}`);
 
         if ('object' === typeof popup && typeof 'undefined' !== typeof popup.opener && null !== popup.opener) {
             popup.opener = null;

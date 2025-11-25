@@ -38,15 +38,15 @@ const Page = (props) => ({
             const stepsEl = Array.from(document.querySelectorAll('.re-step'));
             const parseNumberId = (id) => Number(id.split('_')[1]) - 1;
             if ([1, 2].includes(step)) {
-                stepsEl.filter((el) => parseNumberId(el.id) > step)
+                stepsEl
+                    .filter((el) => parseNumberId(el.id) > step)
                     .forEach((el) => {
                         el.classList.add('re-step--disabled');
                     });
             } else {
-                document.querySelectorAll(`.re-step:not(#step_${step + 1})`)
-                    .forEach((el) => {
-                        el.classList.add('re-step--disabled');
-                    });
+                document.querySelectorAll(`.re-step:not(#step_${step + 1})`).forEach((el) => {
+                    el.classList.add('re-step--disabled');
+                });
             }
         }
     },
@@ -63,9 +63,7 @@ const Page = (props) => ({
         this.$nextTick(() => {
             const firstError = document.querySelector('[data-status="error"]');
             if (firstError) {
-                const stepNumber = Number(firstError.closest('.re-step')
-                    .id
-                    .split('_')[1]) - 1;
+                const stepNumber = Number(firstError.closest('.re-step').id.split('_')[1]) - 1;
                 this.blockStep(stepNumber);
                 firstError.scrollIntoView({
                     behavior: 'smooth',
@@ -117,7 +115,6 @@ const Page = (props) => ({
         const steps = document.querySelectorAll('.re-step');
         steps.forEach((step) => observer.observe(step));
     },
-
 });
 
 export default Page;

@@ -28,9 +28,10 @@ export default () => {
                 amounts={
                     dataset.readhesion
                         ? defaultAmounts
-                        : defaultAmounts.map(
-                            (item) => ({ ...item, label: `${item.label}  <sup class="text-red-500">(2)</sup>` })
-                        )
+                        : defaultAmounts.map((item) => ({
+                              ...item,
+                              label: `${item.label}  <sup class="text-red-500">(2)</sup>`,
+                          }))
                 }
             />
         );

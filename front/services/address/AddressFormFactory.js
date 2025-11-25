@@ -6,14 +6,6 @@ export default class AddressFormFactory {
     }
 
     createAddressForm(country, postalCode, city, cityName, cityNameRequired, region = null) {
-        return new AddressForm(
-            this._api,
-            dom(`#${country}`),
-            dom(`#${postalCode}`),
-            dom(`#${city}`),
-            dom(`#${cityName}`),
-            cityNameRequired,
-            region ? dom(`#${region}`) : null
-        );
+        return new AddressForm(this._api, dom(`#${country}`), dom(`#${postalCode}`), dom(`#${city}`), dom(`#${cityName}`), cityNameRequired, region ? dom(`#${region}`) : null);
     }
 }

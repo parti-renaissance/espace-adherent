@@ -25,9 +25,7 @@ const SecondForm = () => ({
     },
 
     init() {
-        const addressInputs = document.querySelectorAll(
-            'input[id^="membership_request_address_"]:not(#membership_request_address_autocomplete)'
-        );
+        const addressInputs = document.querySelectorAll('input[id^="membership_request_address_"]:not(#membership_request_address_autocomplete)');
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
@@ -58,19 +56,24 @@ const SecondForm = () => ({
                 exclusiveMembership: true,
                 isPhysicalPerson: true,
             };
-            await postAccount(bodyPayload)
-                .then((res) => handlePostAccountResponse.call(this, res, (payload) => {
-                    this.stepToFill = 3;
-                    this.nextStepId = 'step_4';
-                    this.handleNextStep();
-                    this.clearLocalStorage();
-                }, {
-                    error: 'Une erreur est survenue lors de la modification de votre compte',
-                }));
+            await postAccount(bodyPayload).then((res) =>
+                handlePostAccountResponse.call(
+                    this,
+                    res,
+                    () => {
+                        this.stepToFill = 3;
+                        this.nextStepId = 'step_4';
+                        this.handleNextStep();
+                        this.clearLocalStorage();
+                    },
+                    {
+                        error: 'Une erreur est survenue lors de la modification de votre compte',
+                    }
+                )
+            );
         }
         this.handleNextStep();
     },
-
 });
 
 export const isFranceCountry = () => {

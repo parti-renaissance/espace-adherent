@@ -63,7 +63,6 @@ const ReContributionOpt = (props) => ({
 
         return (Math.log(value) - minv) / scale + minp;
     },
-
 });
 
 export default ReContributionOpt;
