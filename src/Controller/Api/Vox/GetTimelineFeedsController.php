@@ -149,12 +149,8 @@ class GetTimelineFeedsController extends AbstractController
                 'circonscription' => ($user->isForeignResident()
                     ? $user->getZonesOfType(Zone::FOREIGN_DISTRICT)
                     : $user->getZonesOfType(Zone::DISTRICT))[0]?->getTypeCode(),
-
                 'assembly' => $user->getAssemblyZone()?->getTypeCode(),
-                'agora' => ($m = $user->agoraMemberships->first())
-                    ? $m->getAgora()->getUuid()->toString()
-                    : null,
-
+                'agora' => ($user->agoraMemberships->first() ?: null)?->agora->getUuid()->toString(),
                 default => null,
             };
 

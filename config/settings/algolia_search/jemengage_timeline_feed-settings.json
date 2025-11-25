@@ -41,6 +41,7 @@
         "filterOnly(adherent_ids)",
         "filterOnly(audience)",
         "filterOnly(committee_uuid)",
+        "filterOnly(agora_uuid)",
         "filterOnly(is_national)",
         "filterOnly(type)",
         "filterOnly(zone_codes)"
