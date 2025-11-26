@@ -362,6 +362,8 @@ role.municipal_candidate: >-
       other {Candidat aux municipales}
     }
 
+role.municipal_pilot: Pilote aux municipales
+
 role.delegated_municipal_candidate: >-
     {gender, select,
       female {Candidate aux municipales déléguée}

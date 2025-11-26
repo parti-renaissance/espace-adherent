@@ -33,7 +33,6 @@ class RemindProcurationMatchedSlotCommandTest extends AbstractCommandTestCase
         self::assertStringContainsString('[OK] Done.', $output);
 
         $this->assertCountMails(1, ProcurationMatchReminderMessage::class);
-        // $this->assertSame(0, $this->countRequestSlotsToRemind($round));
     }
 
     protected function setUp(): void

@@ -1910,11 +1910,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isPresidentDepartmentalAssembly() ? $this->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)->getZones()->toArray() : [];
     }
 
-    public function getMunicipalCandidateZone(): ?Zone
-    {
-        return $this->isMunicipalCandidate() ? $this->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE)?->getZones()->toArray()[0] ?? null : null;
-    }
-
     public function getFacebookPageUrl(): ?string
     {
         return $this->facebookPageUrl;

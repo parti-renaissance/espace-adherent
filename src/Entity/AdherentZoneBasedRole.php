@@ -98,6 +98,11 @@ class AdherentZoneBasedRole
         return static::create(ScopeEnum::PROCURATIONS_MANAGER, $zones);
     }
 
+    public static function createMunicipalPilot(array $zones): self
+    {
+        return static::create(ScopeEnum::MUNICIPAL_PILOT, $zones);
+    }
+
     public static function createFdeCoordinator(array $zones): self
     {
         return static::create(ScopeEnum::FDE_COORDINATOR, $zones);
