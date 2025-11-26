@@ -139,6 +139,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS
         );
         yield $this->createRole(
+            'ROLE_ADMIN_ADHERENT_EXTRACT',
+            'Extraction de données adhérents',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_BAN',
             'Bannissement des adhérents',
             AdministratorRoleGroupEnum::ADHERENTS,

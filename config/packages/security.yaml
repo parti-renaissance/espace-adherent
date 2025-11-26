@@ -264,7 +264,6 @@ security:
             - ROLE_APP_ADMIN_DONATION_ALL
             - ROLE_APP_ADMIN_DONATOR_TAG_ALL
             - ROLE_APP_ADMIN_DONATION_TAG_ALL
-            - ROLE_APP_ADMIN_ADHERENT_EXTRACT
             - ROLE_APP_ADMIN_OHME_CONTACT_ALL
 
         ## Tech
