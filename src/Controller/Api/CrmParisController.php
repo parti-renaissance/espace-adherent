@@ -42,7 +42,7 @@ class CrmParisController extends AbstractController
     ): Response {
         set_time_limit(0);
 
-        $csv = Writer::createFromPath('php://temp', 'r+');
+        $csv = Writer::from('php://temp');
         $csv->setDelimiter(self::CSV_DELIMITER);
         $csv->addFormatter((new CharsetConverter())->outputEncoding(self::CSV_OUTPUT_ENCODING));
 

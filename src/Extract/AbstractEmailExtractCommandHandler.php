@@ -26,7 +26,7 @@ abstract class AbstractEmailExtractCommandHandler
         $emails = $emailExtractCommand->getEmails();
         $fields = $emailExtractCommand->getFields();
 
-        $csv = Writer::createFromPath('php://temp', 'r+');
+        $csv = Writer::from('php://temp');
         $csv->setDelimiter(self::CSV_DELIMITER);
 
         $csv->insertOne(array_map(

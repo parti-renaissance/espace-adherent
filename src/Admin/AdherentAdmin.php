@@ -32,7 +32,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'terminate_membership' => 'TERMINATE_MEMBERSHIP',
             'certify' => 'CERTIFY',
             'uncertify' => 'UNCERTIFY',
-            'extract' => 'EXTRACT',
             'create_renaissance' => 'CREATE_RENAISSANCE',
             'create_renaissance_verify_email' => 'CREATE_RENAISSANCE_VERIFY_EMAIL',
             'refresh_tags' => 'REFRESH_TAGS',

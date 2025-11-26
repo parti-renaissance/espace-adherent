@@ -242,7 +242,7 @@ class AdminAdherentCRUDController extends CRUDController
         Request $request,
         AdherentExtractCommandHandler $adherentExtractCommandHandler,
     ): Response {
-        $this->admin->checkAccess('extract');
+        $this->admin->isGranted('ROLE_ADMIN_ADHERENT_EXTRACT');
 
         $adherentExtractCommand = new AdherentExtractCommand();
 
