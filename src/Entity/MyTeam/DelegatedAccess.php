@@ -3,12 +3,9 @@
 namespace App\Entity\MyTeam;
 
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\MyTeam\DelegatedAccessRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -25,21 +22,13 @@ class DelegatedAccess
 
     public const ATTRIBUTE_KEY = 'delegated_access_uuid';
 
-    public const DEFAULT_ROLES = [
-        'Responsable communication',
-        'Responsable mobilisation',
-        'Responsable phoning',
-    ];
-
     public const ACCESS_MESSAGES = 'messages';
     public const ACCESS_EVENTS = 'events';
     public const ACCESS_ADHERENTS = 'adherents';
-    public const ACCESS_COMMITTEE = 'committee';
     public const ACCESS_POLLS = 'polls';
     public const ACCESS_JECOUTE = 'jecoute';
     public const ACCESS_JECOUTE_REGION = 'jecoute_region';
     public const ACCESS_JECOUTE_NEWS = 'jecoute_news';
-    public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESS_FILES = 'files';
 
     public const ACCESSES = [
@@ -84,19 +73,6 @@ class DelegatedAccess
     private $scopeFeatures;
 
     /**
-     * @var Committee[]|Collection
-     */
-    #[ORM\JoinTable(name: 'my_team_delegate_access_committee')]
-    #[ORM\ManyToMany(targetEntity: Committee::class)]
-    private $restrictedCommittees;
-
-    /**
-     * @var array|null
-     */
-    #[ORM\Column(type: 'simple_array', nullable: true)]
-    private $restrictedCities = [];
-
-    /**
      * @var string
      */
     #[ORM\Column(name: 'type', type: 'string')]
@@ -104,7 +80,6 @@ class DelegatedAccess
 
     public function __construct(?UuidInterface $uuid = null)
     {
-        $this->restrictedCommittees = new ArrayCollection();
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
@@ -157,38 +132,6 @@ class DelegatedAccess
     public function setScopeFeatures(array $scopeFeatures): void
     {
         $this->scopeFeatures = $scopeFeatures;
-    }
-
-    public function getRestrictedCommittees(): Collection
-    {
-        return $this->restrictedCommittees;
-    }
-
-    public function setRestrictedCommittees(iterable $restrictedCommittees): void
-    {
-        $this->restrictedCommittees = $restrictedCommittees;
-    }
-
-    public function addRestrictedCommittee(Committee $restrictedCommittee): void
-    {
-        if (!$this->restrictedCommittees->contains($restrictedCommittee)) {
-            $this->restrictedCommittees->add($restrictedCommittee);
-        }
-    }
-
-    public function removeRestrictedCommittee(Committee $restrictedCommittee)
-    {
-        $this->restrictedCommittees->removeElement($restrictedCommittee);
-    }
-
-    public function getRestrictedCities(): ?array
-    {
-        return $this->restrictedCities;
-    }
-
-    public function setRestrictedCities(?array $restrictedCities): void
-    {
-        $this->restrictedCities = $restrictedCities;
     }
 
     public function getType(): ?string

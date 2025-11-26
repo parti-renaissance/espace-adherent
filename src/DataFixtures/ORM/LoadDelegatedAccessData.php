@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\MyTeam\RoleEnum;
@@ -67,7 +66,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess3->setType(ScopeEnum::DEPUTY);
         $delegatedAccess3->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_EVENTS]);
         $delegatedAccess3->setScopeFeatures([FeatureEnum::MESSAGES, FeatureEnum::EVENTS]);
-        $delegatedAccess3->setRestrictedCities(['59360', '59350', '59044', '59002']);
 
         $manager->persist($delegatedAccess3);
 
@@ -151,8 +149,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             FeatureEnum::RIPOSTES,
             FeatureEnum::SURVEY,
         ]);
-        $delegatedAccess8->setRestrictedCities(['77288', '59002']);
-        $delegatedAccess8->setRestrictedCommittees([$this->getReference('committee-4', Committee::class)]);
         $manager->persist($delegatedAccess8);
 
         // access from senatorial candidate

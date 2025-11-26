@@ -5,14 +5,6 @@
         <section class="b__nudge--bottom-huge">
             {% set back_url = path('homepage') %}
 
-            {% if type is defined %}
-                {% if type == 'supervisor' %}
-                    {% set back_url = path('app_committee_manager_list_members', {slug: committee.slug}) %}
-                {% else %}
-                    {% set back_url = path("app_#{type}_managed_users_list") %}
-                {% endif %}
-            {% endif %}
-
             <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
                 ⟵ Retour
             </a>

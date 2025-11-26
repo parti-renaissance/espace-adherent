@@ -4,22 +4,8 @@
         <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}</span> du candidat <span class="text--black">{{ currentUserOrDelegator }}</span></p>
     {% endif %}
 
-    {% if has_datacorner_access %}
-        <div>
-            <a href="{{ jemengage_host }}" class="link--no--decor">
-                <img src="{{ asset('images/data-corner/sidebar-data-corner.png') }}" style="width: 100%;" alt="data-corner-logo">
-            </a>
-        </div>
-    {% endif %}
-
     <ul>
         <li class="menu-section">Territoires</li>
-
-        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
-            <li class="{{ is_active_route(app.request, ['app_candidate_managed_users_list', 'app_candidate_adherent_invitation']) ? 'active' }}">
-                <a href="{{ path('app_candidate_managed_users_list') }}">Adhérents</a>
-            </li>
-        {% endif %}
 
         {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
             <li class="{{ is_active_route(app.request, 'app_candidate_event_manager_event*') ? 'active' }}">

@@ -79,18 +79,6 @@ trait EntityZoneTrait
         }, $this->zones->toArray());
     }
 
-    public function hasZoneOutsideFrance(): bool
-    {
-        /** @var Zone $zone */
-        foreach ($this->zones as $zone) {
-            if (!$zone->isInFrance()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @return Zone[]
      */

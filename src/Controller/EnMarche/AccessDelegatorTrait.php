@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -19,26 +18,6 @@ trait AccessDelegatorTrait
         }
 
         return $user;
-    }
-
-    protected function getRestrictedCommittees(SessionInterface $session): array
-    {
-        if (null !== $delegatedAccess = $this->getDelegatedAccess($this->getUser(), $session)) {
-            return $delegatedAccess->getRestrictedCommittees()->map(static function (Committee $committee) {
-                return $committee->getUuidAsString();
-            })->toArray();
-        }
-
-        return [];
-    }
-
-    protected function getRestrictedCities(SessionInterface $session): array
-    {
-        if (null !== $delegatedAccess = $this->getDelegatedAccess($this->getUser(), $session)) {
-            return $delegatedAccess->getRestrictedCities();
-        }
-
-        return [];
     }
 
     protected function getDelegatedAccess(Adherent $user, SessionInterface $session): ?DelegatedAccess
