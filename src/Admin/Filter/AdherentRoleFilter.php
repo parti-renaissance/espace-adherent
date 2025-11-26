@@ -29,7 +29,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
             'field_type' => ChoiceType::class,
             'show_filter' => true,
             'field_options' => [
-                'choices' => AdherentRoles::getZoneBasedRoles(),
+                'choices' => AdherentRoles::ALL,
                 'choice_label' => function (string $label): string {
                     return (isset(ScopeEnum::SCOPE_INSTANCES[$label]) ? ScopeEnum::SCOPE_INSTANCES[$label].' : ' : '').$this->translator->trans("role.$label", ['gender' => 'male']);
                 },
