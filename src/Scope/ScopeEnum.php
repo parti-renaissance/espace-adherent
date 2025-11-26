@@ -10,6 +10,7 @@ class ScopeEnum extends Enum
     public const SENATOR = 'senator';
     public const CANDIDATE = 'candidate';
     public const MUNICIPAL_CANDIDATE = 'municipal_candidate';
+    public const MUNICIPAL_PILOT = 'municipal_pilot';
     public const NATIONAL = 'national';
     public const NATIONAL_COMMUNICATION = 'national_communication';
     public const NATIONAL_TERRITORIES_DIVISION = 'national_territories_division';
@@ -38,6 +39,7 @@ class ScopeEnum extends Enum
         self::SENATOR,
         self::CANDIDATE,
         self::MUNICIPAL_CANDIDATE,
+        self::MUNICIPAL_PILOT,
 
         self::NATIONAL,
         self::NATIONAL_COMMUNICATION,
@@ -80,6 +82,7 @@ class ScopeEnum extends Enum
     public const ROLE_NAMES = [
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président',
         self::MUNICIPAL_CANDIDATE => 'Candidat',
+        self::MUNICIPAL_PILOT => 'Pilote',
         self::DEPUTY => 'Délégué',
         self::REGIONAL_DELEGATE => 'Délégué',
         self::ANIMATOR => 'Responsable',
@@ -95,6 +98,7 @@ class ScopeEnum extends Enum
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Assemblée départementale',
         self::DEPUTY => 'Circonscription',
         self::MUNICIPAL_CANDIDATE => 'Municipales',
+        self::MUNICIPAL_PILOT => 'Municipales',
         self::REGIONAL_DELEGATE => 'Région',
         self::ANIMATOR => 'Comité local',
         self::NATIONAL => 'National',

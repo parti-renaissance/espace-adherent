@@ -21,6 +21,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::SENATOR,
         ScopeEnum::CANDIDATE,
         ScopeEnum::MUNICIPAL_CANDIDATE,
+        ScopeEnum::MUNICIPAL_PILOT,
         ScopeEnum::NATIONAL_COMMUNICATION,
         ScopeEnum::NATIONAL_TERRITORIES_DIVISION,
         ScopeEnum::NATIONAL_FORMATION_DIVISION,
@@ -44,6 +45,9 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::MUNICIPAL_CANDIDATE => [
             Zone::CITY,
             Zone::BOROUGH,
+        ],
+        ScopeEnum::MUNICIPAL_PILOT => [
+            Zone::CITY,
         ],
         ScopeEnum::DEPUTY => [
             Zone::DISTRICT,

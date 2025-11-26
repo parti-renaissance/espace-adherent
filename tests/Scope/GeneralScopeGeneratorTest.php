@@ -29,10 +29,10 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         $adherent = $this->adherentRepository->findOneByUuid($adherentUuid);
         $scopes = $this->generalScopeGenerator->generateScopes($adherent);
 
-        $this->assertCount(\count($expectedScopes), $scopes);
         foreach ($scopes as $key => $scope) {
             $this->checkScope($scope, $expectedScopes[$key]);
         }
+        $this->assertCount(\count($expectedScopes), $scopes);
     }
 
     public static function provideAdherent(): iterable
@@ -163,6 +163,14 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'meeting_scanner',
                 'zones' => [],
                 'apps' => ['jemarche'],
+            ],
+            [
+                'code' => 'municipal_pilot',
+                'zones' => [[
+                    'code' => '75056',
+                    'name' => 'Paris',
+                ]],
+                'apps' => ['data_corner'],
             ],
             [
                 'code' => 'president_departmental_assembly',

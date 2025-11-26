@@ -30,6 +30,7 @@ class AdherentRoles
             ScopeEnum::PROCURATIONS_MANAGER,
             ScopeEnum::LEGISLATIVE_CANDIDATE,
             ScopeEnum::MUNICIPAL_CANDIDATE,
+            ScopeEnum::MUNICIPAL_PILOT,
         ],
         self::GROUP_NATIONAL => [
             ScopeEnum::NATIONAL,

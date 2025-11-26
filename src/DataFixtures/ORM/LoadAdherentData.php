@@ -948,6 +948,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->donatedForMembership(new \DateTime());
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createProcurationManager([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createMunicipalPilot([LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createFdeCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')]));
         $this->addReference('president-ad-1', $adherent);
 
