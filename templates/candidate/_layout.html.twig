@@ -1,7 +1,5 @@
 {% extends 'adherent_space/_layout.html.twig' %}
 
-{% block canonical_url url('app_candidate_managed_users_list') %}
-
 {% set currentUserOrDelegator = current_user() %}
 {% set delegated_access = get_delegated_access() %}
 
@@ -22,8 +20,6 @@
     {% endif %}
 {% endblock %}
 
-{% set has_datacorner_access = is_granted('ROLE_CANDIDATE_REGIONAL_HEADED') %}
-
 {% block manager_sidebar %}
     {{ include('candidate/_sidebar.html.twig') }}
 {% endblock %}
@@ -37,10 +33,6 @@
             subtitle: 'candidate.popup.subtitle'|trans,
             fileUrl: 'candidate.popup.file_url'|trans,
         }) }}
-    {% endif %}
-
-    {% if has_datacorner_access %}
-        {{ include('candidate/_data-corner-modal.html.twig') }}
     {% endif %}
 {% endblock %}
 
@@ -63,10 +55,6 @@
             {% if not hasCharterAccepted %}
                 {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
             {% endif %}
-
-            {% if has_datacorner_access and is_active_route(app.request, 'app_candidate_managed_users_list') %}
-                dom('#data-corner-modal--trigger').click();
-            {% endif %}
-        } );
+        });
     </script>
 {% endblock %}

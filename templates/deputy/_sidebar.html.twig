@@ -4,18 +4,10 @@
         <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}<span> du député <span class="text--black">{{ currentUserOrDelegator }}</span></p>
     {% endif %}
 
-    {{ include(('components/_data_corner_button.html.twig')) }}
-
     <ul>
         {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
             <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
                 <a href="{{ path('app_deputy_event_manager_events') }}">Événements</a>
-            </li>
-        {% endif %}
-
-        {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
-            <li class="{{ is_active_route(app.request, ['app_deputy_managed_users_list', 'app_deputy_adherent_invitation']) ? 'active' }}">
-                <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
             </li>
         {% endif %}
 

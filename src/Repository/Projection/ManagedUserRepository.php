@@ -410,38 +410,6 @@ class ManagedUserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function countManagedUsers(array $zones = []): int
-    {
-        if (empty($zones)) {
-            throw new \InvalidArgumentException('Zones could not be empty');
-        }
-
-        $qb = $this
-            ->createQueryBuilder('u')
-            ->select('COUNT(DISTINCT u.id)')
-            ->where('u.status = :status')
-            ->setParameter('status', ManagedUser::STATUS_READY)
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'u',
-            ManagedUser::class,
-            'm2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
-            }
-        );
-
-        return (int) $qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function refreshAdherentMandates(Adherent $adherent): void
     {
         $subQuery = $this->getEntityManager()

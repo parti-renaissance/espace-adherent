@@ -46,7 +46,6 @@ common.all: Tous
 common.jecoute_manager: Accès aux questionnaires
 common.adherent.subscribed: Abonné(e)
 common.adherent.unsubscribed: Non-abonné(e)
-common.adherent.status_email: Statut (e-mail)
 common.adherent.others: Autres
 common.select_date: Choisissez une date
 common.blue: Bleu
