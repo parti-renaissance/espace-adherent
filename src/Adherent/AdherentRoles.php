@@ -16,14 +16,11 @@ class AdherentRoles
         self::GROUP_LOCAL => [
             ScopeEnum::REGIONAL_DELEGATE,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
-            AdherentRoleEnum::DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             ScopeEnum::DEPUTY,
-            AdherentRoleEnum::DELEGATED_DEPUTY,
             ScopeEnum::SENATOR,
-            AdherentRoleEnum::ANIMATOR,
-            AdherentRoleEnum::DELEGATED_ANIMATOR,
-            AdherentRoleEnum::AGORA_PRESIDENT,
-            AdherentRoleEnum::AGORA_GENERAL_SECRETARY,
+            ScopeEnum::ANIMATOR,
+            ScopeEnum::AGORA_PRESIDENT,
+            ScopeEnum::AGORA_GENERAL_SECRETARY,
         ],
         self::GROUP_ELECTIONS => [
             ScopeEnum::CORRESPONDENT,

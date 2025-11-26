@@ -35,7 +35,6 @@ class AudienceSnapshotType extends AbstractType
                 'multiple' => true,
                 'choices' => [
                     AdherentRoleEnum::COMMITTEE_SUPERVISOR => AdherentRoleEnum::COMMITTEE_SUPERVISOR,
-                    AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR => AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR,
                 ],
             ])
         ;

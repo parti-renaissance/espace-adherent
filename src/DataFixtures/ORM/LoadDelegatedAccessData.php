@@ -23,7 +23,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     public const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
     public const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
     public const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
-    public const ACCESS_UUID_9 = '2c0107d4-75d6-4874-ad38-2060112c0049';
     public const ACCESS_UUID_10 = '13208e84-450d-4d44-86e7-fb5f0b7e642c';
     public const ACCESS_UUID_11 = 'ef339f8e-e9d0-4f22-b98f-1a7526246cad';
     public const ACCESS_UUID_12 = '433e368f-fd4e-4a24-9f01-b667f8e3b9f2';
@@ -151,18 +150,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         ]);
         $manager->persist($delegatedAccess8);
 
-        // access from senatorial candidate
-        $delegatedAccess9 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_9));
-        $delegatedAccess9->setDelegated($this->getReference('adherent-5', Adherent::class)); // gisele-berthoux@caramail.com
-        $delegatedAccess9->setDelegator($this->getReference('senatorial-candidate', Adherent::class)); // senatorial-candidate@en-marche-dev.fr
-        $delegatedAccess9->setRole('Candidat Sénateur délégué');
-        $delegatedAccess9->setType('senatorial_candidate');
-        $delegatedAccess9->setAccesses([
-            DelegatedAccess::ACCESS_ADHERENTS,
-            DelegatedAccess::ACCESS_MESSAGES,
-        ]);
-        $manager->persist($delegatedAccess9);
-
         $delegatedAccess10 = new DelegatedAccess(Uuid::uuid4());
         $delegatedAccess10->setDelegated($this->getReference('deputy-75-1', Adherent::class));
         $delegatedAccess10->setDelegator($this->getReference('president-ad-1', Adherent::class));
@@ -214,6 +201,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             $delegatedAccess->setDelegated($member->getAdherent());
             $delegatedAccess->setDelegator($team->getOwner());
             $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()]);
+            $delegatedAccess->roleCode = $member->getRole();
             $delegatedAccess->setType($team->getScope());
             $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
             $manager->persist($delegatedAccess);

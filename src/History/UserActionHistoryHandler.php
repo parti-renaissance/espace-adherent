@@ -169,6 +169,7 @@ class UserActionHistoryHandler
             'scope' => $delegatedAccess->getType(),
             'features' => $delegatedAccess->getScopeFeatures(),
             'role' => $delegatedAccess->getRole(),
+            'role_code' => $delegatedAccess->roleCode,
             'zones' => $zoneBasedRole ? $this->getZoneNames($zoneBasedRole->getZones()->toArray()) : null,
         ];
 

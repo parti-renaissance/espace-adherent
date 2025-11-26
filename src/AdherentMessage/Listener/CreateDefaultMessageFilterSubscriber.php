@@ -44,13 +44,16 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
         }
 
         $filter->setScope($scope->getMainCode());
-        $filter->setZones($zones = $scope->getZones());
-        if ($zones) {
-            $filter->setZone($zones[0]);
-        }
 
-        if ($committeeUuids = $scope->getCommitteeUuids()) {
-            $filter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
+        if (!$scope->isNational()) {
+            $filter->setZones($zones = $scope->getZones());
+            if ($zones) {
+                $filter->setZone($zones[0]);
+            }
+
+            if ($committeeUuids = $scope->getCommitteeUuids()) {
+                $filter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
+            }
         }
 
         $message->setFilter($filter);

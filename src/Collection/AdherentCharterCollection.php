@@ -10,7 +10,6 @@ use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
-use App\Entity\AdherentCharter\SenatorialCandidateCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
@@ -26,13 +25,6 @@ class AdherentCharterCollection extends ArrayCollection
     {
         return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
             return $charter instanceof DeputyCharter;
-        });
-    }
-
-    public function hasSenatorialCandidateCharterAccepted(): bool
-    {
-        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
-            return $charter instanceof SenatorialCandidateCharter;
         });
     }
 
@@ -72,9 +64,6 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return $this->hasDeputyCharterAccepted();
-
-            case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
-                return $this->hasSenatorialCandidateCharterAccepted();
 
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return $this->hasLegislativeCandidateCharterAccepted();

@@ -41,6 +41,7 @@ use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AdherentMessageRepository;
 use App\Scope\Scope;
+use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -523,6 +524,11 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
+    }
+
+    public function isNational(): bool
+    {
+        return ScopeEnum::isNational($this->instanceScope);
     }
 
     public function getUnsubscribedCount(): int

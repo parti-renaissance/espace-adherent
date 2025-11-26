@@ -8,16 +8,16 @@ use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\ScopeRepository;
 use App\Scope\ScopeEnum;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PhoningManagerScopeGenerator extends AbstractScopeGenerator
 {
-    private ZoneRepository $zoneRepository;
-
-    public function __construct(ScopeRepository $scopeRepository, ZoneRepository $zoneRepository)
-    {
-        parent::__construct($scopeRepository);
-
-        $this->zoneRepository = $zoneRepository;
+    public function __construct(
+        ScopeRepository $scopeRepository,
+        TranslatorInterface $translator,
+        private readonly ZoneRepository $zoneRepository,
+    ) {
+        parent::__construct($scopeRepository, $translator);
     }
 
     public function getCode(): string

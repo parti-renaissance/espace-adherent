@@ -8,7 +8,6 @@ class AdherentCharterTypeEnum extends Enum
 {
     public const TYPE_COMMITTEE_HOST = 'committee_host';
     public const TYPE_DEPUTY = 'deputy';
-    public const TYPE_SENATORIAL_CANDIDATE = 'senatorial_candidate';
     public const TYPE_LEGISLATIVE_CANDIDATE = 'legislative_candidate';
     public const TYPE_CANDIDATE = 'candidate';
     public const TYPE_PHONING_CAMPAIGN = 'phoning_campaign';

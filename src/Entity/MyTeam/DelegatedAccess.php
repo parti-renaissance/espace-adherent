@@ -45,6 +45,9 @@ class DelegatedAccess
     #[ORM\Column(type: 'string')]
     private $role;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    public ?string $roleCode = null;
+
     /**
      * @var Adherent
      */

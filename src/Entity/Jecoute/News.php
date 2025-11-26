@@ -300,4 +300,9 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
     }
+
+    public function isNational(): bool
+    {
+        return $this->isNationalVisibility();
+    }
 }

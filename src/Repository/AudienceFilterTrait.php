@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
@@ -32,7 +33,7 @@ trait AudienceFilterTrait
             $perimeterFilterWasApplied = true;
         }
 
-        if (!$perimeterFilterWasApplied) {
+        if (!$perimeterFilterWasApplied && !ScopeEnum::isNational($filter->getScope())) {
             $qb->andWhere('1 = 0'); // No adherents if no perimeter filter was applied
 
             return;

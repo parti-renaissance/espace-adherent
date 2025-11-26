@@ -30,7 +30,7 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
         $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
-            if ($audienceFilter->getZones()->isEmpty() && $scope->getZones()) {
+            if (!$scope->isNational() && $audienceFilter->getZones()->isEmpty() && $scope->getZones()) {
                 $audienceFilter->setZones($scope->getZones());
             }
 

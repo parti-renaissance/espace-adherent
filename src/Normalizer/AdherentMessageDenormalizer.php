@@ -5,7 +5,6 @@ namespace App\Normalizer;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\MemberRepository;
 use App\Repository\MyTeam\MyTeamRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -13,6 +12,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentMessageDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
@@ -22,6 +22,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         private readonly ScopeGeneratorResolver $resolver,
         private readonly MemberRepository $memberRepository,
         private readonly MyTeamRepository $myTeamRepository,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -69,7 +70,13 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
                 && $teamOwner !== $message->getSender()
                 && ($member = $this->memberRepository->findMemberInTeam($team, $message->getSender()))
             ) {
-                $message->senderRole = RoleEnum::LABELS[$member->getRole()] ?? $member->getRole();
+                $key = 'my_team_member.role.'.$member->getRole();
+                $role = $this->translator->trans($key, ['gender' => $member->getAdherent()?->getGender()]);
+                if ($role === $key) {
+                    $role = $member->getRole();
+                }
+
+                $message->senderRole = $role;
             }
         }
 

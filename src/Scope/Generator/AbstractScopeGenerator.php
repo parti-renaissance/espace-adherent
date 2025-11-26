@@ -9,14 +9,22 @@ use App\Repository\ScopeRepository;
 use App\Scope\DelegatedAccess as ScopeDelegatedAccess;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 {
     /** @var DelegatedAccess|null */
     private $delegatedAccess;
 
-    public function __construct(private readonly ScopeRepository $scopeRepository)
+    public function __construct(
+        private readonly ScopeRepository $scopeRepository,
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
+    public function supports(Adherent $adherent): bool
     {
+        return $adherent->hasZoneBasedRole($this->getCode());
     }
 
     final public function generate(Adherent $adherent): Scope
@@ -28,18 +36,20 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             $delegatedAccess = new ScopeDelegatedAccess(
                 $this->delegatedAccess->getDelegator(),
                 $this->delegatedAccess->getType(),
-                $this->delegatedAccess->getRole()
+                $this->translateDelegatedRole($this->delegatedAccess->roleCode, $adherent->getGender(), $this->delegatedAccess->getRole())
             );
         }
 
         $scope = new Scope(
             $this->getScopeCode($scopeEntity),
-            $this->getScopeName($scopeEntity),
+            $this->getScopeName($scopeEntity, $adherent),
+            $this->getScopeRoleName($scopeEntity, $adherent),
             $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
             $this->getFeatures($scopeEntity, $adherent),
             $adherent,
-            $delegatedAccess
+            $delegatedAccess,
+            $this->getScopeMainRoleName($scopeEntity, $adherent),
         );
 
         $this->delegatedAccess = null;
@@ -89,15 +99,49 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             : $scopeEntity->getCode();
     }
 
-    private function getScopeName(ScopeEntity $scopeEntity): string
+    private function getScopeName(ScopeEntity $scopeEntity, Adherent $currentUser): string
     {
-        $name = $scopeEntity->getName();
+        $name = $this->translator->trans($key = 'role.'.$scopeEntity->getCode(), ['gender' => $currentUser->getGender()]);
+
+        if ($name === $key) {
+            $name = $scopeEntity->getName();
+        }
 
         if ($this->delegatedAccess) {
-            $name .= ' délégué';
+            $name .= ' délégué'.($currentUser->isFemale() ? 'e' : '');
         }
 
         return $name;
+    }
+
+    private function getScopeRoleName(ScopeEntity $scopeEntity, Adherent $currentUser): string
+    {
+        if ($this->delegatedAccess) {
+            return $this->translateDelegatedRole($this->delegatedAccess->roleCode, $currentUser, $this->delegatedAccess->getRole());
+        }
+
+        $value = $this->translator->trans($key = 'scope.role.'.$scopeEntity->getCode(), ['gender' => $currentUser->getGender()]);
+
+        if ($value !== $key) {
+            return $value;
+        }
+
+        return $scopeEntity->getName();
+    }
+
+    private function getScopeMainRoleName(ScopeEntity $scopeEntity, Adherent $currentUser): ?string
+    {
+        if (!$this->delegatedAccess) {
+            return null;
+        }
+
+        $value = $this->translator->trans($key = 'scope.role.'.$scopeEntity->getCode(), ['gender' => $this->delegatedAccess->getDelegator()->getGender()]);
+
+        if ($value !== $key) {
+            return $value;
+        }
+
+        return $scopeEntity->getName();
     }
 
     private function getFeatures(ScopeEntity $scopeEntity, Adherent $adherent): array
@@ -122,5 +166,21 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     protected function enrichAttributes(Scope $scope, Adherent $adherent): Scope
     {
         return $scope;
+    }
+
+    private function translateDelegatedRole(?string $roleCode, ?string $gender, string $fallback): string
+    {
+        if (!$roleCode) {
+            return $fallback;
+        }
+
+        $key = 'my_team_member.role.'.$roleCode;
+        $role = $this->translator->trans($key, ['gender' => $gender]);
+
+        if ($role === $key) {
+            $role = $fallback;
+        }
+
+        return $role;
     }
 }

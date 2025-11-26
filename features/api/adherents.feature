@@ -231,11 +231,6 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate Sénatoriales 2020 déléguée",
-                                "tooltip": "Candidat Sénateur délégué"
-                            },
-                            {
-                                "type": "role",
                                 "label": "Présidente d'assemblée départementale déléguée",
                                 "tooltip": "Responsable élus délégué #1"
                             },
@@ -411,11 +406,6 @@ Feature:
                                 "type": "role",
                                 "label": "Candidate déléguée",
                                 "tooltip": "Candidat délégué"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Candidate Sénatoriales 2020 déléguée",
-                                "tooltip": "Candidat Sénateur délégué"
                             },
                             {
                                 "type": "role",
@@ -604,14 +594,6 @@ Feature:
                                     contains('Candidate déléguée')
                                 )",
                                 "tooltip": "Candidat délégué"
-                            },
-                            {
-                                "type": "role",
-                                "label": "@string@.oneOf(
-                                    contains('Candidat Sénatoriales 2020 délégué'),
-                                    contains('Candidate Sénatoriales 2020 déléguée')
-                                )",
-                                "tooltip": "Candidat Sénateur délégué"
                             },
                             {
                                 "type": "role",
@@ -1030,7 +1012,7 @@ Feature:
                         "tags": [
                             {
                                 "type": "role",
-                                "label": "Directeur général adjoint",
+                                "label": "National communication : Directeur général adjoint",
                                 "tooltip": null
                             },
                             {

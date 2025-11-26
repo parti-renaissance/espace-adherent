@@ -15,6 +15,7 @@ Feature:
                 {
                     "code": "deputy",
                     "name": "Délégué de circonscription",
+                    "role_name": "Délégué",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -49,7 +50,8 @@ Feature:
                 },
                 {
                     "code": "national_communication",
-                    "name": "Directeur général adjoint",
+                    "name": "National communication : Directeur général adjoint",
+                    "role_name": "Directeur général adjoint",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -71,6 +73,7 @@ Feature:
                 {
                     "code": "national",
                     "name": "Rôle national",
+                    "role_name": "Rôle national",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -122,6 +125,7 @@ Feature:
                 {
                     "code": "pap_national_manager",
                     "name": "Responsable National PAP",
+                    "role_name": "Responsable National PAP",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -143,6 +147,7 @@ Feature:
                 {
                     "code": "pap",
                     "name": "Porte-à-porteur",
+                    "role_name": "Porte-à-porteur",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -158,6 +163,7 @@ Feature:
                 {
                     "code": "phoning_national_manager",
                     "name": "Responsable phoning",
+                    "role_name": "Responsable phoning",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -179,6 +185,7 @@ Feature:
                 {
                     "code": "phoning",
                     "name": "Appelant",
+                    "role_name": "Appelant",
                     "attributes": {
                         "theme": {
                             "primary": "#3A7DFF",
@@ -204,6 +211,7 @@ Feature:
             {
                 "code": "deputy",
                 "name": "Délégué de circonscription",
+                "role_name": "Délégué",
                 "zones": [
                     {
                         "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -252,6 +260,7 @@ Feature:
             {
                 "code": "national",
                 "name": "Rôle national",
+                "role_name": "Rôle national",
                 "zones": [
                     {
                         "code": "FR",
@@ -331,12 +340,14 @@ Feature:
                     },
                     "code": "agora_president",
                     "features": ["agoras", "contacts", "events"],
-                    "name": "Président d'Agora",
+                    "name": "Présidente d'Agora",
+                    "role_name": "Présidente",
                     "zones": []
                 },
                 {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
                     "name": "Délégué de circonscription délégué",
+                    "role_name": "Responsable mobilisation",
                     "zones": [
                         {
                             "uuid": "e3efac36-906e-11eb-a875-0242ac150002",
@@ -358,6 +369,7 @@ Feature:
                 {
                     "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
                     "name": "Délégué de circonscription délégué",
+                    "role_name": "Responsable mobilisation",
                     "zones": [
                         {
                             "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",
@@ -379,6 +391,7 @@ Feature:
                 {
                     "code": "delegated_01ddb89b-25be-4ccb-a90f-8338c42e7e58",
                     "name": "Candidat délégué",
+                    "role_name": "Candidat délégué",
                     "zones": [
                         {
                             "uuid": "e3efe139-906e-11eb-a875-0242ac150002",
@@ -400,6 +413,7 @@ Feature:
                 {
                     "code": "delegated_1d29b80c-a308-441c-9d7d-a333c366fdb1",
                     "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Responsable élus délégué #1",
                     "zones": [
                         {
                             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
@@ -421,6 +435,7 @@ Feature:
                 {
                     "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
                     "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Responsable communication",
                     "zones": [
                         {
                             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -462,6 +477,7 @@ Feature:
                 {
                     "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
                     "name": "Responsable local délégué",
+                    "role_name": "Responsable logistique",
                     "zones": [
                         {
                             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
@@ -483,6 +499,7 @@ Feature:
                 {
                     "code": "delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c",
                     "name": "Candidat aux législatives délégué",
+                    "role_name": "Responsable communication",
                     "zones": [
                         {
                             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -513,7 +530,8 @@ Feature:
             """
             {
                 "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
-                "name": "Délégué de circonscription délégué",
+                "name": "Déléguée de circonscription déléguée",
+                "role_name": "Responsable mobilisation",
                 "zones": [
                     {
                         "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",
@@ -556,6 +574,7 @@ Feature:
             {
                 "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
                 "name": "Président d'assemblée départementale délégué",
+                "role_name": "Responsable mobilisation",
                 "zones": [
                     {
                         "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -662,6 +681,7 @@ Feature:
             {
                 "code": "animator",
                 "name": "Responsable comité local",
+                "role_name": "Responsable",
                 "zones": [],
                 "apps": ["data_corner"],
                 "features": [

@@ -222,4 +222,9 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
     }
+
+    public function isNational(): bool
+    {
+        return false;
+    }
 }

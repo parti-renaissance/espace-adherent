@@ -51,7 +51,7 @@ class MailchimpCampaignReportRepository extends ServiceEntityRepository
             ->setParameter('last_month', new \DateTime("-$maxHistory days"))
         ;
 
-        if (!\in_array($instanceScope, ScopeEnum::NATIONAL_SCOPES)) {
+        if (!ScopeEnum::isNational($instanceScope)) {
             $qb
                 ->andWhere('message.instanceScope = :instance_scope')
                 ->setParameter('instance_scope', $instanceScope)

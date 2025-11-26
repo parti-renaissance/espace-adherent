@@ -189,4 +189,9 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
     }
+
+    public function isNational(): bool
+    {
+        return false;
+    }
 }

@@ -1642,11 +1642,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @return DelegatedAccess[]|Collection|iterable
+     * @return DelegatedAccess[]
      */
-    public function getReceivedDelegatedAccesses(): iterable
+    public function getReceivedDelegatedAccesses(): array
     {
-        return $this->receivedDelegatedAccesses;
+        return $this->receivedDelegatedAccesses->toArray();
     }
 
     public function getReceivedDelegatedAccessByUuid(?string $delegatedAccessUuid): ?DelegatedAccess
