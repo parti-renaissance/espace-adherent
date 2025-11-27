@@ -4,16 +4,6 @@
         <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}</span> du candidat <span class="text--black">{{ currentUserOrDelegator }}</span></p>
     {% endif %}
 
-    <ul>
-        <li class="menu-section">Territoires</li>
-
-        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
-            <li class="{{ is_active_route(app.request, 'app_candidate_event_manager_event*') ? 'active' }}">
-                <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
-            </li>
-        {% endif %}
-    </ul>
-
     {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') or is_granted('ROLE_JECOUTE_NEWS') %}
         <ul>
             <li class="menu-section">Je Marche</li>
