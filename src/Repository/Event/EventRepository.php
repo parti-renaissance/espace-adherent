@@ -2,7 +2,6 @@
 
 namespace App\Repository\Event;
 
-use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Agora;
@@ -16,7 +15,6 @@ use App\Event\ListFilter;
 use App\Geocoder\Coordinates;
 use App\Repository\GeoZoneTrait;
 use App\Repository\NearbyTrait;
-use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
@@ -30,7 +28,6 @@ use Doctrine\Persistence\ManagerRegistry;
 class EventRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
-    use PaginatorTrait;
     use GeoZoneTrait;
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
@@ -53,39 +50,6 @@ class EventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-
-    /**
-     * @param Zone[] $zones
-     *
-     * @return Event[]|PaginatorInterface
-     */
-    public function findManagedByPaginator(array $zones, int $page = 1, int $limit = 50): PaginatorInterface
-    {
-        $qb = $this->createQueryBuilder('event')
-            ->select('event', 'category', 'organizer')
-            ->leftJoin('event.category', 'category')
-            ->leftJoin('event.author', 'organizer')
-            ->where('event.published = :published')
-            ->orderBy('event.beginAt', 'DESC')
-            ->addOrderBy('event.name', 'ASC')
-            ->setParameter('published', true)
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'event',
-            Event::class,
-            'e2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
-            }
-        );
-
-        return $this->configurePaginator($qb, $page, $limit);
     }
 
     public function findOneActiveBySlug(string $slug): ?Event
@@ -254,34 +218,6 @@ class EventRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->enableResultCache(3600)->getArrayResult();
-    }
-
-    /**
-     * @return Event[]|PaginatorInterface
-     */
-    public function findEventsByOrganizerPaginator(
-        Adherent $organizer,
-        int $page = 1,
-        int $limit = 50,
-        ?string $groupCategorySlug = null,
-    ): PaginatorInterface {
-        $qb = $this
-            ->createQueryBuilder('event')
-            ->andWhere('event.author = :organizer')
-            ->setParameter('organizer', $organizer)
-            ->orderBy('event.createdAt', 'DESC')
-        ;
-
-        if ($groupCategorySlug) {
-            $qb
-                ->innerJoin('event.category', 'category')
-                ->innerJoin('category.eventGroupCategory', 'groupCategory')
-                ->andWhere('groupCategory.slug = :group_category_slug')
-                ->setParameter('group_category_slug', $groupCategorySlug)
-            ;
-        }
-
-        return $this->configurePaginator($qb, $page, $limit);
     }
 
     public function removeOrganizerEvents(Adherent $organizer, string $type = self::TYPE_ALL, $anonymize = false)

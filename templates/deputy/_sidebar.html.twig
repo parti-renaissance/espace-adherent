@@ -4,17 +4,11 @@
         <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}<span> du député <span class="text--black">{{ currentUserOrDelegator }}</span></p>
     {% endif %}
 
-    <ul>
-        {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
-            <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
-                <a href="{{ path('app_deputy_event_manager_events') }}">Événements</a>
-            </li>
-        {% endif %}
-
-        {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE') %}
+    {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE') %}
+        <ul>
             <li class="{{ is_active_route(app.request, 'app_deputy_committees') ? 'active' }}">
                 <a href="{{ path('app_deputy_committees') }}">Comités</a>
             </li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
 </nav>
