@@ -22,7 +22,7 @@ class AdherentForCommitteeMandateReplacementValidator extends ConstraintValidato
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof AdherentForCommitteeMandateReplacement) {
-            throw new UnexpectedTypeException($constraint, CommitteeProvisionalSupervisor::class);
+            throw new UnexpectedTypeException($constraint, AdherentForCommitteeMandateReplacement::class);
         }
 
         if (!$value) {

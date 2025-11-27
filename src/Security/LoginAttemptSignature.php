@@ -41,7 +41,7 @@ class LoginAttemptSignature
     public function getSignature(): string
     {
         if (!$this->signature) {
-            $this->signature = sha1(\GuzzleHttp\json_encode($this->args));
+            $this->signature = sha1(json_encode($this->args, \JSON_THROW_ON_ERROR));
         }
 
         return $this->signature;

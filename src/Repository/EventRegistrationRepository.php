@@ -39,16 +39,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return EventRegistration[]
-     */
-    public function findByEventAndUuid(Event $event, array $uuids): array
-    {
-        self::validUuids($uuids);
-
-        return $this->findBy(['event' => $event, 'uuid' => $uuids]);
-    }
-
     public function findAdherentRegistration(string $eventUuid, string $adherentUuid, ?RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED): ?EventRegistration
     {
         self::validUuid($adherentUuid);

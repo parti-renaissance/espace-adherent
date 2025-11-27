@@ -28,12 +28,6 @@ trait BasicUserFiltersTrait
      * @var bool
      */
     #[ORM\Column(type: 'boolean')]
-    private $includeCommitteeProvisionalSupervisors;
-
-    /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean')]
     private $includeCommitteeHosts;
 
     public function includeAdherentsNoCommittee(): ?bool
@@ -64,16 +58,6 @@ trait BasicUserFiltersTrait
     public function setIncludeCommitteeSupervisors(?bool $value): void
     {
         $this->includeCommitteeSupervisors = $value;
-    }
-
-    public function includeCommitteeProvisionalSupervisors(): ?bool
-    {
-        return $this->includeCommitteeProvisionalSupervisors;
-    }
-
-    public function setIncludeCommitteeProvisionalSupervisors(?bool $value): void
-    {
-        $this->includeCommitteeProvisionalSupervisors = $value;
     }
 
     public function includeCommitteeHosts(): ?bool

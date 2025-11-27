@@ -18,12 +18,6 @@ class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
     {
         self::authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-evry/editer');
-
-        $this->isSuccessful($this->client->getResponse());
-
-        $this->assertCount(0, $crawler->selectLink('Désignations'));
-
         $this->client->request(Request::METHOD_GET, '/espace-animateur/en-marche-comite-de-evry/designations');
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -36,22 +30,6 @@ class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-animateur/en-marche-comite-de-evry/designations');
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
-    }
-
-    public function testSupervisorCanSeeAllDesignationsOfHisCommittee(): void
-    {
-        self::authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/editer');
-
-        $this->isSuccessful($this->client->getResponse());
-
-        $crawler = $this->client->click($crawler->selectLink('Désignations')->link());
-
-        $this->assertStringEndsWith('/espace-animateur/en-marche-paris-8/designations', $crawler->getUri());
-
-        $this->assertStringContainsString('Désignation du binôme d’adhérents siégeant au Conseil territorial', $this->client->getResponse()->getContent());
-        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 
     public function testSupervisorCanSeeSubscribedVotersCommittee(): void

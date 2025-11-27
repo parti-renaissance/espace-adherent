@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Address\PostAddressFactory;
-use App\Committee\CommitteeManagementAuthority;
+use App\Committee\CommitteeManager;
 use App\Committee\DTO\CommitteeCommand;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
@@ -17,7 +17,7 @@ class AdminCommitteeCRUDController extends CRUDController
     public function approveAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority,
+        CommitteeManager $committeeManager,
         PostAddressFactory $addressFactory,
     ): Response {
         $this->admin->checkAccess('approve');
@@ -40,14 +40,8 @@ class AdminCommitteeCRUDController extends CRUDController
                         $committee->setPostAddress($address);
                     }
                     $committee->setNameLocked($command->isNameLocked());
-                    if ($adherentPSF = $command->getProvisionalSupervisorFemale()) {
-                        $committee->updateProvisionalSupervisor($adherentPSF);
-                    }
+                    $committeeManager->approveCommittee($committee);
 
-                    if ($adherentPSM = $command->getProvisionalSupervisorMale()) {
-                        $committee->updateProvisionalSupervisor($adherentPSM);
-                    }
-                    $committeeManagementAuthority->approve($committee);
                     $this->addFlash('sonata_flash_success', \sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
                 } catch (BaseGroupException $exception) {
                     throw $this->createNotFoundException(\sprintf('Committee %u must not be approved in order to be approved.', $committee->getId()), $exception);

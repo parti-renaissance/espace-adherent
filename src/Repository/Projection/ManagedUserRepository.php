@@ -293,10 +293,6 @@ class ManagedUserRepository extends ServiceEntityRepository
             $typeExpression->add('u.isCommitteeSupervisor = 1');
         }
 
-        if (true === $filter->includeCommitteeProvisionalSupervisors) {
-            $typeExpression->add('u.isCommitteeProvisionalSupervisor = 1');
-        }
-
         $qb->andWhere($typeExpression);
 
         // excludes
@@ -306,10 +302,6 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (false === $filter->includeCommitteeSupervisors) {
             $qb->andWhere('u.isCommitteeSupervisor = 0');
-        }
-
-        if (false === $filter->includeCommitteeProvisionalSupervisors) {
-            $qb->andWhere('u.isCommitteeProvisionalSupervisor = 0');
         }
 
         if (null !== $filter->emailSubscription && $filter->subscriptionType) {

@@ -49,16 +49,12 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
-        $this->assertFalse($membership->isPromotableHost());
-        $this->assertTrue($membership->isDemotableHost());
 
         $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
 
         $this->assertFalse($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
         $this->assertTrue($membership->isFollower());
-        $this->assertTrue($membership->isPromotableHost());
-        $this->assertFalse($membership->isDemotableHost());
     }
 
     private function createNewAdherent(): Adherent

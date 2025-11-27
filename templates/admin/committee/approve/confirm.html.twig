@@ -53,23 +53,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="box box-success">
-                <div class="box-header">
-                    <h4 class="box-title">Animation</h4>
-                </div>
-                <div class="table-responsive margin-bottom">
-                    {{ include('admin/committee/approve/_provisional_supervisors.html.twig'
-                        , {female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale}) }}
-                </div>
-                <div class="box-body">
-                    <div class="sonata-ba-collapsed-fields visually-hidden">
-                        {{ form_row(form.provisionalSupervisorFemale, {label: 'Animatrice provisoire', attr: {readonly: true}}) }}
-                        {{ form_row(form.provisionalSupervisorMale, {label: 'Animateur provisoire', attr: {readonly: true}}) }}
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="box-body">

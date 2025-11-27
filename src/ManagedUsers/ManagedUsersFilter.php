@@ -51,8 +51,6 @@ class ManagedUsersFilter
 
     public ?bool $includeCommitteeSupervisors = null;
 
-    public ?bool $includeCommitteeProvisionalSupervisors = null;
-
     public ?bool $includeCommitteeHosts = null;
 
     #[Assert\Choice(callback: [TagEnum::class, 'getAdherentTags'])]

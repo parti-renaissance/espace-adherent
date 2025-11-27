@@ -53,8 +53,6 @@ common.conditions.not_accepted: Vous devez accepter les conditions.
 common.recaptcha.empty_message: Merci de confirmer le captcha avant de continuer.
 common.recaptcha.invalid_message: Le captcha soumis est invalide.
 
-common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
-
 common.date_range.invalid_date: La date de fin ne doit pas dépasser le {{ limit }}.
 common.date_range.invalid_interval: La date de fin doit être incluse entre {{ dateMin }} et {{ dateMax }}.
 
@@ -126,13 +124,6 @@ adherent_profile.subscription_types.invalid_choice: Une ou plusieurs des valeurs
 committee.merge.same_committees: Veuillez spécifier des comités différents.
 committee.merge.not_approved: Le comité "{{ committee_name }}" ({{ committee_id }}) doit être approuvé pour être fusionné.
 committee.unknown_id: Il n'existe aucun comité correspondant à cet ID.
-committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
-committee.address.when_approved: Vous ne pouvez pas changer la ville de votre comité.
-committee.address.not_unique: Un comité actif existe déjà à l'adresse indiquée.
-committee.address.not_in_zone: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.
-committee.provisional_supervisor.empty: Vous devez sélectionner au moins un Animateur provisoire parmi vos adhérents
-committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs
-committee.provisional_supervisor.gender.not_valid: La civilité de l'adhérent ne correspond pas à la civilité demandée.
 
 committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
 
@@ -143,9 +134,6 @@ committee.event.invalid_date_range: La date de fin de l'événement doit être p
 committee.event.invalid_finish_date: La date de fin de votre événement ne peut pas dépasser le {{ limit }}.
 committee.event.invalid_start_date: La date de début doit être dans le futur.
 committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
-
-committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
-committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
 
 #
 # Mandate

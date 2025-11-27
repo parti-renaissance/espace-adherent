@@ -81,10 +81,6 @@
                 </button>
                 <p class="error-label text--error"></p>
             </div>
-        {% elseif is_host %}
-            <div class="committee-follow--anonymous">
-                {{ include('committee/_host_header.html.twig') }}
-            </div>
         {% elseif is_candidate(app.user, committee) %}
             <div class="committee-follow--anonymous">
                 <button role="button" class="btn btn--no-border btn--text-blue btn--no-wrap" disabled="disabled">

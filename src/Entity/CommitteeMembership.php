@@ -270,16 +270,6 @@ class CommitteeMembership implements UuidEntityInterface
         $this->enableVote = null;
     }
 
-    public function isPromotableHost(): bool
-    {
-        return $this->isFollower();
-    }
-
-    public function isDemotableHost(): bool
-    {
-        return $this->isHostMember();
-    }
-
     #[Groups(['export', 'adherent_committees_modal', 'profile_read'])]
     public function getSubscriptionDate(): \DateTimeImmutable
     {

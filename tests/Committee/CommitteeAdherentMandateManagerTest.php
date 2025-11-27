@@ -200,60 +200,6 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertNotNull($mandate->getFinishAt());
     }
 
-    public function testCannotUpdateSupervisorProvisionalMandateIfIncorrectGender()
-    {
-        $this->expectException(CommitteeAdherentMandateException::class);
-
-        $adherent = $this->createNewAdherent(Genders::OTHER);
-        $committee = $this->createCommittee();
-
-        $this->translator
-            ->expects($this->once())
-            ->method('trans')
-            ->with('adherent_mandate.committee.not_valid_gender', $this->anything())
-        ;
-
-        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
-    }
-
-    public function testCannotUpdateSupervisorProvisionalMandateIfMinor()
-    {
-        $this->expectException(CommitteeAdherentMandateException::class);
-
-        $adherent = $this->createNewAdherent(Genders::MALE, (new \DateTime())->modify('-17 years')->format('Y-m-d'));
-        $committee = $this->createCommittee();
-
-        $this->translator
-            ->expects($this->once())
-            ->method('trans')
-            ->with('adherent_mandate.committee.provisional_supervisor.not_valid', $this->anything())
-        ;
-
-        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
-    }
-
-    public function testCannotUpdateSupervisorProvisionalMandateIfHasActiveParliamentaryMandate()
-    {
-        $this->expectException(CommitteeAdherentMandateException::class);
-
-        $adherent = $this->createNewAdherent(Genders::MALE);
-        $committee = $this->createCommittee();
-
-        $this->translator
-            ->expects($this->once())
-            ->method('trans')
-            ->with('adherent_mandate.committee.provisional_supervisor.not_valid', $this->anything())
-        ;
-        $this->electedRepresentativeRepository
-            ->expects($this->once())
-            ->method('hasActiveParliamentaryMandate')
-            ->with($adherent)
-            ->willReturn(true)
-        ;
-
-        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
-    }
-
     public function testCheckAdherentForMandateReplacementFailsIfAdherentHasInappropriateGender(): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);

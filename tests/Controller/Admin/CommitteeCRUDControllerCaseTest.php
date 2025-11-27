@@ -3,7 +3,6 @@
 namespace Tests\App\Controller\Admin;
 
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
-use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +48,6 @@ class CommitteeCRUDControllerCaseTest extends AbstractAdminWebTestCase
         $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
-        $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
     }
 
     protected function setUp(): void
