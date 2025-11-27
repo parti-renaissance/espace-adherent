@@ -43,10 +43,6 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
                 $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
             }
 
-            if (true === $filter->includeCommitteeProvisionalSupervisors()) {
-                $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
-            }
-
             if (true === $filter->includeCommitteeHosts()) {
                 $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
             }
@@ -54,10 +50,6 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
             // exclude interests
             if (false === $filter->includeCommitteeSupervisors()) {
                 $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
-            }
-
-            if (false === $filter->includeCommitteeProvisionalSupervisors()) {
-                $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
             }
 
             if (false === $filter->includeCommitteeHosts()) {

@@ -37,13 +37,5 @@
 {% endblock %}
 
 {% block manager_content %}
-    {% if not hasCharterAccepted %}
-        {{ include('chart_dialog.html.twig', {
-            title: 'committee_host.popup.title'|trans,
-            subtitle: 'committee_host.popup.subtitle'|trans,
-            fileUrl: 'committee_host.popup.file_url'|trans,
-        }) }}
-    {% endif %}
-
     {% block committee_content %}{% endblock %}
 {% endblock %}

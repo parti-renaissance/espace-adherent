@@ -2,8 +2,6 @@
 
 namespace App\Twig;
 
-use App\Committee\CommitteeManager;
-use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -17,37 +15,12 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly CommitteeCandidacyRepository $committeeCandidacyRepository,
-        private readonly CommitteeManager $committeeManager,
-        private readonly CommitteeMembershipManager $committeeMembershipManager,
     ) {
-    }
-
-    public function isPromotableHost(Adherent $adherent, Committee $committee): bool
-    {
-        if (!$this->committeeManager) {
-            return false;
-        }
-
-        return $this->committeeManager->isPromotableHost($adherent, $committee);
-    }
-
-    public function isDemotableHost(Adherent $adherent, Committee $committee): bool
-    {
-        if (!$this->committeeManager) {
-            return false;
-        }
-
-        return $this->committeeManager->isDemotableHost($adherent, $committee);
     }
 
     public function isHost(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissionEnum::HOST, $committee);
-    }
-
-    public function isSupervisor(Committee $committee): bool
-    {
-        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::SUPERVISE, $committee);
     }
 
     public function canFollow(Committee $committee): bool
@@ -58,11 +31,6 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     public function canUnfollow(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissionEnum::UNFOLLOW, $committee);
-    }
-
-    public function canCreate(Committee $committee): bool
-    {
-        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::CREATE, $committee);
     }
 
     public function canSee(Committee $committee): bool

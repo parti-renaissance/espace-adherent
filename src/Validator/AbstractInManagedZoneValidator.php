@@ -18,7 +18,7 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
     }
 
     /**
-     * @param ManagedZone|AddressInManagedZones $constraint
+     * @param ManagedZone $constraint
      */
     protected function validateZones(array $zones, Constraint $constraint, ?array $managedZones = null): void
     {

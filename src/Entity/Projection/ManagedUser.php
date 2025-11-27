@@ -255,12 +255,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private $isCommitteeSupervisor;
 
     /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean')]
-    private $isCommitteeProvisionalSupervisor;
-
-    /**
      * @var string
      */
     #[ORM\Column(type: 'text', nullable: true)]
@@ -379,7 +373,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?array $tags = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
-        int $isCommitteeProvisionalSupervisor = 0,
         int $isCommitteeSupervisor = 0,
         ?array $subscriptionTypes = [],
         array $zones = [],
@@ -424,7 +417,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
-        $this->isCommitteeProvisionalSupervisor = $isCommitteeProvisionalSupervisor;
         $this->subscriptionTypes = $subscriptionTypes;
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
@@ -553,11 +545,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function isCommitteeSupervisor(): bool
     {
         return $this->isCommitteeSupervisor;
-    }
-
-    public function isCommitteeProvisionalSupervisor(): bool
-    {
-        return $this->isCommitteeProvisionalSupervisor;
     }
 
     public function getSubscribedTags(): string

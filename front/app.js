@@ -112,16 +112,6 @@ class App {
             });
     }
 
-    runManageParticipants() {
-        import('pages/manage_participants')
-            .catch((error) => {
-                throw error;
-            })
-            .then((module) => {
-                module.default();
-            });
-    }
-
     runCandidacyModal(triggerSelector) {
         import('pages/committee_candidacies')
             .catch((error) => {

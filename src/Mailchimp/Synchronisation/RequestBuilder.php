@@ -798,7 +798,6 @@ class RequestBuilder implements LoggerAwareInterface
                     $ids,
                     array_filter([
                         Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => $adherent->isSupervisor(false),
-                        Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR => $adherent->isSupervisor(true),
                         Manager::INTEREST_KEY_COMMITTEE_HOST => (bool) ($membership = $adherent->getCommitteeMembership())?->isHostMember(),
                         Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = (bool) $membership?->isFollower(),
                         Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,

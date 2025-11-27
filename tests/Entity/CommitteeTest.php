@@ -29,7 +29,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
-        $this->assertFalse($committee->isWaitingForApproval());
         $this->assertNull($committee->getApprovedAt());
     }
 
@@ -70,32 +69,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertSame('EnMarcheLyon69', $committee->getTwitterNickname());
     }
 
-    public function testPreApproveCommittee()
-    {
-        $committee = $this->createCommittee();
-        $committee->setStatus(Committee::PENDING);
-        $committee->preApproved();
-
-        $this->assertFalse($committee->isApproved());
-        $this->assertFalse($committee->isRefused());
-        $this->assertFalse($committee->isClosed());
-        $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertEquals(null, $committee->getApprovedAt());
-    }
-
-    public function testPreRefuseCommittee()
-    {
-        $committee = $this->createCommittee();
-        $committee->setStatus(Committee::PENDING);
-        $committee->preRefused();
-
-        $this->assertFalse($committee->isApproved());
-        $this->assertFalse($committee->isRefused());
-        $this->assertFalse($committee->isClosed());
-        $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertEquals(null, $committee->getApprovedAt());
-    }
-
     public function testApproveCommittee()
     {
         $committee = $this->createCommittee();
@@ -105,7 +78,6 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
         $this->assertFalse($committee->isClosed());
-        $this->assertFalse($committee->isWaitingForApproval());
     }
 
     public function testCloseCommittee()
@@ -115,7 +87,6 @@ class CommitteeTest extends AbstractKernelTestCase
 
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
-        $this->assertFalse($committee->isWaitingForApproval());
         $this->assertTrue($committee->isClosed());
     }
 

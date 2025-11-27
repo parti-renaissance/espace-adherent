@@ -50,7 +50,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
         $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
 
-        $this->assertNotNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNotNull($adherent->getCommitteeMembership());
         $membershipHistory = $this->getCommitteeMembershipHistoryRepository()->findOneBy(['adherentUuid' => $adherent->getUuid()]);
 
         /* @var CommitteeMembershipHistory $membershipHistory */
@@ -61,7 +61,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
         $this->committeeMembershipManager->unfollowCommittee($adherent->getCommitteeMembership());
 
-        $this->assertNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNull($adherent->getCommitteeMembership());
         $membershipHistory = $this->getCommitteeMembershipHistoryRepository()->findOneBy(['adherentUuid' => $adherent->getUuid(), 'action' => 'leave']);
 
         /* @var CommitteeMembershipHistory $membershipHistory */
@@ -76,22 +76,22 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $committee = $this->getCommitteeRepository()->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID);
 
-        $this->assertNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNull($adherent->getCommitteeMembership());
         $this->assertCount(0, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
 
-        $this->assertNotNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNotNull($adherent->getCommitteeMembership());
         $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $this->committeeMembershipManager->unfollowCommittee($adherent->getCommitteeMembership());
 
-        $this->assertNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNull($adherent->getCommitteeMembership());
         $this->assertCount(2, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
 
-        $this->assertNotNull($this->getCommitteeMembershipRepository()->findMembership($adherent));
+        $this->assertNotNull($adherent->getCommitteeMembership());
         $this->assertCount(3, $this->findCommitteeMembershipHistoryByAdherent($adherent));
     }
 

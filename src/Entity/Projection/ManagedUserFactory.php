@@ -29,7 +29,6 @@ class ManagedUserFactory
             $data['tags'] ?? null,
             $data['is_committee_member'] ?? 0,
             $data['is_committee_host'] ?? 0,
-            $data['is_committee_provisional_supervisor'] ?? 0,
             $data['is_committee_supervisor'] ?? 0,
             $data['subscription_types'] ?? [],
             $data['zones'] ?? [],

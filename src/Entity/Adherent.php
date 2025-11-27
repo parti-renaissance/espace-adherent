@@ -436,12 +436,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $adherentMandates;
 
     /**
-     * @var ProvisionalSupervisor[]
-     */
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: ProvisionalSupervisor::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    private $provisionalSupervisors;
-
-    /**
      * @var Member[]|Collection
      */
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Member::class, fetch: 'EXTRA_LAZY')]
@@ -570,7 +564,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
-        $this->provisionalSupervisors = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
         $this->campusRegistrations = new ArrayCollection();
@@ -2077,20 +2070,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }, $this->getRoles());
 
         return array_values(array_intersect(FilePermissionEnum::toArray(), $roles));
-    }
-
-    public function getProvisionalSupervisors(): Collection
-    {
-        return $this->provisionalSupervisors;
-    }
-
-    public function isProvisionalSupervisor(): bool
-    {
-        return $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $provisionalSupervisor) {
-            $committee = $provisionalSupervisor->getCommittee();
-
-            return $committee->isWaitingForApproval();
-        })->count() > 0;
     }
 
     /** @return CommitteeAdherentMandate[]|Collection */

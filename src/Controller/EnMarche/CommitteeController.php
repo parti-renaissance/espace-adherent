@@ -39,12 +39,6 @@ class CommitteeController extends AbstractController
             return $authenticate;
         }
 
-        if ($committee->isPending()) {
-            return $this->redirectToRoute('app_committee_manager_edit', [
-                'slug' => $committee->getSlug(),
-            ]);
-        }
-
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),

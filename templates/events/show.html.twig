@@ -96,22 +96,11 @@
 
             {{ include('events/_header.html.twig') }}
 
-            <div class="b__nudge--top-10 text--body text--small">
-                {% if is_granted('HOST_EVENT', event) %}
-                    {% if event.getCommittee() and event.active %}
-                        <a class="b__nudge--right-small link--newblue"
-                           href="{{ path('app_committee_event_cancel', {slug: event.slug}) }}">
-                            {{ 'event.cancel'|trans }}
-                        </a>
-                    {% endif %}
-
-                    <a href="{{ path('app_committee_event_members', {slug: event.slug}) }}" class="link--newblue">
-                        {{ 'event.manage_participants'|trans }}
-                    </a>
-                {% elseif is_granted('REPORT') %}
+            {% if is_granted('REPORT') %}
+                <div class="b__nudge--top-10 text--body text--small">
                     <a href="{{ report_path(event, app.request.pathInfo) }}" class="text--body link--newblue pull-right">{{ 'event.report'|trans }}</a>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
 
             <div class="committee__event__schedule text--summary">
                 <ul>

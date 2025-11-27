@@ -5,7 +5,6 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
-use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -14,7 +13,6 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -52,24 +50,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         );
     }
 
-    public function findMembership(Adherent $adherent, ?Committee $committee = null): ?CommitteeMembership
-    {
-        $qb = $this
-            ->createQueryBuilder('cm')
-            ->where('cm.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
-        ;
-
-        if ($committee) {
-            $qb
-                ->andWhere('cm.committee = :committee')
-                ->setParameter('committee', $committee)
-            ;
-        }
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
     /**
      * @return CommitteeMembership[]
      */
@@ -87,19 +67,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public function countMembers(Committee $committee, array $privileges): int
-    {
-        return (int) $this->createQueryBuilder('cm')
-            ->select('COUNT(cm.uuid)')
-            ->where('cm.committee = :committee')
-            ->andWhere('cm.privilege IN (:privileges)')
-            ->setParameter('committee', $committee)
-            ->setParameter('privileges', $privileges)
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
     }
 
@@ -149,135 +116,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    /**
-     * @return CommitteeMembership[]|PaginatorInterface|iterable
-     */
-    public function getCommitteeMembershipsPaginator(
-        Committee $committee,
-        ?ListFilterObject $filter = null,
-        int $page = 1,
-        ?int $limit = 30,
-    ): iterable {
-        $qb = $this
-            ->createCommitteeMembershipsQueryBuilder($committee)
-            ->addSelect('a')
-            ->addSelect('GROUP_CONCAT(st.code) AS HIDDEN st_codes')
-            ->leftJoin('a.subscriptionTypes', 'st')
-            ->groupBy('a.id')
-        ;
-
-        if ($filter) {
-            if ($filter->getAgeMin() || $filter->getAgeMax()) {
-                $now = new \DateTimeImmutable();
-
-                if ($filter->getAgeMin()) {
-                    $qb
-                        ->andWhere('a.birthdate <= :min_birth_date')
-                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMin()))))
-                    ;
-                }
-
-                if ($filter->getAgeMax()) {
-                    $qb
-                        ->andWhere('a.birthdate >= :max_birth_date')
-                        ->setParameter('max_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax()))))
-                    ;
-                }
-            }
-
-            if ($gender = $filter->getGender()) {
-                $qb
-                    ->andWhere('a.gender = :gender')
-                    ->setParameter('gender', $gender)
-                ;
-            }
-
-            if (null !== $filter->isCertified()) {
-                $qb
-                    ->andWhere(\sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
-                ;
-            }
-
-            if (null !== $filter->isSubscribed()) {
-                $subscriptionCondition = 'st_codes LIKE :subscription_code';
-                if (false === $filter->isSubscribed()) {
-                    $subscriptionCondition = 'st_codes IS NULL OR st_codes NOT LIKE :subscription_code';
-                }
-
-                $qb
-                    ->having($subscriptionCondition)
-                    ->setParameter('subscription_code', '%'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL.'%')
-                ;
-            }
-
-            if ($filter->getFirstName()) {
-                $qb
-                    ->andWhere('a.firstName = :first_name')
-                    ->setParameter('first_name', $filter->getFirstName())
-                ;
-            }
-
-            if ($filter->getLastName()) {
-                $qb
-                    ->andWhere('a.lastName = :last_name')
-                    ->setParameter('last_name', $filter->getLastName())
-                ;
-            }
-
-            if ($filter->getRegisteredSince()) {
-                $qb
-                    ->andWhere('a.registeredAt >= :registered_since')
-                    ->setParameter('registered_since', $filter->getRegisteredSince())
-                ;
-            }
-
-            if ($filter->getRegisteredUntil()) {
-                $qb
-                    ->andWhere('a.registeredAt <= :registered_until')
-                    ->setParameter('registered_until', $filter->getRegisteredUntil())
-                ;
-            }
-
-            if ($filter->getJoinedSince()) {
-                $qb
-                    ->andWhere('cm.joinedAt >= :joined_since')
-                    ->setParameter('joined_since', $filter->getJoinedSince())
-                ;
-            }
-
-            if ($filter->getJoinedUntil()) {
-                $qb
-                    ->andWhere('cm.joinedAt <= :joined_until')
-                    ->setParameter('joined_until', $filter->getJoinedUntil())
-                ;
-            }
-
-            if ($filter->getCity()) {
-                $qb
-                    ->andWhere('(a.postAddress.cityName = :city OR a.postAddress.postalCode = :city)')
-                    ->setParameter('city', $filter->getCity())
-                ;
-            }
-
-            if ($filter->getVotersOnly()) {
-                $qb
-                    ->andWhere('cm.enableVote = :enable_vote')
-                    ->setParameter('enable_vote', true)
-                ;
-            }
-
-            if ($filter->getSort()) {
-                $qb->orderBy('cm.'.$filter->getSort(), $filter->getOrder() ?? 'ASC');
-            }
-        }
-
-        if (!$limit) {
-            return $qb->getQuery()->getResult();
-        }
-
-        return $this->configurePaginator($qb, $page, $limit);
     }
 
     /**

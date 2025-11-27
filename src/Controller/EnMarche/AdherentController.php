@@ -3,9 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
-use App\Committee\CommandHandler\CommitteeCreationCommandHandler;
-use App\Committee\CommitteePermissionEnum;
-use App\Committee\DTO\CommitteeCreationCommand;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
@@ -17,7 +14,6 @@ use App\Exception\EventRegistrationException;
 use App\Exception\InvalidUuidException;
 use App\Form\AdherentInterestsFormType;
 use App\Form\ContactMessageType;
-use App\Form\CreateCommitteeCommandType;
 use App\Geocoder\Exception\GeocodingException;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -107,33 +103,6 @@ class AdherentController extends AbstractController
 
         return $this->render('adherent/pin_interests.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * This action enables an adherent to create a committee.
-     */
-    #[Route(path: '/creer-mon-comite', name: 'app_adherent_create_committee', methods: ['GET', 'POST'])]
-    public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
-    {
-        $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
-        $form = $this->createForm(CreateCommitteeCommandType::class, $command, ['validation_groups' => ['Default', 'created_by_adherent']]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->isGranted(CommitteePermissionEnum::CREATE)) {
-                throw $this->createAccessDeniedException();
-            }
-
-            $commandHandler->handle($command);
-            $this->addFlash('info', 'committee.creation.success.adherent');
-
-            return $this->redirectToRoute('app_adherent_profile_activity', ['_fragment' => 'committees']);
-        }
-
-        return $this->render('adherent/create_committee.html.twig', [
-            'form' => $form->createView(),
-            'adherent' => $user,
         ]);
     }
 

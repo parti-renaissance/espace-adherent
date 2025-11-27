@@ -7,17 +7,14 @@ use App\Collection\AdherentCollection;
 use App\Committee\Event\ApproveCommitteeEvent;
 use App\Committee\Event\EditCommitteeEvent;
 use App\Committee\Event\FollowCommitteeEvent;
-use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
-use App\Exception\CommitteeMembershipException;
 use App\Geo\ZoneMatcher;
 use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
-use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -48,24 +45,6 @@ class CommitteeManager
         return null;
     }
 
-    public function isPromotableHost(Adherent $adherent, Committee $committee): bool
-    {
-        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee)) {
-            return false;
-        }
-
-        return $membership->isPromotableHost();
-    }
-
-    public function isDemotableHost(Adherent $adherent, Committee $committee): bool
-    {
-        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee)) {
-            return false;
-        }
-
-        return $membership->isDemotableHost();
-    }
-
     public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
     {
         return $this->getAdherentRepository()->countCommitteeHosts($committee, $withoutSupervisors);
@@ -82,68 +61,16 @@ class CommitteeManager
     }
 
     /**
-     * Promotes an adherent to be a host of a committee.
-     */
-    public function promote(Adherent $adherent, Committee $committee): void
-    {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-
-        if (!$membership->isPromotableHost()) {
-            throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($membership->getUuid());
-        }
-
-        $this->changePrivilegeOnMembership($membership, CommitteeMembership::COMMITTEE_HOST, true);
-    }
-
-    /**
-     * Promotes an adherent to be a host of a committee.
-     */
-    public function demote(Adherent $adherent, Committee $committee): void
-    {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-
-        if (!$membership->isDemotableHost()) {
-            throw CommitteeMembershipException::createNotDemotableFollowerPrivilegeException($membership->getUuid());
-        }
-
-        $this->changePrivilegeOnMembership($membership, CommitteeMembership::COMMITTEE_FOLLOWER, true);
-    }
-
-    /**
      * Approves one committee
      */
     public function approveCommittee(Committee $committee): void
     {
         $committee->approved();
 
-        foreach ($committee->getProvisionalSupervisors() as $provisionalSupervisor) {
-            $adherent = $provisionalSupervisor->getAdherent();
-
-            if ($adherent->getMembershipFor($committee)) {
-                continue;
-            }
-
-            $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::ADMIN);
-        }
-
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
         $this->dispatcher->dispatch(new ApproveCommitteeEvent($committee));
-    }
-
-    /**
-     * Pre-approves one committee.
-     */
-    public function preApproveCommittee(Committee $committee, bool $flush = true): void
-    {
-        $committee->preApproved();
-
-        if ($flush) {
-            $this->entityManager->flush();
-        }
-
-        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
     }
 
     /**
@@ -168,20 +95,6 @@ class CommitteeManager
                 $mandate->setFinishAt(new \DateTime());
             }
         }
-
-        if ($flush) {
-            $this->entityManager->flush();
-        }
-
-        $this->dispatcher->dispatch(new EditCommitteeEvent($committee));
-    }
-
-    /**
-     * Pre-refuses one committee.
-     */
-    public function preRefuseCommittee(Committee $committee, bool $flush = true): void
-    {
-        $committee->preRefused();
 
         if ($flush) {
             $this->entityManager->flush();
@@ -221,11 +134,6 @@ class CommitteeManager
         return $this->entityManager->getRepository(Committee::class);
     }
 
-    private function getMembershipRepository(): CommitteeMembershipRepository
-    {
-        return $this->entityManager->getRepository(CommitteeMembership::class);
-    }
-
     private function getAdherentRepository(): AdherentRepository
     {
         return $this->entityManager->getRepository(Adherent::class);
@@ -244,11 +152,6 @@ class CommitteeManager
         $this->changePrivilegeOnMembership($committeeMembership, $privilege, $flush);
     }
 
-    public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilter $filter): array
-    {
-        return $this->getCommitteeRepository()->findManagedByCoordinator($coordinator, $filter);
-    }
-
     private function changePrivilegeOnMembership(
         CommitteeMembership $membership,
         string $privilege,
@@ -260,12 +163,12 @@ class CommitteeManager
 
         if (CommitteeMembership::COMMITTEE_HOST === $privilege) {
             if ($adherent->isSupervisorOf($membership->getCommittee())) {
-                throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($membership->getUuid());
+                throw new \RuntimeException('A supervisor cannot be promoted to host.');
             }
 
             // We can't have more than 2 hosts per committee
             if ($this->countCommitteeHosts($membership->getCommittee(), true) > 1) {
-                throw CommitteeMembershipException::createNotPromotableHostPrivilegeManyHostsException($membership->getUuid());
+                throw new \RuntimeException('A committee cannot have more than 2 hosts.');
             }
         }
 

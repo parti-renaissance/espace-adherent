@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Committee\CommitteeAdherentMandateManager;
-use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
@@ -15,7 +14,6 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Exception\BaseGroupException;
-use App\Exception\CommitteeMembershipException;
 use App\Form\Admin\CommitteeMandateCommandType;
 use App\Form\ConfirmActionType;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
@@ -95,7 +93,7 @@ class AdminCommitteeController extends AbstractController
     public function refuseAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority,
+        CommitteeManager $committeeManager,
     ): Response {
         $form = $this
             ->createForm(ConfirmActionType::class)
@@ -105,7 +103,7 @@ class AdminCommitteeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
                 try {
-                    $committeeManagementAuthority->refuse($committee);
+                    $committeeManager->refuseCommittee($committee);
                     $this->addFlash('sonata_flash_success', \sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
                 } catch (BaseGroupException $exception) {
                     throw $this->createNotFoundException(\sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
@@ -268,20 +266,15 @@ class AdminCommitteeController extends AbstractController
         Adherent $adherent,
         string $privilege,
     ): Response {
-        if (CommitteeMembership::COMMITTEE_HOST === $privilege
-            && !$this->isGranted('PROMOTE_TO_HOST_IN_COMMITTEE', $committee)) {
-            $this->createAccessDeniedException('Cannot promote an adherent');
+        if (CommitteeMembership::COMMITTEE_HOST === $privilege && !$this->isGranted('PROMOTE_TO_HOST_IN_COMMITTEE', $committee)) {
+            throw $this->createAccessDeniedException('Cannot promote an adherent');
         }
 
         if (!$this->isCsrfTokenValid(\sprintf('committee.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
-        try {
-            $manager->changePrivilege($adherent, $committee, $privilege);
-        } catch (CommitteeMembershipException $e) {
-            $this->addFlash('error', $e->getMessage());
-        }
+        $manager->changePrivilege($adherent, $committee, $privilege);
 
         return $this->redirectToRoute('app_admin_committee_members', [
             'id' => $committee->getId(),

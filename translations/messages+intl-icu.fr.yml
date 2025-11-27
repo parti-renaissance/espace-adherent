@@ -31,11 +31,6 @@ common.ordinal_number_masculine: >-
         other {#ème}
     }
 common.optional: optionnel
-common.committees_count: >-
-    {count, plural,
-        one {1 comité}
-        other {# comités}
-    }
 common.members_count: >-
     {count, plural,
         one {1 membre}
@@ -44,8 +39,6 @@ common.members_count: >-
 common.i.am: Je suis
 common.all: Tous
 common.jecoute_manager: Accès aux questionnaires
-common.adherent.subscribed: Abonné(e)
-common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.others: Autres
 common.select_date: Choisissez une date
 common.blue: Bleu
@@ -541,13 +534,9 @@ dashboard.picture.update: Modifier ma photo
 #
 # Committee
 #
-committee.creation.success.adherent: Votre comité a été créé avec succès. Il ne manque plus que la validation d'un référent.
 committee.creation.success.referent: |
     Votre comité a été créé avec succès.
     Il ne manque plus que la validation d'un coordinateur régional pour qu'il soit pleinement opérationnel.
-
-committee.update.success: Les informations du comité ont été mises à jour avec succès.
-committee.pre-approve.success: Le comité a été pré-approuvé.
 
 committee.members_count: >-
     {count, plural,
@@ -559,19 +548,12 @@ participants_count: >-
         one {# inscrit}
         other {# inscrits}
     }
-event.cancel.success: L'événement a bien été annulé.
 committee.event.show.share.download_ical: Ajouter l'événement à votre agenda Apple
 committee.event.show.share.cal_google: Ajouter l'événement à votre agenda Google
-
-committee.event.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
-committee.event.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
 committee.event.registration.success: Votre inscription à l'événement est confirmée.
 
 committee.contact_members.none: Vous n'avez sélectionné aucun adhérent à contacter.
 committee.contact_members.success: Félicitations, votre message a bien été envoyé aux membres sélectionnés.
-
-committee.promote_host.success: Le membre a été promu animateur du comité avec succès.
-committee.demote_host.success: Le membre a été redéfini simple membre du comité avec succès.
 
 committee.elected_candidate_adherent.female: Désignée
 committee.elected_candidate_adherent.male: Désigné
@@ -581,10 +563,6 @@ committee.pending.count: >-
         one {Vous avez 1 demande de création de comité en attente de traitement.}
         other {Vous avez # demandes de création de comité en attente de traitement.}
     }
-
-committee_host.popup.title: Charte de bonne utilisation des outils numériques
-committee_host.popup.subtitle: à l'usage des animateurs, animateurs provisoires et co-animateurs
-committee_host.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_referents_animateurs.pdf
 
 #
 # Summary
@@ -1274,7 +1252,6 @@ adherent_mandate.committee.provisional_supervisor_female: Animatrice provisoire
 adherent_mandate.committee.provisional_supervisor_male: Animateur provisoire
 adherent_mandate.committee.elected_adherent_female: Adhérente désignée
 adherent_mandate.committee.elected_adherent_male: Adhérent désigné
-adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
 adherent_mandate.committee.adherent.not_valid: L'adhérent ne doit pas être Parlementaire ou mineur.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
 adherent_mandate.committee.not_valid_gender: La civilité "{gender}" de l'adhérent ({email}) n'est pas valide.

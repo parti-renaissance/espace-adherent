@@ -5,7 +5,6 @@ namespace App\Form\Admin;
 use App\Address\Address;
 use App\Committee\DTO\CommitteeCommand;
 use App\Form\AddressType;
-use App\Form\AdherentIdType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -36,12 +35,6 @@ class ApproveCommitteeCommandType extends AbstractType
                 'data' => $builder->getData() ? Address::createFromAddress($builder->getData()->getAddress()) : null,
             ])
             ->add('nameLocked', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('provisionalSupervisorMale', AdherentIdType::class, [
-                'required' => false,
-            ])
-            ->add('provisionalSupervisorFemale', AdherentIdType::class, [
                 'required' => false,
             ])
             ->add('confirm', SubmitType::class)

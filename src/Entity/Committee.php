@@ -13,15 +13,12 @@ use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Collection\ZoneCollection;
-use App\Committee\Exception\CommitteeProvisionalSupervisorException;
-use App\Committee\Exception\CommitteeSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
-use App\Exception\CoordinatorAreaAlreadyTreatedException;
 use App\Geocoder\GeoPointInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Report\ReportType;
@@ -93,14 +90,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public const PENDING = 'PENDING';
     public const REFUSED = 'REFUSED';
     public const CLOSED = 'CLOSED';
-    public const PRE_APPROVED = 'PRE_APPROVED';
-    public const PRE_REFUSED = 'PRE_REFUSED';
-
-    public const WAITING_STATUSES = [
-        self::PENDING,
-        self::PRE_APPROVED,
-        self::PRE_REFUSED,
-    ];
 
     public const BLOCKED_STATUSES = [
         self::CLOSED,
@@ -184,12 +173,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     private $committeeElections;
 
     /**
-     * @var ProvisionalSupervisor[]
-     */
-    #[ORM\OneToMany(mappedBy: 'committee', targetEntity: ProvisionalSupervisor::class, cascade: ['all'], orphanRemoval: true)]
-    private $provisionalSupervisors;
-
-    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -248,7 +231,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         $this->adherentMandates = new ArrayCollection();
         $this->zones = new ZoneCollection();
         $this->committeeElections = new ArrayCollection();
-        $this->provisionalSupervisors = new ArrayCollection();
     }
 
     #[Groups(['committee:read'])]
@@ -295,27 +277,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         return $committee;
     }
 
-    public static function createForAdherent(
-        Adherent $adherent,
-        string $name,
-        string $description,
-        AddressInterface $address,
-        ?PhoneNumber $phone = null,
-        string $createdAt = 'now',
-    ): self {
-        $committee = new self(
-            self::createUuid($name),
-            clone $adherent->getUuid(),
-            $name,
-            $description,
-            $address,
-            $phone
-        );
-        $committee->createdAt = new \DateTime($createdAt);
-
-        return $committee;
-    }
-
     public function getDescription(): string
     {
         return $this->description;
@@ -339,11 +300,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
     public function setNameLocked(bool $nameLocked): void
     {
         $this->nameLocked = $nameLocked;
-    }
-
-    public function isWaitingForApproval(): bool
-    {
-        return \in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
     }
 
     public function isBlocked(): bool
@@ -409,11 +365,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         }
     }
 
-    public function removeAdherentMandate(CommitteeAdherentMandate $adherentMandate): void
-    {
-        $this->adherentMandates->removeElement($adherentMandate);
-    }
-
     public function hasMaleAdherentMandate(): bool
     {
         return $this->hasAdherentMandateWithGender(Genders::MALE);
@@ -451,89 +402,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
         ;
 
         return $this->adherentMandates->matching($criteria);
-    }
-
-    public function getActiveAdherentMandateAdherentIds(): array
-    {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('finishAt', null))
-            ->andWhere(Criteria::expr()->eq('quality', null))
-            ->orderBy(['gender' => 'ASC'])
-        ;
-
-        return $this->adherentMandates
-            ->matching($criteria)
-            ->map(function (CommitteeAdherentMandate $adherentMandate) {
-                return $adherentMandate->getAdherent()->getId();
-            })
-            ->toArray()
-        ;
-    }
-
-    /**
-     * @return ProvisionalSupervisor[]|Collection
-     */
-    public function getProvisionalSupervisors(): Collection
-    {
-        return $this->provisionalSupervisors;
-    }
-
-    public function hasProvisionalSupervisor(Adherent $adherent): bool
-    {
-        $found = $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $ps) use ($adherent) {
-            return $ps->getAdherent() === $adherent;
-        });
-
-        return $found->count() > 0;
-    }
-
-    public function getProvisionalSupervisorByGender(string $gender): ?ProvisionalSupervisor
-    {
-        $found = $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $ps) use ($gender) {
-            return $ps->getAdherent()->getGender() === $gender;
-        });
-
-        $count = $found->count();
-
-        if ($count > 1) {
-            throw new CommitteeProvisionalSupervisorException(\sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
-        }
-
-        return $count > 0 ? $found->first() : null;
-    }
-
-    public function addProvisionalSupervisor(Adherent $adherent): void
-    {
-        if (!$this->hasProvisionalSupervisor($adherent)) {
-            $provisionalSupervisor = new ProvisionalSupervisor($adherent, $this);
-            $this->provisionalSupervisors->add($provisionalSupervisor);
-        }
-    }
-
-    public function removeProvisionalSupervisor(ProvisionalSupervisor $provisionalSupervisor): void
-    {
-        $this->provisionalSupervisors->removeElement($provisionalSupervisor);
-    }
-
-    public function updateProvisionalSupervisor(Adherent $adherent): void
-    {
-        if ($ps = $this->getProvisionalSupervisorByGender($adherent->getGender())) {
-            $this->removeProvisionalSupervisor($ps);
-        }
-
-        $this->addProvisionalSupervisor($adherent);
-    }
-
-    public function getSupervisorMandate(string $gender, bool $isProvisional = false): ?CommitteeAdherentMandate
-    {
-        $mandates = $this->findSupervisorMandates($gender, $isProvisional);
-        $count = $mandates->count();
-
-        if ($count > 1) {
-            throw new CommitteeSupervisorException(\sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
-        }
-
-        return $count > 0 ? $mandates->first() : null;
     }
 
     /**
@@ -781,24 +649,6 @@ class Committee implements StaticSegmentInterface, AddressHolderInterface, Zonea
             && $designation->getElectionCreationDate() < ($now = new \DateTime())
             && $designation->getVoteEndDate() > $now
         );
-    }
-
-    public function preRefused(): void
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CoordinatorAreaAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_REFUSED;
-    }
-
-    public function preApproved(): void
-    {
-        if ($this->isApproved() || $this->isRefused()) {
-            throw new CoordinatorAreaAlreadyTreatedException($this->uuid);
-        }
-
-        $this->status = self::PRE_APPROVED;
     }
 
     public function countElections(): int

@@ -18,14 +18,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
     use MessengerTestTrait;
 
-    public function testBackButtonPresentWhenCommitteeIsAccepted(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-new-york-city/editer');
-
-        $this->assertStringContainsString('Tous mes comités', $this->client->getResponse()->getContent());
-    }
-
     public function testAnonymousUserIsNotAllowedToFollowCommittee()
     {
         $committeeUrl = '/comites/en-marche-dammarie-les-lys';
@@ -104,10 +96,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->seeMessageForContactHosts($crawler);
-        $this->assertSeeDesignedAdherents($crawler, [
-            ['LO', 'Lucie O.', 'Adhérente désignée'],
-            ['JP', 'Jacques P.', 'Adhérent désigné'],
-        ]);
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -121,7 +109,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         // Member
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+        $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -182,10 +170,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
             ['JP', 'Jacques Picard', 'Animateur'],
-        ]);
-        $this->assertSeeDesignedAdherents($crawler, [
-            ['GB', 'Gisele Berthoux', 'Adhérente désignée'],
-            ['CM', 'Carl Mirabeau', 'Adhérent désigné'],
         ]);
 
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
