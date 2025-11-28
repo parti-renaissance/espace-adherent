@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $configurator) {
     $services
         ->set('app.admin.adherent', App\Admin\AdherentAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Adherent::class, 'controller' => App\Controller\Admin\AdminAdherentCRUDController::class, 'label' => 'Militants', 'group' => 'Militants', 'default' => true])
+        ->call('setTemplate', ['list', 'admin/adherent/list.html.twig'])
     ;
     $services
         ->set('app.admin.app_session', App\Admin\AppSessionAdmin::class)

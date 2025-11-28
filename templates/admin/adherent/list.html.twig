@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/list.html.twig' %}
+
+{% block list_header %}
+    <div class="form-inline clearfix" style="padding: 10px;">
+        <div class="pull-right">
+            {{ include(get_admin_template('pager_results', admin.code)) }}
+        </div>
+    </div>
+{% endblock %}

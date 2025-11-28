@@ -46,7 +46,6 @@ security:
 
         ## Adhérents
         ROLE_ADMIN_ADHERENT_ADHERENTS:
-            - ROLE_APP_ADMIN_ADHERENT_EXPORT
             - ROLE_APP_ADMIN_ADHERENT_LIST
             - ROLE_APP_ADMIN_ADHERENT_VIEW
             - ROLE_APP_ADMIN_ADHERENT_EDIT
@@ -264,6 +263,7 @@ security:
             - ROLE_APP_ADMIN_DONATION_ALL
             - ROLE_APP_ADMIN_DONATOR_TAG_ALL
             - ROLE_APP_ADMIN_DONATION_TAG_ALL
+            - ROLE_APP_ADMIN_ADHERENT_EXTRACT
             - ROLE_APP_ADMIN_OHME_CONTACT_ALL
 
         ## Tech
