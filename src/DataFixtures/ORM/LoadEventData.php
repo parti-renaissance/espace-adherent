@@ -5,12 +5,16 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
+use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationFactory;
 use App\Event\EventVisibilityEnum;
+use App\FranceCities\FranceCities;
 use App\Scope\ScopeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoadEventData extends AbstractLoadEventData implements DependentFixtureInterface
 {
@@ -22,6 +26,16 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
     private const EVENT_6_UUID = 'e770cda4-b215-4ea2-85e5-03fc3e4423e3';
     private const EVENT_7_UUID = '06d88cb2-d254-4ba3-9e00-b9d4611d90fc';
     public const EVENT_8_UUID = 'b4938d40-337b-4bdf-83ac-f84dd182eefb';
+
+    public function __construct(
+        string $environment,
+        EventFactory $eventFactory,
+        EventRegistrationFactory $eventRegistrationFactory,
+        FranceCities $franceCities,
+        private readonly TranslatorInterface $translator,
+    ) {
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
+    }
 
     public function loadEvents(ObjectManager $manager): void
     {
@@ -47,7 +61,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event1->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event1->setAuthor($referent);
         $event1->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
-        $event1->setAuthorRole(ScopeEnum::ROLE_NAMES[ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
+        $event1->setAuthorRole($this->translator->trans('scope.role.'.ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ['gender' => $referent->getGender()]));
 
         $event2 = new Event(Uuid::fromString(self::EVENT_2_UUID));
         $event2->setName('Nouvel événement online privé et électoral');
@@ -92,7 +106,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event4->setTimeZone('Europe/Paris');
         $event4->setAuthor($senatorialCandidate);
         $event4->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::LEGISLATIVE_CANDIDATE]);
-        $event4->setAuthorRole(ScopeEnum::ROLE_NAMES[ScopeEnum::LEGISLATIVE_CANDIDATE]);
+        $event4->setAuthorRole($this->translator->trans('scope.role.'.ScopeEnum::LEGISLATIVE_CANDIDATE, ['gender' => $senatorialCandidate->getGender()]));
         $event4->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));

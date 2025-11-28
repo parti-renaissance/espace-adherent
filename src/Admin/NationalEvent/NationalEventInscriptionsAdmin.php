@@ -495,7 +495,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 }, $adherent?->getZoneBasedRoles() ?? [])),
                 'Rôle délégué' => implode(', ', array_map(function (DelegatedAccess $delegatedAccess): string {
                     return $delegatedAccess->getRole();
-                }, $adherent?->getReceivedDelegatedAccesses()->toArray() ?? [])),
+                }, $adherent?->getReceivedDelegatedAccesses() ?? [])),
                 'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate) use ($translator): string {
                     $str = $translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 

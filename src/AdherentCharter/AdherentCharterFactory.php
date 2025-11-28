@@ -9,7 +9,6 @@ use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
-use App\Entity\AdherentCharter\SenatorialCandidateCharter;
 
 abstract class AdherentCharterFactory
 {
@@ -20,8 +19,6 @@ abstract class AdherentCharterFactory
                 return new CommitteeHostCharter();
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return new DeputyCharter();
-            case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
-                return new SenatorialCandidateCharter();
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return new LegislativeCandidateCharter();
             case AdherentCharterTypeEnum::TYPE_CANDIDATE:

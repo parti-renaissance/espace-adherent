@@ -38,7 +38,7 @@ class ZoneAutocompleteRestrictedController extends AbstractZoneAutocompleteContr
                 $scopeCode = $authorizationChecker->getScope($request);
                 $user = $this->getMainUser($request->getSession());
 
-                if (!\in_array($scopeCode, ScopeEnum::NATIONAL_SCOPES, true)) {
+                if (!ScopeEnum::isNational($scopeCode)) {
                     $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scopeCode]);
                 }
             }

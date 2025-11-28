@@ -79,21 +79,6 @@ class ScopeEnum extends Enum
         self::NATIONAL_TECH_DIVISION,
     ];
 
-    public const ROLE_NAMES = [
-        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président',
-        self::MUNICIPAL_CANDIDATE => 'Candidat',
-        self::MUNICIPAL_PILOT => 'Pilote',
-        self::DEPUTY => 'Délégué',
-        self::REGIONAL_DELEGATE => 'Délégué',
-        self::ANIMATOR => 'Responsable',
-        self::NATIONAL => 'Responsable',
-        self::FDE_COORDINATOR => 'Coordinateur',
-        self::REGIONAL_COORDINATOR => 'Coordinateur',
-        self::LEGISLATIVE_CANDIDATE => 'Candidat',
-        self::AGORA_PRESIDENT => 'Président',
-        self::AGORA_GENERAL_SECRETARY => 'Secrétaire Général',
-    ];
-
     public const SCOPE_INSTANCES = [
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Assemblée départementale',
         self::DEPUTY => 'Circonscription',
@@ -114,4 +99,9 @@ class ScopeEnum extends Enum
         self::AGORA_PRESIDENT => 'Agora',
         self::AGORA_GENERAL_SECRETARY => 'Agora',
     ];
+
+    public static function isNational(?string $instanceScope): bool
+    {
+        return \in_array($instanceScope, self::NATIONAL_SCOPES, true);
+    }
 }

@@ -9,4 +9,6 @@ interface NotificationObjectInterface
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool;
 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void;
+
+    public function isNational(): bool;
 }

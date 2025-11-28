@@ -211,4 +211,9 @@ class NationalEvent implements NotificationObjectInterface, EntityAdministratorB
     {
         return $this->transportConfiguration['hebergements'] ?? [];
     }
+
+    public function isNational(): bool
+    {
+        return true;
+    }
 }

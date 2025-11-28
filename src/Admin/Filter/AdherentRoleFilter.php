@@ -31,7 +31,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
             'field_options' => [
                 'choices' => AdherentRoles::ALL,
                 'choice_label' => function (string $label): string {
-                    return (isset(ScopeEnum::SCOPE_INSTANCES[$label]) ? ScopeEnum::SCOPE_INSTANCES[$label].' : ' : '').$this->translator->trans("role.$label", ['gender' => 'male']);
+                    return $this->translator->trans("role.$label", ['gender' => 'male']);
                 },
                 'multiple' => true,
             ],
@@ -46,7 +46,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 $where = new Expr\Orx();
 
                 // Committee animator
-                if (\in_array(AdherentRoleEnum::ANIMATOR, $value, true)) {
+                if (\in_array(ScopeEnum::ANIMATOR, $value, true)) {
                     $qb->leftJoin(\sprintf('%s.animatorCommittees', $alias), 'ac');
                     $where->add('ac IS NOT NULL');
                 }
@@ -82,11 +82,11 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 }
 
                 // Agora roles Role
-                if (\in_array(AdherentRoleEnum::AGORA_PRESIDENT, $value, true)) {
+                if (\in_array(ScopeEnum::AGORA_PRESIDENT, $value, true)) {
                     $qb->innerJoin("$alias.presidentOfAgoras", 'agora_president');
                 }
 
-                if (\in_array(AdherentRoleEnum::AGORA_GENERAL_SECRETARY, $value, true)) {
+                if (\in_array(ScopeEnum::AGORA_GENERAL_SECRETARY, $value, true)) {
                     $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'agora_general_secretary');
                 }
 

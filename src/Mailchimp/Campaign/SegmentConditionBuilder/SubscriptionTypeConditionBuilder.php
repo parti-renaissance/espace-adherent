@@ -29,6 +29,13 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
         $interestKeys = [];
 
         switch ($scope = $campaign->getMessage()?->getInstanceScope()) {
+            case ScopeEnum::NATIONAL_COMMUNICATION:
+            case ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION:
+            case ScopeEnum::NATIONAL_TECH_DIVISION:
+            case ScopeEnum::NATIONAL_FORMATION_DIVISION:
+            case ScopeEnum::NATIONAL_IDEAS_DIVISION:
+            case ScopeEnum::NATIONAL_TERRITORIES_DIVISION:
+                return [];
             case ScopeEnum::REGIONAL_COORDINATOR:
             case ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY:
             case ScopeEnum::FDE_COORDINATOR:

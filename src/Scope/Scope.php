@@ -15,6 +15,11 @@ class Scope
     private string $name;
 
     #[Groups(['scopes', 'scope'])]
+    private string $roleName;
+
+    private ?string $mainRoleName;
+
+    #[Groups(['scopes', 'scope'])]
     private array $zones;
 
     #[Groups(['scopes', 'scope'])]
@@ -34,14 +39,18 @@ class Scope
     public function __construct(
         string $code,
         string $name,
+        string $roleName,
         array $zones,
         array $apps,
         array $features,
         Adherent $adherent,
         ?DelegatedAccess $delegatedAccess = null,
+        ?string $mainRoleName = null,
     ) {
         $this->code = $code;
         $this->name = $name;
+        $this->roleName = $roleName;
+        $this->mainRoleName = $mainRoleName;
         $this->zones = $zones;
         $this->apps = $apps;
         $this->features = $features;
@@ -94,7 +103,7 @@ class Scope
 
     public function isNational(): bool
     {
-        return \in_array($this->getMainCode(), ScopeEnum::NATIONAL_SCOPES, true);
+        return ScopeEnum::isNational($this->getMainCode());
     }
 
     public function getMainUser(): ?Adherent
@@ -149,12 +158,12 @@ class Scope
 
     public function getMainRoleName(): string
     {
-        return ScopeEnum::ROLE_NAMES[$this->getMainCode()] ?? $this->getName();
+        return $this->mainRoleName ?? $this->roleName;
     }
 
     public function getRoleName(): string
     {
-        return $this->delegatedAccess?->getRole() ?? ScopeEnum::ROLE_NAMES[$this->code] ?? $this->getName();
+        return $this->roleName;
     }
 
     public function getScopeInstance(): ?string

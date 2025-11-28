@@ -5,7 +5,6 @@ namespace App\Form\Admin;
 use App\Adherent\AdherentRoles;
 use App\Admin\AdherentZoneBasedRoleAdmin;
 use App\Entity\AdherentZoneBasedRole;
-use App\Scope\ScopeEnum;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -27,7 +26,7 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'label' => 'Rôle national ou local',
                 'choices' => AdherentRoles::getZoneBasedRoles(),
                 'choice_label' => function (string $label): string {
-                    return (isset(ScopeEnum::SCOPE_INSTANCES[$label]) ? ScopeEnum::SCOPE_INSTANCES[$label].' : ' : '').$this->translator->trans("role.$label", ['gender' => 'male']);
+                    return $this->translator->trans("role.$label", ['gender' => 'male']);
                 },
             ])
             ->add('zones', AdminZoneAutocompleteType::class, [

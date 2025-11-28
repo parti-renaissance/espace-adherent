@@ -79,6 +79,11 @@ class TimelineItemPrivateMessage implements IndexableEntityInterface, Notificati
         $this->notificationSentAt = new \DateTimeImmutable();
     }
 
+    public function isNational(): bool
+    {
+        return false;
+    }
+
     public function countAdherents(): int
     {
         return $this->adherents->count();

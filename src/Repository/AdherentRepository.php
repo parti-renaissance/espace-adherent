@@ -1043,13 +1043,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         $where = $qb->expr()->orX();
 
-        if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $roles)) {
+        if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR], $roles)) {
             $qb->leftJoin(\sprintf('%s.adherentMandates', $alias), 'am');
             $condition = '';
 
             if (1 === \count($committeeMandates)) {
                 $condition = ' AND am.provisional = :provisional';
-                $qb->setParameter('provisional', \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $committeeMandates, true));
+                $qb->setParameter('provisional', false);
             }
 
             $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$condition);
@@ -1647,7 +1647,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $managedZoneIds = $filter->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
         $filterZoneId = $filter->getZone()?->getId();
 
-        if (empty($managedZoneIds) && !$filter->getCommittee()) {
+        if (!ScopeEnum::isNational($message->getInstanceScope()) && empty($managedZoneIds) && !$filter->getCommittee()) {
             return 0;
         }
 

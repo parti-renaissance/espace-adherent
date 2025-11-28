@@ -103,7 +103,7 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
             || ($adherent->isRenaissanceSympathizer() && \count($this->eventInscriptionRepository->findAcceptedByEmail($eventInscription->addressEmail, $eventInscription->event)))
             || ($adherent->isRenaissanceAdherent() && (
                 \count($adherent->getZoneBasedRoles())
-                || !$adherent->getReceivedDelegatedAccesses()->isEmpty()
+                || !$adherent->getReceivedDelegatedAccesses()
                 || \count($adherent->findElectedRepresentativeMandates(true))
             ))
         ) {

@@ -104,7 +104,6 @@ adherent.activity_position.intermediate_profession: Profession intermédiaire
 adherent.activity_position.executive: Cadre
 
 referent: référent
-coreferent: co-référent
 delegated_referent: référent délégué
 deputy: délégué de circonscription
 delegated_deputy: délégué de circonscription délégué
@@ -112,12 +111,10 @@ senator: sénateur
 delegated_senator: sénateur délégué
 committee_supervisor: animateur
 animator: Responsable comité local
-committee_provisional_supervisor: animateur provisoire
 supervisor: animateur
 committee_host: co-animateur
 host: co-animateur
 coordinator: coordinateur
-assessor_manager: responsable assesseur
 jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
@@ -128,23 +125,6 @@ role.group.local: Local
 role.group.elections: Élections
 role.group.national: National
 role.group.other: Autres
-role.referent: >-
-    {gender, select,
-      female {Référente}
-      other {Référent}
-    }
-
-role.coreferent: >-
-    {gender, select,
-      female {Co-Référente}
-      other {Co-Référent}
-    }
-
-role.delegated_referent: >-
-    {gender, select,
-      female {Référente déléguée}
-      other {Référent délégué}
-    }
 
 role.deputy: >-
     {gender, select,
@@ -152,22 +132,10 @@ role.deputy: >-
       other {Délégué de circonscription}
     }
 
-role.delegated_deputy: >-
-    {gender, select,
-      female {Déléguée de circonscription déléguée}
-      other {Délégué de circonscription délégué}
-    }
-
 role.senator: >-
     {gender, select,
       female {Sénatrice}
       other {Sénateur}
-    }
-
-role.delegated_senator: >-
-    {gender, select,
-      female {Sénatrice déléguée}
-      other {Sénateur délégué}
     }
 
 role.committee_supervisor: >-
@@ -178,26 +146,6 @@ role.committee_supervisor: >-
 
 role.animator: Responsable comité local
 
-role.delegated_animator: >-
-    {gender, select,
-        female {Responsable comité local déléguéé}
-        other {Responsable comité local délégué}
-    }
-
-role.committee_provisional_supervisor: >-
-    {gender, select,
-      female {Animatrice provisoire}
-      other {Animateur provisoire}
-    }
-
-role.committee_host: >-
-    {gender, select,
-      female {Co-Animatrice}
-      other {Co-Animateur}
-    }
-
-role.assessor_manager: Responsable assesseurs
-
 role.assessor: >-
     {gender, select,
       female {Assesseure}
@@ -206,54 +154,42 @@ role.assessor: >-
 
 role.jecoute_manager: Responsable des questionnaires
 
-role.user: >-
-    {gender, select,
-      female {Utilisatrice}
-      other {Utilisateur}
-    }
-
 role.national: Rôle national
 
 role.national_communication: >-
     {gender, select,
-      female {Directrice générale adjointe}
-      other {Directeur général adjoint}
+      female {National communication : Directrice générale adjointe}
+      other {National communication : Directeur général adjoint}
     }
 
 role.national_ideas_division: >-
     {gender, select,
-      female {Directrice générale adjointe}
-      other {Directeur général adjoint}
+      female {Pôle Idées : Directrice générale adjointe}
+      other {Pôle Idées : Directeur général adjoint}
     }
 
 role.national_territories_division: >-
     {gender, select,
-      female {Cheffe de pôle}
-      other {Chef de pôle}
+      female {Pôle Territoires : Cheffe de pôle}
+      other {Pôle Territoires : Chef de pôle}
     }
 
 role.national_elected_representatives_division: >-
     {gender, select,
-      female {Cheffe de pôle}
-      other {Chef de pôle}
+      female {Pôle Élus : Cheffe de pôle}
+      other {Pôle Élus : Chef de pôle}
     }
 
 role.national_formation_division: >-
     {gender, select,
-      female {Cheffe de pôle}
-      other {Chef de pôle}
+      female {Pôle Formations : Cheffe de pôle}
+      other {Pôle Formations : Chef de pôle}
     }
 
 role.national_tech_division: >-
     {gender, select,
-      female {Cheffe de pôle}
-      other {Chef de pôle}
-    }
-
-role.senatorial_candidate: >-
-    {gender, select,
-      female {Candidate Sénatoriales 2020}
-      other {Candidat Sénatoriales 2020}
+      female {Pôle Tech : Cheffe de pôle}
+      other {Pôle Tech : Chef de pôle}
     }
 
 role.candidate_regional_headed: Tête de liste aux régionales
@@ -270,29 +206,7 @@ role.candidate_departmental: >-
       other {Candidat aux départementales}
     }
 
-role.delegated_candidate_regional_headed: >-
-    {gender, select,
-      female {Tête de liste aux régionales déléguée}
-      other {Tête de liste aux régionales délégué}
-    }
-
-role.delegated_candidate_regional_leader: >-
-    {gender, select,
-      female {Cheffe de file aux régionales déléguée}
-      other {Chef de file aux régionales délégué}
-    }
-
-role.delegated_candidate_departmental: >-
-    {gender, select,
-      female {Candidate aux départementales}
-      other {Candidat aux départementales}
-    }
-
-role.phoning_national_manager: >-
-    {gender, select,
-      female {Responsable phoning}
-      other {Responsable phoning}
-    }
+role.phoning_national_manager: Responsable phoning
 
 role.pap_national_manager: >-
     {gender, select,
@@ -342,12 +256,6 @@ role.president_departmental_assembly: >-
       other {Président d'assemblée départementale}
     }
 
-role.delegated_president_departmental_assembly: >-
-    {gender, select,
-      female {Présidente d'assemblée départementale déléguée}
-      other {Président d'assemblée départementale délégué}
-    }
-
 role.municipal_candidate: >-
     {gender, select,
       female {Candidate aux municipales}
@@ -355,13 +263,6 @@ role.municipal_candidate: >-
     }
 
 role.municipal_pilot: Pilote aux municipales
-
-role.delegated_municipal_candidate: >-
-    {gender, select,
-      female {Candidate aux municipales déléguée}
-      other {Candidat aux municipales délégué}
-    }
-
 role.procurations_manager: Responsable procurations
 
 role.fde_coordinator: >-
@@ -395,12 +296,6 @@ role.agora_general_secretary: >-
       female {Secrétaire Générale d'Agora}
       other {Secrétaire Général d'Agora}
     }
-
-role_or_mandat.adherent: Adhérent
-role_or_mandat.supervisor: Animateur local
-role_or_mandat.provisional_supervisor: Animateur local provisoire
-role_or_mandat.referent: Référent
-role_or_mandat.contact: Contact
 
 role.membership.agir: >-
     {gender, select,
@@ -519,7 +414,6 @@ dashboard.shortcut.leaflets_posters: 🎨 Tracts et posters
 dashboard.shortcut.my_documents: 📄 Mes documents
 dashboard.shortcut.contact: 🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
 dashboard.shortcut.procuration_manager_space: 🐼 Espace responsable procuration
-dashboard.shortcut.assessor_manager_space: 🐼 Espace responsable assesseur
 dashboard.shortcut.committee_coordinator_space: 🐸 Espace coordinateur de comité
 dashboard.my_skills: Mes compétences
 dashboard.my_committes: Les comités dont je fais partie
@@ -623,8 +517,6 @@ referent.managed_area: Zone gérée
 referent.radio.co_referent: "Donner un accès à l'onglet&nbsp;<i>Adhérents</i>"
 referent.radio.limited_co_referent: "Donner un accès restreint à l'onglet&nbsp;<i>Adhérents</i>&nbsp;:"
 referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>Questionnaires</i>
-referent.coreferent_access: Accès adhérents
-referent.limited_coreferent_access: Accès adhérents (limité)
 referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <i>Adhérents</i> et sauvegarder la modification.
 referent.save: Enregistrer
 referent.zones: Zones gérées
@@ -927,9 +819,6 @@ payment.message.expiry_data_passed: La date de validité de votre carte semble �
 payment.message.card_absent: Votre carte bancaire semble ne pas être reconnue par le système. Nous vous invitons à contacter votre banque pour obtenir plus d'informations.
 
 # Adherent message
-adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
-adherent_message.filter.role.CommitteeProvisionalSupervisors: 'Animateurs provisoire de comités locaux'
-adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'
 adherent_message.source.cadre: Cadre
 adherent_message.source.vox: VOX
 draft: Brouillon
@@ -1172,12 +1061,6 @@ delegated_access.form.access.files: Documents
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé
-
-#
-# Senatorial Candidate
-#
-senatorial_candidate.popup.title: Charte de bonne utilisation des outils numériques
-senatorial_candidate.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_candidat_senatoriales.pdf
 
 #
 # TerritorialCouncil
@@ -1577,3 +1460,158 @@ active: Active
 terminated: Terminée
 
 AppSession_list: Liste des sessions
+
+scope.role.deputy: >-
+    {gender, select,
+      female {Déléguée}
+      other {Délégué}
+    }
+
+scope.role.senator: >-
+    {gender, select,
+      female {Sénatrice}
+      other {Sénateur}
+    }
+
+scope.role.animator: Responsable
+scope.role.national: Rôle national
+scope.role.national_communication: >-
+    {gender, select,
+      female {Directrice générale adjointe}
+      other {Directeur général adjoint}
+    }
+scope.role.national_ideas_division: >-
+    {gender, select,
+      female {Directrice générale adjointe}
+      other {Directeur général adjoint}
+    }
+scope.role.national_territories_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+scope.role.national_elected_representatives_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+scope.role.national_formation_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+scope.role.national_tech_division: >-
+    {gender, select,
+      female {Cheffe de pôle}
+      other {Chef de pôle}
+    }
+
+scope.role.phoning_national_manager: Responsable phoning
+
+scope.role.pap_national_manager: >-
+    {gender, select,
+      female {Responsable Nationale PAP}
+      other {Responsable National PAP}
+    }
+
+scope.role.correspondent: >-
+    {gender, select,
+      female {Responsable locale}
+      other {Responsable local}
+    }
+
+scope.role.candidate: >-
+    {gender, select,
+      female {Candidate}
+      other {Candidat}
+    }
+
+scope.role.legislative_candidate: >-
+    {gender, select,
+      female {Candidate}
+      other {Candidat}
+    }
+
+scope.role.regional_coordinator: >-
+    {gender, select,
+      female {Coordinatrice}
+      other {Coordinateur}
+    }
+
+scope.role.regional_delegate: >-
+    {gender, select,
+      female {Déléguée}
+      other {Délégué}
+    }
+
+scope.role.president_departmental_assembly: >-
+    {gender, select,
+      female {Présidente}
+      other {Président}
+    }
+
+scope.role.municipal_candidate: >-
+    {gender, select,
+      female {Candidate}
+      other {Candidat}
+    }
+
+scope.role.municipal_pilot: Pilote
+scope.role.procurations_manager: Responsable procurations
+
+scope.role.fde_coordinator: >-
+    {gender, select,
+      female {Coordinatrice}
+      other {Coordinateur}
+    }
+
+scope.role.pap: >-
+    {gender, select,
+      female {Porte-à-porteuse}
+      other {Porte-à-porteur}
+    }
+
+scope.role.meeting_scanner: Meeting scanneur
+
+scope.role.phoning: >-
+    {gender, select,
+      female {Appelante}
+      other {Appelant}
+    }
+
+scope.role.agora_president: >-
+    {gender, select,
+      female {Présidente}
+      other {Président}
+    }
+
+scope.role.agora_general_secretary: >-
+    {gender, select,
+      female {Secrétaire générale}
+      other {Secrétaire général}
+    }
+
+my_team_member.role.general_secretary: >-
+    {gender, select,
+      female {Secrétaire générale}
+      other {Secrétaire général}
+    }
+my_team_member.role.treasurer: >-
+    {gender, select,
+      female {Trésorière}
+      other {Trésorier}
+    }
+my_team_member.role.mobilization_manager: Responsable mobilisation
+my_team_member.role.procurations_manager: Responsable procurations
+my_team_member.role.logistics_manager: Responsable logistique
+my_team_member.role.communication_manager: Responsable communication
+my_team_member.role.compliance_and_finance_manager: Responsable conformité et finance
+my_team_member.role.head_of_european_affairs: Responsable des questions européennes
+my_team_member.role.head_of_gender_equality: Responsable Égalité Femme / Homme
+my_team_member.role.head_of_relations_and_training_of_elected_officials: Responsable des relations et formation élus
+my_team_member.role.new_members_manager: Responsable nouveaux adhérents
+my_team_member.role.training_manager: Responsable formation
+my_team_member.role.manager: Responsable
