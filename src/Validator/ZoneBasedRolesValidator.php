@@ -93,7 +93,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation($constraint->limitZoneMessage)
                     ->atPath('['.$key.'].zones')
-                    ->setParameter('{{limit}}', self::LIMITS[$role->getType()])
+                    ->setParameter('{{limit}}', (string) self::LIMITS[$role->getType()])
                     ->addViolation()
                 ;
 
@@ -101,8 +101,8 @@ class ZoneBasedRolesValidator extends ConstraintValidator
             }
 
             $allowedTypes = [];
-            foreach ($allowedTypesConfiguration as $typeKey => $value) {
-                $allowedTypes[] = is_numeric($typeKey) ? $value : $typeKey;
+            foreach ($allowedTypesConfiguration as $typeKey => $v) {
+                $allowedTypes[] = is_numeric($typeKey) ? $v : $typeKey;
             }
 
             foreach ($role->getZones() as $zone) {

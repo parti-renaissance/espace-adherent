@@ -27,7 +27,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
         $this->patternUuid = $patternUuid;
     }
 
-    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, int $redirectCode): bool
     {
         foreach ($this->provider->get(RedirectionsProvider::TO_REMOVE_UUID) as $pattern => $path) {
             if (!$this->hasPattern($pattern, $requestUri)) {

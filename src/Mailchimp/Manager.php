@@ -236,7 +236,7 @@ class Manager implements LoggerAwareInterface
                 throw new \RuntimeException(\sprintf('Campaign for the message "%s" has not been created', $message->getUuid()));
             }
 
-            $campaign->setExternalId($campaignData['id']);
+            $campaign->setExternalId((string) $campaignData['id']);
         } else {
             $campaignData = $this->driver->updateCampaign($campaignId, $editCampaignRequest);
         }
@@ -341,7 +341,7 @@ class Manager implements LoggerAwareInterface
         $listId ??= $this->mailchimpObjectIdMapping->getMainListId();
 
         if ($segmentId) {
-            $response = $this->driver->updateDynamicSegment($segmentId, $listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
+            $response = $this->driver->updateDynamicSegment((string) $segmentId, $listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
         } else {
             $response = $this->driver->createDynamicSegment($listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
         }

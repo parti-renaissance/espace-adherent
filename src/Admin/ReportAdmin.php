@@ -73,8 +73,8 @@ class ReportAdmin extends AbstractAdmin
 
                     $instancesExpression = $qb->expr()->orX();
 
-                    foreach ($value->getValue() as $value) {
-                        $instancesExpression->add(\sprintf('%s INSTANCE OF %s', $alias, $value));
+                    foreach ($value->getValue() as $v) {
+                        $instancesExpression->add(\sprintf('%s INSTANCE OF %s', $alias, $v));
                     }
 
                     $qb->andWhere($instancesExpression);

@@ -56,8 +56,8 @@ class AddressRepository extends ServiceEntityRepository
             SQL;
         $offsetX1 = floor(($longitude + 180 - $longitudeDelta) / 360 * 131072) - $correction;
         $offsetX2 = floor(($longitude + 180 + $longitudeDelta) / 360 * 131072) + $correction;
-        $offsetY1 = floor((1.0 - log(tan(deg2rad($latitude + $latitudeDelta)) + 1.0 / cos(deg2rad($latitude + $latitudeDelta))) / pi()) / 2.0 * 131072) - $correction;
-        $offsetY2 = floor((1.0 - log(tan(deg2rad($latitude - $latitudeDelta)) + 1.0 / cos(deg2rad($latitude - $latitudeDelta))) / pi()) / 2.0 * 131072) + $correction;
+        $offsetY1 = floor((1.0 - log(tan(deg2rad($latitude + $latitudeDelta)) + 1.0 / cos(deg2rad($latitude + $latitudeDelta))) / \M_PI) / 2.0 * 131072) - $correction;
+        $offsetY2 = floor((1.0 - log(tan(deg2rad($latitude - $latitudeDelta)) + 1.0 / cos(deg2rad($latitude - $latitudeDelta))) / \M_PI) / 2.0 * 131072) + $correction;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 

@@ -164,9 +164,9 @@ class Referral implements ZoneableEntityInterface
         return $referral;
     }
 
-    public static function createHash(string $email): UuidInterface
+    public static function createHash(string $email): string
     {
-        return Adherent::createUuid($email);
+        return Adherent::createUuid($email)->toString();
     }
 
     public function __toString(): string

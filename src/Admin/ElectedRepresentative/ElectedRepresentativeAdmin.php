@@ -464,7 +464,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $alias = $qb->getRootAlias();
                     switch ($value->getValue()) {
                         case BooleanType::TYPE_YES:
                             $qb->andWhere("$alias.contributedAt IS NOT NULL");
@@ -488,7 +487,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $alias = $qb->getRootAlias();
                     $qb->andWhere("$alias.contributionStatus = :contribution_status");
                     switch ($value->getValue()) {
                         case BooleanType::TYPE_YES:

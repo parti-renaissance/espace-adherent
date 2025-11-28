@@ -16,7 +16,7 @@ class AdherentUncertifyVoter extends AbstractAdminVoter
     /**
      * @param Adherent $subject
      */
-    protected function doVoteOnAttribute(string $attribute, Administrator $administrator, $subject): bool
+    protected function doVoteOnAttribute(string|int $attribute, Administrator $administrator, $subject): bool
     {
         return $subject->isCertified();
     }

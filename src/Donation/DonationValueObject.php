@@ -62,7 +62,7 @@ class DonationValueObject
     #[Groups(['donation_read'])]
     public function getUuid(): string
     {
-        return $this->uuid;
+        return $this->uuid->toString();
     }
 
     public function getDonatorId(): int

@@ -27,7 +27,8 @@ class ReportManager
     /**
      * @param string $type is one of the constant defined in \App\Report\ReportType class
      *
-     * @return ReportableInterface|null  Object matching $type and $uuid
+     * @return ReportableInterface|null Object matching $type and $uuid
+     *
      * @throws \InvalidArgumentException if $type is not valid
      */
     public function getSubjectByUuid(string $type, string $uuid): ?ReportableInterface

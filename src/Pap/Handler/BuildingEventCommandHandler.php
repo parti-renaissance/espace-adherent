@@ -55,7 +55,7 @@ class BuildingEventCommandHandler
                     if (!$buildingBlock) {
                         throw new \RuntimeException(\sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $name, $building->getUuid()));
                     }
-                    $objectWithStats = $buildingBlock->getFloorByNumber($number);
+                    $objectWithStats = $buildingBlock->getFloorByNumber((int) $number);
                     if (!$objectWithStats) {
                         throw new \RuntimeException(\sprintf('Floor with number "%s" is not found in the BuildingBlock named "%s" in the Building with uuid "%s"', $number, $name, $building->getUuid()));
                     }

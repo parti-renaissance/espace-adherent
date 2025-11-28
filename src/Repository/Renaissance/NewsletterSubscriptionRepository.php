@@ -6,6 +6,7 @@ use App\Entity\Renaissance\NewsletterSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class NewsletterSubscriptionRepository extends ServiceEntityRepository
 {
@@ -24,7 +25,7 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
-    public function findOneByUuidAndToken(string $uuid, string $token): ?NewsletterSubscription
+    public function findOneByUuidAndToken(UuidInterface|string $uuid, string $token): ?NewsletterSubscription
     {
         return $this->findOneBy(['uuid' => $uuid, 'token' => $token]);
     }

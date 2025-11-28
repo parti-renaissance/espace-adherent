@@ -196,7 +196,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
             new \DateTime('-30 minutes'),
-            Uuid::fromString(self::HISTORY_3_UUID)
+            self::HISTORY_3_UUID
         );
         $phoningDataSurvey16->setFinishAt(new \DateTime('-25 minutes'));
         $this->addReference('phoning-data-survey-1', $phoningDataSurvey16->getDataSurvey());
@@ -208,7 +208,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
             new \DateTime('-20 minutes'),
-            Uuid::fromString(self::HISTORY_4_UUID)
+            self::HISTORY_4_UUID
         );
         $phoningDataSurvey17->setFinishAt(new \DateTime('-10 minutes'));
         $this->addReference('phoning-data-survey-2', $phoningDataSurvey17->getDataSurvey());
@@ -229,7 +229,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
             new \DateTime('-25 minutes'),
-            Uuid::fromString(self::HISTORY_5_UUID)
+            self::HISTORY_5_UUID
         );
         $phoningDataSurvey19->setFinishAt(new \DateTime('-20 minutes'));
         $this->addReference('phoning-data-survey-3', $phoningDataSurvey19->getDataSurvey());
@@ -241,7 +241,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             CampaignHistoryStatusEnum::SEND,
             null,
             new \DateTime('-2 days'),
-            Uuid::fromString(self::HISTORY_2_UUID)
+            self::HISTORY_2_UUID
         ));
 
         $manager->persist($phoningDataSurvey1);

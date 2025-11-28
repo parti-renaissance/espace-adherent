@@ -9,6 +9,7 @@ use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class DonationRepository extends ServiceEntityRepository
 {
@@ -21,7 +22,7 @@ class DonationRepository extends ServiceEntityRepository
         parent::__construct($registry, Donation::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Donation
+    public function findOneByUuid(UuidInterface|string $uuid): ?Donation
     {
         return $this->findOneByValidUuid($uuid);
     }

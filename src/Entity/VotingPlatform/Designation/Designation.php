@@ -474,7 +474,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $this->notifications = $notifications;
     }
 
-    public function isNotificationEnabled(string $notificationBit): bool
+    public function isNotificationEnabled(int $notificationBit): bool
     {
         return 0 !== ($this->notifications & $notificationBit);
     }
@@ -843,7 +843,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function removeCandidacyPool(CandidacyPool $candidacyPool): void
     {
-        $this->candidacyPools->remove($candidacyPool);
+        $this->candidacyPools->removeElement($candidacyPool);
     }
 
     public function __toString(): string

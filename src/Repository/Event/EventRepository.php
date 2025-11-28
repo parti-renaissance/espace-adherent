@@ -5,7 +5,6 @@ namespace App\Repository\Event;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Agora;
-use App\Entity\Committee;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
@@ -19,11 +18,11 @@ use App\Repository\UuidEntityRepositoryTrait;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class EventRepository extends ServiceEntityRepository
 {
@@ -257,70 +256,9 @@ class EventRepository extends ServiceEntityRepository
         return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function findOneByUuid(string $uuid): ?Event
+    public function findOneByUuid(UuidInterface|string $uuid): ?Event
     {
         return $this->findOneByValidUuid($uuid);
-    }
-
-    public function findStartedEventBetweenDatesForZones(
-        \DateTimeInterface $startDate,
-        \DateTimeInterface $endDate,
-        array $zones,
-    ): array {
-        if (!$zones) {
-            return [];
-        }
-
-        $qb = $this
-            ->createQueryBuilder('event')
-            ->addSelect('adherent')
-            ->join('event.author', 'adherent')
-            ->where('event.beginAt < :end_date AND event.finishAt > :start_date')
-            ->andWhere('event.status = :status')
-            ->setParameters([
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'status' => Event::STATUS_SCHEDULED,
-            ])
-            ->leftJoin('event.committee', 'committee')
-            ->leftJoin('committee.zones', 'committeeZones')
-            ->leftJoin('adherent.zones', 'adherentZones')
-        ;
-
-        $adherentZonesCondition = $this->createGeoZonesQueryBuilder(
-            'adherent',
-            $zones,
-            $qb,
-            Adherent::class,
-            'adherent_2',
-            'zones',
-            'adherent_zone_2',
-            null,
-            true,
-            'adherent_zone_parent'
-        );
-
-        $committeeZoneCondition = $this->createGeoZonesQueryBuilder(
-            'committee',
-            $zones,
-            $qb,
-            Committee::class,
-            'committee_2',
-            'zones',
-            'committee_zone_2',
-            null,
-            true,
-            'committee_zone_parent'
-        );
-
-        return $qb
-            ->andWhere((new Orx())
-                ->add(\sprintf('committee IS NOT NULL AND EXISTS (%s)', $committeeZoneCondition->getDQL()))
-                ->add(\sprintf('committee IS NULL AND EXISTS (%s)', $adherentZonesCondition->getDQL()))
-            )
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     public function searchAllEvents(SearchParametersFilter $search): array

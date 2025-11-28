@@ -36,6 +36,6 @@ class TagBuilder
 
     public function buildLabelFromSlug(string $slug): string
     {
-        return $this->nationalEventRepository->findOneBySlug($slug)?->getName() ?? (new UnicodeString(str_replace('-', ' ', $slug)))->title(true);
+        return $this->nationalEventRepository->findOneBySlug($slug)?->getName() ?? (new UnicodeString(str_replace('-', ' ', $slug)))->title(true)->toString();
     }
 }

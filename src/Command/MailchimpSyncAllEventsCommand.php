@@ -45,7 +45,7 @@ class MailchimpSyncAllEventsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('type', null, InputArgument::REQUIRED, implode('|', static::$allTypes))
+            ->addArgument('type', InputArgument::REQUIRED, implode('|', static::$allTypes))
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }

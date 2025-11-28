@@ -55,7 +55,7 @@ class ElectedRepresentativeRenaissanceCaseTest extends AbstractAdminWebTestCase
         }
 
         $this->client->submit($crawler->selectButton('Mettre à jour')->form($formValues));
-        $this->assertResponseStatusCode('302', $this->client->getResponse());
+        $this->assertResponseStatusCode(302, $this->client->getResponse());
 
         if ($isChangeMessageExpected) {
             $this->assertMessageIsDispatched(ElectedRepresentativeChangeCommand::class);

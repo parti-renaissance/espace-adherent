@@ -6,6 +6,7 @@ use App\Entity\Email\EmailLog;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class EmailLogRepository extends ServiceEntityRepository
 {
@@ -18,7 +19,7 @@ class EmailLogRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailLog::class);
     }
 
-    public function findOneByUuid(string $uuid): ?EmailLog
+    public function findOneByUuid(UuidInterface|string $uuid): ?EmailLog
     {
         return $this->findOneByValidUuid($uuid);
     }

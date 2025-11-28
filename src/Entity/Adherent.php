@@ -1421,7 +1421,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getOAuthUser(): InMemoryOAuthUser
     {
         if (!$this->oAuthUser) {
-            $this->oAuthUser = new InMemoryOAuthUser($this->uuid);
+            $this->oAuthUser = new InMemoryOAuthUser($this->uuid->toString());
         }
 
         return $this->oAuthUser;

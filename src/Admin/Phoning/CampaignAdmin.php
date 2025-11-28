@@ -221,7 +221,7 @@ class CampaignAdmin extends AbstractAdmin
 
     private function updateParticipantsCount(Campaign $object): void
     {
-        $object->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
+        $object->setParticipantsCount((int) $this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
     }
 
     public function toString($object): string

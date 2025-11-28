@@ -63,24 +63,24 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
     ];
 
     private const REGIONS = [
-        '1' => 'Guadeloupe',
-        '2' => 'Martinique',
-        '3' => 'Guyane',
-        '4' => 'La Réunion',
-        '6' => 'Mayotte',
-        '11' => 'Île-de-France',
-        '24' => 'Centre-Val de Loire',
-        '27' => 'Bourgogne-Franche-Comté',
-        '28' => 'Normandie',
-        '32' => 'Hauts-de-France',
-        '44' => 'Grand Est',
-        '52' => 'Pays de la Loire',
-        '53' => 'Bretagne',
-        '75' => 'Nouvelle-Aquitaine',
-        '76' => 'Occitanie',
-        '84' => 'Auvergne-Rhône-Alpes',
-        '93' => 'Provence-Alpes-Côte d\'Azur',
-        '94' => 'Corse',
+        1 => 'Guadeloupe',
+        2 => 'Martinique',
+        3 => 'Guyane',
+        4 => 'La Réunion',
+        6 => 'Mayotte',
+        11 => 'Île-de-France',
+        24 => 'Centre-Val de Loire',
+        27 => 'Bourgogne-Franche-Comté',
+        28 => 'Normandie',
+        32 => 'Hauts-de-France',
+        44 => 'Grand Est',
+        52 => 'Pays de la Loire',
+        53 => 'Bretagne',
+        75 => 'Nouvelle-Aquitaine',
+        76 => 'Occitanie',
+        84 => 'Auvergne-Rhône-Alpes',
+        93 => 'Provence-Alpes-Côte d\'Azur',
+        94 => 'Corse',
     ];
 
     private const DISTRICTS = [
@@ -124,7 +124,7 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
 
         foreach (self::REGIONS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-région', ZoneCategory::class), $name);
-            $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
+            $code = str_pad((string) $code, 2, '0', \STR_PAD_LEFT);
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-region-$code", $zoneRegion);
@@ -132,7 +132,7 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
 
         foreach (self::DISTRICTS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-circonscription', ZoneCategory::class), $name);
-            $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
+            $code = str_pad((string) $code, 2, '0', \STR_PAD_LEFT);
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-district-$code", $zoneRegion);

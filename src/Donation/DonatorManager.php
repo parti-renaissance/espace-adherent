@@ -4,17 +4,14 @@ namespace App\Donation;
 
 use App\Entity\DonatorIdentifier;
 use App\Repository\DonatorIdentifierRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DonatorManager
 {
-    private $manager;
-    private $donatorIdentifierRepository;
-
-    public function __construct(ObjectManager $manager, DonatorIdentifierRepository $donatorIdentifierRepository)
-    {
-        $this->manager = $manager;
-        $this->donatorIdentifierRepository = $donatorIdentifierRepository;
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly DonatorIdentifierRepository $donatorIdentifierRepository,
+    ) {
     }
 
     public function incrementIdentifier(bool $flush = true): ?string
@@ -41,7 +38,7 @@ class DonatorManager
 
     public function getNextAccountId(string $currentAccountId): string
     {
-        return str_pad((int) $currentAccountId + 1, 6, '0', \STR_PAD_LEFT);
+        return \sprintf('%06d', (int) $currentAccountId + 1);
     }
 
     public function findLastIdentifier(): DonatorIdentifier

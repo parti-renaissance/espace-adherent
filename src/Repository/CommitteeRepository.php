@@ -23,6 +23,7 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class CommitteeRepository extends ServiceEntityRepository
 {
@@ -37,7 +38,7 @@ class CommitteeRepository extends ServiceEntityRepository
         parent::__construct($registry, Committee::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Committee
+    public function findOneByUuid(UuidInterface|string $uuid): ?Committee
     {
         return $this->findOneByValidUuid($uuid);
     }

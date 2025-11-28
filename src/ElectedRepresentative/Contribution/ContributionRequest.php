@@ -74,7 +74,7 @@ class ContributionRequest
             return 0;
         }
 
-        $contributionAmount = round($this->revenueAmount * 2 / 100);
+        $contributionAmount = (int) round($this->revenueAmount * 2 / 100);
 
         if ($contributionAmount > self::CONTRIBUTION_MAX_AMOUNT) {
             return self::CONTRIBUTION_MAX_AMOUNT;

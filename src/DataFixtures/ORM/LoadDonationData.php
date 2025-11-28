@@ -216,7 +216,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
             $type,
-            $amount * 100,
+            (int) ($amount * 100),
             $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
             $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',

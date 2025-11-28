@@ -35,7 +35,7 @@ class FailedLoginAttempt
     {
         $this->uuid = Uuid::uuid4();
         $this->signature = $signature;
-        $this->at = \DateTime::createFromFormat('U', time());
+        $this->at = \DateTime::createFromFormat('U', (string) time());
         $this->extra = $extra;
     }
 

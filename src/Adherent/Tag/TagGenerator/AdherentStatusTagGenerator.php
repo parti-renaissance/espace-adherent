@@ -24,7 +24,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
 
     public function generate(Adherent $adherent, array $previousTags): array
     {
-        $currentYear = date('Y');
+        $currentYear = (int) date('Y');
 
         if ($adherent->forcedMembership) {
             return [TagEnum::getAdherentYearTag($currentYear)];

@@ -56,11 +56,11 @@ class LocalPollRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('poll')
             ->select('poll')
             ->addSelect('
-            CASE 
+            CASE
                 WHEN zone.type = :zone_region THEN 1
                 WHEN zone.type = :zone_department THEN 2
                 ELSE 3
-            END AS HIDDEN priority    
+            END AS HIDDEN priority
             ')
             ->leftJoin('poll.zone', 'zone')
             ->where('poll.published = :true AND poll.finishAt > :now')

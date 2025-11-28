@@ -18,7 +18,7 @@ class ContributionAmountUtils
             return 0;
         }
 
-        $contributionAmount = round($revenueAmount * 2 / 100);
+        $contributionAmount = (int) round($revenueAmount * 2 / 100);
 
         if ($contributionAmount > self::CONTRIBUTION_MAX_AMOUNT) {
             return self::CONTRIBUTION_MAX_AMOUNT;
@@ -29,6 +29,6 @@ class ContributionAmountUtils
 
     public static function getContributionAmountAfterTax(float $revenueAmount): int
     {
-        return round(static::getContributionAmount($revenueAmount) / 3);
+        return (int) round(static::getContributionAmount($revenueAmount) / 3);
     }
 }

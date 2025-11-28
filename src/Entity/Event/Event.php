@@ -572,7 +572,7 @@ class Event implements ReportableInterface, GeoPointInterface, AddressHolderInte
     public function setStatus(string $status): void
     {
         if (!\in_array($status, self::STATUSES, true)) {
-            throw new \InvalidArgumentException('Invalid status "%" given.', $status);
+            throw new \InvalidArgumentException(\sprintf('Invalid status "%s" given.', $status));
         }
 
         $this->status = $status;

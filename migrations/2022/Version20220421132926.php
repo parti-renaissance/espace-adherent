@@ -18,9 +18,9 @@ final class Version20220421132926 extends AbstractMigration
 
         $this->addSql('ALTER TABLE
           my_team_delegated_access
-        CHANGE 
+        CHANGE
           created_at created_at DATETIME NOT NULL,
-        CHANGE 
+        CHANGE
           updated_at updated_at DATETIME NOT NULL');
     }
 

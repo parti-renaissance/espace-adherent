@@ -117,7 +117,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     private function getScopeRoleName(ScopeEntity $scopeEntity, Adherent $currentUser): string
     {
         if ($this->delegatedAccess) {
-            return $this->translateDelegatedRole($this->delegatedAccess->roleCode, $currentUser, $this->delegatedAccess->getRole());
+            return $this->translateDelegatedRole($this->delegatedAccess->roleCode, $currentUser->getGender(), $this->delegatedAccess->getRole());
         }
 
         $value = $this->translator->trans($key = 'scope.role.'.$scopeEntity->getCode(), ['gender' => $currentUser->getGender()]);

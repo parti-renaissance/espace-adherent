@@ -163,7 +163,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface, EntityAdmi
     #[SerializedName('id')]
     public function getPublicId(): string
     {
-        return substr($this->uuid->toString(), 0, 6 - \strlen($this->id)).$this->id;
+        return substr($this->uuid->toString(), 0, 6 - \strlen((string) $this->id)).$this->id;
     }
 
     public function getZones(): Collection

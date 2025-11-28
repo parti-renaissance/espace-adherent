@@ -25,7 +25,6 @@ use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadAdherentData extends AbstractLoadPostAddressData implements DependentFixtureInterface
@@ -670,7 +669,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('senatorial-candidate', $senatorialCandidate);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-male-a@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -690,7 +688,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-21', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-a@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -709,7 +706,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-22', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-male-b@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -729,7 +725,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-23', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-b@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -747,7 +742,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-24', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-male-c@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -766,7 +760,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-25', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-c@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -784,7 +777,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-26', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-male-d@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -803,7 +795,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-27', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-d@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -821,7 +812,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-28', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-male-e@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -840,7 +830,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-29', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-e@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -858,7 +847,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('adherent-30', $adherent);
 
         $adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'adherent-female-f@en-marche-dev.fr',
             'gender' => GenderEnum::FEMALE,
@@ -879,7 +867,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             $gender = 0 === $index % 2 ? GenderEnum::FEMALE : GenderEnum::MALE;
 
             $adherent = $this->adherentFactory->createFromArray([
-                'uuid' => Uuid::uuid4(),
                 'password' => self::DEFAULT_PASSWORD,
                 'email' => \sprintf('adherent-%s-%d@en-marche-dev.fr', $gender, $index),
                 'gender' => $gender,
@@ -926,7 +913,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('correspondent-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::fromString(self::ADHERENT_20_UUID),
+            'uuid' => self::ADHERENT_20_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'president-ad@renaissance-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -954,7 +941,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->addReference('president-ad-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'je-mengage-user-2@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,

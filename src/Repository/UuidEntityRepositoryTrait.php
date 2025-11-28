@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Exception\InvalidUuidException;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 trait UuidEntityRepositoryTrait
 {
@@ -13,9 +14,11 @@ trait UuidEntityRepositoryTrait
      *
      * @throws InvalidUuidException
      */
-    public function findOneByUuid(string $uuid): ?object
+    public function findOneByUuid(UuidInterface|string $uuid): ?object
     {
-        static::validUuid($uuid);
+        if (\is_string($uuid)) {
+            static::validUuid($uuid);
+        }
 
         return $this->findOneBy(['uuid' => $uuid]);
     }

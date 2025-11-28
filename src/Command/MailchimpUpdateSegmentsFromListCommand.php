@@ -47,7 +47,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('list', null, InputArgument::REQUIRED, implode('|', MailchimpSegment::LISTS))
+            ->addArgument('list', InputArgument::REQUIRED, implode('|', MailchimpSegment::LISTS))
         ;
     }
 

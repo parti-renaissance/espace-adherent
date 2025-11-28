@@ -30,7 +30,7 @@ class ClientStore implements OAuthClientRepositoryInterface
             return null;
         }
 
-        $oAuthClient = new InMemoryClient($client->getUuid(), $client->getSupportedScopes());
+        $oAuthClient = new InMemoryClient($client->getUuid()->toString(), $client->getSupportedScopes());
         $oAuthClient->setName($client->getName());
         $oAuthClient->setRedirectUris($client->getRedirectUris());
 

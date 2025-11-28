@@ -13,6 +13,7 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class EventRegistrationRepository extends ServiceEntityRepository
 {
@@ -24,9 +25,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, EventRegistration::class);
     }
 
-    public function findOneByUuid(string $uuid): ?EventRegistration
+    public function findOneByUuid(UuidInterface|string $uuid): ?EventRegistration
     {
-        self::validUuid($uuid);
+        if (\is_string($uuid)) {
+            self::validUuid($uuid);
+        }
 
         return $this
             ->createQueryBuilder('r')
@@ -73,9 +76,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]
      */
-    public function findUpcomingAdherentRegistrations(string $adherentUuid): array
+    public function findUpcomingAdherentRegistrations(UuidInterface|string $adherentUuid): array
     {
-        self::validUuid($adherentUuid);
+        if (\is_string($adherentUuid)) {
+            self::validUuid($adherentUuid);
+        }
 
         $registrations = $this->createAdherentEventRegistrationQueryBuilder($adherentUuid)
             ->andWhere('e.published = true')
@@ -112,9 +117,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]
      */
-    public function findPastAdherentRegistrations(string $adherentUuid): array
+    public function findPastAdherentRegistrations(UuidInterface|string $adherentUuid): array
     {
-        self::validUuid($adherentUuid);
+        if (\is_string($adherentUuid)) {
+            self::validUuid($adherentUuid);
+        }
 
         $registrations = $this
             ->createAdherentEventRegistrationQueryBuilder($adherentUuid)

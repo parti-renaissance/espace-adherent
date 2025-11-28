@@ -2,7 +2,6 @@
 
 namespace App\Event\Request;
 
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CountInvitationsRequest
@@ -19,9 +18,7 @@ class CountInvitationsRequest
 
     public function isEmpty(): bool
     {
-        return
-            (empty($this->agora) || !Uuid::isValid($this->agora))
-            && empty($this->roles);
+        return empty($this->agora) && empty($this->roles);
     }
 
     public function hasPerimeter(): bool

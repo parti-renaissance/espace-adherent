@@ -100,7 +100,7 @@ abstract class AbstractJecouteController extends AbstractController
         SuggestedQuestionRepository $suggestedQuestionRepository,
     ): Response {
         $author = $survey->getCreator();
-        if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {
+        if ($editByAuthor = ($author === $this->getMainUser($request->getSession()))) {
             $zones = $this->getZones($author);
         } else {
             $zones = [$survey->getZone()];

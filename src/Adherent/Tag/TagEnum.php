@@ -42,7 +42,7 @@ class TagEnum extends Enum
 
     public static function getAdherentTags(bool $adherentOnly = false): array
     {
-        $currentYear = date('Y');
+        $currentYear = (int) date('Y');
 
         $adherentTags = array_merge(
             [
