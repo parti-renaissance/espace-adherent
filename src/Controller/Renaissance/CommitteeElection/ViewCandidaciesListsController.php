@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\CommitteeElection;
 
 use App\Entity\Committee;

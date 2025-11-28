@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailchimp\Synchronisation\MemberRequest;
 
 use App\Mailchimp\Synchronisation\Request\MemberRequest;

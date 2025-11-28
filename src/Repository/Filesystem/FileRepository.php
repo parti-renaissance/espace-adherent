@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Filesystem;
 
 use App\Entity\Filesystem\File;

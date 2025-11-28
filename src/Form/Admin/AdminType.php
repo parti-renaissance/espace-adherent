@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Admin;
 
 use Sonata\AdminBundle\Form\Type\AdminType as SonataAdminType;

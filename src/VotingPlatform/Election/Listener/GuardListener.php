@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\VotingPlatform\Election\Listener;
 
 use App\Repository\VotingPlatform\ElectionRepository;

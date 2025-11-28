@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Pap;
 
 use App\Controller\Api\Jecoute\AbstractReplyController;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Firebase;
 
 use App\Entity\Notification as NotificationEntity;

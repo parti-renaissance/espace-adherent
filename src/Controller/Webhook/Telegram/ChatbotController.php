@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Webhook\Telegram;
 
 use App\Chatbot\Telegram\ConversationManager;

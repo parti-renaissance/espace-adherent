@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter\Poll;
 
 use App\Entity\Adherent;

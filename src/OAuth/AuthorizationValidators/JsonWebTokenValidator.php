@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OAuth\AuthorizationValidators;
 
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;

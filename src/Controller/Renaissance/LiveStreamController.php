@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance;
 
 use App\Adherent\Tag\TagEnum;

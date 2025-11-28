@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use FOS\CKEditorBundle\Form\Type\CKEditorType as BaseCKEditorType;

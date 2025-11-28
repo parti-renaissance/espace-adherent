@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\GeneralMeeting;
 
 use App\Entity\GeneralMeeting\GeneralMeetingReport;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\Adherent\Contribution;
 
 use App\Adherent\AdherentRoleEnum;

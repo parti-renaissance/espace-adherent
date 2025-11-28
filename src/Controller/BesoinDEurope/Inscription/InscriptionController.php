@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\BesoinDEurope\Inscription;
 
 use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;

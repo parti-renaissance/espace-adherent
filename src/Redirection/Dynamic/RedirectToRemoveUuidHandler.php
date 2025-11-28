@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Redirection\Dynamic;
 
 use App\Repository\Event\EventRepository;

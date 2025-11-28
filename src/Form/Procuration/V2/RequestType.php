@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Procuration\V2;
 
 use App\Procuration\V2\Command\RequestCommand;

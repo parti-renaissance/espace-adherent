@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\PushToken;
 
 use App\Entity\Adherent;

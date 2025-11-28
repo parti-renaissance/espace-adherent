@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer\Message\Renaissance\Referral;
 
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Filter;
 
 use App\JMEFilter\FiltersGenerator;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Webhook;
 
 use App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DepartmentSite;
 
 use Doctrine\Persistence\Mapping\ClassMetadata;

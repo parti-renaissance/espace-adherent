@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Newsletter\Listener;
 
 use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;

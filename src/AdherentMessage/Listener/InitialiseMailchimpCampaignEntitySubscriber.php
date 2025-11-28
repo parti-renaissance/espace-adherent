@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Events;

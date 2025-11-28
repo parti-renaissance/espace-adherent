@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\BesoinDEurope;
 
 use App\BesoinDEurope\Inscription\InscriptionRequest;

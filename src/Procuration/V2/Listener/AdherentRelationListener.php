@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Procuration\V2\Listener;
 
 use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;

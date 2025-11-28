@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Normalizer;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;

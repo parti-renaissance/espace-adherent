@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Team;
 
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;

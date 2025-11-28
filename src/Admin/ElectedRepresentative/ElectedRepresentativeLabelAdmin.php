@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\ElectedRepresentative;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;

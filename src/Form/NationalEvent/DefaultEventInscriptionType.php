@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\NationalEvent;
 
 use Symfony\Component\Form\AbstractType;

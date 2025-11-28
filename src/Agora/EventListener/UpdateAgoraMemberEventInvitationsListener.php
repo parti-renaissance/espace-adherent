@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Agora\EventListener;
 
 use App\Agora\Command\InviteAdherentForAllFuturAgoraEventCommand;

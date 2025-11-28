@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\Election;
 
 use App\Entity\VotingPlatform\Designation\Designation;

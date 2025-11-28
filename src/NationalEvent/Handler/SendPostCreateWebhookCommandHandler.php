@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\NationalEvent\Handler;
 
 use App\NationalEvent\Command\SendWebhookCommand;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Controller\Renaissance\Adherent\Contribution;
 
 use App\Entity\Adherent;

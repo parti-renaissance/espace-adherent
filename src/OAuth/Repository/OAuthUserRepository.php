@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OAuth\Repository;
 
 use App\Entity\Adherent;

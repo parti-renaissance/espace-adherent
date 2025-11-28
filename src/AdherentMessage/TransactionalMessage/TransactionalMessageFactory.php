@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\AdherentMessage\TransactionalMessage;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;

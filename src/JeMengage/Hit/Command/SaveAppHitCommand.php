@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\JeMengage\Hit\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Encoder;
 
 use Symfony\Component\HttpFoundation\RequestStack;

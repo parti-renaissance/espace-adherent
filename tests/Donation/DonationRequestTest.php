@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Donation;
 
 use App\Donation\Request\DonationRequest;

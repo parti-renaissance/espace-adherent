@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Query\Utils;
 
 use Doctrine\ORM\QueryBuilder;

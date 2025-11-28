@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Pap\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;

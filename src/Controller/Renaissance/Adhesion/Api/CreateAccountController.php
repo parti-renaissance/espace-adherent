@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\Adhesion\Api;
 
 use App\Adhesion\Command\CreateAccountCommand;

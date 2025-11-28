@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Firebase\Notification;
 
 abstract class AbstractMulticastNotification extends AbstractNotification implements MulticastNotificationInterface

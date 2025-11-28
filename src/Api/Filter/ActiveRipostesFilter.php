@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Api\Filter;
 
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;

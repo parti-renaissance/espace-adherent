@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\VotingPlatform\Designation\Poll;
 
 use App\Admin\AbstractAdmin;

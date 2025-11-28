@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\Donation\V2;
 
 use App\Controller\Renaissance\Payment\StatusController;

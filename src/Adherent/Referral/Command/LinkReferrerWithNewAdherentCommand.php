@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adherent\Referral\Command;
 
 use App\Messenger\Message\UuidDefaultAsyncMessage;

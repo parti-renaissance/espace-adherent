@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adherent\Referral;
 
 use App\Controller\Renaissance\Referral\AdhesionController;

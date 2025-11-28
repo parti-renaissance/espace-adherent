@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailchimp\Exception;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;

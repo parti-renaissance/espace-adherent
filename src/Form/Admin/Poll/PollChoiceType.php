@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Admin\Poll;
 
 use App\Entity\Poll\Choice;

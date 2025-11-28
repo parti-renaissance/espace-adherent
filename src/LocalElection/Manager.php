@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\LocalElection;
 
 use App\Entity\LocalElection\CandidaciesGroup;

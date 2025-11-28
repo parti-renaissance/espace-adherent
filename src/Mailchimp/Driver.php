@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailchimp;
 
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;

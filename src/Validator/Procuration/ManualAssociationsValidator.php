@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator\Procuration;
 
 use App\Entity\ProcurationV2\Request;

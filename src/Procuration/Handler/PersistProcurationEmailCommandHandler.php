@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Procuration\Handler;
 
 use App\Entity\ProcurationV2\ProcurationRequest;

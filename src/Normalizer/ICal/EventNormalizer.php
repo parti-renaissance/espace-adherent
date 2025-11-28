@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Normalizer\ICal;
 
 use App\Entity\Event\Event;

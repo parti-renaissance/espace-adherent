@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Filter;
 
 use App\Entity\Geo\Zone;

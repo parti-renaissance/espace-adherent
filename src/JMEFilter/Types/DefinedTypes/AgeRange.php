@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\JMEFilter\Types\DefinedTypes;
 
 use App\JMEFilter\Types\IntegerInterval;

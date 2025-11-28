@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Jecoute;
 
 use App\Form\DataTransformer\SurveyToIdTransformer;

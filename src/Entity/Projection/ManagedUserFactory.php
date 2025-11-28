@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Projection;
 
 use App\Mailchimp\Contact\ContactStatusEnum;

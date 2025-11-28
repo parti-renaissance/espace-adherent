@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use App\Committee\Election\CandidacyManager;

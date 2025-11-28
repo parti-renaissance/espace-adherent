@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Command;
 
 use App\DataFixtures\ORM\LoadProcurationV2ElectionData;

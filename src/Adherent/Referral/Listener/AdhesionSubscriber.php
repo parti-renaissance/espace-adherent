@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adherent\Referral\Listener;
 
 use App\Adherent\Referral\Command\LinkReferrerWithNewAdherentCommand;

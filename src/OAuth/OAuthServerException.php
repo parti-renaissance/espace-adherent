@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OAuth;
 
 use League\OAuth2\Server\Exception\OAuthServerException as BaseOAuthServerException;
