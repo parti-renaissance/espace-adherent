@@ -19,6 +19,7 @@ use App\Form\ConfirmActionType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,12 +43,18 @@ class AdminAdherentCRUDController extends CRUDController
 
         $this->primeUsers($results);
 
+        if ($this->container->has('sonata.admin.admin_exporter') && $this->admin->hasAccess('export')) {
+            $exporter = $this->container->get('sonata.admin.admin_exporter');
+            \assert($exporter instanceof AdminExporter);
+            $exportFormats = $exporter->getAvailableFormats($this->admin);
+        }
+
         return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->admin->getExportFormats(),
+            'export_formats' => $exportFormats ?? $this->admin->getExportFormats(),
         ]);
     }
 
