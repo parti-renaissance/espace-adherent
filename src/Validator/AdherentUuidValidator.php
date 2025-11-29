@@ -32,7 +32,7 @@ class AdherentUuidValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', $value->toString())
                 ->addViolation()
             ;
         }

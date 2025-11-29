@@ -31,7 +31,7 @@ class PayboxPaymentUnsubscription
         parse_str($this->request->cancel($donation->getPayboxOrderRef()), $result);
 
         if ('OK' !== $result['ACQ']) {
-            throw new PayboxPaymentUnsubscriptionException($result['ERREUR']);
+            throw new PayboxPaymentUnsubscriptionException((int) $result['ERREUR']);
         }
 
         $donation->stopSubscription();

@@ -244,7 +244,7 @@ final class UpdateFranceCommand extends Command
         $regionOutreMer->activate();
 
         foreach (self::OVERSEAS_DEPARTMENTS as $code => $name) {
-            $department = $this->retrieveEntity(Department::class, $code, static function () use ($code, $name, $regionOutreMer) {
+            $department = $this->retrieveEntity(Department::class, (string) $code, static function () use ($code, $name, $regionOutreMer) {
                 return new Department($code, $name, $regionOutreMer);
             });
             $department->activate();

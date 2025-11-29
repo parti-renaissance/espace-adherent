@@ -176,7 +176,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public function setEmailAddress(?string $emailAddress): void
     {
-        $this->emailAddress = mb_strtolower($emailAddress);
+        $this->emailAddress = $emailAddress ? mb_strtolower($emailAddress) : null;
     }
 
     public function getEmailAddress(): ?string

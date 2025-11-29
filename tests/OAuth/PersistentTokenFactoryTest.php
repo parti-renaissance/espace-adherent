@@ -144,7 +144,7 @@ class PersistentTokenFactoryTest extends TestCase
         $token = $this->createAccessToken();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime($expectedDate = \DateTimeImmutable::createFromFormat('U', time() + 5 * 60 * 60));
+        $token->setExpiryDateTime($expectedDate = \DateTimeImmutable::createFromFormat('U', (string) (time() + 5 * 60 * 60)));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
 

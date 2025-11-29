@@ -225,7 +225,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         return 1 === \count($crawler->filter('.committee-unfollow'));
     }
 
-    private function seeMembersCount(Crawler $crawler, string $membersCount): bool
+    private function seeMembersCount(Crawler $crawler, int $membersCount): bool
     {
         return str_contains(
             $crawler->filter('.committee__infos')->text(),

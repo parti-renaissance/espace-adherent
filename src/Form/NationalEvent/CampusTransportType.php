@@ -140,7 +140,7 @@ class CampusTransportType extends AbstractType
         $builder->get('roommateIdentifier')->addModelTransformer(new CallbackTransformer(
             fn ($value) => $value,
             function ($value) {
-                if (preg_match('/^\d{6}$/', $value)) {
+                if (preg_match('/^\d{6}$/', (string) $value)) {
                     return substr($value, 0, 3).'-'.substr($value, 3);
                 }
 

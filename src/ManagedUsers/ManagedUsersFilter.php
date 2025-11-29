@@ -171,11 +171,11 @@ class ManagedUsersFilter
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
-            $this->ageMin = $minMax['min'];
+            $this->ageMin = (int) $minMax['min'];
         }
 
         if (!empty($minMax['max'])) {
-            $this->ageMax = $minMax['max'];
+            $this->ageMax = (int) $minMax['max'];
         }
     }
 

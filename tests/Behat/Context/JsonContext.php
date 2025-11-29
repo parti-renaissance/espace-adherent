@@ -16,7 +16,7 @@ class JsonContext extends BehatchJsonContext
 
     public function theJsonShouldBeEqualTo(PyStringNode $content)
     {
-        $this->assertJson($content->getRaw(), $this->getJson());
+        $this->assertJson($content->getRaw(), (string) $this->getJson());
     }
 
     public function assertJson(string $expected, string $actual): void

@@ -27,6 +27,8 @@ class NewsContentValidator extends ConstraintValidator
                 ->atPath($constraint->path)
                 ->addViolation()
             ;
+
+            return;
         }
 
         if (mb_strlen($value->getContent()) > $constraint->contentLength) {
