@@ -18,7 +18,7 @@ class AdherentElectStatusTagGenerator extends AbstractTagGenerator
         $countPayments = \count($adherent->getConfirmedPayments());
 
         if ($adherent->exemptFromCotisation) {
-            if (TagEnum::includesTag(TagEnum::getAdherentYearTag(date('Y')), $previousTags)) {
+            if (TagEnum::includesTag(TagEnum::getAdherentYearTag((int) date('Y')), $previousTags)) {
                 $tags[] = TagEnum::ELU_COTISATION_OK_EXEMPTE;
             } else {
                 $tags[] = TagEnum::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK;

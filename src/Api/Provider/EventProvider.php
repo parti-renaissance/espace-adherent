@@ -15,7 +15,7 @@ class EventProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $identifier = (string) $context['uri_variables']['uuid'] ?? null;
+        $identifier = (string) ($context['uri_variables']['uuid'] ?? null);
 
         if (empty($identifier)) {
             return null;

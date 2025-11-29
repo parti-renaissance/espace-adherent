@@ -55,7 +55,7 @@ class QrCode
 
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getName(): ?string

@@ -31,7 +31,7 @@ class MaxMonthDonationValidator extends ConstraintValidator
         if ($value->isSubscription() && $value->getAmount() * 100 > $constraint->maxDonationInCents) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ max_amount }}', $constraint->maxDonationInCents / 100)
+                ->setParameter('{{ max_amount }}', (string) ($constraint->maxDonationInCents / 100))
                 ->addViolation()
             ;
         }

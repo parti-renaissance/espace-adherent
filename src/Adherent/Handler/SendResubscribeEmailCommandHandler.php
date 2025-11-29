@@ -21,7 +21,7 @@ class SendResubscribeEmailCommandHandler
     {
         $adherent = $command->adherent;
 
-        $link = $this->loginLinkHandler->createLoginLink($adherent, targetPath: '/app?state='.urlencode('/profil/communications?autorun=1'));
+        $link = $this->loginLinkHandler->createLoginLink($adherent, targetPath: '/app?state='.urlencode('/profil/communications?autorun=1'))->getUrl();
 
         $this->transactionalMailer->sendMessage(AdherentResubscribeEmailMessage::create($adherent, $link));
     }

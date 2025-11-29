@@ -35,7 +35,7 @@ class GetHeaderBlockContentController extends AbstractController
                 $content = str_replace('{{ prenom }}', '', $content);
             }
 
-            $content = str_replace('{{ date_echeance }}', $headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0, $content);
+            $content = str_replace('{{ date_echeance }}', (string) ($headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0), $content);
             $data['content'] = $content;
         }
 

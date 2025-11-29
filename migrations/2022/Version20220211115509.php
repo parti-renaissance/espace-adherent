@@ -16,7 +16,7 @@ final class Version20220211115509 extends AbstractMigration
           procuration_proxies
         ADD
           voter_number VARCHAR(255) DEFAULT NULL,
-        ADD 
+        ADD
           other_vote_cities VARCHAR(255) DEFAULT NULL,
         ADD
           uuid CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:uuid)\',

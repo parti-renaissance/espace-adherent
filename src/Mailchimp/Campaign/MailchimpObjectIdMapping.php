@@ -28,7 +28,11 @@ class MailchimpObjectIdMapping
 
     public function getFolderIdByType(string $messageType): ?string
     {
-        return $this->folderIds[$messageType] ?? null;
+        if (!empty($this->folderIds[$messageType])) {
+            return (string) $this->folderIds[$messageType];
+        }
+
+        return null;
     }
 
     public function getTemplateId(AdherentMessageInterface $message): ?int

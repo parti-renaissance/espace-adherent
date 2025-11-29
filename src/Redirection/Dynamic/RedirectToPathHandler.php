@@ -14,7 +14,7 @@ class RedirectToPathHandler extends AbstractRedirectTo implements RedirectToInte
         $this->provider = $provider;
     }
 
-    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, int $redirectCode): bool
     {
         foreach ($this->provider->get(RedirectionsProvider::TO_PATH) as $pattern => $path) {
             if (!$this->hasPattern($pattern, $requestUri)) {

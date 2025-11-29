@@ -23,7 +23,7 @@ class ManageCommitteeMandatesVoter extends AbstractAdminVoter
     /**
      * @param Committee $committee
      */
-    protected function doVoteOnAttribute(string $attribute, Administrator $administrator, $committee): bool
+    protected function doVoteOnAttribute(string|int $attribute, Administrator $administrator, $committee): bool
     {
         if (!$committee->isApproved()) {
             return false;

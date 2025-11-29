@@ -58,7 +58,7 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
         $this
             ->context
             ->buildViolation($message)
-            ->setParameter('{{ surveyQuestionId }}', $surveyQuestionId)
+            ->setParameter('{{ surveyQuestionId }}', (string) $surveyQuestionId)
             ->atPath('surveyQuestion')
             ->addViolation()
         ;

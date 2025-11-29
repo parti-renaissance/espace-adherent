@@ -6,6 +6,7 @@ use App\Entity\Chatbot\Chatbot;
 use App\Entity\Chatbot\Thread;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class ThreadRepository extends ServiceEntityRepository
 {
@@ -14,7 +15,7 @@ class ThreadRepository extends ServiceEntityRepository
         parent::__construct($registry, Thread::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Thread
+    public function findOneByUuid(UuidInterface|string $uuid): ?Thread
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

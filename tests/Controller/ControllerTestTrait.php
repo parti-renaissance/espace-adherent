@@ -22,9 +22,9 @@ trait ControllerTestTrait
 {
     use TestHelperTrait;
 
-    public function assertResponseStatusCode(int $statusCode, Response $response, string $message = '')
+    public function assertResponseStatusCode(int $statusCode, Response $response, string $message = ''): void
     {
-        $this->assertSame($statusCode, $response->getStatusCode(), $message);
+        self::assertSame($statusCode, $response->getStatusCode(), $message);
     }
 
     public function assertClientIsRedirectedTo(

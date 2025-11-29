@@ -21,7 +21,7 @@ class ZoneableEntityVoter extends AbstractAdminVoter
         return (string) self::ROLE_ADMIN_OBJECT_IN_USER_ZONES === $attribute;
     }
 
-    protected function doVoteOnAttribute(string $attribute, Administrator $administrator, $subject): bool
+    protected function doVoteOnAttribute(string|int $attribute, Administrator $administrator, $subject): bool
     {
         if ($administrator->getZones()->isEmpty()) {
             return true;

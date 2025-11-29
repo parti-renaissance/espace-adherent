@@ -49,6 +49,6 @@ class JecouteManagedArea
 
     public function __toString(): string
     {
-        return $this->zone;
+        return (string) $this->zone;
     }
 }

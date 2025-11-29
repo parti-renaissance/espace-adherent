@@ -82,7 +82,7 @@ abstract class AbstractPollController extends AbstractController
         PollManager $pollManager,
     ): Response {
         $author = $localPoll->getAuthor();
-        if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {
+        if ($author === $this->getMainUser($request->getSession())) {
             $zones = $this->getZones($author);
         } else {
             $zones = [$localPoll->getZone()];

@@ -20,7 +20,7 @@ final class Version20220429114235 extends AbstractMigration
         CHANGE
           scope scope VARCHAR(255) DEFAULT NULL');
 
-        $this->addSql('ALTER TABLE 
+        $this->addSql('ALTER TABLE
             adherent_message_filters
         CHANGE created_at created_at DATETIME NOT NULL,
         CHANGE updated_at updated_at DATETIME NOT NULL');

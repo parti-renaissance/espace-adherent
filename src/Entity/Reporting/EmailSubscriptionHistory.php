@@ -76,7 +76,7 @@ class EmailSubscriptionHistory
 
     public function getSubscriptionType(): string
     {
-        return $this->subscriptionType;
+        return (string) $this->subscriptionType;
     }
 
     public function getDate(): \DateTimeImmutable

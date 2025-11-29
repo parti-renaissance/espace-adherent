@@ -44,7 +44,7 @@ class Processor
         $winnerListIds = [];
         foreach ($quotients as $listIdentifier => $quotient) {
             if ($quotient === $max) {
-                $winnerListIds[] = $listIdentifier;
+                $winnerListIds[] = (string) $listIdentifier;
             }
         }
 
@@ -54,7 +54,7 @@ class Processor
             $maxVote = 0;
             foreach ($winnerListIds as $listId) {
                 $list = $election->findListByIdentifier($listId);
-                if ($list->totalVotes > $maxVote) {
+                if ($list && $list->totalVotes > $maxVote) {
                     $maxVote = $list->totalVotes;
                     $winnerList = $list;
                 }

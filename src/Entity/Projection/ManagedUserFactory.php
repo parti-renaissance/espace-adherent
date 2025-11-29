@@ -58,9 +58,9 @@ class ManagedUserFactory
 
     private function getAge(\DateTimeInterface $date): int
     {
-        $age = date('Y') - date('Y', $date->getTimestamp());
+        $age = (int) date('Y') - (int) date('Y', $date->getTimestamp());
 
-        if (date('md') < date('md', $date->getTimestamp())) {
+        if ((int) date('md') < (int) date('md', $date->getTimestamp())) {
             return $age - 1;
         }
 

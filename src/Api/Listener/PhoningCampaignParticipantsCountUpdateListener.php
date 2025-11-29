@@ -46,7 +46,7 @@ class PhoningCampaignParticipantsCountUpdateListener implements EventSubscriberI
 
         if ($campaign->getAudience()) {
             try {
-                $campaign->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
+                $campaign->setParticipantsCount((int) $this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
                 $this->entityManager->flush();
             } catch (\Exception $e) {
                 $this->logger->error(

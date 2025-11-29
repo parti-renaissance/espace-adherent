@@ -140,7 +140,7 @@ class CommitteeCandidacy extends BaseCandidacy
     #[Assert\IsTrue(groups: ['committee_supervisor_candidacy', 'accept_invitation'], message: 'Photo est obligatoire')]
     public function isValid(): bool
     {
-        return $this->hasImageName() && !$this->isRemoveImage()
+        return ($this->hasImageName() && !$this->isRemoveImage())
             || $this->getImage();
     }
 

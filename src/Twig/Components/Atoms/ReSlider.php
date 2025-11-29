@@ -19,12 +19,12 @@ class ReSlider
 
     private function getStep(): int
     {
-        return $this->step ?? ($this->stepBy ?? 'null');
+        return $this->step ?? ($this->stepBy ?? 0);
     }
 
     private function getStepBy(): int
     {
-        return $this->stepBy ?? ($this->step ?? 'null');
+        return $this->stepBy ?? ($this->step ?? 0);
     }
 
     private function getPipe(): string

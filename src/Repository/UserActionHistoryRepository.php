@@ -15,7 +15,8 @@ class UserActionHistoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param  UserActionHistoryTypeEnum[] $types
+     * @param UserActionHistoryTypeEnum[] $types
+     *
      * @return UserActionHistory[]
      */
     public function findToNotifyOnTelegram(array $types): array

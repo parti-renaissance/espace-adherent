@@ -38,7 +38,7 @@ class MajorityJudgmentCalculator extends AbstractResultCalculator
         Processor::process($election);
 
         foreach ($electionPoolResult->getCandidateGroupResults() as $result) {
-            $candidate = $election->findCandidate($result->getCandidateGroup()->getId());
+            $candidate = $election->findCandidate((string) $result->getCandidateGroup()->getId());
             if ($candidate->getMajorityMention()) {
                 $result->setMajorityMention($candidate->getMajorityMention()->getValue());
             }

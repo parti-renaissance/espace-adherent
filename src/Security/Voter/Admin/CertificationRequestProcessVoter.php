@@ -17,7 +17,7 @@ class CertificationRequestProcessVoter extends AbstractAdminVoter
     /**
      * @param CertificationRequest $subject
      */
-    protected function doVoteOnAttribute(string $attribute, Administrator $administrator, $subject): bool
+    protected function doVoteOnAttribute(string|int $attribute, Administrator $administrator, $subject): bool
     {
         switch ($attribute) {
             case CertificationPermissions::APPROVE:

@@ -34,13 +34,13 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
         $queryBuilder = $datagrid->getQuery();
         $alias = $queryBuilder->getAllAliases()[0];
 
-        foreach (explode(' ', $value) as $key => $value) {
+        foreach (explode(' ', $value) as $key => $v) {
             $conditions = (new Expr())->orX();
             foreach ($property as $prop) {
                 $conditions->add($alias.'.'.$prop.' LIKE :search_'.$key);
             }
             $queryBuilder->andWhere($conditions);
-            $queryBuilder->setParameter('search_'.$key, '%'.$value.'%');
+            $queryBuilder->setParameter('search_'.$key, '%'.$v.'%');
         }
     }
 

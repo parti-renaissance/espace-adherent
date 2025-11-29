@@ -17,7 +17,7 @@ class RedirectToAdminPanelHandler implements RedirectToInterface
         $this->redirectionManager = $redirectionManager;
     }
 
-    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, int $redirectCode): bool
     {
         if ($redirection = $this->redirectionManager->getRedirection($requestUri)) {
             $event->setResponse(new RedirectResponse($redirection->getTo(), $redirection->getType()));

@@ -39,23 +39,20 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
             return null;
         }
 
-        if ($majorityPrime) {
-            $primeSeats = $seats * $majorityPrime / 100;
+        if ($majorityPrime > 0) {
+            $calculated = $seats * ($majorityPrime / 100);
 
-            if (\intval($primeSeats) != $primeSeats) {
-                $primeSeats = round(
-                    \intval($primeSeats) + 0.5,
-                    0,
-                    $majorityPrimeRoundSubMode ? \PHP_ROUND_HALF_UP : \PHP_ROUND_HALF_DOWN
-                );
-            }
+            $primeSeats = (int) ($majorityPrimeRoundSubMode
+                ? ceil($calculated)
+                : floor($calculated)
+            );
         }
 
         Processor::process($electionToProcess = new Election(
             $seats - $primeSeats,
-            array_map(function (CandidateGroupResult $candidateGroupResult) {
+            array_map(static function (CandidateGroupResult $candidateGroupResult) {
                 return new PartyList(
-                    $candidateGroupResult->getCandidateGroup()->getId(),
+                    (string) $candidateGroupResult->getCandidateGroup()->getId(),
                     $candidateGroupResult->getTotal()
                 );
             }, $candidateGroupResults = $electionPoolResult->getCandidateGroupResults())

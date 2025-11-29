@@ -133,7 +133,7 @@ class ElectionPoolResult
         return $this->blank;
     }
 
-    public function getBlankRate(): int
+    public function getBlankRate(): float
     {
         $total = $this->getExpressed(true);
 

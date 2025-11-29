@@ -40,7 +40,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('has-no-participants-count', InputOption::VALUE_NONE)
+            ->addOption('has-no-participants-count', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -70,7 +70,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         do {
             foreach ($paginator as $campaign) {
                 try {
-                    $campaign->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
+                    $campaign->setParticipantsCount((int) $this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
 
                     $this->entityManager->flush();
                 } catch (\Exception $e) {

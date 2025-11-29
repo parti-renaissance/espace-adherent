@@ -53,7 +53,7 @@ class Payment
         $payment->date = $data['date'] ? \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['date']) : null;
         $payment->method = $data['payment_method_name'];
         $payment->status = $data['payment_status'];
-        $payment->amount = round($data['amount']);
+        $payment->amount = (int) round($data['amount']);
 
         return $payment;
     }

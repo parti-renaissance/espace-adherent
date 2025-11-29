@@ -55,12 +55,12 @@ class DonationTest extends TestCase
     private function createDonation(
         ?string $donatedAt = null,
         string $type = Donation::TYPE_CB,
-        string $duration = PayboxPaymentSubscription::UNLIMITED,
+        int $duration = PayboxPaymentSubscription::UNLIMITED,
     ): Donation {
         return new Donation(
             Uuid::uuid4(),
             $type,
-            '10',
+            10,
             $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
             $this->createMock(PostAddress::class),
             '127.0.0.1',
@@ -76,7 +76,7 @@ class DonationTest extends TestCase
             new Donation(
                 $uuid,
                 'cb',
-                '10',
+                10,
                 \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 PostAddress::createEmptyAddress(),
                 '127.0.0.1',
@@ -101,7 +101,7 @@ class DonationTest extends TestCase
             new Donation(
                 $uuid,
                 'cb',
-                '10',
+                10,
                 \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 PostAddress::createEmptyAddress(),
                 '127.0.0.1',

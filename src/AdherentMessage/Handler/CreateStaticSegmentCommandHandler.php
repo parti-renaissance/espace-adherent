@@ -25,7 +25,7 @@ class CreateStaticSegmentCommandHandler
         /** @var StaticSegmentInterface $object */
         $object = $this->entityManager
             ->getRepository($command->getEntityClass())
-            ->findOneByUuid($command->getUuid()->toString())
+            ->findOneByUuid($command->getUuid())
         ;
 
         if (!$object) {

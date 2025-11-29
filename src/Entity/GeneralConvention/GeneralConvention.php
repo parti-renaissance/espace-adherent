@@ -159,6 +159,6 @@ class GeneralConvention implements EntityAdministratorBlameableInterface
 
     public function __toString(): string
     {
-        return $this->departmentZone;
+        return (string) $this->departmentZone;
     }
 }

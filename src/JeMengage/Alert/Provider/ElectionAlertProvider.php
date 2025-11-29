@@ -48,7 +48,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                     $designation->alertTitle,
                     $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,
-                    $this->loginLinkHandler->createLoginLink($adherent, targetPath: $targetPath ?? null)
+                    $this->loginLinkHandler->createLoginLink($adherent, targetPath: $targetPath ?? null)->getUrl()
                 );
                 $alert->date = $designation->getSortableAlertDate();
             }

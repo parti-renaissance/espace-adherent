@@ -55,7 +55,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'DUFOUR',
             new \DateTime('1972-11-23'),
             'female',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
+            self::ELECTED_REPRESENTATIVE_1_UUID
         );
         $erAdherent92->setAdherent($this->getReference('adherent-5', Adherent::class));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
@@ -71,7 +71,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LabelNameEnum::LAREM,
             $erAdherent92,
             true,
-            '2017'
+            2017
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_1_UUID),
@@ -113,14 +113,14 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'BOUILLOUX',
             new \DateTime('1977-08-02'),
             'female',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
+            self::ELECTED_REPRESENTATIVE_2_UUID
         );
         $erCityCouncilWithFinishedFunction->setContactPhone(PhoneNumberUtils::create('+330999887766'));
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $erCityCouncilWithFinishedFunction,
             true,
-            '2016'
+            2016
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_2_UUID),
@@ -174,20 +174,20 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'BOULON',
             new \DateTime('1951-03-04'),
             null,
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
+            self::ELECTED_REPRESENTATIVE_3_UUID
         );
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $er2Mandates,
             false,
-            '2014',
-            '2018'
+            2014,
+            2018
         );
         $label2 = new ElectedRepresentativeLabel(
             LabelNameEnum::GS,
             $er2Mandates,
             true,
-            '2018'
+            2018
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_3_UUID),
@@ -243,13 +243,13 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'BUET',
             new \DateTime('1952-04-21'),
             'male',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_4_UUID)
+            self::ELECTED_REPRESENTATIVE_4_UUID
         );
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::OTHER,
             $er2MandatesOneFinished,
             true,
-            '2014'
+            2014
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_5_UUID),
@@ -295,20 +295,20 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'OFFICIELID',
             new \DateTime('1951-11-03'),
             'male',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_5_UUID)
+            self::ELECTED_REPRESENTATIVE_5_UUID
         );
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::MRC,
             $erEuroDeputy2Labels,
             false,
-            '2014',
-            '2017'
+            2014,
+            2017
         );
         $label2 = new ElectedRepresentativeLabel(
             LabelNameEnum::GS,
             $erEuroDeputy2Labels,
             true,
-            '2017'
+            2017
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_7_UUID),
@@ -334,7 +334,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'LOBELL',
             new \DateTime('1951-11-03'),
             'male',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_6_UUID)
+            self::ELECTED_REPRESENTATIVE_6_UUID
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_8_UUID),
@@ -398,7 +398,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'PASELU',
             new \DateTime('1981-01-03'),
             'male',
-            Uuid::fromString(self::ELECTED_REPRESENTATIVE_7_UUID)
+            self::ELECTED_REPRESENTATIVE_7_UUID
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_10_UUID),

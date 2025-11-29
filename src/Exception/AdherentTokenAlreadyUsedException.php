@@ -8,7 +8,7 @@ final class AdherentTokenAlreadyUsedException extends AdherentTokenException
 {
     public function __construct(AdherentExpirableTokenInterface $token, ?\Exception $previous = null)
     {
-        $message = \sprintf('The %s token %s was already used on %s.', $token->getType(), $token->getValue(), $token->getUsageDate()->format(\DATE_ISO8601));
+        $message = \sprintf('The %s token %s was already used on %s.', $token->getType(), $token->getValue(), $token->getUsageDate()->format(\DATE_ATOM));
 
         parent::__construct($token, $message, $previous);
     }

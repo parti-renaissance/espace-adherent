@@ -18,5 +18,5 @@ abstract class AbstractAdminVoter extends Voter
         return $this->doVoteOnAttribute($attribute, $administrator, $subject);
     }
 
-    abstract protected function doVoteOnAttribute(string $attribute, Administrator $administrator, $subject): bool;
+    abstract protected function doVoteOnAttribute(string|int $attribute, Administrator $administrator, $subject): bool;
 }
