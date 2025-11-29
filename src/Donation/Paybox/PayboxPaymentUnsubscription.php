@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Donation\Paybox;
 
 use App\Entity\Adherent;
@@ -29,7 +31,7 @@ class PayboxPaymentUnsubscription
         parse_str($this->request->cancel($donation->getPayboxOrderRef()), $result);
 
         if ('OK' !== $result['ACQ']) {
-            throw new PayboxPaymentUnsubscriptionException($result['ERREUR']);
+            throw new PayboxPaymentUnsubscriptionException((int) $result['ERREUR']);
         }
 
         $donation->stopSubscription();

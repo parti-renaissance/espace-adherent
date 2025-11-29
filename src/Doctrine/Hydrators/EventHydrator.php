@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine\Hydrators;
 
 use App\Address\AddressInterface;
@@ -63,7 +65,7 @@ class EventHydrator extends AbstractHydrator
                 $uuidOrganizer,
                 $row['adherent_public_id'],
                 $row['adherent_email_address'],
-                $uuidOrganizer,
+                $uuidOrganizer->toString(),
                 $row['adherent_gender'],
                 $row['adherent_first_name'],
                 $row['adherent_last_name'],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Behat\Context;
 
 use App\Repository\Email\EmailLogRepository;

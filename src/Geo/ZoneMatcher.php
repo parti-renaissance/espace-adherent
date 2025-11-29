@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Geo;
 
 use App\Address\AddressInterface;
@@ -44,7 +46,7 @@ class ZoneMatcher
         if ($isFrance) {
             // Borough or city
             $zones[] =
-                $this->repository->findOneBy(['code' => str_pad($address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => [Zone::BOROUGH, Zone::CITY]])
+                $this->repository->findOneBy(['code' => str_pad((string) $address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => [Zone::BOROUGH, Zone::CITY]])
                     ?: ($this->matchPostalCode($address->getPostalCode()
                         ?: $this->matchPostalCode($address->getPostalCode(), $address->getCityName())));
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\JeMengage\Alert\Provider;
 
 use App\Entity\Adherent;
@@ -27,7 +29,7 @@ class AppAlertProvider implements AlertProviderInterface
 
         foreach ($appAlerts as $appAlert) {
             if ($appAlert->withMagicLink && $appAlert->ctaUrl) {
-                $ctaUrl = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $appAlert->ctaUrl);
+                $ctaUrl = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $appAlert->ctaUrl)->getUrl();
             }
             $alerts[] = $alert = Alert::createFromAppAlert($appAlert, $ctaUrl ?? null);
             $alert->date = $appAlert->beginAt;

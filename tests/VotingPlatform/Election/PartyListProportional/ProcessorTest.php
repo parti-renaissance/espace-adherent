@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\VotingPlatform\Election\PartyListProportional;
 
 use App\VotingPlatform\Election\PartyListProportional\Model\Election;

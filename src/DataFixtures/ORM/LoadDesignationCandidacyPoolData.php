@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures\ORM;
 
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator\Jecoute;
 
 use App\Entity\Jecoute\News;
@@ -25,6 +27,8 @@ class NewsContentValidator extends ConstraintValidator
                 ->atPath($constraint->path)
                 ->addViolation()
             ;
+
+            return;
         }
 
         if (mb_strlen($value->getContent()) > $constraint->contentLength) {

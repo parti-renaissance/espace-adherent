@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
@@ -162,6 +164,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     public function testCampusInscription(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');

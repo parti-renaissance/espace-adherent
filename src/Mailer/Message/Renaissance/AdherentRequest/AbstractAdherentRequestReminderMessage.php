@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer\Message\Renaissance\AdherentRequest;
 
 use App\Entity\Renaissance\Adhesion\AdherentRequest;

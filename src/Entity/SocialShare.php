@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\SocialShareRepository;
@@ -24,7 +26,7 @@ class SocialShare
         self::TYPE_PDF,
     ];
 
-    #[ORM\Column(type: 'bigint')]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     #[ORM\Id]
     private $id;
@@ -82,7 +84,7 @@ class SocialShare
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     public function getId(): int

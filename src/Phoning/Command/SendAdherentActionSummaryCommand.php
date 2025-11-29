@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Phoning\Command;
 
 use App\Entity\Phoning\CampaignHistory;

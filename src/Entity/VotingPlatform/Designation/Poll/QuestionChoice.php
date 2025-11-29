@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\VotingPlatform\Designation\Poll;
 
 use App\Entity\EntityIdentityTrait;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\FranceCities;
 
 use App\Entity\Geo\Zone;
@@ -54,7 +56,7 @@ class FranceCities
         foreach ($citiesList as $inseeCode => $city) {
             $matchFilters = false;
             foreach ($filters as $filter) {
-                if (str_starts_with($inseeCode, $filter)) {
+                if (str_starts_with((string) $inseeCode, $filter)) {
                     $matchFilters = true;
                     break;
                 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter\Admin;
 
 use App\Adherent\Certification\CertificationPermissions;

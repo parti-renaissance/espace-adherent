@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\NationalEvent\Api\State;
 
 use ApiPlatform\Metadata\Operation;

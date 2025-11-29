@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ElectedRepresentative\Filter;
 
 use App\Entity\Adherent;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Geo\Http;
 
 use App\Adherent\MandateTypeEnum;

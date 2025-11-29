@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Procuration;
 
 use App\Entity\ProcurationV2\Proxy as ProcurationProxy;

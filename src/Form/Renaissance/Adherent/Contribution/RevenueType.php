@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Renaissance\Adherent\Contribution;
 
 use App\Adherent\Contribution\ContributionRequest;

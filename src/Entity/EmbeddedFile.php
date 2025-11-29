@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -74,12 +76,20 @@ class EmbeddedFile
 
     public function getWidth(): ?int
     {
-        return $this->dimensions[0] ?? null;
+        if ($this->dimensions[0]) {
+            return (int) $this->dimensions[0];
+        }
+
+        return null;
     }
 
     public function getHeight(): ?int
     {
-        return $this->dimensions[1] ?? null;
+        if ($this->dimensions[1]) {
+            return (int) $this->dimensions[1];
+        }
+
+        return null;
     }
 
     public function isEmpty(): bool

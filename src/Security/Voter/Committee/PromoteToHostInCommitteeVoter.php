@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter\Committee;
 
 use App\Committee\CommitteeManager;

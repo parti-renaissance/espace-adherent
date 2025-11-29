@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer\Message\Renaissance\Certification;
 
 use App\Entity\CertificationRequest;

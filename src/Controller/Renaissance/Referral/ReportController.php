@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Renaissance\Referral;
 
 use App\Adherent\Referral\ReportHandler;

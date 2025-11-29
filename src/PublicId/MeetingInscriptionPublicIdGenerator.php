@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\PublicId;
 
 use App\Repository\NationalEvent\EventInscriptionRepository;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\JeMengage\Hit\Handler;
 
 use App\Entity\Adherent;
@@ -43,7 +45,7 @@ class SaveAppHitCommandHandler
             $hit->referrer = $this->adherentRepository->findByPublicId($hit->referrerCode, true);
         }
 
-        if (str_contains($hit->source, 'notification')) {
+        if (str_contains((string) $hit->source, 'notification')) {
             $hit->sourceGroup = SourceGroupEnum::Notification;
         }
 

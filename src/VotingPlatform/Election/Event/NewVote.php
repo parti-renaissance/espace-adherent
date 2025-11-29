@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\VotingPlatform\Election\Event;
 
 use App\Entity\VotingPlatform\Election;

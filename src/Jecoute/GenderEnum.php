@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jecoute;
 
 use MyCLabs\Enum\Enum;

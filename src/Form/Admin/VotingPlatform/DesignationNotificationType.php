@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Admin\VotingPlatform;
 
 use App\Entity\VotingPlatform\Designation\Designation;

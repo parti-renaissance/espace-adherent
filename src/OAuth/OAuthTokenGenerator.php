@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OAuth;
 
 use App\OAuth\Model\GrantTypeEnum;

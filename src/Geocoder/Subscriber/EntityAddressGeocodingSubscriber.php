@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Geocoder\Subscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;

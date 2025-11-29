@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Api\Validator;
 
 use ApiPlatform\Symfony\Validator\ValidationGroupsGeneratorInterface;

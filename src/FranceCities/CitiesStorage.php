@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\FranceCities;
 
 use App\Repository\Geo\ZoneRepository;

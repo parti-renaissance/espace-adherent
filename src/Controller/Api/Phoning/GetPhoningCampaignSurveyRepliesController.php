@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Phoning;
 
 use App\Entity\Phoning\Campaign;

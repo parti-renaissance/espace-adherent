@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Formation;
 
 use App\Entity\Formation\Module;

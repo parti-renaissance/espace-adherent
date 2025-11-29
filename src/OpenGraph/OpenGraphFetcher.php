@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OpenGraph;
 
 use Fusonic\OpenGraph\Consumer;

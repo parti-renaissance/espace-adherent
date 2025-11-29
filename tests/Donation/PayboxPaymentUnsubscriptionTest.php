@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Donation;
 
 use App\Donation\Paybox\PayboxPaymentUnsubscription;
@@ -19,7 +21,7 @@ class PayboxPaymentUnsubscriptionTest extends AbstractKernelTestCase
         $payboxPaymentUnsubscribtion = $this->createPayboxPaymentUnsubscriptionError();
 
         $this->expectException(PayboxPaymentUnsubscriptionException::class);
-        $this->expectExceptionMessage('Echec de la résiliation. Aucun abonnement résilié');
+        $this->expectExceptionMessage('Échec de la résiliation. Aucun abonnement résilié');
 
         $payboxPaymentUnsubscribtion->unsubscribe($donation);
     }

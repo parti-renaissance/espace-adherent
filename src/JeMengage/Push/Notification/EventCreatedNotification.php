@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\JeMengage\Push\Notification;
 
 use App\Entity\Event\Event;

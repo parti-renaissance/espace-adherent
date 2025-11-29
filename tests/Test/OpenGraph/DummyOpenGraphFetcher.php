@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\App\Test\OpenGraph;
 
 use App\OpenGraph\OpenGraphFetcher;

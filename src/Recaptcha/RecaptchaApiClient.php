@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Recaptcha;
 
 use Google\Cloud\RecaptchaEnterprise\V1\Assessment;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\VotingPlatform\AdherentMandate\Factory;
 
 use App\Entity\AdherentMandate\AdherentMandateInterface;

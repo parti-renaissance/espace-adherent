@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Phoning\Handler;
 
 use App\Mailer\MailerService;

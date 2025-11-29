@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Renaissance\Adhesion;
 
 use App\Adhesion\AdherentRequestReminderTypeEnum;

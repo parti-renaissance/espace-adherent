@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Admin\Procuration;
 
 use App\Procuration\V2\InitialRequestTypeEnum;

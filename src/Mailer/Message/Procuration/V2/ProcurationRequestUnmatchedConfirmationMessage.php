@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer\Message\Procuration\V2;
 
 use App\Entity\Adherent;

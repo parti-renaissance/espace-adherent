@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\AdherentMessage\Segment;
 
 use App\Entity\AdherentMessage\Segment\AudienceSegment;

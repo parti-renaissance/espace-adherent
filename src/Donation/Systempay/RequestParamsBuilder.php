@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Donation\Systempay;
 
 use App\BesoinDEurope\Donation\DonationRequest;

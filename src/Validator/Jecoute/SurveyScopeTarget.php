@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator\Jecoute;
 
 use Symfony\Component\Validator\Constraint;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator;
 
 use App\Repository\AdherentRepository;
@@ -30,7 +32,7 @@ class AdherentUuidValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', $value->toString())
                 ->addViolation()
             ;
         }

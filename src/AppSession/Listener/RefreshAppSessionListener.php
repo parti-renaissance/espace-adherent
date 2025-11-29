@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\AppSession\Listener;
 
 use App\AppSession\Manager;

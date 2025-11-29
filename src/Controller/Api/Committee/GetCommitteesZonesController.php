@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Committee;
 
 use App\Geo\Http\ZoneAutocompleteFilter;

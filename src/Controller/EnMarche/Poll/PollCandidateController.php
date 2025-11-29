@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\EnMarche\Poll;
 
 use App\AdherentSpace\AdherentSpaceEnum;

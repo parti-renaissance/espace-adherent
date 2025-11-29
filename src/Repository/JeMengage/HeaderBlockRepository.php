@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\JeMengage;
 
 use App\Entity\JeMengage\HeaderBlock;

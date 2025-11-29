@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\OAuth\Store;
 
 use App\Entity\OAuth\AuthorizationCode as PersistentAuthorizationCode;

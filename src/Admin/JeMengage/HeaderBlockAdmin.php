@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\JeMengage;
 
 use App\Admin\AbstractAdmin;

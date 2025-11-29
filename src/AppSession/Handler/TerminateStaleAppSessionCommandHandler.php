@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\AppSession\Handler;
 
 use App\AppSession\Command\TerminateStaleAppSessionCommand;

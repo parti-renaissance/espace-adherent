@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Donation\Paybox;
 
 use MyCLabs\Enum\Enum;
@@ -10,12 +12,12 @@ class PayboxPaymentUnsubscriptionErrorEnum extends Enum
     public const ERROR_2 = 'Données non cohérentes';
     public const ERROR_3 = 'Incident technique (Accès à la base de données)';
     public const ERROR_4 = 'Site inconnu';
-    public const ERROR_9 = 'Echec de la résiliation. Aucun abonnement résilié';
+    public const ERROR_9 = 'Échec de la résiliation. Aucun abonnement résilié';
 
     public static function getMessage(int $codeError): string
     {
         if (static::isValidKey($key = "ERROR_$codeError")) {
-            return static::$key();
+            return (string) static::$key();
         }
 
         return 'Error unknown';

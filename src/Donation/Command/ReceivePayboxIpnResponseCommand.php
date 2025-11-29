@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Donation\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;

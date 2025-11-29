@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Search;
 
 use App\Geocoder\Coordinates;
@@ -81,8 +83,8 @@ class SearchParametersFilter
         $this->setType($request->query->get(self::PARAMETER_TYPE, ''));
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS, self::DEFAULT_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
-        $this->setEventCategory($request->query->get(self::PARAMETER_EVENT_CATEGORY, null));
-        $this->setReferentEvents($request->query->getBoolean(self::PARAMETER_REFERENT_EVENTS, false));
+        $this->setEventCategory($request->query->getInt(self::PARAMETER_EVENT_CATEGORY));
+        $this->setReferentEvents($request->query->getBoolean(self::PARAMETER_REFERENT_EVENTS));
 
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);
@@ -183,12 +185,12 @@ class SearchParametersFilter
         return $this->maxResults;
     }
 
-    public function getEventCategory(): ?string
+    public function getEventCategory(): ?int
     {
         return $this->eventCategory;
     }
 
-    public function setEventCategory(?string $eventCategory): void
+    public function setEventCategory(?int $eventCategory): void
     {
         $this->eventCategory = $eventCategory;
     }

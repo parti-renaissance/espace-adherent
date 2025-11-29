@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Donation\Listener;
 
 use App\Adhesion\Events\NewCotisationEvent;

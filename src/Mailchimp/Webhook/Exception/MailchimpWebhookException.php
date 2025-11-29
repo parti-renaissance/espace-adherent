@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailchimp\Webhook\Exception;
 
 class MailchimpWebhookException extends \InvalidArgumentException

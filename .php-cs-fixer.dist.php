@@ -18,7 +18,7 @@ return (new PhpCsFixer\Config())
         '@Symfony' => true,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,
-        'declare_strict_types' => false, // pass to true when ready
+        'declare_strict_types' => true,
         'use_arrow_functions' => false,
         'no_superfluous_phpdoc_tags' => true,
         'concat_space' => ['spacing' => 'none'],

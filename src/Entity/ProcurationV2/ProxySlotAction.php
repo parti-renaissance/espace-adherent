@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\ProcurationV2;
 
 use App\Procuration\V2\SlotActionStatusEnum;

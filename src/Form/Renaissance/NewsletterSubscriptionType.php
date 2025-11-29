@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Renaissance;
 
 use App\Renaissance\Newsletter\SubscriptionRequest;

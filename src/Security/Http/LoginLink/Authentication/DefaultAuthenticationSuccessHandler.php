@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Http\LoginLink\Authentication;
 
 use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;

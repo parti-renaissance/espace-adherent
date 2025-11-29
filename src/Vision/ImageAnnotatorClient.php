@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Vision;
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient as GoogleImageAnnotatorClient;

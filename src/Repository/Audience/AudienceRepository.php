@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Audience;
 
 use App\Entity\Audience\Audience;

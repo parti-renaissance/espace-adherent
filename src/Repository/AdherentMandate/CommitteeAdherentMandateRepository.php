@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\AdherentMandate;
 
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
