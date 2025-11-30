@@ -74,23 +74,5 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::SENATOR => [
             Zone::DEPARTMENT,
         ],
-        ScopeEnum::NATIONAL_COMMUNICATION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
-        ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
-        ScopeEnum::NATIONAL_FORMATION_DIVISION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
-        ScopeEnum::NATIONAL_IDEAS_DIVISION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
-        ScopeEnum::NATIONAL_TERRITORIES_DIVISION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
-        ScopeEnum::NATIONAL_TECH_DIVISION => [
-            Zone::COUNTRY => [AddressInterface::FRANCE],
-        ],
     ];
 }

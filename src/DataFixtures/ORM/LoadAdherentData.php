@@ -570,7 +570,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-06-01 09:26:31',
         ]);
         $deputy_75_1->setNationalRole(true);
-        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createNational(ScopeEnum::NATIONAL_COMMUNICATION, LoadGeoZoneData::getZoneReference($manager, 'zone_country_FR')));
+        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createNational(ScopeEnum::NATIONAL_COMMUNICATION));
         $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')));
         $deputy_75_1->setPhoningManagerRole(true);
         $deputy_75_1->setPapNationalManagerRole(true);
@@ -939,7 +939,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createProcurationManager([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createMunicipalPilot([LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056')]));
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createFdeCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')]));
-        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createNational(ScopeEnum::NATIONAL_TECH_DIVISION, LoadGeoZoneData::getZoneReference($manager, 'zone_country_FR')));
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createNational(ScopeEnum::NATIONAL_TECH_DIVISION));
         $this->addReference('president-ad-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([

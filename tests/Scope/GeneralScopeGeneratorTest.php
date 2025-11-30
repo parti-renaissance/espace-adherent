@@ -50,10 +50,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ],
             [
                 'code' => 'national_communication',
-                'zones' => [[
-                    'code' => 'FR',
-                    'name' => 'France',
-                ]],
+                'zones' => [],
                 'apps' => ['data_corner'],
             ],
             [
@@ -176,10 +173,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ],
             [
                 'code' => 'national_tech_division',
-                'zones' => [[
-                    'code' => 'FR',
-                    'name' => 'France',
-                ]],
+                'zones' => [],
                 'apps' => ['data_corner'],
             ],
             [

@@ -467,7 +467,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->senderInstance = $scope->getScopeInstance();
         $this->senderRole = $scope->getMainRoleName();
         $this->senderTheme = $scope->getAttribute('theme');
-        $this->senderZone = implode(', ', $scope->getZoneNames());
+        $this->senderZone = implode(', ', $scope->getZoneNames()) ?: null;
     }
 
     public function setSender(Adherent $sender): void

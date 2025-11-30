@@ -978,3 +978,37 @@
         {{ parent() }}
     </div>
 {% endblock %}
+
+{% block app_admin_adherent_adherent_zone_based_role_zoneBasedRoles_zoneBasedRoles_entry_widget %}
+    {# Affiche le widget complet de la ligne (la collection de champs) #}
+    {{ form_widget(form) }}
+
+    <script>
+        (function($) {
+            var typeSelectId = '{{ form.type.vars.id }}';
+            var zonesInputId = '{{ form.zones.vars.id }}';
+
+            function toggleZones() {
+                var $typeSelect = $('#' + typeSelectId);
+                var $zonesRow = $('#sonata-ba-field-container-' + zonesInputId);
+
+                if ($zonesRow.length === 0) {
+                    return;
+                }
+
+                var show = String($typeSelect.val()).indexOf('national_') !== 0;
+                if (!show) {
+                    $zonesRow.find('input, select').val('').trigger('change');
+                }
+                $zonesRow.toggle(show);
+            }
+
+            $(document).ready(function() {
+                toggleZones();
+
+                $('#' + typeSelectId).on('change', toggleZones);
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

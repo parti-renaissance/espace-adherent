@@ -7,11 +7,14 @@ namespace App\Form\Admin;
 use App\Adherent\AdherentRoles;
 use App\Admin\AdherentZoneBasedRoleAdmin;
 use App\Entity\AdherentZoneBasedRole;
+use App\Scope\ScopeEnum;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -44,6 +47,16 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'help' => "Les rôles cachés ne sont pas visibles sur l'espace militant et l'espace cadre et permettent de contourner la contrainte d'unicité rôle/zone attribuée.",
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (isset($data['type']) && ScopeEnum::isNational($data['type'])) {
+                $data['zones'] = [];
+            }
+
+            $event->setData($data);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
