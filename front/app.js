@@ -92,26 +92,6 @@ class App {
             });
     }
 
-    runManagedList(columns, items) {
-        import('pages/managed_list')
-            .catch((error) => {
-                throw error;
-            })
-            .then((module) => {
-                module.default(columns, items);
-            });
-    }
-
-    runSocialShare(urlAll, urlCategory) {
-        import('pages/social_share')
-            .catch((error) => {
-                throw error;
-            })
-            .then((module) => {
-                module.default(urlAll, urlCategory);
-            });
-    }
-
     runCandidacyModal(triggerSelector) {
         import('pages/committee_candidacies')
             .catch((error) => {
