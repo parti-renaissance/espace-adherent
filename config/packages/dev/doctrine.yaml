@@ -1,3 +1,5 @@
 doctrine:
     dbal:
-        profiling_collect_backtrace: true
+        logging: '%kernel.debug%'
+        profiling: '%kernel.debug%'
+        profiling_collect_backtrace: '%kernel.debug%'
