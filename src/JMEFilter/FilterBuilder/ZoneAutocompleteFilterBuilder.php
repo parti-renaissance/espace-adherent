@@ -28,7 +28,7 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
     {
         $availableZoneTypes = PublicationZone::availableZoneTypes($scope);
 
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createFrom(ZoneAutocomplete::class, [
                 'code' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'zone' : 'zones',
                 'zone_types' => \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? ($availableZoneTypes ?: PublicationZone::ZONE_TYPES) : [],

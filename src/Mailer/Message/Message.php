@@ -229,13 +229,13 @@ class Message
 
     protected static function formatDate(\DateTimeInterface $date, string $format): string
     {
-        return (new \IntlDateFormatter(
+        return new \IntlDateFormatter(
             'fr_FR',
             \IntlDateFormatter::NONE,
             \IntlDateFormatter::NONE,
             $date->getTimezone(),
             \IntlDateFormatter::GREGORIAN,
             $format
-        ))->format($date);
+        )->format($date);
     }
 }

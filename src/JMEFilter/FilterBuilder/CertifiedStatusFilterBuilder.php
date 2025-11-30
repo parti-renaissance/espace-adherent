@@ -18,7 +18,7 @@ class CertifiedStatusFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createBooleanSelect('isCertified', 'Certifié')
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()

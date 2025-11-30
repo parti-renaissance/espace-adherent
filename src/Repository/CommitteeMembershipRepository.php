@@ -210,7 +210,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->innerJoin('cm.committee', 'c')
             ->innerJoin('cm.adherent', 'a')
             ->leftJoin('c.adherentMandates', 'am')
-            ->andWhere((new Orx())
+            ->andWhere(new Orx()
                 ->add('cm.privilege = :host')
                 ->add('am.quality = :supervisor AND am.finishAt IS NULL')
             )

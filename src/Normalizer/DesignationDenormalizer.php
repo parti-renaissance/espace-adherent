@@ -39,7 +39,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
             } elseif ($designation->isConsultationType() || $designation->isVoteType()) {
                 $designation->alertTitle = $designation->getTitle();
                 $designation->alertCtaLabel = $designation->alertCtaLabel ?: 'Voir';
-                $designation->alertDescription = (new UnicodeString($designation->getDescription() ?? ''))->truncate(200, '…', false)->toString();
+                $designation->alertDescription = new UnicodeString($designation->getDescription() ?? '')->truncate(200, '…', false)->toString();
                 $designation->alertBeginAt = $designation->getVoteStartDate() ? (clone $designation->getVoteStartDate())->modify('-2 days') : null;
             }
 

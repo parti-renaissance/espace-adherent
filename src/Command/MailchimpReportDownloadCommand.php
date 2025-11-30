@@ -56,7 +56,7 @@ class MailchimpReportDownloadCommand extends Command
 
         $from = null;
         if ($recentOnly) {
-            $from = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
+            $from = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
                 ->modify(\sprintf('-%d days', $recentDays))
             ;
         }

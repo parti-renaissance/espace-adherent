@@ -111,7 +111,7 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
 
         $chatMessage = new ChatMessage(
             implode(\PHP_EOL, $messageBlock),
-            (new TelegramOptions())
+            new TelegramOptions()
                 ->chatId($this->telegramChatIdDeclaredMandates)
                 ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2)
                 ->disableWebPagePreview(true)

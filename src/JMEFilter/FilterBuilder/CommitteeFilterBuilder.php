@@ -30,7 +30,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
     {
         $scopeObject = $this->scopeGeneratorResolver->generate();
 
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createSelect(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'committee' : 'committeeUuids', 'Comités')
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices($this->getCommitteeChoices($scopeObject))

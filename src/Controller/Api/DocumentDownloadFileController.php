@@ -30,7 +30,7 @@ class DocumentDownloadFileController extends AbstractController
         return HttpUtils::createResponse(
             $this->defaultStorage,
             $document->filePath,
-            (new Slugify())->slugify($document->title).'.'.pathinfo($document->filePath, \PATHINFO_EXTENSION)
+            new Slugify()->slugify($document->title).'.'.pathinfo($document->filePath, \PATHINFO_EXTENSION)
         );
     }
 }

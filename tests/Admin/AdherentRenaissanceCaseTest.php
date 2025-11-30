@@ -441,7 +441,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
                     'number' => '0123456789',
                 ],
                 'birthdate' => [
-                    'year' => (new \DateTime('-20 years'))->format('Y'),
+                    'year' => new \DateTime('-20 years')->format('Y'),
                     'month' => 1,
                     'day' => 1,
                 ],
@@ -631,7 +631,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
             ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'Too young for adhesion' => [
-            ['birthdate' => ['year' => (new \DateTime('-5 years'))->format('Y'), 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
+            ['birthdate' => ['year' => new \DateTime('-5 years')->format('Y'), 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'No membership type' => [

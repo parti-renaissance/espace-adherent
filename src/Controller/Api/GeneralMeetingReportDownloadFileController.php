@@ -26,7 +26,7 @@ class GeneralMeetingReportDownloadFileController extends AbstractController
         return HttpUtils::createResponse(
             $this->defaultStorage,
             $filePath,
-            (new Slugify())->slugify($generalMeetingReport->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
+            new Slugify()->slugify($generalMeetingReport->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
         );
     }
 }

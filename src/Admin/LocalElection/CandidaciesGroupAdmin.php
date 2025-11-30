@@ -43,7 +43,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
 
-        if (\in_array($action, ['edit'], true)) {
+        if ('edit' === $action) {
             if ($this->hasAccess('candidate_import', $object) && $this->hasRoute('candidate_import')) {
                 $actions['candidate_import'] = ['template' => 'admin/local_election/candidate_import_button.html.twig'];
             }

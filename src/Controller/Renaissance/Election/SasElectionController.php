@@ -53,7 +53,7 @@ class SasElectionController extends AbstractController
 
         return $exporter->getResponse(
             'csv',
-            (new AsciiSlugger())->slug($designation->getTitle()).'.csv',
+            new AsciiSlugger()->slug($designation->getTitle()).'.csv',
             new \ArrayIterator($repository->getVotes($designation))
         );
     }

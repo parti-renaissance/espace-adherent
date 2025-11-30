@@ -42,7 +42,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('elected_representative')
             ->leftJoin('elected_representative.adherent', 'adherent')
-            ->andWhere((new Orx())
+            ->andWhere(new Orx()
                 ->add('adherent.emailAddress = :email')
                 ->add('elected_representative.contactEmail = :email')
             )
@@ -109,7 +109,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('elected_representative')
-            ->andWhere((new Orx())
+            ->andWhere(new Orx()
                 ->add('elected_representative.adherent IS NOT NULL')
                 ->add('elected_representative.contactEmail IS NOT NULL')
             )

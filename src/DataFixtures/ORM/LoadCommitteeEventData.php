@@ -87,8 +87,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $hiddenEventCategory,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+3 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+3 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 10,
         ]);
         $eventHidden->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -102,8 +102,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+3 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+3 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -117,8 +117,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory1,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
-            'begin_at' => (new Chronos('+10 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+10 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+10 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+10 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event2->incrementParticipantsCount();
@@ -132,8 +132,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory2,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
-            'begin_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('tomorrow')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('tomorrow')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
             'private' => true,
             'electoral' => true,
@@ -149,8 +149,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory3,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
-            'begin_at' => (new Chronos('+15 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+15 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+15 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+15 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event4->incrementParticipantsCount();
@@ -163,8 +163,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory6,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
-            'begin_at' => (new Chronos('+17 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+17 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+17 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+17 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 1,
         ]);
         $event5->incrementParticipantsCount();
@@ -177,8 +177,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('+60 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('+60 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('+60 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('+60 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -237,8 +237,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Débatons ensemble du programme.',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('yesterday')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('yesterday')->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
         $event10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -253,8 +253,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de Singapour.',
             'address' => NullablePostAddress::createAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', null, null, 1.2835627, 103.8606872),
-            'begin_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => new Chronos('now', new \DateTimeZone('Asia/Singapore'))->modify('-4 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => new Chronos('now', new \DateTimeZone('Asia/Singapore'))->modify('-2 hours')->format('Y-m-d H:00:00'),
             'capacity' => 100,
             'time_zone' => 'Asia/Singapore',
         ]);
@@ -268,8 +268,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', null, 'New York', 40.7625289, -73.9859927),
-            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
             'time_zone' => 'America/New_York',
         ]);
@@ -283,8 +283,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', null, 'New York', 40.7625289, -73.9859927),
-            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
             'time_zone' => 'America/New_York',
         ]);
@@ -298,8 +298,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', null, 'New York', 40.7625289, -73.9859927),
-            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => new Chronos('now', new \DateTimeZone('America/New_York'))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
             'time_zone' => 'America/New_York',
         ]);
@@ -313,8 +313,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'HAPPINESS FOR EVERYBODY, FREE, AND NO ONE WILL GO AWAY UNSATISFIED!',
             'address' => NullablePostAddress::createAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, null, 47.321569, 8.549968799999988),
-            'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 10:00:00',
-            'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 18:00:00',
+            'begin_at' => new Chronos('yesterday')->format('Y-m-d').' 10:00:00',
+            'finish_at' => new Chronos('yesterday')->format('Y-m-d').' 18:00:00',
             'capacity' => 5,
             'time_zone' => 'Europe/Zurich',
         ]);
@@ -327,8 +327,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory9,
             'description' => 'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('now'))->format('Y-m-d').' 09:00:00',
-            'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
+            'begin_at' => new Chronos('now')->format('Y-m-d').' 09:00:00',
+            'finish_at' => new Chronos('now')->format('Y-m-d').' 18:00:00',
             'capacity' => 15,
         ]);
         $event16->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -342,8 +342,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory10,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('-3 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('-3 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('-3 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('-3 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
         $event17->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -357,8 +357,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory1,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('-10 days'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('-10 days'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('-10 days')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('-10 days')->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
         $event18->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -372,8 +372,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory5,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
-            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => new Chronos('-1 month')->format('Y-m-d').' 09:30:00',
+            'finish_at' => new Chronos('-1 month')->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event19->setPublished(true);
@@ -386,8 +386,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory3,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
-            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 10:30:00',
-            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:30:00',
+            'begin_at' => new Chronos('-1 month')->format('Y-m-d').' 10:30:00',
+            'finish_at' => new Chronos('-1 month')->format('Y-m-d').' 19:30:00',
             'capacity' => 50,
         ]);
         $event20->setPublished(true);
@@ -400,8 +400,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory3,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
-            'begin_at' => (new Chronos('+1 month'))->format('Y-m-d').' 10:30:00',
-            'finish_at' => (new Chronos('+1 month'))->format('Y-m-d').' 19:30:00',
+            'begin_at' => new Chronos('+1 month')->format('Y-m-d').' 10:30:00',
+            'finish_at' => new Chronos('+1 month')->format('Y-m-d').' 19:30:00',
             'capacity' => 50,
         ]);
         $event21->setPublished(true);
@@ -415,8 +415,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory6,
             'description' => 'Tractage sur le marché de la maire de clichy.',
             'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
-            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 15:30:00',
-            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 18:30:00',
+            'begin_at' => new Chronos('-1 month')->format('Y-m-d').' 15:30:00',
+            'finish_at' => new Chronos('-1 month')->format('Y-m-d').' 18:30:00',
             'capacity' => 50,
         ]);
         $event22->setPublished(true);

@@ -14,13 +14,13 @@ class FloatToStringTransformerTest extends TestCase
     #[DataProvider('floatToString')]
     public function testTransform($float, $string)
     {
-        $this->assertSame($string, (new FloatToStringTransformer())->transform($float));
+        $this->assertSame($string, new FloatToStringTransformer()->transform($float));
     }
 
     #[DataProvider('floatToString')]
     public function testReverseTransform($float, $string)
     {
-        $this->assertSame($float, (new FloatToStringTransformer())->reverseTransform($string));
+        $this->assertSame($float, new FloatToStringTransformer()->reverseTransform($string));
     }
 
     public static function floatToString(): array
@@ -34,19 +34,19 @@ class FloatToStringTransformerTest extends TestCase
 
     public function testTransformWithNothing()
     {
-        $this->assertSame('', (new FloatToStringTransformer())->transform(null));
+        $this->assertSame('', new FloatToStringTransformer()->transform(null));
     }
 
     public function testReverseTransformWithNothing()
     {
-        $this->assertSame(0.0, (new FloatToStringTransformer())->reverseTransform(null));
+        $this->assertSame(0.0, new FloatToStringTransformer()->reverseTransform(null));
     }
 
     public function testTransformWithNoFloatValue()
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected a float.');
-        (new FloatToStringTransformer())->transform('42');
+        new FloatToStringTransformer()->transform('42');
     }
 
     public function testReverseTransformWithNoStringValue()
@@ -54,6 +54,6 @@ class FloatToStringTransformerTest extends TestCase
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected a string.');
 
-        (new FloatToStringTransformer())->reverseTransform(42);
+        new FloatToStringTransformer()->reverseTransform(42);
     }
 }

@@ -53,8 +53,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event1->setName('Nouvel événement online');
         $event1->setDescription('Description du nouvel événement online');
         $event1->setPublished(true);
-        $event1->setBeginAt((new \DateTime('now'))->modify('+1 hour'));
-        $event1->setFinishAt((new \DateTime('now'))->modify('+2 hours'));
+        $event1->setBeginAt(new \DateTime('now')->modify('+1 hour'));
+        $event1->setFinishAt(new \DateTime('now')->modify('+2 hours'));
         $event1->setCapacity(50);
         $event1->setStatus(Event::STATUS_SCHEDULED);
         $event1->setMode(Event::MODE_ONLINE);
@@ -69,8 +69,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event2->setName('Nouvel événement online privé et électoral');
         $event2->setDescription('Description du nouvel événement online privé et électoral');
         $event2->setPublished(true);
-        $event2->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
-        $event2->setFinishAt((new \DateTime('now'))->modify('+3 hours'));
+        $event2->setBeginAt(new \DateTime('now')->modify('+2 hours'));
+        $event2->setFinishAt(new \DateTime('now')->modify('+3 hours'));
         $event2->setCapacity(50);
         $event2->setStatus(Event::STATUS_SCHEDULED);
         $event2->setMode(Event::MODE_ONLINE);
@@ -85,8 +85,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event3->setName('Un événement du référent annulé');
         $event3->setDescription('Description de l\'événement du référent annulé');
         $event3->setPublished(true);
-        $event3->setBeginAt((new \DateTime('now'))->modify('-2 hours'));
-        $event3->setFinishAt((new \DateTime('now'))->modify('-1 hour'));
+        $event3->setBeginAt(new \DateTime('now')->modify('-2 hours'));
+        $event3->setFinishAt(new \DateTime('now')->modify('-1 hour'));
         $event3->setCapacity(50);
         $event3->setStatus(Event::STATUS_SCHEDULED);
         $event3->setMode(Event::MODE_ONLINE);
@@ -100,8 +100,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event4->setName('Un événement du candidat aux législatives');
         $event4->setDescription('Description de l\'événement du candidat aux législatives');
         $event4->setPublished(true);
-        $event4->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
-        $event4->setFinishAt((new \DateTime('now'))->modify('+4 hours'));
+        $event4->setBeginAt(new \DateTime('now')->modify('+2 hours'));
+        $event4->setFinishAt(new \DateTime('now')->modify('+4 hours'));
         $event4->setCapacity(50);
         $event4->setStatus(Event::STATUS_SCHEDULED);
         $event4->setMode(Event::MODE_MEETING);
@@ -119,8 +119,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event5->setDescription('Description de l\'événement de l\'assemblée départementale annulé');
         $event5->setCategory($eventCategory7);
         $event5->setPublished(true);
-        $event5->setBeginAt((new \DateTime('now'))->modify('-3 hours'));
-        $event5->setFinishAt((new \DateTime('now'))->modify('-2 hour'));
+        $event5->setBeginAt(new \DateTime('now')->modify('-3 hours'));
+        $event5->setFinishAt(new \DateTime('now')->modify('-2 hour'));
         $event5->setCapacity(50);
         $event5->setStatus(Event::STATUS_SCHEDULED);
         $event5->setMode(Event::MODE_ONLINE);
@@ -136,8 +136,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event6->setDescription('Description de l\'événement de l\'assemblée départementale');
         $event6->setCategory($eventCategory7);
         $event6->setPublished(true);
-        $event6->setBeginAt((new \DateTime('now'))->modify('+6 hours'));
-        $event6->setFinishAt((new \DateTime('now'))->modify('+8 hours'));
+        $event6->setBeginAt(new \DateTime('now')->modify('+6 hours'));
+        $event6->setFinishAt(new \DateTime('now')->modify('+8 hours'));
         $event6->setCapacity(50);
         $event6->setStatus(Event::STATUS_SCHEDULED);
         $event6->setMode(Event::MODE_ONLINE);
@@ -154,8 +154,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event7->setDescription('Description de l\'événement de l\'assemblée départementale passé');
         $event7->setCategory($eventCategory7);
         $event7->setPublished(true);
-        $event7->setBeginAt((new \DateTime('now'))->modify('-2 months'));
-        $event7->setFinishAt((new \DateTime('now'))->modify('-2 months'));
+        $event7->setBeginAt(new \DateTime('now')->modify('-2 months'));
+        $event7->setFinishAt(new \DateTime('now')->modify('-2 months'));
         $event7->setCapacity(50);
         $event7->setStatus(Event::STATUS_SCHEDULED);
         $event7->setMode(Event::MODE_ONLINE);
@@ -170,8 +170,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event8->setName('Un événement de l\'Agora');
         $event8->setDescription('Description de l\'événement de l\'Agora');
         $event8->setPublished(true);
-        $event8->setBeginAt((new \DateTime('now'))->modify('-2 months'));
-        $event8->setFinishAt((new \DateTime('now'))->modify('-2 months'));
+        $event8->setBeginAt(new \DateTime('now')->modify('-2 months'));
+        $event8->setFinishAt(new \DateTime('now')->modify('-2 months'));
         $event8->setStatus(Event::STATUS_SCHEDULED);
         $event8->setMode(Event::MODE_ONLINE);
         $event8->setVisioUrl('https://parti-renaissance.fr');
@@ -217,8 +217,8 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
             $event->setName('Event interne '.$i);
             $event->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
             $event->setPublished(true);
-            $event->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
-            $event->setFinishAt((new \DateTime('now'))->modify('+4 hours'));
+            $event->setBeginAt(new \DateTime('now')->modify('+2 hours'));
+            $event->setFinishAt(new \DateTime('now')->modify('+4 hours'));
             $event->setCapacity(50);
             $event->setStatus(Event::STATUS_SCHEDULED);
             $event->setMode(0 === $i % 2 ? Event::MODE_MEETING : Event::MODE_ONLINE);

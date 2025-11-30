@@ -78,7 +78,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
 
     public function countByDeviceForLastMonth(Device $device): int
     {
-        return $this->countByDevice($device, (new \DateTime('now'))->modify('-1 month'));
+        return $this->countByDevice($device, new \DateTime('now')->modify('-1 month'));
     }
 
     public function createAvailableToContactQueryBuilder(): QueryBuilder

@@ -30,7 +30,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     {
         $isRequired = $this->isRequired($scope, $feature);
 
-        $builder = (new FilterCollectionBuilder())
+        $builder = new FilterCollectionBuilder()
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS], true))

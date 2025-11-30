@@ -81,7 +81,7 @@ class SendNewMembershipNotificationCommand extends Command
                 'zone_based_role.adherent = adherent AND zone_based_role.type IN (:zone_based_role_types)'
             )
             ->andWhere('adherent.status = :status')
-            ->andWhere((new Orx())
+            ->andWhere(new Orx()
                 ->add('animator_committee.id IS NOT NULL')
                 ->add('zone_based_role.id IS NOT NULL')
             )

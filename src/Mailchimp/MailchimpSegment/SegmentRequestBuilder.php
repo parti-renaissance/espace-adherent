@@ -21,11 +21,11 @@ class SegmentRequestBuilder
     {
         $name = \sprintf(
             '%s_%s',
-            strtolower((new \ReflectionClass($segment))->getShortName()),
+            strtolower(new \ReflectionClass($segment)->getShortName()),
             $segment->getUuid()->toString()
         );
 
-        return (new EditSegmentRequest($name))
+        return new EditSegmentRequest($name)
             ->setOptions($this->segmentConditionsBuilder->buildFromDynamicSegment($segment))
         ;
     }

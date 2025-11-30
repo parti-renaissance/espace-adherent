@@ -309,7 +309,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'first_name' => 'Élodie',
             'last_name' => 'Dutemps',
             'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, null, 1.3329126, 103.8795163),
-            'birthdate' => (new \DateTime('-17 years'))->format('Y-m-d'),
+            'birthdate' => new \DateTime('-17 years')->format('Y-m-d'),
             'position' => 'employed',
             'phone' => '+6566888868',
             'registered_at' => '2017-04-10 14:08:12',

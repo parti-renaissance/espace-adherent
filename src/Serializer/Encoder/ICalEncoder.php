@@ -13,7 +13,7 @@ class ICalEncoder implements EncoderInterface
 
     public function encode($data, $format, array $context = []): string
     {
-        return (new VCalendar($data))->serialize();
+        return new VCalendar($data)->serialize();
     }
 
     public function supportsEncoding($format): bool

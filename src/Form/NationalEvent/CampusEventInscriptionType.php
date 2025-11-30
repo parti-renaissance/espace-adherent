@@ -22,7 +22,7 @@ class CampusEventInscriptionType extends AbstractType
         ;
 
         if (false === $options['is_edit']) {
-            (new CampusTransportType())->buildForm($builder, $options);
+            new CampusTransportType()->buildForm($builder, $options);
         }
     }
 

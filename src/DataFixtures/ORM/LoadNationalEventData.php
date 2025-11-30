@@ -24,7 +24,7 @@ class LoadNationalEventData extends Fixture
         $event->alertEnabled = true;
         $event->alertTitle = 'Venez nombreux !';
         $event->startDate = new \DateTime('+1 month');
-        $event->endDate = (new \DateTime())->add(new \DateInterval('P1M2D'));
+        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -39,7 +39,7 @@ class LoadNationalEventData extends Fixture
         $manager->persist($event = new NationalEvent());
         $event->setName('Event national 2');
         $event->startDate = new \DateTime('+1 month');
-        $event->endDate = (new \DateTime())->add(new \DateInterval('P1M2D'));
+        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
         $event->textIntro = '<p>Voici un nouvel event</p>';
@@ -59,7 +59,7 @@ class LoadNationalEventData extends Fixture
         $event->alertTitle = 'Venez nombreux !';
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
         $event->startDate = new \DateTime('-1 hour');
-        $event->endDate = (new \DateTime())->add(new \DateInterval('P1M2D'));
+        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';

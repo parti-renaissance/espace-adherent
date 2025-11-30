@@ -40,14 +40,14 @@ abstract class AbstractNotification implements NotificationInterface
 
     protected static function formatDate(\DateTimeInterface $date, string $format): string
     {
-        return (new \IntlDateFormatter(
+        return new \IntlDateFormatter(
             'fr_FR',
             \IntlDateFormatter::NONE,
             \IntlDateFormatter::NONE,
             $date->getTimezone(),
             \IntlDateFormatter::GREGORIAN,
             $format
-        ))->format($date);
+        )->format($date);
     }
 
     public function setScope(?string $scope): void

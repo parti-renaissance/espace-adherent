@@ -46,7 +46,7 @@ class CrmParisController extends AbstractController
 
         $csv = Writer::from('php://temp');
         $csv->setDelimiter(self::CSV_DELIMITER);
-        $csv->addFormatter((new CharsetConverter())->outputEncoding(self::CSV_OUTPUT_ENCODING));
+        $csv->addFormatter(new CharsetConverter()->outputEncoding(self::CSV_OUTPUT_ENCODING));
 
         $csv->insertOne(self::CSV_HEADER);
         $csv->insertAll($adherentRepository->getCrmParisRecords());

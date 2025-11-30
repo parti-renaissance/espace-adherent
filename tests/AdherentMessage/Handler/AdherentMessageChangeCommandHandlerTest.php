@@ -132,7 +132,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        new GenericMailchimpCampaignHandler()->handle($message);
 
         $series = [
             ['POST', '/3.0/campaigns', ['json' => [
@@ -199,7 +199,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
         $message->setFilter(new JecouteFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        new GenericMailchimpCampaignHandler()->handle($message);
 
         $series = [
             ['POST', '/3.0/campaigns', ['json' => [
@@ -266,7 +266,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(ScopeEnum::CORRESPONDENT);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        new GenericMailchimpCampaignHandler()->handle($message);
 
         $series = [
             ['POST', '/3.0/campaigns', ['json' => [
@@ -329,7 +329,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(ScopeEnum::REGIONAL_COORDINATOR);
         $message->setFilter(new MessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        new GenericMailchimpCampaignHandler()->handle($message);
 
         $series = [
             ['POST', '/3.0/campaigns', ['json' => [

@@ -40,8 +40,8 @@ class PhoningCampaignSurveyRepliesExporter
             $format,
             \sprintf(
                 '%s_Replies_%s.%s',
-                (new Slugify())->slugify($campaign->getTitle()),
-                (new \DateTime())->format('YmdHis'),
+                new Slugify()->slugify($campaign->getTitle()),
+                new \DateTime()->format('YmdHis'),
                 $format
             ),
             new IteratorCallbackSourceIterator(

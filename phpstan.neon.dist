@@ -7,3 +7,8 @@ parameters:
         - migrations
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    ignoreErrors:
+        -
+            identifier: doctrine.columnType
+        -
+            identifier: doctrine.associationType

@@ -20,7 +20,7 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createSelect('audienceType', 'Audience')
             ->setRequired(true)
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)

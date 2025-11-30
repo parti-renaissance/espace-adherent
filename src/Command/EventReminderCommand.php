@@ -52,11 +52,11 @@ class EventReminderCommand extends Command
         $mode = $input->getArgument('mode');
 
         if (Event::MODE_MEETING === $mode) {
-            $startAfter = (new Chronos())->modify(\sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
+            $startAfter = new Chronos()->modify(\sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
             $startBefore = (clone $startAfter)->modify('+1 day');
         } elseif (Event::MODE_ONLINE === $mode) {
-            $startAfter = (new Chronos())->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
-            $startBefore = (new Chronos())->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
+            $startAfter = new Chronos()->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
+            $startBefore = new Chronos()->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
         } else {
             throw new \InvalidArgumentException(\sprintf('Event mode "%s" is not defined.', $mode));
         }

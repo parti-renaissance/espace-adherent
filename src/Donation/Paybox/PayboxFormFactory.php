@@ -92,7 +92,7 @@ class PayboxFormFactory
 
     private function getCountryISO3166Numeric(string $countryCode): int
     {
-        $data = (new ISO3166())->alpha2($countryCode);
+        $data = new ISO3166()->alpha2($countryCode);
 
         return $data['numeric'] ? (int) $data['numeric'] : 250;
     }

@@ -104,7 +104,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
                 Création du compte le {$adherent->getRegisteredAt()->format('d/m/Y')}
                 {$step}
                 MESSAGE,
-            (new TelegramOptions())
+            new TelegramOptions()
                 ->chatId($this->telegramChatIdPrimoAdhesion)
                 ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2)
                 ->disableWebPagePreview(true)

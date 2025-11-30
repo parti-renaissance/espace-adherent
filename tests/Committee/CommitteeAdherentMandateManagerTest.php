@@ -221,7 +221,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createNewAdherent(Genders::MALE, (new \DateTime())->modify('-17 years')->format('Y-m-d'));
+        $adherent = $this->createNewAdherent(Genders::MALE, new \DateTime()->modify('-17 years')->format('Y-m-d'));
 
         $this->translator
             ->expects($this->once())
@@ -320,7 +320,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertSame($gender, $mandate->getGender());
         $this->assertSame($quality, $mandate->getQuality());
         $this->assertSame($isProvisional, $mandate->isProvisional());
-        $this->assertSame((new \DateTime())->format('Y/m/d'), $mandate->getBeginAt()->format('Y/m/d'));
+        $this->assertSame(new \DateTime()->format('Y/m/d'), $mandate->getBeginAt()->format('Y/m/d'));
         $this->assertNull($mandate->getFinishAt());
         $this->assertNull($mandate->getReason());
     }
@@ -349,7 +349,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
             'En Marche ! - Lyon 1',
             'Le comité En Marche ! de Lyon village',
             $this->createPostAddress('50 Rue de la Villette', '69003-69383'),
-            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
+            new PhoneNumber()->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon',
         );
     }

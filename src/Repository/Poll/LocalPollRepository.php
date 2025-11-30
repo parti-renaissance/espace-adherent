@@ -68,7 +68,7 @@ class LocalPollRepository extends ServiceEntityRepository
             ->where('poll.published = :true AND poll.finishAt > :now')
         ;
 
-        $conditions = (new Orx())
+        $conditions = new Orx()
             ->add('zone.type = :zone_region AND zone = :region')
         ;
 

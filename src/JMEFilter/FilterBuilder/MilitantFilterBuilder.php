@@ -18,7 +18,7 @@ class MilitantFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createDateInterval('registered', 'Inscrit')
             ->setPosition(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 99 : 200)
             ->getFilters()

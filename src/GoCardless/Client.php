@@ -113,7 +113,7 @@ class Client implements ClientInterface
      */
     private function getNextSubscriptionDay(): int
     {
-        $nextPossibleDay = (new \DateTime('+6 days'))->format('d');
+        $nextPossibleDay = new \DateTime('+6 days')->format('d');
 
         return (int) $nextPossibleDay <= 15 ? 15 : 1;
     }

@@ -13,8 +13,7 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setParallelConfig(ParallelConfigFactory::detect())
     ->setRules([
-        '@PHP8x3Migration' => true,
-        // '@PHP8x4Migration' => true, // pass to true when phpstan is v2
+        '@PHP8x4Migration' => true,
         '@Symfony' => true,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,

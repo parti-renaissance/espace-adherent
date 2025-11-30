@@ -18,7 +18,7 @@ class MandatesFilterBuilder extends AbstractAdherentMandateFilterBuilder
     {
         $multiple = FeatureEnum::CONTACTS === $feature;
 
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createSelect($multiple ? 'mandates' : 'mandateType', 'Type de mandat')
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices($this->getTranslatedChoices())

@@ -80,7 +80,7 @@ class UserManager
     private function prepareAdherentJobs(Adherent $adherent): array
     {
         $jobs = [];
-        $startData = (new \DateTime('2022-01-01 00:00:00'))->getTimestamp();
+        $startData = new \DateTime('2022-01-01 00:00:00')->getTimestamp();
 
         if ($adherent->isRenaissanceAdherent()) {
             $endDate = $assemblyCode = null;
@@ -94,7 +94,7 @@ class UserManager
             $year = (int) date('Y');
             if (!$adherent->hasActiveMembership()) {
                 $year = $adherent->getLastMembershipDonation()?->format('Y') ?? $adherent->getFirstMembershipDonation()?->format('Y') ?? 2022;
-                $endDate = (new \DateTime())->setDate((int) $year, 12, 31)->setTime(23, 59, 59)->getTimestamp();
+                $endDate = new \DateTime()->setDate((int) $year, 12, 31)->setTime(23, 59, 59)->getTimestamp();
             }
 
             $zones = [

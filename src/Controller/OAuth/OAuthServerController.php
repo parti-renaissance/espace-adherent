@@ -107,7 +107,7 @@ class OAuthServerController extends AbstractController
             return $e->generateHttpResponse(new Response());
         }
 
-        $accessTokenObject = (new Parser(new JoseEncoder()))->parse($accessToken);
+        $accessTokenObject = new Parser(new JoseEncoder())->parse($accessToken);
         $client = $repository->findOneByUuid(current($accessTokenObject->claims()->get(RegisteredClaims::AUDIENCE)));
 
         return new JsonResponse([

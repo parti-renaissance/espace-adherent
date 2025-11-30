@@ -34,7 +34,7 @@ class PostUpdateNewsletterSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (
-            !\in_array($request->getMethod(), [Request::METHOD_POST])
+            Request::METHOD_POST !== $request->getMethod()
             || !$newsletter instanceof LegislativeNewsletterSubscription
             || !$newsletter->getConfirmedAt()
         ) {

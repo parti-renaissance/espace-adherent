@@ -74,7 +74,7 @@ class FileRepository extends ServiceEntityRepository
 
     public function createWithPermissionsQueryBuilder(array $permissions): QueryBuilder
     {
-        array_push($permissions, FilePermissionEnum::ALL);
+        $permissions[] = FilePermissionEnum::ALL;
 
         return $this->createQueryBuilder('file')
             ->leftJoin('file.permissions', 'permission')

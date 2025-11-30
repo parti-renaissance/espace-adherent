@@ -44,8 +44,8 @@ class EventControllerTest extends AbstractApiTestCase
             'name' => 'My best event !',
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
             'time_zone' => 'Europe/Paris',
-            'begin_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 10:30:00',
-            'finish_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 16:30:00',
+            'begin_at' => new \DateTime('+5 days')->format('Y-m-d').' 10:30:00',
+            'finish_at' => new \DateTime('+5 days')->format('Y-m-d').' 16:30:00',
             'capacity' => 10,
             'visio_url' => 'https://en-marche.fr/123',
             'mode' => Event::MODE_ONLINE,
@@ -70,7 +70,7 @@ class EventControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'name' => 'My best edited event !',
-            'begin_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 11:30:00',
+            'begin_at' => new \DateTime('+5 days')->format('Y-m-d').' 11:30:00',
         ]));
 
         self::assertResponseStatusCodeSame(200);
