@@ -12,7 +12,6 @@ use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\AppSession\SessionStatusEnum;
-use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -423,15 +422,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getSingleScalarResult()
         ;
-    }
-
-    public function findCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
-    {
-        return new AdherentCollection(
-            $this->createCommitteeHostsQueryBuilder($committee, $withoutSupervisors)
-                ->getQuery()
-                ->getResult()
-        );
     }
 
     public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
