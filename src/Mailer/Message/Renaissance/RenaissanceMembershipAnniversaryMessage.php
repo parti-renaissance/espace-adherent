@@ -11,7 +11,7 @@ class RenaissanceMembershipAnniversaryMessage extends AbstractRenaissanceMessage
 {
     public static function create(Adherent $adherent, string $url): self
     {
-        $lastYear = (int) (new \DateTime())->format('Y') - 1;
+        $lastYear = (int) new \DateTime()->format('Y') - 1;
 
         return new self(
             Uuid::uuid4(),

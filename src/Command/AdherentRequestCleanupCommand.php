@@ -50,7 +50,7 @@ class AdherentRequestCleanupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = (int) $input->getArgument('days');
-        $from = (new \DateTime())->modify(\sprintf('-%d days', $days));
+        $from = new \DateTime()->modify(\sprintf('-%d days', $days));
 
         $this->io->title(\sprintf(
             'Cleaning up adherent requests created before %s',

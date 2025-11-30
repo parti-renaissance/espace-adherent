@@ -172,7 +172,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         if (null !== $filter->isNewRenaissanceUser) {
             $qb
                 ->andWhere(\sprintf('u.createdAt %s :registered_since_last_15d', $filter->isNewRenaissanceUser ? '>=' : '<'))
-                ->setParameter('registered_since_last_15d', (new \DateTime('-15 days'))->setTime(0, 0))
+                ->setParameter('registered_since_last_15d', new \DateTime('-15 days')->setTime(0, 0))
             ;
         }
 

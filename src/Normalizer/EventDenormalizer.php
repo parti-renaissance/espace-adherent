@@ -35,11 +35,11 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
             $timeZone = new \DateTimeZone($object->getTimeZone());
 
             if ($date = $object->getBeginAt()) {
-                $object->setBeginAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
+                $object->setBeginAt(new \DateTime($date->format('Y-m-d H:i:s'), $timeZone)->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
             }
 
             if ($date = $object->getFinishAt()) {
-                $object->setFinishAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
+                $object->setFinishAt(new \DateTime($date->format('Y-m-d H:i:s'), $timeZone)->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
             }
         }
 

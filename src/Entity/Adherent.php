@@ -2245,7 +2245,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $donationYear = (int) $this->firstMembershipDonation->format('Y');
-        $yearToCheck = $year ?? (int) (new \DateTime())->format('Y');
+        $yearToCheck = $year ?? (int) new \DateTime()->format('Y');
 
         return $donationYear === $yearToCheck;
     }

@@ -123,7 +123,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
             'En Marche ! - Lyon',
             'Le comité En Marche ! de Lyon village',
             $this->createPostAddress($address, '69001-69381'),
-            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
+            new PhoneNumber()->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-clichy'
         );
     }

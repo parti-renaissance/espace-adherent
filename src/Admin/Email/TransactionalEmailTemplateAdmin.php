@@ -118,7 +118,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
     private function getMessageClassNames(?TransactionalEmailTemplate $currentTemplate): array
     {
         $classNames = [];
-        foreach ($this->scanDir($dir = \dirname((new \ReflectionClass(Message::class))->getFileName())) as $file) {
+        foreach ($this->scanDir($dir = \dirname(new \ReflectionClass(Message::class)->getFileName())) as $file) {
             if ('php' === pathinfo($file, \PATHINFO_EXTENSION)) {
                 require_once $file;
             }

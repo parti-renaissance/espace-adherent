@@ -37,7 +37,7 @@ class JecouteNewsExtension implements QueryCollectionExtensionInterface
             $queryBuilder
                 ->andWhere(\sprintf('%1$s.published = 1 AND %1$s.createdAt >= :date', $alias))
                 ->orderBy("$alias.createdAt", 'DESC')
-                ->setParameter('date', (new \DateTime('-60 days'))->setTime(0, 0))
+                ->setParameter('date', new \DateTime('-60 days')->setTime(0, 0))
             ;
         }
     }

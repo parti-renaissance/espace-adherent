@@ -17,17 +17,17 @@ class CreateAdherentResult
 
     public static function createAlreadyExists(): self
     {
-        return (new self())->setNextStep(self::ALREADY_EXISTS);
+        return new self()->setNextStep(self::ALREADY_EXISTS);
     }
 
     public static function createActivation(): self
     {
-        return (new self())->setNextStep(self::ACTIVATION);
+        return new self()->setNextStep(self::ACTIVATION);
     }
 
     public static function createPayment(): self
     {
-        return (new self())->setNextStep(self::PAYMENT);
+        return new self()->setNextStep(self::PAYMENT);
     }
 
     public function isNextStepPayment(): bool

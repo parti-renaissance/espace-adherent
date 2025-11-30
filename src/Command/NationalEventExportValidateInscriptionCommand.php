@@ -69,7 +69,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
         $content = ob_get_clean();
 
         $this->nationalEventExportClient->request('POST', '', ['json' => [
-            'file_name' => 'export-'.(new \DateTime())->format('Y-m-d_His').'.xlsx',
+            'file_name' => 'export-'.new \DateTime()->format('Y-m-d_His').'.xlsx',
             'file_content' => base64_encode($content),
         ]]);
 

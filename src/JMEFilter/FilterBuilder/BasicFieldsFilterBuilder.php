@@ -20,7 +20,7 @@ class BasicFieldsFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createFrom(GenderSelect::class)
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->createFrom(AgeRange::class)

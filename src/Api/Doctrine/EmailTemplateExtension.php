@@ -39,7 +39,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
 
         $queryBuilder
             ->leftJoin("$rootAlias.zones", 'zone')
-            ->andWhere((new Orx())
+            ->andWhere(new Orx()
                 ->add($queryBuilder->expr()->andX()
                     ->add(\sprintf('%1$s.scopes IS NOT NULL AND FIND_IN_SET(:scope, %1$s.scopes) > 0', $rootAlias))
                     ->add($queryBuilder->expr()->orX()

@@ -37,7 +37,7 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
         $alias = $queryBuilder->getAllAliases()[0];
 
         foreach (explode(' ', $value) as $key => $v) {
-            $conditions = (new Expr())->orX();
+            $conditions = new Expr()->orX();
             foreach ($property as $prop) {
                 $conditions->add($alias.'.'.$prop.' LIKE :search_'.$key);
             }

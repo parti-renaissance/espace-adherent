@@ -65,7 +65,7 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
 
         foreach ($order as $key => $value) {
             $key = implode('.', array_map(function (string $part) {
-                return (new UnicodeString($part))->camel();
+                return new UnicodeString($part)->camel();
             }, explode('.', $key)));
 
             $queryBuilder->addOrderBy(!str_contains($key, '.') ? 'stats.'.$key : $key, $value);

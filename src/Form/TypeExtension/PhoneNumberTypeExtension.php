@@ -40,7 +40,7 @@ class PhoneNumberTypeExtension extends AbstractTypeExtension
         $defaultRegion = $form->getConfig()->getOption('default_region');
 
         if (!$event->getData() && PhoneNumberUtil::UNKNOWN_REGION !== $defaultRegion) {
-            $event->setData((new PhoneNumber())->setCountryCode(33)->setNationalNumber(''));
+            $event->setData(new PhoneNumber()->setCountryCode(33)->setNationalNumber(''));
         }
     }
 }

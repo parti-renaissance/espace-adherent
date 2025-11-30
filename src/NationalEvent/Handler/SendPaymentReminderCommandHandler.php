@@ -57,9 +57,9 @@ class SendPaymentReminderCommandHandler
 
     public function determineReminderType(EventInscription $eventInscription): ?InscriptionReminderTypeEnum
     {
-        $minutesSinceInscription = (new \DateTimeImmutable())->diff($eventInscription->getCreatedAt())->days * 24 * 60
-            + (new \DateTimeImmutable())->diff($eventInscription->getCreatedAt())->h * 60
-            + (new \DateTimeImmutable())->diff($eventInscription->getCreatedAt())->i;
+        $minutesSinceInscription = new \DateTimeImmutable()->diff($eventInscription->getCreatedAt())->days * 24 * 60
+            + new \DateTimeImmutable()->diff($eventInscription->getCreatedAt())->h * 60
+            + new \DateTimeImmutable()->diff($eventInscription->getCreatedAt())->i;
 
         return match (true) {
             $minutesSinceInscription < 10 => null,

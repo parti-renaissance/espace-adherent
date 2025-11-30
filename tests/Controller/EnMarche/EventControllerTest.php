@@ -355,6 +355,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
 
     private static function getRelativeDate(string $date, string $modifier, string $format = 'Y-m-d'): string
     {
-        return (new \DateTime($date))->modify($modifier)->format($format);
+        return new \DateTime($date)->modify($modifier)->format($format);
     }
 }

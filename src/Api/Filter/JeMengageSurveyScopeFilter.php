@@ -49,7 +49,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
                     ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, \sprintf('ls.id = %s.id', $alias))
                     ->leftJoin('ls.zone', 'zone')
                     ->leftJoin('zone.parents', 'parent')
-                    ->andWhere((new Orx())
+                    ->andWhere(new Orx()
                         ->add(\sprintf('%s INSTANCE OF :national', $alias))
                         ->add(\sprintf('%s INSTANCE OF :local AND (zone = :zone OR parent IN (:zone))', $alias))
                     )

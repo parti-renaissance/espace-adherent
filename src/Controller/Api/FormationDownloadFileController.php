@@ -27,7 +27,7 @@ class FormationDownloadFileController extends AbstractFormationContentController
         return HttpUtils::createResponse(
             $defaultStorage,
             $filePath,
-            (new Slugify())->slugify($formation->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
+            new Slugify()->slugify($formation->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
         );
     }
 }

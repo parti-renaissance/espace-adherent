@@ -45,7 +45,7 @@ class RemindActivatedMembershipCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $from = (new \DateTime())->modify(\sprintf('-%d minutes', (int) $input->getArgument('minutes')));
+        $from = new \DateTime()->modify(\sprintf('-%d minutes', (int) $input->getArgument('minutes')));
 
         while ($adherents = $this->findActivated($from, 100)) {
             foreach ($adherents as $adherent) {

@@ -41,7 +41,7 @@ class RecaptchaApiClient implements RecaptchaApiClientInterface
 
     private function createEvent(string $token, ?string $siteKey): Event
     {
-        return (new Event())
+        return new Event()
             ->setSiteKey($siteKey ?? $this->defaultSiteKey)
             ->setToken($token)
         ;
@@ -49,7 +49,7 @@ class RecaptchaApiClient implements RecaptchaApiClientInterface
 
     private function createAssessment(string $token, ?string $siteKey): Assessment
     {
-        return (new Assessment())
+        return new Assessment()
             ->setEvent($this->createEvent($token, $siteKey))
         ;
     }

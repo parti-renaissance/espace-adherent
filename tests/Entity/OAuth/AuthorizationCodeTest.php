@@ -23,7 +23,7 @@ class AuthorizationCodeTest extends TestCase
         $this->assertEquals(Uuid::fromString(self::UUID), $authCode->getUuid());
         $this->assertSame('https://my.app.com/oauth/callback', $authCode->getRedirectUri());
         $this->assertInstanceOf(\DateTimeImmutable::class, $authCode->getExpiryDateTime());
-        $this->assertEquals((new \DateTime('+5 hours'))->format('U'), $authCode->getExpiryDateTime()->format('U'));
+        $this->assertEquals(new \DateTime('+5 hours')->format('U'), $authCode->getExpiryDateTime()->format('U'));
         $this->assertSame(['public', 'user_profile', 'manage_committees'], $authCode->getScopes());
         $this->assertInstanceOf(Adherent::class, $authCode->getUser());
         $this->assertInstanceOf(Client::class, $authCode->getClient());

@@ -65,7 +65,7 @@ class SendMembershipAnniversaryCommand extends Command
                 return Command::FAILURE;
             }
         } else {
-            $targetDate = (new \DateTimeImmutable('today'))->modify('-1 year');
+            $targetDate = new \DateTimeImmutable('today')->modify('-1 year');
         }
 
         $this->io->title('Anniversary Recotisation Reminder');

@@ -39,7 +39,7 @@ class RefreshTokenGrant extends BaseRefreshTokenGrant
         $oldRefreshToken = parent::validateOldRefreshToken($request, $clientId);
 
         if (\in_array(Scope::IMPERSONATOR, $oldRefreshToken['scopes'] ?? [], true)) {
-            $estimatedAgeInSeconds = (new \DateTimeImmutable())->add($this->refreshTokenTTL)->getTimestamp() - (int) $oldRefreshToken['expire_time'];
+            $estimatedAgeInSeconds = new \DateTimeImmutable()->add($this->refreshTokenTTL)->getTimestamp() - (int) $oldRefreshToken['expire_time'];
 
             if ($estimatedAgeInSeconds > $this->adminSessionTtl) {
                 throw OAuthServerException::invalidRefreshToken('Token has expired');

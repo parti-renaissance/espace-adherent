@@ -31,8 +31,8 @@ class EventParticipantsExporter
             $format,
             \sprintf(
                 '%s_%s.%s',
-                (new Slugify())->slugify($event->getName()),
-                (new \DateTime())->format('Y-m-d'),
+                new Slugify()->slugify($event->getName()),
+                new \DateTime()->format('Y-m-d'),
                 $format
             ),
             new IteratorCallbackSourceIterator(

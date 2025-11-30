@@ -22,7 +22,7 @@ class RequestParamsBuilder
             'vads_site_id' => $this->systemPaySiteId,
             'vads_ctx_mode' => $this->systemPayMode,
             'vads_trans_id' => \sprintf("%'.06d", (strtotime('tomorrow') - time()) * 10 + ((microtime(true) * 10) % 10)),
-            'vads_trans_date' => (new \DateTime(timezone: new \DateTimeZone('UTC')))->format('YmdHis'),
+            'vads_trans_date' => new \DateTime(timezone: new \DateTimeZone('UTC'))->format('YmdHis'),
             'vads_amount' => $donationRequest->amount * 100,
             'vads_currency' => '978',
             'vads_action_mode' => 'INTERACTIVE',

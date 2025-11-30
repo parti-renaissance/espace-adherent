@@ -164,7 +164,7 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('election')
             ->addSelect('designation')
             ->innerJoin('election.designation', 'designation')
-            ->where((new Orx())->addMultiple([
+            ->where(new Orx()->addMultiple([
                 'election.secondRoundEndDate IS NULL AND designation.voteEndDate BETWEEN :start_date AND :end_date',
                 'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate BETWEEN :start_date AND :end_date',
             ]))
@@ -192,7 +192,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->addSelect('designation')
             ->innerJoin('election.designation', 'designation')
             ->leftJoin('election.electionResult', 'election_result')
-            ->where((new Orx())->addMultiple([
+            ->where(new Orx()->addMultiple([
                 'election.status = :open AND election.secondRoundEndDate IS NULL AND designation.voteEndDate IS NOT NULL AND designation.voteEndDate < :date',
                 'election.status = :open AND election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
                 'election.status != :open AND election_result IS NULL',

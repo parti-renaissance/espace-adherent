@@ -25,7 +25,7 @@ class RequestParamsBuilder
             'AMOUNT' => $amount, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',
-            'CN' => (new UnicodeString($inscription->firstName.' '.$inscription->lastName))->ascii(),
+            'CN' => new UnicodeString($inscription->firstName.' '.$inscription->lastName)->ascii(),
             'EMAIL' => $inscription->addressEmail,
             'ACCEPTURL' => $backUrl.'?status=success',
             'DECLINEURL' => $backUrl.'?status=error',

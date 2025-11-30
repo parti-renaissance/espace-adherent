@@ -17,7 +17,7 @@ class SearchTermFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createText('searchTerm', 'Recherche')
             ->setFavorite(true)
             ->getFilters()

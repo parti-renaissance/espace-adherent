@@ -27,6 +27,6 @@ enum EventVisibilityEnum: string implements TranslatableInterface
 
     public static function isInvitation(self $visibility): bool
     {
-        return \in_array($visibility, [self::INVITATION_AGORA], true);
+        return self::INVITATION_AGORA === $visibility;
     }
 }

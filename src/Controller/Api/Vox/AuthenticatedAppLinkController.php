@@ -98,7 +98,7 @@ class AuthenticatedAppLinkController extends AbstractController
                 'redirect_uri' => $client->getRedirectUris()[0],
                 'scope' => implode(' ', $client->getSupportedScopes()),
             ], UrlGeneratorInterface::ABSOLUTE_URL),
-            'expires_at' => (new \DateTimeImmutable())->add(new \DateInterval('PT10M')),
+            'expires_at' => new \DateTimeImmutable()->add(new \DateInterval('PT10M')),
         ];
     }
 }

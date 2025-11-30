@@ -260,9 +260,9 @@ class ZoneRepository extends ServiceEntityRepository
             ->leftJoin('zone.children', 'child', Join::WITH, 'child.type = :city_type')
             ->where('zone.type IN (:city_type, :district_type)')
             ->andWhere(
-                (new Orx())
+                new Orx()
                     ->add('parent.type = :dpt_type AND zone.type = :city_type AND parent.code = :dpt_code AND zone.postalCode LIKE :postal_code')
-                    ->add((new Andx())
+                    ->add(new Andx()
                         ->add('zone.type = :district_type')
                         ->add('(parent.type = :city_type AND parent.postalCode LIKE :postal_code) OR (child.postalCode LIKE :postal_code)')))
             ->setParameter('postal_code', '%'.$postalCode.'%')

@@ -35,7 +35,7 @@ class SendEventEmailReminderCommandTest extends AbstractCommandTestCase
 
     private function countEventsToRemind(): int
     {
-        $startAfter = (new \DateTime())->setTime(7, 0);
+        $startAfter = new \DateTime()->setTime(7, 0);
         $startBefore = (clone $startAfter)->modify('+1 day');
 
         $events = $this->eventRepository->findEventsToRemindByEmail($startAfter, $startBefore);

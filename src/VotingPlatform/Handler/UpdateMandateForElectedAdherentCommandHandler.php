@@ -79,10 +79,10 @@ class UpdateMandateForElectedAdherentCommandHandler
         foreach ($electedPoolResults as $poolResult) {
             foreach ($poolResult->getElectedCandidateGroups() as $candidateGroup) {
                 foreach ($candidateGroup->getCandidates() as $candidate) {
-                    array_push($candidates, [
+                    $candidates[] = [
                         'candidate' => $candidate,
                         'quality' => $poolResult->getElectionPool()->getCode(),
-                    ]);
+                    ];
                 }
             }
         }
@@ -90,17 +90,17 @@ class UpdateMandateForElectedAdherentCommandHandler
         if (DesignationTypeEnum::COPOL === $election->getDesignationType()) {
             foreach ($electedPoolResults as $poolResult) {
                 foreach ($poolResult->getAdditionallyElectedCandidates() as $candidate) {
-                    array_push($candidates, [
+                    $candidates[] = [
                         'candidate' => $candidate,
                         'quality' => $poolResult->getElectionPool()->getCode(),
                         'additionally_elected' => true,
-                    ]);
+                    ];
                 }
             }
         }
 
         array_map(function (array $row) use ($election) {
-            $this->entityManager->persist($mandate = $this->mandateFactory->create($election, $row['candidate'], $row['quality']));
+            $this->entityManager->persist($this->mandateFactory->create($election, $row['candidate'], $row['quality']));
         }, $candidates);
 
         $this->entityManager->flush();

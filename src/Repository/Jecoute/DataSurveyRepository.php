@@ -257,7 +257,7 @@ class DataSurveyRepository extends ServiceEntityRepository
 
     public function countByAdherentForLastMonth(Adherent $adherent): int
     {
-        return $this->countByAdherent($adherent, (new \DateTime('now'))->modify('-1 month'));
+        return $this->countByAdherent($adherent, new \DateTime('now')->modify('-1 month'));
     }
 
     private function createSurveyQueryBuilder(

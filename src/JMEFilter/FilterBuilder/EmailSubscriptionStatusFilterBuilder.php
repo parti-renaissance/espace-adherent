@@ -17,7 +17,7 @@ class EmailSubscriptionStatusFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        return new FilterCollectionBuilder()
             ->createBooleanSelect('emailSubscription', 'Abonné email')
             ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->getFilters()

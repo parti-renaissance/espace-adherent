@@ -113,7 +113,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
             }
 
             if ($memberEmail) {
-                array_push($recipients[$departmentCode], $memberEmail);
+                $recipients[$departmentCode][] = $memberEmail;
             }
         }
 
