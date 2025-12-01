@@ -92,9 +92,6 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent;
 
-    #[ORM\ManyToMany(targetEntity: Round::class)]
-    public Collection $rounds;
-
     #[ORM\Column(nullable: true)]
     public ?string $statusDetail = null;
 

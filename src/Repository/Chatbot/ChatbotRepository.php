@@ -9,6 +9,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Chatbot\Chatbot>
+ */
 class ChatbotRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

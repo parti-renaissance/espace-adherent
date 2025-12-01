@@ -10,6 +10,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Email\EmailLog>
+ */
 class EmailLogRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {

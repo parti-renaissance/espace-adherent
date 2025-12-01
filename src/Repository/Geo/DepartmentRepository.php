@@ -12,6 +12,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Geo\Department>
+ */
 final class DepartmentRepository extends ServiceEntityRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

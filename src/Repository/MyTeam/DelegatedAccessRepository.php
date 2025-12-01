@@ -11,6 +11,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\MyTeam\DelegatedAccess>
+ */
 class DelegatedAccessRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;

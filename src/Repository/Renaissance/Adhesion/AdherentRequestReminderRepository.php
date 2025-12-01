@@ -10,6 +10,9 @@ use App\Entity\Renaissance\Adhesion\AdherentRequestReminder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Renaissance\Adhesion\AdherentRequestReminder>
+ */
 class AdherentRequestReminderRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

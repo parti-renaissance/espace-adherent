@@ -9,9 +9,14 @@ use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Entity\Renaissance\Adhesion\AdherentRequestReminder;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Renaissance\Adhesion\AdherentRequest>
+ */
 class AdherentRequestRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {
@@ -42,10 +47,7 @@ class AdherentRequestRepository extends ServiceEntityRepository
             ->andWhere('adherent_request.adherent IS NULL')
             ->andWhere('adherent_request.accountCreatedAt IS NULL')
             ->andWhere('adherent_request.email IS NOT NULL')
-            ->setParameters([
-                'reminder_type' => $type,
-                'created_before' => $createdBefore,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('reminder_type', $type), new Parameter('created_before', $createdBefore)]))
         ;
 
         if ($createdAfter) {

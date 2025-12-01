@@ -9,6 +9,9 @@ use App\Entity\ElectedRepresentative\Contribution;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ElectedRepresentative\Contribution>
+ */
 class ContributionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

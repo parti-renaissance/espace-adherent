@@ -8,6 +8,9 @@ use App\Entity\CommitteeCandidaciesGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\CommitteeCandidaciesGroup>
+ */
 class CommitteeCandidaciesGroupRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

@@ -7,8 +7,13 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AdherentActivationCode>
+ */
 class AdherentActivationCodeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -21,10 +26,7 @@ class AdherentActivationCodeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('code')
             ->where('code.adherent = :adherent')
             ->andWhere('code.value = :code')
-            ->setParameters([
-                'adherent' => $adherent,
-                'code' => $code,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent', $adherent), new Parameter('code', $code)]))
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -37,10 +39,7 @@ class AdherentActivationCodeRepository extends ServiceEntityRepository
             ->where('code.adherent = :adherent')
             ->andWhere('code.usedAt IS NULL AND code.revokedAt IS NULL')
             ->set('code.revokedAt', ':now')
-            ->setParameters([
-                'adherent' => $user,
-                'now' => new \DateTime(),
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent', $user), new Parameter('now', new \DateTime())]))
             ->getQuery()
             ->execute()
         ;

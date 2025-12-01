@@ -8,6 +8,9 @@ use App\Entity\Geo\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Geo\City>
+ */
 final class CityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

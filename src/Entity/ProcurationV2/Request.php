@@ -88,8 +88,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'procuration_v2_requests')]
 class Request extends AbstractProcuration
 {
-    #[Assert\Choice(callback: [RequestStatusEnum::class,
-        'getAvailableStatuses'], groups: ['procuration_update_status'])]
+    #[Assert\Choice(callback: [RequestStatusEnum::class, 'getAvailableStatuses'], groups: ['procuration_update_status'])]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(enumType: RequestStatusEnum::class)]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
@@ -117,6 +116,9 @@ class Request extends AbstractProcuration
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestAction::class, cascade: ['all'])]
     #[ORM\OrderBy(['date' => 'DESC'])]
     public Collection $actions;
+
+    #[ORM\ManyToMany(targetEntity: Round::class)]
+    public Collection $rounds;
 
     public function __construct(
         UuidInterface $uuid,

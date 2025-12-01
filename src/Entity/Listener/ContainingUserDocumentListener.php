@@ -8,7 +8,11 @@ use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\UserDocument\UserDocumentManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Ramsey\Uuid\Uuid;
 
 class ContainingUserDocumentListener
@@ -23,7 +27,7 @@ class ContainingUserDocumentListener
         $this->patternUuid = '/'.$patternUuid.'/';
     }
 
-    public function postUpdate(UserDocumentInterface $object, LifecycleEventArgs $args): void
+    public function postUpdate(UserDocumentInterface $object, PostUpdateEventArgs $args): void
     {
         // postUpdate is called inside flush()
         // Add this to be sure that all previous modifications were executed on database
@@ -33,22 +37,24 @@ class ContainingUserDocumentListener
         }
     }
 
-    public function preRemove(UserDocumentInterface $object, LifecycleEventArgs $args): void
+    public function preRemove(UserDocumentInterface $object, PreRemoveEventArgs $args): void
     {
         $this->documentUuidsToRemove = $object->getDocuments()->toArray();
     }
 
-    public function postRemove(UserDocumentInterface $object, LifecycleEventArgs $args): void
+    public function postRemove(UserDocumentInterface $object, PostRemoveEventArgs $args): void
     {
         if ($this->documentUuidsToRemove) {
             $this->documentManager->removeUnusedDocuments($this->documentUuidsToRemove);
         }
     }
 
-    public function prePersist(UserDocumentInterface $object, LifecycleEventArgs $args): void
+    public function prePersist(UserDocumentInterface $object, PrePersistEventArgs $args): void
     {
         preg_match_all($this->patternUuid, $object->getContentContainingDocuments(), $documentUuids);
-        $documentUuids = $this->prepareUuidsArray($documentUuids);
+        if (!$documentUuids = $this->prepareUuidsArray($documentUuids)) {
+            return;
+        }
 
         $entityManager = $args->getObjectManager();
         if ($documents = $entityManager->getRepository(UserDocument::class)->findBy(['uuid' => $documentUuids])) {
@@ -56,7 +62,7 @@ class ContainingUserDocumentListener
         }
     }
 
-    public function preUpdate(UserDocumentInterface $object, LifecycleEventArgs $args): void
+    public function preUpdate(UserDocumentInterface $object, PreUpdateEventArgs $args): void
     {
         if (!$args->hasChangedField($field = $object->getFieldContainingDocuments())) {
             return;
@@ -68,7 +74,7 @@ class ContainingUserDocumentListener
 
         $newDocuments = [];
         if ($newDocumentUuids) {
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getObjectManager();
             $newDocuments = $entityManager->getRepository(UserDocument::class)->findBy(['uuid' => $newDocumentUuids]);
             foreach ($newDocuments as $document) {
                 $object->addDocument($document);

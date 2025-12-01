@@ -8,6 +8,9 @@ use App\Entity\Formation\Path;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Formation\Path>
+ */
 class PathRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

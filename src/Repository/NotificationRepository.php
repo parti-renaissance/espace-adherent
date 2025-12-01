@@ -10,6 +10,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Notification[] findByNotificationClass(string $notificationClass, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Notification>
  */
 class NotificationRepository extends ServiceEntityRepository
 {

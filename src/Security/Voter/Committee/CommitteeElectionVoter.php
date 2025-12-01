@@ -15,11 +15,8 @@ class CommitteeElectionVoter extends AbstractAdherentVoter
     public const PERMISSION_ABLE_TO_VOTE = 'ABLE_TO_VOTE_IN_COMMITTEE';
     public const PERMISSION_IS_VOTER = 'IS_VOTER_IN_COMMITTEE';
 
-    private $authorisationChecker;
-
-    public function __construct(ElectionAuthorisationChecker $authorisationChecker)
+    public function __construct(private readonly ElectionAuthorisationChecker $authorisationChecker)
     {
-        $this->authorisationChecker = $authorisationChecker;
     }
 
     /**

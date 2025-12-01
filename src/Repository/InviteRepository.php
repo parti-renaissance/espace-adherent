@@ -8,6 +8,9 @@ use App\Entity\Invite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Invite>
+ */
 class InviteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

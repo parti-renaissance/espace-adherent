@@ -18,10 +18,15 @@ use App\Entity\VotingPlatform\VoteResult;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\VotingPlatform\Election>
+ */
 class ElectionRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -37,10 +42,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->select('COUNT(1)')
             ->innerJoin('e.electionEntity', 'ee')
             ->where('ee.committee = :committee AND e.designation = :designation')
-            ->setParameters([
-                'committee' => $committee,
-                'designation' => $designation,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('committee', $committee), new Parameter('designation', $designation)]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -57,10 +59,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->innerJoin('e.electionEntity', 'ee')
             ->where('ee.committee = :committee')
             ->andWhere('d = :designation')
-            ->setParameters([
-                'committee' => $committee,
-                'designation' => $designation,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('committee', $committee), new Parameter('designation', $designation)]))
             ->orderBy('d.voteStartDate', 'DESC')
         ;
 
@@ -85,7 +84,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->addSelect('d')
             ->innerJoin('e.designation', 'd')
             ->where('d = :designation')
-            ->setParameters(['designation' => $designation])
+            ->setParameters(new ArrayCollection([new Parameter('designation', $designation)]))
             ->setMaxResults(1)
         ;
 
@@ -111,7 +110,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->addSelect('d')
             ->innerJoin('e.designation', 'd')
             ->where('d = :designation')
-            ->setParameters(['designation' => $designation])
+            ->setParameters(new ArrayCollection([new Parameter('designation', $designation)]))
             ->getQuery()
             ->getResult()
         ;
@@ -149,9 +148,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->innerJoin('election.electionRounds', 'election_round')
             ->innerJoin('election.electionPools', 'pool')
             ->where('election_round = :election_round')
-            ->setParameters([
-                'election_round' => $electionRound,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('election_round', $electionRound)]))
             ->getQuery()
             ->getArrayResult(), null, 'id');
     }
@@ -172,12 +169,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere('designation.isCanceled = false')
             ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
             ->andWhere(\sprintf('TIMESTAMPDIFF(%s, designation.voteStartDate, designation.voteEndDate) > 2', Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'HOUR' : 'DAY'))
-            ->setParameters([
-                'start_date' => $date,
-                'end_date' => (clone $date)->modify('+1 '.(Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'hour' : 'day')),
-                'open' => ElectionStatusEnum::OPEN,
-                'notification' => $notification,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('start_date', $date), new Parameter('end_date', (clone $date)->modify('+1 '.(Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'hour' : 'day'))), new Parameter('open', ElectionStatusEnum::OPEN), new Parameter('notification', $notification)]))
             ->getQuery()
             ->getResult()
         ;
@@ -197,10 +189,7 @@ class ElectionRepository extends ServiceEntityRepository
                 'election.status = :open AND election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
                 'election.status != :open AND election_result IS NULL',
             ]))
-            ->setParameters([
-                'date' => $date,
-                'open' => ElectionStatusEnum::OPEN,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('date', $date), new Parameter('open', ElectionStatusEnum::OPEN)]))
             ->getQuery()
         ;
 
@@ -220,12 +209,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere('election.status = :open')
             ->andWhere('designation.isCanceled = false')
             ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
-            ->setParameters([
-                'start_date' => $date,
-                'end_date' => (clone $date)->modify('+2 days'),
-                'open' => ElectionStatusEnum::OPEN,
-                'notification' => Designation::NOTIFICATION_VOTE_ANNOUNCEMENT,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('start_date', $date), new Parameter('end_date', (clone $date)->modify('+2 days')), new Parameter('open', ElectionStatusEnum::OPEN), new Parameter('notification', Designation::NOTIFICATION_VOTE_ANNOUNCEMENT)]))
             ->getQuery()
             ->getResult()
         ;
@@ -316,9 +300,7 @@ class ElectionRepository extends ServiceEntityRepository
                 WHERE d2.id = :designation_id
             ) AS votes', VoteResult::class))
             ->setMaxResults(1)
-            ->setParameters([
-                'designation_id' => $designation->getId(),
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('designation_id', $designation->getId())]))
             ->getQuery()
             ->getSingleResult()
         ;

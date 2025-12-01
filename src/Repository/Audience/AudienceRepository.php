@@ -10,6 +10,9 @@ use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Audience\Audience>
+ */
 class AudienceRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;

@@ -8,6 +8,9 @@ use App\Entity\AppAlert;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AppAlert>
+ */
 class AppAlertRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

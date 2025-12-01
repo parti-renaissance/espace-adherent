@@ -8,6 +8,9 @@ use App\Entity\ElectionRound;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ElectionRound>
+ */
 class ElectionRoundRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

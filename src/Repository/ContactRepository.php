@@ -8,6 +8,9 @@ use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Contact>
+ */
 class ContactRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

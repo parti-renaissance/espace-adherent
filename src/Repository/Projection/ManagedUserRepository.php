@@ -17,11 +17,15 @@ use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Projection\ManagedUser>
+ */
 class ManagedUserRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
@@ -420,9 +424,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->update()
             ->set('managed_user.mandates', \sprintf('(%s)', $subQuery))
             ->where('managed_user.originalId = :adherent_id')
-            ->setParameters([
-                'adherent_id' => $adherent->getId(),
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('adherent_id', $adherent->getId())]))
             ->getQuery()
             ->execute()
         ;

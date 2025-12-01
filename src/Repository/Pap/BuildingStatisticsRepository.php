@@ -11,9 +11,14 @@ use App\Pap\BuildingStatusEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\String\UnicodeString;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Pap\BuildingStatistics>
+ */
 class BuildingStatisticsRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -32,12 +37,7 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
             ->innerJoin('buildingStatistics.campaign', 'campaign')
             ->andWhere('campaign = :campaign')
             ->andWhere('buildingStatistics.status != :status_todo')
-            ->setParameters([
-                'campaign' => $campaign,
-                'status_todo' => BuildingStatusEnum::TODO,
-                'status_ongoing' => BuildingStatusEnum::ONGOING,
-                'status_completed' => BuildingStatusEnum::COMPLETED,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('campaign', $campaign), new Parameter('status_todo', BuildingStatusEnum::TODO), new Parameter('status_ongoing', BuildingStatusEnum::ONGOING), new Parameter('status_completed', BuildingStatusEnum::COMPLETED)]))
             ->getQuery()
             ->getSingleResult()
         ;

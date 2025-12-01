@@ -12,6 +12,9 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AdherentMessage\AdherentMessage>
+ */
 class AdherentMessageRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

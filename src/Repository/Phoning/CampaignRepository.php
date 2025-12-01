@@ -9,9 +9,14 @@ use App\Entity\Phoning\Campaign;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Phoning\Campaign>
+ */
 class CampaignRepository extends ServiceEntityRepository
 {
     use ScopeVisibilityEntityRepositoryTrait;
@@ -40,12 +45,7 @@ class CampaignRepository extends ServiceEntityRepository
                 'dataSurvey.author = :adherent'
             )
             ->andWhere('(campaign.permanent = :true OR (team_member.adherent = :adherent AND campaign.finishAt > :now))')
-            ->setParameters([
-                'adherent' => $adherent,
-                'send' => CampaignHistoryStatusEnum::SEND,
-                'now' => new \DateTime(),
-                'true' => true,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent', $adherent), new Parameter('send', CampaignHistoryStatusEnum::SEND), new Parameter('now', new \DateTime()), new Parameter('true', true)]))
             ->orderBy('campaign.permanent', 'ASC')
             ->addOrderBy('campaign.finishAt', 'DESC')
             ->getQuery()
@@ -69,11 +69,7 @@ class CampaignRepository extends ServiceEntityRepository
                 'campaignHistory.status != :send'
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
-            ->setParameters([
-                'now' => new \DateTime(),
-                'last_30d' => new \DateTime('-30 days'),
-                'send' => CampaignHistoryStatusEnum::SEND,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('now', new \DateTime()), new Parameter('last_30d', new \DateTime('-30 days')), new Parameter('send', CampaignHistoryStatusEnum::SEND)]))
         ;
 
         $this->addScopeVisibility($queryBuilder, $zones);

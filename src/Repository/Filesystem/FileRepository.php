@@ -8,9 +8,14 @@ use App\Entity\Filesystem\File;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Filesystem\FileTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Filesystem\File>
+ */
 class FileRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -38,10 +43,7 @@ class FileRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('file')
             ->where('file.type = :dir_type AND file.name = :name')
-            ->setParameters([
-                'name' => $name,
-                'dir_type' => FileTypeEnum::DIRECTORY,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('name', $name), new Parameter('dir_type', FileTypeEnum::DIRECTORY)]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

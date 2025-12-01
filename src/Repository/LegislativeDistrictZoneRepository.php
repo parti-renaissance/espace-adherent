@@ -8,6 +8,9 @@ use App\Entity\LegislativeDistrictZone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\LegislativeDistrictZone>
+ */
 class LegislativeDistrictZoneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

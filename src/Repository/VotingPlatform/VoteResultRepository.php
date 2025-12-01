@@ -8,8 +8,13 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\VoteResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\VotingPlatform\VoteResult>
+ */
 class VoteResultRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -56,10 +61,7 @@ class VoteResultRepository extends ServiceEntityRepository
             ->innerJoin('candidate_group.candidates', 'candidates')
             ->innerJoin('candidates.adherent', 'adherent')
             ->where('adherent.id = :adherent_id AND designation.id = :designation_id')
-            ->setParameters([
-                'adherent_id' => $adherentId,
-                'designation_id' => $designationId,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent_id', $adherentId), new Parameter('designation_id', $designationId)]))
             ->groupBy('election.id', 'election_round.id')
         ;
 
@@ -89,9 +91,7 @@ class VoteResultRepository extends ServiceEntityRepository
             ->innerJoin('vote_choice.electionPool', 'pool')
             ->leftJoin('vote_choice.candidateGroup', 'candidate_group')
             ->where('designation.id = :designation_id')
-            ->setParameters([
-                'designation_id' => $designation->getId(),
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('designation_id', $designation->getId())]))
             ->getQuery()
             ->getArrayResult()
         ;

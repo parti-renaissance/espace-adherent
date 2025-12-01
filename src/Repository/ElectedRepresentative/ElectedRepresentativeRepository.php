@@ -17,6 +17,7 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\Query\Expr\Join;
@@ -24,6 +25,9 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ElectedRepresentative\ElectedRepresentative>
+ */
 class ElectedRepresentativeRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
@@ -306,15 +310,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 ->where('m.onGoing = :true AND m.isElected = :true AND m.finishAt IS NULL')
                 ->andWhere('m.type IN (:types)')
                 ->andWhere('e.adherent = :adherent')
-                ->setParameters([
-                    'true' => true,
-                    'adherent' => $adherent,
-                    'types' => [
-                        MandateTypeEnum::SENATOR,
-                        MandateTypeEnum::DEPUTY,
-                        MandateTypeEnum::EURO_DEPUTY,
-                    ],
-                ])
+                ->setParameters(new ArrayCollection([new Query\Parameter('true', true), new Query\Parameter('adherent', $adherent), new Query\Parameter('types', [
+                    MandateTypeEnum::SENATOR,
+                    MandateTypeEnum::DEPUTY,
+                    MandateTypeEnum::EURO_DEPUTY,
+                ])]))
                 ->getQuery()
                 ->getSingleScalarResult()
         ;

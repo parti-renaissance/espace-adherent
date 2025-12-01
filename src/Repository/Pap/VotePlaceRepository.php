@@ -12,6 +12,9 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Pap\VotePlace>
+ */
 class VotePlaceRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;

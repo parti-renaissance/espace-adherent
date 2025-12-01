@@ -12,10 +12,14 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\VotingPlatform\Voter>
+ */
 class VoterRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -47,10 +51,7 @@ class VoterRepository extends ServiceEntityRepository
             ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('list.election', 'election')
             ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
-            ->setParameters([
-                'adherent' => $adherent,
-                'election_uuid' => $electionUuid,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('adherent', $adherent), new Query\Parameter('election_uuid', $electionUuid)]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -155,11 +156,8 @@ class VoterRepository extends ServiceEntityRepository
                 ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
                 ->innerJoin('election.electionEntity', 'election_entity')
                 ->innerJoin('election_entity.committee', 'committee')
-                ->where('voter.adherent = :adherent')
-                ->setParameters([
-                    'adherent' => $adherent,
-                    'designation_type' => DesignationTypeEnum::COMMITTEE_SUPERVISOR,
-                ])
+                ->andWhere('voter.adherent = :adherent')
+                ->setParameters(new ArrayCollection([new Query\Parameter('adherent', $adherent), new Query\Parameter('designation_type', DesignationTypeEnum::COMMITTEE_SUPERVISOR)]))
         ;
 
         if ($committee) {

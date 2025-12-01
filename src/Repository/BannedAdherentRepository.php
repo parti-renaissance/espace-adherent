@@ -9,6 +9,9 @@ use App\Entity\BannedAdherent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\BannedAdherent>
+ */
 class BannedAdherentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

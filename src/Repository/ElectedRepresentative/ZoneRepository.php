@@ -8,6 +8,9 @@ use App\Entity\ElectedRepresentative\Zone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ElectedRepresentative\Zone>
+ */
 class ZoneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

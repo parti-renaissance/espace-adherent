@@ -7,8 +7,13 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Donator>
+ */
 class DonatorRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -23,11 +28,7 @@ class DonatorRepository extends ServiceEntityRepository
             ->andWhere('donator.emailAddress = :emailAddress')
             ->andWhere('donator.firstName = :firstName')
             ->andWhere('donator.lastName = :lastName')
-            ->setParameters([
-                'emailAddress' => $emailAddress,
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('emailAddress', $emailAddress), new Parameter('firstName', $firstName), new Parameter('lastName', $lastName)]))
             ->orderBy('donator.createdAt', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
@@ -44,12 +45,7 @@ class DonatorRepository extends ServiceEntityRepository
             ->andWhere('d.firstName = :first_name')
             ->andWhere('d.lastName = :last_name')
             ->andWhere('d.emailAddress = :email')
-            ->setParameters([
-                'adherent' => $adherent,
-                'first_name' => $adherent->getFirstName(),
-                'last_name' => $adherent->getLastName(),
-                'email' => $adherent->getEmailAddress(),
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent', $adherent), new Parameter('first_name', $adherent->getFirstName()), new Parameter('last_name', $adherent->getLastName()), new Parameter('email', $adherent->getEmailAddress())]))
             ->getQuery()
             ->execute()
         ;
