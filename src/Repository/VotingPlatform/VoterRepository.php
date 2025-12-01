@@ -155,7 +155,7 @@ class VoterRepository extends ServiceEntityRepository
                 ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
                 ->innerJoin('election.electionEntity', 'election_entity')
                 ->innerJoin('election_entity.committee', 'committee')
-                ->where('voter.adherent = :adherent')
+                ->andWhere('voter.adherent = :adherent')
                 ->setParameters([
                     'adherent' => $adherent,
                     'designation_type' => DesignationTypeEnum::COMMITTEE_SUPERVISOR,

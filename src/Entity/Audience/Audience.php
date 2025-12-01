@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Api\Audience\RetrieveAudiencesController;
+use App\Entity\EntityZoneTrait;
 use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,6 +57,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AudienceRepository::class)]
 class Audience extends AbstractAudience
 {
+    use EntityZoneTrait;
+
     /**
      * @var string
      */

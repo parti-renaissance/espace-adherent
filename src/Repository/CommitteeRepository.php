@@ -20,6 +20,7 @@ use App\Search\SearchParametersFilter;
 use App\Utils\GeometryUtils;
 use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -54,8 +55,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->createQueryBuilder('c')
             ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults(1)
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return $query->getOneOrNullResult();
     }
@@ -69,17 +69,16 @@ class CommitteeRepository extends ServiceEntityRepository
             ->where('c.postAddress.address = :address AND c.postAddress.postalCode = :postal_code')
             ->andWhere('c.postAddress.cityName LIKE :city_name AND c.postAddress.country = :country')
             ->andWhere('c.status = :approved')
-            ->setParameters([
+            ->setParameters(new ArrayCollection([
                 'address' => $address->getAddress(),
                 'postal_code' => $address->getPostalCode(),
                 'city_name' => $address->getCityName().'%',
                 'country' => $address->getCountry(),
                 'approved' => Committee::APPROVED,
-            ])
+            ]))
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function updateMembershipsCounters(): void
@@ -123,8 +122,7 @@ class CommitteeRepository extends ServiceEntityRepository
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression($alias).' < :distance_max')
-                ->setParameter('distance_max', $search->getRadius())
-            ;
+                ->setParameter('distance_max', $search->getRadius());
         } else {
             $qb = $this->createQueryBuilder($alias);
         }
@@ -140,8 +138,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function paginateAllApprovedCommittees(
@@ -153,8 +150,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->setMaxResults($limit)
-            ->setFirstResult($offset)
-        ;
+            ->setFirstResult($offset);
 
         return new Paginator($query);
     }
@@ -167,8 +163,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'status' => Committee::APPROVED,
             ])
             ->orderBy('c.name', 'ASC')
-            ->addOrderBy('c.createdAt', 'DESC')
-        ;
+            ->addOrderBy('c.createdAt', 'DESC');
 
         return $this->withGeoZones(
             $zones,
@@ -215,14 +210,12 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
             ->setFirstResult($offset)
             ->setMaxResults($limit)
-            ->groupBy('c.id')
-        ;
+            ->groupBy('c.id');
 
         if ($identifier = $designation->getElectionEntityIdentifier()) {
             $qb
                 ->andWhere('c.uuid = :committee_uuid')
-                ->setParameter('committee_uuid', $identifier)
-            ;
+                ->setParameter('committee_uuid', $identifier);
         } elseif (DesignationGlobalZoneEnum::toArray() !== array_intersect(DesignationGlobalZoneEnum::toArray(), $designation->getGlobalZones())) {
             $zoneCondition = new Orx();
 
@@ -245,8 +238,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
             $qb
                 ->andWhere($zoneCondition)
-                ->setParameter('fr', AddressInterface::FRANCE)
-            ;
+                ->setParameter('fr', AddressInterface::FRANCE);
         }
 
         return $qb->getQuery()->getResult();
@@ -259,7 +251,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
             ->innerJoin('election.candidacies', 'candidacy', Join::WITH, 'candidacy.status = :candidacy_status AND candidacy.createdAt >= :candidacy_date')
             ->innerJoin('candidacy.committeeMembership', 'membership', Join::WITH, 'membership.adherent = :adherent')
-            ->where('committee.status = :status')
+            ->andWhere('committee.status = :status')
             ->setParameters([
                 'designation_type' => $designation->getType(),
                 'candidacy_status' => CandidacyInterface::STATUS_CONFIRMED,
@@ -269,8 +261,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function findCommitteeForRecentVote(Designation $designation, Adherent $adherent): ?Committee
@@ -282,7 +273,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->innerJoin('election.electionRounds', 'election_round')
             ->innerJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = :adherent')
             ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = election_round AND vote.votedAt >= :vote_date')
-            ->where('committee.status = :status')
+            ->andWhere('committee.status = :status')
             ->setParameters([
                 'designation_type' => $designation->getType(),
                 'adherent' => $adherent,
@@ -291,8 +282,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function getCommitteesPerimeters(): array
@@ -324,8 +314,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->enableResultCache(43200)
-            ->getResult()
-        ;
+            ->getResult();
 
         $committees = [];
 

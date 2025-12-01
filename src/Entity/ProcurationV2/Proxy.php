@@ -58,8 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'procuration_v2_proxies')]
 class Proxy extends AbstractProcuration
 {
-    #[Assert\Length(min: 5,
-        max: 9)]
+    #[Assert\Length(min: 5, max: 9)]
     #[Assert\Regex(pattern: '/^[0-9]+$/i')]
     #[ORM\Column(length: 9, nullable: true)]
     public ?string $electorNumber = null;
@@ -89,6 +88,9 @@ class Proxy extends AbstractProcuration
      */
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxyAction::class, cascade: ['all'])]
     public Collection $actions;
+
+    #[ORM\ManyToMany(targetEntity: Round::class)]
+    public Collection $rounds;
 
     public function __construct(
         UuidInterface $uuid,

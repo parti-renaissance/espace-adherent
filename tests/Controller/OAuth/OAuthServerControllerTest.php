@@ -365,8 +365,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
         return $this
             ->get('doctrine')
             ->getRepository(AuthorizationCode::class)
-            ->findAuthorizationCodeByIdentifier($identifier)
-        ;
+            ->findAuthorizationCodeByIdentifier($identifier);
     }
 
     private function createAuthorizeUrl(
