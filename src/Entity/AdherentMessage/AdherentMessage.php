@@ -23,6 +23,7 @@ use App\Controller\Api\AdherentMessage\DuplicateMessageController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageRecipientsCountController;
 use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
+use App\Controller\Api\AdherentMessage\GetAvailableVariablesController;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
@@ -80,6 +81,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherent_messages/available-senders',
             controller: GetAvailableSendersController::class,
+            read: false,
+        ),
+        new Get(
+            uriTemplate: '/adherent_messages/available-variables',
+            controller: GetAvailableVariablesController::class,
             read: false,
         ),
         new Put(
