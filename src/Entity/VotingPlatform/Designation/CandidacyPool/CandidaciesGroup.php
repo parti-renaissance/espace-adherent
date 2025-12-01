@@ -30,7 +30,7 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
      */
     #[Assert\Count(min: 1)]
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     protected $candidacies;
 

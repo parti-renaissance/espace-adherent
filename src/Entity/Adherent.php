@@ -230,7 +230,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[AssertZoneBasedRoles]
     #[Groups(['profile_update'])]
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $zoneBasedRoles;
 
     /**
@@ -1021,8 +1021,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             ->orderBy([
                 'unsubscribedAt' => Order::Ascending,
                 'lastActivityDate' => Order::Descending,
-            ])
-        ;
+            ]);
 
         if ($activeOnly) {
             $criteria->andWhere($criteria::expr()->eq('status', SessionStatusEnum::ACTIVE));
@@ -1985,8 +1984,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
             ->andWhere(Criteria::expr()->eq('quality', null))
-            ->orderBy(['beginAt' => 'DESC'])
-        ;
+            ->orderBy(['beginAt' => 'DESC']);
 
         return $this->adherentMandates->matching($criteria);
     }
@@ -1998,24 +1996,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
-            ->andWhere(Criteria::expr()->eq('quality', null))
-        ;
+            ->andWhere(Criteria::expr()->eq('quality', null));
 
         return $this->adherentMandates
             ->matching($criteria)
             ->filter(function (AdherentMandateInterface $mandate) {
                 return $mandate instanceof CommitteeAdherentMandate;
             })
-            ->toArray()
-        ;
+            ->toArray();
     }
 
     public function hasParliamentaryMandates(): bool
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
-            ->andWhere(Criteria::expr()->eq('quality', null))
-        ;
+            ->andWhere(Criteria::expr()->eq('quality', null));
 
         $types = array_merge(MandateTypeEnum::PARLIAMENTARY_TYPES, [MandateTypeEnum::MINISTER]);
 
@@ -2024,8 +2019,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             ->filter(
                 fn (AbstractAdherentMandate $mandate) => $mandate instanceof ElectedRepresentativeAdherentMandate && \in_array($mandate->mandateType, $types)
             )
-            ->isEmpty()
-        ;
+            ->isEmpty();
     }
 
     /**
@@ -2409,8 +2403,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getPaymentByOhmeId(string $ohmeId): ?Payment
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('ohmeId', $ohmeId))
-        ;
+            ->where(Criteria::expr()->eq('ohmeId', $ohmeId));
 
         return $this->payments->matching($criteria)->count() > 0
             ? $this->payments->matching($criteria)->first()

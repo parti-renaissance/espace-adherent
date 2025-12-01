@@ -194,7 +194,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     #[Groups(['committee:list', 'committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER', inversedBy: 'animatorCommittees')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
     public ?Adherent $animator = null;
 
     public function __construct(
@@ -386,8 +386,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
             ->andWhere(Criteria::expr()->eq('quality', null))
-            ->andWhere(Criteria::expr()->eq('gender', $gender))
-        ;
+            ->andWhere(Criteria::expr()->eq('gender', $gender));
 
         return $this->adherentMandates->matching($criteria)->count() > 0;
     }
@@ -400,8 +399,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('finishAt', null))
             ->andWhere(Criteria::expr()->eq('quality', null))
-            ->orderBy(['gender' => 'ASC'])
-        ;
+            ->orderBy(['gender' => 'ASC']);
 
         return $this->adherentMandates->matching($criteria);
     }
@@ -440,8 +438,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
             ->andWhere(Criteria::expr()->orX(
                 Criteria::expr()->isNull('finishAt'),
                 Criteria::expr()->gt('finishAt', new \DateTime())
-            ))
-        ;
+            ));
 
         if ($gender) {
             $criteria->andWhere(Criteria::expr()->eq('gender', $gender));

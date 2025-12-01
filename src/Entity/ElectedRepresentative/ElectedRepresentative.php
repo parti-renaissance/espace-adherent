@@ -172,7 +172,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
      * @var SocialNetworkLink[]|Collection
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: SocialNetworkLink::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: SocialNetworkLink::class, cascade: ['all'], orphanRemoval: true)]
     private $socialNetworkLinks;
 
     /**
@@ -187,21 +187,21 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
      * PoliticalFunction[]|Collection
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: PoliticalFunction::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: PoliticalFunction::class, cascade: ['all'], orphanRemoval: true)]
     private $politicalFunctions;
 
     /**
      * @var ElectedRepresentativeLabel[]|Collection
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: ElectedRepresentativeLabel::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: ElectedRepresentativeLabel::class, cascade: ['all'], orphanRemoval: true)]
     private $labels;
 
     /**
      * Sponsorship[]|Collection
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], orphanRemoval: true)]
     private $sponsorships;
 
     #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Contribution::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -705,8 +705,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     public function getPaymentByOhmeId(string $ohmeId): ?Payment
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('ohmeId', $ohmeId))
-        ;
+            ->where(Criteria::expr()->eq('ohmeId', $ohmeId));
 
         return $this->payments->matching($criteria)->count() > 0
             ? $this->payments->matching($criteria)->first()

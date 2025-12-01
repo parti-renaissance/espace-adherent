@@ -23,12 +23,12 @@ class ActionParticipant
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isPresent = false;
 
-    #[ORM\ManyToOne(targetEntity: Action::class, fetch: 'EAGER', inversedBy: 'participants')]
+    #[ORM\ManyToOne(targetEntity: Action::class, inversedBy: 'participants')]
     public Action $action;
 
     #[Groups(['action_read', 'action_read_list'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne]
     public Adherent $adherent;
 
     public function __construct(Action $action, Adherent $adherent)

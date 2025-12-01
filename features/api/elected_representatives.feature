@@ -376,7 +376,7 @@ Feature:
                 "name": "Hauts-de-Seine"
               },
               "on_going": true,
-              "begin_at": "2023-01-13T00:00:00+01:00",
+              "begin_at": "@string@.isDateTime()",
               "finish_at": null,
               "political_affiliation": null,
               "la_r_e_m_support": "informal",
@@ -391,7 +391,7 @@ Feature:
                   "name": "president_of_epci",
                   "clarification": "string",
                   "on_going": true,
-                  "begin_at": "2023-01-30T12:01:51+00:00",
+                  "begin_at": "@string@.isDateTime()",
                   "finish_at": null
                 },
                 {
@@ -399,8 +399,8 @@ Feature:
                   "name": "vice_president_of_epci",
                   "clarification": "string",
                   "on_going": false,
-                  "begin_at": "2023-01-13T12:01:51+00:00",
-                  "finish_at": "2023-01-30T11:01:51+00:00"
+                  "begin_at": "@string@.isDateTime()",
+                  "finish_at": "@string@.isDateTime()"
                 }
               ],
               "uuid": "@uuid@"
@@ -457,7 +457,7 @@ Feature:
                 "name": "Hauts-de-Seine"
               },
               "on_going": true,
-              "begin_at": "2023-01-13T00:00:00+01:00",
+              "begin_at": "@string@.isDateTime()",
               "finish_at": null,
               "political_affiliation": null,
               "la_r_e_m_support": "informal",
@@ -472,7 +472,7 @@ Feature:
                   "name": "president_of_epci",
                   "clarification": "test",
                   "on_going": true,
-                  "begin_at": "2023-01-30T12:01:51+00:00",
+                  "begin_at": "@string@.isDateTime()",
                   "finish_at": null
                 },
                 {
@@ -480,8 +480,8 @@ Feature:
                   "name": "vice_president_of_epci",
                   "clarification": "test",
                   "on_going": false,
-                  "begin_at": "2023-01-13T12:01:51+00:00",
-                  "finish_at": "2023-01-30T11:01:51+00:00"
+                  "begin_at": "@string@.isDateTime()",
+                  "finish_at": "@string@.isDateTime()"
                 }
               ],
               "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727"

@@ -39,7 +39,7 @@ class DataAnswer
     #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\JoinColumn(name: 'data_answer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\JoinTable(name: 'jecoute_data_answer_selected_choices')]
-    #[ORM\ManyToMany(targetEntity: Choice::class, inversedBy: 'dataAnswers', fetch: 'EAGER')]
+    #[ORM\ManyToMany(targetEntity: Choice::class, inversedBy: 'dataAnswers')]
     #[ORM\OrderBy(['id' => 'ASC'])]
     private $selectedChoices;
 

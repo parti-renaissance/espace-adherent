@@ -16,7 +16,7 @@ class EventGroupCategory extends BaseEventCategory
 {
     public const CAMPAIGN_EVENTS = 'evenements-de-campagne';
 
-    #[ORM\OneToMany(mappedBy: 'eventGroupCategory', targetEntity: EventCategory::class, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'eventGroupCategory', targetEntity: EventCategory::class)]
     #[ORM\OrderBy(['name' => 'ASC'])]
     private $eventCategories;
 
