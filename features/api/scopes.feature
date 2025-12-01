@@ -60,13 +60,7 @@ Feature:
                             "active": "#1C5CD8"
                         }
                     },
-                    "zones": [
-                        {
-                            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
-                            "code": "FR",
-                            "name": "France"
-                        }
-                    ],
+                    "zones": [],
                     "apps": ["data_corner"],
                     "features": ["news"]
                 },
