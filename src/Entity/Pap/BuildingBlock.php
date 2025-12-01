@@ -44,7 +44,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
      * @var Floor[]|Collection
      */
     #[Groups(['pap_building_block_list'])]
-    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: Floor::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: Floor::class, cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['number' => 'ASC'])]
     private Collection $floors;
 
@@ -94,8 +94,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
     public function getFloorByNumber(int $number): ?Floor
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('number', $number))
-        ;
+            ->andWhere(Criteria::expr()->eq('number', $number));
 
         return $this->floors->matching($criteria)->count() > 0
             ? $this->floors->matching($criteria)->first()

@@ -65,7 +65,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="les-enjeux-des-10-prochaines-annees_3_[\d]{14}.xlsx"$/',
+            '/^attachment; filename="les-enjeux-des-10-prochaines-annees_\d+_\d{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 

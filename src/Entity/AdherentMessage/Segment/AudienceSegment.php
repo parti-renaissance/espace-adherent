@@ -62,7 +62,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     #[Assert\Valid]
     #[Groups(['audience_segment_read', 'audience_segment_write'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\OneToOne(targetEntity: AudienceFilter::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToOne(targetEntity: AudienceFilter::class, cascade: ['all'], orphanRemoval: true)]
     private $filter;
 
     /**

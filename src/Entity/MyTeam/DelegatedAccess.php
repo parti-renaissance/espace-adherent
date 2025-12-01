@@ -54,7 +54,7 @@ class DelegatedAccess
      * @var Adherent
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $delegator;
 
     /**

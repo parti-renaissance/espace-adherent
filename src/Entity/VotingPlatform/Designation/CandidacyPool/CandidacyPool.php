@@ -23,7 +23,7 @@ class CandidacyPool implements \Stringable
     #[ORM\Column]
     public ?string $label = null;
 
-    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER', inversedBy: 'candidacyPools')]
+    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], inversedBy: 'candidacyPools')]
     public ?Designation $designation = null;
 
     /**
@@ -31,7 +31,7 @@ class CandidacyPool implements \Stringable
      */
     #[Assert\Count(min: 1)]
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'candidacyPool', targetEntity: CandidaciesGroup::class, cascade: ['persist'], fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'candidacyPool', targetEntity: CandidaciesGroup::class, cascade: ['persist'])]
     private $candidaciesGroups;
 
     public function __construct(?UuidInterface $uuid = null)

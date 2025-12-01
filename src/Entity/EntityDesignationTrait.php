@@ -18,7 +18,7 @@ trait EntityDesignationTrait
     #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Valid(groups: ['Admin'])]
     #[Groups(['committee_election:read'])]
-    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'])]
     protected $designation;
 
     public function getDesignation(): ?Designation

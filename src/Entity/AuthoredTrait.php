@@ -14,7 +14,7 @@ trait AuthoredTrait
      */
     #[Groups(['action_read', 'action_read_list', 'action_write', 'survey_replies_list', 'jecoute_news_read_dc', 'user_document:read'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
 
     public function getAuthor(): ?Adherent

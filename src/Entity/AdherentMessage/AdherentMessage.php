@@ -219,7 +219,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     /**
      * @var AdherentMessageFilterInterface|null
      */
-    #[ORM\OneToOne(inversedBy: 'message', targetEntity: AbstractAdherentMessageFilter::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToOne(inversedBy: 'message', targetEntity: AbstractAdherentMessageFilter::class, cascade: ['all'], orphanRemoval: true)]
     private $filter;
 
     /**
