@@ -29,6 +29,9 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\PushToken>
+ */
 class PushTokenRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;

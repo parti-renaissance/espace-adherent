@@ -12,6 +12,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Poll\LocalPoll>
+ */
 class LocalPollRepository extends ServiceEntityRepository
 {
     use UnpublishPollTrait;

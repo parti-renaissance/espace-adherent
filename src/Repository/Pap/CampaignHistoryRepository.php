@@ -14,10 +14,15 @@ use App\Pap\CampaignHistoryStatusEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Pap\CampaignHistory>
+ */
 class CampaignHistoryRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -36,11 +41,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
                 ->select('campaignHistory.door')
                 ->where('campaignHistory.building = :building')
                 ->andWhere('campaignHistory.buildingBlock = :buildingBlock AND campaignHistory.floor = :floor')
-                ->setParameters([
-                    'building' => $building,
-                    'buildingBlock' => $buildingBlock,
-                    'floor' => $floor,
-                ])
+                ->setParameters(new ArrayCollection([new Parameter('building', $building), new Parameter('buildingBlock', $buildingBlock), new Parameter('floor', $floor)]))
                 ->getQuery()
                 ->getArrayResult(),
             'door'));
@@ -63,10 +64,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('campaignHistory')
             ->where('campaignHistory.building = :building AND campaignHistory.campaign = :campaign')
-            ->setParameters([
-                'building' => $building,
-                'campaign' => $campaign,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('building', $building), new Parameter('campaign', $campaign)]))
             ->orderBy('campaignHistory.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -152,10 +150,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->addSelect('adherent')
             ->innerJoin('campaignHistory.questioner', 'adherent')
             ->where('campaignHistory.building = :building AND campaignHistory.campaign = :campaign')
-            ->setParameters([
-                'building' => $building,
-                'campaign' => $campaign,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('building', $building), new Parameter('campaign', $campaign)]))
             ->orderBy('campaignHistory.createdAt', 'ASC')
             ->getQuery()
             ->getResult()

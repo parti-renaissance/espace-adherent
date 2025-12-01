@@ -11,9 +11,14 @@ use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneTagEnum;
 use App\Entity\Referral;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Referral>
+ */
 class ReferralRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
@@ -29,10 +34,7 @@ class ReferralRepository extends ServiceEntityRepository
             ->select('COUNT(referral.id)')
             ->where('referral.emailHash = :hash')
             ->andWhere('referral.status = :status_reported')
-            ->setParameters([
-                'hash' => Referral::createHash($email),
-                'status_reported' => StatusEnum::REPORTED,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('hash', Referral::createHash($email)), new Parameter('status_reported', StatusEnum::REPORTED)]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -46,12 +48,7 @@ class ReferralRepository extends ServiceEntityRepository
             ->set('r.updatedAt', ':date')
             ->andWhere('r.status IN (:status_to_update)')
             ->andWhere('r.referred = :referred')
-            ->setParameters([
-                'new_status' => StatusEnum::ADHESION_FINISHED,
-                'date' => new \DateTimeImmutable(),
-                'status_to_update' => [StatusEnum::ACCOUNT_CREATED, StatusEnum::INVITATION_SENT],
-                'referred' => $adherent,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('new_status', StatusEnum::ADHESION_FINISHED), new Parameter('date', new \DateTimeImmutable()), new Parameter('status_to_update', [StatusEnum::ACCOUNT_CREATED, StatusEnum::INVITATION_SENT]), new Parameter('referred', $adherent)]))
             ->getQuery()
             ->execute()
         ;
@@ -65,12 +62,7 @@ class ReferralRepository extends ServiceEntityRepository
             ->set('r.updatedAt', ':date')
             ->where('r.status = :status_to_update')
             ->andWhere('r.emailAddress = :email')
-            ->setParameters([
-                'new_status' => $status,
-                'date' => new \DateTimeImmutable(),
-                'status_to_update' => StatusEnum::INVITATION_SENT,
-                'email' => $adherent->getEmailAddress(),
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('new_status', $status), new Parameter('date', new \DateTimeImmutable()), new Parameter('status_to_update', StatusEnum::INVITATION_SENT), new Parameter('email', $adherent->getEmailAddress())]))
         ;
 
         if ($excludeReferral) {
@@ -98,11 +90,7 @@ class ReferralRepository extends ServiceEntityRepository
             ->addSelect('COUNT(DISTINCT referral.id) AS nb_referral_sent')
             ->addSelect('COUNT(IF(referral.status = :status_reported, referral.id, null)) AS nb_referral_reported')
             ->where('referral.referrer = :referrer')
-            ->setParameters([
-                'status_finished' => StatusEnum::ADHESION_FINISHED->value,
-                'status_reported' => StatusEnum::REPORTED->value,
-                'referrer' => $referrer,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('status_finished', StatusEnum::ADHESION_FINISHED->value), new Parameter('status_reported', StatusEnum::REPORTED->value), new Parameter('referrer', $referrer)]))
             ->getQuery()
             ->getSingleResult()
         ;
@@ -113,10 +101,7 @@ class ReferralRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('referral')
             ->where('referral.status = :status_finished')
             ->andWhere('referral.referred = :referred')
-            ->setParameters([
-                'status_finished' => StatusEnum::ADHESION_FINISHED,
-                'referred' => $adherent,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('status_finished', StatusEnum::ADHESION_FINISHED), new Parameter('referred', $adherent)]))
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()

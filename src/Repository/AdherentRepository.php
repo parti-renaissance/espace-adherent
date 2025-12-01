@@ -64,6 +64,9 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Adherent>
+ */
 class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface, PublicIdRepositoryInterface
 {
     use NearbyTrait;
@@ -119,10 +122,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('adherent')
             ->where('adherent.emailAddress = :email')
             ->andWhere('adherent.status IN (:statuses)')
-            ->setParameters([
-                'email' => $email,
-                'statuses' => $statuses,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('email', $email), new Query\Parameter('statuses', $statuses)]))
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -136,10 +136,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('adherent')
             ->where('adherent.id = :id')
             ->andWhere('adherent.status = :status')
-            ->setParameters([
-                'id' => $id,
-                'status' => Adherent::ENABLED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('id', $id), new Query\Parameter('status', Adherent::ENABLED)]))
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -373,12 +370,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('a.birthdate = :birth_date')
             ->andWhere('a.certifiedAt IS NOT NULL')
             ->andWhere('a != :ignored_adherent')
-            ->setParameters([
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'birth_date' => $birthDate,
-                'ignored_adherent' => $ignoredAdherent,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('first_name', $firstName), new Query\Parameter('last_name', $lastName), new Query\Parameter('birth_date', $birthDate), new Query\Parameter('ignored_adherent', $ignoredAdherent)]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -390,11 +382,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('a')
             ->where('LOWER(a.firstName) = :firstName AND LOWER(a.lastName) = :lastName')
             ->orWhere('a.birthdate = :birthDate')
-            ->setParameters([
-                'firstName' => $electedRepresentative->getFirstName(),
-                'lastName' => $electedRepresentative->getLastName(),
-                'birthDate' => $electedRepresentative->getBirthDate(),
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('firstName', $electedRepresentative->getFirstName()), new Query\Parameter('lastName', $electedRepresentative->getLastName()), new Query\Parameter('birthDate', $electedRepresentative->getBirthDate())]))
             ->getQuery()
             ->getResult()
         ;
@@ -465,10 +453,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('a')
             ->leftJoin('a.adherentMandates', 'am')
             ->where('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
-            ->setParameters([
-                'committee' => $committee,
-                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('committee', $committee), new Query\Parameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)]))
         ;
     }
 
@@ -700,10 +685,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->orderBy('nb_surveys', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
             ->addOrderBy('adherent.id', 'ASC')
-            ->setParameters([
-                'campaign' => $campaign,
-                'send' => CampaignHistoryStatusEnum::SEND,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('campaign', $campaign), new Query\Parameter('send', CampaignHistoryStatusEnum::SEND)]))
             ->getQuery()
             ->getResult()
         ;
@@ -723,10 +705,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL a.{id, emailAddress, firstName, lastName}')
             ->where('a.status = :status')
             ->andWhere('a.tags LIKE :adherent_tag')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('status', Adherent::ENABLED), new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%')]))
         ;
 
         $this->withGeoZones(
@@ -792,16 +771,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->groupBy('adherent.id')
             ->orderBy('nb_surveys', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
-            ->setParameters([
-                'campaign' => $campaign,
-                'send' => CampaignHistoryStatusEnum::SEND,
-                'completed' => CampaignHistoryStatusEnum::COMPLETED,
-                'to_unsubscribe' => CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
-                'to_unjoin' => CampaignHistoryStatusEnum::TO_UNJOIN,
-                'to_remind' => CampaignHistoryStatusEnum::TO_REMIND,
-                'not_respond' => CampaignHistoryStatusEnum::NOT_RESPOND,
-                'failed' => CampaignHistoryStatusEnum::FAILED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('campaign', $campaign), new Query\Parameter('send', CampaignHistoryStatusEnum::SEND), new Query\Parameter('completed', CampaignHistoryStatusEnum::COMPLETED), new Query\Parameter('to_unsubscribe', CampaignHistoryStatusEnum::TO_UNSUBSCRIBE), new Query\Parameter('to_unjoin', CampaignHistoryStatusEnum::TO_UNJOIN), new Query\Parameter('to_remind', CampaignHistoryStatusEnum::TO_REMIND), new Query\Parameter('not_respond', CampaignHistoryStatusEnum::NOT_RESPOND), new Query\Parameter('failed', CampaignHistoryStatusEnum::FAILED)]))
         ;
 
         if (!$apiContext) {
@@ -834,14 +804,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->where('campaignHistory.campaign = :campaign')
             ->groupBy('adherent.id')
             ->orderBy('nb_surveys', 'DESC')
-            ->setParameters([
-                'campaign' => $campaign,
-                'accept_to_answer' => PapCampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
-                'dont_accept_to_answer' => PapCampaignHistoryStatusEnum::DONT_ACCEPT_TO_ANSWER,
-                'contact_later' => PapCampaignHistoryStatusEnum::CONTACT_LATER,
-                'door_open' => PapCampaignHistoryStatusEnum::DOOR_OPEN,
-                'door_closed' => PapCampaignHistoryStatusEnum::DOOR_CLOSED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('campaign', $campaign), new Query\Parameter('accept_to_answer', PapCampaignHistoryStatusEnum::ACCEPT_TO_ANSWER), new Query\Parameter('dont_accept_to_answer', PapCampaignHistoryStatusEnum::DONT_ACCEPT_TO_ANSWER), new Query\Parameter('contact_later', PapCampaignHistoryStatusEnum::CONTACT_LATER), new Query\Parameter('door_open', PapCampaignHistoryStatusEnum::DOOR_OPEN), new Query\Parameter('door_closed', PapCampaignHistoryStatusEnum::DOOR_CLOSED)]))
         ;
 
         return $this->configurePaginator($qb, $page, $limit, null, false);
@@ -1016,9 +979,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('adherent')
             ->andWhere('adherent.status = :status')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('status', Adherent::ENABLED)]))
         ;
 
         if ($adherentRenaissance ^ $sympathizerRenaissance) {
@@ -1088,10 +1049,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->innerJoin('adherent.zoneBasedRoles', 'zone_based_role')
             ->andWhere('zone_based_role.type = :role_type')
             ->andWhere(':zone MEMBER OF zone_based_role.zones')
-            ->setParameters([
-                'role_type' => $roleType,
-                'zone' => $zone,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('role_type', $roleType), new Query\Parameter('zone', $zone)]))
         ;
 
         if (!$withHidden) {
@@ -1136,11 +1094,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'rda.delegator = adherent AND rda.type = :type_pad AND FIND_IN_SET(:feature_elected_representative, rda.scopeFeatures) > 0'
             )
             ->leftJoin('rda.delegated', 'delegated')
-            ->setParameters([
-                'department_codes' => $departmentCodes,
-                'type_pad' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
-                'feature_elected_representative' => FeatureEnum::ELECTED_REPRESENTATIVE,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('department_codes', $departmentCodes), new Query\Parameter('type_pad', ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY), new Query\Parameter('feature_elected_representative', FeatureEnum::ELECTED_REPRESENTATIVE)]))
             ->getQuery()
             ->getArrayResult()
         ;
@@ -1200,10 +1154,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin('adherent.committeeMembership', 'committee_membership')
             ->leftJoin('committee_membership.committee', 'cl')
             ->andWhere('adherent.status = :enabled')
-            ->setParameters([
-                'enabled' => Adherent::ENABLED,
-                'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('enabled', Adherent::ENABLED), new Query\Parameter('manual_trigger', CommitteeMembershipTriggerEnum::MANUAL)]))
         ;
 
         $this->withGeoZones(
@@ -1242,11 +1193,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->where('mandate.finishAt IS NULL AND mandate.mandateType IN (:types)')
             ->andWhere('adherent.tags LIKE :adherent_tag')
             ->andWhere('adherent.status = :status')
-            ->setParameters([
-                'types' => MandateTypeEnum::LOCAL_TYPES,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-                'status' => Adherent::ENABLED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('types', MandateTypeEnum::LOCAL_TYPES), new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%'), new Query\Parameter('status', Adherent::ENABLED)]))
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
@@ -1267,11 +1214,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $qb = $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->andWhere(\sprintf('adherent.id IN (%s)', $subQuery->getDQL()))
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'date' => '2024-11-05 00:00:00',
-                'donation_status' => Donation::STATUS_FINISHED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('status', Adherent::ENABLED), new Query\Parameter('date', '2024-11-05 00:00:00'), new Query\Parameter('donation_status', Donation::STATUS_FINISHED)]))
         ;
 
         if (null !== $offset && null !== $limit) {
@@ -1313,17 +1256,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_recotisation, a.id, NULL)) AS total_recotisation')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_elu, a.id, NULL)) AS total_elu')
             ->where('a.status = :enabled')
-            ->setParameters([
-                'enabled' => Adherent::ENABLED,
-                'tag_primo' => \sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
-                'tag_recotisation' => \sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
-                'tag_elu' => \sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%',
-                'tag_a_jour_n' => TagEnum::getAdherentYearTag().'%',
-                'tag_a_jour_n1' => TagEnum::getAdherentYearTag($currentYear - 1).'%',
-                'tag_a_jour_n2' => TagEnum::getAdherentYearTag($currentYear - 2).'%',
-                'tag_a_jour_n3' => TagEnum::getAdherentYearTag($currentYear - 3).'%',
-                'tag_sympathisant' => TagEnum::SYMPATHISANT.'%',
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('enabled', Adherent::ENABLED), new Query\Parameter('tag_primo', \sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%'), new Query\Parameter('tag_recotisation', \sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%'), new Query\Parameter('tag_elu', \sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%'), new Query\Parameter('tag_a_jour_n', TagEnum::getAdherentYearTag().'%'), new Query\Parameter('tag_a_jour_n1', TagEnum::getAdherentYearTag($currentYear - 1).'%'), new Query\Parameter('tag_a_jour_n2', TagEnum::getAdherentYearTag($currentYear - 2).'%'), new Query\Parameter('tag_a_jour_n3', TagEnum::getAdherentYearTag($currentYear - 3).'%'), new Query\Parameter('tag_sympathisant', TagEnum::SYMPATHISANT.'%')]))
         ;
 
         $zoneQueryBuilder = (clone $baseQueryBuilder)
@@ -1364,10 +1297,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->innerJoin(Donator::class, 'donator', Join::WITH, 'donator.adherent = a')
             ->innerJoin('donator.donations', 'donation', Join::WITH, 'donation.membership = 1 AND donation.status = :status')
             ->where('a = :adherent')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => Donation::STATUS_FINISHED,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('adherent', $adherent), new Query\Parameter('status', Donation::STATUS_FINISHED)]))
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -1457,11 +1387,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->where('c = :committee')
             ->andWhere('a.status = :status')
             ->andWhere('a.tags LIKE :adherent_tag')
-            ->setParameters([
-                'committee' => $committee,
-                'status' => Adherent::ENABLED,
-                'adherent_tag' => $tag.'%',
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('committee', $committee), new Query\Parameter('status', Adherent::ENABLED), new Query\Parameter('adherent_tag', $tag.'%')]))
         ;
 
         if ($subscriptionTypeCode) {
@@ -1483,11 +1409,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('subscription_type.code IN (:subscription_type_codes)')
             ->andWhere('a.status = :status')
             ->andWhere('a.tags LIKE :adherent_tag')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-                'subscription_type_codes' => $subscriptionTypeCodes,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('status', Adherent::ENABLED), new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%'), new Query\Parameter('subscription_type_codes', $subscriptionTypeCodes)]))
             ->getQuery()
             ->getArrayResult()
         ;

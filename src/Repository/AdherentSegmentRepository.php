@@ -8,6 +8,9 @@ use App\Entity\AdherentSegment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AdherentSegment>
+ */
 class AdherentSegmentRepository extends ServiceEntityRepository
 {
     use AuthorTrait;

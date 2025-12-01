@@ -8,6 +8,9 @@ use App\Entity\Reporting\DeclaredMandateHistory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Reporting\DeclaredMandateHistory>
+ */
 class DeclaredMandateHistoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

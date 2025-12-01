@@ -8,6 +8,9 @@ use App\Entity\Device;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Device>
+ */
 class DeviceRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

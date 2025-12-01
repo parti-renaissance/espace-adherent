@@ -8,6 +8,9 @@ use App\Entity\PetitionSignature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\PetitionSignature>
+ */
 class PetitionSignatureRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

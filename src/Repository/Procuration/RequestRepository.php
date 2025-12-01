@@ -8,8 +8,13 @@ use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Request;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ProcurationV2\Request>
+ */
 class RequestRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
@@ -43,12 +48,7 @@ class RequestRepository extends ServiceEntityRepository
             ->andWhere('request.lastName = :last_name')
             ->andWhere('request.birthdate = :birthdate')
             ->andWhere('request_slot.round IN (:rounds)')
-            ->setParameters([
-                'first_names' => $firstNames,
-                'last_name' => $lastName,
-                'birthdate' => $birthdate,
-                'rounds' => $rounds,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('first_names', $firstNames), new Parameter('last_name', $lastName), new Parameter('birthdate', $birthdate), new Parameter('rounds', $rounds)]))
         ;
 
         if ($id) {

@@ -9,6 +9,9 @@ use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Pap\Floor>
+ */
 class FloorRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

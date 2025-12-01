@@ -8,6 +8,9 @@ use App\Entity\ProcurationV2\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ProcurationV2\Election>
+ */
 class ElectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

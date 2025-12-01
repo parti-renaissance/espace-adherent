@@ -10,9 +10,14 @@ use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\CommitteeCandidacy>
+ */
 class CommitteeCandidacyRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -28,10 +33,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('cc')
             ->innerJoin('cc.committeeElection', 'election')
             ->where('election.committee = :committee AND election.designation = :designation')
-            ->setParameters([
-                'committee' => $committee,
-                'designation' => $designation,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('committee', $committee), new Parameter('designation', $designation)]))
             ->getQuery()
             ->getResult()
         ;
@@ -65,10 +67,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('candidacy')
             ->where('candidacy.committeeElection = :election')
             ->andWhere('candidacy.status = :confirmed')
-            ->setParameters([
-                'election' => $election,
-                'confirmed' => CandidacyInterface::STATUS_CONFIRMED,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('election', $election), new Parameter('confirmed', CandidacyInterface::STATUS_CONFIRMED)]))
             ->getQuery()
             ->getResult()
         ;
@@ -82,11 +81,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
             ->innerJoin('cc.committeeElection', 'election')
             ->where('election.committee = :committee AND election.designation = :designation')
             ->andWhere('cc.status = :status')
-            ->setParameters([
-                'committee' => $committee,
-                'designation' => $designation,
-                'status' => CandidacyInterface::STATUS_CONFIRMED,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('committee', $committee), new Parameter('designation', $designation), new Parameter('status', CandidacyInterface::STATUS_CONFIRMED)]))
         ;
     }
 }

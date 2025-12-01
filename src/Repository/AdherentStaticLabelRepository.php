@@ -8,6 +8,9 @@ use App\Entity\AdherentStaticLabel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AdherentStaticLabel>
+ */
 class AdherentStaticLabelRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

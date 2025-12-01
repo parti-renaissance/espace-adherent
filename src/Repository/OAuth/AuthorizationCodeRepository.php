@@ -9,6 +9,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\OAuth\AuthorizationCode>
+ */
 class AuthorizationCodeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

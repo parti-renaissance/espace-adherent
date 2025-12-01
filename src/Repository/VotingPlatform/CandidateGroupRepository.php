@@ -9,8 +9,13 @@ use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\VotingPlatform\CandidateGroup>
+ */
 class CandidateGroupRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -48,9 +53,7 @@ class CandidateGroupRepository extends ServiceEntityRepository
                 )
             )
             ->where('candidate_group.electionPool = :election_pool')
-            ->setParameters([
-                'election_pool' => $electionPool,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('election_pool', $electionPool)]))
             ->getQuery()
             ->getArrayResult()
         ;

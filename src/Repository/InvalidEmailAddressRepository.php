@@ -8,6 +8,9 @@ use App\Entity\InvalidEmailAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\InvalidEmailAddress>
+ */
 class InvalidEmailAddressRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

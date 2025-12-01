@@ -17,6 +17,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -24,6 +25,9 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\CommitteeMembership>
+ */
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
@@ -63,10 +67,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->innerJoin('cm.adherent', 'adherent')
             ->where('cm.committee = :committee')
             ->andWhere('cm.enableVote = :true')
-            ->setParameters([
-                'committee' => $committee,
-                'true' => true,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('committee', $committee), new Query\Parameter('true', true)]))
             ->getQuery()
             ->getResult()
         ;
@@ -214,10 +215,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 ->add('cm.privilege = :host')
                 ->add('am.quality = :supervisor AND am.finishAt IS NULL')
             )
-            ->setParameters([
-                'host' => CommitteeMembership::COMMITTEE_HOST,
-                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('host', CommitteeMembership::COMMITTEE_HOST), new Query\Parameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)]))
         ;
 
         if (isset($criteria['firstName'])) {
@@ -309,17 +307,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
             ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
             ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
-            ->setParameters([
-                'query' => \sprintf('%s%%', $query),
-                'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
-                'election' => $candidacy->getElection(),
-                'committee' => $membership->getCommittee(),
-                'membership_id' => $membership->getId(),
-                'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
-                'adherent_status' => Adherent::ENABLED,
-                'registration_limit_date' => (clone $refDate)->modify('-3 months'),
-                'limit_date' => (clone $refDate)->modify('-30 days'),
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('query', \sprintf('%s%%', $query)), new Query\Parameter('candidacy_draft_status', CandidacyInterface::STATUS_DRAFT), new Query\Parameter('election', $candidacy->getElection()), new Query\Parameter('committee', $membership->getCommittee()), new Query\Parameter('membership_id', $membership->getId()), new Query\Parameter('gender', $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE), new Query\Parameter('adherent_status', Adherent::ENABLED), new Query\Parameter('registration_limit_date', (clone $refDate)->modify('-3 months')), new Query\Parameter('limit_date', (clone $refDate)->modify('-30 days'))]))
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')
             ->getQuery()
@@ -336,11 +324,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->where('membership.committee = :committee')
             ->andWhere('membership.joinedAt <= :joined_at_min')
             ->andWhere('adherent.tags LIKE :adherent_tag')
-            ->setParameters([
-                'committee' => $committee,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-                'joined_at_min' => $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('committee', $committee), new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%'), new Query\Parameter('joined_at_min', $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'))]))
         ;
 
         if ($onlyCertified) {
@@ -358,11 +342,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 ->where('election.designation = :designation')
                 ->andWhere('candidacy.status = :status')
                 ->andWhere('election.committee != :committee')
-                ->setParameters([
-                    'committee' => $committee,
-                    'status' => CandidacyInterface::STATUS_CONFIRMED,
-                    'designation' => $designation,
-                ])
+                ->setParameters(new ArrayCollection([new Query\Parameter('committee', $committee), new Query\Parameter('status', CandidacyInterface::STATUS_CONFIRMED), new Query\Parameter('designation', $designation)]))
                 ->getQuery()
                 ->getArrayResult(), 'adherent_id'
             );
@@ -388,11 +368,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->where('cm.committee = :committee')
             ->andWhere('a.uuid = :adherent_uuid')
             ->andWhere('a.tags LIKE :adherent_tag')
-            ->setParameters([
-                'adherent_uuid' => $adherentUuid,
-                'committee' => $committee,
-                'adherent_tag' => TagEnum::ADHERENT.'%',
-            ])
+            ->setParameters(new ArrayCollection([new Query\Parameter('adherent_uuid', $adherentUuid), new Query\Parameter('committee', $committee), new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%')]))
             ->getQuery()
             ->getOneOrNullResult()
         ;

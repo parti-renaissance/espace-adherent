@@ -9,6 +9,9 @@ use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ProcurationV2\Round>
+ */
 class RoundRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

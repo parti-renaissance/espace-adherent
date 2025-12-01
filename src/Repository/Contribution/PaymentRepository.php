@@ -7,8 +7,13 @@ namespace App\Repository\Contribution;
 use App\Entity\Adherent;
 use App\Entity\Contribution\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Contribution\Payment>
+ */
 class PaymentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -41,14 +46,11 @@ class PaymentRepository extends ServiceEntityRepository
             ->addSelect('SUM(payment.amount) AS total')
             ->where('payment.adherent = :adherent')
             ->andWhere('payment.status IN (:status)')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => [
-                    'paid_out',
-                    'confirmed',
-                    'cheque_cashed',
-                ],
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('adherent', $adherent), new Parameter('status', [
+                'paid_out',
+                'confirmed',
+                'cheque_cashed',
+            ])]))
             ->groupBy('year')
             ->orderBy('year', 'DESC')
             ->getQuery()

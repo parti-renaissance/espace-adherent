@@ -9,6 +9,9 @@ use App\Entity\SocialShareCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\SocialShare>
+ */
 class SocialShareRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

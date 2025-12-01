@@ -9,9 +9,14 @@ use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Pap\Address>
+ */
 class AddressRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
@@ -93,11 +98,7 @@ class AddressRepository extends ServiceEntityRepository
             ->innerJoin('address.building', 'building')
             ->leftJoin('building.statistics', 'stats', Join::WITH, 'stats.campaign = building.currentCampaign')
             ->where('address.id IN (:address_ids)')
-            ->setParameters([
-                'address_ids' => array_keys($result->fetchAllAssociativeIndexed()),
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('address_ids', array_keys($result->fetchAllAssociativeIndexed())), new Parameter('latitude', $latitude), new Parameter('longitude', $longitude)]))
             ->orderBy('distance', 'ASC')
             ->getQuery()
             ->getResult()

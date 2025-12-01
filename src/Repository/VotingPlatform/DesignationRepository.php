@@ -11,9 +11,14 @@ use App\Repository\GeoZoneTrait;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\VotingPlatform\Designation\Designation>
+ */
 class DesignationRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
@@ -79,10 +84,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->andWhere('d.isCanceled = false')
             ->andWhere('(d.candidacyEndDate IS NULL OR d.candidacyEndDate > :date)')
             ->andWhere('(d.limited = :false OR d.electionEntityIdentifier IS NOT NULL)')
-            ->setParameters([
-                'date' => $candidacyStartDate,
-                'false' => false,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('date', $candidacyStartDate), new Parameter('false', false)]))
             ->getQuery()
             ->getResult()
         ;
@@ -118,11 +120,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
             ->andWhere('DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\') < :now')
             ->andWhere('DATE_ADD(DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\'), designation.resultDisplayDelay, \'DAY\') > :now')
-            ->setParameters([
-                'now' => $date,
-                'close_status' => ElectionStatusEnum::CLOSED,
-                'notification' => Designation::NOTIFICATION_RESULT_READY,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('now', $date), new Parameter('close_status', ElectionStatusEnum::CLOSED), new Parameter('notification', Designation::NOTIFICATION_RESULT_READY)]))
             ->getQuery()
             ->getResult()
         ;
@@ -141,7 +139,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->where('DATE_ADD(designation.voteEndDate, 3, \'DAY\') > :now')
             ->andWhere('designation.alertBeginAt IS NOT NULL AND designation.alertBeginAt < :now')
             ->andWhere('designation.isCanceled = false')
-            ->setParameters(['now' => new \DateTime()])
+            ->setParameters(new ArrayCollection([new Parameter('now', new \DateTime())]))
             ->setMaxResults($limit)
             ->orderBy('score', 'DESC')
             ->addOrderBy('designation.voteStartDate', 'ASC')

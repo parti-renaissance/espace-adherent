@@ -8,8 +8,13 @@ use App\Entity\Geo\Zone;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\LocalElection\LocalElection>
+ */
 class LocalElectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -28,7 +33,7 @@ class LocalElectionRepository extends ServiceEntityRepository
                     designation.resultDisplayDelay > 0
                     AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
                 )')
-            ->setParameters(['types' => [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT], 'now' => new \DateTime()])
+            ->setParameters(new ArrayCollection([new Parameter('types', [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT]), new Parameter('now', new \DateTime())]))
             ->addOrderBy('zone.code')
             ->getQuery()
             ->getResult()

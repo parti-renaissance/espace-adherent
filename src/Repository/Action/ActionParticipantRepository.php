@@ -6,8 +6,13 @@ namespace App\Repository\Action;
 
 use App\Entity\Action\ActionParticipant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Action\ActionParticipant>
+ */
 class ActionParticipantRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -21,10 +26,7 @@ class ActionParticipantRepository extends ServiceEntityRepository
             ->innerJoin('ap.action', 'a')
             ->innerJoin('ap.adherent', 'ad')
             ->where('a.uuid = :action_uuid AND ad.uuid = :adherent_uuid')
-            ->setParameters([
-                'action_uuid' => $actionUuid,
-                'adherent_uuid' => $adherentUuid,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('action_uuid', $actionUuid), new Parameter('adherent_uuid', $adherentUuid)]))
             ->getQuery()
             ->getOneOrNullResult()
         ;

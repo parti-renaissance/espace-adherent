@@ -8,6 +8,9 @@ use App\Entity\ElectedRepresentative\Mandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\ElectedRepresentative\Mandate>
+ */
 class MandateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

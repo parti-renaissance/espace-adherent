@@ -9,6 +9,9 @@ use App\Entity\Geo\Zone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AdherentZoneBasedRole>
+ */
 class AdherentZoneBasedRoleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

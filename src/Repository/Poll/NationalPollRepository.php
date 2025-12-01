@@ -9,6 +9,9 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Poll\NationalPoll>
+ */
 class NationalPollRepository extends ServiceEntityRepository
 {
     use UnpublishPollTrait;

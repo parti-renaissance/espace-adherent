@@ -6,9 +6,14 @@ namespace App\Repository;
 
 use App\Entity\CertificationRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\CertificationRequest>
+ */
 class CertificationRequestRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -33,9 +38,7 @@ class CertificationRequestRepository extends ServiceEntityRepository
             ->createQueryBuilder('cr')
             ->andWhere('cr.createdAt <= :created_at')
             ->andWhere('cr.documentName IS NOT NULL')
-            ->setParameters([
-                'created_at' => $createdBefore,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('created_at', $createdBefore)]))
             ->getQuery()
             ->getResult()
         ;
@@ -69,10 +72,7 @@ class CertificationRequestRepository extends ServiceEntityRepository
             ->createQueryBuilder('cr')
             ->andWhere('cr.status = :status_pending')
             ->andWhere('cr.createdAt LIKE :created_at')
-            ->setParameters([
-                'status_pending' => CertificationRequest::STATUS_PENDING,
-                'created_at' => $date->format('Y-m-d').'%',
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('status_pending', CertificationRequest::STATUS_PENDING), new Parameter('created_at', $date->format('Y-m-d').'%')]))
             ->getQuery()
             ->getResult()
         ;
@@ -84,10 +84,7 @@ class CertificationRequestRepository extends ServiceEntityRepository
             ->createQueryBuilder('cr')
             ->andWhere('cr.status = :status_pending')
             ->andWhere('cr.createdAt <= :created_at')
-            ->setParameters([
-                'status_pending' => CertificationRequest::STATUS_PENDING,
-                'created_at' => $createdBefore,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('status_pending', CertificationRequest::STATUS_PENDING), new Parameter('created_at', $createdBefore)]))
         ;
     }
 }

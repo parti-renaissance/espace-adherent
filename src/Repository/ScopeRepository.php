@@ -9,6 +9,9 @@ use App\Scope\AppEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Scope>
+ */
 class ScopeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

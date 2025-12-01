@@ -12,6 +12,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\AppSession>
+ */
 class AppSessionRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;

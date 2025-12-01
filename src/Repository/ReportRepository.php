@@ -11,6 +11,9 @@ use App\Report\ReportType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Report\Report>
+ */
 class ReportRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

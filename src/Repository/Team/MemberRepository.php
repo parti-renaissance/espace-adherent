@@ -8,6 +8,9 @@ use App\Entity\Team\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Team\Member>
+ */
 class MemberRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

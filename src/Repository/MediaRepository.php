@@ -8,6 +8,9 @@ use App\Entity\Media;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Media>
+ */
 class MediaRepository extends ServiceEntityRepository
 {
     public const TYPE_IMAGE = 'image';

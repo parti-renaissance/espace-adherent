@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Administrator>
+ */
 class AdministratorRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     public function __construct(ManagerRegistry $registry)

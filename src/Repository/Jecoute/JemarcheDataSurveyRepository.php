@@ -13,6 +13,9 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Jecoute\JemarcheDataSurvey>
+ */
 class JemarcheDataSurveyRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

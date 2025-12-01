@@ -8,8 +8,13 @@ use App\Address\AddressInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Jecoute\Region>
+ */
 class RegionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -40,17 +45,7 @@ class RegionRepository extends ServiceEntityRepository
             ))
             ->andWhere('campaign.enabled = :enabled')
             ->addOrderBy('priority', 'asc')
-            ->setParameters([
-                'code_france' => AddressInterface::FRANCE,
-                'region' => $region,
-                'department' => $department,
-                'postal_code' => $postalCode,
-                'zone_country' => Zone::COUNTRY,
-                'zone_region' => Zone::REGION,
-                'zone_department' => Zone::DEPARTMENT,
-                'zone_borough' => Zone::BOROUGH,
-                'enabled' => true,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('code_france', AddressInterface::FRANCE), new Parameter('region', $region), new Parameter('department', $department), new Parameter('postal_code', $postalCode), new Parameter('zone_country', Zone::COUNTRY), new Parameter('zone_region', Zone::REGION), new Parameter('zone_department', Zone::DEPARTMENT), new Parameter('zone_borough', Zone::BOROUGH), new Parameter('enabled', true)]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -65,10 +60,7 @@ class RegionRepository extends ServiceEntityRepository
             ->innerJoin('campaign.zone', 'zone')
             ->where('zone.type = :zone_country')
             ->andWhere('zone.code = :code_france')
-            ->setParameters([
-                'zone_country' => Zone::COUNTRY,
-                'code_france' => AddressInterface::FRANCE,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('zone_country', Zone::COUNTRY), new Parameter('code_france', AddressInterface::FRANCE)]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

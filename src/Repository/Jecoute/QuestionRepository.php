@@ -10,9 +10,14 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Jecoute\Question>
+ */
 class QuestionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -39,10 +44,7 @@ class QuestionRepository extends ServiceEntityRepository
             ->leftJoin('q.choices', 'ch', Join::WITH, 'q.type != :simple_field_type')
             ->leftJoin(DataAnswer::class, 'da1', Join::WITH, 'da1.surveyQuestion = sq')
             ->where('sq.survey = :survey')
-            ->setParameters([
-                'survey' => $survey,
-                'simple_field_type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
-            ])
+            ->setParameters(new ArrayCollection([new Parameter('survey', $survey), new Parameter('simple_field_type', SurveyQuestionTypeEnum::SIMPLE_FIELD)]))
             ->groupBy('q.id', 'ch.id')
             ->getQuery()
             ->getArrayResult()

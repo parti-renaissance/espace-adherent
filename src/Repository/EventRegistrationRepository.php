@@ -13,10 +13,15 @@ use App\Entity\Event\EventRegistration;
 use App\Entity\Event\RegistrationStatusEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Event\EventRegistration>
+ */
 class EventRegistrationRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
@@ -216,7 +221,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->where('er.event = :event')
             ->andWhere('er.emailAddress IS NOT NULL')
             ->orderBy('er.createdAt', 'ASC')
-            ->setParameters(['event' => $event])
+            ->setParameters(new ArrayCollection([new Parameter('event', $event)]))
         ;
     }
 
