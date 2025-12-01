@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'formation_axes')]
 #[UniqueEntity(fields: ['title'], message: 'Il existe déjà un axe de formation avec ce titre.')]
-class Axe implements EntityMediaInterface
+class Axe implements \Stringable, EntityMediaInterface
 {
     use EntityMediaTrait;
     use PositionTrait;

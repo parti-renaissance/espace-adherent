@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'poll')]
-abstract class Poll
+abstract class Poll implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

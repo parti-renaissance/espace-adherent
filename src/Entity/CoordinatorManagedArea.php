@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'coordinator_managed_areas')]
-class CoordinatorManagedArea
+class CoordinatorManagedArea implements \Stringable
 {
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]

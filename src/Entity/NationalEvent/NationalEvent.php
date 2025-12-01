@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
-class NationalEvent implements NotificationObjectInterface, EntityAdministratorBlameableInterface, AlertOwnerInterface
+class NationalEvent implements \Stringable, NotificationObjectInterface, EntityAdministratorBlameableInterface, AlertOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;

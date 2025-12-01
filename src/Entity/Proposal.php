@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
 #[ORM\Table(name: 'proposals')]
-class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
+class Proposal implements \Stringable, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'donation_tags')]
 #[UniqueEntity(fields: ['label'])]
-class DonationTag
+class DonationTag implements \Stringable
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ValueObject;
 
-final class SHA1
+final class SHA1 implements \Stringable
 {
     private $hash;
 

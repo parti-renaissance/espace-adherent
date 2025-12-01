@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'filesystem_file_permission')]
 #[ORM\UniqueConstraint(name: 'file_permission_unique', columns: ['file_id', 'name'])]
-class FilePermission
+class FilePermission implements \Stringable
 {
     /**
      * @var int|null

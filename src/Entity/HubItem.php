@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'dashboard')"
 )]
 #[ORM\Entity]
-class HubItem implements EntityAdministratorBlameableInterface
+class HubItem implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

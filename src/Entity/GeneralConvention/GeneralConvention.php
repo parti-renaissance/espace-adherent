@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('RENAISSANCE_ADHERENT')"
 )]
 #[ORM\Entity]
-class GeneralConvention implements EntityAdministratorBlameableInterface
+class GeneralConvention implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

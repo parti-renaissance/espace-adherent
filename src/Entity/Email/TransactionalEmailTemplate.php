@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransactionalEmailTemplateRepository::class)]
 #[UniqueEntity(fields: ['identifier'])]
-class TransactionalEmailTemplate implements EntityAdministratorBlameableInterface
+class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

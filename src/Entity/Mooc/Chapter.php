@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'mooc_chapter')]
 #[UniqueEntity(fields: ['slug', 'mooc'])]
-class Chapter
+class Chapter implements \Stringable
 {
     use Sortable;
 

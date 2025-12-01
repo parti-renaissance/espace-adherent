@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
 #[ORM\Table(name: 'jecoute_choice')]
-class Choice
+class Choice implements \Stringable
 {
     use Sortable;
 

@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserDocumentRepository::class)]
 #[ORM\Index(fields: ['instanceKey'])]
 #[ORM\Table(name: 'user_documents')]
-class UserDocument implements InstanceOwnerInterface
+class UserDocument implements \Stringable, InstanceOwnerInterface
 {
     use EntityIdentityTrait;
     use AuthorInstanceTrait;

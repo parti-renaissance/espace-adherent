@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LegislativeDistrictZoneRepository::class)]
 #[ORM\Table(name: 'legislative_district_zones')]
 #[UniqueEntity(fields: ['areaCode'], message: 'legislative_district_zone.area_code.unique', groups: ['Admin'])]
-class LegislativeDistrictZone
+class LegislativeDistrictZone implements \Stringable
 {
     private const TYPE_DEPARTMENT = 'departement';
     private const TYPE_REGION = 'region';

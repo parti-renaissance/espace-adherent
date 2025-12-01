@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'general_meeting_report')]
 #[ScopeVisibility]
 #[UniqueEntity(fields: ['zone', 'title'], message: 'general_meeting_report.title.unique_entity')]
-class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class GeneralMeetingReport implements \Stringable, EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
 #[ORM\Table(name: 'newsletter_subscriptions')]
 #[UniqueEntity(fields: ['email'], message: 'newsletter.already_registered')]
-class NewsletterSubscription implements NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
+class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]
-class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
+class LegislativeNewsletterSubscription implements \Stringable, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

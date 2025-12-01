@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'procuration_v2_elections')]
 #[UniqueEntity(fields: ['name'])]
 #[UniqueEntity(fields: ['slug'])]
-class Election implements EntityAdministratorBlameableInterface
+class Election implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

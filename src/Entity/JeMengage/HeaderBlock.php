@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: HeaderBlockRepository::class)]
 #[ORM\Table(name: 'jemengage_header_blocks')]
 #[UniqueEntity(fields: ['name'], message: 'header_block.name.unique')]
-class HeaderBlock implements ImageManageableInterface, ImageExposeInterface
+class HeaderBlock implements \Stringable, ImageManageableInterface, ImageExposeInterface
 {
     use EntityTimestampableTrait;
     use ImageTrait;

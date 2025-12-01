@@ -98,7 +98,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'phoning_campaign')]
 #[ScopeVisibility]
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface
+class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

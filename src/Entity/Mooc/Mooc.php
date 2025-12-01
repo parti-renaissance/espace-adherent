@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Assert\Expression(expression: '(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())', message: 'mooc.two_media')]
 #[ORM\Entity(repositoryClass: MoocRepository::class)]
 #[UniqueEntity(fields: ['title'])]
-class Mooc
+class Mooc implements \Stringable
 {
     use EntityTimestampableTrait;
 

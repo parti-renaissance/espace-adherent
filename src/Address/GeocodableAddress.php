@@ -6,7 +6,7 @@ namespace App\Address;
 
 use App\Intl\FranceCitiesBundle;
 
-final class GeocodableAddress
+final class GeocodableAddress implements \Stringable
 {
     private $address;
     private $postalCode;

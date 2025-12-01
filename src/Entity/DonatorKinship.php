@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-class DonatorKinship
+class DonatorKinship implements \Stringable
 {
     /**
      * The unique auto incremented primary key.

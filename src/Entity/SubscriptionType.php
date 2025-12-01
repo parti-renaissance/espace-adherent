@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['code'])]
 #[ORM\Table]
 #[UniqueEntity(fields: ['code'])]
-class SubscriptionType
+class SubscriptionType implements \Stringable
 {
     /**
      * @var int|null

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]
-class Member
+class Member implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

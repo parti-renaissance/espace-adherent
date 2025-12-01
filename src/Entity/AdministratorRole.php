@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdministratorRoleRepository::class)]
 #[UniqueEntity(fields: ['code'], message: 'administrator_role.unique_entity.name')]
 #[UniqueEntity(fields: ['groupCode', 'label'], message: 'administrator_role.unique_entity.group_label')]
-class AdministratorRole
+class AdministratorRole implements \Stringable
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

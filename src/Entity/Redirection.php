@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RedirectionRepository::class)]
 #[ORM\EntityListeners([RedirectionListener::class])]
 #[ORM\Table(name: 'redirections')]
-class Redirection
+class Redirection implements \Stringable
 {
     /**
      * @var int|null

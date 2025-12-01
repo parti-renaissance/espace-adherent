@@ -174,7 +174,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: '`events`')]
-class Event implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
+class Event implements \Stringable, ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;

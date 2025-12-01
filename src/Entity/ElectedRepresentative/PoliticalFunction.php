@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PoliticalFunctionRepository::class)]
 #[ORM\Table(name: 'elected_representative_political_function')]
-class PoliticalFunction
+class PoliticalFunction implements \Stringable
 {
     #[Groups(['elected_mandate_read'])]
     #[ORM\Column(type: 'integer')]

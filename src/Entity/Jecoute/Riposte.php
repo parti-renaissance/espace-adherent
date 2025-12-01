@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_riposte')]
 #[RiposteOpenGraph]
-class Riposte implements AuthorInterface, IndexableEntityInterface
+class Riposte implements \Stringable, AuthorInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

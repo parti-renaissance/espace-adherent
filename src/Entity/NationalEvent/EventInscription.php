@@ -78,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Table('national_event_inscription')]
-class EventInscription implements ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface
+class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface
 {
     use EntityIdentityTrait;
     use PublicIdTrait;

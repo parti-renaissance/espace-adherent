@@ -19,7 +19,7 @@ use MyCLabs\Enum\Enum;
  * @method static WRITE_PROFILE()
  * @method static FORMATION()
  */
-final class Scope extends Enum implements ScopeEntityInterface
+final class Scope extends Enum implements \Stringable, ScopeEntityInterface
 {
     public const WRITE_USERS = 'write:users';
     public const WRITE_EVENT = 'write:event';

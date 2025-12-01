@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'events_invitations')]
-class EventInvite
+class EventInvite implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'elected_representative_label')]
-class ElectedRepresentativeLabel
+class ElectedRepresentativeLabel implements \Stringable
 {
     /**
      * @var int|null

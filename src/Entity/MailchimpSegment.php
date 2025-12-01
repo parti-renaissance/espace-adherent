@@ -8,7 +8,7 @@ use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MailchimpSegmentRepository::class)]
-class MailchimpSegment
+class MailchimpSegment implements \Stringable
 {
     public const LIST_MAIN = 'main';
     public const LIST_ELECTED_REPRESENTATIVE = 'elected_representative';

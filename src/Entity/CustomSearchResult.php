@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CustomSearchResultRepository::class)]
 #[ORM\Table(name: 'custom_search_results')]
-class CustomSearchResult implements EntityMediaInterface
+class CustomSearchResult implements \Stringable, EntityMediaInterface
 {
     use EntityTimestampableTrait;
     use EntityMediaTrait;

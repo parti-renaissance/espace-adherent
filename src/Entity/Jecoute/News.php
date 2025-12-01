@@ -94,7 +94,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_news')]
 #[ScopeVisibility]
-class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface, HitTargetInterface
+class News implements \Stringable, AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

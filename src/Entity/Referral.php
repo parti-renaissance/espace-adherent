@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: ReferralRepository::class)]
 #[ReferralInformations]
-class Referral implements ZoneableEntityInterface
+class Referral implements \Stringable, ZoneableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

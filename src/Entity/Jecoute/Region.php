@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
 #[ORM\Table(name: 'jecoute_region')]
 #[UniqueEntity(fields: ['zone'], message: 'jecoute_region.zone.not_unique')]
-class Region
+class Region implements \Stringable
 {
     use EntityTimestampableTrait;
     use EntityAdministratorTrait;

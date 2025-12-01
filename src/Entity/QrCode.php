@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QrCodeRepository::class)]
 #[UniqueEntity(fields: ['name'])]
-class QrCode
+class QrCode implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

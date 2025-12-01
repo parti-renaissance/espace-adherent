@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdministratorRepository::class)]
 #[ORM\Table(name: 'administrators')]
 #[UniqueEntity(fields: ['emailAddress'])]
-class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
+class Administrator implements \Stringable, UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
     use EntityZoneTrait;
 

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RoundRepository::class)]
 #[ORM\Index(columns: ['date'])]
 #[ORM\Table(name: 'procuration_v2_rounds')]
-class Round implements EntityAdministratorBlameableInterface
+class Round implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

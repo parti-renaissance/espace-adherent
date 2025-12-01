@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: DonatorRepository::class)]
 #[ORM\Index(columns: ['email_address', 'first_name', 'last_name'])]
 #[ORM\Table(name: 'donators')]
-class Donator
+class Donator implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AgoraMembershipRepository::class)]
 #[ORM\UniqueConstraint(columns: ['agora_id', 'adherent_id'])]
 #[UniqueEntity(fields: ['adherent', 'agora'], message: 'Cet adhérent est déjà membre de cette agora.')]
-class AgoraMembership implements EntityAdministratorBlameableInterface
+class AgoraMembership implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

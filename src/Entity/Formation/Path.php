@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PathRepository::class)]
 #[ORM\Table(name: 'formation_paths')]
 #[UniqueEntity(fields: ['title'], message: 'path.title.unique_entity')]
-class Path
+class Path implements \Stringable
 {
     use PositionTrait;
 

@@ -92,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'jecoute_survey')]
 #[SurveyScopeTarget]
-abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, EntityScopeVisibilityInterface
+abstract class Survey implements \Stringable, IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

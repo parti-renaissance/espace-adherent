@@ -13,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: EmailLogRepository::class)]
 #[ORM\Table(name: 'emails')]
-class EmailLog
+class EmailLog implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

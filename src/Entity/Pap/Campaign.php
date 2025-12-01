@@ -122,7 +122,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['begin_at', 'finish_at'])]
 #[ORM\Table(name: 'pap_campaign')]
 #[ScopeVisibility]
-class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface
+class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

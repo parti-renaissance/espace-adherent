@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\Index(columns: ['paybox_result_code'], name: 'donation_transactions_result_idx')]
 #[ORM\Table(name: 'donation_transactions')]
-class Transaction
+class Transaction implements \Stringable
 {
     public const PAYBOX_SUCCESS = '00000';
     public const PAYBOX_CONNECTION_FAILED = '00001';
