@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: MandateRepository::class)]
 #[ORM\Table(name: 'elected_representative_mandate')]
-class Mandate
+class Mandate implements \Stringable
 {
     use EntityIdentityTrait;
 

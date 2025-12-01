@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['duration'], name: 'donation_duration_idx')]
 #[ORM\Index(columns: ['status'], name: 'donation_status_idx')]
 #[ORM\Table(name: 'donations')]
-class Donation implements GeoPointInterface
+class Donation implements \Stringable, GeoPointInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;

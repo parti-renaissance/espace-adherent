@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'formation_modules')]
 #[UniqueEntity(fields: ['title', 'axe'], message: 'module.title.unique_entity')]
 #[UniqueEntity(fields: ['slug', 'axe'], message: 'module.slug.unique_entity')]
-class Module implements EntityMediaInterface
+class Module implements \Stringable, EntityMediaInterface
 {
     use EntityMediaTrait;
     use PositionTrait;

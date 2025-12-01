@@ -12,7 +12,7 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity(repositoryClass: PetitionSignatureRepository::class)]
-class PetitionSignature
+class PetitionSignature implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityUTMTrait;

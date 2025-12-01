@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SocialShareCategoryRepository::class)]
 #[ORM\Table(name: 'social_share_categories')]
-class SocialShareCategory
+class SocialShareCategory implements \Stringable
 {
     use PositionTrait;
 

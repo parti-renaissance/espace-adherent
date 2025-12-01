@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'local_election_candidacies_group')]
-class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministratorBlameableInterface
+class CandidaciesGroup extends BaseCandidaciesGroup implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;

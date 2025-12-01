@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['name'])]
 #[ORM\Table(name: 'filesystem_file')]
 #[UniqueEntity(fields: ['name'], message: 'file.validation.name.not_unique', repositoryMethod: 'findDirectoryByName')]
-class File implements Timestampable
+class File implements \Stringable, Timestampable
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

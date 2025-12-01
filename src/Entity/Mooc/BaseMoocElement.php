@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'mooc_elements')]
 #[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]
 #[UniqueEntity(fields: ['slug', 'chapter'])]
-abstract class BaseMoocElement
+abstract class BaseMoocElement implements \Stringable
 {
     use EntityTimestampableTrait;
     use Sortable;

@@ -76,7 +76,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'designation')"
 )]
 #[ORM\Entity(repositoryClass: DesignationRepository::class)]
-class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface, AlertOwnerInterface
+class Designation implements \Stringable, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface, AlertOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

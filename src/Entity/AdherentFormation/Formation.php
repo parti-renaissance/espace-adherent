@@ -98,7 +98,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'adherent_formation')]
 #[ScopeVisibility]
 #[UniqueEntity(fields: ['zone', 'title'], message: 'adherent_formation.zone_title.unique_entity')]
-class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class Formation implements \Stringable, EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-class LiveStream implements Timestampable, EntityAdministratorBlameableInterface
+class LiveStream implements \Stringable, Timestampable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

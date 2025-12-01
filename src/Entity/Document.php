@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['title'], message: 'document.title.unique_entity')]
-class Document implements EntityAdministratorBlameableInterface
+class Document implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

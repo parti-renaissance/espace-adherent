@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProposalThemeRepository::class)]
 #[ORM\Table(name: 'proposals_themes')]
-class ProposalTheme
+class ProposalTheme implements \Stringable
 {
     /**
      * @var int

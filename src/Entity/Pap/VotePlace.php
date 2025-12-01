@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
 #[ORM\Table(name: 'pap_vote_place')]
-class VotePlace
+class VotePlace implements \Stringable
 {
     use EntityIdentityTrait;
 

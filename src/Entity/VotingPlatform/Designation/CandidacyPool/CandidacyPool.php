@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table('designation_candidacy_pool')]
-class CandidacyPool
+class CandidacyPool implements \Stringable
 {
     use EntityIdentityTrait;
 

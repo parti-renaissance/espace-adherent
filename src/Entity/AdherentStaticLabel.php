@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdherentStaticLabelRepository::class)]
 #[UniqueEntity(fields: ['code'])]
 #[UniqueEntity(fields: ['label'])]
-class AdherentStaticLabel
+class AdherentStaticLabel implements \Stringable
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: LocalElectionRepository::class)]
-class LocalElection extends AbstractElectionEntity
+class LocalElection extends AbstractElectionEntity implements \Stringable
 {
     /**
      * @var CandidaciesGroup[]|Collection

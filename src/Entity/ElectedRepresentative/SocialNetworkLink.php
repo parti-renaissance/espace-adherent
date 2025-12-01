@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'elected_representative_social_network_link')]
 #[ORM\UniqueConstraint(name: 'social_network_elected_representative_unique', columns: ['type', 'elected_representative_id'])]
 #[UniqueEntity(fields: ['type', 'electedRepresentative'], message: 'Il existe déjà un lien vers ce réseau social pour cet(te) élu(e)', errorPath: 'type')]
-class SocialNetworkLink
+class SocialNetworkLink implements \Stringable
 {
     /**
      * @var int

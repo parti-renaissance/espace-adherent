@@ -52,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'my_team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]
 #[UniqueEntity(fields: ['team', 'adherent'], message: 'my_team.member.adherent.already_in_collection', errorPath: 'adherent')]
-class Member
+class Member implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

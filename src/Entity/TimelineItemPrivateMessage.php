@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
-class TimelineItemPrivateMessage implements IndexableEntityInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface
+class TimelineItemPrivateMessage implements \Stringable, IndexableEntityInterface, NotificationObjectInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
 #[UniqueEntity(fields: ['code'])]
-class Scope
+class Scope implements \Stringable
 {
     /**
      * @var int|null

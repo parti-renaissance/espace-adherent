@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
 #[ORM\Table(name: 'jecoute_resource_link')]
-class ResourceLink implements ImageManageableInterface, ImageExposeInterface
+class ResourceLink implements \Stringable, ImageManageableInterface, ImageExposeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

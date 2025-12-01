@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class BaseEventCategory implements EventCategoryInterface
+abstract class BaseEventCategory implements \Stringable, EventCategoryInterface
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';

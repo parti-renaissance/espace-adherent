@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
 #[ORM\Table(name: 'election_rounds')]
 #[UniqueEntity(fields: ['election', 'label'])]
-class ElectionRound
+class ElectionRound implements \Stringable
 {
     /**
      * @var int|null

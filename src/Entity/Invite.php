@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[AssertWasNotInvitedRecently(emailField: 'email', since: '24 hours', message: 'invitation.email.was_invited_recently')]
 #[ORM\Entity(repositoryClass: InviteRepository::class)]
 #[ORM\Table(name: 'invitations')]
-class Invite implements RecaptchaChallengeInterface
+class Invite implements \Stringable, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use RecaptchaChallengeTrait;

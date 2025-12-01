@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: ElectedRepresentativeRepository::class)]
 #[UniqueEntity(fields: ['adherent'], message: 'elected_representative.invalid_adherent')]
-class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntityInterface, AuthoredInterface
+class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntityInterface, AuthoredInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

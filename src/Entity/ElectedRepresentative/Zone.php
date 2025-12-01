@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Index(columns: ['code'], name: 'elected_repr_zone_code')]
 #[ORM\Table(name: 'elected_representative_zone')]
 #[ORM\UniqueConstraint(name: 'elected_representative_zone_name_category_unique', columns: ['name', 'category_id'])]
-class Zone
+class Zone implements \Stringable
 {
     /**
      * @var int|null

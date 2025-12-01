@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 #[ORM\Table(name: 'medias')]
 #[UniqueEntity(fields: ['path'])]
-class Media
+class Media implements \Stringable
 {
     /**
      * @var int

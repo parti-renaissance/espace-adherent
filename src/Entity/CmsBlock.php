@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CmsBlockRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'cms_block.name.unique')]
-class CmsBlock implements EntityAdministratorBlameableInterface
+class CmsBlock implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;

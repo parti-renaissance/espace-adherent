@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'oauth_clients')]
-class Client implements EntitySoftDeletedInterface
+class Client implements \Stringable, EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
     use EntitySoftDeletableTrait;

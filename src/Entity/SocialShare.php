@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SocialShareRepository::class)]
 #[ORM\Table(name: 'social_shares')]
-class SocialShare
+class SocialShare implements \Stringable
 {
     use EntityTimestampableTrait;
     use PositionTrait;

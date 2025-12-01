@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProcurationRequestRepository::class)]
 #[ORM\Table(name: 'procuration_v2_initial_requests')]
-class ProcurationRequest
+class ProcurationRequest implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

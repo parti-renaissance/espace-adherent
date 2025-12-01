@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'facebook_profiles')]
-class FacebookProfile
+class FacebookProfile implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

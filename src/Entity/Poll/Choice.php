@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
 #[ORM\Table(name: 'poll_choice')]
-class Choice
+class Choice implements \Stringable
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

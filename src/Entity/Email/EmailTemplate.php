@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity]
 #[ORM\Table(name: 'email_templates')]
-class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class EmailTemplate implements \Stringable, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

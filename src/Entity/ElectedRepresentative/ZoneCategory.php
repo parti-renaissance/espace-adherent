@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'elected_representative_zone_category')]
-class ZoneCategory
+class ZoneCategory implements \Stringable
 {
     public const CITY = 'Ville';
     public const EPCI = 'EPCI';

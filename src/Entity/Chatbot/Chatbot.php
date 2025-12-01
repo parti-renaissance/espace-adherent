@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChatbotRepository::class)]
 #[UniqueEntity(fields: ['code'])]
-class Chatbot implements EntityAdministratorBlameableInterface
+class Chatbot implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

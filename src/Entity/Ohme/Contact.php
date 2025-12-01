@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Index(columns: ['ohme_identifier'])]
 #[ORM\Table(name: 'ohme_contact')]
 #[UniqueEntity(fields: ['ohmeIdentifier'])]
-class Contact implements EntityAdministratorBlameableInterface
+class Contact implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class AbstractProcuration implements TranslatedTagInterface, EntityAdministratorBlameableInterface
+abstract class AbstractProcuration implements \Stringable, TranslatedTagInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

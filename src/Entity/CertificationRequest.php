@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CertificationRequestRepository::class)]
-class CertificationRequest
+class CertificationRequest implements \Stringable
 {
     use EntityIdentityTrait;
 

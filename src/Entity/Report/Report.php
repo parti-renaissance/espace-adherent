@@ -18,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 #[ORM\Index(columns: ['type'], name: 'report_type_idx')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'reports')]
-abstract class Report
+abstract class Report implements \Stringable
 {
     use EntityIdentityTrait;
     use AuthoredTrait;
