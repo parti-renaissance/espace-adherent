@@ -170,10 +170,11 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $teamOwner = null;
 
+    #[Assert\Expression('this.isNational() or this.getSender()', message: 'Le signataire est obligatoire.')]
     #[Groups(['message_read_list', 'message_read', 'message_write'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
-    private ?Adherent $sender = null;
+    private ?Adherent $sender;
 
     #[ORM\Column(nullable: true)]
     public ?string $senderEmail = null;
@@ -387,21 +388,15 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     }
 
     #[Groups('message_read_list')]
-    public function getFromName(): ?string
+    public function getFromName(bool $withSuffix = true): string
     {
-        if ($this->senderName) {
-            return trim($this->senderName).$this->getFromNameSuffix();
+        $name = $this->senderName ?? $this->sender?->getFullName();
+
+        if ($name) {
+            return $name.($withSuffix ? $this->getFromNameSuffix() : '');
         }
 
-        if ($this->sender) {
-            return trim($this->sender->getFullName()).$this->getFromNameSuffix();
-        }
-
-        if ($this->author) {
-            return trim($this->author->getFullName()).$this->getFromNameSuffix();
-        }
-
-        return null;
+        return $this->senderInstance ?? 'Renaissance';
     }
 
     private function getFromNameSuffix(): string
@@ -470,15 +465,15 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->senderZone = implode(', ', $scope->getZoneNames()) ?: null;
     }
 
-    public function setSender(Adherent $sender): void
+    public function setSender(?Adherent $sender): void
     {
         if ($this->isSent()) {
             throw new \LogicException('Cannot change sender of a sent message.');
         }
 
         $this->sender = $sender;
-        $this->senderEmail = $sender->getEmailAddress();
-        $this->senderName = $sender->getFullName();
+        $this->senderEmail = $sender?->getEmailAddress();
+        $this->senderName = $sender?->getFullName();
     }
 
     public function getInstanceScope(): ?string

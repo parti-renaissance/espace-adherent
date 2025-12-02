@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/v3/events/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'events') and is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)"
+            security: "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)"
         ),
         new HttpOperation(
             method: 'POST|DELETE',

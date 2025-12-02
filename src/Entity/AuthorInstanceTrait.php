@@ -60,6 +60,11 @@ trait AuthorInstanceTrait
         return $this->authorInstance;
     }
 
+    public function getInstanceKey(): ?string
+    {
+        return $this->instanceKey;
+    }
+
     public function setAuthorInstance(?string $instance): void
     {
         $this->authorInstance = $instance;

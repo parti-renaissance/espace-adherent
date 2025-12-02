@@ -27,12 +27,6 @@ class ZoneTokenProvider extends AbstractTokenProvider
 
     public function getTokens(NotificationInterface $notification, NotificationObjectInterface $object, SendNotificationCommandInterface $command): array
     {
-        if ($object->isNational()) {
-            $notification->setScope('zone:national');
-
-            return $this->pushTokenRepository->findAllForNational();
-        }
-
         $zones = [];
         if ($object instanceof EntityScopeVisibilityWithZoneInterface) {
             $zones = array_filter([$object->getZone()]);

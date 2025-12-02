@@ -70,6 +70,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'last_name' => $this->getAuthorObject($object)?->getLastName(),
             'role' => $this->getAuthorRole($object),
             'instance' => $this->getAuthorInstance($object),
+            'instance_key' => $this->getAuthorInstanceKey($object),
             'zone' => $this->getAuthorZone($object),
             'scope' => $this->getAuthorScope($object),
             'image_url' => $this->getAuthorImageUrl($object),
@@ -190,6 +191,15 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     {
         if ($object instanceof AuthorInstanceInterface) {
             return $object->getAuthorInstance();
+        }
+
+        return null;
+    }
+
+    protected function getAuthorInstanceKey(object $object): ?string
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getInstanceKey();
         }
 
         return null;

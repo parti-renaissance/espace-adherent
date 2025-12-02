@@ -6,7 +6,6 @@ namespace App\Normalizer;
 
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\AuthorInstanceInterface;
-use App\Entity\Event\Event;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -52,10 +51,6 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
 
                 unset($data[$key]);
             }
-        }
-
-        if ($object instanceof Event && $object->isNational()) {
-            $data[$authorKey] = null;
         }
 
         return $data;

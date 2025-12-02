@@ -6,6 +6,7 @@ namespace App\Security\Voter;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
+use App\Entity\AuthorInstanceInterface;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
@@ -32,6 +33,10 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
             $committeeUuids = $scope->getCommitteeUuids();
             $agoraUuids = $scope->getAgoraUuids();
+
+            if ($subject instanceof AuthorInstanceInterface && $subject->getInstanceKey() === $scope->getInstanceKey()) {
+                return true;
+            }
         }
 
         if ($subject instanceof ZoneableWithScopeEntityInterface && $scopeCode = $subject->getScope()) {

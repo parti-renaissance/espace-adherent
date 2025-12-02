@@ -45,7 +45,7 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
-    public function setFromName(?string $fromName): self
+    public function setFromName(string $fromName): self
     {
         $this->fromName = $fromName;
 

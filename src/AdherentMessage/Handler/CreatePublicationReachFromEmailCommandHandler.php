@@ -54,7 +54,7 @@ class CreatePublicationReachFromEmailCommandHandler
         $conn = $this->entityManager->getConnection();
         $objectId = $adherentMessage->getId();
         $offset = 0;
-        $now = $adherentMessage->getSentAt()->format('Y-m-d H:i:s');
+        $now = ($adherentMessage->getSentAt() ?? new \DateTime())->format('Y-m-d H:i:s');
 
         while (true) {
             /** @var array<array> $members */

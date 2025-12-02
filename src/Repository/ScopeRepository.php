@@ -18,7 +18,13 @@ class ScopeRepository extends ServiceEntityRepository
 
     public function findOneByCode(string $code): ?Scope
     {
-        return $this->findOneBy(['code' => $code]);
+        return $this->createQueryBuilder('s')
+            ->where('s.code = :code')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->enableResultCache(3600)
+            ->getOneOrNullResult()
+        ;
     }
 
     public function findCodesGrantedForDataCorner(): array

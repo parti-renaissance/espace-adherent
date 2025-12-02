@@ -54,6 +54,10 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             }
         }
 
+        if ($object instanceof Event && $object->isNational()) {
+            $event['organizer'] = null;
+        }
+
         return $this->cleanEventDataIfNeed($object, $user, $event, $apiContext);
     }
 
