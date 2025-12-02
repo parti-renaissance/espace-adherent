@@ -178,7 +178,7 @@ Feature:
                     "alert": "@string@",
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Réunion d'équipe",
-                    "slug": "reunion-dequipe"
+                    "slug": "reunion-d-equipe"
                 },
                 {
                     "event_group_category": {

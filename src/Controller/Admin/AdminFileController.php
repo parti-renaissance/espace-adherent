@@ -7,7 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use App\Utils\HttpUtils;
-use Gedmo\Sluggable\Util\Urlizer;
+use App\Utils\StringCleaner;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,7 +50,7 @@ class AdminFileController extends AbstractController
         return HttpUtils::createResponse(
             $defaultStorage,
             $file->getPath(),
-            \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension()),
+            \sprintf('%s.%s', StringCleaner::slugify($file->getName()), $file->getExtension()),
             $file->getMimeType()
         );
     }
