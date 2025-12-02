@@ -47,18 +47,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->adherentRepository->loadUserByIdentifier('someone@foobar.tld');
     }
 
-    public function testFindCommitteeHostMembersList()
-    {
-        // Approved committees
-        $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)), '1 supervisor + 1 host');
-        $this->assertCount(4, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)), '1 supervisor + 1 host');
-        $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)), '1 supervisor');
-        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_5_UUID)), '1 supervisor');
-
-        // Unapproved committees
-        $this->assertCount(0, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
-    }
-
     public function testCountHostMembersInCommittee()
     {
         $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Committee;
 
 use App\Address\AddressInterface;
-use App\Collection\AdherentCollection;
 use App\Committee\Event\ApproveCommitteeEvent;
 use App\Committee\Event\EditCommitteeEvent;
 use App\Committee\Event\FollowCommitteeEvent;
@@ -50,16 +49,6 @@ class CommitteeManager
     public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
     {
         return $this->getAdherentRepository()->countCommitteeHosts($committee, $withoutSupervisors);
-    }
-
-    public function getCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
-    {
-        return $this->getAdherentRepository()->findCommitteeHosts($committee, $withoutSupervisors);
-    }
-
-    public function getCommitteeCreator(Committee $committee): ?Adherent
-    {
-        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy()) : null;
     }
 
     /**

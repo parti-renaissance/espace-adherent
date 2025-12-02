@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\SocialShareRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: SocialShareRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: 'social_shares')]
 class SocialShare implements \Stringable
 {
