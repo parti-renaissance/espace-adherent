@@ -3034,8 +3034,7 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "editable": true,
-                "edit_link": "@string@.isUrl()",
+                "editable": false,
                 "object_state": "full"
             }
             """

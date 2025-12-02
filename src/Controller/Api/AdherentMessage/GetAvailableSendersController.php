@@ -24,8 +24,8 @@ class GetAvailableSendersController extends AbstractController
     ) {
     }
 
-    public function __invoke(
-    ): Response {
+    public function __invoke(): Response
+    {
         if (!$scope = $this->resolver->generate()) {
             return $this->json([]);
         }
@@ -37,12 +37,23 @@ class GetAvailableSendersController extends AbstractController
             'theme' => $scope->getAttribute('theme'),
         ];
 
-        $members = [$mainUser = $scope->getMainUser()];
+        $emptyChoices = [];
+        $members = [];
+
+        if ($scope->isNational()) {
+            $emptyChoices[] = [
+                'label' => 'Sans signature',
+                'value' => null,
+            ];
+        }
+
+        $members[] = $mainUser = $scope->getMainUser();
+
         if ($team = $this->myTeamRepository->findOneByAdherentAndScope($mainUser, $scope->getMainCode())) {
             $members = array_merge($members, $team->getMembers()->toArray());
         }
 
-        return $this->json(array_map(function (Member|Adherent $sender) use ($defaultMemberData) {
+        return $this->json(array_merge(array_map(function (Member|Adherent $sender) use ($defaultMemberData) {
             $role = null;
             if ($sender instanceof Member) {
                 $key = 'my_team_member.role.'.$sender->getRole();
@@ -56,6 +67,6 @@ class GetAvailableSendersController extends AbstractController
             return array_merge($defaultMemberData, $this->normalizer->normalize($sender, context: [
                 'groups' => ['adherent_message_sender', ImageExposeNormalizer::NORMALIZATION_GROUP],
             ]), $role ? ['role' => $role] : []);
-        }, $members));
+        }, $members), $emptyChoices));
     }
 }

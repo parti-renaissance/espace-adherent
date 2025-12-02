@@ -303,7 +303,7 @@ class Manager implements LoggerAwareInterface
         $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
         $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true), [new DelayStamp(300_000)]);
 
-        return $globalStatus;
+        return (bool) $globalStatus;
     }
 
     public function sendTestCampaign(AdherentMessageInterface $message, array $emails): bool

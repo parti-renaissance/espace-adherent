@@ -56,7 +56,7 @@ class GeneralScopeGenerator
             }
 
             $generator->setDelegatedAccess($delegatedAccess);
-            $scope = $generator->generate($delegator);
+            $scope = $generator->generate($adherent);
 
             if ($scope->getFeatures()) {
                 $scopes[] = $scope;

@@ -42,7 +42,7 @@ class CampaignRequestBuilder
         return implode(' - ', array_filter([
             new \DateTime()->format('Y/m/d'),
             $message->senderInstance,
-            ($message->senderName ?? $message->getSender()?->getFullName() ?? $message->getAuthor()?->getFullName()).' : '.($message->getSubject() ?: '(Sans sujet)'),
+            ($message->senderName ?? $message->getSender()?->getFullName()).' : '.($message->getSubject() ?: '(Sans sujet)'),
         ]));
     }
 }

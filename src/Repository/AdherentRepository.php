@@ -1653,27 +1653,40 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             return 0;
         }
 
-        if (\count($managedZoneIds)) {
-            $z1Seeds = [];
+        if ($filterZoneId || \count($managedZoneIds)) {
+            $z1Seeds = $cteBlocks = [];
+            $cteZA = null;
+
             foreach ($managedZoneIds as $i => $id) {
                 $key = "mgr_$i";
                 $z1Seeds[] = "SELECT :$key AS id";
                 $params[$key] = $id;
                 $types[$key] = ParameterType::INTEGER;
             }
-            $z1SeedSql = implode("\nUNION ALL\n", $z1Seeds);
 
-            $cteZ1 = <<<SQL
-                    z1(id) AS (
-                        $z1SeedSql
-                        UNION ALL
-                        SELECT gp.child_id
-                        FROM geo_zone_parent gp
-                        JOIN z1 ON gp.parent_id = z1.id
-                    )
-                SQL;
+            if ($z1Seeds) {
+                $z1SeedSql = implode("\nUNION ALL\n", $z1Seeds);
 
-            $cteBlocks = [$cteZ1];
+                $cteZ1 = <<<SQL
+                        z1(id) AS (
+                            $z1SeedSql
+                            UNION ALL
+                            SELECT gp.child_id
+                            FROM geo_zone_parent gp
+                            JOIN z1 ON gp.parent_id = z1.id
+                        )
+                    SQL;
+
+                $cteBlocks = [$cteZ1];
+
+                $cteZA = <<<SQL
+                        z_adherents AS (
+                          SELECT DISTINCT a.adherent_id
+                          FROM adherent_zone a
+                          JOIN z1 ON z1.id = a.zone_id
+                        )
+                    SQL;
+            }
 
             if ($filterZoneId) {
                 $cteZ2 = <<<SQL
@@ -1694,29 +1707,33 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                         z_adherents AS (
                             SELECT DISTINCT a.adherent_id
                             FROM adherent_zone a
-                            WHERE EXISTS (SELECT 1 FROM z1 WHERE z1.id = a.zone_id)
-                            AND EXISTS (
-                                SELECT 1
-                                FROM adherent_zone b
-                                WHERE b.adherent_id = a.adherent_id
-                                AND EXISTS (SELECT 1 FROM z2 WHERE z2.id = b.zone_id)
-                            )
+                            WHERE %s
                         )
                     SQL;
-            } else {
-                $cteZA = <<<SQL
-                        z_adherents AS (
-                          SELECT DISTINCT a.adherent_id
-                          FROM adherent_zone a
-                          JOIN z1 ON z1.id = a.zone_id
-                        )
-                    SQL;
+                $conditions = [
+                    'EXISTS (
+                        SELECT 1
+                        FROM adherent_zone b
+                        WHERE b.adherent_id = a.adherent_id
+                        AND EXISTS (SELECT 1 FROM z2 WHERE z2.id = b.zone_id)
+                    )',
+                ];
+
+                if ($z1Seeds) {
+                    $conditions[] = 'EXISTS (SELECT 1 FROM z1 WHERE z1.id = a.zone_id)';
+                }
+
+                $cteZA = \sprintf($cteZA, implode(' AND ', $conditions));
             }
 
-            $cteBlocks[] = $cteZA;
+            if (!empty($cteZA)) {
+                $cteBlocks[] = $cteZA;
+            }
 
-            $with = "WITH RECURSIVE\n".implode(",\n", $cteBlocks);
-            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
+            if ($cteBlocks) {
+                $with = "WITH RECURSIVE\n".implode(",\n", $cteBlocks);
+                $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
+            }
         }
 
         $fromJoin = [];

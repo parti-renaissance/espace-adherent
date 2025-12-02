@@ -61,14 +61,15 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
                 $message->teamOwner = $scope->getMainUser();
             }
 
-            if (!$message->getSender()) {
+            if (!$message->getSender() && !$scope->isNational()) {
                 $message->setSender($scope->getMainUser());
             }
 
             $message->updateSenderDataFromScope($scope);
 
             if (
-                ($team = $this->myTeamRepository->findOneByAdherentAndScope($teamOwner = $scope->getMainUser(), $scope->getMainCode()))
+                $message->getSender()
+                && ($team = $this->myTeamRepository->findOneByAdherentAndScope($teamOwner = $scope->getMainUser(), $scope->getMainCode()))
                 && $teamOwner !== $message->getSender()
                 && ($member = $this->memberRepository->findMemberInTeam($team, $message->getSender()))
             ) {

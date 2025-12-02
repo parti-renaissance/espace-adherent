@@ -18,6 +18,8 @@ interface AuthorInstanceInterface extends AuthorInterface
 
     public function getAuthorInstance(): ?string;
 
+    public function getInstanceKey(): ?string;
+
     public function setAuthorInstance(?string $authorInstance): void;
 
     public function getAuthorZone(): ?string;

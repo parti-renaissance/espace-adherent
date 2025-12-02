@@ -6,7 +6,6 @@ namespace App\Normalizer;
 
 use App\Address\AddressInterface;
 use App\Entity\Event\Event;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -43,7 +42,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
             }
         }
 
-        if (($scope = $this->scopeGeneratorResolver->generate()) && ScopeEnum::NATIONAL === $scope->getMainCode()) {
+        if (($scope = $this->scopeGeneratorResolver->generate()) && $scope->isNational()) {
             $object->setNational(true);
         }
 

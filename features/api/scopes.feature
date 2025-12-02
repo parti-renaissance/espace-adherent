@@ -340,7 +340,7 @@ Feature:
                 },
                 {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
-                    "name": "Délégué de circonscription délégué",
+                    "name": "Déléguée de circonscription déléguée",
                     "role_name": "Responsable mobilisation",
                     "zones": [
                         {
@@ -362,7 +362,7 @@ Feature:
                 },
                 {
                     "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
-                    "name": "Délégué de circonscription délégué",
+                    "name": "Déléguée de circonscription déléguée",
                     "role_name": "Responsable mobilisation",
                     "zones": [
                         {
@@ -384,7 +384,7 @@ Feature:
                 },
                 {
                     "code": "delegated_01ddb89b-25be-4ccb-a90f-8338c42e7e58",
-                    "name": "Candidat délégué",
+                    "name": "Candidate déléguée",
                     "role_name": "Candidat délégué",
                     "zones": [
                         {
@@ -406,7 +406,7 @@ Feature:
                 },
                 {
                     "code": "delegated_1d29b80c-a308-441c-9d7d-a333c366fdb1",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Présidente d'assemblée départementale déléguée",
                     "role_name": "Responsable élus délégué #1",
                     "zones": [
                         {
@@ -428,7 +428,7 @@ Feature:
                 },
                 {
                     "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Présidente d'assemblée départementale déléguée",
                     "role_name": "Responsable communication",
                     "zones": [
                         {
@@ -470,7 +470,7 @@ Feature:
                 },
                 {
                     "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
-                    "name": "Responsable local délégué",
+                    "name": "Responsable locale déléguée",
                     "role_name": "Responsable logistique",
                     "zones": [
                         {
@@ -492,7 +492,7 @@ Feature:
                 },
                 {
                     "code": "delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c",
-                    "name": "Candidat aux législatives délégué",
+                    "name": "Candidate aux législatives déléguée",
                     "role_name": "Responsable communication",
                     "zones": [
                         {

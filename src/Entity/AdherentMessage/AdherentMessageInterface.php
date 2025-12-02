@@ -30,7 +30,7 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function setFilter(?AdherentMessageFilterInterface $filter): void;
 
-    public function getFromName(): ?string;
+    public function getFromName(): string;
 
     public function setLabel(string $label): void;
 
@@ -73,7 +73,7 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function getSender(): ?Adherent;
 
-    public function setSender(Adherent $sender): void;
+    public function setSender(?Adherent $sender): void;
 
     public function updateSenderDataFromScope(Scope $scope): void;
 

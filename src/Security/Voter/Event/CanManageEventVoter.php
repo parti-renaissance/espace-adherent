@@ -51,6 +51,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return $this->canManageEventItem($adherent, [
+                'instance_key' => $subject->getInstanceKey(),
                 'instance' => $subject->getAuthorInstance(),
                 'zones' => $subject->getZones()->toArray(),
                 'committee_uuid' => $subject->getCommitteeUuid(),
@@ -61,6 +62,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
 
         if (!$scope->hasFeature(FeatureEnum::EVENTS)) {
             return false;
+        }
+
+        if ($subject->getInstanceKey()) {
+            return $subject->getInstanceKey() === $scope->getInstanceKey();
         }
 
         if ($subject->getAuthorInstance() !== $scope->getScopeInstance()) {
@@ -88,6 +93,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
                         return true;
                     }
 
+                    if (!empty($event['instance_key'])) {
+                        return $scope->getInstanceKey() === $event['instance_key'] && $scope->hasFeature(FeatureEnum::EVENTS);
+                    }
+
                     return $scope->getScopeInstance() === $event['instance'] && $scope->hasFeature(FeatureEnum::EVENTS);
                 }
             );
@@ -100,6 +109,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
         }
 
         foreach ($scopes as $scope) {
+            if (!empty($event['instance_key'])) {
+                return $event['instance_key'] === $scope->getInstanceKey();
+            }
+
             if (!empty($event['committee_uuid'])) {
                 if (\in_array($event['committee_uuid'], $scope->getCommitteeUuids())) {
                     return true;
