@@ -76,7 +76,7 @@ Feature:
                     },
                     "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Réunion d'équipe",
-                    "slug": "reunion-dequipe"
+                    "slug": "reunion-d-equipe"
                 },
                 "visio_url": null,
                 "is_national": false,
@@ -425,7 +425,7 @@ Feature:
                     {
                         "uuid": "e770cda4-b215-4ea2-85e5-03fc3e4423e3",
                         "name": "Un événement de l'assemblée départementale",
-                        "slug": "@string@-un-evenement-de-lassemblee-departementale",
+                        "slug": "@string@-un-evenement-de-l-assemblee-departementale",
                         "time_zone": "Europe/Paris",
                         "live_url": null,
                         "visibility": "public",

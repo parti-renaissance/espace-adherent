@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\QrCode;
 
+use App\Utils\StringCleaner;
 use Endroid\QrCode\Builder\BuilderInterface;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
-use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class QrCodeResponseFactory
@@ -31,7 +31,7 @@ class QrCodeResponseFactory
         if ($download) {
             $disposition = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                \sprintf('QR-%s.%s', Urlizer::urlize($filename), $writerByName)
+                \sprintf('QR-%s.%s', StringCleaner::slugify($filename), $writerByName)
             );
 
             $response->headers->set('Content-Disposition', $disposition);

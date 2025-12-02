@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Utils;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
+
 class StringCleaner
 {
     public static function htmlspecialchars(string $value, int $flags = \ENT_NOQUOTES): string
@@ -26,5 +28,10 @@ class StringCleaner
     public static function escapeMarkdown(string $text): string
     {
         return preg_replace('/([_*\[\]()])/', '\\\\$1', $text);
+    }
+
+    public static function slugify(string $text): string
+    {
+        return new AsciiSlugger()->slug($text)->lower()->toString();
     }
 }

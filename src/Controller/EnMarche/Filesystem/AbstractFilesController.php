@@ -8,7 +8,7 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use App\Utils\HttpUtils;
-use Gedmo\Sluggable\Util\Urlizer;
+use App\Utils\StringCleaner;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,6 +78,6 @@ abstract class AbstractFilesController extends AbstractController
 
     private function getFilenameForDownload(File $file): ?string
     {
-        return \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension());
+        return \sprintf('%s.%s', StringCleaner::slugify($file->getName()), $file->getExtension());
     }
 }

@@ -8,7 +8,7 @@ use App\Entity\UserDocument;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\FileUploadVoter;
 use App\UserDocument\UserDocumentManager;
-use Gedmo\Sluggable\Util\Urlizer;
+use App\Utils\StringCleaner;
 use League\Flysystem\FilesystemException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -78,7 +78,7 @@ class UploadDocumentController extends AbstractController
         $response->headers->set('Content-Type', $mimeType);
         $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
             $dispositionType,
-            \sprintf('%s.%s', Urlizer::urlize($document->getFilename()), $document->getExtension())
+            \sprintf('%s.%s', StringCleaner::slugify($document->getFilename()), $document->getExtension())
         ));
 
         return $response;
