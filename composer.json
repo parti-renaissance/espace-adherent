@@ -79,7 +79,7 @@
         "phpoffice/phpspreadsheet": "^5.0",
         "ramsey/uuid": "^4.1",
         "ramsey/uuid-doctrine": "^2.0",
-        "runroom-packages/sortable-behavior-bundle": "^0.18.0",
+        "runroom-packages/sortable-behavior-bundle": "^0.21.0",
         "sabre/dav": "^4.1",
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-google-authenticator": "^6.3",
