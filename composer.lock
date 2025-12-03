@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01f6beff352dc943287211bfa7ce86f5",
+    "content-hash": "d0800aab75008bba2ee9ae8293b174ab",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -10085,56 +10085,58 @@
         },
         {
             "name": "runroom-packages/sortable-behavior-bundle",
-            "version": "0.18.0",
+            "version": "0.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Runroom/RunroomSortableBehaviorBundle.git",
-                "reference": "6004e079a29018d5de469e2a56da45a77235cabe"
+                "reference": "61e9fc14794b54081010f0446362721ce31d91f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/6004e079a29018d5de469e2a56da45a77235cabe",
-                "reference": "6004e079a29018d5de469e2a56da45a77235cabe",
+                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/61e9fc14794b54081010f0446362721ce31d91f5",
+                "reference": "61e9fc14794b54081010f0446362721ce31d91f5",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "^2.8",
-                "doctrine/orm": "^2.14",
+                "doctrine/dbal": "^3.6 || ^4.0",
+                "doctrine/doctrine-bundle": "^2.10",
+                "doctrine/orm": "^2.19 || ^3.2",
+                "doctrine/persistence": "^3.1 || ^4.0",
                 "php": "^8.1",
-                "symfony/config": "^5.4 || ^6.4",
-                "symfony/dependency-injection": "^5.4 || ^6.4",
-                "symfony/http-foundation": "^5.4 || ^6.4",
-                "symfony/http-kernel": "^5.4 || ^6.4",
-                "symfony/property-access": "^5.4 || ^6.4",
-                "symfony/translation": "^5.4 || ^6.4",
-                "twig/twig": "^3.0"
+                "symfony/config": "^6.4 || ^7.1",
+                "symfony/dependency-injection": "^6.4 || ^7.1",
+                "symfony/http-foundation": "^6.4 || ^7.1",
+                "symfony/http-kernel": "^6.4 || ^7.1",
+                "symfony/property-access": "^6.4 || ^7.1",
+                "symfony/translation": "^6.4 || ^7.1",
+                "twig/twig": "^3.14"
             },
             "conflict": {
-                "gedmo/doctrine-extensions": "<3.0",
-                "sonata-project/admin-bundle": "<4.0"
+                "gedmo/doctrine-extensions": "<3.11",
+                "sonata-project/admin-bundle": "<4.25"
             },
             "require-dev": {
                 "dama/doctrine-test-bundle": "^8.0",
                 "gedmo/doctrine-extensions": "^3.11",
                 "knplabs/knp-menu-bundle": "^3.1",
-                "matthiasnoback/symfony-config-test": "^5.1",
-                "matthiasnoback/symfony-dependency-injection-test": "^5.1",
-                "phpunit/phpunit": "^9.6",
+                "matthiasnoback/symfony-config-test": "^6.1",
+                "matthiasnoback/symfony-dependency-injection-test": "^6.1",
+                "phpunit/phpunit": "^10.5",
                 "psr/container": "^1.1 || ^2.0",
-                "runroom-packages/testing": "^0.18",
-                "sonata-project/admin-bundle": "^4.20",
-                "sonata-project/doctrine-orm-admin-bundle": "^4.3",
-                "symfony/browser-kit": "^5.4 || ^6.4",
-                "symfony/framework-bundle": "^5.4 || ^6.4",
-                "symfony/phpunit-bridge": "^7.0",
-                "symfony/security-bundle": "^5.4 || ^6.4",
-                "symfony/twig-bundle": "^5.4 || ^6.4",
-                "zenstruck/foundry": "^1.38.2 || ^2.0"
+                "runroom-packages/testing": "^0.21",
+                "sonata-project/admin-bundle": "^4.25",
+                "sonata-project/doctrine-orm-admin-bundle": "^4.13",
+                "symfony/browser-kit": "^6.4 || ^7.1",
+                "symfony/framework-bundle": "^6.4 || ^7.1",
+                "symfony/security-bundle": "^6.4 || ^7.1",
+                "symfony/stimulus-bundle": "^2.30",
+                "symfony/twig-bundle": "^6.4 || ^7.1",
+                "zenstruck/foundry": "^2.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.18-dev"
+                    "dev-master": "0.21-dev"
                 }
             },
             "autoload": {
@@ -10161,9 +10163,9 @@
                 "sortable"
             ],
             "support": {
-                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.18.0"
+                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.21.0"
             },
-            "time": "2024-07-09T08:44:46+00:00"
+            "time": "2025-10-03T14:52:43+00:00"
         },
         {
             "name": "sabre/dav",
