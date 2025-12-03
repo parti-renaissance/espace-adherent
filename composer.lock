@@ -2423,28 +2423,27 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "2.1.1",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "861c870e8b75f7c8f69c146c7f89cc1c0f1b49b6"
+                "reference": "31ad66abc0fc9e1a1f2d9bc6a42668d2fbbcd6dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/861c870e8b75f7c8f69c146c7f89cc1c0f1b49b6",
-                "reference": "861c870e8b75f7c8f69c146c7f89cc1c0f1b49b6",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/31ad66abc0fc9e1a1f2d9bc6a42668d2fbbcd6dd",
+                "reference": "31ad66abc0fc9e1a1f2d9bc6a42668d2fbbcd6dd",
                 "shasum": ""
             },
             "require": {
-                "doctrine/deprecations": "^1.0",
-                "php": "^7.1 || ^8.0"
+                "php": "^8.1"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^9 || ^12",
-                "phpstan/phpstan": "^1.3",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6",
+                "doctrine/coding-standard": "^12",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5",
                 "psalm/plugin-phpunit": "^0.18.3",
-                "vimeo/psalm": "^4.11 || ^5.21"
+                "vimeo/psalm": "^5.21"
             },
             "type": "library",
             "autoload": {
@@ -2481,7 +2480,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/lexer/issues",
-                "source": "https://github.com/doctrine/lexer/tree/2.1.1"
+                "source": "https://github.com/doctrine/lexer/tree/3.0.1"
             },
             "funding": [
                 {
@@ -2497,7 +2496,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-05T11:35:39+00:00"
+            "time": "2024-02-05T11:56:58+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -19510,34 +19509,34 @@
         },
         {
             "name": "coduo/php-matcher",
-            "version": "6.0.14",
+            "version": "6.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coduo/php-matcher.git",
-                "reference": "d107768b2bcbd4413c9f04be60dca6bcd466f165"
+                "reference": "ec521bba7757d98fc601a80f063de1c4cbc2f92b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/d107768b2bcbd4413c9f04be60dca6bcd466f165",
-                "reference": "d107768b2bcbd4413c9f04be60dca6bcd466f165",
+                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/ec521bba7757d98fc601a80f063de1c4cbc2f92b",
+                "reference": "ec521bba7757d98fc601a80f063de1c4cbc2f92b",
                 "shasum": ""
             },
             "require": {
-                "aeon-php/calendar": "^1.0",
+                "aeon-php/calendar": "^1.0.6",
                 "coduo/php-to-string": "^3",
-                "doctrine/lexer": "^1.0||^2.0",
+                "doctrine/lexer": "^3.0",
                 "ext-filter": "*",
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4"
             },
             "require-dev": {
-                "ext-pcov": "*",
+                "nikic/php-parser": "^4.0",
                 "openlss/lib-array2xml": "^1.0",
                 "phpunit/phpunit": "^10.4",
-                "symfony/cache": "^2.3|^3.0|^4.0|^5.0|^6.0",
-                "symfony/expression-language": "^2.3|^3.0|^4.0|^5.0|^6.0",
-                "symfony/var-exporter": "^2.3|^3.0|^4.0|^5.0|^6.0"
+                "symfony/cache": "^5.4|^6.4",
+                "symfony/expression-language": "^5.4|^6.4|^7.0",
+                "symfony/var-exporter": "^5.4|^6.4|^7.0"
             },
             "suggest": {
                 "openlss/lib-array2xml": "In order ot use Coduo\\PHPMatcher\\Matcher\\XmlMatcher",
@@ -19572,22 +19571,22 @@
             ],
             "support": {
                 "issues": "https://github.com/coduo/php-matcher/issues",
-                "source": "https://github.com/coduo/php-matcher/tree/6.0.14"
+                "source": "https://github.com/coduo/php-matcher/tree/6.0.17"
             },
-            "time": "2023-12-13T11:48:18+00:00"
+            "time": "2024-12-20T03:49:15+00:00"
         },
         {
             "name": "coduo/php-to-string",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coduo/php-to-string.git",
-                "reference": "e467de70e5e7403d969a05e853c7f480cde9fda4"
+                "reference": "2f7b08b64bfd24578c498936ef80c8ff3a99b337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coduo/php-to-string/zipball/e467de70e5e7403d969a05e853c7f480cde9fda4",
-                "reference": "e467de70e5e7403d969a05e853c7f480cde9fda4",
+                "url": "https://api.github.com/repos/coduo/php-to-string/zipball/2f7b08b64bfd24578c498936ef80c8ff3a99b337",
+                "reference": "2f7b08b64bfd24578c498936ef80c8ff3a99b337",
                 "shasum": ""
             },
             "require": {
@@ -19625,9 +19624,19 @@
             ],
             "support": {
                 "issues": "https://github.com/coduo/php-to-string/issues",
-                "source": "https://github.com/coduo/php-to-string/tree/3.2.1"
+                "source": "https://github.com/coduo/php-to-string/tree/3.2.2"
             },
-            "time": "2023-03-28T10:10:37+00:00"
+            "funding": [
+                {
+                    "url": "https://flow-php.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/norberttech",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-12-02T15:30:05+00:00"
         },
         {
             "name": "composer/semver",
