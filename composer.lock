@@ -7164,12 +7164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git",
-                "reference": "3e9ceaea44c6bc1603d4436491d91176726d7e02"
+                "reference": "89935d528bba9ce1d807af11d13cfe56a8a9a43c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/parti-renaissance/LexikPayboxBundle/zipball/3e9ceaea44c6bc1603d4436491d91176726d7e02",
-                "reference": "3e9ceaea44c6bc1603d4436491d91176726d7e02",
+                "url": "https://api.github.com/repos/parti-renaissance/LexikPayboxBundle/zipball/89935d528bba9ce1d807af11d13cfe56a8a9a43c",
+                "reference": "89935d528bba9ce1d807af11d13cfe56a8a9a43c",
                 "shasum": ""
             },
             "require": {
@@ -7179,9 +7179,9 @@
                 "lib-openssl": ">=0.9.6",
                 "php": ">=7.4",
                 "psr/log": "^2.0|^3.0",
-                "symfony/form": "~4.0|^5.0|^6.0",
-                "symfony/framework-bundle": "~4.0|^5.0|^6.0",
-                "symfony/options-resolver": "~4.0|^5.0|^6.0"
+                "symfony/form": "^6.0||^7.0",
+                "symfony/framework-bundle": "^6.0||^7.0",
+                "symfony/options-resolver": "^6.0||^7.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
@@ -7222,7 +7222,7 @@
             "support": {
                 "source": "https://github.com/parti-renaissance/LexikPayboxBundle/tree/master"
             },
-            "time": "2024-11-17T23:18:58+00:00"
+            "time": "2025-12-04T18:18:27+00:00"
         },
         {
             "name": "longitude-one/doctrine-spatial",
@@ -24555,5 +24555,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
