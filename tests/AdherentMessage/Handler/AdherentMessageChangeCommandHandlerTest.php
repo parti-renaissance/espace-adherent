@@ -7,6 +7,9 @@ namespace Tests\App\AdherentMessage\Handler;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
+use App\AdherentMessage\Variable\ContextBuilder;
+use App\AdherentMessage\Variable\Parser;
+use App\AdherentMessage\Variable\Renderer;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -49,6 +52,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 use Tests\App\AbstractKernelTestCase;
 
 class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
@@ -472,6 +476,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
                 $this->mailchimpMapping,
+                $this->createMockRenderer(),
                 $this->createSectionRequestBuildersIterable()
             ),
         ]);
@@ -532,9 +537,20 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             'toArray' => json_decode($content, true),
         ]);
     }
+
+    private function createMockRenderer(): Renderer
+    {
+        return new Renderer(
+            new Parser(),
+            $this->createMock(ContextBuilder::class),
+            new SimpleContainer([
+                'mailchimp' => new Renderer\MailchimpVariableRenderer(),
+            ])
+        );
+    }
 }
 
-class SimpleContainer implements ContainerInterface
+class SimpleContainer implements ContainerInterface, ServiceProviderInterface
 {
     private $container;
 
@@ -543,7 +559,7 @@ class SimpleContainer implements ContainerInterface
         $this->container = $container;
     }
 
-    public function get($id)
+    public function get($id): mixed
     {
         return $this->container[$id] ?? null;
     }
@@ -551,5 +567,10 @@ class SimpleContainer implements ContainerInterface
     public function has($id): bool
     {
         return isset($this->container[$id]);
+    }
+
+    public function getProvidedServices(): array
+    {
+        return array_map(fn ($v) => \gettype($v), $this->container);
     }
 }
