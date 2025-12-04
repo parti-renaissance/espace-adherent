@@ -112,6 +112,8 @@ services:
             tags: ['app.token_provider']
         App\JeMengage\Hit\Stats\Provider\ProviderInterface:
             tags: ['app.hit.stats_provider']
+        App\AdherentMessage\Variable\Renderer\PublicationVariableRendererInterface:
+            tags: ['app.publication.variable.renderer']
 
     # Imports
     App\:

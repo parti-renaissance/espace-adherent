@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Normalizer;
 
 use App\AdherentMessage\StatisticsAggregator;
+use App\AdherentMessage\Variable\Renderer;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\PublicationVoter;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -23,6 +25,8 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         private readonly StatisticsAggregator $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly Renderer $variableRenderer,
+        private readonly Security $security,
     ) {
     }
 
@@ -32,6 +36,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $groups = $context['groups'] ?? [];
+
+        if (\in_array('message_read', $groups, true) && $user = $this->security->getUser()) {
+            $data['json_content'] = $this->variableRenderer->renderTipTap($data['json_content'] ?? '', $user);
+        }
 
         if (array_intersect($groups, ['message_read_list', 'message_read'])) {
             $data['author']['scope'] = $object->getAuthorScope();
