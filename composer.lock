@@ -10900,23 +10900,23 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "5.8.0",
+            "version": "5.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "1929c807e3f7e39eecb7646b7d841e13736e3f4c"
+                "reference": "f28ad3fe72c42656c15345f77187dc58bd8e1281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/1929c807e3f7e39eecb7646b7d841e13736e3f4c",
-                "reference": "1929c807e3f7e39eecb7646b7d841e13736e3f4c",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/f28ad3fe72c42656c15345f77187dc58bd8e1281",
+                "reference": "f28ad3fe72c42656c15345f77187dc58bd8e1281",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^2.1.1",
                 "jean85/pretty-package-versions": "^1.5||^2.0",
                 "php": "^7.2||^8.0",
-                "sentry/sentry": "^4.19",
+                "sentry/sentry": "^4.19.1",
                 "symfony/cache-contracts": "^1.1||^2.4||^3.0",
                 "symfony/config": "^4.4.20||^5.0.11||^6.0||^7.0||^8.0",
                 "symfony/console": "^4.4.20||^5.0.11||^6.0||^7.0||^8.0",
@@ -10986,7 +10986,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-symfony/issues",
-                "source": "https://github.com/getsentry/sentry-symfony/tree/5.8.0"
+                "source": "https://github.com/getsentry/sentry-symfony/tree/5.8.1"
             },
             "funding": [
                 {
@@ -10998,7 +10998,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-12-02T12:04:51+00:00"
+            "time": "2025-12-03T14:43:27+00:00"
         },
         {
             "name": "sonata-project/admin-bundle",
