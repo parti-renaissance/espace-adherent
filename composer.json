@@ -149,7 +149,6 @@
         "behat/mink": "^1.12",
         "behat/mink-browserkit-driver": "^2.2",
         "behat/mink-selenium2-driver": "^1.5",
-        "behatch/contexts": "dev-sf-7",
         "coduo/php-matcher": "^6.0",
         "dama/doctrine-test-bundle": "^8.0",
         "doctrine/doctrine-fixtures-bundle": "^4.0",
@@ -164,6 +163,7 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^12.5",
         "roave/security-advisories": "dev-latest",
+        "soyuka/contexts": "^3.3",
         "symfony/css-selector": "^7.4",
         "symfony/debug-bundle": "^7.4",
         "symfony/phpunit-bridge": "^7.4",
@@ -207,17 +207,11 @@
         "symfony/polyfill-php83": "*",
         "symfony/polyfill-php84": "*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/parti-renaissance/contexts.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git"
-        }
-    ],
     "conflict": {
         "symfony/symfony": "*"
-    }
+    },
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git"
+    }]
 }
