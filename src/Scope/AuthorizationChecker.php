@@ -79,6 +79,7 @@ class AuthorizationChecker
     {
         return !empty(array_intersect($featureCodes, [
             FeatureEnum::ACTIONS,
+            FeatureEnum::EVENTS,
             FeatureEnum::MESSAGES,
             FeatureEnum::PUBLICATIONS,
             FeatureEnum::EAGGLE,

@@ -31,10 +31,10 @@ class GetAvailableSendersController extends AbstractController
         }
 
         $defaultMemberData = [
-            'instance' => $scope->getScopeInstance(),
+            'instance' => $instance = $scope->getScopeInstance(),
             'role' => $scope->getMainRoleName(),
             'zone' => implode(', ', $scope->getZoneNames()) ?: null,
-            'theme' => $scope->getAttribute('theme'),
+            'theme' => $theme = $scope->getAttribute('theme'),
         ];
 
         $emptyChoices = [];
@@ -44,6 +44,8 @@ class GetAvailableSendersController extends AbstractController
             $emptyChoices[] = [
                 'label' => 'Sans signature',
                 'value' => null,
+                'instance' => $instance,
+                'theme' => $theme,
             ];
         }
 

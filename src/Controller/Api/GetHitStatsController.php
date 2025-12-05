@@ -15,6 +15,7 @@ use App\JeMengage\Hit\TargetTypeEnum;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AppHitRepository;
 use App\Scope\FeatureEnum;
+use App\Security\Voter\Event\CanManageEventVoter;
 use App\Security\Voter\ManageZoneableItemVoter;
 use App\Security\Voter\PublicationVoter;
 use App\Security\Voter\ScopeFeatureVoter;
@@ -97,6 +98,10 @@ class GetHitStatsController extends AbstractController
 
         if ($object instanceof AdherentMessageInterface) {
             if (!$this->isGranted(PublicationVoter::PERMISSION, $object)) {
+                return $this->json(['error' => 'Access to this resource is forbidden'], Response::HTTP_FORBIDDEN);
+            }
+        } elseif ($object instanceof Event) {
+            if (!$this->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object)) {
                 return $this->json(['error' => 'Access to this resource is forbidden'], Response::HTTP_FORBIDDEN);
             }
         } elseif (!$this->isGranted(ManageZoneableItemVoter::PERMISSION, $object)) {
