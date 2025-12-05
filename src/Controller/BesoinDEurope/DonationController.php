@@ -45,8 +45,8 @@ class DonationController extends AbstractController
             ]);
         }
 
-        return $this->renderForm('besoindeurope/donation/form.html.twig', [
-            'form' => $form,
+        return $this->render('besoindeurope/donation/form.html.twig', [
+            'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $donationRequest->hasAmount() ? 1 : 0,
         ]);

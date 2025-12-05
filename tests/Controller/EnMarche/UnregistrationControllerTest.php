@@ -8,20 +8,17 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
-use PHPUnit\Framework\Attributes\DependsExternal;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebTestCase;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
-use Tests\App\Controller\Renaissance\Adherent\Contribution\ContributionControllerTest;
 
 #[Group('functional')]
 #[Group('controller')]
-class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
+class UnregistrationControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    #[DependsExternal(ContributionControllerTest::class, 'testOnGoingElectedRepresentativeCanSeeContributionWorkflow')]
     public function testAdherentCanUnregisterSuccessfully(): void
     {
         $countForbidden = 0;
@@ -72,6 +69,8 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
             );
 
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
+
+            $this->client->getCookieJar()->clear();
         }
 
         self::assertSame(8, $countForbidden);

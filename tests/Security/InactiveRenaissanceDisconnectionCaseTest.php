@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Security;
 
+use App\Security\Listener\InactiveAdminListener;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractRenaissanceWebTestCase;
@@ -18,27 +20,27 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
 
     public function testLogoutInactiveAdmin()
     {
-        $this->markTestSkipped('Waiting for compatibility of Symfony/phpunit-bridge with PHPUnit 10 @see https://github.com/symfony/symfony/issues/49069');
+        ClockMock::register(InactiveAdminListener::class);
+
+        $this->makeAdminClient();
 
         $this->authenticateAsAdmin($this->client);
 
-        $this->client->request(Request::METHOD_GET, '/app/media/list');
+        $this->client->request(Request::METHOD_GET, '/app/adherent/list');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // wait
         sleep(1900);
 
         // go to another page
-        $this->client->request(Request::METHOD_GET, '/dashboard');
+        $this->client->request(Request::METHOD_GET, '/app/adherent/list');
 
         // should be redirected to log out
-        $this->assertClientIsRedirectedTo('http://test.renaissance.code/deconnexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://admin.renaissance.code/dashboard', $this->client);
     }
 
     public function testNoLogoutInactiveAdherent()
     {
-        $this->markTestSkipped('Waiting for compatibility of Symfony/phpunit-bridge with PHPUnit 10 @see https://github.com/symfony/symfony/issues/49069');
-
         $this->makeEMClient();
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 

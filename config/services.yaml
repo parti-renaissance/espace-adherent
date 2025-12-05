@@ -86,8 +86,6 @@ services:
             tags: ['app.adherent_message.transaction.message_modifier']
         App\AdherentMessage\Sender\SenderInterface:
             tags: ['app.adherent_message.sender']
-        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
-            tags: ['messenger.message_handler']
         App\Redirection\Dynamic\RedirectToInterface:
             tags: ['app.redirection.handler']
         App\VotingPlatform\AdherentMandate\Factory\AdherentMandateFactoryInterface:

@@ -390,9 +390,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         self::assertSame('territoires_progres' === $submittedValues['partyMembership'], $adherent->isTerritoireProgresMembership());
 
         $registeredAt = $adherent->getRegisteredAt();
-        self::assertSame($submittedValues['cotisationDate']['year'], $registeredAt->format('Y'));
-        self::assertSame($submittedValues['cotisationDate']['month'], $registeredAt->format('m'));
-        self::assertSame($submittedValues['cotisationDate']['day'], $registeredAt->format('d'));
+        self::assertSame($submittedValues['cotisationDate'], $registeredAt->format('Y-m-d'));
 
         $donator = $this->getDonatorRepository()->findOneForMatching($submittedValues['email'], $submittedValues['firstName'], $submittedValues['lastName']);
 
@@ -409,9 +407,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         self::assertSame('finished', $donation->getStatus());
 
         $donationDate = $donation->getDonatedAt();
-        self::assertSame($submittedValues['cotisationDate']['year'], $donationDate->format('Y'));
-        self::assertSame($submittedValues['cotisationDate']['month'], $donationDate->format('m'));
-        self::assertSame($submittedValues['cotisationDate']['day'], $donationDate->format('d'));
+        self::assertSame($submittedValues['cotisationDate'], $donationDate->format('Y-m-d'));
 
         self::assertInstanceOf(\DateTime::class, $adherent->getLastMembershipDonation());
         self::assertTrue($adherent->isRenaissanceAdherent());
@@ -447,11 +443,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
                 ],
                 'partyMembership' => 'exclusive',
                 'cotisationAmountChoice' => 'amount_30',
-                'cotisationDate' => [
-                    'year' => date('Y'),
-                    'month' => '11',
-                    'day' => '27',
-                ],
+                'cotisationDate' => \sprintf('%s-11-27', date('Y')),
             ],
             30,
         ];

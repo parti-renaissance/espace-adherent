@@ -9,12 +9,12 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class JsonTransformer implements DataTransformerInterface
 {
-    public function transform(mixed $value)
+    public function transform(mixed $value): mixed
     {
         return json_encode($value ?: [], \JSON_PRETTY_PRINT);
     }
 
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): mixed
     {
         if ($value) {
             try {

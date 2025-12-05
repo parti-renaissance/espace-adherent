@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures\ORM;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use App\AdherentMessage\Listener\AdherentMessageChangeSubscriber;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -16,8 +15,6 @@ use App\Entity\Committee;
 use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
@@ -30,13 +27,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager): void
     {
-        /** @var EntityManager $manager */
-        $eventManager = $manager->getEventManager();
-        $listener = current(array_filter($eventManager->getListeners(Events::postFlush), function ($listener) {
-            return $listener instanceof AdherentMessageChangeSubscriber;
-        }));
-        $eventManager->removeEventSubscriber($listener);
-
         $faker = Factory::create('FR_fr');
 
         $parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75');
