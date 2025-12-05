@@ -1875,13 +1875,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $baseWhere = $where;
 
         if ($asUnion && null !== $branchEmailSql && null !== $branchPushSql) {
-            $sql = ($with ? "$with\n" : '')."SELECT COUNT(*) AS cnt
+            $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT u.id) AS cnt
                 FROM (
-                    SELECT DISTINCT a.id
+                    SELECT a.id
                     $baseFrom
                     WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
-                    UNION
-                    SELECT DISTINCT a.id
+                    UNION ALL
+                    SELECT a.id
                     $baseFrom
                     WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
                 ) u";
