@@ -1653,87 +1653,28 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             return 0;
         }
 
-        if ($filterZoneId || \count($managedZoneIds)) {
-            $z1Seeds = $cteBlocks = [];
-            $cteZA = null;
+        $targetZoneIds = array_unique(array_merge($managedZoneIds, $filterZoneId ? [$filterZoneId] : []));
 
-            foreach ($managedZoneIds as $i => $id) {
-                $key = "mgr_$i";
-                $z1Seeds[] = "SELECT :$key AS id";
+        if (!empty($targetZoneIds)) {
+            $placeholders = [];
+            foreach ($targetZoneIds as $i => $id) {
+                $key = "target_zone_$i";
+                $placeholders[] = ":$key";
                 $params[$key] = $id;
                 $types[$key] = ParameterType::INTEGER;
             }
+            $inClause = implode(', ', $placeholders);
 
-            if ($z1Seeds) {
-                $z1SeedSql = implode("\nUNION ALL\n", $z1Seeds);
+            $with = <<<SQL
+                    WITH RECURSIVE z_adherents AS (
+                        SELECT DISTINCT a.adherent_id
+                        FROM adherent_zone a
+                        LEFT JOIN geo_zone_parent p ON p.child_id = a.zone_id
+                        WHERE p.parent_id IN ($inClause) OR a.zone_id IN ($inClause)
+                    )
+                SQL;
 
-                $cteZ1 = <<<SQL
-                        z1(id) AS (
-                            $z1SeedSql
-                            UNION ALL
-                            SELECT gp.child_id
-                            FROM geo_zone_parent gp
-                            JOIN z1 ON gp.parent_id = z1.id
-                        )
-                    SQL;
-
-                $cteBlocks = [$cteZ1];
-
-                $cteZA = <<<SQL
-                        z_adherents AS (
-                          SELECT DISTINCT a.adherent_id
-                          FROM adherent_zone a
-                          JOIN z1 ON z1.id = a.zone_id
-                        )
-                    SQL;
-            }
-
-            if ($filterZoneId) {
-                $cteZ2 = <<<SQL
-                        z2(id) AS (
-                            SELECT :flt
-                            UNION ALL
-                            SELECT gp.child_id
-                            FROM geo_zone_parent gp
-                            JOIN z2 ON gp.parent_id = z2.id
-                        )
-                    SQL;
-                $cteBlocks[] = $cteZ2;
-
-                $params['flt'] = $filterZoneId;
-                $types['flt'] = ParameterType::INTEGER;
-
-                $cteZA = <<<SQL
-                        z_adherents AS (
-                            SELECT DISTINCT a.adherent_id
-                            FROM adherent_zone a
-                            WHERE %s
-                        )
-                    SQL;
-                $conditions = [
-                    'EXISTS (
-                        SELECT 1
-                        FROM adherent_zone b
-                        WHERE b.adherent_id = a.adherent_id
-                        AND EXISTS (SELECT 1 FROM z2 WHERE z2.id = b.zone_id)
-                    )',
-                ];
-
-                if ($z1Seeds) {
-                    $conditions[] = 'EXISTS (SELECT 1 FROM z1 WHERE z1.id = a.zone_id)';
-                }
-
-                $cteZA = \sprintf($cteZA, implode(' AND ', $conditions));
-            }
-
-            if (!empty($cteZA)) {
-                $cteBlocks[] = $cteZA;
-            }
-
-            if ($cteBlocks) {
-                $with = "WITH RECURSIVE\n".implode(",\n", $cteBlocks);
-                $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
-            }
+            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
         }
 
         $fromJoin = [];
@@ -1839,9 +1780,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 $emailConds = ['a.mailchimp_status = :mailchimp_subscribed'];
                 if ($stId) {
                     $emailConds[] = 'EXISTS (
-                       SELECT 1
-                       FROM adherent_subscription_type ast
-                       WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
+                        SELECT 1
+                        FROM adherent_subscription_type ast
+                        WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
                     )';
                 }
                 $branchEmailSql = '('.implode(' AND ', $emailConds).')';
@@ -1849,9 +1790,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 $emailConds = ['a.mailchimp_status <> :mailchimp_subscribed'];
                 if ($stId) {
                     $emailConds[] = 'NOT EXISTS (
-                       SELECT 1
-                       FROM adherent_subscription_type ast
-                       WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
+                        SELECT 1
+                        FROM adherent_subscription_type ast
+                        WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
                     )';
                 }
                 $branchEmailSql = '('.implode(' OR ', $emailConds).')';
@@ -1860,31 +1801,31 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if (null !== $byPush) {
             $branchPushSql = ($byPush ? '' : 'NOT ').'EXISTS (
-                   SELECT 1
-                   FROM app_session s
-                   JOIN app_session_push_token_link p ON p.app_session_id = s.id AND p.unsubscribed_at IS NULL
-                   WHERE s.adherent_id = a.id AND s.status = :session_status
-                )';
+                SELECT 1
+                FROM app_session s
+                JOIN app_session_push_token_link p ON p.app_session_id = s.id AND p.unsubscribed_at IS NULL
+                WHERE s.adherent_id = a.id AND s.status = :session_status
+            )';
             $params['session_status'] = SessionStatusEnum::ACTIVE->value;
         }
 
         $baseFrom = 'FROM adherents a'
-            .(!empty($cteBlocks) ? "\n$joinPerimeter" : '')
+            .(!empty($with) ? "\n$joinPerimeter" : '')
             .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
 
         $baseWhere = $where;
 
         if ($asUnion && null !== $branchEmailSql && null !== $branchPushSql) {
             $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT u.id) AS cnt
-                FROM (
-                    SELECT a.id
-                    $baseFrom
-                    WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
-                    UNION ALL
-                    SELECT a.id
-                    $baseFrom
-                    WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
-                ) u";
+            FROM (
+                SELECT a.id
+                $baseFrom
+                WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
+                UNION ALL
+                SELECT a.id
+                $baseFrom
+                WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
+            ) u";
 
             return (int) $cnx->fetchOne($sql, $params, $types);
         }
