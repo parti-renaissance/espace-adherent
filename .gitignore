@@ -24,7 +24,6 @@
 /.phpunit.result.cache
 /yarn-error.log
 /.php_cs
-/behat.yml
 /docker-dev.lock
 node_modules
 .idea

@@ -14,7 +14,7 @@ class JsonContext extends BehatchJsonContext
 {
     use PHPMatcherAssertions;
 
-    public function theJsonShouldBeEqualTo(PyStringNode $content)
+    public function theJsonShouldBeEqualTo(PyStringNode $content): void
     {
         $this->assertJson($content->getRaw(), (string) $this->getJson());
     }
@@ -38,7 +38,7 @@ class JsonContext extends BehatchJsonContext
         }
     }
 
-    public function theJsonNodeShouldMatch($node, $text)
+    public function theJsonNodeShouldMatch($node, $text): void
     {
         $actual = $this->inspector->evaluate($this->getJson(), $node);
 
