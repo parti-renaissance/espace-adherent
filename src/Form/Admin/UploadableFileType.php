@@ -31,7 +31,7 @@ class UploadableFileType extends AbstractType implements DataTransformerInterfac
         return AdminType::class;
     }
 
-    public function transform(mixed $value)
+    public function transform(mixed $value): mixed
     {
         if ($value instanceof UploadableFile && ($value->uploadFile || false === $value->getFile()?->isEmpty())) {
             return $value;
@@ -40,7 +40,7 @@ class UploadableFileType extends AbstractType implements DataTransformerInterfac
         return null;
     }
 
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): mixed
     {
         return $this->transform($value);
     }
