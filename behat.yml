@@ -3,7 +3,7 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
         Behat\MinkExtension:
-            base_url: "http://test.renaissance.code"
+            base_url: 'http://test.renaissance.code'
             files_path: 'tests/Fixtures'
             sessions:
                 default:
@@ -17,17 +17,17 @@ default:
                             extra_capabilities:
                                 chromeOptions:
                                     args:
-                                        - "--start-maximized"
+                                        - '--start-maximized'
         Behatch\Extension: ~
     suites:
         default:
             filters:
-                tags: "@app,@api"
+                tags: '@app,@api'
             contexts:
                 - Behatch\Context\BrowserContext:
-                    timeout: 3
+                      timeout: 3
                 - Behatch\Context\DebugContext:
-                    screenshotDir: 'var/behat'
+                      screenshotDir: 'var/behat'
                 - Behatch\Context\XmlContext
                 - Behat\MinkExtension\Context\MinkContext
                 - Tests\App\Behat\Context\AppContext
@@ -44,12 +44,12 @@ default:
                 - Tests\App\Behat\Context\DonationContext
         javascript:
             filters:
-                tags: "@javascript"
+                tags: '@javascript'
             contexts:
                 - Behatch\Context\BrowserContext:
-                    timeout: 3
+                      timeout: 3
                 - Behatch\Context\DebugContext:
-                    screenshotDir: 'var/behat'
+                      screenshotDir: 'var/behat'
                 - Behat\MinkExtension\Context\MinkContext
                 - Tests\App\Behat\Context\AppContext
                 - Tests\App\Behat\Context\DIContext
