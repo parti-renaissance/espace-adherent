@@ -19,7 +19,7 @@
                     {% endif %}
                     <li><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a></li>
                     {% if is_granted('IS_IMPERSONATOR') %}
-                        <li><a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}">Quitter l'impersonnification</a></li>
+                        <li><a href="{{ impersonation_exit_path(path('admin_app_adherent_list')) }}">Quitter l'impersonnification</a></li>
                     {% endif %}
                     {% if has_role_user %}
                         <li><a href="{{ path('logout') }}">Déconnexion</a></li>

@@ -69,8 +69,8 @@ class CommunicationReminderController extends AbstractController
             return $this->redirectToRoute(FinishController::ROUTE_NAME);
         }
 
-        return $this->renderForm('besoindeurope/inscription/communication_reminder.html.twig', [
-            'form' => $form,
+        return $this->render('besoindeurope/inscription/communication_reminder.html.twig', [
+            'form' => $form->createView(),
             'accept_sms' => $acceptSms,
             'accept_email' => $acceptEmail,
             'has_phone' => $hasPhone,

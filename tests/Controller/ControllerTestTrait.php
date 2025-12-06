@@ -147,7 +147,7 @@ trait ControllerTestTrait
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
         $this->assertStringContainsString($author, $message->filter('h3')->text());
-        $this->assertSame($role, $message->filter('h3 span')->text());
+        self::assertSame($role, $message->filter('h3 span')->text());
         $this->assertStringContainsString($text, $message->filter('div')->first()->text());
     }
 

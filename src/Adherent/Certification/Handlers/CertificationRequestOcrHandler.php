@@ -12,6 +12,7 @@ use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
@@ -26,6 +27,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     public function __construct(
         EntityManagerInterface $em,
         VisionHandler $visionHandler,
+        #[Autowire(service: 'serializer.normalizer.object')]
         ObjectNormalizer $normalizer,
         PdfToImageConverter $pdfToImageConverter,
         FilesystemOperator $defaultStorage,

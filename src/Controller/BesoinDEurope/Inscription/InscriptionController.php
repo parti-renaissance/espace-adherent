@@ -64,8 +64,8 @@ class InscriptionController extends AbstractController
             return $this->redirectToRoute(ActivateEmailController::ROUTE_NAME);
         }
 
-        return $this->renderForm('besoindeurope/inscription/form.html.twig', [
-            'form' => $form,
+        return $this->render('besoindeurope/inscription/form.html.twig', [
+            'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->step,
         ]);

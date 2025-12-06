@@ -14,8 +14,6 @@ services:
             tags: ['app.mailchimp.campaign.content_builder']
         App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface:
             tags: ['app.mailchimp.campaign.segment_condition_builder']
-        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
-            tags: ['messenger.message_handler']
 
     App\Mailchimp\:
         resource: ../../src/Mailchimp/

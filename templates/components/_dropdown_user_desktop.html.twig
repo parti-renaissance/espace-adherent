@@ -20,7 +20,7 @@
                     <li class="space--5-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
                     {% if is_granted('IS_IMPERSONATOR') %}
                         <li class="space--5-0">
-                            <a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}" class="text--body text--small link--no-decor">
+                            <a href="{{ impersonation_exit_path(path('admin_app_adherent_list')) }}" class="text--body text--small link--no-decor">
                                 Quitter l'impersonnification
                             </a>
                         </li>

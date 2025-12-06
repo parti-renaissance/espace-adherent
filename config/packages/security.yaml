@@ -3,7 +3,6 @@ security:
     # see usages of App\Security\Exception\BadCredentialsException
     hide_user_not_found: false
     erase_credentials: false
-    enable_authenticator_manager: true
 
     password_hashers:
         App\Entity\Administrator: bcrypt

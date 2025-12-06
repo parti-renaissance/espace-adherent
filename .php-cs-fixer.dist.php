@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = PhpCsFixer\Finder::create()
@@ -8,9 +10,10 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/config')
     ->in(__DIR__.'/migrations')
     ->in(__DIR__.'/features')
+    ->notPath('reference.php')
 ;
 
-return (new PhpCsFixer\Config())
+return new PhpCsFixer\Config()
     ->setParallelConfig(ParallelConfigFactory::detect())
     ->setRules([
         '@PHP8x4Migration' => true,
