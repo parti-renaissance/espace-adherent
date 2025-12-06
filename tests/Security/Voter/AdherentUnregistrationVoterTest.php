@@ -106,12 +106,12 @@ class AdherentUnregistrationVoterTest extends TestCase
 
     public static function provideAdherentWithRolesCases(): iterable
     {
-        yield [true, false, false, false, false, false];
-        yield [false, true, false, false, false, false];
-        yield [false, false, true, false, false, false];
-        yield [false, false, false, true, false, false];
-        yield [false, false, false, false, true, false];
-        yield [true, true, true, true, true, true];
+        yield [true, false, false, false, false];
+        yield [false, true, false, false, false];
+        yield [false, false, true, false, false];
+        yield [false, false, false, true, false];
+        yield [false, false, false, false, true];
+        yield [true, true, true, true, true];
     }
 
     private function createAdherentMock(): Adherent

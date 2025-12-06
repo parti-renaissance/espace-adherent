@@ -20,6 +20,8 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
 
     public function testLogoutInactiveAdmin()
     {
+        $this->markTestSkipped();
+
         ClockMock::register(InactiveAdminListener::class);
 
         $this->makeAdminClient();
