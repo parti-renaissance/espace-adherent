@@ -30,10 +30,10 @@ class ScopesType extends AbstractType
         }
 
         $builder->addModelTransformer(new class implements DataTransformerInterface {
-            public function transform($value)
+            public function transform($value): mixed
             {
                 if (!$value) {
-                    return;
+                    return null;
                 }
 
                 $data = [];
@@ -45,7 +45,7 @@ class ScopesType extends AbstractType
                 return $data;
             }
 
-            public function reverseTransform($value)
+            public function reverseTransform($value): mixed
             {
                 return array_keys($value, true, true);
             }

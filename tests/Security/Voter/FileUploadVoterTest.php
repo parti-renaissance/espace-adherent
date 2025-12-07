@@ -23,16 +23,9 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideDocumentTypes(): iterable
     {
-        return static::getUserDocumentTypesDataProvider();
-    }
-
-    public static function provideHostRights(): iterable
-    {
-        return static::getUserDocumentTypesDataProvider([
-            UserDocument::TYPE_COMMITTEE_CONTACT,
-            UserDocument::TYPE_COMMITTEE_FEED,
-            UserDocument::TYPE_EVENT,
-        ]);
+        foreach (UserDocument::ALL_TYPES as $type) {
+            yield [$type];
+        }
     }
 
     protected function getVoter(): AbstractAdherentVoter
@@ -64,12 +57,5 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
         }
 
         return $adherent;
-    }
-
-    private static function getUserDocumentTypesDataProvider(array $allowedTypes = []): \Generator
-    {
-        foreach (UserDocument::ALL_TYPES as $type) {
-            yield [$type, \in_array($type, $allowedTypes)];
-        }
     }
 }

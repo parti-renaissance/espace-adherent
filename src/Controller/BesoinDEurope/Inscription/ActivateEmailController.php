@@ -88,10 +88,10 @@ class ActivateEmailController extends AbstractController
             }
         }
 
-        return $this->renderForm('besoindeurope/inscription/confirmation_email.html.twig', [
+        return $this->render('besoindeurope/inscription/confirmation_email.html.twig', [
             'code_ttl' => ActivationCodeManager::CODE_TTL,
             'request' => $validateAccountRequest,
-            'form' => $form,
+            'form' => $form->createView(),
             'new_code_form' => $this->createForm(ConfirmActionType::class, null, ['with_deny' => false, 'allow_label' => 'Renvoyer le code']),
         ]);
     }

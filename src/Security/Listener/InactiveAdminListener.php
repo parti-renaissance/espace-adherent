@@ -8,17 +8,14 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class InactiveAdminListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly Security $security,
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly int $maxIdleTime,
     ) {
     }
@@ -44,9 +41,7 @@ class InactiveAdminListener implements EventSubscriberInterface
             $lapse = time() - $this->requestStack->getSession()->getMetadataBag()->getLastUsed();
 
             if ($lapse > $this->maxIdleTime) {
-                $this->security->logout(false);
-
-                $event->setResponse(new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard')));
+                $event->setResponse($this->security->logout(false));
             }
         }
     }

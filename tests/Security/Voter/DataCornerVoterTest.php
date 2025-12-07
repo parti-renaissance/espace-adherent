@@ -51,8 +51,8 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideAdherent(): iterable
     {
-        yield [true, true, true];
-        yield [false, false, false];
+        yield [true, true];
+        yield [false, false];
     }
 
     private function getAdherentMock(bool $isDeputy = false): Adherent

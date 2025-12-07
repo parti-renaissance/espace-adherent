@@ -44,8 +44,8 @@ class FurtherInformationController extends AbstractController
             return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME);
         }
 
-        return $this->renderForm('besoindeurope/inscription/further_information.html.twig', [
-            'form' => $form,
+        return $this->render('besoindeurope/inscription/further_information.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

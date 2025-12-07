@@ -47,8 +47,8 @@ class CreatePasswordController extends AbstractController
             return $this->redirectToRoute(FurtherInformationController::ROUTE_NAME);
         }
 
-        return $this->renderForm('besoindeurope/inscription/create_password.html.twig', [
-            'form' => $form,
+        return $this->render('besoindeurope/inscription/create_password.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

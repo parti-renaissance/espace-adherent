@@ -31,7 +31,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
     private $emailRepository;
 
     #[DataProvider('getAdherentEmails')]
-    public function testAuthenticationIsSuccessful(string $email, string $fullName): void
+    public function testAuthenticationIsSuccessful(string $email): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -56,8 +56,8 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
     public static function getAdherentEmails(): array
     {
         return [
-            ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true],
-            ['carl999@example.fr', 'Carl Mirabeau', false],
+            ['renaissance-user-1@en-marche-dev.fr'],
+            ['carl999@example.fr'],
         ];
     }
 

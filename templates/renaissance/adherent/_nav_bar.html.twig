@@ -77,7 +77,7 @@
                             </div>
                             <div class="py-1" role="none">
                                 {% if is_granted('IS_IMPERSONATOR') %}
-                                    <a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
+                                    <a href="{{ impersonation_exit_path(path('admin_app_adherent_list')) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
                                 {% else %}
                                     <a href="{{ path('logout', {app_domain: user_vox_host}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
                                 {% endif %}
