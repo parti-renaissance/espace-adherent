@@ -82,13 +82,46 @@ Feature:
                         "source": "cadre",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
-                            "sent": 0,
-                            "opens": 0,
-                            "open_rate": 0,
-                            "clicks": 0,
-                            "click_rate": 0,
-                            "unsubscribe": 0,
-                            "unsubscribe_rate": 0
+                            "contacts": 0,
+                            "notifications": {
+                                "android": 0,
+                                "ios": 0,
+                                "web": 0
+                            },
+                            "sent_at": null,
+                            "unique_clicks": {
+                                "app": 0,
+                                "app_rate": 0,
+                                "email": 0,
+                                "email_rate": 0,
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "unique_emails": null,
+                            "unique_impressions": {
+                                "list": 0,
+                                "timeline": 0,
+                                "total": 0
+                            },
+                            "unique_notifications": 0,
+                            "unique_opens": {
+                                "app": 0,
+                                "app_rate": 0,
+                                "direct_link": 0,
+                                "email": 0,
+                                "email_rate": 0,
+                                "list": 0,
+                                "notification": 0,
+                                "notification_rate": 0,
+                                "timeline": 0,
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "unsubscribed": {
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "visible_count": null
                         }
                     },
                     {
@@ -122,13 +155,46 @@ Feature:
                         "source": "cadre",
                         "from_name": "Damien Durock | Renaissance",
                         "statistics": {
-                            "sent": 0,
-                            "opens": 0,
-                            "open_rate": 0,
-                            "clicks": 0,
-                            "click_rate": 0,
-                            "unsubscribe": 0,
-                            "unsubscribe_rate": 0
+                            "contacts": 0,
+                            "notifications": {
+                                "android": 0,
+                                "ios": 0,
+                                "web": 0
+                            },
+                            "sent_at": "@string@.isDateTime()",
+                            "unique_clicks": {
+                                "app": 0,
+                                "app_rate": 0,
+                                "email": 0,
+                                "email_rate": 0,
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "unique_emails": null,
+                            "unique_impressions": {
+                                "list": 0,
+                                "timeline": 0,
+                                "total": 0
+                            },
+                            "unique_notifications": 0,
+                            "unique_opens": {
+                                "app": 0,
+                                "app_rate": 0,
+                                "direct_link": 0,
+                                "email": 0,
+                                "email_rate": 0,
+                                "list": 0,
+                                "notification": 0,
+                                "notification_rate": 0,
+                                "timeline": 0,
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "unsubscribed": {
+                                "total": 0,
+                                "total_rate": 0
+                            },
+                            "visible_count": null
                         }
                     }
                 ]
@@ -184,13 +250,46 @@ Feature:
                     }
                 },
                 "statistics": {
-                    "click_rate": 0,
-                    "clicks": 0,
-                    "open_rate": 0,
-                    "opens": 0,
-                    "sent": 0,
-                    "unsubscribe": 0,
-                    "unsubscribe_rate": 0
+                    "contacts": 0,
+                    "notifications": {
+                        "android": 0,
+                        "ios": 0,
+                        "web": 0
+                    },
+                    "sent_at": null,
+                    "unique_clicks": {
+                        "app": 0,
+                        "app_rate": 0,
+                        "email": 0,
+                        "email_rate": 0,
+                        "total": 0,
+                        "total_rate": 0
+                    },
+                    "unique_emails": null,
+                    "unique_impressions": {
+                        "list": 0,
+                        "timeline": 0,
+                        "total": 0
+                    },
+                    "unique_notifications": 0,
+                    "unique_opens": {
+                        "app": 0,
+                        "app_rate": 0,
+                        "direct_link": 0,
+                        "email": 0,
+                        "email_rate": 0,
+                        "list": 0,
+                        "notification": 0,
+                        "notification_rate": 0,
+                        "timeline": 0,
+                        "total": 0,
+                        "total_rate": 0
+                    },
+                    "unsubscribed": {
+                        "total": 0,
+                        "total_rate": 0
+                    },
+                    "visible_count": null
                 },
                 "json_content": "@string@",
                 "sent_at": null,

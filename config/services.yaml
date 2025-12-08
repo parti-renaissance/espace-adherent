@@ -179,6 +179,8 @@ services:
         arguments:
             $providers: !tagged_iterator 'app.hit.stats_provider'
 
+    App\JeMengage\Hit\Stats\AggregatorInterface: '@App\JeMengage\Hit\Stats\Aggregator'
+
     App\Adherent\Tag\TagAggregator:
         arguments:
             $generators: !tagged_iterator { tag: 'app.adherent.tag.generator' }

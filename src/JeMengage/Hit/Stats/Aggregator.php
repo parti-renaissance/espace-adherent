@@ -9,7 +9,7 @@ use App\JeMengage\Hit\Stats\Provider\ProviderInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
 use Ramsey\Uuid\UuidInterface;
 
-class Aggregator
+class Aggregator implements AggregatorInterface
 {
     public function __construct(private readonly iterable $providers)
     {
