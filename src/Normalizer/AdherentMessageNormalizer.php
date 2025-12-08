@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
-use App\AdherentMessage\StatisticsAggregator;
 use App\AdherentMessage\Variable\Renderer;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\JeMengage\Hit\Stats\AggregatorInterface;
+use App\JeMengage\Hit\TargetTypeEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\PublicationVoter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -21,8 +21,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     use NormalizerAwareTrait;
 
     public function __construct(
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly StatisticsAggregator $statisticsAggregator,
+        private readonly AggregatorInterface $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly Renderer $variableRenderer,
@@ -53,12 +52,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
                 ]);
             }
 
-            $scope = $this->scopeGeneratorResolver->generate();
-
             $data['editable'] = $this->authorizationChecker->isGranted(PublicationVoter::PERMISSION, $object);
 
-            if ($scope) {
-                $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
+            if ($data['editable']) {
+                $data['statistics'] = $this->statisticsAggregator->getStats(TargetTypeEnum::Publication, $object->getUuid());
                 $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
             } else {
                 foreach (array_keys($data) as $key) {

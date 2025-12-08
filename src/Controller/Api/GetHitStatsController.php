@@ -10,7 +10,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\Event\Event;
 use App\Entity\Jecoute\News;
 use App\JeMengage\Hit\EventTypeEnum;
-use App\JeMengage\Hit\Stats\Aggregator;
+use App\JeMengage\Hit\Stats\AggregatorInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\AppHitRepository;
@@ -45,7 +45,7 @@ class GetHitStatsController extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Aggregator $aggregator,
+        private readonly AggregatorInterface $aggregator,
         private readonly AppHitRepository $hitRepository,
     ) {
     }

@@ -8,7 +8,8 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadAdherentMessageData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventData;
-use App\JeMengage\Hit\Stats\Aggregator;
+use App\JeMengage\Hit\Stats\AggregatorInterface;
+use App\JeMengage\Hit\Stats\CachedAggregator;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -31,7 +32,7 @@ class AppHitControllerTest extends AbstractApiTestCase
     private const SESSION_UUID = '5c9d9b61-da9e-4fbc-81d1-3e471b50b2d0';
 
     private ?string $accessToken = null;
-    private Aggregator $aggregator;
+    private AggregatorInterface $aggregator;
 
     public function testEventHits(): void
     {
@@ -465,7 +466,7 @@ class AppHitControllerTest extends AbstractApiTestCase
     {
         parent::setUp();
 
-        $this->aggregator = self::getContainer()->get(Aggregator::class);
+        $this->aggregator = self::getContainer()->get(CachedAggregator::class.'.inner');
 
         $this->accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_13_UUID,

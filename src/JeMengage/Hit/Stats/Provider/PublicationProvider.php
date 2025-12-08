@@ -44,7 +44,7 @@ class PublicationProvider extends AbstractProvider
         $uniqueImpressions = $output->get('unique_impressions');
 
         $result = [
-            'sent_at' => $message->getSentAt(),
+            'sent_at' => $message->getSentAt()?->format(\DateTimeInterface::RFC3339),
             'visible_count' => $wait ? $this->adherentRepository->countAdherentsForMessage($message) : null,
             'contacts' => $allReach['email_push'],
             'unique_notifications' => $totalReachByPush,
