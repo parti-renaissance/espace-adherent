@@ -74,11 +74,16 @@ class AppSessionAdmin extends AbstractAdmin
             ->add('client', ModelFilter::class, [
                 'label' => 'App',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'minimum_input_length' => 0,
-                    'property' => ['name'],
-                    'callback' => [$this, 'prepareClientFilterCallback'],
+                    'multiple' => true,
+                    'query_builder' => function (ClientRepository $repository): QueryBuilder {
+                        return $repository
+                            ->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC')
+                            ->innerJoin(AppSession::class, 'session', Join::WITH, 'session.client = c')
+                            ->groupBy('c.id')
+                        ;
+                    },
                 ],
             ])
             ->add('appSystem', ChoiceFilter::class, [
@@ -183,18 +188,6 @@ class AppSessionAdmin extends AbstractAdmin
                     'template' => 'admin/app_session/show_push_tokens.html.twig',
                 ])
             ->end()
-        ;
-    }
-
-    public function prepareClientFilterCallback(AbstractAdmin $admin): void
-    {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $qb
-            ->innerJoin(AppSession::class, 'session', Join::WITH, 'session.client = '.$alias)
-            ->groupBy($alias.'.id')
         ;
     }
 
