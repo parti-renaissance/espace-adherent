@@ -211,9 +211,6 @@ services:
             $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
 
-    App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
-        tags: ['doctrine.event_subscriber']
-
     App\Normalizer\JecouteDeviceNormalizer:
         tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
