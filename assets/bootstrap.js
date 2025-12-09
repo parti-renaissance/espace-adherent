@@ -10,7 +10,6 @@ window.Bootstrap = class {
     static boot(release, sentryDsn, environment, user) {
         let app = false;
 
-        // eslint-disable-next-line consistent-return
         const runIfReady = () => {
             if (app) {
                 const { listeners } = Bootstrap;

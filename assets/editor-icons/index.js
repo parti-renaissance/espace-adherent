@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable */
 const Images = {
     indent: require('./indent.png'),
     outdent: require('./unindent.png'),

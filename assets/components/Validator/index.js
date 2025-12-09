@@ -184,7 +184,7 @@ function getValue(domEl) {
         default:
             throw new Error(`Unknown type ${domType}`);
     }
-    // eslint-disable-next-line consistent-return
+
     return value;
 }
 
@@ -244,7 +244,6 @@ const xValidate = (state) => ({
         validateField(this.validate, e.currentTarget, this.setData.bind(this));
     },
     validateField: {
-        // eslint-disable-next-line func-names
         '@change': function (e) {
             this.checkField(e);
         },

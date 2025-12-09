@@ -1,4 +1,3 @@
-/* eslint-disable no-new */
 /*
  * Social share
  */

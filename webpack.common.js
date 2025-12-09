@@ -60,11 +60,7 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js'],
-        modules: [
-            path.resolve('./front'),
-            path.resolve('./assets'),
-            'node_modules',
-        ],
+        modules: [path.resolve('./front'), path.resolve('./assets'), 'node_modules'],
     },
     plugins: [
         new WebpackManifestPlugin({}),

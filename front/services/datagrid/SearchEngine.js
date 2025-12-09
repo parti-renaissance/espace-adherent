@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax, guard-for-in */
 export default class SearchEngine {
     constructor(slugifier) {
         this.slugifier = slugifier;
@@ -28,7 +27,6 @@ export default class SearchEngine {
 
                 // Then priority to any keyword
                 for (const k in keywords) {
-                    // eslint-disable-next-line eqeqeq
                     if (0 != k) {
                         for (const l in resultColumnKeywords) {
                             if (startsWith(resultColumnKeywords[l], keywords[k])) {

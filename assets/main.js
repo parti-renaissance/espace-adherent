@@ -24,7 +24,7 @@ class Main {
         registerServices(this._di);
 
         // Execute the page load listeners
-        // eslint-disable-next-line no-restricted-syntax
+
         for await (const listener of this._listeners) {
             await listener(this._di);
         }

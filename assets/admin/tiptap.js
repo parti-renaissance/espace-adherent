@@ -1,6 +1,5 @@
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
 import Images from '../editor-icons';
 
 const setupTipTap = () => {
@@ -28,7 +27,6 @@ const setupTipTap = () => {
         {
             onPress: (editor) => () => {
                 const previousUrl = editor.getAttributes('link').href;
-                // eslint-disable-next-line no-alert
                 const url = window.prompt('URL', previousUrl);
 
                 // cancelled
@@ -60,31 +58,27 @@ const setupTipTap = () => {
             element: element.parentElement,
             content: inputJson.value ? JSON.parse(inputJson.value) : inputHtml.value,
             extensions: [
-                StarterKit,
-                Link.configure({
-                    openOnClick: false,
-                    autolink: true,
-                    defaultProtocol: 'https',
-                    protocols: ['http', 'https'],
-                    isAllowedUri: (url, ctx) => {
-                        try {
-                            // construct URL
-                            const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`);
+                StarterKit.configure({
+                    link: {
+                        openOnClick: false,
+                        defaultProtocol: 'https',
+                        protocols: ['http', 'https'],
+                        isAllowedUri: (url, ctx) => {
+                            try {
+                                const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`);
 
-                            // use default validation
-                            if (!ctx.defaultValidate(parsedUrl.href)) {
+                                if (!ctx.defaultValidate(parsedUrl.href)) {
+                                    return false;
+                                }
+
+                                const protocol = parsedUrl.protocol.replace(':', '');
+                                const allowedProtocols = ctx.protocols.map((p) => ('string' === typeof p ? p : p.scheme));
+
+                                return allowedProtocols.includes(protocol);
+                            } catch {
                                 return false;
                             }
-
-                            const protocol = parsedUrl.protocol.replace(':', '');
-
-                            // only allow protocols specified in ctx.protocols
-                            const allowedProtocols = ctx.protocols.map((p) => ('string' === typeof p ? p : p.scheme));
-
-                            return allowedProtocols.includes(protocol);
-                        } catch {
-                            return false;
-                        }
+                        },
                     },
                 }),
             ],

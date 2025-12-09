@@ -1,16 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const { FlatCompat } = require('@eslint/eslintrc');
-const js = require('@eslint/js');
-const globals = require('globals');
-const react = require('eslint-plugin-react');
-const prettierPlugin = require('eslint-plugin-prettier');
-const prettierConfig = require('eslint-config-prettier');
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
+import js from '@eslint/js';
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 
 const customGlobals = {
     dom: 'readonly',
@@ -39,28 +32,8 @@ const customGlobals = {
     friendlyChallenge: 'readonly',
 };
 
-module.exports = [
+export default [
     js.configs.recommended,
-
-    ...compat.extends('airbnb-base'),
-
-    {
-        files: ['**/*.js', '**/*.jsx'],
-        plugins: {
-            react,
-        },
-        languageOptions: {
-            parserOptions: {
-                ecmaFeatures: { jsx: true },
-            },
-        },
-        settings: {
-            react: { version: 'detect' },
-        },
-        rules: {
-            ...react.configs.recommended.rules,
-        },
-    },
 
     prettierConfig,
 
@@ -68,12 +41,17 @@ module.exports = [
         files: ['**/*.js', '**/*.jsx'],
 
         plugins: {
+            react,
             prettier: prettierPlugin,
+            import: importPlugin,
         },
 
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
             globals: {
                 ...globals.browser,
                 ...globals.jquery,
@@ -82,6 +60,7 @@ module.exports = [
         },
 
         settings: {
+            react: { version: 'detect' },
             'import/resolver': {
                 webpack: {
                     config: 'webpack.development.js',
@@ -90,6 +69,8 @@ module.exports = [
         },
 
         rules: {
+            ...react.configs.recommended.rules,
+
             'prettier/prettier': 'error',
 
             'no-var': 'error',
@@ -97,8 +78,10 @@ module.exports = [
             'no-param-reassign': 'off',
             'class-methods-use-this': 'off',
             'default-case': 'off',
+
             'import/no-named-as-default': 'off',
             'import/no-named-as-default-member': 'off',
+            'import/no-extraneous-dependencies': 'off',
 
             yoda: ['error', 'always'],
 
