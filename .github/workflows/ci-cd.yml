@@ -200,7 +200,7 @@ jobs:
               run: make tfp
 
             - env:
-                  PHPUNIT_ARGS: --display-deprecations --log-junit ./phpunit/junit.xml
+                  PHPUNIT_ARGS: --log-junit ./phpunit/junit.xml
               run: |-
                   make test-phpunit
 
