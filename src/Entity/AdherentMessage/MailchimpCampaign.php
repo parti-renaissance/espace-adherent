@@ -94,7 +94,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\Column(nullable: true)]
     private ?string $mailchimpListType = null;
 
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     private ?Zone $zone = null;
 
     public function __construct(AdherentMessageInterface $message)

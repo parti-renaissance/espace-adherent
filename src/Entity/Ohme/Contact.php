@@ -76,7 +76,7 @@ class Contact implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $ohmeUpdatedAt = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 

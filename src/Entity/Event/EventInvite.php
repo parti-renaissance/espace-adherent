@@ -20,7 +20,7 @@ class EventInvite implements \Stringable
     /**
      * @var Event|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Event::class)]
     private $event;
 

@@ -11,14 +11,14 @@ trait EntityAdministratorBlameableTrait
     /**
      * @var Administrator|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $createdByAdministrator;
 
     /**
      * @var Administrator|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $updatedByAdministrator;
 

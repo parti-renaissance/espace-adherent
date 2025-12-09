@@ -19,8 +19,7 @@ trait EntityScopeVisibilityTrait
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     #[Groups(['team_read', 'team_list_read', 'team_write', 'pap_campaign_read', 'pap_campaign_write', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write', 'jecoute_news_read_dc', 'jecoute_news_write', 'formation_read', 'formation_list_read', 'formation_write', 'general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
-    #[ORM\JoinColumn(nullable: true)]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     private ?Zone $zone = null;
 
     public function getZone(): ?Zone

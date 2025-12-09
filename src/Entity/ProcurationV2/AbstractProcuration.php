@@ -74,8 +74,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[ORM\ManyToOne(targetEntity: Zone::class, fetch: 'EXTRA_LAZY')]
     public Zone $voteZone;
 
-    #[ORM\JoinColumn(nullable: true)]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     public ?Zone $votePlace;
 
     #[Assert\Length(max: 255, maxMessage: 'procuration.custom_vote_place.max_length')]
@@ -88,7 +87,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[ORM\Column(length: 50, nullable: true)]
     public ?string $clientIp;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent;
 

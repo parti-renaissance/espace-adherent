@@ -284,7 +284,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var Media|null
      */
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 

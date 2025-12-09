@@ -50,7 +50,7 @@ class GeneralConvention implements \Stringable, EntityAdministratorBlameableInte
     #[Assert\NotBlank]
     #[Groups(['general_convention_read', 'general_convention_write'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     public ?Zone $departmentZone = null;
 
     #[Groups(['general_convention_read', 'general_convention_write'])]
@@ -59,7 +59,7 @@ class GeneralConvention implements \Stringable, EntityAdministratorBlameableInte
     public ?Committee $committee = null;
 
     #[Groups(['general_convention_read', 'general_convention_write'])]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     public ?Zone $districtZone = null;
 
     #[Assert\NotBlank]

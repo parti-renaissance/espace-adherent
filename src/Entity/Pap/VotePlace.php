@@ -54,7 +54,7 @@ class VotePlace implements \Stringable
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $nbVoters;
 
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne]
     public ?Zone $zone = null;
 
     #[ORM\ManyToMany(targetEntity: Campaign::class, mappedBy: 'votePlaces', fetch: 'EXTRA_LAZY')]

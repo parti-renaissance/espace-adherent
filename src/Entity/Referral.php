@@ -117,12 +117,12 @@ class Referral implements \Stringable, ZoneableEntityInterface
     public ?\DateTimeInterface $birthdate = null;
 
     #[Groups(['referral_read_with_referrer'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referrer = null;
 
     #[Groups(['referral_read'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $referred = null;
 

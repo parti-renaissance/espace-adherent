@@ -38,7 +38,7 @@ class RequestSlot extends AbstractSlot
     #[ORM\ManyToOne(targetEntity: Request::class, fetch: 'EXTRA_LAZY', inversedBy: 'requestSlots')]
     public Request $request;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(inversedBy: 'requestSlot', targetEntity: ProxySlot::class)]
     public ?ProxySlot $proxySlot = null;
 

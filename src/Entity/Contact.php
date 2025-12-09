@@ -113,7 +113,7 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $processedAt = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 

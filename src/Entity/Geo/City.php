@@ -32,7 +32,6 @@ class City implements ZoneableInterface
     /**
      * @var Department|null
      */
-    #[ORM\JoinColumn(nullable: true)]
     #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
