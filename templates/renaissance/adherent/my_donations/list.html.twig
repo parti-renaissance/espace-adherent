@@ -18,7 +18,7 @@
                             Si vous voulez recotiser, cliquez <strong><a href="{{ path('app_adhesion_index') }}" class="underline">ici</a></strong>.
                         </p>
                     {% endif %}
-                    <p class="mt-4 text-base leading-6 text-gray-500">Votre dernier don ou dernière cotisation remonte à <strong>{{ donations_history|first.date|ago }}</strong>.</p>
+                    <p class="mt-4 text-base leading-6 text-gray-500">Votre dernier don ou dernière cotisation remonte à <strong>{{ donations_history|first.date|format_datetime('none', 'none', 'd MMMM yyyy') }}</strong>.</p>
                 </div>
                 <div class="mt-8">
                     <h2 class="text-lg font-medium leading-6 text-gray-900 tracking-wider">Don mensuel</h2>

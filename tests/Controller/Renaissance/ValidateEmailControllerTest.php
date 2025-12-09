@@ -52,7 +52,7 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
         yield current($params = ['techsupport@parti-renaissance.fr', 0]) => $params;
         yield current($params = ['warding-email@parti-renaissance123.fr', 1]) => $params;
         yield current($params = ['warding-email@yopmail.com', 2]) => $params;
-        yield current($params = ['disabled-email@test.com', 2]) => $params;
+        yield current($params = ['disabled-email@utilisateur@parti-renaissance.fr', 2]) => $params;
         yield current($params = ['invalid-email', 2]) => $params;
         yield current($params = ['invalid-email@parti-renaissance', 2]) => $params;
         yield current($params = ['invalid-email@parti-renaissance..fr', 2]) => $params;

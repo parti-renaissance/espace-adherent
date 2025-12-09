@@ -27,36 +27,14 @@ class PublicationVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         if (self::PERMISSION_ITEM === $attribute) {
-            try {
-                $scopes = array_filter(
-                    $this->generalScopeGenerator->generateScopes($adherent),
-                    static fn (Scope $scope) => $scope->containsFeatures([FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS])
-                );
-            } catch (ScopeExceptionInterface $e) {
-                return false;
-            }
-
-            if (empty($scopes)) {
-                return false;
-            }
-
-            if ($adherent->getId() === ($subject['author_id'] ?? null)) {
-                return true;
-            }
-
-            $teamOwnerId = $subject['team_owner_id'] ?? null;
-
-            foreach ($scopes as $scope) {
-                if ($scope->getMainUser()?->getId() === $teamOwnerId) {
-                    return true;
-                }
-            }
-
-            return false;
+            return $this->canManagePublicationItem($adherent, $subject);
         }
 
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
-            return false;
+            return $this->canManagePublicationItem($adherent, [
+                'author_id' => $subject->getAuthor()?->getId(),
+                'team_owner_id' => $subject->teamOwner?->getId(),
+            ]);
         }
 
         if (!$scope->containsFeatures([FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS])) {
@@ -64,6 +42,28 @@ class PublicationVoter extends AbstractAdherentVoter
         }
 
         return $subject->getAuthor() === $adherent || $subject->teamOwner === $scope->getMainUser();
+    }
+
+    private function canManagePublicationItem(Adherent $adherent, array $publicationData): bool
+    {
+        try {
+            $scopes = array_filter(
+                $this->generalScopeGenerator->generateScopes($adherent),
+                static fn (Scope $scope) => $scope->containsFeatures([FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS])
+            );
+        } catch (ScopeExceptionInterface $e) {
+            return false;
+        }
+
+        if (empty($scopes)) {
+            return false;
+        }
+
+        if ($adherent->getId() === $publicationData['author_id']) {
+            return true;
+        }
+
+        return array_any($scopes, static fn ($scope) => $scope->getMainUser()?->getId() === $publicationData['team_owner_id']);
     }
 
     protected function supports(string $attribute, $subject): bool
