@@ -25,8 +25,9 @@ class MembershipNotifier implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const ANNIVERSARY_UTM_SOURCE = 'email';
-    private const ANNIVERSARY_UTM_CAMPAIGN = 'anniversaire';
+    private const UTM_SOURCE_EMAIL = 'email';
+    private const UTM_CAMPAIGN_ANNIVERSARY = 'anniversaire';
+    private const UTM_CAMPAIGN_PAYMENT_REMINDER = 'ReminderPaiementMessage';
 
     public function __construct(
         private readonly CallbackManager $callbackManager,
@@ -43,7 +44,7 @@ class MembershipNotifier implements LoggerAwareInterface
     {
         $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
             $adherent,
-            $this->createMagicLink($adherent, self::ANNIVERSARY_UTM_SOURCE, self::ANNIVERSARY_UTM_CAMPAIGN)
+            $this->createMagicLink($adherent, self::UTM_SOURCE_EMAIL, self::UTM_CAMPAIGN_ANNIVERSARY)
         ));
     }
 
@@ -51,7 +52,7 @@ class MembershipNotifier implements LoggerAwareInterface
     {
         return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create(
             $adherent,
-            $this->createMagicLink($adherent)
+            $this->createMagicLink($adherent, self::UTM_SOURCE_EMAIL, self::UTM_CAMPAIGN_PAYMENT_REMINDER)
         ));
     }
 
