@@ -144,9 +144,6 @@
     "knplabs/knp-menu-bundle": {
         "version": "v3.2.0"
     },
-    "knplabs/knp-time-bundle": {
-        "version": "1.17.0"
-    },
     "kreait/firebase-bundle": {
         "version": "2.4.0"
     },

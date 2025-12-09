@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d37b8dc3d017230891d8803e64920cb",
+    "content-hash": "8570281488e83cbbeea1b88965af5c44",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -5426,81 +5426,6 @@
                 "source": "https://github.com/KnpLabs/KnpMenuBundle/tree/v3.7.0"
             },
             "time": "2025-11-30T08:30:04+00:00"
-        },
-        {
-            "name": "knplabs/knp-time-bundle",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
-                "reference": "93e9528415b28a19872d74b28e816045c0fd217b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/93e9528415b28a19872d74b28e816045c0fd217b",
-                "reference": "93e9528415b28a19872d74b28e816045c0fd217b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/config": "^5.4|^6.0|^7.0",
-                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
-                "symfony/translation": "^5.4|^6.0|^7.0"
-            },
-            "conflict": {
-                "phpunit/phpunit": "<8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.11",
-                "phpunit/phpunit": "^9.6",
-                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
-                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0",
-                "symfony/twig-bundle": "^5.4|^6.0|^7.0"
-            },
-            "suggest": {
-                "symfony/twig-bundle": "to use the Twig `time_diff()` function and `|time_diff`/`|duration` filter"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Knp\\Bundle\\TimeBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "KnpLabs Team",
-                    "homepage": "https://knplabs.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://github.com/KnpLabs/KnpTimeBundle/contributors"
-                }
-            ],
-            "description": "Making your dates and durations look sensible and descriptive",
-            "homepage": "https://github.com/KnpLabs/KnpTimeBundle",
-            "keywords": [
-                "bundle",
-                "date",
-                "descriptive time",
-                "duration",
-                "knp",
-                "knplabs",
-                "time"
-            ],
-            "support": {
-                "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v2.4.0"
-            },
-            "time": "2024-06-11T09:38:28+00:00"
         },
         {
             "name": "kreait/firebase-bundle",
@@ -24308,5 +24233,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
