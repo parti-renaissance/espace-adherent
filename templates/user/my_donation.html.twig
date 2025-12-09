@@ -5,7 +5,7 @@
 
 {% if donations_history is not empty %}
     <p class="text--body">Merci pour votre engagement à nos côtés !</p>
-    <p class="text--body text--bold">Votre dernier don remonte à {{ donations_history|first.date|ago }}.</p>
+    <p class="text--body text--bold">Votre dernier don remonte à {{ donations_history|first.date|format_datetime('none', 'none', 'd MMMM yyyy') }}.</p>
     {% if subscribed_donations %}
         {% for subscribed_donation in subscribed_donations %}
             Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
