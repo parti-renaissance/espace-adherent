@@ -32,7 +32,7 @@ class AdministratorRoleHistory
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeInterface $date;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private Administrator $author;
 

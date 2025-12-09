@@ -79,7 +79,7 @@ class Agora implements \Stringable, EntityAdministratorBlameableInterface
 
     #[Assert\NotBlank]
     #[Groups(['agora_read'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'presidentOfAgoras')]
     public ?Adherent $president = null;
 

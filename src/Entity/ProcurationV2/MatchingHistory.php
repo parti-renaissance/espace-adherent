@@ -39,11 +39,11 @@ class MatchingHistory
     #[ORM\ManyToOne(targetEntity: Round::class)]
     public Round $round;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $matcher = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     public ?Administrator $adminMatcher = null;
 

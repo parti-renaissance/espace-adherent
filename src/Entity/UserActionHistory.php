@@ -29,7 +29,7 @@ class UserActionHistory
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $data = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     public ?Administrator $impersonator = null;
 

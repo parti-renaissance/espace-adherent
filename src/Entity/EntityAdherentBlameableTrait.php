@@ -11,14 +11,14 @@ trait EntityAdherentBlameableTrait
     /**
      * @var Adherent|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $createdByAdherent;
 
     /**
      * @var Adherent|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $updatedByAdherent;
 

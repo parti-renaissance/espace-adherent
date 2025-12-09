@@ -21,7 +21,7 @@ class AdherentRequestReminder
     #[ORM\Column(type: 'string', enumType: AdherentRequestReminderTypeEnum::class)]
     public AdherentRequestReminderTypeEnum $type;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: AdherentRequest::class)]
     public AdherentRequest $adherentRequest;
 

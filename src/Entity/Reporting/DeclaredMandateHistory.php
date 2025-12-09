@@ -37,7 +37,7 @@ class DeclaredMandateHistory
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeInterface $telegramNotifiedAt = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private ?Administrator $administrator = null;
 

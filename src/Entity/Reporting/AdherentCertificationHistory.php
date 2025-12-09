@@ -41,7 +41,7 @@ class AdherentCertificationHistory
     /**
      * @var Administrator|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $administrator;
 

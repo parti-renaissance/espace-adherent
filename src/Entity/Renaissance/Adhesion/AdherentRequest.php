@@ -28,7 +28,7 @@ class AdherentRequest
     #[ORM\Column(type: 'uuid', nullable: true)]
     public ?UuidInterface $emailHash = null;
 
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 

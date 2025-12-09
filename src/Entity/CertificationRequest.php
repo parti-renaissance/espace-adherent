@@ -89,7 +89,7 @@ class CertificationRequest implements \Stringable
     /**
      * @var Administrator|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $processedBy;
 
@@ -159,7 +159,7 @@ class CertificationRequest implements \Stringable
     /**
      * @var Adherent|null
      */
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $foundDuplicatedAdherent;
 

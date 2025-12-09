@@ -56,8 +56,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 
     #[Assert\Expression("value !== null or (value == null and this.mandateType === constant('App\\\\Adherent\\\\MandateTypeEnum::DEPUTE_EUROPEEN'))", message: 'Le périmètre géographique est obligatoire.')]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
     public ?Zone $zone = null;
 
     public static function create(

@@ -91,7 +91,7 @@ class File implements \Stringable, Timestampable
      * @var File|null
      */
     #[Assert\Valid]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: File::class, cascade: ['persist'], inversedBy: 'children')]
     private $parent;
 
