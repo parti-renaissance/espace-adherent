@@ -1433,14 +1433,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return [
             $this->id,
             $this->emailAddress,
-            $this->password,
             $this->getRoles(),
         ];
     }
 
     public function __unserialize(array $serialized): void
     {
-        [$this->id, $this->emailAddress, $this->password, $this->roles] = $serialized;
+        [$this->id, $this->emailAddress, $this->roles] = $serialized;
     }
 
     public function getMandates(): ?array
