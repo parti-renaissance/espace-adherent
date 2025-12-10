@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdministratorRepository::class)]
 #[ORM\Table(name: 'administrators')]
 #[UniqueEntity(fields: ['emailAddress'])]
-class Administrator implements \Stringable, UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
+class Administrator implements \Stringable, UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     use EntityZoneTrait;
 
@@ -58,6 +59,8 @@ class Administrator implements \Stringable, UserInterface, TwoFactorInterface, P
     #[ORM\JoinTable(name: 'administrators_roles')]
     #[ORM\ManyToMany(targetEntity: AdministratorRole::class)]
     private Collection $administratorRoles;
+
+    private array $sessionRoles = [];
 
     /**
      * @var bool
@@ -189,5 +192,24 @@ class Administrator implements \Stringable, UserInterface, TwoFactorInterface, P
         return array_map(function (AdministratorRole $administratorRole): string {
             return $administratorRole->code;
         }, $this->administratorRoles->toArray());
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->emailAddress,
+            $this->getRoles(),
+        ];
+    }
+
+    public function __unserialize(array $serialized): void
+    {
+        [$this->id, $this->emailAddress, $this->sessionRoles] = $serialized;
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        return $this->id === $user->getId() && $this->sessionRoles === $user->getRoles();
     }
 }
