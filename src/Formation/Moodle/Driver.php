@@ -59,4 +59,18 @@ class Driver
             'body' => ['id' => $jobId],
         ]);
     }
+
+    public function createDepartment(string $name, string $id, ?string $parentId): bool
+    {
+        $response = $this->moodleClient->request('POST', '', [
+            'query' => ['wsfunction' => 'tool_organisation_create_departments'],
+            'body' => ['departments' => [[
+                'name' => $name,
+                'idnumber' => $id,
+                'parent' => $parentId,
+            ]]],
+        ])->toArray();
+
+        return !empty($response['result'][0]['id']);
+    }
 }
