@@ -2524,6 +2524,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         erase_fields?: scalar|null, // Default: true
  *         delete_on_update?: scalar|null, // Default: true
  *         inject_on_load?: scalar|null, // Default: false
+ *         namer_keep_extension?: scalar|null, // Default: false
  *         db_driver?: scalar|null, // Default: null
  *     }>,
  * }

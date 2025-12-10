@@ -13,6 +13,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 class UserManager
 {
@@ -70,8 +71,23 @@ class UserManager
         }
 
         foreach ($adherentJobs as $key => $jobData) {
-            if ($jobId = $this->driver->createJob($moodleUser->moodleId, $jobData)) {
-                $moodleUser->addJob(new UserJob($moodleUser, $jobId, $jobData['jobdepartment'], $jobData['jobposition'], $key));
+            $jobId = $this->driver->createJob($moodleUser->moodleId, $jobData['request']);
+
+            if (
+                null === $jobId
+                && !empty($jobData['zone']['code'])
+                && Uuid::isValid($jobData['zone']['code'])
+                && $this->driver->createDepartment(
+                    $jobData['zone']['name'] ?? $jobData['zone']['code'],
+                    $jobData['zone']['code'],
+                    $jobData['zone']['parent']
+                )
+            ) {
+                $jobId = $this->driver->createJob($moodleUser->moodleId, $jobData['request']);
+            }
+
+            if ($jobId) {
+                $moodleUser->addJob(new UserJob($moodleUser, $jobId, $jobData['request']['jobdepartment'], $jobData['request']['jobposition'], $key));
                 $this->entityManager->flush();
             }
         }
@@ -98,22 +114,29 @@ class UserManager
             }
 
             $zones = [
-                $assemblyCode ? 'departement:'.$assemblyCode : null,
-                $adherent->getCommitteeMembership()?->getCommitteeUuid()->toString(),
+                $assemblyCode ? ['code' => 'departement:'.$assemblyCode] : null,
+                ($committeeMembership = $adherent->getCommitteeMembership()) ? [
+                    'code' => ($committee = $committeeMembership->getCommittee())->getUuidAsString(),
+                    'name' => $committee->getName(),
+                    'parent' => ($committeeAssemblyZone = $committee->getAssemblyZone()) ? 'departement:'.$committeeAssemblyZone->getCode() : null,
+                ] : null,
             ];
 
             foreach (array_filter($zones) as $zone) {
                 $key = [
-                    $zone,
+                    $zone['code'],
                     $position = 'adherent',
                     $year,
                 ];
 
                 $jobs[implode('-', $key)] = [
-                    'jobdepartment' => $zone,
-                    'jobposition' => $position,
-                    'startdate' => $startData,
-                    'enddate' => $endDate,
+                    'request' => [
+                        'jobdepartment' => $zone['code'],
+                        'jobposition' => $position,
+                        'startdate' => $startData,
+                        'enddate' => $endDate,
+                    ],
+                    'zone' => $zone,
                 ];
             }
         }
@@ -134,24 +157,33 @@ class UserManager
             ];
 
             $jobs[implode('-', $key)] = [
-                'jobdepartment' => $department,
-                'jobposition' => $position,
-                'startdate' => $startData,
+                'request' => [
+                    'jobdepartment' => $department,
+                    'jobposition' => $position,
+                    'startdate' => $startData,
+                ],
             ];
         }
 
         foreach ($adherent->getAnimatorCommittees() as $committee) {
-            $zone = $committee->getUuidAsString();
+            $zone = [
+                'code' => $committee->getUuidAsString(),
+                'name' => $committee->getName(),
+                'parent' => ($committeeAssemblyZone = $committee->getAssemblyZone()) ? 'departement:'.$committeeAssemblyZone->getCode() : null,
+            ];
 
             $key = [
-                $zone,
+                $zone['code'],
                 $position = ScopeEnum::ANIMATOR,
             ];
 
             $jobs[implode('-', $key)] = [
-                'jobdepartment' => $zone,
-                'jobposition' => $position,
-                'startdate' => $startData,
+                'request' => [
+                    'jobdepartment' => $zone['code'],
+                    'jobposition' => $position,
+                    'startdate' => $startData,
+                ],
+                'zone' => $zone,
             ];
         }
 
@@ -164,11 +196,15 @@ class UserManager
 
             if (ScopeEnum::ANIMATOR === $access->getType()) {
                 if ($committees = $access->getDelegator()?->getAnimatorCommittees()) {
-                    $zone = $committees[0]->getUuidAsString();
+                    $zone = [
+                        'code' => $committees[0]->getUuidAsString(),
+                        'name' => $committees[0]->getName(),
+                        'parent' => ($committeeAssemblyZone = $committees[0]->getAssemblyZone()) ? 'departement:'.$committeeAssemblyZone->getCode() : null,
+                    ];
                 }
             } else {
                 if ($assemblyZone = $access->getDelegator()?->findZoneBasedRole($access->getType())?->getAssemblyZone()) {
-                    $zone = 'departement:'.$assemblyZone->getCode();
+                    $zone = ['code' => 'departement:'.$assemblyZone->getCode()];
                 }
             }
 
@@ -178,14 +214,17 @@ class UserManager
             }
 
             $key = [
-                $zone,
+                $zone['code'],
                 $position = 'team:'.$access->getType(),
             ];
 
             $jobs[implode('-', $key)] = [
-                'jobdepartment' => $zone,
-                'jobposition' => $position,
-                'startdate' => $startData,
+                'request' => [
+                    'jobdepartment' => $zone['code'],
+                    'jobposition' => $position,
+                    'startdate' => $startData,
+                ],
+                'zone' => $zone,
             ];
         }
 
