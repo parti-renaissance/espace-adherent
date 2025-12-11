@@ -37,7 +37,7 @@ services:
             start_period: 30s
         environment:
             # See https://xdebug.org/docs/all_settings#mode
-            XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+            XDEBUG_MODE: '${XDEBUG_MODE:-off}'
         extra_hosts:
             # Ensure that host.docker.internal is correctly defined on Linux
             - host.docker.internal:host-gateway
@@ -50,7 +50,7 @@ services:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        image: redis:6-alpine
+        image: redis:7.2-alpine
 
     rabbitmq:
         image: rabbitmq:3-management-alpine
