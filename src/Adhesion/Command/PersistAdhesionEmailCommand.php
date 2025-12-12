@@ -19,4 +19,14 @@ class PersistAdhesionEmailCommand
     {
         $this->email = mb_strtolower($email);
     }
+
+    public function setUtmSource(?string $utmSource): void
+    {
+        $this->utmSource = trim($utmSource) ?: null;
+    }
+
+    public function setUtmCampaign(?string $utmCampaign): void
+    {
+        $this->utmCampaign = trim($utmCampaign) ?: null;
+    }
 }

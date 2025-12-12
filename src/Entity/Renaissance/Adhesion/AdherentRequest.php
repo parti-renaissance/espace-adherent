@@ -49,11 +49,4 @@ class AdherentRequest
 
         return $object;
     }
-
-    public function handleAccountCreated(Adherent $adherent): void
-    {
-        $this->email = null;
-        $this->adherent = $adherent;
-        $this->accountCreatedAt = new \DateTime();
-    }
 }

@@ -22,13 +22,14 @@ use App\PublicId\PublicIdRepositoryInterface;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
+use App\Repository\UpdateAdherentLinkRepositoryInterface;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface
+class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface, UpdateAdherentLinkRepositoryInterface
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
@@ -571,5 +572,34 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function updateLinksWithNewAdherent(Adherent $adherent): void
+    {
+        $this
+            ->createQueryBuilder('ei')
+            ->update()
+            ->set('ei.adherent', ':adherent')
+            ->where('ei.adherent IS NULL')
+            ->andWhere('ei.addressEmail = :email')
+            ->andWhere('ei.createdAt > :created_after')
+            ->setParameters([
+                'adherent' => $adherent,
+                'email' => $adherent->getEmailAddress(),
+                'created_after' => new \DateTime('-6 months'),
+            ])
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    /** @param EventInscription $object */
+    public function updateAdherentLink(object $object): void
+    {
+        if ($object->adherent) {
+            return;
+        }
+
+        $object->adherent = $this->getEntityManager()->getRepository(Adherent::class)->findOneBy(['emailAddress' => $object->addressEmail]);
     }
 }
