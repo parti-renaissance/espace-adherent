@@ -92,10 +92,10 @@ class Transaction implements \Stringable
         $this->donation = $donation;
         $this->createdAt = new \DateTimeImmutable();
         $this->payboxPayload = $payboxPayload;
-        $this->payboxResultCode = $payboxPayload['result'];
-        $this->payboxAuthorizationCode = $payboxPayload['authorization'] ?: null;
-        $this->payboxSubscriptionId = $payboxPayload['subscription'] ?: null;
-        $this->payboxTransactionId = $payboxPayload['transaction'] ?: null;
+        $this->payboxResultCode = $payboxPayload['result'] ?? null;
+        $this->payboxAuthorizationCode = $payboxPayload['authorization'] ?? null;
+        $this->payboxSubscriptionId = $payboxPayload['subscription'] ?? null;
+        $this->payboxTransactionId = $payboxPayload['transaction'] ?? null;
 
         if (isset($payboxPayload['date'], $payboxPayload['time'])) {
             $this->payboxDateTime = \DateTimeImmutable::createFromFormat(
