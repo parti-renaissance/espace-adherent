@@ -70,8 +70,7 @@ class Administrator implements \Stringable, UserInterface, TwoFactorInterface, P
 
     public function __construct()
     {
-        $this->administratorRoles = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->_init();
     }
 
     public function __toString()
@@ -206,10 +205,17 @@ class Administrator implements \Stringable, UserInterface, TwoFactorInterface, P
     public function __unserialize(array $serialized): void
     {
         [$this->id, $this->emailAddress, $this->sessionRoles] = $serialized;
+        $this->_init();
     }
 
     public function isEqualTo(UserInterface $user): bool
     {
         return $this->id === $user->getId() && $this->sessionRoles === $user->getRoles();
+    }
+
+    private function _init(): void
+    {
+        $this->administratorRoles = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 }
