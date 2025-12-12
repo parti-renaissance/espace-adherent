@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Renaissance\Petition;
 
+use App\Adherent\Command\UpdateAdherentLinkCommand;
 use App\Entity\PetitionSignature;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\PetitionConfirmationMessage;
-use App\Mailer\Message\Renaissance\PetitionConfirmationReminderMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Firebase\JWT\Key;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class SignatureManager
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly MailerService $transactionalMailer, private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly MessageBusInterface $messageBus,
+        private readonly Notifier $notifier,
         private readonly string $secret,
     ) {
     }
@@ -26,7 +26,26 @@ class SignatureManager
         $this->entityManager->persist($signature = PetitionSignature::createFromRequest($request));
         $this->entityManager->flush();
 
-        $this->transactionalMailer->sendMessage(PetitionConfirmationMessage::create($signature, $this->generateConfirmUrl($signature)));
+        $this->notifier->sendConfirmation($signature);
+    }
+
+    public function validate(PetitionSignature $signature, string $token): void
+    {
+        if ($signature->validatedAt) {
+            return;
+        }
+
+        if (
+            !($uuidFromToken = JWT::decode($token, new Key($this->secret, 'HS256'))?->uuid)
+            || $uuidFromToken !== $signature->getUuid()->toString()
+        ) {
+            throw new \InvalidArgumentException('Le token de confirmation est invalide');
+        }
+
+        $signature->validate();
+        $this->entityManager->flush();
+
+        $this->messageBus->dispatch(new UpdateAdherentLinkCommand($signature->getUuid(), $signature::class));
     }
 
     public function remind(PetitionSignature $signature): void
@@ -35,16 +54,9 @@ class SignatureManager
             return;
         }
 
-        $this->transactionalMailer->sendMessage(PetitionConfirmationReminderMessage::create($signature, $this->generateConfirmUrl($signature)));
+        $this->notifier->sendReminder($signature);
+
         $signature->remindedAt = new \DateTime();
         $this->entityManager->flush();
-    }
-
-    private function generateConfirmUrl(PetitionSignature $signature): string
-    {
-        return $this->urlGenerator->generate('app_petition_validate', [
-            'uuid' => $signature->getUuid(),
-            'token' => JWT::encode(['uuid' => $signature->getUuid()], $this->secret, 'HS256'),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

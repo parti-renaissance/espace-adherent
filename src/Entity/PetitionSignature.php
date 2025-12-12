@@ -51,6 +51,10 @@ class PetitionSignature implements \Stringable
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $remindedAt = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+    public ?Adherent $adherent = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -82,6 +86,11 @@ class PetitionSignature implements \Stringable
     public function validate(): void
     {
         $this->validatedAt = new \DateTime();
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
     }
 
     public function __toString(): string
