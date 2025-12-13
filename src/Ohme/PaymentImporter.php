@@ -46,7 +46,7 @@ class PaymentImporter
                 continue;
             }
 
-            $contact = $this->contactRepository->findOneByOhmeIdentifier($paymentData['contact_id']);
+            $contact = $this->contactRepository->findOneByOhmeIdentifier((string) $paymentData['contact_id']);
 
             // Do not retrieve payments that can't be associated to an adherent
             if (!$contact || !$contact->adherent) {
