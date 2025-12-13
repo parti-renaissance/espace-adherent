@@ -8,6 +8,7 @@ use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Contribution\Payment;
 use App\Repository\Contribution\PaymentRepository;
 use App\Repository\Ohme\ContactRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -18,6 +19,7 @@ class PaymentImporter
         private readonly ContactRepository $contactRepository,
         private readonly PaymentRepository $paymentRepository,
         private readonly MessageBusInterface $bus,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -28,7 +30,7 @@ class PaymentImporter
         return $payments['count'] ?? 0;
     }
 
-    public function importPayments(int $limit = 100, int $offset = 0, array $options = []): int
+    public function importPayments(int $limit = 100, int $offset = 0, array $options = [], bool $clear = false): int
     {
         $payments = $this->client->getPayments($limit, $offset, $options);
 
@@ -46,7 +48,7 @@ class PaymentImporter
                 continue;
             }
 
-            $contact = $this->contactRepository->findOneByOhmeIdentifier($paymentData['contact_id']);
+            $contact = $this->contactRepository->findOneByOhmeIdentifier((string) $paymentData['contact_id']);
 
             // Do not retrieve payments that can't be associated to an adherent
             if (!$contact || !$contact->adherent) {
@@ -92,6 +94,10 @@ class PaymentImporter
             $this->bus->dispatch(new AsyncRefreshAdherentTagCommand(Uuid::fromString($adherentUuid)));
         }
 
+        if ($clear) {
+            $this->entityManager->clear();
+        }
+
         return $total;
     }
 
@@ -123,7 +129,7 @@ class PaymentImporter
         }
 
         if (!empty($data['amount'])) {
-            $payment->amount = $data['amount'];
+            $payment->amount = (int) $data['amount'];
         }
 
         $this->paymentRepository->save($payment);

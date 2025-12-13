@@ -122,7 +122,7 @@ class OhmeImportCommand extends Command
         $offset = 0;
 
         do {
-            $paymentsCount = $this->paymentImporter->importPayments($pageSize, $offset);
+            $paymentsCount = $this->paymentImporter->importPayments($pageSize, $offset, clear: true);
 
             $this->io->progressAdvance($paymentsCount);
 

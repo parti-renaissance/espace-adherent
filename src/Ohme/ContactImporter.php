@@ -7,6 +7,7 @@ namespace App\Ohme;
 use App\Entity\Ohme\Contact;
 use App\Repository\AdherentRepository;
 use App\Repository\Ohme\ContactRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ContactImporter
 {
@@ -14,6 +15,7 @@ class ContactImporter
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -47,6 +49,8 @@ class ContactImporter
 
             $this->updateContact($contact, $contactData);
         }
+
+        $this->entityManager->clear();
 
         return $total;
     }
