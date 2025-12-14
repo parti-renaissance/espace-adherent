@@ -1009,12 +1009,13 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
         return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) use ($translator) {
             /** @var Adherent $adherent */
             $adherent = $adherent[0];
+            $genderTransKey = array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true);
 
             try {
                 return [
                     'PID' => $adherent->getPublicId(),
                     'Email' => $adherent->getEmailAddress(),
-                    'Civilité' => $translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
+                    'Civilité' => $genderTransKey ? $translator->trans($genderTransKey) : null,
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
                     'Date de naissance' => $adherent->getBirthdate()?->format('d/m/Y'),
