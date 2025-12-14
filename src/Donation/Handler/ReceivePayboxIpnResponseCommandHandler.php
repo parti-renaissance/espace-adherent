@@ -49,38 +49,51 @@ class ReceivePayboxIpnResponseCommandHandler
             return;
         }
 
-        $adherent = $donation->getDonator()?->getAdherent();
+        $connection = $this->manager->getConnection();
+        $connection->beginTransaction();
 
-        $transaction = $donation->processPayload($payload);
+        try {
+            $adherent = $donation->getDonator()?->getAdherent();
 
-        if ($transaction->isSuccessful()) {
-            $donation->markAsLastSuccessfulDonation();
-        }
+            $transaction = $donation->processPayload($payload);
 
-        $this->manager->persist($transaction);
-        $this->manager->flush();
-
-        if ($transaction->isSuccessful()) {
-            if ($adherent) {
-                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+            if ($transaction->isSuccessful()) {
+                $donation->markAsLastSuccessfulDonation();
             }
 
-            if ($donation->isMembership()) {
-                if (!$adherent) {
-                    $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
+            $this->manager->persist($transaction);
+            $this->manager->flush();
 
-                    return;
+            if ($transaction->isSuccessful()) {
+                if ($adherent) {
+                    $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
                 }
 
-                $this->eventDispatcher->dispatch(new NewCotisationEvent($adherent, $donation));
-            } else {
-                if (
-                    !$donation->hasSubscription()
-                    || $donation->isFirstSuccessfulTransaction($transaction)
-                ) {
-                    $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
+                if ($donation->isMembership()) {
+                    if (!$adherent) {
+                        $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
+
+                        return;
+                    }
+
+                    $this->eventDispatcher->dispatch(new NewCotisationEvent($adherent, $donation));
+                } else {
+                    if (
+                        !$donation->hasSubscription()
+                        || $donation->isFirstSuccessfulTransaction($transaction)
+                    ) {
+                        $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
+                    }
                 }
             }
+
+            $connection->commit();
+        } catch (\Throwable $e) {
+            if ($connection->isTransactionActive()) {
+                $connection->rollBack();
+            }
+
+            throw $e;
         }
     }
 

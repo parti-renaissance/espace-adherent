@@ -888,7 +888,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isParisResident(): bool
     {
-        return !$this->isForeignResident() && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
+        return !$this->isForeignResident() && str_starts_with((string) $this->getPostalCode(), AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS);
     }
 
     public function isFemale(): bool
