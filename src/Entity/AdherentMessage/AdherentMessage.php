@@ -466,7 +466,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function updateSenderDataFromScope(Scope $scope): void
     {
         $this->senderInstance = $scope->getScopeInstance();
-        $this->senderRole = $scope->getMainRoleName();
+        $this->senderRole = $this->sender ? $scope->getMainRoleName() : null;
         $this->senderTheme = $scope->getAttribute('theme');
         $this->senderZone = implode(', ', $scope->getZoneNames()) ?: null;
     }

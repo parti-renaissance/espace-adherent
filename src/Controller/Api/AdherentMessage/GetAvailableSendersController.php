@@ -42,8 +42,12 @@ class GetAvailableSendersController extends AbstractController
 
         if ($scope->isNational()) {
             $emptyChoices[] = [
-                'label' => 'Sans signature',
-                'value' => null,
+                'uuid' => null,
+                'first_name' => 'Sans signature',
+                'last_name' => null,
+                'image_url' => null,
+                'role' => null,
+                'zone' => null,
                 'instance' => $instance,
                 'theme' => $theme,
             ];
