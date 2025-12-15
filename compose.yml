@@ -66,6 +66,26 @@ services:
         image: selenium/standalone-chrome:90.0
         shm_size: 2g
 
+    mercure:
+        image: dunglas/mercure:v0
+        restart: unless-stopped
+        environment:
+            SERVER_NAME: ':80'
+            MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+            MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+            MERCURE_EXTRA_DIRECTIVES: |
+                cors_origins "http://admin.renaissance.code"
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'https://localhost/healthz']
+            timeout: 5s
+            retries: 5
+            start_period: 60s
+        volumes:
+            - mercure_data:/data
+            - mercure_config:/config
+
 volumes:
     caddy_data:
     caddy_config:
+    mercure_data:
+    mercure_config:

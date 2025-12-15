@@ -8,12 +8,16 @@
                     {% if key is same as('adherent_uuid') %}
                         {% set adherent = get_adherent_by_uuid(value) %}
 
-                        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-                            <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}">
+                        {% if adherent is not empty %}
+                            {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+                                <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}">
+                                    {{ adherent.fullName }}
+                                </a>
+                            {% else %}
                                 {{ adherent.fullName }}
-                            </a>
+                            {% endif %}
                         {% else %}
-                            {{ adherent.fullName }}
+                            Adhérent UUID : {{ value }}
                         {% endif %}
                     {% elseif key is same as('committee_uuid') %}
                         {% set committee = get_committee_by_uuid(value) %}

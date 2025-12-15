@@ -6,7 +6,7 @@ namespace App\History\Handler;
 
 use App\Entity\Administrator;
 use App\Entity\AdministratorActionHistory;
-use App\History\Command\AdministratorActionHistoryCommand;
+use App\History\Command\AdministratorActionHistoryCommandInterface;
 use App\Repository\AdministratorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,7 +20,7 @@ class AdministratorActionHistoryCommandHandler
     ) {
     }
 
-    public function __invoke(AdministratorActionHistoryCommand $command): void
+    public function __invoke(AdministratorActionHistoryCommandInterface $command): void
     {
         $administrator = $this->administratorRepository->find($command->administratorId);
 

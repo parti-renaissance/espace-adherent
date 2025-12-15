@@ -10,28 +10,40 @@ use App\Adherent\BanManager;
 use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Adherent\Certification\CertificationPermissions;
 use App\Adherent\Command\SendResubscribeEmailCommand;
+use App\Adherent\Merge\AdherentMergeManager;
+use App\Adherent\Merge\ProcessTracker;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Adherent\UnregistrationManager;
 use App\Entity\Adherent;
+use App\Entity\Administrator;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
 use App\Form\Admin\Adherent\UnregistrationType;
 use App\Form\Admin\Adherent\VerifyEmailType;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
+use App\History\Command\MergeAdherentActionHistoryCommand;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class AdminAdherentCRUDController extends CRUDController
 {
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly string $secret,
     ) {
     }
 
@@ -364,6 +376,151 @@ class AdminAdherentCRUDController extends CRUDController
             'object' => $command,
             'form' => $form->createView(),
         ]);
+    }
+
+    public function mergeAction(
+        int $id,
+        Request $request,
+        AdherentMergeManager $mergeManager,
+        CacheItemPoolInterface $cache,
+    ): Response {
+        $this->admin->checkAccess('merge');
+
+        /* @var Adherent $adherentSource */
+        if (!$adherentSource = $this->admin->getObject($id)) {
+            $this->addFlash('sonata_flash_info', 'Adhérent source est introuvable ou déjà fusionné.');
+
+            return $this->redirect($this->admin->generateUrl('list'));
+        }
+
+        if ($mergeManager->mergeAlreadyStarted($adherentSource)) {
+            $this->addFlash('sonata_flash_error', 'Impossible de fusionner : cet adhérent est déjà en cours de fusion.');
+
+            return $this->redirect($this->admin->generateUrl('list'));
+        }
+
+        $form = $this->createFormBuilder(null, ['validation_groups' => ['Admin:merge']])
+            ->add('adherent', ModelAutocompleteType::class, [
+                'class' => Adherent::class,
+                'property' => ['search'],
+                'model_manager' => $this->admin->getModelManager(),
+                'label' => 'Adhérent cible',
+                'minimum_input_length' => 1,
+                'items_per_page' => 20,
+                'req_params' => [
+                    '_sonata_admin' => 'app.admin.agora_membership',
+                ],
+                'safe_label' => true,
+                'constraints' => [
+                    new NotBlank(groups: ['Admin:merge']),
+                    new Callback(function ($object, ExecutionContextInterface $context) use ($adherentSource) {
+                        if (null === $object) {
+                            return;
+                        }
+
+                        if ($object->getId() === $adherentSource->getId()) {
+                            $context
+                                ->buildViolation('Vous ne pouvez pas fusionner un adhérent avec lui-même.')
+                                ->addViolation()
+                            ;
+                        }
+                    }, ['Admin:merge']),
+                ],
+            ])
+            ->add('confirm', SubmitType::class, [
+                'label' => 'Confirmer l\'adhérent cible',
+                'attr' => ['class' => 'btn btn-primary'],
+            ])
+            ->getForm()
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirect($this->admin->generateObjectUrl('merge_confirme', $adherentSource, [
+                'adherentTarget' => $adherentTargetId = $form->get('adherent')->getData()->getId(),
+                's' => $this->generateMergeToken($adherentSource->getId(), $adherentTargetId),
+            ]));
+        }
+
+        return $this->render('admin/adherent/renaissance/merge.html.twig', [
+            'adherent_source' => $adherentSource,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function mergeConfirmeAction(
+        #[CurrentUser] Administrator $administrator,
+        Adherent $adherentSource,
+        Adherent $adherentTarget,
+        Request $request,
+        AdherentMergeManager $mergeManager,
+        MessageBusInterface $messageBus,
+    ): Response {
+        $this->admin->checkAccess('merge');
+
+        if ($mergeManager->mergeAlreadyStarted($adherentSource)) {
+            $this->addFlash('sonata_flash_warning', 'Impossible de fusionner : cet adhérent est déjà en cours de fusion.');
+
+            return $this->redirect($this->admin->generateUrl('list'));
+        }
+
+        $expectedToken = $this->generateMergeToken($adherentSource->getId(), $adherentTarget->getId());
+
+        if (!hash_equals($expectedToken, (string) $request->query->get('s'))) {
+            $this->addFlash('sonata_flash_error', 'Lien invalide ou modifié. Merci de repasser par la recherche.');
+
+            return $this->redirect($this->admin->generateObjectUrl('merge', $adherentSource));
+        }
+
+        $form = $this
+            ->createForm(ConfirmActionType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('deny')->isClicked()) {
+                $this->addFlash('sonata_flash_info', 'La fusion a été annulée.');
+
+                return $this->redirect($this->admin->generateObjectUrl('merge', $adherentSource));
+            }
+
+            if ($form->get('allow')->isClicked()) {
+                $mergeManager->handleMergeRequest($adherentSource, $adherentTarget);
+
+                $messageBus->dispatch(MergeAdherentActionHistoryCommand::create($administrator, $adherentSource, $adherentTarget));
+
+                return $this->redirect($this->admin->generateObjectUrl('merge_status', $adherentSource));
+            }
+        }
+
+        return $this->render('admin/adherent/renaissance/merge_confirme.html.twig', [
+            'adherent_source' => $adherentSource,
+            'adherent_target' => $adherentTarget,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function mergeStatusAction(int $id, ProcessTracker $processTracker): Response
+    {
+        $this->admin->checkAccess('merge');
+
+        $adherentSource = $this->admin->getObject($id);
+        $history = $processTracker->getHistory((string) $id);
+
+        if (!$adherentSource && !$history) {
+            $this->addFlash('sonata_flash_info', 'Adhérent source est introuvable ou déjà fusionné.');
+
+            return $this->redirect($this->admin->generateUrl('list'));
+        }
+
+        return $this->render('admin/adherent/renaissance/merge_status.html.twig', [
+            'adherent_source' => $adherentSource,
+            'adherent_source_id' => $id,
+            'history' => $history,
+        ]);
+    }
+
+    private function generateMergeToken(int $adherentSourceId, int $adherentTargetId): string
+    {
+        return substr(hash('sha256', $adherentSourceId.'|'.$adherentTargetId.'|'.$this->secret), 0, 15);
     }
 
     private function primeUsers(iterable $users): void

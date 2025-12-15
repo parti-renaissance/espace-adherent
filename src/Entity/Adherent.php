@@ -1233,6 +1233,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->registeredAt;
     }
 
+    public function merge(self $source): void
+    {
+        if ($this->registeredAt > $source->registeredAt) {
+            $this->registeredAt = $source->getRegisteredAt();
+        }
+
+        if (!$this->phone) {
+            $this->phone = $source->getPhone();
+        }
+
+        if (!$this->birthdate) {
+            $this->birthdate = $source->getBirthdate();
+        }
+
+        if (!$this->nationality) {
+            $this->nationality = $source->getNationality();
+        }
+    }
+
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;

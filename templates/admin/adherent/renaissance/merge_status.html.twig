@@ -1,0 +1,83 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Fusion de l'adhérent
+                        {% if adherent_source is not empty %}
+                            {{ adherent_source.fullName }} ({{ adherent_source.publicId }})
+                        {% else %}
+                            #{{ adherent_source_id }}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Avancement de la fusion</h3>
+                </div>
+                <div class="box-body">
+                    <div class="progress active">
+                        {% set last_percent = history|last.percent|default(0) %}
+                        <div id="progress-bar"
+                             class="progress-bar progress-bar-success progress-bar-striped"
+                             role="progressbar"
+                             style="width: {{ last_percent }}%">
+                            <span id="progress-text">{{ last_percent }}%</span>
+                        </div>
+                    </div>
+
+                    <details>
+                        <ul id="log-container" class="list-group">
+                            {% for log in history %}
+                                <li class="list-group-item">
+                                    <span class="badge">{{ log.timestamp|date('H:i:s') }}</span>
+                                    {{ log.message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const url = "{{ mercure('merge_status/' ~ adherent_source_id, {subscribe: 'merge_status/' ~ adherent_source_id})|e('js') }}";
+
+        const eventSource = new EventSource(url, {
+            withCredentials: true
+        });
+
+        eventSource.onmessage = event => {
+            const data = JSON.parse(event.data);
+
+            const progressBar = document.getElementById('progress-bar');
+            if (data.percent >= 0) {
+                progressBar.style.width = data.percent + '%';
+                document.getElementById('progress-text').innerText = data.percent + '%';
+            }
+
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.style.backgroundColor = '#f0f9ff';
+            li.innerHTML = `<span class="badge">Maintenant</span> ${data.message}`;
+
+            document.getElementById('log-container').appendChild(li);
+
+            if (data.percent >= 100) {
+                eventSource.close();
+            }
+        }
+    </script>
+{% endblock %}
