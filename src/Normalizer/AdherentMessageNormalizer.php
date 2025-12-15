@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Normalizer;
 
 use App\AdherentMessage\Variable\Renderer;
+use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\JeMengage\Hit\Stats\AggregatorInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
@@ -43,14 +44,16 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         if (array_intersect($groups, ['message_read_list', 'message_read'])) {
             $data['author']['scope'] = $object->getAuthorScope();
 
-            if (!empty($data['sender'])) {
-                $data['sender'] = array_merge($data['sender'], [
-                    'instance' => $object->senderInstance,
-                    'role' => $object->senderRole,
-                    'zone' => $object->senderZone,
-                    'theme' => $object->senderTheme,
-                ]);
-            }
+            $data['sender'] = array_merge([
+                'uuid' => null,
+                'first_name' => GetAvailableSendersController::CHOICE_LABEL,
+                'last_name' => null,
+                'image_url' => null,
+                'instance' => $object->senderInstance,
+                'role' => $object->senderRole,
+                'zone' => $object->senderZone,
+                'theme' => $object->senderTheme,
+            ], $data['sender'] ?? [], );
 
             $data['editable'] = $this->authorizationChecker->isGranted(PublicationVoter::PERMISSION, $object);
 

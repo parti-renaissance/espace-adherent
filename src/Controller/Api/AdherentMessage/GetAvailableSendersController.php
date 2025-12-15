@@ -16,6 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GetAvailableSendersController extends AbstractController
 {
+    public const CHOICE_LABEL = 'Sans signature';
+
     public function __construct(
         private readonly ScopeGeneratorResolver $resolver,
         private readonly NormalizerInterface $normalizer,
@@ -42,8 +44,12 @@ class GetAvailableSendersController extends AbstractController
 
         if ($scope->isNational()) {
             $emptyChoices[] = [
-                'label' => 'Sans signature',
-                'value' => null,
+                'uuid' => null,
+                'first_name' => self::CHOICE_LABEL,
+                'last_name' => null,
+                'image_url' => null,
+                'role' => null,
+                'zone' => null,
                 'instance' => $instance,
                 'theme' => $theme,
             ];
