@@ -390,9 +390,9 @@ class Donator implements \Stringable
         return $count;
     }
 
-    public function getTotalDonated(): int
+    public function getTotalDonated(): float
     {
-        $total = 0;
+        $total = 0.0;
 
         foreach ($this->donations as $donation) {
             if ($donation->isCB() && ($donation->isFinished() || $donation->isSubscriptionInProgress())) {
