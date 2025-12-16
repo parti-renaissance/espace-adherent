@@ -25,6 +25,20 @@ log_skip /healthcheck
 route {
 	root * /srv/app/public
 
+    # Mercure hub (discovery endpoint)
+	@mercure path /.well-known/mercure*
+	reverse_proxy @mercure mercure:80 {
+		header_up Host {host}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Forwarded-Host {host}
+
+		# SSE: connexions longues, éviter le buffering
+		transport http {
+			read_buffer 0
+			write_buffer 0
+		}
+	}
+
 	# Set security headers
 
 	# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
