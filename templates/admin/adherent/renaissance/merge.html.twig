@@ -1,0 +1,34 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Fusion de l'adhérent {{ adherent_source.fullName }} ({{ adherent_source.publicId }}) : étape 1 sur 2
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div class="callout callout-warning" style="margin-bottom: 20px;">
+        <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 16px;">
+            <i class="fa fa-exclamation-circle"></i> Action irréversible
+        </h4>
+        <p style="font-size: 14px;">
+            La fusion ne pourra pas être annulée et l'adhérent source sera supprimé.
+        </p>
+    </div>
+
+    {{ form(form) }}
+{% endblock %}

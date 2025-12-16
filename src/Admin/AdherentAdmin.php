@@ -38,6 +38,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'create_renaissance' => 'CREATE_RENAISSANCE',
             'create_renaissance_verify_email' => 'CREATE_RENAISSANCE_VERIFY_EMAIL',
             'refresh_tags' => 'REFRESH_TAGS',
+            'merge' => 'MERGE',
         ];
     }
 
@@ -55,6 +56,9 @@ class AdherentAdmin extends AbstractAdherentAdmin
             ->add('create_renaissance', 'create-renaissance')
             ->add('create_renaissance_verify_email', 'create-adherent-verify-email')
             ->add('refresh_tags', $this->getRouterIdParameter().'/refresh-tags')
+            ->add('merge', $this->getRouterIdParameter().'/fusion')
+            ->add('merge_confirme', $this->getRouterIdParameter().'/fusion-confirmation/{adherentTarget}')
+            ->add('merge_status', $this->getRouterIdParameter().'/fusion-statut')
         ;
     }
 
@@ -89,6 +93,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
             if ($this->hasAccess('refresh_tags', $object) && $this->hasRoute('refresh_tags')) {
                 $actions['refresh_tags'] = ['template' => 'admin/adherent/action_button_refresh_tags.html.twig'];
+            }
+
+            if ($this->hasAccess('merge', $object) && $this->hasRoute('merge')) {
+                $actions['merge'] = ['template' => 'admin/adherent/action_button_merge.html.twig'];
             }
         }
 

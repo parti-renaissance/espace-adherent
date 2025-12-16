@@ -1403,6 +1403,7 @@ administrator_action_history.type.export: Export
 administrator_action_history.type.adherent_profile_update: Mise à jour du profil adhérent
 administrator_action_history.type.adherent_role_add: Ajout de rôle adhérent
 administrator_action_history.type.adherent_role_remove: Suppression de rôle adhérent
+administrator_action_history.type.adherent_merge: Fusion adhérent
 administrator_action_history.type.committee_update: Mise à jour de comité
 administrator_action_history.type.committee_create: Création de comité
 administrator_action_history.type.committee_delete: Suppression de comité

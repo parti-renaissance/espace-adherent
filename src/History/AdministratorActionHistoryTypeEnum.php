@@ -14,6 +14,7 @@ enum AdministratorActionHistoryTypeEnum: string
     case ADHERENT_PROFILE_UPDATE = 'adherent_profile_update';
     case ADHERENT_ROLE_ADD = 'adherent_role_add';
     case ADHERENT_ROLE_REMOVE = 'adherent_role_remove';
+    case ADHERENT_MERGE = 'adherent_merge';
     case COMMITTEE_UPDATE = 'committee_update';
     case COMMITTEE_CREATE = 'committee_create';
     case COMMITTEE_DELETE = 'committee_delete';

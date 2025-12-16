@@ -1,0 +1,7 @@
+{% if admin.hasAccess('merge', object) %}
+    <li>
+        <a href="{{ admin.generateObjectUrl('merge', object) }}" class="sonata-action-element" title="Fusionner cet adhérent avec un autre">
+            <i class="fa fa-solid fa-code-branch" aria-hidden="true"></i> Fusionner
+        </a>
+    </li>
+{% endif %}

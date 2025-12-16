@@ -1,0 +1,61 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Fusion de l'adhérent {{ adherent_source.fullName }} ({{ adherent_source.publicId }}) : étape 2 sur 2
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div class="callout callout-warning" style="margin-bottom: 20px;">
+        <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 16px;">
+            <i class="fa fa-exclamation-circle"></i> Action irréversible
+        </h4>
+        <p style="font-size: 14px;">
+            La fusion ne pourra pas être annulée et l'adhérent source sera supprimé.
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Confirmation requise</h3>
+                </div>
+
+                <div class="box-body">
+                    <p class="lead">
+                        Êtes-vous sûr de vouloir fusionner le compte <strong>{{ adherent_source.fullName }} ({{ adherent_source.publicId }})</strong> dans le compte <strong>{{ adherent_target.fullName }} ({{ adherent_target.publicId }})</strong> ?
+                    </p>
+                    {{ form_errors(form) }}
+                </div>
+
+                <div class="box-footer">
+                    {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-xs-6 text-left">
+                                {{ form_widget(form.deny) }}
+                            </div>
+
+                            <div class="col-xs-6 text-right">
+                                {{ form_widget(form.allow, {attr: {class: 'btn btn-success'}}) }}
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -146,6 +146,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS
         );
         yield $this->createRole(
+            'ROLE_APP_ADMIN_ADHERENT_MERGE',
+            'Fusion des adhérents',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_BAN',
             'Bannissement des adhérents',
             AdministratorRoleGroupEnum::ADHERENTS,

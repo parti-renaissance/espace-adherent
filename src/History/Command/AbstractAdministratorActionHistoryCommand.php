@@ -6,9 +6,9 @@ namespace App\History\Command;
 
 use App\History\AdministratorActionHistoryTypeEnum;
 
-class AdministratorActionHistoryCommand implements AdministratorActionHistoryCommandInterface
+abstract class AbstractAdministratorActionHistoryCommand implements AdministratorActionHistoryCommandInterface
 {
-    public function __construct(
+    final public function __construct(
         public readonly ?int $administratorId,
         public readonly AdministratorActionHistoryTypeEnum $type,
         public readonly ?array $data = null,
