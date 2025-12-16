@@ -402,7 +402,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
             return $name.($withSuffix ? $this->getFromNameSuffix() : '');
         }
 
-        return $this->senderInstance ?? 'Renaissance';
+        return 'Renaissance';
     }
 
     private function getFromNameSuffix(): string
