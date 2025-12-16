@@ -22,7 +22,6 @@ class ScopeRepository extends ServiceEntityRepository
             ->where('s.code = :code')
             ->setParameter('code', $code)
             ->getQuery()
-            ->enableResultCache(3600)
             ->getOneOrNullResult()
         ;
     }
