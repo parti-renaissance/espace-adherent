@@ -11,18 +11,20 @@ use App\Repository\MyTeam\MyTeamRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GetAvailableSendersController extends AbstractController
 {
-    public const CHOICE_LABEL = 'Sans signature';
+    public const CHOICE_LABEL = 'Anonyme';
 
     public function __construct(
         private readonly ScopeGeneratorResolver $resolver,
         private readonly NormalizerInterface $normalizer,
         private readonly MyTeamRepository $myTeamRepository,
         private readonly TranslatorInterface $translator,
+        private readonly UrlHelper $urlHelper,
     ) {
     }
 
@@ -47,7 +49,7 @@ class GetAvailableSendersController extends AbstractController
                 'uuid' => null,
                 'first_name' => self::CHOICE_LABEL,
                 'last_name' => null,
-                'image_url' => null,
+                'image_url' => $this->urlHelper->getAbsoluteUrl('/images/anonymous-avatar.png'),
                 'role' => null,
                 'zone' => null,
                 'instance' => $instance,
