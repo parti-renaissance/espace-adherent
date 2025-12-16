@@ -17,6 +17,10 @@ updates:
             update-types: ['version-update:semver-major']
       labels:
           - 'dependencies'
+      groups:
+          symfony-framework:
+              patterns:
+                  - 'symfony/*'
 
     - package-ecosystem: 'npm'
       directory: '/'
@@ -28,6 +32,11 @@ updates:
             update-types: ['version-update:semver-major']
       labels:
           - 'dependencies'
+      groups:
+          react-core:
+              patterns:
+                  - 'react'
+                  - 'react-dom'
 
     - package-ecosystem: 'github-actions'
       directory: '/'
