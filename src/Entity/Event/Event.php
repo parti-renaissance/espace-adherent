@@ -356,7 +356,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     /**
      * @var int|null
      */
-    #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]
+    #[Assert\Range(notInRangeMessage: 'committee.event.invalid_capacity', min: 1, max: 1000000)]
     #[Groups(['event_read', 'event_write', 'event_write_limited', 'event_list_read'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $capacity;
