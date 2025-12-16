@@ -11,4 +11,5 @@ enum TargetTypeEnum: string
     case Action = 'action';
     case News = 'news';
     case Alert = 'alert';
+    case TransactionalMessage = 'transactional_message';
 }
