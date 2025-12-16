@@ -27,7 +27,7 @@ class TimelineFeedTypeEnum extends Enum
     public const SURVEY = 'survey';
     public const ACTION = 'action';
     public const PUBLICATION = 'publication';
-    public const PRIVATE_MASSAGE = 'private_massage';
+    public const TRANSACTIONAL_MESSAGE = 'transactional_message';
 
     public const CLASS_MAPPING = [
         News::class => self::NEWS,
@@ -40,6 +40,6 @@ class TimelineFeedTypeEnum extends Enum
         Event::class => self::EVENT,
         Action::class => self::ACTION,
         AdherentMessage::class => self::PUBLICATION,
-        TimelineItemPrivateMessage::class => self::PRIVATE_MASSAGE,
+        TimelineItemPrivateMessage::class => self::TRANSACTIONAL_MESSAGE,
     ];
 }
