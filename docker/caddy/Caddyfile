@@ -27,12 +27,12 @@ route {
 
     # Mercure hub (discovery endpoint)
 	@mercure path /.well-known/mercure*
-	reverse_proxy @mercure mercure:80 {
+	reverse_proxy @mercure {$MERCURE_HOST:mercure}:80 {
 		header_up Host {host}
 		header_up X-Forwarded-Proto {scheme}
 		header_up X-Forwarded-Host {host}
 
-		# SSE: connexions longues, éviter le buffering
+		# SSE: disable read and write buffers
 		transport http {
 			read_buffer 0
 			write_buffer 0
