@@ -310,7 +310,7 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
             - '@redis'
-            - { ttl: '%env(SESSION_TTL)%', prefix: 'session' }
+            - { ttl: '%env(SESSION_TTL)%', prefix: 'session:' }
 
     App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
         arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']
