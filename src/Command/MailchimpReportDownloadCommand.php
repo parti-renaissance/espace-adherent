@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 #[AsCommand(
     name: 'mailchimp:report:download',
@@ -79,7 +80,7 @@ class MailchimpReportDownloadCommand extends Command
 
             foreach ($paginator->getIterator() as $am) {
                 $this->io->progressAdvance();
-                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false));
+                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false), [new TransportNamesStamp('mailchimp_campaign_batch')]);
             }
 
             $this->entityManager->clear();

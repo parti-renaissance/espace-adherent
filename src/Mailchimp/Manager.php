@@ -39,6 +39,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements LoggerAwareInterface
@@ -301,7 +302,7 @@ class Manager implements LoggerAwareInterface
         }
 
         $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
-        $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true), [new DelayStamp(300_000)]);
+        $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true), [new DelayStamp(300_000), new TransportNamesStamp('mailchimp_campaign_batch')]);
 
         return (bool) $globalStatus;
     }
