@@ -296,20 +296,9 @@ services:
     Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
     Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
 
-    cache.adapter.redis_tag_aware:
-        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
-        tags: [{ name: 'cache.pool', provider: 'cache.default_redis_provider' }]
-        arguments:
-            - ''
-            - ''
-            - 86400 # 1 day
-
-    redis:
-        alias: 'cache.default_redis_provider'
-
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
-            - '@redis'
+            - '@cache.default_redis_provider'
             - { ttl: '%env(SESSION_TTL)%', prefix: 'session:' }
 
     App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
