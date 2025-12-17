@@ -1,18 +1,11 @@
-framework:
-    cache:
-        pools:
-            doctrine.system_cache_pool:
-                adapter: cache.adapter.apcu
-            doctrine.result_cache_pool: ~
-
 doctrine:
     orm:
         metadata_cache_driver:
             type: pool
-            pool: doctrine.system_cache_pool
+            pool: doctrine.metadata_cache_pool
         query_cache_driver:
             type: pool
-            pool: doctrine.system_cache_pool
+            pool: doctrine.query_cache_pool
         result_cache_driver:
             type: pool
             pool: doctrine.result_cache_pool

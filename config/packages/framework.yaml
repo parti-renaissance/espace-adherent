@@ -15,8 +15,25 @@ framework:
     cache:
         app: cache.adapter.redis_tag_aware
         default_redis_provider: '%env(REDIS_DSN)%'
+        prefix_seed: 'app_v_%env(APP_VERSION)%'
         pools:
-            app.cache.redirection: ~
-            app.cache.france_cities: ~
-            app.cache.geocoder: ~
-            app.cache.event_notifications: ~
+            doctrine.metadata_cache_pool:
+                adapter: cache.adapter.redis
+                tags: false
+                default_lifetime: 2592000
+            doctrine.query_cache_pool:
+                adapter: cache.adapter.redis
+                tags: false
+                default_lifetime: 2592000
+            doctrine.result_cache_pool:
+                adapter: cache.app
+                default_lifetime: 86400
+                tags: true
+            app.cache.redirection:
+                default_lifetime: 86400
+            app.cache.france_cities:
+                default_lifetime: 86400
+            app.cache.geocoder:
+                default_lifetime: 86400
+            app.cache.event_notifications:
+                default_lifetime: 86400
