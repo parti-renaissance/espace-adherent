@@ -84,7 +84,7 @@ class AdherentCreateCommand implements MembershipInterface
         return CotisationTypeChoiceEnum::TYPE_TPE === $this->cotisationTypeChoice;
     }
 
-    public function getCotisationAmount(): int
+    public function getCotisationAmount(): float
     {
         return match ($this->cotisationAmountChoice) {
             CotisationAmountChoiceEnum::AMOUNT_10 => 10,
