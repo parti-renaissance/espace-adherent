@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 #[AsCommand(name: 'mailchimp:sync:all-adherents')]
 class MailchimpSyncAllAdherentsCommand extends Command
@@ -96,7 +97,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
                 $this->bus->dispatch(new AdherentChangeCommand(
                     $adherent->getUuid(),
                     $adherent->getEmailAddress()
-                ));
+                ), [new TransportNamesStamp('mailchimp_sync_batch')]);
                 $this->io->progressAdvance();
                 ++$offset;
                 if ($limit && $limit <= $offset) {

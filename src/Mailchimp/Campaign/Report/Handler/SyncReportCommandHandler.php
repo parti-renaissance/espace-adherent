@@ -22,6 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 #[AsMessageHandler]
@@ -48,18 +49,28 @@ class SyncReportCommandHandler
             return;
         }
 
-        if ($command->firstRun && AdherentMessageInterface::SOURCE_VOX === $adherentMessage->getSource()) {
-            $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
+        if (3 === $command->step) {
+            if ($command->firstRun && AdherentMessageInterface::SOURCE_VOX === $adherentMessage->getSource()) {
+                $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
+            }
+
+            if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
+                $this->bus->dispatch(new SyncReportCommand($command->getUuid()), [new DelayStamp($nextRunDelay), new TransportNamesStamp('mailchimp_campaign_batch')]);
+            }
         }
 
         foreach ($adherentMessage->getMailchimpCampaigns() as $campaign) {
-            $this->saveOpens($adherentMessage, $campaign);
-            $this->saveClicks($adherentMessage, $campaign);
-            $this->saveGeneralStats($campaign);
+            if (1 === $command->step) {
+                $this->saveOpens($adherentMessage, $campaign);
+            } elseif (2 === $command->step) {
+                $this->saveClicks($adherentMessage, $campaign);
+            } else {
+                $this->saveGeneralStats($campaign);
+            }
         }
 
-        if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
-            $this->bus->dispatch(new SyncReportCommand($command->getUuid()), [new DelayStamp($nextRunDelay)]);
+        if ($command->step < 3) {
+            $this->bus->dispatch(new SyncReportCommand($command->getUuid(), $command->firstRun, $command->autoReschedule, $command->step + 1), [new TransportNamesStamp('mailchimp_campaign_batch')]);
         }
     }
 

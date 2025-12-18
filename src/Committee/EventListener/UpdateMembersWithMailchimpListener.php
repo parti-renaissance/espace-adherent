@@ -9,6 +9,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\CommitteeMembershipRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 class UpdateMembersWithMailchimpListener implements EventSubscriberInterface
 {
@@ -28,7 +29,7 @@ class UpdateMembersWithMailchimpListener implements EventSubscriberInterface
         if (($committee = $event->getCommittee())->isApproved()) {
             $members = $this->committeeMembershipRepository->findMembers($committee);
             foreach ($members as $member) {
-                $this->bus->dispatch(new AdherentChangeCommand($member->getUuid(), $member->getEmailAddress()));
+                $this->bus->dispatch(new AdherentChangeCommand($member->getUuid(), $member->getEmailAddress()), [new TransportNamesStamp('mailchimp_sync_batch')]);
             }
         }
     }
