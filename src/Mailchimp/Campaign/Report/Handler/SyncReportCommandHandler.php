@@ -21,8 +21,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
-use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 #[AsMessageHandler]
@@ -55,7 +53,7 @@ class SyncReportCommandHandler
             }
 
             if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
-                $this->bus->dispatch(new SyncReportCommand($command->getUuid()), [new DelayStamp($nextRunDelay), new TransportNamesStamp('mailchimp_campaign_batch')]);
+                $this->bus->dispatch(new SyncReportCommand($command->getUuid(), lowPriority: $command->lowPriority, delay: $nextRunDelay));
             }
         }
 
@@ -70,7 +68,7 @@ class SyncReportCommandHandler
         }
 
         if ($command->step < 3) {
-            $this->bus->dispatch(new SyncReportCommand($command->getUuid(), $command->firstRun, $command->autoReschedule, $command->step + 1), [new TransportNamesStamp('mailchimp_campaign_batch')]);
+            $this->bus->dispatch(new SyncReportCommand($command->getUuid(), $command->firstRun, $command->autoReschedule, $command->step + 1, $command->lowPriority));
         }
     }
 

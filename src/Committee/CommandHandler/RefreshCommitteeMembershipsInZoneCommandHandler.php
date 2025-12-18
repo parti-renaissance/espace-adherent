@@ -16,7 +16,6 @@ use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 #[AsMessageHandler]
 class RefreshCommitteeMembershipsInZoneCommandHandler
@@ -93,7 +92,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler
         $this->committeeRepository->updateMembershipsCounters();
 
         foreach ($adherentsToSyncMC as $adherent) {
-            $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()), [new TransportNamesStamp('mailchimp_sync_batch')]);
+            $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress(), batch: true));
         }
     }
 
