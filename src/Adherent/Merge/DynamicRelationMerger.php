@@ -23,6 +23,8 @@ class DynamicRelationMerger
         $total = \count($allMetadata);
         $current = 0;
 
+        $errors = [];
+
         foreach ($allMetadata as $metadata) {
             ++$current;
             $className = $metadata->getName();
@@ -61,16 +63,24 @@ class DynamicRelationMerger
                         $progressCallback(\sprintf('Migration de %s (relation: %s)', $this->getShortName($className), $assocName), (int) (($current / $total) * 80));
                     }
 
-                    usleep(25_000);
+                    usleep(20_000);
                 } catch (\Exception $e) {
-                    $this->logger->error(\sprintf(
-                        '[AdherentMerge] Erreur lors de la migration des relations de %s (relation: %s) : %s',
-                        $this->getShortName($className),
-                        $assocName,
-                        $e->getMessage()
-                    ), ['exception' => $e]);
+                    $message = $e->getMessage();
+
+                    if (!str_contains($message, 'Base table or view not found')) {
+                        $errors[] = \sprintf(
+                            '[AdherentMerge] Erreur lors de la migration des relations de %s (relation: %s) : %s',
+                            $this->getShortName($className),
+                            $assocName,
+                            $e->getMessage()
+                        );
+                    }
                 }
             }
+        }
+
+        if ($errors) {
+            $this->logger->error('Errors occurred during Adherent merge #'.$source->getId().' into #'.$target->getId(), ['errors' => $errors]);
         }
     }
 
