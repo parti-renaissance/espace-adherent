@@ -25,7 +25,6 @@ use App\History\Command\MergeAdherentActionHistoryCommand;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Cache\CacheItemPoolInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -378,12 +377,8 @@ class AdminAdherentCRUDController extends CRUDController
         ]);
     }
 
-    public function mergeAction(
-        int $id,
-        Request $request,
-        AdherentMergeManager $mergeManager,
-        CacheItemPoolInterface $cache,
-    ): Response {
+    public function mergeAction(int $id, Request $request, AdherentMergeManager $mergeManager): Response
+    {
         $this->admin->checkAccess('merge');
 
         /* @var Adherent $adherentSource */
@@ -406,7 +401,7 @@ class AdminAdherentCRUDController extends CRUDController
                 'model_manager' => $this->admin->getModelManager(),
                 'label' => 'Adhérent cible',
                 'minimum_input_length' => 1,
-                'items_per_page' => 20,
+                'items_per_page' => 10,
                 'req_params' => [
                     '_sonata_admin' => 'app.admin.agora_membership',
                 ],
@@ -487,7 +482,7 @@ class AdminAdherentCRUDController extends CRUDController
 
                 $messageBus->dispatch(MergeAdherentActionHistoryCommand::create($administrator, $adherentSource, $adherentTarget));
 
-                return $this->redirect($this->admin->generateObjectUrl('merge_status', $adherentSource));
+                return $this->redirect($this->admin->generateObjectUrl('merge_status', $adherentSource, ['target_id' => $adherentTarget->getId()]));
             }
         }
 
@@ -498,7 +493,7 @@ class AdminAdherentCRUDController extends CRUDController
         ]);
     }
 
-    public function mergeStatusAction(int $id, ProcessTracker $processTracker): Response
+    public function mergeStatusAction(int $id, Request $request, ProcessTracker $processTracker): Response
     {
         $this->admin->checkAccess('merge');
 
@@ -514,6 +509,7 @@ class AdminAdherentCRUDController extends CRUDController
         return $this->render('admin/adherent/renaissance/merge_status.html.twig', [
             'adherent_source' => $adherentSource,
             'adherent_source_id' => $id,
+            'adherent_target' => $this->admin->getObject((int) $request->query->get('target_id')),
             'history' => $history,
         ]);
     }

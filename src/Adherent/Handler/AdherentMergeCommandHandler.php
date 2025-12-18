@@ -8,9 +8,11 @@ use App\Adherent\Command\AdherentMergeCommand;
 use App\Adherent\Merge\AdherentMergeManager;
 use App\Adherent\Merge\DynamicRelationMerger;
 use App\Adherent\Merge\ProcessTracker;
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class AdherentMergeCommandHandler
@@ -21,6 +23,7 @@ class AdherentMergeCommandHandler
         private readonly AdherentRepository $repository,
         private readonly AdherentMergeManager $mergeManager,
         private readonly DynamicRelationMerger $relationMerger,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -49,6 +52,8 @@ class AdherentMergeCommandHandler
 
         $this->em->remove($source);
         $this->em->flush();
+
+        $this->bus->dispatch(new RefreshAdherentTagCommand($target->getUuid()));
 
         $this->tracker->log($processId, 'Fusion terminée.', 100);
     }

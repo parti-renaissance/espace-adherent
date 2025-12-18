@@ -1,43 +1,64 @@
 {% extends 'admin/layout.html.twig' %}
 
-{% block sonata_page_content_header %}
-    <div class="sticky-wrapper">
-        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
-                        Fusion de l'adhérent
-                        {% if adherent_source is not empty %}
-                            {{ adherent_source.fullName }} ({{ adherent_source.publicId }})
-                        {% else %}
-                            #{{ adherent_source_id }}
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .log-wrapper {
+            display: flex;
+            flex-direction: column;
+
+            /* CORRECTION ICI : */
+            /* On prend la hauteur de l'écran MOINS l'espace utilisé au-dessus (approx 340px) */
+            height: calc(100vh - 250px);
+            min-height: 500px;
+
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+
+        #log-container {
+            flex-grow: 1;
+            overflow-y: auto;    /* Le scroll se fait ICI uniquement */
+            min-height: 0;
+            margin-bottom: 0;    /* Enlève la marge par défaut de ul */
+            padding: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block sonata_admin_content %}
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-primary">
+            <div class="box box-primary" style="margin-bottom: 0;">
                 <div class="box-header">
                     <h3 class="box-title">Avancement de la fusion</h3>
                 </div>
                 <div class="box-body">
-                    <div class="progress active">
-                        {% set last_percent = history|last.percent|default(0) %}
+                    {% set last_percent = history|last.percent|default(0) %}
+
+                    <div class="row">
+                        <div id="target-button" class="col-md-offset-6 col-md-6 text-right {{ last_percent < 100 ? 'hidden' }}" style="margin-bottom: 15px;">
+                            <a href="{{ path('admin_app_adherent_edit', {id: adherent_target.id}) }}" class="btn btn-success">
+                                Voir l'adhérent fusionné
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="progress {{ last_percent < 100 ? 'active' }}">
                         <div id="progress-bar"
-                             class="progress-bar progress-bar-success progress-bar-striped"
+                             class="progress-bar progress-bar-success {{ last_percent < 100 ? 'progress-bar-striped' }}"
                              role="progressbar"
                              style="width: {{ last_percent }}%">
                             <span id="progress-text">{{ last_percent }}%</span>
                         </div>
                     </div>
 
-                    <details>
+                    <div class="log-wrapper">
                         <ul id="log-container" class="list-group">
                             {% for log in history %}
                                 <li class="list-group-item">
@@ -46,7 +67,7 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                    </details>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,10 +75,15 @@
 
     <script>
         const url = "{{ mercure('merge_status/' ~ adherent_source_id, {subscribe: 'merge_status/' ~ adherent_source_id})|e('js') }}";
+        const listContainer = document.getElementById('log-container');
 
-        const eventSource = new EventSource(url, {
-            withCredentials: true
-        });
+        function scrollToBottom() {
+            listContainer.scrollTop = listContainer.scrollHeight;
+        }
+
+        scrollToBottom();
+
+        const eventSource = new EventSource(url, { withCredentials: true });
 
         eventSource.onmessage = event => {
             const data = JSON.parse(event.data);
@@ -71,12 +97,20 @@
             const li = document.createElement('li');
             li.className = 'list-group-item';
             li.style.backgroundColor = '#f0f9ff';
-            li.innerHTML = `<span class="badge">Maintenant</span> ${data.message}`;
+            li.style.transition = 'background-color 1s';
 
-            document.getElementById('log-container').appendChild(li);
+            li.innerHTML = `<span class="badge">${new Date().toLocaleTimeString()}</span> ${data.message}`;
+
+            listContainer.appendChild(li);
+
+            scrollToBottom();
+
+            setTimeout(() => { li.style.backgroundColor = '#fff'; }, 100);
 
             if (data.percent >= 100) {
                 eventSource.close();
+                progressBar.classList.remove('progress-bar-striped', 'active');
+                $('#target-button').removeClass('hidden');
             }
         }
     </script>
