@@ -55,14 +55,17 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
                         mailchimp_sync: { binding_keys: ['mailchimp.sync'] }
-            mailchimp_sync_batch:
+            mailchimp_batch:
                 dsn: '%env(RABBITMQ_DSN)%'
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync.batch' }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.batch' }
                     queues:
-                        mailchimp_sync_batch: { binding_keys: ['mailchimp.sync.batch'] }
+                        mailchimp_batch:
+                            binding_keys: ['mailchimp.batch']
+                            arguments:
+                                x-max-priority: 100
             mailchimp_campaign:
                 dsn: '%env(RABBITMQ_DSN)%'
                 retry_strategy:
@@ -71,14 +74,6 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
                         mailchimp_campaign: { binding_keys: ['mailchimp.campaign'] }
-            mailchimp_campaign_batch:
-                dsn: '%env(RABBITMQ_DSN)%'
-                retry_strategy:
-                    delay: 10000
-                options:
-                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign.batch' }
-                    queues:
-                        mailchimp_campaign_batch: { binding_keys: ['mailchimp.campaign.batch'] }
             notification:
                 dsn: '%env(RABBITMQ_DSN)%'
                 retry_strategy:

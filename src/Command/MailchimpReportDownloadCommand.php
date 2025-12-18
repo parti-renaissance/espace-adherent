@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\AdherentMessage\AdherentMessageStatusEnum;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 #[AsCommand(
     name: 'mailchimp:report:download',
@@ -78,9 +78,10 @@ class MailchimpReportDownloadCommand extends Command
         do {
             $q->setFirstResult($offset);
 
+            /** @var AdherentMessage $am */
             foreach ($paginator->getIterator() as $am) {
                 $this->io->progressAdvance();
-                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false), [new TransportNamesStamp('mailchimp_campaign_batch')]);
+                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false, lowPriority: $am->isNational()));
             }
 
             $this->entityManager->clear();
