@@ -23,6 +23,13 @@ ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 ENV LC_ALL fr_FR.UTF-8
 
+ENV PHP_FPM_MAX_CHILDREN=15 \
+    PHP_FPM_START_SERVERS=4 \
+    PHP_FPM_MIN_SPARE_SERVERS=2 \
+    PHP_FPM_MAX_SPARE_SERVERS=6 \
+    PHP_FPM_MAX_REQUESTS=100 \
+    PHP_MEMORY_LIMIT=512M
+
 ARG BUILD_DEV
 
 WORKDIR /srv/app
@@ -67,11 +74,6 @@ COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/app.ini
 
 COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 RUN mkdir -p /var/run/php
-
-COPY --link docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-RUN chmod +x /usr/local/bin/docker-healthcheck
-
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 
 COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

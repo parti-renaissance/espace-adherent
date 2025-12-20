@@ -28,6 +28,10 @@ app_user_connect_with_magic_link:
     requirements:
         app_domain: '%app_renaissance_host%|%user_vox_host%'
 
+app_all_routes:
+    resource: '../src/Controller'
+    type: attribute
+
 #
 # Assets
 #
