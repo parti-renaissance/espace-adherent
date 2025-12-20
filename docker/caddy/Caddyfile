@@ -25,7 +25,7 @@ log_skip /healthcheck
 route {
 	root * /srv/app/public
 
-    # Mercure hub (discovery endpoint)
+	# Mercure hub (discovery endpoint)
 	@mercure path /.well-known/mercure*
 	reverse_proxy @mercure {$MERCURE_HOST:mercure}:80 {
 		header_up Host {host}

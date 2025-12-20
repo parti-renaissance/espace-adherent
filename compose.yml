@@ -31,7 +31,8 @@ services:
             - rabbitmq
             - redis
         healthcheck:
-            interval: 10s
+            test: ['CMD-SHELL', 'curl -f http://localhost/ping || exit 1']
+            interval: 30s
             timeout: 3s
             retries: 3
             start_period: 30s
