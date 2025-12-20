@@ -1,3 +1,7 @@
+app_health_check:
+    path: /health/ready
+    controller: App\Controller\HealthCheckController
+
 logout:
     host: '{app_domain}'
     path: '/deconnexion'
@@ -27,10 +31,6 @@ app_user_connect_with_magic_link:
         app_domain: '%user_vox_host%'
     requirements:
         app_domain: '%app_renaissance_host%|%user_vox_host%'
-
-app_all_routes:
-    resource: '../src/Controller'
-    type: attribute
 
 #
 # Assets
