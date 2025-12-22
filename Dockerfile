@@ -2,7 +2,6 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 ARG CADDY_VERSION=2
-# Fix the version of PHP to avoid this bug https://github.com/php/php-src/issues/14480
 ARG PHP_VERSION=8.4
 ARG NODE_VERSION=20
 
@@ -45,6 +44,8 @@ RUN apk add --no-cache \
         gettext \
         git \
         multirun \
+        unzip \
+        libzip-dev \
     ;
 
 RUN set -eux; \
@@ -83,12 +84,12 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
-
 COPY --link . .
+
+RUN mkdir -p var/cache var/log /var/run/php
 
 RUN test -z "$BUILD_DEV" && ( \
         set -eux; \
-        mkdir -p var/cache var/log; \
         composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
         composer dump-autoload --classmap-authoritative --no-dev; \
         composer dump-env prod; \
@@ -97,9 +98,13 @@ RUN test -z "$BUILD_DEV" && ( \
         chmod +x bin/console; sync \
     ) || :
 
+RUN chown -R www-data:www-data var/ /var/run/php
+
 COPY --link --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
 
-CMD ["multirun", "docker-entrypoint php-fpm -F -R", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]
+USER www-data
+
+CMD ["multirun", "docker-entrypoint php-fpm -F", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]
