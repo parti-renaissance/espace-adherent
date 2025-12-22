@@ -17,50 +17,69 @@ test.*.code:80 {
 	file_server
 }
 
-:80
+:80 {
+	@health_checks {
+		path /health/ready /healthcheck /ping
+	}
 
-@health_checks {
-	path /health/ready /healthcheck /ping
-}
+	@static {
+		path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff *.woff2 *.ico
+	}
 
-log_skip @health_checks
-log
+	log_skip @health_checks
+	log_skip @static
 
-route {
-	root * /srv/app/public
-
-	# Mercure hub (discovery endpoint)
-	@mercure path /.well-known/mercure*
-	reverse_proxy @mercure {$MERCURE_HOST:mercure}:80 {
-		header_up Host {host}
-
-		# SSE: disable read and write buffers
-		transport http {
-			read_buffer 0
-			write_buffer 0
+	log {
+		output stderr
+		level INFO
+		format filter {
+			wrap json {
+				time_format iso8601
+			}
+			fields {
+				request.headers delete
+				resp_headers delete
+				request.cookies delete
+			}
 		}
 	}
 
-	# Set security headers
+	route {
+		root * /srv/app/public
 
-	# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
-	header ?Permissions-Policy "interest-cohort=()"
+		# Mercure hub (discovery endpoint)
+		@mercure path /.well-known/mercure*
+		reverse_proxy @mercure {$MERCURE_HOST:mercure}:80 {
+			header_up Host {host}
 
-	# Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
-	header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+			# SSE: disable read and write buffers
+			transport http {
+				read_buffer 0
+				write_buffer 0
+			}
+		}
 
-	@noLiveEvent not path /live-event/*
-	header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+		# Set security headers
 
-	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
-	header X-Content-Type-Options "nosniff"
+		# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
+		header ?Permissions-Policy "interest-cohort=()"
 
-	# Enable cross-site filter (XSS) and tell browser to block detected attacks
-	header X-XSS-Protection "1; mode=block"
+		# Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
+		header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-	php_fastcgi unix//var/run/php/php-fpm.sock {
-		trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
+		@noLiveEvent not path /live-event/*
+		header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+
+		# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+		header X-Content-Type-Options "nosniff"
+
+		# Enable cross-site filter (XSS) and tell browser to block detected attacks
+		header X-XSS-Protection "1; mode=block"
+
+		php_fastcgi unix//var/run/php/php-fpm.sock {
+			trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
+		}
+		encode zstd gzip
+		file_server
 	}
-	encode zstd gzip
-	file_server
 }
