@@ -37,6 +37,9 @@ updates:
               patterns:
                   - 'react'
                   - 'react-dom'
+          tiptap:
+              patterns:
+                  - '@tiptap/*'
 
     - package-ecosystem: 'github-actions'
       directory: '/'
