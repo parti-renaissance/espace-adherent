@@ -635,6 +635,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'example.jpg',
             'image/jpg',
         ));
+        $senator_59->addZoneBasedRole(AdherentZoneBasedRole::createSenator(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
         $this->addReference('senator-59', $senator_59);
 
         $assessor = $this->adherentFactory->createFromArray([

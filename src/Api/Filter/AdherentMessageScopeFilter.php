@@ -34,7 +34,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
 
         $this
             ->adherentMessageRepository
-            ->withInstanceScope($queryBuilder, $scope->getMainCode(), $alias)
+            ->withInstanceKey($queryBuilder, $scope->getInstanceKey(), $alias)
             ->withSource(
                 $queryBuilder,
                 ($context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null) === PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER ?

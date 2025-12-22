@@ -9,9 +9,10 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\Committee;
+use App\Repository\Geo\ZoneRepository;
+use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -25,18 +26,27 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     public const MESSAGE_02_UUID = '65f6cdbf-0707-4940-86d8-cc1755aab17e';
     public const MESSAGE_03_UUID = '75f6cdbf-0707-4940-86d8-cc1755aab17e';
 
+    public function __construct(
+        private readonly GeneralScopeGenerator $generalScopeGenerator,
+        private readonly ZoneRepository $zoneRepository,
+    ) {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('FR_fr');
 
+        // initialize zones
+        $this->zoneRepository->findBy(['code' => ['75', '92', '75-1']]);
+
         $parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75');
 
-        $manager->persist($message = AdherentMessage::createFromAdherent($this->getAuthor('', true)));
+        $manager->persist($message = AdherentMessage::createFromAdherent($author = $this->getAuthor('', true)));
         $message->setIsStatutory(true);
-        $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $author)->generate($author));
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(10);
-        $message->setFilter(new MessageFilter([$parisZone]));
+        $message->setFilter(new AudienceFilter([$parisZone]));
         $message->setContent($faker->randomHtml());
         $message->setSubject($faker->sentence(5));
         $message->setLabel($faker->sentence(2));
@@ -48,7 +58,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         );
         $message1->teamOwner = $author;
         $message1->setSender($author);
-        $message1->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message1->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $author)->generate($author));
         $message1->setContent($faker->randomHtml());
         $message1->setSubject($faker->sentence(5));
         $message1->setLabel($faker->sentence(2));
@@ -62,7 +72,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
             Uuid::fromString(self::MESSAGE_02_UUID)
         );
 
-        $message2->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message2->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $pad)->generate($pad));
         $message2->setContent($faker->randomHtml());
         $message2->setSubject($faker->sentence(5));
         $message2->setLabel($faker->sentence(2));
@@ -75,7 +85,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $manager->persist($message2);
 
         $manager->persist($message = AdherentMessage::createFromAdherent($pad, Uuid::fromString(self::MESSAGE_03_UUID)));
-        $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $pad)->generate($pad));
         $message->setSource(AdherentMessageInterface::SOURCE_VOX);
         $message->setRecipientCount(2);
         $message->setFilter(new AudienceFilter([$parisZone]));
@@ -84,9 +94,9 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->setSubject($faker->sentence(5));
         $message->setLabel($faker->sentence(2));
 
-        $manager->persist($message = AdherentMessage::createFromAdherent($this->getAuthor('', true)));
+        $manager->persist($message = AdherentMessage::createFromAdherent($author = $this->getAuthor('', true)));
         $message->setIsStatutory(true);
-        $message->setInstanceScope(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $author)->generate($author));
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(2);
         $message->setFilter(new AudienceFilter([$parisZone]));
@@ -98,9 +108,12 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $manager->flush();
 
         foreach ($this->getInstanceScopes() as $instanceScope) {
+            $author = $this->getAuthor($instanceScope);
+            $scope = $this->generalScopeGenerator->getGenerator($instanceScope, $author)->generate($author);
+
             for ($i = 1; $i <= 100; ++$i) {
-                $message = AdherentMessage::createFromAdherent($this->getAuthor($instanceScope));
-                $message->setInstanceScope($instanceScope);
+                $message = AdherentMessage::createFromAdherent($author);
+                $message->updateFromScope($scope);
                 $message->setContent($faker->randomHtml());
                 $message->setSubject($faker->sentence(5));
                 $message->setLabel($faker->sentence(2));
@@ -123,6 +136,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         return [
             LoadCommitteeV1Data::class,
+            LoadCommitteeData::class,
             LoadGeoZoneData::class,
         ];
     }
@@ -137,16 +151,17 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         ];
     }
 
-    private function getAuthor(string $instanceScope, bool $isStaturory = false): Adherent
+    private function getAuthor(string $instanceScope, bool $isStatutory = false): Adherent
     {
-        if ($isStaturory) {
+        if ($isStatutory) {
             return $this->getReference('president-ad-1', Adherent::class);
         }
 
         switch ($instanceScope) {
             case ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY:
-            case ScopeEnum::ANIMATOR:
                 return $this->getReference('adherent-8', Adherent::class); // referent@en-marche-dev.fr
+            case ScopeEnum::ANIMATOR:
+                return $this->getReference('adherent-55', Adherent::class);
             case ScopeEnum::DEPUTY:
                 return $this->getReference('deputy-75-1', Adherent::class);
             case ScopeEnum::SENATOR:

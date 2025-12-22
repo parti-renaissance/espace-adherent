@@ -38,7 +38,7 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent",
                             "image_url": null,
-                            "scope": null
+                            "scope": "president_departmental_assembly"
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -112,7 +112,7 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent",
                             "image_url": null,
-                            "scope": null
+                            "scope": "president_departmental_assembly"
                         },
                         "sender": {
                             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -518,10 +518,10 @@ Feature:
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
-                    "first_name": "<first_name>",
-                    "last_name": "<last_name>",
-                    "image_url": <image_url>,
-                    "scope": "<scope>"
+                    "first_name": "Referent",
+                    "last_name": "Referent",
+                    "image_url": null,
+                    "scope": "president_departmental_assembly"
                 },
                 "sender": {
                     "uuid": "@uuid@",
@@ -587,9 +587,9 @@ Feature:
             """
 
         Examples:
-            | user                      | scope                                          | first_name | last_name     | image_url                                                                                 |
-            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      | null                                                                                      |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) | "http://test.renaissance.code/assets/images/profile/9c08a772fa1b36dc5ca3152bc3b1749d.jpg" |
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario: As a delegated referent I can access to sending a referent message
         Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
