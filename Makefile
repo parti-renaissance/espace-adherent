@@ -228,6 +228,7 @@ rm-docker-dev.lock:
 perm:
 	$(EXEC) chmod -R 777 app/data/images app/data/files
 	$(EXEC) chmod 664 var/public.key var/private.key
+	$(EXEC) chown -R www-data:www-data var/cache var/log
 
 # Rules from files
 

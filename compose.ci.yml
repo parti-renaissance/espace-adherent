@@ -1,6 +1,7 @@
 services:
     app:
         image: ${REGISTRY}:${TAG}-${HASH}
+        user: root
         environment:
             APP_ENV: test
 
