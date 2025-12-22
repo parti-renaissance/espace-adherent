@@ -263,7 +263,7 @@ class AppHitControllerTest extends AbstractApiTestCase
                 'total' => 0,
                 'total_rate' => 0.0,
             ],
-            'visible_count' => null,
+            'visible_count' => 4,
         ], $stats->jsonSerialize());
 
         // Send new impression hit
@@ -328,7 +328,7 @@ class AppHitControllerTest extends AbstractApiTestCase
                 'total' => 0,
                 'total_rate' => 0.0,
             ],
-            'visible_count' => null,
+            'visible_count' => 4,
         ], $stats->jsonSerialize());
 
         // Send new open hit
@@ -393,7 +393,7 @@ class AppHitControllerTest extends AbstractApiTestCase
                 'total' => 0,
                 'total_rate' => 0.0,
             ],
-            'visible_count' => null,
+            'visible_count' => 4,
         ], $stats->jsonSerialize());
 
         // Send new click hit
@@ -458,7 +458,7 @@ class AppHitControllerTest extends AbstractApiTestCase
                 'total' => 0,
                 'total_rate' => 0.0,
             ],
-            'visible_count' => null,
+            'visible_count' => 4,
         ], $stats->jsonSerialize());
     }
 

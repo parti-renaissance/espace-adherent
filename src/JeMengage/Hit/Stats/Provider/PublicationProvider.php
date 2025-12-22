@@ -45,7 +45,7 @@ class PublicationProvider extends AbstractProvider
 
         $result = [
             'sent_at' => $message->getSentAt()?->format(\DateTimeInterface::RFC3339),
-            'visible_count' => $wait ? $this->adherentRepository->countAdherentsForMessage($message) : null,
+            'visible_count' => $this->adherentRepository->countAdherentsForMessage($message),
             'contacts' => $allReach['email_push'],
             'unique_notifications' => $totalReachByPush,
             'unique_emails' => $totalReachByEmail,

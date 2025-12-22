@@ -56,7 +56,6 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "synchronized": true,
                         "editable": true,
-                        "preview_link": null,
                         "author": {
                             "uuid": "@string@",
                             "first_name": "Damien",
@@ -80,56 +79,13 @@ Feature:
                         "sent_at": null,
                         "recipient_count": 10,
                         "source": "cadre",
-                        "from_name": "Damien Durock | Renaissance",
-                        "statistics": {
-                            "contacts": 0,
-                            "notifications": {
-                                "android": 0,
-                                "ios": 0,
-                                "web": 0
-                            },
-                            "sent_at": null,
-                            "unique_clicks": {
-                                "app": 0,
-                                "app_rate": 0,
-                                "email": 0,
-                                "email_rate": 0,
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "unique_emails": null,
-                            "unique_impressions": {
-                                "list": 0,
-                                "timeline": 0,
-                                "total": 0
-                            },
-                            "unique_notifications": 0,
-                            "unique_opens": {
-                                "app": 0,
-                                "app_rate": 0,
-                                "direct_link": 0,
-                                "email": 0,
-                                "email_rate": 0,
-                                "list": 0,
-                                "notification": 0,
-                                "notification_rate": 0,
-                                "timeline": 0,
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "unsubscribed": {
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "visible_count": null
-                        }
+                        "from_name": "Damien Durock | Renaissance"
                     },
                     {
                         "uuid": "@string@",
                         "created_at": "@string@.isDateTime()",
                         "synchronized": true,
                         "editable": true,
-                        "preview_link": null,
                         "author": {
                             "uuid": "@string@",
                             "first_name": "Damien",
@@ -153,49 +109,7 @@ Feature:
                         "sent_at": "@string@.isDateTime()",
                         "recipient_count": 2,
                         "source": "cadre",
-                        "from_name": "Damien Durock | Renaissance",
-                        "statistics": {
-                            "contacts": 0,
-                            "notifications": {
-                                "android": 0,
-                                "ios": 0,
-                                "web": 0
-                            },
-                            "sent_at": "@string@.isDateTime()",
-                            "unique_clicks": {
-                                "app": 0,
-                                "app_rate": 0,
-                                "email": 0,
-                                "email_rate": 0,
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "unique_emails": null,
-                            "unique_impressions": {
-                                "list": 0,
-                                "timeline": 0,
-                                "total": 0
-                            },
-                            "unique_notifications": 0,
-                            "unique_opens": {
-                                "app": 0,
-                                "app_rate": 0,
-                                "direct_link": 0,
-                                "email": 0,
-                                "email_rate": 0,
-                                "list": 0,
-                                "notification": 0,
-                                "notification_rate": 0,
-                                "timeline": 0,
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "unsubscribed": {
-                                "total": 0,
-                                "total_rate": 0
-                            },
-                            "visible_count": null
-                        }
+                        "from_name": "Damien Durock | Renaissance"
                     }
                 ]
             }
@@ -225,7 +139,6 @@ Feature:
                 "subject": "Voici un message statutaire",
                 "status": "draft",
                 "recipient_count": 3,
-                "preview_link": null,
                 "source": "vox",
                 "author": {
                     "uuid": "@uuid@",
@@ -248,48 +161,6 @@ Feature:
                         "primary": "#3A7DFF",
                         "soft": "#E8F0FF"
                     }
-                },
-                "statistics": {
-                    "contacts": 0,
-                    "notifications": {
-                        "android": 0,
-                        "ios": 0,
-                        "web": 0
-                    },
-                    "sent_at": null,
-                    "unique_clicks": {
-                        "app": 0,
-                        "app_rate": 0,
-                        "email": 0,
-                        "email_rate": 0,
-                        "total": 0,
-                        "total_rate": 0
-                    },
-                    "unique_emails": null,
-                    "unique_impressions": {
-                        "list": 0,
-                        "timeline": 0,
-                        "total": 0
-                    },
-                    "unique_notifications": 0,
-                    "unique_opens": {
-                        "app": 0,
-                        "app_rate": 0,
-                        "direct_link": 0,
-                        "email": 0,
-                        "email_rate": 0,
-                        "list": 0,
-                        "notification": 0,
-                        "notification_rate": 0,
-                        "timeline": 0,
-                        "total": 0,
-                        "total_rate": 0
-                    },
-                    "unsubscribed": {
-                        "total": 0,
-                        "total_rate": 0
-                    },
-                    "visible_count": null
                 },
                 "json_content": "@string@",
                 "sent_at": null,

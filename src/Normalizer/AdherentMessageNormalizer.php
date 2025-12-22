@@ -58,8 +58,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
             $data['editable'] = $this->authorizationChecker->isGranted(PublicationVoter::PERMISSION, $object);
 
             if ($data['editable']) {
-                $data['statistics'] = $this->statisticsAggregator->getStats(TargetTypeEnum::Publication, $object->getUuid());
-                $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
+                if (!$object->isStatutory()) {
+                    $data['statistics'] = $this->statisticsAggregator->getStats(TargetTypeEnum::Publication, $object->getUuid());
+                    $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
+                }
             } else {
                 foreach (array_keys($data) as $key) {
                     if (!\in_array($key, ['uuid', 'sender', 'json_content', 'sent_at', 'subject', 'updated_at'])) {
