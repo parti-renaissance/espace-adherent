@@ -282,7 +282,7 @@ jobs:
     docker-build-push-gcr:
         name: Build prod & push on registry
         runs-on: ubuntu-24.04
-        needs: [lint, phpunit, behat]
+        needs: [lint, phpunit, behat, behat-selenium]
         if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
 
         steps:
