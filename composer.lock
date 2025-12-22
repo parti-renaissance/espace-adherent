@@ -315,16 +315,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.2.10",
+            "version": "v4.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "b09d4a0d1e761d80f5bc42ae7213b7353d48d97c"
+                "reference": "34f3f1c684717102d125bacce54cf2182105ac50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/b09d4a0d1e761d80f5bc42ae7213b7353d48d97c",
-                "reference": "b09d4a0d1e761d80f5bc42ae7213b7353d48d97c",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/34f3f1c684717102d125bacce54cf2182105ac50",
+                "reference": "34f3f1c684717102d125bacce54cf2182105ac50",
                 "shasum": ""
             },
             "require": {
@@ -363,10 +363,10 @@
                 "api-platform/documentation": "self.version",
                 "api-platform/elasticsearch": "self.version",
                 "api-platform/graphql": "self.version",
+                "api-platform/hal": "self.version",
                 "api-platform/http-cache": "self.version",
                 "api-platform/hydra": "self.version",
                 "api-platform/json-api": "self.version",
-                "api-platform/json-hal": "self.version",
                 "api-platform/json-schema": "self.version",
                 "api-platform/jsonld": "self.version",
                 "api-platform/laravel": "self.version",
@@ -403,7 +403,7 @@
                 "illuminate/routing": "^11.0 || ^12.0",
                 "illuminate/support": "^11.0 || ^12.0",
                 "jangregor/phpstan-prophecy": "^2.1.11",
-                "justinrainbow/json-schema": "^5.2.11",
+                "justinrainbow/json-schema": "^6.5.2",
                 "laravel/framework": "^11.0 || ^12.0",
                 "orchestra/testbench": "^9.1",
                 "phpspec/prophecy-phpunit": "^2.2",
@@ -531,9 +531,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.2.10"
+                "source": "https://github.com/api-platform/core/tree/v4.2.11"
             },
-            "time": "2025-12-11T16:38:19+00:00"
+            "time": "2025-12-19T14:15:41+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
