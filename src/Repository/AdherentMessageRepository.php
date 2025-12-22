@@ -36,11 +36,11 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function withInstanceScope(QueryBuilder $queryBuilder, string $instanceScope, string $alias = 'message'): self
+    public function withInstanceKey(QueryBuilder $queryBuilder, string $instanceKey, string $alias = 'message'): self
     {
         $queryBuilder
-            ->andWhere("$alias.instanceScope = :instance_scope")
-            ->setParameter('instance_scope', $instanceScope)
+            ->andWhere("$alias.instanceKey = :instance_key")
+            ->setParameter('instance_key', $instanceKey)
         ;
 
         return $this;

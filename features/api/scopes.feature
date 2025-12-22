@@ -361,6 +361,28 @@ Feature:
                     }
                 },
                 {
+                    "code": "delegated_411faa64-202d-4ff2-91ce-c98b29af28ef",
+                    "features": ["dashboard", "contacts", "messages", "mobile_app"],
+                    "name": "Sénatrice déléguée",
+                    "role_name": "Responsable mobilisation",
+                    "zones": [
+                        {
+                            "code": "92",
+                            "name": "Hauts-de-Seine",
+                            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        }
+                    ],
+                    "apps": ["data_corner"],
+                    "attributes": {
+                        "theme": {
+                            "active": "#1C5CD8",
+                            "hover": "#2F6FE0",
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF"
+                        }
+                    }
+                },
+                {
                     "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
                     "name": "Déléguée de circonscription déléguée",
                     "role_name": "Responsable mobilisation",

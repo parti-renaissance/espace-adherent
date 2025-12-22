@@ -10,7 +10,7 @@
 
 {% macro display_committee(committee) %}
     {% if committee %}
-        <a href="{{ path('admin_app_adherent_list', {filter: {committeeMembership__committee: {value: committee.id}}}) }}" class="sonata-action-element">
+        <a href="{{ path('admin_app_adherent_list', {filter: {committeeMembership__committee: {value: [committee.id]}}}) }}" class="sonata-action-element">
             {{ committee }}
         </a>
 

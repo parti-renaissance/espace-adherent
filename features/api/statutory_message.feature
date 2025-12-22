@@ -61,7 +61,7 @@ Feature:
                             "first_name": "Damien",
                             "last_name": "Durock",
                             "image_url": null,
-                            "scope": null
+                            "scope": "president_departmental_assembly"
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
@@ -91,7 +91,7 @@ Feature:
                             "first_name": "Damien",
                             "last_name": "Durock",
                             "image_url": null,
-                            "scope": null
+                            "scope": "president_departmental_assembly"
                         },
                         "sender": {
                             "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",

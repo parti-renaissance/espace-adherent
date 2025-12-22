@@ -126,6 +126,11 @@ class AdherentZoneBasedRole
         return $role;
     }
 
+    public static function createSenator(Zone $zone): self
+    {
+        return static::create(ScopeEnum::SENATOR, [$zone]);
+    }
+
     public function getType(): ?string
     {
         return $this->type;
