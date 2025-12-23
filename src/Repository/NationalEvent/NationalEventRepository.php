@@ -48,14 +48,21 @@ class NationalEventRepository extends ServiceEntityRepository
         return $this->findOneBy(['slug' => $part]);
     }
 
-    public function findAllSince(\DateTime $since): array
+    public function findAllSince(\DateTime $since, array $types = []): array
     {
-        return $this->createQueryBuilder('event')
+        $qb = $this->createQueryBuilder('event')
             ->where('event.startDate >= :start_date')
             ->setParameter('start_date', $since)
             ->orderBy('event.startDate', 'DESC')
-            ->getQuery()
-            ->getResult()
         ;
+
+        if (\count($types) > 0) {
+            $qb
+                ->andWhere('event.type IN (:types)')
+                ->setParameter('types', $types)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

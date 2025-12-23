@@ -31,14 +31,14 @@ class NationalEventTransportModeValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, InscriptionRequest::class);
         }
 
-        $transportConfig = $value->transportConfiguration;
+        $packageConfig = $value->packageConfig;
 
-        if (!$value->visitDay || !$value->transport || !$transportConfig || empty($transportConfig['transports'])) {
+        if (!$value->visitDay || !$value->transport || !$packageConfig || empty($packageConfig['transport'])) {
             return;
         }
 
         $availableModes = array_filter(
-            $transportConfig['transports'],
+            $packageConfig['transport']['options'] ?? [],
             static function (array $transport) use ($value) {
                 return \in_array($value->visitDay, $transport['jours_ids'] ?? [], true);
             }
@@ -75,7 +75,7 @@ class NationalEventTransportModeValidator extends ConstraintValidator
         }
 
         $availableAccommodationModes = array_filter(
-            $transportConfig['hebergements'] ?? [],
+            $packageConfig['accommodation']['options'] ?? [],
             static function (array $accommodation) use ($value) {
                 return \in_array($value->visitDay, $accommodation['jours_ids'] ?? [], true);
             }

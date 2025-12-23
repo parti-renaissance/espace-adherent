@@ -117,7 +117,7 @@
 
                     <twig:ReButton class="w-full" color="blue">Enregistrer les modifications</twig:ReButton>
 
-                    {% if event.isCampus() %}
+                    {% if event.isPackageEventType() %}
                         <twig:ReButton tag="a" href="{{ path('app_national_event_my_inscription', {slug: event.slug, uuid: inscription.uuid}) }}" class="w-full" color="white">Annuler</twig:ReButton>
                     {% endif %}
                 </twig:Atoms:ReCard>

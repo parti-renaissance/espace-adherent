@@ -6,10 +6,11 @@ namespace App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
+use App\Form\NationalEvent\PackageEventInscriptionType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\AdherentPublicIdGenerator;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -47,7 +48,7 @@ class InscriptionController extends AbstractController
             return $this->redirectToRoute('renaissance_site');
         }
 
-        if ($response = $this->anonymousFollowerSession->start($request)) {
+        if ($event->connectionEnabled && $response = $this->anonymousFollowerSession->start($request)) {
             return $response;
         }
 
@@ -57,11 +58,11 @@ class InscriptionController extends AbstractController
             $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
         }
 
-        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->transportConfiguration);
+        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->getIndexedPackageConfig());
 
         if ($user) {
             if ($existingInscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($user, $event)) {
-                if ($event->isCampus()) {
+                if ($event->isPackageEventType()) {
                     return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscriptions[0]->getUuid()->toString(), 'app_domain' => $app_domain]);
                 }
 
@@ -99,18 +100,23 @@ class InscriptionController extends AbstractController
                 return $this->redirectToRoute('app_national_event_new_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
             }
 
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }
 
-        return $this->render('renaissance/national_event/inscription/'.$event->type->value.'.html.twig', [
+        return $this->render('renaissance/national_event/inscription/layout.html.twig', [
             'form' => $form->createView(),
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'is_open' => $isOpen,
+            'base_template' => match ($event->type) {
+                NationalEventTypeEnum::CAMPUS,
+                NationalEventTypeEnum::JEM => 'package',
+                default => 'simple',
+            },
         ]);
     }
 
@@ -119,14 +125,14 @@ class InscriptionController extends AbstractController
         $defaultOptions = [
             'adherent' => $adherent,
             'disabled' => !$isOpen,
-            'validation_groups' => ['Default', 'inscription_creation'],
+            'event_type' => $event->type,
+            'validation_groups' => ['Default', 'inscription_creation', 'event_type:'.$event->type->value],
         ];
 
-        if ($event->isCampus()) {
-            return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
-                'transport_configuration' => $event->transportConfiguration,
+        if ($event->isPackageEventType()) {
+            return $this->createForm(PackageEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
+                'package_config' => $event->packageConfig,
                 'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
-                'validation_groups' => ['Default', 'inscription_creation', 'inscription_campus_creation'],
             ]));
         }
 

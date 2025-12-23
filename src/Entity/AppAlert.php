@@ -48,7 +48,7 @@ class AppAlert implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(nullable: true)]
     public ?string $shareUrl = null;
 
-    #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
+    #[ORM\Column(type: 'json', nullable: true)]
     public ?array $data = null;
 
     #[NotBlank]

@@ -80,6 +80,9 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\Column(nullable: true)]
     public ?string $ogDescription = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $connectionEnabled = true;
+
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $alertEnabled = false;
 
@@ -95,6 +98,10 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $alertLogoImage = null;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $logoImage = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -107,8 +114,8 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\Column(enumType: NationalEventTypeEnum::class, options: ['default' => NationalEventTypeEnum::DEFAULT])]
     public NationalEventTypeEnum $type = NationalEventTypeEnum::DEFAULT;
 
-    #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
-    public ?array $transportConfiguration = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $packageConfig = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $mailchimpSync = false;
@@ -121,6 +128,12 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     #[ORM\Column(nullable: true)]
     public ?string $defaultBraceletColor = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $discountLabel = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $discountHelp = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {
@@ -157,41 +170,64 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     public function isPaymentEnabled(): bool
     {
-        return $this->isCampus();
+        return $this->isPackageEventType();
     }
 
-    public function calculateInscriptionAmount(?string $transport, ?string $accommodation, ?bool $withDiscount): ?int
-    {
-        $amount = 0;
+    public function calculateInscriptionAmount(
+        ?string $transport,
+        ?string $accommodation,
+        ?string $packagePlan,
+        ?string $packageDonation,
+        ?bool $withDiscount,
+    ): ?int {
+        $amountRows = [];
 
         if ($transport) {
-            foreach ($this->getTransports() as $transportConfig) {
+            foreach ($this->getTransports()['options'] ?? [] as $transportConfig) {
                 if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
-                    $amount += (int) $transportConfig['montant'];
+                    $amountRows['transport'] = (int) $transportConfig['montant'];
                     break;
                 }
             }
         }
 
         if ($accommodation) {
-            foreach ($this->getAccommodations() as $accommodationConfig) {
+            foreach ($this->getAccommodations()['options'] ?? [] as $accommodationConfig) {
                 if ($accommodationConfig['id'] === $accommodation && !empty($accommodationConfig['montant'])) {
-                    $amount += (int) $accommodationConfig['montant'];
+                    $amountRows['accommodation'] = (int) $accommodationConfig['montant'];
                     break;
                 }
             }
         }
 
-        if ($amount > 0) {
-            return $amount * 100 / ($withDiscount ? 2 : 1);
+        if ($packagePlan) {
+            foreach ($this->getPackagePlans()['options'] ?? [] as $packagePlanConfig) {
+                if ($packagePlanConfig['id'] === $packagePlan && !empty($packagePlanConfig['montant'])) {
+                    $amountRows['packagePlan'] = (int) $packagePlanConfig['montant'];
+                    break;
+                }
+            }
+        }
+
+        if ($packageDonation) {
+            foreach ($this->getPackageDonations()['options'] ?? [] as $packageDonationConfig) {
+                if ($packageDonationConfig['id'] === $packageDonation && !empty($packageDonationConfig['montant'])) {
+                    $amountRows['packageDonation'] = (int) $packageDonationConfig['montant'];
+                    break;
+                }
+            }
+        }
+
+        if ($amountRows) {
+            return (int) (array_sum($amountRows) * 100 * ($withDiscount ? $this->getDiscountFactor() : 1));
         }
 
         return null;
     }
 
-    public function isCampus(): bool
+    public function isPackageEventType(): bool
     {
-        return NationalEventTypeEnum::CAMPUS === $this->type;
+        return \in_array($this->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::JEM], true);
     }
 
     public function getSortableAlertDate(): \DateTimeInterface
@@ -199,23 +235,55 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         return $this->createdAt;
     }
 
+    public function getIndexedPackageConfig(): ?array
+    {
+        if (null === $this->packageConfig) {
+            return null;
+        }
+
+        return array_column($this->packageConfig, null, 'cle');
+    }
+
     public function getVisitDays(): array
     {
-        return $this->transportConfiguration['jours'] ?? [];
+        return $this->getIndexedPackageConfig()['visitDay'] ?? [];
     }
 
     public function getTransports(): array
     {
-        return $this->transportConfiguration['transports'] ?? [];
+        return $this->getIndexedPackageConfig()['transport'] ?? [];
+    }
+
+    public function getPackagePlans(): array
+    {
+        return $this->getIndexedPackageConfig()['packagePlan'] ?? [];
+    }
+
+    public function getPackageDonations(): array
+    {
+        return $this->getIndexedPackageConfig()['packageDonation'] ?? [];
     }
 
     public function getAccommodations(): array
     {
-        return $this->transportConfiguration['hebergements'] ?? [];
+        return $this->getIndexedPackageConfig()['accommodation'] ?? [];
     }
 
     public function isNational(): bool
     {
         return true;
+    }
+
+    public function getDiscountFactor(): float
+    {
+        if (NationalEventTypeEnum::CAMPUS === $this->type) {
+            return 0.5;
+        }
+
+        if (NationalEventTypeEnum::JEM === $this->type) {
+            return 0;
+        }
+
+        return 1;
     }
 }

@@ -7,8 +7,8 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Form\NationalEvent\CampusEventInscriptionType;
 use App\Form\NationalEvent\DefaultEventInscriptionType;
+use App\Form\NationalEvent\PackageEventInscriptionType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
@@ -43,7 +43,7 @@ class EditInscriptionController extends AbstractController
         if (!$inscription->allowEditInscription()) {
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
 
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
             }
 
@@ -64,7 +64,7 @@ class EditInscriptionController extends AbstractController
 
             $this->addFlash('success', 'Votre inscription a bien été mise à jour.');
 
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
             }
 
@@ -88,8 +88,8 @@ class EditInscriptionController extends AbstractController
             'adherent' => $adherent,
         ];
 
-        if ($event->isCampus()) {
-            return $this->createForm(CampusEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
+        if ($event->isPackageEventType()) {
+            return $this->createForm(PackageEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
                 'validation_groups' => ['Default', 'inscription_campus_edit'],
             ]));
         }

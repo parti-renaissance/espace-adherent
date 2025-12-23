@@ -171,11 +171,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $crawler = $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -189,7 +189,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertStringContainsString('Veillez sélectionner votre jour de visite.', $crawler->filter('body')->text());
 
         $crawler = $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -204,7 +204,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertStringContainsString('Veillez sélectionner le forfait.', $crawler->filter('body')->text());
 
         $crawler = $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -221,11 +221,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $em = $this->getEntityManager();
         $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'campus']);
-        $event->transportConfiguration['transports'][0]['quota'] = 0;
+        $event->packageConfig[1]['options'][0]['quota'] = 0;
         $em->flush();
 
         $crawler = $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -241,7 +241,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertStringContainsString('Le quota de places pour ce mode de transport est atteint.', $crawler->filter('body')->text());
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -279,8 +279,8 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $crawler = $this->client->submit($form, [
-            'campus_event_inscription' => [
+        $this->client->submit($form, [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -306,11 +306,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -358,11 +358,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'Julien',
@@ -406,11 +406,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -497,11 +497,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -547,11 +547,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -602,15 +602,15 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         self::assertSame([
             'dimanche_train' => 7,
         ], $this->eventInscriptionRepository->countPlacesByTransport(3));
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -680,11 +680,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'john.doe@example.com',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -723,11 +723,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => 'renaissance-user-2@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -804,11 +804,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'test-update-free-to-free@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -857,7 +857,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'gratuit',
                 'accommodation' => 'gratuit',
@@ -892,11 +892,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'test-update-payed-to-free@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -954,7 +954,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'gratuit',
                 'accommodation' => 'gratuit',
@@ -992,11 +992,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'test-update-payed-to-free@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -1054,7 +1054,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'dimanche_bus',
                 'accommodation' => 'chambre_individuelle',
@@ -1096,11 +1096,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'test-update-payed-to-free@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -1160,7 +1160,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'dimanche_bus',
                 'accommodation' => 'chambre_individuelle',
@@ -1234,11 +1234,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['campus_event_inscription[acceptCgu]']->tick();
-        $form['campus_event_inscription[acceptMedia]']->tick();
+        $form['package_event_inscription[acceptCgu]']->tick();
+        $form['package_event_inscription[acceptMedia]']->tick();
 
         $this->client->submit($form, [
-            'campus_event_inscription' => [
+            'package_event_inscription' => [
                 'email' => $email = 'test-update-payed-to-free@en-marche-dev.fr',
                 'civility' => 'male',
                 'firstName' => 'John',
@@ -1284,7 +1284,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'dimanche_train',
                 'accommodation' => 'chambre_individuelle',
@@ -1336,7 +1336,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form = $crawler->filter('form')->form();
 
         $this->client->submit($form, [
-            'campus_transport' => [
+            'package_config' => [
                 'visitDay' => 'dimanche',
                 'transport' => 'dimanche_train',
                 'accommodation' => 'chambre_partagee',

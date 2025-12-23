@@ -23,7 +23,7 @@ class SendDuplicationEmailListener implements EventSubscriberInterface
     {
         $eventInscription = $event->eventInscription;
 
-        if ($eventInscription->event->isCampus() && $eventInscription->isDuplicate() && $eventInscription->originalInscription) {
+        if ($eventInscription->event->isPackageEventType() && $eventInscription->isDuplicate() && $eventInscription->originalInscription) {
             $this->notifier->sendDuplicateNotification($eventInscription->originalInscription);
         }
     }

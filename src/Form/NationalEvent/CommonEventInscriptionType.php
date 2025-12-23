@@ -10,6 +10,7 @@ use App\Form\BirthdateType;
 use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
 use App\NationalEvent\DTO\InscriptionRequest;
+use App\NationalEvent\NationalEventTypeEnum;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -32,19 +33,28 @@ class CommonEventInscriptionType extends AbstractType
             ->add('civility', GenderCivilityType::class, ['disabled' => $isAdherent && $adherent->getGender()])
             ->add('firstName', TextType::class, ['disabled' => $isAdherent && $adherent->getFirstName()])
             ->add('lastName', TextType::class, ['disabled' => $isAdherent && $adherent->getLastName()])
-            ->add('birthPlace', TextType::class)
             ->add('birthdate', BirthdateType::class, [
                 'years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years),
                 'disabled' => $isAdherent && $adherent->getBirthDate(),
             ])
             ->add('phone', TelNumberType::class, [
-                'required' => false,
+                'required' => NationalEventTypeEnum::JEM === $options['event_type'],
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('postalCode', TextType::class, ['disabled' => $isAdherent && $adherent->getPostalCode()])
-            ->add('isJAM', CheckboxType::class, ['required' => false])
-            ->add('volunteer', CheckboxType::class, ['required' => false])
         ;
+
+        if (NationalEventTypeEnum::JEM !== $options['event_type']) {
+            $builder
+                ->add('volunteer', CheckboxType::class, ['required' => false])
+                ->add('birthPlace', TextType::class)
+                ->add('isJAM', CheckboxType::class, ['required' => false])
+            ;
+
+            if (false === $options['is_edit']) {
+                $builder->add('allowNotifications', CheckboxType::class, ['required' => false]);
+            }
+        }
 
         if (false === $options['is_edit']) {
             $builder
@@ -52,7 +62,6 @@ class CommonEventInscriptionType extends AbstractType
                 ->add('utmCampaign', HiddenType::class)
                 ->add('acceptCgu', AcceptPersonalDataCollectType::class)
                 ->add('acceptMedia', AcceptPersonalDataCollectType::class)
-                ->add('allowNotifications', CheckboxType::class, ['required' => false])
             ;
         }
     }
@@ -65,9 +74,10 @@ class CommonEventInscriptionType extends AbstractType
                 'adherent' => null,
                 'is_edit' => false,
             ])
-            ->setDefined(['adherent', 'is_edit'])
+            ->setDefined(['adherent', 'is_edit', 'event_type'])
             ->addAllowedTypes('adherent', ['null', Adherent::class])
             ->addAllowedTypes('is_edit', ['bool'])
+            ->addAllowedTypes('event_type', ['null', NationalEventTypeEnum::class])
         ;
     }
 }

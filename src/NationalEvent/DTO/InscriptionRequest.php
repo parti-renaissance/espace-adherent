@@ -18,7 +18,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['inscription_creation'])]
-#[NationalEventTransportMode(groups: ['inscription_campus_creation', 'campus_transport_update'])]
+#[NationalEventTransportMode(groups: ['event_type:campus', 'campus_transport_update'])]
 class InscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -45,14 +45,17 @@ class InscriptionRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank]
     #[Assert\Range(max: '-1 years')]
-    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['inscription_campus_creation', 'inscription_campus_edit'])]
+    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['event_type:campus', 'event_type:jem'])]
     public ?\DateTime $birthdate = null;
 
-    #[Assert\Length(max: 255)]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(max: 255),
+    ], groups: ['event_type:default', 'event_type:campus'])]
     public ?string $birthPlace = null;
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
+    #[Assert\NotBlank(groups: ['event_type:jem'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Sequentially([
@@ -61,11 +64,23 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['inscription_campus_creation', 'campus_transport_update'])]
+    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['event_type:campus', 'campus_transport_update'])]
     public ?string $visitDay = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['inscription_campus_creation', 'campus_transport_update'])]
+    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['event_type:campus', 'campus_transport_update'])]
     public ?string $transport = null;
+
+    #[Assert\NotBlank(groups: ['event_type:jem'])]
+    public ?string $packagePlan = null;
+
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['event_type:jem'])]
+    public ?string $packageCity = null;
+
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageDepartureTime', message: 'Veillez sélectionner votre préférence de départ', groups: ['event_type:jem'])]
+    public ?string $packageDepartureTime = null;
+
+    public ?string $packageDonation = null;
+
     public ?string $accommodation = null;
     public ?string $initialTransport = null;
     public bool $withDiscount = false;
@@ -103,13 +118,18 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         public readonly int $eventId,
         public readonly string $sessionId,
         public readonly string $clientIp,
-        public readonly ?array $transportConfiguration = null,
+        public readonly ?array $packageConfig = null,
     ) {
     }
 
     public static function fromInscription(EventInscription $inscription): self
     {
-        $request = new self($inscription->event->getId(), $inscription->sessionId ?? '', $inscription->clientIp ?? '', $inscription->event->transportConfiguration);
+        $request = new self(
+            $inscription->event->getId(),
+            $inscription->sessionId ?? '',
+            $inscription->clientIp ?? '',
+            $inscription->event->getIndexedPackageConfig()
+        );
         $request->email = $inscription->addressEmail;
         $request->civility = $inscription->gender;
         $request->firstName = $inscription->firstName;

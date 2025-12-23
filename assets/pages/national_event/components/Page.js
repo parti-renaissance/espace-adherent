@@ -4,29 +4,22 @@
  * First Step component for funnel
  *
  * @param {{
- *   transportConfig?: Object | null,
+ *   packageConfig?: Object | null,
  *   uncheckInputs?: boolean | null,
- *   transport?: string | null,
- *   accommodation?: string | null,
  *   initialPayedAmount?: int | null,
+ *   discountFactor?: float | null,
+ *   discountLabel?: string | null,
  * }} props
  *
  * @returns {AlpineComponent}
  */
 const Page = (props) => ({
-    accessibility: false,
-    transportConfig: props.transportConfig || null,
+    packageConfig: props.packageConfig || null,
     initialPayedAmount: props.initialPayedAmount || null,
-    visitDay: null,
-    availableTransports: [],
-    availableAccommodations: [],
-    transport: props.transport || null,
-    accommodation: props.accommodation || null,
-    initialTransport: props.transport || null,
-    initialAccommodation: props.accommodation || null,
-    selectedTransportConfig: null,
-    selectedAccommodationConfig: null,
+    packageValues: {},
+    availabilities: {},
     withDiscount: false,
+    accessibility: false,
 
     init() {
         this.$nextTick(() => {
@@ -49,112 +42,118 @@ const Page = (props) => ({
                     block: 'center',
                 });
             }
-            this.selectedTransportConfig = this.getSelectedTransportConfig();
-            this.selectedAccommodationConfig = this.getSelectedAccommodationConfig();
         });
 
-        this.$watch('transport', () => {
-            this.selectedTransportConfig = this.getSelectedTransportConfig();
-        });
-        this.$watch('accommodation', () => {
-            this.selectedAccommodationConfig = this.getSelectedAccommodationConfig();
-        });
-        this.visitDay = dom('input[name*="[visitDay]"]:checked')?.value || null;
-        this.transport = dom('input[name*="[transport]"]:checked')?.value || null;
-        this.accommodation = dom('input[name*="[accommodation]"]:checked')?.value || null;
         this.withDiscount = !!dom('input[name*="[withDiscount]"]')?.checked;
-        this.accessibility = !!dom('#campus_event_inscription_accessibility')?.value;
+        this.accessibility = !!dom('#package_event_inscription_accessibility')?.value;
+
+        this.$watch('packageValues', () => this.updateAvailabilities());
+        this.$watch('withDiscount', () => {
+            if (this.withDiscount && this.packageValues['packageDonation']) {
+                delete this.packageValues['packageDonation'];
+            }
+        });
+
+        this.$watch('accessibility', () => {
+            if (false === this.accessibility) {
+                document.querySelector('#package_event_inscription_accessibility').value = '';
+            }
+        });
+
+        findAll(document, 'input[data-field-name]:checked').forEach((input) => {
+            this.packageValues[input.dataset.fieldName] = input.value;
+        });
+
+        this.updateAvailabilities('boolean' === typeof props.uncheckInputs ? props.uncheckInputs : true);
+
         const accessibilityCheckbox = dom('#accessibility-checkbox');
         if (accessibilityCheckbox) {
             accessibilityCheckbox.checked = this.accessibility;
         }
-
-        const uncheckInputs = 'boolean' === typeof props.uncheckInputs ? props.uncheckInputs : true;
-
-        this.updateAvailableTransports(uncheckInputs);
-        this.updateAvailableAccommodations(uncheckInputs);
     },
 
-    handleAccessibilityChange(e) {
-        this.accessibility = e.target.checked;
-        if (false === this.accessibility) {
-            document.querySelector('#campus_event_inscription_accessibility').value = '';
-        }
-    },
+    updateAvailabilities(uncheckInputs = true) {
+        const activeValues = Object.values(this.packageValues).flat();
 
-    handleVisitDayChange(e) {
-        this.visitDay = e.target.value;
-        this.updateAvailableTransports();
-        this.updateAvailableAccommodations();
-    },
+        this.packageConfig.forEach((config) => {
+            const fieldKey = config.cle;
 
-    updateAvailableTransports(uncheckInputs = true) {
-        this.availableTransports = [];
+            if (!fieldKey) {
+                return;
+            }
 
-        if (!this.visitDay || !this.transportConfig?.transports) {
-            return;
-        }
+            let isAvailable = true;
 
-        this.availableTransports = (this.transportConfig.transports ?? []).filter((transport) => transport.jours_ids.includes(this.visitDay));
+            if (config.dependence && Array.isArray(config.dependence)) {
+                const dependencyMet = config.dependence.some((depId) => activeValues.includes(depId));
 
-        if (uncheckInputs) {
-            this.transport = null;
-            findAll(document, 'input[name*="[transport]"]').forEach((input) => {
-                input.checked = false;
-            });
-        }
-    },
+                if (!dependencyMet) {
+                    isAvailable = false;
+                }
+            }
 
-    updateAvailableAccommodations(uncheckInputs = true) {
-        this.availableAccommodations = [];
+            const container = document.querySelector(`[data-field-group="${fieldKey}"]`);
 
-        if (!this.visitDay || !this.transportConfig?.hebergements) {
-            return;
-        }
+            if (container) {
+                container.style.display = isAvailable ? '' : 'none';
 
-        this.availableAccommodations = (this.transportConfig.hebergements ?? []).filter((accommodation) => accommodation.jours_ids.includes(this.visitDay));
+                container.querySelectorAll('input, select, textarea').forEach((input) => {
+                    input.disabled = !isAvailable;
+                });
+            }
 
-        if (uncheckInputs) {
-            this.accommodation = null;
-            findAll(document, 'input[name*="[accommodation]"]').forEach((input) => {
-                input.checked = false;
-            });
-        }
-    },
+            if (!isAvailable && uncheckInputs) {
+                if (this.packageValues[fieldKey] !== undefined) {
+                    delete this.packageValues[fieldKey];
+                }
 
-    getSelectedTransportConfig() {
-        if (!this.transport || this.transport.startsWith('gratuit')) {
-            return null;
-        }
+                const inputsToReset = document.querySelectorAll(`[data-field-name="${fieldKey}"]`);
 
-        const configs = (this.transportConfig?.transports ?? []).filter((transport) => transport.id === this.transport);
-
-        return 0 < configs.length ? configs[0] : null;
+                inputsToReset.forEach((input) => {
+                    if ('checkbox' === input.type || 'radio' === input.type) {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                });
+            }
+        });
     },
 
     getSummaryItems() {
         const items = [];
 
-        if (this.selectedTransportConfig && !!this.selectedTransportConfig.montant) {
-            items.push({
-                label: this.selectedTransportConfig.recap_label,
-                price: this.selectedTransportConfig.montant,
-            });
-        }
+        this.packageConfig.forEach((fieldConfig) => {
+            const fieldKey = fieldConfig.cle;
+            const selectedId = this.packageValues[fieldKey];
 
-        if (this.selectedAccommodationConfig && !!this.selectedAccommodationConfig.montant) {
-            items.push({
-                label: this.selectedAccommodationConfig.recap_label,
-                price: this.selectedAccommodationConfig.montant,
+            if (!selectedId) {
+                return;
+            }
+
+            const selectedOption = fieldConfig.options.find((opt) => {
+                if ('string' === typeof opt) {
+                    return opt === selectedId;
+                }
+
+                return opt.id === selectedId;
             });
-        }
+
+            if (selectedOption && 'object' === typeof selectedOption && selectedOption.montant) {
+                items.push({
+                    label: selectedOption.recap_label || selectedOption.titre,
+                    price: parseFloat(selectedOption.montant),
+                    type: fieldKey,
+                });
+            }
+        });
 
         if (items.length && this.withDiscount) {
             const total = items.reduce((sum, item) => sum + item.price, 0);
 
             items.push({
-                label: 'Je suis étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux',
-                price: -total * 0.5,
+                label: props.discountLabel || 'Je suis étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux',
+                price: -(total - total * props.discountFactor),
             });
         }
 
@@ -164,16 +163,6 @@ const Page = (props) => ({
     getTotalPrice() {
         const items = this.getSummaryItems();
         return items.reduce((sum, item) => sum + item.price, 0);
-    },
-
-    getSelectedAccommodationConfig() {
-        if (!this.accommodation || this.accommodation.startsWith('gratuit')) {
-            return null;
-        }
-
-        const configs = (this.transportConfig?.hebergements ?? []).filter((accommodation) => accommodation.id === this.accommodation);
-
-        return 0 < configs.length ? configs[0] : null;
     },
 
     fieldsValid: {

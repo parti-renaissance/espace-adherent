@@ -5,20 +5,26 @@
 
 {% block header %}
     <header class="flex py-10 md:py-20 justify-center w-full">
-        <a href="{{ path('renaissance_site') }}">
-            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo"/>
-        </a>
+        {% if event.logoImage %}
+            <img class="max-h-36" src="{{ vich_uploader_asset(event.logoImage) }}" alt="logo"/>
+        {% else %}
+            <a href="{{ path('renaissance_site') }}">
+                <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo"/>
+            </a>
+        {% endif %}
     </header>
 {% endblock %}
 
 {% block content_section %}
-    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({uncheckInputs: {{ form.vars.valid ? 'true' : 'false' }}, transportConfig: {{ event.transportConfiguration|json_encode }}})">
+    {% set packageConfig = event.packageConfig %}
+
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({uncheckInputs: {{ form.vars.valid ? 'true' : 'false' }}, packageConfig: {{ packageConfig|json_encode }}, discountLabel: '{{ event.discountLabel|e('js') }}', discountFactor: {{ event.getDiscountFactor() }}})">
         <div class="flex flex-col gap-8 max-w-[500px] md:w-[500px]">
             {% if event.intoImage %}
                 {% set imgRatio = event.intoImage.getHeight() / event.intoImage.getWidth() %}
                 {% set imgHeight = 500 * imgRatio %}
                 <div style="height: {{ imgHeight }}px;">
-                    <img class="w-full h-full object-cover rounded-2xl" src="{{ vich_uploader_asset(event.intoImage) }}" loading="lazy" />
+                    <img class="w-full h-full object-cover rounded-2xl" src="{{ vich_uploader_asset(event.intoImage) }}" loading="lazy" alt="event-image" />
                 </div>
             {% endif %}
 
@@ -69,7 +75,7 @@
                         Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
                     </div>
 
-                    {% if not app.user %}
+                    {% if event.connectionEnabled and not app.user %}
                         <div class="text-center">
                             Adhérent ou sympathisant ?<br/>
                             <a href="{{ login_path_for_anonymous_follower(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})|merge({app_domain: user_vox_host})) }}" class="text-ui_blue-50">Connectez-vous</a> pour faciliter votre inscription.
@@ -145,74 +151,65 @@
                         {{ form_errors(form.birthdate) }}
                     </fieldset>
 
-                    {{ form_row(form.birthPlace, {
-                        label: 'Lieu de naissance',
-                        attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
-                    }) }}
+                    {% if form.birthPlace is defined %}
+                        {{ form_row(form.birthPlace, {
+                            label: 'Lieu de naissance',
+                            attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                        }) }}
+                    {% endif %}
 
-                    <fieldset class="mb-4">
+                    <fieldset>
                         {{ form_row(form.phone, {label: 'Numéro de téléphone', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
-                    <div class="bg-ui_gray-1 rounded-lg p-6">
-                        {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
-                    </div>
-                </twig:Atoms:ReCard>
-
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
-                    {{ form_row(form.visitDay, {
-                        label: 'Quand venez-vous ?',
-                        attr: {
-                            validate: "['required']",
-                            '@change': 'handleVisitDayChange($event)',
-                        },
-                    }) }}
-                </twig:Atoms:ReCard>
-
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableTransports.length > 0">
-                    {{ form_row(form.transport, {
-                        label: 'Choisissez un transport',
-                        attr: {
-                            validate: "['required']",
-                            'x-model': 'transport',
-                        },
-                    }) }}
-                </twig:Atoms:ReCard>
-
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableAccommodations.length > 0">
-                    {{ form_row(form.accommodation, {
-                        label: 'Choisissez un hébergement',
-                        attr: {
-                            validate: "['required']",
-                            'x-model': 'accommodation',
-                        },
-                    }) }}
-
-                    <fieldset class="flex flex-col gap-4" x-show="selectedAccommodationConfig && !!selectedAccommodationConfig?.accompagnement">
-                        <twig:Atoms:ReLabel x-text="selectedAccommodationConfig?.pid_label"></twig:Atoms:ReLabel>
-                        <p x-html="selectedAccommodationConfig?.pid_description" class="text-[#919EAB]"></p>
-
-                        {{ form_row(form.roommateIdentifier, {label: false, attr: {
-                            placeholder: 'Code à 6 ou 7 caractères XXX-XXX ou XXXXXX',
-                            class: 'border border-ui_blue-50 rounded-lg',
-                        }}) }}
-                    </fieldset>
-                </twig:Atoms:ReCard>
-
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
-                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-                        <div x-show="selectedTransportConfig || selectedAccommodationConfig">
-                            {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
-                                widget_side: 'right',
-                                'x-model': 'withDiscount',
-                            }}) }}
+                    {% if form.isJAM is defined %}
+                        <div class="bg-ui_gray-1 rounded-lg p-6 mt-4">
+                            {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
                         </div>
+                    {% endif %}
+                </twig:Atoms:ReCard>
 
-                        {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+                {% for child in form|filter(child => child.vars.attr['data-field-name'] is defined) %}
+                    {% set configKey = child.vars.attr['data-field-name'] %}
+
+                    {% set currentConfig = packageConfig|filter(item => item.cle == configKey)|first %}
+                    {% set defaultVisibility = (currentConfig.dependence is defined and currentConfig.dependence is not empty) ? 'false' : 'true' %}
+
+                    <twig:Atoms:ReCard
+                        class="!rounded-2xl !gap-6"
+                        data-field-group="{{ configKey }}"
+                        x-show="availabilities.{{ configKey }} ?? {{ defaultVisibility }}"
+                        x-cloak
+                    >
+                        {{ form_row(child, {
+                            widget_attr: {
+                                validate: "['required']",
+                            },
+                        }) }}
+                    </twig:Atoms:ReCard>
+                {% endfor %}
+
+                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
+                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4" x-show="getSummaryItems().length > 0">
+                        {{ form_row(form.withDiscount, {label: event.discountLabel ?? 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
+                            widget_side: 'right',
+                            'x-model': 'withDiscount',
+                        }}) }}
+
+                        {% if event.discountHelp %}
+                            {{ event.discountHelp|raw|nl2br }}
+                        {% endif %}
+                    </div>
+
+                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
+
+                        {% if form.volunteer is defined %}
+                            {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+                        {% endif %}
 
                         <div>
-                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" @change="handleAccessibilityChange($event)">
-                                <label for="accessibility-checkbox">J’ai un handicap visible ou invisible nécessitant des aménagements spécifiques</label>
+                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
+                                <label for="accessibility-checkbox">J’ai une allergie, un régime spécial, un handicap ou autre question</label>
                             </twig:Molecules:ReCheckboxField>
                         </div>
                         <div x-show="accessibility" x-transition>
@@ -220,7 +217,10 @@
                         </div>
                     </div>
 
-                    {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
+                    {% if form.allowNotifications is defined %}
+                        {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
+                    {% endif %}
+
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
                     {{ form_row(form.acceptMedia, {label: 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}
 
