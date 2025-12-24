@@ -99,7 +99,7 @@ class AppHit
     #[ORM\Column(unique: true, nullable: true)]
     public ?string $fingerprint = null;
 
-    #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
+    #[ORM\Column(type: 'json', nullable: true)]
     public array $raw = [];
 
     public function __construct()

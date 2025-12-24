@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CampusEventInscriptionType extends AbstractType
+class PackageEventInscriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -22,7 +22,7 @@ class CampusEventInscriptionType extends AbstractType
         ;
 
         if (false === $options['is_edit']) {
-            new CampusTransportType()->buildForm($builder, $options);
+            new PackageConfigType()->buildForm($builder, $options);
         }
     }
 
@@ -34,8 +34,8 @@ class CampusEventInscriptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined(['transport_configuration', 'reserved_places'])
-            ->addAllowedTypes('transport_configuration', ['array'])
+            ->setDefined(['package_config', 'reserved_places'])
+            ->addAllowedTypes('package_config', ['array'])
             ->addAllowedTypes('reserved_places', ['array'])
         ;
     }

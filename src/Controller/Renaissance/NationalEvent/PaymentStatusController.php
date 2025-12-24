@@ -26,7 +26,7 @@ class PaymentStatusController extends AbstractController
         $status = $request->query->get('status', 'unknown');
 
         if ('success' === $status) {
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 

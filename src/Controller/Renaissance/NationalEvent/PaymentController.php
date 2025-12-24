@@ -32,7 +32,7 @@ class PaymentController extends AbstractController
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
         if (!$inscription->isPaymentRequired() || PaymentStatusEnum::CONFIRMED === $inscription->paymentStatus) {
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
             }
 

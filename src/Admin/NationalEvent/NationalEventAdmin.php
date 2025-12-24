@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
@@ -106,6 +107,7 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('alertEnabled', null, ['label' => 'Alerte activée', 'required' => false])
                     ->add('alertTitle', TextType::class, ['label' => 'Titre', 'required' => false])
                     ->add('alertDescription', TextType::class, ['label' => 'Description', 'required' => false])
+                    ->add('alertLogoImage', UploadableFileType::class, ['label' => 'Logo de l\'alerte', 'required' => false])
                 ->end()
                 ->with('Open Graph', ['class' => 'col-md-6'])
                     ->add('ogTitle', TextType::class, ['label' => 'Titre', 'required' => false])
@@ -124,14 +126,23 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('defaultBraceletColor', ColorType::class, ['label' => 'Couleur bracelet par défaut', 'required' => false])
                 ->end()
             ->end()
-            ->tab('Configuration Campus  🛠️')
-                ->with('Choix de transport & tarifs', ['class' => 'col-md-6'])
-                    ->add('transportConfiguration', JsonType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 10], 'help' => 'Configuration des transports et tarifs pour le campus. Utilisez le format JSON.'])
+            ->tab('Configuration forfaits  🛠️')
+                ->with('', ['class' => 'col-md-12'])
+                    ->add('packageConfig', JsonType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 25], 'help' => 'Configuration des transports et tarifs. Utilisez le format JSON.'])
                 ->end()
             ->end()
-            ->tab('Mailchimp')
-                ->with('Mailchimp', ['class' => 'col-md-6'])
+            ->tab('Autre configuration  ⚙️')
+                ->with('Connection & Synchronisation', ['class' => 'col-md-6'])
+                    ->add('connectionEnabled', null, ['label' => 'Activer la connexion militant', 'required' => false])
                     ->add('mailchimpSync', null, ['label' => 'Synchronisation des participants vers Mailchimp', 'required' => false])
+                ->end()
+                ->with('Réduction', ['class' => 'col-md-6'])
+                    ->add('discountLabel', null, ['label' => 'Libellé de la case à cocher de la réduction', 'required' => false])
+                    ->add('discountHelp', TextareaType::class, [
+                        'label' => 'Le text descriptif de la réduction (optionnel, HTML acceptable)',
+                        'required' => false,
+                        'attr' => ['rows' => 7],
+                    ])
                 ->end()
             ->end()
         ;

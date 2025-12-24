@@ -318,11 +318,12 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
         /** @var NationalEvent[] $campusEvents */
         $campusEvents = $this->getModelManager()->createQuery(NationalEvent::class, 'e')
             ->select('e')
-            ->where('e.transportConfiguration IS NOT NULL')
+            ->where('e.packageConfig IS NOT NULL')
             ->getQuery()
             ->getResult()
         ;
 
+        /** @var NationalEvent|null $currentEvent */
         $currentEvent = $this->getSubject()?->event;
 
         $form
@@ -376,7 +377,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ])
                     ->add('visitDay', ChoiceType::class, [
                         'label' => 'Jour de visite',
-                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {
@@ -392,7 +393,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ])
                     ->add('transport', ChoiceType::class, [
                         'label' => 'Choix de transport',
-                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {
@@ -408,7 +409,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ])
                     ->add('accommodation', ChoiceType::class, [
                         'label' => 'Choix d\'hébergement',
-                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {

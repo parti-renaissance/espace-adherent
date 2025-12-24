@@ -66,11 +66,13 @@ class EventInscriptionManager
         $newAmount = $eventInscription->event->calculateInscriptionAmount(
             $inscriptionRequest->transport,
             $inscriptionRequest->accommodation,
+            $inscriptionRequest->packagePlan,
+            $inscriptionRequest->packageDonation,
             $inscriptionRequest->withDiscount
         );
 
         if (!$newAmount) {
-            $eventInscription->updateTransportFromRequest($inscriptionRequest);
+            $eventInscription->updatePackageFromRequest($inscriptionRequest);
 
             if (InscriptionStatusEnum::WAITING_PAYMENT === $eventInscription->status) {
                 $eventInscription->status = InscriptionStatusEnum::PENDING;
@@ -86,7 +88,7 @@ class EventInscriptionManager
         }
 
         if ($eventInscription->isPaymentSuccess() && $newAmount === $eventInscription->amount) {
-            $eventInscription->updateTransportFromRequest($inscriptionRequest);
+            $eventInscription->updatePackageFromRequest($inscriptionRequest);
             $this->entityManager->flush();
 
             return null;

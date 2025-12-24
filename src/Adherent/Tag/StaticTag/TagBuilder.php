@@ -8,6 +8,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagGenerator\EventTagGenerator;
 use App\Entity\AdherentStaticLabel;
 use App\Entity\NationalEvent\NationalEvent;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\Repository\AdherentStaticLabelRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Symfony\Component\String\UnicodeString;
@@ -22,7 +23,7 @@ class TagBuilder
 
     public function buildAll(): array
     {
-        $events = $this->nationalEventRepository->findAllSince(new \DateTime(EventTagGenerator::PERIOD));
+        $events = $this->nationalEventRepository->findAllSince(new \DateTime(EventTagGenerator::PERIOD), [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS]);
 
         return array_values(array_unique(array_merge(
             array_map([$this, 'buildForEvent'], array_filter($events, static fn (NationalEvent $event) => $event->endDate > new \DateTime())),

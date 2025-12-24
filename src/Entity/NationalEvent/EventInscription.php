@@ -189,6 +189,22 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
+    public ?string $packagePlan = null;
+
+    #[Groups(['event_inscription_read'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $packageCity = null;
+
+    #[Groups(['event_inscription_read'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $packageDepartureTime = null;
+
+    #[Groups(['event_inscription_read'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $packageDonation = null;
+
+    #[Groups(['event_inscription_read'])]
+    #[ORM\Column(nullable: true)]
     public ?string $roommateIdentifier = null;
 
     #[Groups(['event_inscription_read'])]
@@ -360,7 +376,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             $this->utmCampaign = $inscriptionRequest->utmCampaign;
             $this->referrerCode = $inscriptionRequest->referrerCode;
 
-            $this->updateTransportFromRequest($inscriptionRequest);
+            $this->updatePackageFromRequest($inscriptionRequest);
 
             if ($this->amount) {
                 $this->status = InscriptionStatusEnum::WAITING_PAYMENT;
@@ -369,14 +385,25 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         }
     }
 
-    public function updateTransportFromRequest(InscriptionRequest $inscriptionRequest): void
+    public function updatePackageFromRequest(InscriptionRequest $inscriptionRequest): void
     {
         $this->transport = $inscriptionRequest->transport;
         $this->accommodation = $inscriptionRequest->accommodation;
         $this->visitDay = $inscriptionRequest->visitDay;
         $this->withDiscount = $inscriptionRequest->withDiscount;
         $this->roommateIdentifier = $inscriptionRequest->roommateIdentifier;
-        $this->amount = $this->event->calculateInscriptionAmount($this->transport, $this->accommodation, $this->withDiscount);
+        $this->packagePlan = $inscriptionRequest->packagePlan;
+        $this->packageCity = $inscriptionRequest->packageCity;
+        $this->packageDepartureTime = $inscriptionRequest->packageDepartureTime;
+        $this->packageDonation = $inscriptionRequest->packageDonation;
+
+        $this->amount = $this->event->calculateInscriptionAmount(
+            $this->transport,
+            $this->accommodation,
+            $this->packagePlan,
+            $this->packageDonation,
+            $this->withDiscount
+        );
     }
 
     #[Groups(['event_inscription_read_for_validation', 'event_inscription_scan'])]
@@ -433,7 +460,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getVisitDays() as $day) {
+        foreach ($this->event->getVisitDays()['options'] as $day) {
             if ($day['id'] === $this->visitDay) {
                 return $day;
             }
@@ -448,7 +475,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getTransports() as $transport) {
+        foreach ($this->event->getTransports()['options'] as $transport) {
             if ($transport['id'] === $this->transport) {
                 return $transport;
             }
@@ -463,7 +490,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getAccommodations() as $accommodation) {
+        foreach ($this->event->getAccommodations()['options'] as $accommodation) {
             if ($accommodation['id'] === $this->accommodation) {
                 return $accommodation;
             }

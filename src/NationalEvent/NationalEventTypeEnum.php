@@ -11,6 +11,7 @@ enum NationalEventTypeEnum: string implements TranslatableInterface
 {
     case DEFAULT = 'default';
     case CAMPUS = 'campus';
+    case JEM = 'jem';
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {

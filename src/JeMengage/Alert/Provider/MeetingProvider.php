@@ -49,11 +49,11 @@ class MeetingProvider implements AlertProviderInterface
             }
 
             if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event)) {
-                if ($event->logoImage) {
-                    $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->logoImage))]);
+                if ($event->alertLogoImage) {
+                    $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->alertLogoImage))]);
                 }
 
-                if ($event->isCampus()) {
+                if ($event->isPackageEventType()) {
                     $ctaLabel = 'Suivre mon inscription';
                     $ctaUrl = $this->generateUrl('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscriptions[0]->getUuid()->toString()]);
                 } else {

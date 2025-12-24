@@ -7,7 +7,7 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Form\NationalEvent\CampusTransportType;
+use App\Form\NationalEvent\PackageConfigType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -34,14 +34,14 @@ class EditTransportController extends AbstractController
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
 
-        if (!$event->isCampus()) {
+        if (!$event->isPackageEventType()) {
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
 
         if (!$inscription->allowEditInscription() && ($event->startDate <= new \DateTime() || $inscription->amount)) {
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
 
-            if ($event->isCampus()) {
+            if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
             }
 
@@ -51,8 +51,8 @@ class EditTransportController extends AbstractController
         $inscriptionRequest = InscriptionRequest::fromInscription($inscription);
 
         $form = $this
-            ->createForm(CampusTransportType::class, $inscriptionRequest, [
-                'transport_configuration' => $event->transportConfiguration,
+            ->createForm(PackageConfigType::class, $inscriptionRequest, [
+                'package_config' => $event->packageConfig,
                 'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
                 'validation_groups' => ['campus_transport_update'],
             ])

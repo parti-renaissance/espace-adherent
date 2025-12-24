@@ -51,6 +51,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->innerJoin('ei.event', 'e')
             ->where('ei.adherent = :adherent')
             ->andWhere('e.startDate >= :start_date')
+            ->andWhere('e.type IN (:types)')
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->andWhere('((e.endDate <= :now AND ei.firstTicketScannedAt IS NOT NULL) OR e.endDate > :now)')
             ->setParameters([
@@ -62,6 +63,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                     InscriptionStatusEnum::DUPLICATE,
                     InscriptionStatusEnum::REFUSED,
                 ],
+                'types' => [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS],
             ])
             ->getQuery()
             ->getResult()

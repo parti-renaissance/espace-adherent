@@ -37,7 +37,7 @@ class AutoUpdateStatusListener implements EventSubscriberInterface
         if ($oldEventInscription = $this->eventInscriptionRepository->findDuplicate($newEventInscription)) {
             // Mark as duplicate the new inscription
             if (
-                (!$newEventInscription->amount && (!$oldEventInscription->event->isCampus() || $oldEventInscription->isPaymentSuccess()))
+                (!$newEventInscription->amount && (!$oldEventInscription->event->isPackageEventType() || $oldEventInscription->isPaymentSuccess()))
                 || $oldEventInscription->isPaymentSuccess()
             ) {
                 $newEventInscription->status = InscriptionStatusEnum::DUPLICATE;
