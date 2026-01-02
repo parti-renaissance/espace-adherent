@@ -67,7 +67,7 @@ Feature:
         When I press "Suivant"
         And I wait 3 seconds
         Then User "renaissance-user-4@en-marche-dev.fr" should have 8 subscription types
-        And I should see "Cotisation pour l’année 2025"
+        And I should see "Cotisation pour l’année 2026"
         When I press "Je cotise pour 60 €"
 
         # Step 5 : payment
@@ -76,7 +76,7 @@ Feature:
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         And I am on payment status page for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
-        And User "renaissance-user-4@en-marche-dev.fr" should have tag "adherent:a_jour_2025:recotisation"
+        And User "renaissance-user-4@en-marche-dev.fr" should have tag "adherent:a_jour_2026:recotisation"
         And I should have 1 email "RenaissanceReAdhesionConfirmationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
             """
             {

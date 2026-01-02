@@ -205,8 +205,8 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "Adhérent à jour 2026",
                                 "type": "adherent"
                             },
                             {
@@ -383,8 +383,8 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "Adhérent à jour 2026",
                                 "type": "adherent"
                             },
                             {
@@ -565,8 +565,8 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "Adhérent à jour 2026",
                                 "type": "adherent"
                             },
                             {
@@ -830,11 +830,12 @@ Feature:
                                 "required": false,
                                 "choices": {
                                     "adherent": "Adhérent",
-                                    "adherent:a_jour_2025": "Adhérent - À jour 2025",
-                                    "adherent:a_jour_2025:primo": "Adhérent - À jour 2025 - Primo-adhérent",
-                                    "adherent:a_jour_2025:recotisation": "Adhérent - À jour 2025 - Recotisation",
-                                    "adherent:a_jour_2025:elu_a_jour": "Adhérent - À jour 2025 - Élu à jour",
+                                    "adherent:a_jour_2026": "Adhérent - À jour 2026",
+                                    "adherent:a_jour_2026:primo": "Adhérent - À jour 2026 - Primo-adhérent",
+                                    "adherent:a_jour_2026:recotisation": "Adhérent - À jour 2026 - Recotisation",
+                                    "adherent:a_jour_2026:elu_a_jour": "Adhérent - À jour 2026 - Élu à jour",
                                     "adherent:plus_a_jour": "Adhérent - Plus à jour",
+                                    "adherent:plus_a_jour:annee_2025": "Adhérent - Plus à jour - À jour 2025",
                                     "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
                                     "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
                                     "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
@@ -1076,8 +1077,8 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "Adhérent à jour 2026",
                                 "type": "adherent"
                             },
                             {
@@ -1152,8 +1153,8 @@ Feature:
                         "nationality": "FR",
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2025:recotisation",
-                                "label": "Adhérent à jour 2025",
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "Adhérent à jour 2026",
                                 "type": "adherent"
                             },
                             {
