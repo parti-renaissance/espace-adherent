@@ -1,10 +1,11 @@
 parameters:
     env(RABBITMQ_CONNECT_TIMEOUT): '10'
-    env(RABBITMQ_READ_TIMEOUT): '250'
-    env(RABBITMQ_WRITE_TIMEOUT): '250'
+    env(RABBITMQ_WAIT_TIMEOUT): '30'
+    env(RABBITMQ_READ_TIMEOUT): '60'
+    env(RABBITMQ_WRITE_TIMEOUT): '60'
     env(RABBITMQ_HEARTBEAT): '120'
 
-    env(RABBITMQ_DSN): 'phpamqplib://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%%2f?connect_timeout=%env(RABBITMQ_CONNECT_TIMEOUT)%&read_timeout=%env(RABBITMQ_READ_TIMEOUT)%&write_timeout=%env(RABBITMQ_WRITE_TIMEOUT)%&heartbeat=%env(RABBITMQ_HEARTBEAT)%&keepalive=1'
+    env(RABBITMQ_DSN): 'phpamqplib://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%%2f?connect_timeout=%env(RABBITMQ_CONNECT_TIMEOUT)%&wait_timeout=%env(RABBITMQ_WAIT_TIMEOUT)%&read_timeout=%env(RABBITMQ_READ_TIMEOUT)%&write_timeout=%env(RABBITMQ_WRITE_TIMEOUT)%&heartbeat=%env(RABBITMQ_HEARTBEAT)%&keepalive=1'
 
 framework:
     messenger:
