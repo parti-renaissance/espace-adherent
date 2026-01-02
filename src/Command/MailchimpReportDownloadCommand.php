@@ -38,7 +38,7 @@ class MailchimpReportDownloadCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('recent-only', null, InputOption::VALUE_NONE, 'Download campaign reports for only recent messages')
+            ->addOption('reschedule', null, InputOption::VALUE_NONE, 'Reschedule report download command')
             ->addOption('recent-interval', null, InputOption::VALUE_REQUIRED, 'Duration of recent interval in day (default: 14 days)', 14)
         ;
     }
@@ -52,15 +52,8 @@ class MailchimpReportDownloadCommand extends Command
     {
         $this->io->title('Mailchimp report catch-up');
 
-        $recentOnly = (bool) $input->getOption('recent-only');
-        $recentDays = (int) $input->getOption('recent-interval');
-
-        $from = null;
-        if ($recentOnly) {
-            $from = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
-                ->modify(\sprintf('-%d days', $recentDays))
-            ;
-        }
+        $from = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->modify(\sprintf('-%d days', (int) $input->getOption('recent-interval')));
+        $reschedule = (bool) $input->getOption('reschedule');
 
         $pageSize = 500;
         $qb = $this->createBaseQuery($from)
@@ -81,7 +74,7 @@ class MailchimpReportDownloadCommand extends Command
             /** @var AdherentMessage $am */
             foreach ($paginator->getIterator() as $am) {
                 $this->io->progressAdvance();
-                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: false, lowPriority: $am->isNational()));
+                $this->messageBus->dispatch(new SyncReportCommand($am->getUuid(), autoReschedule: $reschedule, lowPriority: $am->isNational()));
             }
 
             $this->entityManager->clear();
