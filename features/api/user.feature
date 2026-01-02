@@ -115,8 +115,8 @@ Feature:
                 },
                 "tags": [
                     {
-                        "code": "adherent:a_jour_2025:recotisation",
-                        "label": "Adhérent à jour 2025",
+                        "code": "adherent:a_jour_2026:recotisation",
+                        "label": "Adhérent à jour 2026",
                         "type": "adherent"
                     }
                 ],

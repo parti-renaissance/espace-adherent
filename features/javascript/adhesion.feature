@@ -59,7 +59,7 @@ Feature:
         And I am on payment status page for the last donation of "adherent@renaissance.code"
         Then I should be on "/adhesion/confirmation-email" wait otherwise
         And I should see "Votre paiement a bien été validé !"
-        And User "adherent@renaissance.code" should have tag "adherent:a_jour_2025:primo"
+        And User "adherent@renaissance.code" should have tag "adherent:a_jour_2026:primo"
         And I should see "Confirmer votre adresse email"
         And I should see "adherent@renaissance.code"
         And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "adherent@renaissance.code" with payload:
@@ -431,7 +431,7 @@ Feature:
         And I am on payment status page for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/carte-adherent" wait otherwise
         And I should see "Votre paiement a bien été validé !"
-        And User "carl999@example.fr" should have tag "adherent:a_jour_2025:primo"
+        And User "carl999@example.fr" should have tag "adherent:a_jour_2026:primo"
         And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "carl999@example.fr" with payload:
             """
             {
