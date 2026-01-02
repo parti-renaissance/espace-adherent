@@ -22,6 +22,7 @@ CREATE TABLE `adherent_activation_code` (
   `created_at` datetime NOT NULL,
   `expired_at` datetime NOT NULL,
   `used_at` datetime DEFAULT NULL,
+  `revoked_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_3A628E8F25F06C53` (`adherent_id`),
   KEY `IDX_3A628E8F25F06C531D775834` (`adherent_id`,`value`),
@@ -269,7 +270,7 @@ CREATE TABLE `adherent_formation` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2D97408BD17F50A6` (`uuid`),
   KEY `IDX_2D97408B9DF5350C` (`created_by_administrator_id`),
@@ -356,6 +357,7 @@ CREATE TABLE `adherent_mandate` (
   KEY `IDX_9C0C3D6085C9D733` (`created_by_adherent_id`),
   KEY `IDX_9C0C3D60DF6CFDC9` (`updated_by_adherent_id`),
   KEY `IDX_9C0C3D609F2C3FAB` (`zone_id`),
+  KEY `IDX_9C0C3D608CDE5729` (`type`),
   CONSTRAINT `FK_9C0C3D6025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9C0C3D6085C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_9C0C3D609DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
@@ -411,7 +413,6 @@ CREATE TABLE `adherent_message_filters` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `committee_id` int unsigned DEFAULT NULL,
   `adherent_segment_id` int unsigned DEFAULT NULL,
-  `user_list_definition_id` int unsigned DEFAULT NULL,
   `zone_id` int unsigned DEFAULT NULL,
   `segment_id` int unsigned DEFAULT NULL,
   `synchronized` tinyint(1) NOT NULL DEFAULT '0',
@@ -433,13 +434,11 @@ CREATE TABLE `adherent_message_filters` (
   `mandate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `political_function` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `include_committee_provisional_supervisors` tinyint(1) DEFAULT NULL,
   `is_certified` tinyint(1) DEFAULT NULL,
   `scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `audience_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_committee_member` tinyint(1) DEFAULT NULL,
   `last_membership_since` date DEFAULT NULL,
   `last_membership_before` date DEFAULT NULL,
@@ -449,17 +448,17 @@ CREATE TABLE `adherent_message_filters` (
   `declared_mandate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `adherent_tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `elect_tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `static_tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `static_tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_membership_since` date DEFAULT NULL,
+  `first_membership_before` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_28CA9F949F2C3FAB` (`zone_id`),
   KEY `IDX_28CA9F94DB296AAD` (`segment_id`),
   KEY `IDX_28CA9F94ED1A100B` (`committee_id`),
-  KEY `IDX_28CA9F94F74563E3` (`user_list_definition_id`),
   KEY `IDX_28CA9F94FAF04979` (`adherent_segment_id`),
   CONSTRAINT `FK_28CA9F949F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_28CA9F94DB296AAD` FOREIGN KEY (`segment_id`) REFERENCES `audience_segment` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_28CA9F94ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_28CA9F94F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`),
   CONSTRAINT `FK_28CA9F94FAF04979` FOREIGN KEY (`adherent_segment_id`) REFERENCES `adherent_segment` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -474,6 +473,37 @@ LOCK TABLES `adherent_message_filters` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `adherent_message_reach`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adherent_message_reach` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `message_id` int unsigned NOT NULL,
+  `adherent_id` int unsigned DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_39E44CAD25F06C53537A13295F8A7F73` (`adherent_id`,`message_id`,`source`),
+  KEY `IDX_39E44CAD537A1329` (`message_id`),
+  KEY `IDX_39E44CAD25F06C53` (`adherent_id`),
+  KEY `IDX_39E44CAD537A13295F8A7F73` (`message_id`,`source`),
+  CONSTRAINT `FK_39E44CAD25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_39E44CAD537A1329` FOREIGN KEY (`message_id`) REFERENCES `adherent_messages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_message_reach`
+--
+
+LOCK TABLES `adherent_message_reach` WRITE;
+/*!40000 ALTER TABLE `adherent_message_reach` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_message_reach` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_messages`
 --
 
@@ -481,27 +511,48 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_messages` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `author_id` int unsigned NOT NULL,
+  `author_id` int unsigned DEFAULT NULL,
   `filter_id` int unsigned DEFAULT NULL,
-  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `instance_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sent_at` datetime DEFAULT NULL,
-  `send_to_timeline` tinyint(1) NOT NULL DEFAULT '0',
   `recipient_count` int DEFAULT NULL,
-  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'platform',
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cadre',
   `json_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `sender_id` int unsigned DEFAULT NULL,
+  `sender_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sender_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_theme` json DEFAULT NULL,
+  `is_statutory` tinyint(1) NOT NULL DEFAULT '0',
+  `team_owner_id` int unsigned DEFAULT NULL,
+  `sender_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sender_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sender_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sender_theme` json DEFAULT NULL,
+  `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D187C183D17F50A6` (`uuid`),
-  KEY `IDX_D187C183D395B25E` (`filter_id`),
+  UNIQUE KEY `UNIQ_D187C183D395B25E` (`filter_id`),
   KEY `IDX_D187C183F675F31B` (`author_id`),
+  KEY `IDX_D187C183F624B39D` (`sender_id`),
+  KEY `IDX_D187C1837B00651C` (`status`),
+  KEY `IDX_D187C1835F8A7F73` (`source`),
+  KEY `IDX_D187C183C3144BB` (`instance_scope`),
+  KEY `IDX_D187C183C67EBD87` (`team_owner_id`),
+  CONSTRAINT `FK_D187C183C67EBD87` FOREIGN KEY (`team_owner_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_D187C183D395B25E` FOREIGN KEY (`filter_id`) REFERENCES `adherent_message_filters` (`id`),
-  CONSTRAINT `FK_D187C183F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+  CONSTRAINT `FK_D187C183F624B39D` FOREIGN KEY (`sender_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_D187C183F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -522,32 +573,19 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_request` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `amount` double NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `allow_email_notifications` tinyint(1) NOT NULL DEFAULT '0',
-  `allow_mobile_notifications` tinyint(1) NOT NULL DEFAULT '0',
-  `token_used_at` datetime DEFAULT NULL,
   `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adherent_id` int unsigned DEFAULT NULL,
+  `email_hash` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
+  `account_created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_BEE6BD11D17F50A6` (`uuid`)
+  UNIQUE KEY `UNIQ_BEE6BD11D17F50A6` (`uuid`),
+  KEY `IDX_BEE6BD1125F06C53` (`adherent_id`),
+  CONSTRAINT `FK_BEE6BD1125F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -558,6 +596,35 @@ CREATE TABLE `adherent_request` (
 LOCK TABLES `adherent_request` WRITE;
 /*!40000 ALTER TABLE `adherent_request` DISABLE KEYS */;
 /*!40000 ALTER TABLE `adherent_request` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adherent_request_reminder`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adherent_request_reminder` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_request_id` int unsigned DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_D80F7E4CD17F50A6` (`uuid`),
+  KEY `IDX_D80F7E4C63A79B71` (`adherent_request_id`),
+  CONSTRAINT `FK_D80F7E4C63A79B71` FOREIGN KEY (`adherent_request_id`) REFERENCES `adherent_request` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_request_reminder`
+--
+
+LOCK TABLES `adherent_request_reminder` WRITE;
+/*!40000 ALTER TABLE `adherent_request_reminder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_request_reminder` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -630,8 +697,8 @@ UNLOCK TABLES;
 CREATE TABLE `adherent_static_label` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `category_id` int unsigned NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_F204E90277153098` (`code`),
   UNIQUE KEY `UNIQ_F204E902EA750E8` (`label`),
@@ -657,8 +724,8 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_static_label_category` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sync` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_36F0D66C77153098` (`code`),
@@ -740,6 +807,7 @@ CREATE TABLE `adherent_zone_based_role` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_390E4D38D17F50A6` (`uuid`),
   KEY `IDX_390E4D3825F06C53` (`adherent_id`),
@@ -799,7 +867,7 @@ CREATE TABLE `adherents` (
   `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `birthdate` date DEFAULT NULL,
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DISABLED',
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
   `registered_at` datetime NOT NULL,
   `activated_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -815,7 +883,6 @@ CREATE TABLE `adherents` (
   `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `adherent` tinyint(1) NOT NULL DEFAULT '0',
   `mandates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nickname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -829,7 +896,6 @@ CREATE TABLE `adherents` (
   `canary_tester` tinyint(1) NOT NULL DEFAULT '0',
   `email_unsubscribed` tinyint(1) NOT NULL DEFAULT '0',
   `email_unsubscribed_at` datetime DEFAULT NULL,
-  `election_results_reporter` tinyint(1) NOT NULL DEFAULT '0',
   `certified_at` datetime DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `linkedin_page_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -844,10 +910,8 @@ CREATE TABLE `adherents` (
   `phoning_manager_role` tinyint(1) NOT NULL DEFAULT '0',
   `pap_national_manager_role` tinyint(1) NOT NULL DEFAULT '0',
   `phone_verified_at` datetime DEFAULT NULL,
-  `national_communication_role` tinyint(1) NOT NULL DEFAULT '0',
   `pap_user_role` tinyint(1) NOT NULL DEFAULT '0',
   `last_login_group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `activism_zone_id` int unsigned DEFAULT NULL,
   `last_membership_donation` datetime DEFAULT NULL,
   `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -862,11 +926,19 @@ CREATE TABLE `adherents` (
   `v2` tinyint(1) NOT NULL DEFAULT '0',
   `finished_adhesion_steps` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `accept_member_card` tinyint(1) NOT NULL DEFAULT '1',
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_mailchimp_failed_sync_response` longtext COLLATE utf8mb4_unicode_ci,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `party_membership` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'exclusive',
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_mailchimp_failed_sync_response` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `party_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'exclusive',
   `resubscribe_email_sent_at` datetime DEFAULT NULL,
+  `public_id` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_membership_donation` datetime DEFAULT NULL,
+  `forced_membership` tinyint(1) NOT NULL DEFAULT '0',
+  `unsubscribe_requested_at` datetime DEFAULT NULL,
+  `sandbox_mode` tinyint(1) NOT NULL DEFAULT '0',
+  `resubscribe_email_started_at` datetime DEFAULT NULL,
+  `resubscribe_response` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meeting_scanner` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_562C7DA3B08E074E` (`email_address`),
   UNIQUE KEY `UNIQ_562C7DA3D17F50A6` (`uuid`),
@@ -874,15 +946,15 @@ CREATE TABLE `adherents` (
   UNIQUE KEY `UNIQ_562C7DA394E3BB99` (`jecoute_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA37657F304` (`candidate_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA314E51F8D` (`last_contribution_id`),
+  UNIQUE KEY `UNIQ_562C7DA3B5B48B91` (`public_id`),
   KEY `IDX_562C7DA3EA9FDD75` (`media_id`),
-  KEY `IDX_562C7DA38C8E414F` (`activism_zone_id`),
   KEY `IDX_562C7DA39DF5350C` (`created_by_administrator_id`),
   KEY `IDX_562C7DA3CF1918FF` (`updated_by_administrator_id`),
   KEY `IDX_562C7DA36FBC9426` (`tags`(512)),
   KEY `IDX_562C7DA37B00651C` (`status`),
+  KEY `IDX_562C7DA317BD45F1` (`mailchimp_status`),
   CONSTRAINT `FK_562C7DA314E51F8D` FOREIGN KEY (`last_contribution_id`) REFERENCES `contribution` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA37657F304` FOREIGN KEY (`candidate_managed_area_id`) REFERENCES `candidate_managed_area` (`id`),
-  CONSTRAINT `FK_562C7DA38C8E414F` FOREIGN KEY (`activism_zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_562C7DA394E3BB99` FOREIGN KEY (`jecoute_managed_area_id`) REFERENCES `jecoute_managed_areas` (`id`),
   CONSTRAINT `FK_562C7DA39DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA3CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
@@ -908,7 +980,7 @@ UNLOCK TABLES;
 CREATE TABLE `administrator_action_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `administrator_id` int NOT NULL,
-  `TYPE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `TYPE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
   `data` json DEFAULT NULL,
   `telegram_notified_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -1012,6 +1084,32 @@ LOCK TABLES `administrator_role_history` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `administrator_zone`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrator_zone` (
+  `administrator_id` int NOT NULL,
+  `zone_id` int unsigned NOT NULL,
+  PRIMARY KEY (`administrator_id`,`zone_id`),
+  KEY `IDX_2961ACEA4B09E92C` (`administrator_id`),
+  KEY `IDX_2961ACEA9F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_2961ACEA4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2961ACEA9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administrator_zone`
+--
+
+LOCK TABLES `administrator_zone` WRITE;
+/*!40000 ALTER TABLE `administrator_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrator_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `administrators`
 --
 
@@ -1064,6 +1162,110 @@ LOCK TABLES `administrators_roles` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `agora`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agora` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `president_id` int unsigned DEFAULT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `max_members_count` int unsigned NOT NULL DEFAULT '50',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `canonical_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_A0B6A0FDD17F50A6` (`uuid`),
+  KEY `IDX_A0B6A0FDB40A33C7` (`president_id`),
+  KEY `IDX_A0B6A0FD9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_A0B6A0FDCF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_A0B6A0FD9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A0B6A0FDB40A33C7` FOREIGN KEY (`president_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A0B6A0FDCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agora`
+--
+
+LOCK TABLES `agora` WRITE;
+/*!40000 ALTER TABLE `agora` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agora` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agora_general_secretaries`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agora_general_secretaries` (
+  `agora_id` int unsigned NOT NULL,
+  `adherent_id` int unsigned NOT NULL,
+  PRIMARY KEY (`agora_id`,`adherent_id`),
+  KEY `IDX_18E675D157588F43` (`agora_id`),
+  KEY `IDX_18E675D125F06C53` (`adherent_id`),
+  CONSTRAINT `FK_18E675D125F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_18E675D157588F43` FOREIGN KEY (`agora_id`) REFERENCES `agora` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agora_general_secretaries`
+--
+
+LOCK TABLES `agora_general_secretaries` WRITE;
+/*!40000 ALTER TABLE `agora_general_secretaries` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agora_general_secretaries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agora_membership`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agora_membership` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `agora_id` int unsigned NOT NULL,
+  `adherent_id` int unsigned NOT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_9F885CDCD17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_9F885CDC57588F4325F06C53` (`agora_id`,`adherent_id`),
+  KEY `IDX_9F885CDC57588F43` (`agora_id`),
+  KEY `IDX_9F885CDC25F06C53` (`adherent_id`),
+  KEY `IDX_9F885CDC9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_9F885CDCCF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_9F885CDC25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_9F885CDC57588F43` FOREIGN KEY (`agora_id`) REFERENCES `agora` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_9F885CDC9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_9F885CDCCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agora_membership`
+--
+
+LOCK TABLES `agora_membership` WRITE;
+/*!40000 ALTER TABLE `agora_membership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agora_membership` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `algolia_je_mengage_timeline_feed`
 --
 
@@ -1082,6 +1284,183 @@ CREATE TABLE `algolia_je_mengage_timeline_feed` (
 LOCK TABLES `algolia_je_mengage_timeline_feed` WRITE;
 /*!40000 ALTER TABLE `algolia_je_mengage_timeline_feed` DISABLE KEYS */;
 /*!40000 ALTER TABLE `algolia_je_mengage_timeline_feed` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_alert`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_alert` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cta_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cta_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `share_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` json DEFAULT NULL,
+  `begin_at` datetime NOT NULL,
+  `end_at` datetime NOT NULL,
+  `with_magic_link` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_C12ECB0CD17F50A6` (`uuid`),
+  KEY `IDX_C12ECB0C9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_C12ECB0CCF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_C12ECB0C9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_C12ECB0CCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_alert`
+--
+
+LOCK TABLES `app_alert` WRITE;
+/*!40000 ALTER TABLE `app_alert` DISABLE KEYS */;
+/*!40000 ALTER TABLE `app_alert` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_hit`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_hit` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `referrer_id` int unsigned DEFAULT NULL,
+  `app_session_id` int unsigned DEFAULT NULL,
+  `event_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `referrer_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `activity_session_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `open_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `button_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `user_agent` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `app_system` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `app_version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `app_date` datetime NOT NULL,
+  `raw` json DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fingerprint` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source_group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_74A09586D17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_74A09586FC0B754A` (`fingerprint`),
+  KEY `IDX_74A0958625F06C53` (`adherent_id`),
+  KEY `IDX_74A09586372447A3` (`app_session_id`),
+  KEY `IDX_74A09586798C22DB` (`referrer_id`),
+  KEY `IDX_74A0958693151B82` (`event_type`),
+  KEY `IDX_74A095865F8A7F73` (`source`),
+  KEY `IDX_74A0958693151B825F8A7F73` (`event_type`,`source`),
+  KEY `IDX_74A0958611CB6B3A` (`object_type`),
+  KEY `IDX_74A09586232D562B` (`object_id`),
+  KEY `IDX_74A09586F4C89FFA` (`source_group`),
+  KEY `IDX_74A0958693151B82F4C89FFA` (`event_type`,`source_group`),
+  CONSTRAINT `FK_74A0958625F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_74A09586372447A3` FOREIGN KEY (`app_session_id`) REFERENCES `app_session` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_74A09586798C22DB` FOREIGN KEY (`referrer_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_hit`
+--
+
+LOCK TABLES `app_hit` WRITE;
+/*!40000 ALTER TABLE `app_hit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `app_hit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_session`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_session` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `client_id` int unsigned DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity_date` datetime DEFAULT NULL,
+  `user_agent` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `app_version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `app_system` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unsubscribed_at` datetime DEFAULT NULL,
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_3D195599D17F50A6` (`uuid`),
+  KEY `IDX_3D19559925F06C53` (`adherent_id`),
+  KEY `IDX_3D19559919EB6921` (`client_id`),
+  KEY `IDX_3D1955997B00651C` (`status`),
+  KEY `IDX_3D1955992C4E7C0B` (`app_system`),
+  CONSTRAINT `FK_3D19559919EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`),
+  CONSTRAINT `FK_3D19559925F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_session`
+--
+
+LOCK TABLES `app_session` WRITE;
+/*!40000 ALTER TABLE `app_session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `app_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_session_push_token_link`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_session_push_token_link` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `app_session_id` int unsigned DEFAULT NULL,
+  `push_token_id` int unsigned DEFAULT NULL,
+  `last_activity_date` datetime DEFAULT NULL,
+  `unsubscribed_at` datetime DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_E592CD44D17F50A6` (`uuid`),
+  KEY `IDX_E592CD44372447A3` (`app_session_id`),
+  KEY `IDX_E592CD44258E0AE3` (`push_token_id`),
+  CONSTRAINT `FK_E592CD44258E0AE3` FOREIGN KEY (`push_token_id`) REFERENCES `push_token` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_E592CD44372447A3` FOREIGN KEY (`app_session_id`) REFERENCES `app_session` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_session_push_token_link`
+--
+
+LOCK TABLES `app_session_push_token_link` WRITE;
+/*!40000 ALTER TABLE `app_session_push_token_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `app_session_push_token_link` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1110,7 +1489,6 @@ CREATE TABLE `audience` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_FDCD9418D17F50A6` (`uuid`),
   KEY `IDX_FDCD94189F2C3FAB` (`zone_id`),
@@ -1184,7 +1562,6 @@ CREATE TABLE `audience_snapshot` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BA99FEBBD17F50A6` (`uuid`),
   KEY `IDX_BA99FEBB9F2C3FAB` (`zone_id`),
@@ -1285,13 +1662,13 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `besoindeurope_inscription_requests` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `client_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_96473AF5D17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1419,14 +1796,14 @@ CREATE TABLE `chatbot` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `assistant_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `assistant_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `telegram_bot_api_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telegram_bot_secret` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telegram_bot_api_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telegram_bot_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_7DC4B00477153098` (`code`),
   UNIQUE KEY `UNIQ_7DC4B004D17F50A6` (`uuid`),
@@ -1455,13 +1832,13 @@ UNLOCK TABLES;
 CREATE TABLE `chatbot_message` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `thread_id` int unsigned NOT NULL,
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `external_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EDF1E884D17F50A6` (`uuid`),
   KEY `IDX_EDF1E884E2904019` (`thread_id`),
@@ -1487,11 +1864,11 @@ UNLOCK TABLES;
 CREATE TABLE `chatbot_run` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `thread_id` int unsigned NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `external_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D603CBB6D17F50A6` (`uuid`),
   KEY `IDX_D603CBB6E2904019` (`thread_id`),
@@ -1519,11 +1896,11 @@ CREATE TABLE `chatbot_thread` (
   `chatbot_id` int unsigned NOT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
   `current_run_id` int unsigned DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `external_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telegram_chat_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telegram_chat_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A356AA3CD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_A356AA3C832A24AA` (`current_run_id`),
@@ -1542,34 +1919,6 @@ CREATE TABLE `chatbot_thread` (
 LOCK TABLES `chatbot_thread` WRITE;
 /*!40000 ALTER TABLE `chatbot_thread` DISABLE KEYS */;
 /*!40000 ALTER TABLE `chatbot_thread` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cities`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cities` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `department_id` int unsigned DEFAULT NULL,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `insee_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_D95DB16B15A3C1BC` (`insee_code`),
-  KEY `IDX_D95DB16BAE80F5DF` (`department_id`),
-  CONSTRAINT `FK_D95DB16BAE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cities`
---
-
-LOCK TABLES `cities` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1762,97 +2111,6 @@ LOCK TABLES `committee_election` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `committee_feed_item`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `committee_feed_item` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `committee_id` int unsigned DEFAULT NULL,
-  `author_id` int unsigned DEFAULT NULL,
-  `event_id` int unsigned DEFAULT NULL,
-  `item_type` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `created_at` datetime NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_4F1CDC80D17F50A6` (`uuid`),
-  KEY `IDX_4F1CDC8071F7E88B` (`event_id`),
-  KEY `IDX_4F1CDC80ED1A100B` (`committee_id`),
-  KEY `IDX_4F1CDC80F675F31B` (`author_id`),
-  CONSTRAINT `FK_4F1CDC8071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_4F1CDC80ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_4F1CDC80F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `committee_feed_item`
---
-
-LOCK TABLES `committee_feed_item` WRITE;
-/*!40000 ALTER TABLE `committee_feed_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `committee_feed_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `committee_feed_item_user_documents`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `committee_feed_item_user_documents` (
-  `committee_feed_item_id` int unsigned NOT NULL,
-  `user_document_id` int unsigned NOT NULL,
-  PRIMARY KEY (`committee_feed_item_id`,`user_document_id`),
-  KEY `IDX_D269D0AA6A24B1A2` (`user_document_id`),
-  KEY `IDX_D269D0AABEF808A3` (`committee_feed_item_id`),
-  CONSTRAINT `FK_D269D0AA6A24B1A2` FOREIGN KEY (`user_document_id`) REFERENCES `user_documents` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_D269D0AABEF808A3` FOREIGN KEY (`committee_feed_item_id`) REFERENCES `committee_feed_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `committee_feed_item_user_documents`
---
-
-LOCK TABLES `committee_feed_item_user_documents` WRITE;
-/*!40000 ALTER TABLE `committee_feed_item_user_documents` DISABLE KEYS */;
-/*!40000 ALTER TABLE `committee_feed_item_user_documents` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `committee_provisional_supervisor`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `committee_provisional_supervisor` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `adherent_id` int unsigned DEFAULT NULL,
-  `committee_id` int unsigned NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_E394C3D425F06C53` (`adherent_id`),
-  KEY `IDX_E394C3D4ED1A100B` (`committee_id`),
-  CONSTRAINT `FK_E394C3D425F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
-  CONSTRAINT `FK_E394C3D4ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `committee_provisional_supervisor`
---
-
-LOCK TABLES `committee_provisional_supervisor` WRITE;
-/*!40000 ALTER TABLE `committee_provisional_supervisor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `committee_provisional_supervisor` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `committee_zone`
 --
 
@@ -1901,7 +2159,7 @@ CREATE TABLE `committees` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1921,7 +2179,8 @@ CREATE TABLE `committees` (
   `sympathizers_count` smallint unsigned NOT NULL DEFAULT '0',
   `animator_id` int unsigned DEFAULT NULL,
   `members_em_count` smallint unsigned NOT NULL DEFAULT '0',
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adherents_count` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A36198C6D17F50A6` (`uuid`),
   KEY `IDX_A36198C67B00651C` (`status`),
@@ -2084,7 +2343,7 @@ CREATE TABLE `contact` (
   `adherent_id` int unsigned DEFAULT NULL,
   `processed_at` datetime DEFAULT NULL,
   `interests_updated_at` datetime DEFAULT NULL,
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4C62E638B08E074E` (`email_address`),
   UNIQUE KEY `UNIQ_4C62E638D17F50A6` (`uuid`),
@@ -2257,34 +2516,6 @@ LOCK TABLES `custom_search_results` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `department`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `department` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `region_id` int unsigned NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_CD1DE18A77153098` (`code`),
-  KEY `IDX_CD1DE18A98260155` (`region_id`),
-  CONSTRAINT `FK_CD1DE18A98260155` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `department`
---
-
-LOCK TABLES `department` WRITE;
-/*!40000 ALTER TABLE `department` DISABLE KEYS */;
-/*!40000 ALTER TABLE `department` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `department_site`
 --
 
@@ -2338,7 +2569,7 @@ CREATE TABLE `designation` (
   `lock_period_threshold` smallint unsigned NOT NULL,
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `limited` tinyint(1) NOT NULL DEFAULT '0',
-  `denomination` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'élection',
+  `denomination` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'élection',
   `pools` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `result_schedule_delay` double unsigned NOT NULL DEFAULT '0',
@@ -2358,11 +2589,15 @@ CREATE TABLE `designation` (
   `election_entity_identifier` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
   `is_canceled` tinyint(1) NOT NULL DEFAULT '0',
   `wording_regulation_page_id` int unsigned DEFAULT NULL,
-  `alert_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alert_cta_label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alert_description` longtext COLLATE utf8mb4_unicode_ci,
+  `alert_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_cta_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `target_year` smallint DEFAULT NULL,
   `alert_begin_at` datetime DEFAULT NULL,
+  `enable_vote_questions_preview` tinyint(1) NOT NULL DEFAULT '1',
+  `account_creation_deadline` datetime DEFAULT NULL,
+  `result_display_blank` tinyint(1) NOT NULL DEFAULT '0',
+  `membership_deadline` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8947610DD17F50A6` (`uuid`),
   KEY `IDX_8947610D3C947C0F` (`poll_id`),
@@ -2431,7 +2666,7 @@ CREATE TABLE `designation_candidacy_pool_candidacies_group` (
   `updated_by_administrator_id` int DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_A9E819837B63808A` (`candidacy_pool_id`),
   KEY `IDX_A9E819839DF5350C` (`created_by_administrator_id`),
@@ -2533,6 +2768,8 @@ CREATE TABLE `designation_poll_question` (
   `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `position` int NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `is_separator` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_83F55735D17F50A6` (`uuid`),
   KEY `IDX_83F557353C947C0F` (`poll_id`),
@@ -2818,9 +3055,9 @@ CREATE TABLE `donations` (
   `zone_id` int unsigned DEFAULT NULL,
   `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `re_adhesion` tinyint(1) NOT NULL DEFAULT '0',
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CDE98962D17F50A6` (`uuid`),
   KEY `donation_duration_idx` (`duration`),
@@ -3121,7 +3358,7 @@ CREATE TABLE `elected_representative_mandate` (
   `is_elected` tinyint(1) NOT NULL DEFAULT '0',
   `begin_at` date NOT NULL,
   `finish_at` date DEFAULT NULL,
-  `political_affiliation` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `political_affiliation` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `la_remsupport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `on_going` tinyint(1) NOT NULL DEFAULT '1',
   `number` smallint NOT NULL DEFAULT '1',
@@ -3294,67 +3531,6 @@ CREATE TABLE `elected_representative_sponsorship` (
 LOCK TABLES `elected_representative_sponsorship` WRITE;
 /*!40000 ALTER TABLE `elected_representative_sponsorship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `elected_representative_sponsorship` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `elected_representative_user_list_definition`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `elected_representative_user_list_definition` (
-  `elected_representative_id` int unsigned NOT NULL,
-  `user_list_definition_id` int unsigned NOT NULL,
-  PRIMARY KEY (`elected_representative_id`,`user_list_definition_id`),
-  KEY `IDX_A9C53A24D38DA5D3` (`elected_representative_id`),
-  KEY `IDX_A9C53A24F74563E3` (`user_list_definition_id`),
-  CONSTRAINT `FK_A9C53A24D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_A9C53A24F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `elected_representative_user_list_definition`
---
-
-LOCK TABLES `elected_representative_user_list_definition` WRITE;
-/*!40000 ALTER TABLE `elected_representative_user_list_definition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `elected_representative_user_list_definition` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `elected_representative_user_list_definition_history`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `elected_representative_user_list_definition_history` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int unsigned NOT NULL,
-  `user_list_definition_id` int unsigned NOT NULL,
-  `adherent_id` int unsigned DEFAULT NULL,
-  `administrator_id` int DEFAULT NULL,
-  `action` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  PRIMARY KEY (`id`),
-  KEY `IDX_1ECF756625F06C53` (`adherent_id`),
-  KEY `IDX_1ECF75664B09E92C` (`administrator_id`),
-  KEY `IDX_1ECF7566D38DA5D3` (`elected_representative_id`),
-  KEY `IDX_1ECF7566F74563E3` (`user_list_definition_id`),
-  CONSTRAINT `FK_1ECF756625F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_1ECF75664B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_1ECF7566D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_1ECF7566F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `elected_representative_user_list_definition_history`
---
-
-LOCK TABLES `elected_representative_user_list_definition_history` WRITE;
-/*!40000 ALTER TABLE `elected_representative_user_list_definition_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `elected_representative_user_list_definition_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3533,7 +3709,7 @@ CREATE TABLE `email_templates` (
   `scopes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `json_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `is_statutory` tinyint(1) NOT NULL DEFAULT '0',
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `subject_editable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6023E2A5D17F50A6` (`uuid`),
@@ -3590,47 +3766,6 @@ LOCK TABLES `emails` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `epci`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `epci` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `surface` double NOT NULL,
-  `department_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `department_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `region_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `region_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_insee` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_dep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city_siren` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code_arr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code_cant` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `population` int unsigned DEFAULT NULL,
-  `epci_dep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `epci_siren` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `insee` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fiscal` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `epci`
---
-
-LOCK TABLES `epci` WRITE;
-/*!40000 ALTER TABLE `epci` DISABLE KEYS */;
-/*!40000 ALTER TABLE `epci` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `event_group_category`
 --
 
@@ -3641,7 +3776,8 @@ CREATE TABLE `event_group_category` (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ENABLED',
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `alert` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D038E3CD5E237E06` (`name`),
   UNIQUE KEY `UNIQ_D038E3CD989D9B62` (`slug`)
@@ -3658,29 +3794,29 @@ LOCK TABLES `event_group_category` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `event_user_documents`
+-- Table structure for table `event_inscription_zone`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `event_user_documents` (
-  `event_id` int unsigned NOT NULL,
-  `user_document_id` int unsigned NOT NULL,
-  PRIMARY KEY (`event_id`,`user_document_id`),
-  KEY `IDX_7D14491F6A24B1A2` (`user_document_id`),
-  KEY `IDX_7D14491F71F7E88B` (`event_id`),
-  CONSTRAINT `FK_7D14491F6A24B1A2` FOREIGN KEY (`user_document_id`) REFERENCES `user_documents` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_7D14491F71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE
+CREATE TABLE `event_inscription_zone` (
+  `event_inscription_id` int unsigned NOT NULL,
+  `zone_id` int unsigned NOT NULL,
+  PRIMARY KEY (`event_inscription_id`,`zone_id`),
+  KEY `IDX_A74D587C82E8EFE0` (`event_inscription_id`),
+  KEY `IDX_A74D587C9F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_A74D587C82E8EFE0` FOREIGN KEY (`event_inscription_id`) REFERENCES `national_event_inscription` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A74D587C9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `event_user_documents`
+-- Dumping data for table `event_inscription_zone`
 --
 
-LOCK TABLES `event_user_documents` WRITE;
-/*!40000 ALTER TABLE `event_user_documents` DISABLE KEYS */;
-/*!40000 ALTER TABLE `event_user_documents` ENABLE KEYS */;
+LOCK TABLES `event_inscription_zone` WRITE;
+/*!40000 ALTER TABLE `event_inscription_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_inscription_zone` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3690,12 +3826,12 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_zone` (
-  `base_event_id` int unsigned NOT NULL,
+  `event_id` int unsigned NOT NULL,
   `zone_id` int unsigned NOT NULL,
-  PRIMARY KEY (`base_event_id`,`zone_id`),
-  KEY `IDX_BF208CAC3B1C4B73` (`base_event_id`),
+  PRIMARY KEY (`event_id`,`zone_id`),
   KEY `IDX_BF208CAC9F2C3FAB` (`zone_id`),
-  CONSTRAINT `FK_BF208CAC3B1C4B73` FOREIGN KEY (`base_event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
+  KEY `IDX_BF208CAC71F7E88B` (`event_id`),
+  CONSTRAINT `FK_BF208CAC71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BF208CAC9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3730,7 +3866,7 @@ CREATE TABLE `events` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3739,30 +3875,40 @@ CREATE TABLE `events` (
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `category_id` int unsigned DEFAULT NULL,
-  `is_for_legislatives` tinyint(1) DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `time_zone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visio_url` longtext COLLATE utf8mb4_unicode_ci,
+  `visio_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reminded` tinyint(1) NOT NULL DEFAULT '0',
   `electoral` tinyint(1) NOT NULL DEFAULT '0',
-  `renaissance_event` tinyint(1) NOT NULL DEFAULT '0',
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
-  `live_url` longtext COLLATE utf8mb4_unicode_ci,
-  `author_role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_instance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_zone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
+  `live_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `author_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image_size` bigint DEFAULT NULL,
-  `image_mime_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_mime_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image_width` int DEFAULT NULL,
   `image_height` int DEFAULT NULL,
+  `national` tinyint(1) NOT NULL DEFAULT '0',
+  `push_sent_at` datetime DEFAULT NULL,
+  `send_invitation_email` tinyint(1) NOT NULL DEFAULT '1',
+  `json_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `email_reminded` tinyint(1) NOT NULL DEFAULT '0',
+  `agora_id` int unsigned DEFAULT NULL,
+  `author_theme` json DEFAULT NULL,
+  `adherents_up_to_date_count` smallint unsigned NOT NULL DEFAULT '0',
+  `adherents_not_up_to_date_count` smallint unsigned NOT NULL DEFAULT '0',
+  `sympathizers_count` smallint unsigned NOT NULL DEFAULT '0',
+  `members_em_count` smallint unsigned NOT NULL DEFAULT '0',
+  `citizens_count` smallint unsigned NOT NULL DEFAULT '0',
+  `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5387574A989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_5387574AD17F50A6` (`uuid`),
@@ -3772,7 +3918,9 @@ CREATE TABLE `events` (
   KEY `IDX_5387574AED1A100B` (`committee_id`),
   KEY `IDX_5387574AFE28FD87` (`finish_at`),
   KEY `IDX_5387574AF675F31B` (`author_id`),
+  KEY `IDX_5387574A57588F43` (`agora_id`),
   CONSTRAINT `FK_5387574A12469DE2` FOREIGN KEY (`category_id`) REFERENCES `events_categories` (`id`),
+  CONSTRAINT `FK_5387574A57588F43` FOREIGN KEY (`agora_id`) REFERENCES `agora` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_5387574AED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_5387574AF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3799,7 +3947,8 @@ CREATE TABLE `events_categories` (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ENABLED',
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `alert` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EF0AF3E95E237E06` (`name`),
   UNIQUE KEY `UNIQ_EF0AF3E9989D9B62` (`slug`),
@@ -3859,20 +4008,30 @@ CREATE TABLE `events_registrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `event_id` int unsigned DEFAULT NULL,
   `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `newsletter_subscriber` tinyint(1) NOT NULL,
-  `adherent_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adherent_id` int unsigned DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confirmed',
+  `confirmed_at` datetime DEFAULT NULL,
+  `referrer_id` int unsigned DEFAULT NULL,
+  `referrer_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EEFA30C0D17F50A6` (`uuid`),
-  KEY `event_registration_adherent_uuid_idx` (`adherent_uuid`),
-  KEY `event_registration_email_address_idx` (`email_address`),
+  UNIQUE KEY `UNIQ_EEFA30C025F06C5371F7E88B` (`adherent_id`,`event_id`),
+  KEY `IDX_EEFA30C0B08E074E` (`email_address`),
   KEY `IDX_EEFA30C071F7E88B` (`event_id`),
-  CONSTRAINT `FK_EEFA30C071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE SET NULL
+  KEY `IDX_EEFA30C025F06C53` (`adherent_id`),
+  KEY `IDX_EEFA30C0798C22DB` (`referrer_id`),
+  CONSTRAINT `FK_EEFA30C025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
+  CONSTRAINT `FK_EEFA30C071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_EEFA30C0798C22DB` FOREIGN KEY (`referrer_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4167,6 +4326,69 @@ CREATE TABLE `formation_paths` (
 LOCK TABLES `formation_paths` WRITE;
 /*!40000 ALTER TABLE `formation_paths` DISABLE KEYS */;
 /*!40000 ALTER TABLE `formation_paths` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `general_convention`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `general_convention` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `department_zone_id` int unsigned NOT NULL,
+  `committee_id` int unsigned DEFAULT NULL,
+  `district_zone_id` int unsigned DEFAULT NULL,
+  `reporter_id` int unsigned DEFAULT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `organizer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reported_at` datetime NOT NULL,
+  `meeting_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `members_count` smallint unsigned NOT NULL DEFAULT '0',
+  `participant_quality` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `general_summary` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `party_definition_summary` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `unique_party_summary` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `progress_since2016` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `party_objectives` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `governance` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `communication` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `militant_training` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `member_journey` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `mobilization` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `talent_detection` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `election_preparation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `relationship_with_supporters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `work_with_partners` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `additional_comments` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_F66947EFD17F50A6` (`uuid`),
+  KEY `IDX_F66947EF2285D748` (`department_zone_id`),
+  KEY `IDX_F66947EF23F5C396` (`district_zone_id`),
+  KEY `IDX_F66947EFE1CFE6F5` (`reporter_id`),
+  KEY `IDX_F66947EF9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_F66947EFCF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_F66947EFED1A100B` (`committee_id`),
+  CONSTRAINT `FK_F66947EF2285D748` FOREIGN KEY (`department_zone_id`) REFERENCES `geo_zone` (`id`),
+  CONSTRAINT `FK_F66947EF23F5C396` FOREIGN KEY (`district_zone_id`) REFERENCES `geo_zone` (`id`),
+  CONSTRAINT `FK_F66947EF9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_F66947EFCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_F66947EFE1CFE6F5` FOREIGN KEY (`reporter_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_F66947EFED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `general_convention`
+--
+
+LOCK TABLES `general_convention` WRITE;
+/*!40000 ALTER TABLE `general_convention` DISABLE KEYS */;
+/*!40000 ALTER TABLE `general_convention` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -4824,9 +5046,9 @@ CREATE TABLE `hub_item` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `position` smallint NOT NULL DEFAULT '0',
@@ -5099,29 +5321,29 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_news` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `zone_id` int unsigned DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `author_id` int unsigned DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `text` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `external_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `topic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notification` tinyint(1) NOT NULL DEFAULT '0',
+  `notification` tinyint(1) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `link_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pinned` tinyint(1) NOT NULL DEFAULT '0',
-  `enriched` tinyint(1) NOT NULL DEFAULT '0',
-  `author_role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_instance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_zone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `committee_id` int unsigned DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
+  `author_theme` json DEFAULT NULL,
+  `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3436209D17F50A6` (`uuid`),
   KEY `IDX_34362099F2C3FAB` (`zone_id`),
@@ -5153,7 +5375,7 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_news_user_documents` (
-  `jecoute_news_id` int NOT NULL,
+  `jecoute_news_id` int unsigned NOT NULL,
   `user_document_id` int unsigned NOT NULL,
   PRIMARY KEY (`jecoute_news_id`,`user_document_id`),
   KEY `IDX_1231D19DD18EE7B3` (`jecoute_news_id`),
@@ -5621,6 +5843,42 @@ LOCK TABLES `legislative_newsletter_subscription_zone` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `live_stream`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `live_stream` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `begin_at` datetime NOT NULL,
+  `finish_at` datetime NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_93BF08C8D17F50A6` (`uuid`),
+  KEY `IDX_93BF08C89DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_93BF08C8CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_93BF08C89DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_93BF08C8CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `live_stream`
+--
+
+LOCK TABLES `live_stream` WRITE;
+/*!40000 ALTER TABLE `live_stream` DISABLE KEYS */;
+/*!40000 ALTER TABLE `live_stream` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `local_election`
 --
 
@@ -5846,15 +6104,15 @@ CREATE TABLE `mailchimp_campaign_report` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `open_total` int NOT NULL,
   `open_unique` int NOT NULL,
-  `open_rate` int NOT NULL,
+  `open_rate` double NOT NULL,
   `last_open` datetime DEFAULT NULL,
   `click_total` int NOT NULL,
   `click_unique` int NOT NULL,
-  `click_rate` int NOT NULL,
+  `click_rate` double NOT NULL,
   `last_click` datetime DEFAULT NULL,
   `email_sent` int NOT NULL,
   `unsubscribed` int NOT NULL,
-  `unsubscribed_rate` int NOT NULL,
+  `unsubscribed_rate` double NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -5880,7 +6138,7 @@ CREATE TABLE `mailchimp_segment` (
   `id` int NOT NULL AUTO_INCREMENT,
   `list` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `external_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5940,9 +6198,7 @@ CREATE TABLE `messenger_messages` (
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   PRIMARY KEY (`id`),
-  KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
-  KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
-  KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
+  KEY `IDX_75EA56E0FB7336F0E3BD61CE16BA31DBBF396750` (`queue_name`,`available_at`,`delivered_at`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5975,7 +6231,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('Migrations\\Version20211126020536','2023-01-05 09:53:48',87),('Migrations\\Version20211126130535','2023-01-05 09:53:48',358),('Migrations\\Version20211126151434','2023-01-05 09:53:49',12),('Migrations\\Version20211126172212','2023-01-05 09:53:49',16),('Migrations\\Version20211130010431','2023-01-05 09:53:49',88),('Migrations\\Version20211130023420','2023-01-05 09:53:49',18),('Migrations\\Version20211130163308','2023-01-05 09:53:49',171),('Migrations\\Version20211202125517','2023-01-05 09:53:49',28),('Migrations\\Version20211202151633','2023-01-05 09:53:49',169),('Migrations\\Version20211202191607','2023-01-05 09:53:49',16),('Migrations\\Version20211203111253','2023-01-05 09:53:49',59),('Migrations\\Version20211203112333','2023-01-05 09:53:49',11),('Migrations\\Version20211206110133','2023-01-05 09:53:49',52),('Migrations\\Version20211206115819','2023-01-05 09:53:49',11),('Migrations\\Version20211207152117','2023-01-05 09:53:49',149),('Migrations\\Version20211208111523','2023-01-05 09:53:49',89),('Migrations\\Version20211209114932','2023-01-05 09:53:50',158),('Migrations\\Version20211209142923','2023-01-05 09:53:50',59),('Migrations\\Version20211220162832','2023-01-05 09:53:50',41),('Migrations\\Version20220103181110','2023-01-05 09:53:50',371),('Migrations\\Version20220104015613','2023-01-05 09:53:50',120),('Migrations\\Version20220106143719','2023-01-05 09:53:50',30),('Migrations\\Version20220110122036','2023-01-05 09:53:50',147),('Migrations\\Version20220110135715','2023-01-05 09:53:50',52),('Migrations\\Version20220110165351','2023-01-05 09:53:51',19),('Migrations\\Version20220110185032','2023-01-05 09:53:51',141),('Migrations\\Version20220112153457','2023-01-05 09:53:51',15),('Migrations\\Version20220113001351','2023-01-05 09:53:51',9),('Migrations\\Version20220113175738','2023-01-05 09:53:51',2454),('Migrations\\Version20220114104853','2023-01-05 09:53:53',113),('Migrations\\Version20220114151651','2023-01-05 09:53:53',19),('Migrations\\Version20220117173646','2023-01-05 09:53:53',13),('Migrations\\Version20220119094725','2023-01-05 09:53:53',54),('Migrations\\Version20220119160854','2023-01-05 09:53:53',106),('Migrations\\Version20220120173302','2023-01-05 09:53:53',150),('Migrations\\Version20220124162602','2023-01-05 09:53:54',82),('Migrations\\Version20220126182307','2023-01-05 09:53:54',55),('Migrations\\Version20220204141925','2023-01-05 09:53:54',11),('Migrations\\Version20220204164624','2023-01-05 09:53:54',209),('Migrations\\Version20220207135908','2023-01-05 09:53:54',56),('Migrations\\Version20220211115509','2023-01-05 09:53:54',216),('Migrations\\Version20220217113503','2023-01-05 09:53:54',9),('Migrations\\Version20220217124001','2023-01-05 09:53:54',16),('Migrations\\Version20220218125939','2023-01-05 09:53:54',107),('Migrations\\Version20220221172957','2023-01-05 09:53:54',48),('Migrations\\Version20220222082557','2023-01-05 09:53:54',170),('Migrations\\Version20220223181739','2023-01-05 09:53:55',41),('Migrations\\Version20220228120338','2023-01-05 09:53:55',12),('Migrations\\Version20220301133517','2023-01-05 09:53:55',47),('Migrations\\Version20220301190248','2023-01-05 09:53:55',14),('Migrations\\Version20220304164524','2023-01-05 09:53:55',69),('Migrations\\Version20220307111506','2023-01-05 09:53:55',58),('Migrations\\Version20220308175358','2023-01-05 09:53:55',12),('Migrations\\Version20220309113232','2023-01-05 09:53:55',11),('Migrations\\Version20220309113539','2023-01-05 09:53:55',33),('Migrations\\Version20220310121312','2023-01-05 09:53:55',13),('Migrations\\Version20220311152121','2023-01-05 09:53:55',13),('Migrations\\Version20220314141817','2023-01-05 09:53:55',45),('Migrations\\Version20220314155701','2023-01-05 09:53:55',11),('Migrations\\Version20220315005750','2023-01-05 09:53:55',106),('Migrations\\Version20220315170237','2023-01-05 09:53:55',89),('Migrations\\Version20220318201041','2023-01-05 09:53:55',39),('Migrations\\Version20220323165400','2023-01-05 09:53:55',6),('Migrations\\Version20220324112855','2023-01-05 09:53:55',84),('Migrations\\Version20220325172441','2023-01-05 09:53:55',398),('Migrations\\Version20220401171433','2023-01-05 09:53:56',12),('Migrations\\Version20220406110135','2023-01-05 09:53:56',45),('Migrations\\Version20220407142612','2023-01-05 09:53:56',69),('Migrations\\Version20220408144824','2023-01-05 09:53:56',43),('Migrations\\Version20220412120724','2023-01-05 09:53:56',54),('Migrations\\Version20220412172359','2023-01-05 09:53:56',601),('Migrations\\Version20220413192745','2023-01-05 09:53:57',22),('Migrations\\Version20220414170047','2023-01-05 09:53:57',14),('Migrations\\Version20220414211940','2023-01-05 09:53:57',28),('Migrations\\Version20220419193718','2023-01-05 09:53:57',116),('Migrations\\Version20220421132926','2023-01-05 09:53:57',45),('Migrations\\Version20220426163649','2023-01-05 09:53:57',31),('Migrations\\Version20220428150916','2023-01-05 09:53:57',13),('Migrations\\Version20220429114235','2023-01-05 09:53:57',115),('Migrations\\Version20220504182132','2023-01-05 09:53:57',37),('Migrations\\Version20220510102006','2023-01-05 09:53:57',14),('Migrations\\Version20220517152903','2023-01-05 09:53:57',13),('Migrations\\Version20220519181035','2023-01-05 09:53:57',25),('Migrations\\Version20220524105827','2023-01-05 09:53:57',55),('Migrations\\Version20220601181917','2023-01-05 09:53:57',405),('Migrations\\Version20220608011640','2023-01-05 09:53:58',57),('Migrations\\Version20220613112116','2023-01-05 09:53:58',33),('Migrations\\Version20220614100027','2023-01-05 09:53:58',72),('Migrations\\Version20220616095027','2023-01-05 09:53:58',9),('Migrations\\Version20220616140609','2023-01-05 09:53:58',67),('Migrations\\Version20220616154158','2023-01-05 09:53:58',14),('Migrations\\Version20220616165915','2023-01-05 09:53:58',11),('Migrations\\Version20220617190412','2023-01-05 09:53:58',12),('Migrations\\Version20220622122711','2023-01-05 09:53:58',167),('Migrations\\Version20220705022722','2023-01-05 09:53:58',22),('Migrations\\Version20220706000352','2023-01-05 09:53:58',138),('Migrations\\Version20220721160526','2023-01-05 09:53:58',14),('Migrations\\Version20220816180602','2023-01-05 09:53:58',21),('Migrations\\Version20220913155038','2023-01-05 09:53:58',739),('Migrations\\Version20220914170047','2023-01-05 09:53:59',18),('Migrations\\Version20220917042906','2023-01-05 09:53:59',174),('Migrations\\Version20220917135347','2023-01-05 09:53:59',283),('Migrations\\Version20220917153647','2023-01-05 09:53:59',205),('Migrations\\Version20220921132543','2023-01-05 09:54:00',180),('Migrations\\Version20220921152207','2023-01-05 09:54:00',16),('Migrations\\Version20220922172929','2023-01-05 09:54:00',8),('Migrations\\Version20220923100710','2023-01-05 09:54:00',7),('Migrations\\Version20220923154015','2023-01-05 09:54:00',19),('Migrations\\Version20220929173136','2023-01-05 09:54:00',28),('Migrations\\Version20220930151511','2023-01-05 09:54:00',24),('Migrations\\Version20221003152108','2023-01-05 09:54:00',82),('Migrations\\Version20221004115251','2023-01-05 09:54:00',23),('Migrations\\Version20221004155004','2023-01-05 09:54:00',19),('Migrations\\Version20221005132710','2023-01-05 09:54:00',10),('Migrations\\Version20221006135107','2023-01-05 09:54:00',27),('Migrations\\Version20221006182442','2023-01-05 09:54:00',9),('Migrations\\Version20221007154603','2023-01-05 09:54:00',8),('Migrations\\Version20221010123838','2023-01-05 09:54:00',8),('Migrations\\Version20221017232936','2023-01-05 09:54:00',8),('Migrations\\Version20221020113016','2023-01-05 09:54:00',168),('Migrations\\Version20221021140835','2023-01-05 09:54:00',14),('Migrations\\Version20221026085426','2023-01-05 09:54:00',113),('Migrations\\Version20221026160544','2023-01-05 09:54:00',215),('Migrations\\Version20221031150105','2023-01-05 09:54:01',21),('Migrations\\Version20221101210133','2023-01-05 09:54:01',29),('Migrations\\Version20221106232616','2023-01-05 09:54:01',194),('Migrations\\Version20221109170709','2023-01-05 09:54:01',34),('Migrations\\Version20221110000854','2023-01-05 09:54:01',11),('Migrations\\Version20221115082558','2023-01-05 09:54:01',35),('Migrations\\Version20221122094902','2023-01-05 09:54:01',348),('Migrations\\Version20221202153430','2023-01-05 09:54:01',50),('Migrations\\Version20221202161505','2023-01-05 09:54:01',12),('Migrations\\Version20221207092223','2023-01-05 09:54:01',57),('Migrations\\Version20221209122913','2023-01-05 09:54:02',361),('Migrations\\Version20221209162545','2023-01-05 09:54:02',136),('Migrations\\Version20221213112859','2023-01-05 09:54:02',114),('Migrations\\Version20221214111850','2023-01-05 09:54:02',15),('Migrations\\Version20221215150113','2023-01-05 09:54:02',25),('Migrations\\Version20221216123241','2023-01-05 09:54:02',9),('Migrations\\Version20221222094329','2023-01-05 09:54:02',53),('Migrations\\Version20230103112607','2024-09-25 10:41:30',423),('Migrations\\Version20230112170300','2024-09-25 10:41:30',33),('Migrations\\Version20230113162740','2024-09-25 10:41:30',212),('Migrations\\Version20230113181056','2024-09-25 10:41:31',206),('Migrations\\Version20230117112145','2024-09-25 10:41:31',216),('Migrations\\Version20230117175420','2024-09-25 10:41:31',59),('Migrations\\Version20230123015605','2024-09-25 10:41:31',10),('Migrations\\Version20230124144750','2024-09-25 10:41:31',267),('Migrations\\Version20230124152540','2024-09-25 10:41:31',4),('Migrations\\Version20230201185840','2024-09-25 10:41:31',49),('Migrations\\Version20230207011026','2024-09-25 10:41:31',186),('Migrations\\Version20230207174546','2024-09-25 10:41:32',127),('Migrations\\Version20230208105829','2024-09-25 10:41:32',94),('Migrations\\Version20230209153258','2024-09-25 10:41:32',57),('Migrations\\Version20230214143118','2024-09-25 10:41:32',38),('Migrations\\Version20230215084303','2024-09-25 10:41:32',117),('Migrations\\Version20230217112001','2024-09-25 10:41:32',75),('Migrations\\Version20230217142406','2024-09-25 10:41:32',35),('Migrations\\Version20230217143246','2024-09-25 10:41:32',95),('Migrations\\Version20230224152955','2024-09-25 10:41:32',68),('Migrations\\Version20230228165519','2024-09-25 10:41:32',25),('Migrations\\Version20230301155217','2024-09-25 10:41:32',160),('Migrations\\Version20230306120354','2024-09-25 10:41:33',31),('Migrations\\Version20230307142934','2024-09-25 10:41:33',75),('Migrations\\Version20230308172514','2024-09-25 10:41:33',8),('Migrations\\Version20230309121041','2024-09-25 10:41:33',17),('Migrations\\Version20230316170530','2024-09-25 10:41:33',46),('Migrations\\Version20230322144816','2024-09-25 10:41:33',16),('Migrations\\Version20230322174658','2024-09-25 10:41:33',8),('Migrations\\Version20230323111246','2024-09-25 10:41:33',8),('Migrations\\Version20230324113203','2024-09-25 10:41:33',4),('Migrations\\Version20230327141628','2024-09-25 10:41:33',9),('Migrations\\Version20230329012543','2024-09-25 10:41:33',38),('Migrations\\Version20230330153931','2024-09-25 10:41:33',73),('Migrations\\Version20230330173213','2024-09-25 10:41:33',13),('Migrations\\Version20230331125853','2024-09-25 10:41:33',150),('Migrations\\Version20230405125351','2024-09-25 10:41:33',9),('Migrations\\Version20230418095845','2024-09-25 10:41:33',13),('Migrations\\Version20230419141029','2024-09-25 10:41:33',33),('Migrations\\Version20230419170927','2024-09-25 10:41:33',3),('Migrations\\Version20230426174026','2024-09-25 10:41:33',154),('Migrations\\Version20230427153956','2024-09-25 10:41:33',81),('Migrations\\Version20230427165714','2024-09-25 10:41:33',9),('Migrations\\Version20230502141531','2024-09-25 10:41:33',32),('Migrations\\Version20230504151826','2024-09-25 10:41:33',122),('Migrations\\Version20230504163117','2024-09-25 10:41:33',36),('Migrations\\Version20230510153522','2024-09-25 10:41:34',8),('Migrations\\Version20230511181544','2024-09-25 10:41:34',18),('Migrations\\Version20230515153520','2024-09-25 10:41:34',75),('Migrations\\Version20230523012308','2024-09-25 10:41:34',6),('Migrations\\Version20230523023528','2024-09-25 10:41:34',46),('Migrations\\Version20230525133109','2024-09-25 10:41:34',14),('Migrations\\Version20230525135030','2024-09-25 10:41:34',5),('Migrations\\Version20230602161100','2024-09-25 10:41:34',19),('Migrations\\Version20230606133239','2024-09-25 10:41:34',4),('Migrations\\Version20230607155251','2024-09-25 10:41:34',10),('Migrations\\Version20230614123149','2024-09-25 10:41:34',79),('Migrations\\Version20230616145405','2024-09-25 10:41:34',54),('Migrations\\Version20230620145022','2024-09-25 10:41:34',3),('Migrations\\Version20230621084524','2024-09-25 10:41:34',17),('Migrations\\Version20230623073145','2024-09-25 10:41:34',5),('Migrations\\Version20230623101144','2024-09-25 10:41:34',26),('Migrations\\Version20230623103320','2024-09-25 10:41:34',17),('Migrations\\Version20230623153454','2024-09-25 10:41:34',28),('Migrations\\Version20230623173752','2024-09-25 10:41:34',14),('Migrations\\Version20230627233532','2024-09-25 10:41:34',5),('Migrations\\Version20230628150524','2024-09-25 10:41:34',10),('Migrations\\Version20230705072301','2024-09-25 10:41:34',34),('Migrations\\Version20230713081354','2024-09-25 10:41:34',463),('Migrations\\Version20230713171821','2024-09-25 10:41:35',260),('Migrations\\Version20230718161858','2024-09-25 10:41:35',31),('Migrations\\Version20230718180507','2024-09-25 10:41:35',180),('Migrations\\Version20230720163801','2024-09-25 10:41:35',6),('Migrations\\Version20230724100823','2024-09-25 10:41:35',82),('Migrations\\Version20230727095418','2024-09-25 10:41:35',389),('Migrations\\Version20230831072408','2024-09-25 10:41:35',14),('Migrations\\Version20230904142735','2024-09-25 10:41:35',8),('Migrations\\Version20230906080635','2024-09-25 10:41:35',6),('Migrations\\Version20230907113553','2024-09-25 10:41:35',20),('Migrations\\Version20230908112010','2024-09-25 10:41:36',29),('Migrations\\Version20230914080444','2024-09-25 10:41:36',54),('Migrations\\Version20230926123728','2024-09-25 10:41:36',22),('Migrations\\Version20230927161359','2024-09-25 10:41:36',162),('Migrations\\Version20231003095946','2024-09-25 10:41:36',122),('Migrations\\Version20231004161126','2024-09-25 10:41:36',98),('Migrations\\Version20231005220834','2024-09-25 10:41:36',111),('Migrations\\Version20231006082726','2024-09-25 10:41:36',111),('Migrations\\Version20231010151645','2024-09-25 10:41:36',20),('Migrations\\Version20231012080033','2024-09-25 10:41:36',6),('Migrations\\Version20231016232208','2024-09-25 10:41:36',9),('Migrations\\Version20231018081458','2024-09-25 10:41:36',34),('Migrations\\Version20231023161507','2024-09-25 10:41:36',8),('Migrations\\Version20231102091259','2024-09-25 10:41:36',4),('Migrations\\Version20231103172715','2024-09-25 10:41:36',55),('Migrations\\Version20231106102259','2024-09-25 10:41:36',6),('Migrations\\Version20231117170244','2024-09-25 10:41:36',5),('Migrations\\Version20231130142149','2024-09-25 10:41:36',14),('Migrations\\Version20231207093329','2024-09-25 10:41:36',31),('Migrations\\Version20231208002730','2024-09-25 10:41:36',85),('Migrations\\Version20231214003554','2024-09-25 10:41:37',103),('Migrations\\Version20231217142736','2024-09-25 10:41:37',144),('Migrations\\Version20240111110813','2025-01-29 14:54:08',123),('Migrations\\Version20240115220546','2025-01-29 14:54:08',308),('Migrations\\Version20240116132005','2025-01-29 14:54:08',137),('Migrations\\Version20240118042542','2025-01-29 14:54:09',29),('Migrations\\Version20240123220055','2025-01-29 14:54:09',11),('Migrations\\Version20240126174201','2025-01-29 14:54:09',122),('Migrations\\Version20240203171047','2025-01-29 14:54:09',110),('Migrations\\Version20240207165446','2025-01-29 14:54:09',22),('Migrations\\Version20240216181147','2025-01-29 14:54:09',37),('Migrations\\Version20240220182326','2025-01-29 14:54:09',13),('Migrations\\Version20240221091851','2025-01-29 14:54:09',42),('Migrations\\Version20240221143404','2025-01-29 14:54:09',81),('Migrations\\Version20240221145728','2025-01-29 14:54:09',97),('Migrations\\Version20240223132047','2025-01-29 14:54:09',24),('Migrations\\Version20240304021611','2025-01-29 14:54:09',100),('Migrations\\Version20240306174317','2025-01-29 14:54:09',25),('Migrations\\Version20240307093902','2025-01-29 14:54:09',11),('Migrations\\Version20240307095411','2025-01-29 14:54:09',344),('Migrations\\Version20240308114452','2025-01-29 14:54:10',35),('Migrations\\Version20240311084338','2025-01-29 14:54:10',27),('Migrations\\Version20240314121122','2025-01-29 14:54:10',215),('Migrations\\Version20240319113037','2025-01-29 14:54:10',11),('Migrations\\Version20240319133416','2025-01-29 14:54:10',15),('Migrations\\Version20240319155519','2025-01-29 14:54:10',51),('Migrations\\Version20240321162127','2025-01-29 14:54:10',102),('Migrations\\Version20240322150932','2025-01-29 14:54:10',62),('Migrations\\Version20240325145823','2025-01-29 14:54:10',23),('Migrations\\Version20240327081758','2025-01-29 14:54:10',31),('Migrations\\Version20240329140615','2025-01-29 14:54:10',78),('Migrations\\Version20240329144236','2025-01-29 14:54:10',20),('Migrations\\Version20240329204549','2025-01-29 14:54:10',319),('Migrations\\Version20240402164724','2025-01-29 14:54:11',25),('Migrations\\Version20240403223008','2025-01-29 14:54:11',6),('Migrations\\Version20240409130540','2025-01-29 14:54:11',11),('Migrations\\Version20240410063924','2025-01-29 14:54:11',43),('Migrations\\Version20240416154418','2025-01-29 14:54:11',119),('Migrations\\Version20240417135955','2025-01-29 14:54:11',22),('Migrations\\Version20240424115627','2025-01-29 14:54:11',25),('Migrations\\Version20240506153531','2025-01-29 14:54:11',15),('Migrations\\Version20240510130946','2025-01-29 14:54:11',16),('Migrations\\Version20240514084526','2025-01-29 14:54:11',57),('Migrations\\Version20240517080738','2025-01-29 14:54:11',48),('Migrations\\Version20240517142406','2025-01-29 14:54:11',14),('Migrations\\Version20240523163640','2025-01-29 14:54:11',96),('Migrations\\Version20240527140711','2025-01-29 14:54:11',154),('Migrations\\Version20240527144138','2025-01-29 14:54:11',14),('Migrations\\Version20240529124938','2025-01-29 14:54:11',16),('Migrations\\Version20240603164507','2025-01-29 14:54:11',15),('Migrations\\Version20240605204832','2025-01-29 14:54:11',122),('Migrations\\Version20240611152139','2025-01-29 14:54:12',36),('Migrations\\Version20240611175556','2025-01-29 14:54:12',144),('Migrations\\Version20240614123828','2025-01-29 14:54:12',177),('Migrations\\Version20240615094405','2025-01-29 14:54:12',76),('Migrations\\Version20240618131552','2025-01-29 14:54:12',42),('Migrations\\Version20240618143502','2025-01-29 14:54:12',38),('Migrations\\Version20240618152952','2025-01-29 14:54:12',127),('Migrations\\Version20240619114342','2025-01-29 14:54:12',35),('Migrations\\Version20240621152825','2025-01-29 14:54:12',96),('Migrations\\Version20240622141935','2025-01-29 14:54:12',335),('Migrations\\Version20240623120631','2025-01-29 14:54:13',18),('Migrations\\Version20240624143855','2025-01-29 14:54:13',66),('Migrations\\Version20240625165041','2025-01-29 14:54:13',25),('Migrations\\Version20240628155502','2025-01-29 14:54:13',31),('Migrations\\Version20240702163555','2025-01-29 14:54:13',22),('Migrations\\Version20240708161136','2025-01-29 14:54:13',392),('Migrations\\Version20240709094154','2025-01-29 14:54:13',26),('Migrations\\Version20240710155639','2025-01-29 14:54:13',43),('Migrations\\Version20240711165324','2025-01-29 14:54:13',25),('Migrations\\Version20240711214827','2025-01-29 14:54:13',33),('Migrations\\Version20240715130054','2025-01-29 14:54:13',45),('Migrations\\Version20240716171532','2025-01-29 14:54:13',7),('Migrations\\Version20240718150142','2025-01-29 14:54:13',12),('Migrations\\Version20240718152519','2025-01-29 14:54:13',3),('Migrations\\Version20240719125151','2025-01-29 14:54:13',690),('Migrations\\Version20240724074801','2025-01-29 14:54:14',8),('Migrations\\Version20240724080325','2025-01-29 14:54:14',3),('Migrations\\Version20240724084413','2025-01-29 14:54:14',12),('Migrations\\Version20240724111618','2025-01-29 14:54:14',63),('Migrations\\Version20240724122946','2025-01-29 14:54:14',13),('Migrations\\Version20240726172241','2025-01-29 14:54:14',1219),('Migrations\\Version20240802121942','2025-01-29 14:54:15',108),('Migrations\\Version20240827135834','2025-01-29 14:54:16',15),('Migrations\\Version20240829173637','2025-01-29 14:54:16',74),('Migrations\\Version20240905154629','2025-01-29 14:54:16',58),('Migrations\\Version20240906131000','2025-01-29 14:54:16',25),('Migrations\\Version20240906151212','2025-01-29 14:54:16',85),('Migrations\\Version20240909120040','2025-01-29 14:54:16',22),('Migrations\\Version20240911151018','2025-01-29 14:54:16',8),('Migrations\\Version20240918194959','2025-01-29 14:54:16',213),('Migrations\\Version20240924075613','2025-01-29 14:54:16',36),('Migrations\\Version20240924123109','2025-01-29 14:54:16',25),('Migrations\\Version20240924133206','2025-01-29 14:54:16',1),('Migrations\\Version20240925100251','2025-01-29 14:54:16',13),('Migrations\\Version20240925134021','2025-01-29 14:54:16',16),('Migrations\\Version20240926163535','2025-01-29 14:54:16',16),('Migrations\\Version20241002124458','2025-01-29 14:54:16',48),('Migrations\\Version20241002132246','2025-01-29 14:54:16',16),('Migrations\\Version20241003080535','2025-01-29 14:54:16',28),('Migrations\\Version20241008144514','2025-01-29 14:54:16',23),('Migrations\\Version20241009112808','2025-01-29 14:54:16',55),('Migrations\\Version20241011115333','2025-01-29 14:54:16',12),('Migrations\\Version20241016164551','2025-01-29 14:54:16',25),('Migrations\\Version20241017170655','2025-01-29 14:54:16',9),('Migrations\\Version20241018074940','2025-01-29 14:54:16',102),('Migrations\\Version20241018120624','2025-01-29 14:54:16',19),('Migrations\\Version20241108095136','2025-01-29 14:54:16',30),('Migrations\\Version20241108150457','2025-01-29 14:54:17',3),('Migrations\\Version20241116225647','2025-01-29 14:54:17',4),('Migrations\\Version20241119103423','2025-01-29 14:54:17',11),('Migrations\\Version20241119155704','2025-01-29 14:54:17',25),('Migrations\\Version20241122093716','2025-01-29 14:54:17',12),('Migrations\\Version20241127160637','2025-01-29 14:54:17',14),('Migrations\\Version20241128231215','2025-01-29 14:54:17',271),('Migrations\\Version20241128232852','2025-01-29 14:54:17',134),('Migrations\\Version20241204170446','2025-01-29 14:54:17',21),('Migrations\\Version20241209093727','2025-01-29 14:54:17',161),('Migrations\\Version20241217101253','2025-01-29 14:54:17',57),('Migrations\\Version20241217133344','2025-01-29 14:54:17',15),('Migrations\\Version20241219151508','2025-01-29 14:54:17',129),('Migrations\\Version20241219172627','2025-01-29 14:54:17',131),('Migrations\\Version20241231142707','2025-01-29 14:54:18',95);
+INSERT INTO `migrations` VALUES ('Migrations\\Version20211126020536','2023-01-05 09:53:48',87),('Migrations\\Version20211126130535','2023-01-05 09:53:48',358),('Migrations\\Version20211126151434','2023-01-05 09:53:49',12),('Migrations\\Version20211126172212','2023-01-05 09:53:49',16),('Migrations\\Version20211130010431','2023-01-05 09:53:49',88),('Migrations\\Version20211130023420','2023-01-05 09:53:49',18),('Migrations\\Version20211130163308','2023-01-05 09:53:49',171),('Migrations\\Version20211202125517','2023-01-05 09:53:49',28),('Migrations\\Version20211202151633','2023-01-05 09:53:49',169),('Migrations\\Version20211202191607','2023-01-05 09:53:49',16),('Migrations\\Version20211203111253','2023-01-05 09:53:49',59),('Migrations\\Version20211203112333','2023-01-05 09:53:49',11),('Migrations\\Version20211206110133','2023-01-05 09:53:49',52),('Migrations\\Version20211206115819','2023-01-05 09:53:49',11),('Migrations\\Version20211207152117','2023-01-05 09:53:49',149),('Migrations\\Version20211208111523','2023-01-05 09:53:49',89),('Migrations\\Version20211209114932','2023-01-05 09:53:50',158),('Migrations\\Version20211209142923','2023-01-05 09:53:50',59),('Migrations\\Version20211220162832','2023-01-05 09:53:50',41),('Migrations\\Version20220103181110','2023-01-05 09:53:50',371),('Migrations\\Version20220104015613','2023-01-05 09:53:50',120),('Migrations\\Version20220106143719','2023-01-05 09:53:50',30),('Migrations\\Version20220110122036','2023-01-05 09:53:50',147),('Migrations\\Version20220110135715','2023-01-05 09:53:50',52),('Migrations\\Version20220110165351','2023-01-05 09:53:51',19),('Migrations\\Version20220110185032','2023-01-05 09:53:51',141),('Migrations\\Version20220112153457','2023-01-05 09:53:51',15),('Migrations\\Version20220113001351','2023-01-05 09:53:51',9),('Migrations\\Version20220113175738','2023-01-05 09:53:51',2454),('Migrations\\Version20220114104853','2023-01-05 09:53:53',113),('Migrations\\Version20220114151651','2023-01-05 09:53:53',19),('Migrations\\Version20220117173646','2023-01-05 09:53:53',13),('Migrations\\Version20220119094725','2023-01-05 09:53:53',54),('Migrations\\Version20220119160854','2023-01-05 09:53:53',106),('Migrations\\Version20220120173302','2023-01-05 09:53:53',150),('Migrations\\Version20220124162602','2023-01-05 09:53:54',82),('Migrations\\Version20220126182307','2023-01-05 09:53:54',55),('Migrations\\Version20220204141925','2023-01-05 09:53:54',11),('Migrations\\Version20220204164624','2023-01-05 09:53:54',209),('Migrations\\Version20220207135908','2023-01-05 09:53:54',56),('Migrations\\Version20220211115509','2023-01-05 09:53:54',216),('Migrations\\Version20220217113503','2023-01-05 09:53:54',9),('Migrations\\Version20220217124001','2023-01-05 09:53:54',16),('Migrations\\Version20220218125939','2023-01-05 09:53:54',107),('Migrations\\Version20220221172957','2023-01-05 09:53:54',48),('Migrations\\Version20220222082557','2023-01-05 09:53:54',170),('Migrations\\Version20220223181739','2023-01-05 09:53:55',41),('Migrations\\Version20220228120338','2023-01-05 09:53:55',12),('Migrations\\Version20220301133517','2023-01-05 09:53:55',47),('Migrations\\Version20220301190248','2023-01-05 09:53:55',14),('Migrations\\Version20220304164524','2023-01-05 09:53:55',69),('Migrations\\Version20220307111506','2023-01-05 09:53:55',58),('Migrations\\Version20220308175358','2023-01-05 09:53:55',12),('Migrations\\Version20220309113232','2023-01-05 09:53:55',11),('Migrations\\Version20220309113539','2023-01-05 09:53:55',33),('Migrations\\Version20220310121312','2023-01-05 09:53:55',13),('Migrations\\Version20220311152121','2023-01-05 09:53:55',13),('Migrations\\Version20220314141817','2023-01-05 09:53:55',45),('Migrations\\Version20220314155701','2023-01-05 09:53:55',11),('Migrations\\Version20220315005750','2023-01-05 09:53:55',106),('Migrations\\Version20220315170237','2023-01-05 09:53:55',89),('Migrations\\Version20220318201041','2023-01-05 09:53:55',39),('Migrations\\Version20220323165400','2023-01-05 09:53:55',6),('Migrations\\Version20220324112855','2023-01-05 09:53:55',84),('Migrations\\Version20220325172441','2023-01-05 09:53:55',398),('Migrations\\Version20220401171433','2023-01-05 09:53:56',12),('Migrations\\Version20220406110135','2023-01-05 09:53:56',45),('Migrations\\Version20220407142612','2023-01-05 09:53:56',69),('Migrations\\Version20220408144824','2023-01-05 09:53:56',43),('Migrations\\Version20220412120724','2023-01-05 09:53:56',54),('Migrations\\Version20220412172359','2023-01-05 09:53:56',601),('Migrations\\Version20220413192745','2023-01-05 09:53:57',22),('Migrations\\Version20220414170047','2023-01-05 09:53:57',14),('Migrations\\Version20220414211940','2023-01-05 09:53:57',28),('Migrations\\Version20220419193718','2023-01-05 09:53:57',116),('Migrations\\Version20220421132926','2023-01-05 09:53:57',45),('Migrations\\Version20220426163649','2023-01-05 09:53:57',31),('Migrations\\Version20220428150916','2023-01-05 09:53:57',13),('Migrations\\Version20220429114235','2023-01-05 09:53:57',115),('Migrations\\Version20220504182132','2023-01-05 09:53:57',37),('Migrations\\Version20220510102006','2023-01-05 09:53:57',14),('Migrations\\Version20220517152903','2023-01-05 09:53:57',13),('Migrations\\Version20220519181035','2023-01-05 09:53:57',25),('Migrations\\Version20220524105827','2023-01-05 09:53:57',55),('Migrations\\Version20220601181917','2023-01-05 09:53:57',405),('Migrations\\Version20220608011640','2023-01-05 09:53:58',57),('Migrations\\Version20220613112116','2023-01-05 09:53:58',33),('Migrations\\Version20220614100027','2023-01-05 09:53:58',72),('Migrations\\Version20220616095027','2023-01-05 09:53:58',9),('Migrations\\Version20220616140609','2023-01-05 09:53:58',67),('Migrations\\Version20220616154158','2023-01-05 09:53:58',14),('Migrations\\Version20220616165915','2023-01-05 09:53:58',11),('Migrations\\Version20220617190412','2023-01-05 09:53:58',12),('Migrations\\Version20220622122711','2023-01-05 09:53:58',167),('Migrations\\Version20220705022722','2023-01-05 09:53:58',22),('Migrations\\Version20220706000352','2023-01-05 09:53:58',138),('Migrations\\Version20220721160526','2023-01-05 09:53:58',14),('Migrations\\Version20220816180602','2023-01-05 09:53:58',21),('Migrations\\Version20220913155038','2023-01-05 09:53:58',739),('Migrations\\Version20220914170047','2023-01-05 09:53:59',18),('Migrations\\Version20220917042906','2023-01-05 09:53:59',174),('Migrations\\Version20220917135347','2023-01-05 09:53:59',283),('Migrations\\Version20220917153647','2023-01-05 09:53:59',205),('Migrations\\Version20220921132543','2023-01-05 09:54:00',180),('Migrations\\Version20220921152207','2023-01-05 09:54:00',16),('Migrations\\Version20220922172929','2023-01-05 09:54:00',8),('Migrations\\Version20220923100710','2023-01-05 09:54:00',7),('Migrations\\Version20220923154015','2023-01-05 09:54:00',19),('Migrations\\Version20220929173136','2023-01-05 09:54:00',28),('Migrations\\Version20220930151511','2023-01-05 09:54:00',24),('Migrations\\Version20221003152108','2023-01-05 09:54:00',82),('Migrations\\Version20221004115251','2023-01-05 09:54:00',23),('Migrations\\Version20221004155004','2023-01-05 09:54:00',19),('Migrations\\Version20221005132710','2023-01-05 09:54:00',10),('Migrations\\Version20221006135107','2023-01-05 09:54:00',27),('Migrations\\Version20221006182442','2023-01-05 09:54:00',9),('Migrations\\Version20221007154603','2023-01-05 09:54:00',8),('Migrations\\Version20221010123838','2023-01-05 09:54:00',8),('Migrations\\Version20221017232936','2023-01-05 09:54:00',8),('Migrations\\Version20221020113016','2023-01-05 09:54:00',168),('Migrations\\Version20221021140835','2023-01-05 09:54:00',14),('Migrations\\Version20221026085426','2023-01-05 09:54:00',113),('Migrations\\Version20221026160544','2023-01-05 09:54:00',215),('Migrations\\Version20221031150105','2023-01-05 09:54:01',21),('Migrations\\Version20221101210133','2023-01-05 09:54:01',29),('Migrations\\Version20221106232616','2023-01-05 09:54:01',194),('Migrations\\Version20221109170709','2023-01-05 09:54:01',34),('Migrations\\Version20221110000854','2023-01-05 09:54:01',11),('Migrations\\Version20221115082558','2023-01-05 09:54:01',35),('Migrations\\Version20221122094902','2023-01-05 09:54:01',348),('Migrations\\Version20221202153430','2023-01-05 09:54:01',50),('Migrations\\Version20221202161505','2023-01-05 09:54:01',12),('Migrations\\Version20221207092223','2023-01-05 09:54:01',57),('Migrations\\Version20221209122913','2023-01-05 09:54:02',361),('Migrations\\Version20221209162545','2023-01-05 09:54:02',136),('Migrations\\Version20221213112859','2023-01-05 09:54:02',114),('Migrations\\Version20221214111850','2023-01-05 09:54:02',15),('Migrations\\Version20221215150113','2023-01-05 09:54:02',25),('Migrations\\Version20221216123241','2023-01-05 09:54:02',9),('Migrations\\Version20221222094329','2023-01-05 09:54:02',53),('Migrations\\Version20230103112607','2024-09-25 10:41:30',423),('Migrations\\Version20230112170300','2024-09-25 10:41:30',33),('Migrations\\Version20230113162740','2024-09-25 10:41:30',212),('Migrations\\Version20230113181056','2024-09-25 10:41:31',206),('Migrations\\Version20230117112145','2024-09-25 10:41:31',216),('Migrations\\Version20230117175420','2024-09-25 10:41:31',59),('Migrations\\Version20230123015605','2024-09-25 10:41:31',10),('Migrations\\Version20230124144750','2024-09-25 10:41:31',267),('Migrations\\Version20230124152540','2024-09-25 10:41:31',4),('Migrations\\Version20230201185840','2024-09-25 10:41:31',49),('Migrations\\Version20230207011026','2024-09-25 10:41:31',186),('Migrations\\Version20230207174546','2024-09-25 10:41:32',127),('Migrations\\Version20230208105829','2024-09-25 10:41:32',94),('Migrations\\Version20230209153258','2024-09-25 10:41:32',57),('Migrations\\Version20230214143118','2024-09-25 10:41:32',38),('Migrations\\Version20230215084303','2024-09-25 10:41:32',117),('Migrations\\Version20230217112001','2024-09-25 10:41:32',75),('Migrations\\Version20230217142406','2024-09-25 10:41:32',35),('Migrations\\Version20230217143246','2024-09-25 10:41:32',95),('Migrations\\Version20230224152955','2024-09-25 10:41:32',68),('Migrations\\Version20230228165519','2024-09-25 10:41:32',25),('Migrations\\Version20230301155217','2024-09-25 10:41:32',160),('Migrations\\Version20230306120354','2024-09-25 10:41:33',31),('Migrations\\Version20230307142934','2024-09-25 10:41:33',75),('Migrations\\Version20230308172514','2024-09-25 10:41:33',8),('Migrations\\Version20230309121041','2024-09-25 10:41:33',17),('Migrations\\Version20230316170530','2024-09-25 10:41:33',46),('Migrations\\Version20230322144816','2024-09-25 10:41:33',16),('Migrations\\Version20230322174658','2024-09-25 10:41:33',8),('Migrations\\Version20230323111246','2024-09-25 10:41:33',8),('Migrations\\Version20230324113203','2024-09-25 10:41:33',4),('Migrations\\Version20230327141628','2024-09-25 10:41:33',9),('Migrations\\Version20230329012543','2024-09-25 10:41:33',38),('Migrations\\Version20230330153931','2024-09-25 10:41:33',73),('Migrations\\Version20230330173213','2024-09-25 10:41:33',13),('Migrations\\Version20230331125853','2024-09-25 10:41:33',150),('Migrations\\Version20230405125351','2024-09-25 10:41:33',9),('Migrations\\Version20230418095845','2024-09-25 10:41:33',13),('Migrations\\Version20230419141029','2024-09-25 10:41:33',33),('Migrations\\Version20230419170927','2024-09-25 10:41:33',3),('Migrations\\Version20230426174026','2024-09-25 10:41:33',154),('Migrations\\Version20230427153956','2024-09-25 10:41:33',81),('Migrations\\Version20230427165714','2024-09-25 10:41:33',9),('Migrations\\Version20230502141531','2024-09-25 10:41:33',32),('Migrations\\Version20230504151826','2024-09-25 10:41:33',122),('Migrations\\Version20230504163117','2024-09-25 10:41:33',36),('Migrations\\Version20230510153522','2024-09-25 10:41:34',8),('Migrations\\Version20230511181544','2024-09-25 10:41:34',18),('Migrations\\Version20230515153520','2024-09-25 10:41:34',75),('Migrations\\Version20230523012308','2024-09-25 10:41:34',6),('Migrations\\Version20230523023528','2024-09-25 10:41:34',46),('Migrations\\Version20230525133109','2024-09-25 10:41:34',14),('Migrations\\Version20230525135030','2024-09-25 10:41:34',5),('Migrations\\Version20230602161100','2024-09-25 10:41:34',19),('Migrations\\Version20230606133239','2024-09-25 10:41:34',4),('Migrations\\Version20230607155251','2024-09-25 10:41:34',10),('Migrations\\Version20230614123149','2024-09-25 10:41:34',79),('Migrations\\Version20230616145405','2024-09-25 10:41:34',54),('Migrations\\Version20230620145022','2024-09-25 10:41:34',3),('Migrations\\Version20230621084524','2024-09-25 10:41:34',17),('Migrations\\Version20230623073145','2024-09-25 10:41:34',5),('Migrations\\Version20230623101144','2024-09-25 10:41:34',26),('Migrations\\Version20230623103320','2024-09-25 10:41:34',17),('Migrations\\Version20230623153454','2024-09-25 10:41:34',28),('Migrations\\Version20230623173752','2024-09-25 10:41:34',14),('Migrations\\Version20230627233532','2024-09-25 10:41:34',5),('Migrations\\Version20230628150524','2024-09-25 10:41:34',10),('Migrations\\Version20230705072301','2024-09-25 10:41:34',34),('Migrations\\Version20230713081354','2024-09-25 10:41:34',463),('Migrations\\Version20230713171821','2024-09-25 10:41:35',260),('Migrations\\Version20230718161858','2024-09-25 10:41:35',31),('Migrations\\Version20230718180507','2024-09-25 10:41:35',180),('Migrations\\Version20230720163801','2024-09-25 10:41:35',6),('Migrations\\Version20230724100823','2024-09-25 10:41:35',82),('Migrations\\Version20230727095418','2024-09-25 10:41:35',389),('Migrations\\Version20230831072408','2024-09-25 10:41:35',14),('Migrations\\Version20230904142735','2024-09-25 10:41:35',8),('Migrations\\Version20230906080635','2024-09-25 10:41:35',6),('Migrations\\Version20230907113553','2024-09-25 10:41:35',20),('Migrations\\Version20230908112010','2024-09-25 10:41:36',29),('Migrations\\Version20230914080444','2024-09-25 10:41:36',54),('Migrations\\Version20230926123728','2024-09-25 10:41:36',22),('Migrations\\Version20230927161359','2024-09-25 10:41:36',162),('Migrations\\Version20231003095946','2024-09-25 10:41:36',122),('Migrations\\Version20231004161126','2024-09-25 10:41:36',98),('Migrations\\Version20231005220834','2024-09-25 10:41:36',111),('Migrations\\Version20231006082726','2024-09-25 10:41:36',111),('Migrations\\Version20231010151645','2024-09-25 10:41:36',20),('Migrations\\Version20231012080033','2024-09-25 10:41:36',6),('Migrations\\Version20231016232208','2024-09-25 10:41:36',9),('Migrations\\Version20231018081458','2024-09-25 10:41:36',34),('Migrations\\Version20231023161507','2024-09-25 10:41:36',8),('Migrations\\Version20231102091259','2024-09-25 10:41:36',4),('Migrations\\Version20231103172715','2024-09-25 10:41:36',55),('Migrations\\Version20231106102259','2024-09-25 10:41:36',6),('Migrations\\Version20231117170244','2024-09-25 10:41:36',5),('Migrations\\Version20231130142149','2024-09-25 10:41:36',14),('Migrations\\Version20231207093329','2024-09-25 10:41:36',31),('Migrations\\Version20231208002730','2024-09-25 10:41:36',85),('Migrations\\Version20231214003554','2024-09-25 10:41:37',103),('Migrations\\Version20231217142736','2024-09-25 10:41:37',144),('Migrations\\Version20240111110813','2025-01-29 14:54:08',123),('Migrations\\Version20240115220546','2025-01-29 14:54:08',308),('Migrations\\Version20240116132005','2025-01-29 14:54:08',137),('Migrations\\Version20240118042542','2025-01-29 14:54:09',29),('Migrations\\Version20240123220055','2025-01-29 14:54:09',11),('Migrations\\Version20240126174201','2025-01-29 14:54:09',122),('Migrations\\Version20240203171047','2025-01-29 14:54:09',110),('Migrations\\Version20240207165446','2025-01-29 14:54:09',22),('Migrations\\Version20240216181147','2025-01-29 14:54:09',37),('Migrations\\Version20240220182326','2025-01-29 14:54:09',13),('Migrations\\Version20240221091851','2025-01-29 14:54:09',42),('Migrations\\Version20240221143404','2025-01-29 14:54:09',81),('Migrations\\Version20240221145728','2025-01-29 14:54:09',97),('Migrations\\Version20240223132047','2025-01-29 14:54:09',24),('Migrations\\Version20240304021611','2025-01-29 14:54:09',100),('Migrations\\Version20240306174317','2025-01-29 14:54:09',25),('Migrations\\Version20240307093902','2025-01-29 14:54:09',11),('Migrations\\Version20240307095411','2025-01-29 14:54:09',344),('Migrations\\Version20240308114452','2025-01-29 14:54:10',35),('Migrations\\Version20240311084338','2025-01-29 14:54:10',27),('Migrations\\Version20240314121122','2025-01-29 14:54:10',215),('Migrations\\Version20240319113037','2025-01-29 14:54:10',11),('Migrations\\Version20240319133416','2025-01-29 14:54:10',15),('Migrations\\Version20240319155519','2025-01-29 14:54:10',51),('Migrations\\Version20240321162127','2025-01-29 14:54:10',102),('Migrations\\Version20240322150932','2025-01-29 14:54:10',62),('Migrations\\Version20240325145823','2025-01-29 14:54:10',23),('Migrations\\Version20240327081758','2025-01-29 14:54:10',31),('Migrations\\Version20240329140615','2025-01-29 14:54:10',78),('Migrations\\Version20240329144236','2025-01-29 14:54:10',20),('Migrations\\Version20240329204549','2025-01-29 14:54:10',319),('Migrations\\Version20240402164724','2025-01-29 14:54:11',25),('Migrations\\Version20240403223008','2025-01-29 14:54:11',6),('Migrations\\Version20240409130540','2025-01-29 14:54:11',11),('Migrations\\Version20240410063924','2025-01-29 14:54:11',43),('Migrations\\Version20240416154418','2025-01-29 14:54:11',119),('Migrations\\Version20240417135955','2025-01-29 14:54:11',22),('Migrations\\Version20240424115627','2025-01-29 14:54:11',25),('Migrations\\Version20240506153531','2025-01-29 14:54:11',15),('Migrations\\Version20240510130946','2025-01-29 14:54:11',16),('Migrations\\Version20240514084526','2025-01-29 14:54:11',57),('Migrations\\Version20240517080738','2025-01-29 14:54:11',48),('Migrations\\Version20240517142406','2025-01-29 14:54:11',14),('Migrations\\Version20240523163640','2025-01-29 14:54:11',96),('Migrations\\Version20240527140711','2025-01-29 14:54:11',154),('Migrations\\Version20240527144138','2025-01-29 14:54:11',14),('Migrations\\Version20240529124938','2025-01-29 14:54:11',16),('Migrations\\Version20240603164507','2025-01-29 14:54:11',15),('Migrations\\Version20240605204832','2025-01-29 14:54:11',122),('Migrations\\Version20240611152139','2025-01-29 14:54:12',36),('Migrations\\Version20240611175556','2025-01-29 14:54:12',144),('Migrations\\Version20240614123828','2025-01-29 14:54:12',177),('Migrations\\Version20240615094405','2025-01-29 14:54:12',76),('Migrations\\Version20240618131552','2025-01-29 14:54:12',42),('Migrations\\Version20240618143502','2025-01-29 14:54:12',38),('Migrations\\Version20240618152952','2025-01-29 14:54:12',127),('Migrations\\Version20240619114342','2025-01-29 14:54:12',35),('Migrations\\Version20240621152825','2025-01-29 14:54:12',96),('Migrations\\Version20240622141935','2025-01-29 14:54:12',335),('Migrations\\Version20240623120631','2025-01-29 14:54:13',18),('Migrations\\Version20240624143855','2025-01-29 14:54:13',66),('Migrations\\Version20240625165041','2025-01-29 14:54:13',25),('Migrations\\Version20240628155502','2025-01-29 14:54:13',31),('Migrations\\Version20240702163555','2025-01-29 14:54:13',22),('Migrations\\Version20240708161136','2025-01-29 14:54:13',392),('Migrations\\Version20240709094154','2025-01-29 14:54:13',26),('Migrations\\Version20240710155639','2025-01-29 14:54:13',43),('Migrations\\Version20240711165324','2025-01-29 14:54:13',25),('Migrations\\Version20240711214827','2025-01-29 14:54:13',33),('Migrations\\Version20240715130054','2025-01-29 14:54:13',45),('Migrations\\Version20240716171532','2025-01-29 14:54:13',7),('Migrations\\Version20240718150142','2025-01-29 14:54:13',12),('Migrations\\Version20240718152519','2025-01-29 14:54:13',3),('Migrations\\Version20240719125151','2025-01-29 14:54:13',690),('Migrations\\Version20240724074801','2025-01-29 14:54:14',8),('Migrations\\Version20240724080325','2025-01-29 14:54:14',3),('Migrations\\Version20240724084413','2025-01-29 14:54:14',12),('Migrations\\Version20240724111618','2025-01-29 14:54:14',63),('Migrations\\Version20240724122946','2025-01-29 14:54:14',13),('Migrations\\Version20240726172241','2025-01-29 14:54:14',1219),('Migrations\\Version20240802121942','2025-01-29 14:54:15',108),('Migrations\\Version20240827135834','2025-01-29 14:54:16',15),('Migrations\\Version20240829173637','2025-01-29 14:54:16',74),('Migrations\\Version20240905154629','2025-01-29 14:54:16',58),('Migrations\\Version20240906131000','2025-01-29 14:54:16',25),('Migrations\\Version20240906151212','2025-01-29 14:54:16',85),('Migrations\\Version20240909120040','2025-01-29 14:54:16',22),('Migrations\\Version20240911151018','2025-01-29 14:54:16',8),('Migrations\\Version20240918194959','2025-01-29 14:54:16',213),('Migrations\\Version20240924075613','2025-01-29 14:54:16',36),('Migrations\\Version20240924123109','2025-01-29 14:54:16',25),('Migrations\\Version20240924133206','2025-01-29 14:54:16',1),('Migrations\\Version20240925100251','2025-01-29 14:54:16',13),('Migrations\\Version20240925134021','2025-01-29 14:54:16',16),('Migrations\\Version20240926163535','2025-01-29 14:54:16',16),('Migrations\\Version20241002124458','2025-01-29 14:54:16',48),('Migrations\\Version20241002132246','2025-01-29 14:54:16',16),('Migrations\\Version20241003080535','2025-01-29 14:54:16',28),('Migrations\\Version20241008144514','2025-01-29 14:54:16',23),('Migrations\\Version20241009112808','2025-01-29 14:54:16',55),('Migrations\\Version20241011115333','2025-01-29 14:54:16',12),('Migrations\\Version20241016164551','2025-01-29 14:54:16',25),('Migrations\\Version20241017170655','2025-01-29 14:54:16',9),('Migrations\\Version20241018074940','2025-01-29 14:54:16',102),('Migrations\\Version20241018120624','2025-01-29 14:54:16',19),('Migrations\\Version20241108095136','2025-01-29 14:54:16',30),('Migrations\\Version20241108150457','2025-01-29 14:54:17',3),('Migrations\\Version20241116225647','2025-01-29 14:54:17',4),('Migrations\\Version20241119103423','2025-01-29 14:54:17',11),('Migrations\\Version20241119155704','2025-01-29 14:54:17',25),('Migrations\\Version20241122093716','2025-01-29 14:54:17',12),('Migrations\\Version20241127160637','2025-01-29 14:54:17',14),('Migrations\\Version20241128231215','2025-01-29 14:54:17',271),('Migrations\\Version20241128232852','2025-01-29 14:54:17',134),('Migrations\\Version20241204170446','2025-01-29 14:54:17',21),('Migrations\\Version20241209093727','2025-01-29 14:54:17',161),('Migrations\\Version20241217101253','2025-01-29 14:54:17',57),('Migrations\\Version20241217133344','2025-01-29 14:54:17',15),('Migrations\\Version20241219151508','2025-01-29 14:54:17',129),('Migrations\\Version20241219172627','2025-01-29 14:54:17',131),('Migrations\\Version20241231142707','2025-01-29 14:54:18',95),('Migrations\\Version20250102173536','2026-01-02 17:36:51',118),('Migrations\\Version20250108110304','2026-01-02 17:36:51',195),('Migrations\\Version20250108154409','2026-01-02 17:36:51',284),('Migrations\\Version20250109162538','2026-01-02 17:36:51',39),('Migrations\\Version20250114160957','2026-01-02 17:36:52',23),('Migrations\\Version20250114174700','2026-01-02 17:36:52',28),('Migrations\\Version20250117171230','2026-01-02 17:36:52',146),('Migrations\\Version20250120134757','2026-01-02 17:36:52',56),('Migrations\\Version20250124163712','2026-01-02 17:36:52',14),('Migrations\\Version20250128150801','2026-01-02 17:36:52',6),('Migrations\\Version20250129125624','2026-01-02 17:36:52',3),('Migrations\\Version20250129170122','2026-01-02 17:36:52',8),('Migrations\\Version20250131111843','2026-01-02 17:36:52',152),('Migrations\\Version20250131151354','2026-01-02 17:36:52',11),('Migrations\\Version20250201142049','2026-01-02 17:36:52',76),('Migrations\\Version20250203133315','2026-01-02 17:36:52',23),('Migrations\\Version20250203144259','2026-01-02 17:36:52',40),('Migrations\\Version20250206095029','2026-01-02 17:36:52',45),('Migrations\\Version20250210161256','2026-01-02 17:36:52',24),('Migrations\\Version20250211155729','2026-01-02 17:36:52',13),('Migrations\\Version20250213155841','2026-01-02 17:36:52',41),('Migrations\\Version20250217081741','2026-01-02 17:36:52',22),('Migrations\\Version20250217214657','2026-01-02 17:36:52',16),('Migrations\\Version20250218130105','2026-01-02 17:36:52',21),('Migrations\\Version20250220094247','2026-01-02 17:36:52',43),('Migrations\\Version20250220095159','2026-01-02 17:36:52',13),('Migrations\\Version20250220104643','2026-01-02 17:36:52',12),('Migrations\\Version20250220105051','2026-01-02 17:36:52',12),('Migrations\\Version20250220155540','2026-01-02 17:36:52',5),('Migrations\\Version20250221150858','2026-01-02 17:36:52',13),('Migrations\\Version20250227133157','2026-01-02 17:36:52',36),('Migrations\\Version20250304125045','2026-01-02 17:36:52',17),('Migrations\\Version20250306133133','2026-01-02 17:36:52',9),('Migrations\\Version20250307142630','2026-01-02 17:36:52',26),('Migrations\\Version20250313145558','2026-01-02 17:36:53',13),('Migrations\\Version20250314091155','2026-01-02 17:36:53',12),('Migrations\\Version20250314101422','2026-01-02 17:36:53',106),('Migrations\\Version20250317152336','2026-01-02 17:36:53',15),('Migrations\\Version20250318155112','2026-01-02 17:36:53',101),('Migrations\\Version20250319104842','2026-01-02 17:36:53',35),('Migrations\\Version20250326133754','2026-01-02 17:36:53',13),('Migrations\\Version20250402145616','2026-01-02 17:36:53',37),('Migrations\\Version20250404070221','2026-01-02 17:36:53',11),('Migrations\\Version20250404122129','2026-01-02 17:36:53',14),('Migrations\\Version20250404164852','2026-01-02 17:36:53',15),('Migrations\\Version20250407114219','2026-01-02 17:36:53',11),('Migrations\\Version20250407134718','2026-01-02 17:36:53',14),('Migrations\\Version20250410083459','2026-01-02 17:36:53',97),('Migrations\\Version20250411102157','2026-01-02 17:36:53',25),('Migrations\\Version20250411105857','2026-01-02 17:36:53',15),('Migrations\\Version20250411134834','2026-01-02 17:36:53',11),('Migrations\\Version20250414131242','2026-01-02 17:36:53',113),('Migrations\\Version20250415094308','2026-01-02 17:36:53',32),('Migrations\\Version20250416162120','2026-01-02 17:36:53',10),('Migrations\\Version20250418122712','2026-01-02 17:36:53',16),('Migrations\\Version20250422114538','2026-01-02 17:36:53',15),('Migrations\\Version20250422123124','2026-01-02 17:36:53',14),('Migrations\\Version20250422125416','2026-01-02 17:36:53',19),('Migrations\\Version20250423143331','2026-01-02 17:36:53',3),('Migrations\\Version20250423143830','2026-01-02 17:36:53',99),('Migrations\\Version20250429104126','2026-01-02 17:36:53',106),('Migrations\\Version20250430123214','2026-01-02 17:36:54',24),('Migrations\\Version20250430141243','2026-01-02 17:36:54',93),('Migrations\\Version20250506132144','2026-01-02 17:36:54',83),('Migrations\\Version20250512135725','2026-01-02 17:36:54',16),('Migrations\\Version20250519121503','2026-01-02 17:36:54',20),('Migrations\\Version20250519124858','2026-01-02 17:36:54',12),('Migrations\\Version20250520114901','2026-01-02 17:36:54',47),('Migrations\\Version20250521150439','2026-01-02 17:36:54',14),('Migrations\\Version20250523120644','2026-01-02 17:36:54',25),('Migrations\\Version20250527141715','2026-01-02 17:36:54',23),('Migrations\\Version20250603092125','2026-01-02 17:36:54',96),('Migrations\\Version20250603155747','2026-01-02 17:36:54',14),('Migrations\\Version20250610074255','2026-01-02 17:36:54',34),('Migrations\\Version20250611083310','2026-01-02 17:36:54',44),('Migrations\\Version20250613144613','2026-01-02 17:36:54',116),('Migrations\\Version20250616084932','2026-01-02 17:36:54',14),('Migrations\\Version20250616222016','2026-01-02 17:36:54',14),('Migrations\\Version20250617143908','2026-01-02 17:36:54',19),('Migrations\\Version20250618130849','2026-01-02 17:36:54',50),('Migrations\\Version20250619124131','2026-01-02 17:36:54',63),('Migrations\\Version20250623080633','2026-01-02 17:36:54',11),('Migrations\\Version20250623111722','2026-01-02 17:36:54',12),('Migrations\\Version20250624125305','2026-01-02 17:36:54',17),('Migrations\\Version20250625085743','2026-01-02 17:36:54',28),('Migrations\\Version20250627081559','2026-01-02 17:36:54',76),('Migrations\\Version20250701102058','2026-01-02 17:36:54',9),('Migrations\\Version20250701152300','2026-01-02 17:36:54',68),('Migrations\\Version20250702081141','2026-01-02 17:36:55',18),('Migrations\\Version20250703081536','2026-01-02 17:36:55',88),('Migrations\\Version20250703153724','2026-01-02 17:36:55',73),('Migrations\\Version20250703170232','2026-01-02 17:36:55',34),('Migrations\\Version20250704121611','2026-01-02 17:36:55',18),('Migrations\\Version20250708083237','2026-01-02 17:36:55',23),('Migrations\\Version20250708085624','2026-01-02 17:36:55',43),('Migrations\\Version20250710200648','2026-01-02 17:36:55',46),('Migrations\\Version20250715143041','2026-01-02 17:36:55',17),('Migrations\\Version20250716220725','2026-01-02 17:36:55',16),('Migrations\\Version20250718132735','2026-01-02 17:36:55',34),('Migrations\\Version20250721093908','2026-01-02 17:36:55',20),('Migrations\\Version20250721162032','2026-01-02 17:36:55',24),('Migrations\\Version20250723100955','2026-01-02 17:36:55',35),('Migrations\\Version20250730144505','2026-01-02 17:36:55',43),('Migrations\\Version20250822094428','2026-01-02 17:36:55',63),('Migrations\\Version20250825155758','2026-01-02 17:36:55',21),('Migrations\\Version20250826090334','2026-01-02 17:36:55',20),('Migrations\\Version20250826144950','2026-01-02 17:36:55',79),('Migrations\\Version20250828213838','2026-01-02 17:36:55',75),('Migrations\\Version20250902083106','2026-01-02 17:36:55',10),('Migrations\\Version20250903135117','2026-01-02 17:36:55',105),('Migrations\\Version20250911151519','2026-01-02 17:36:55',25),('Migrations\\Version20250911222728','2026-01-02 17:36:56',108),('Migrations\\Version20250912095153','2026-01-02 17:36:56',60),('Migrations\\Version20250912144715','2026-01-02 17:36:56',34),('Migrations\\Version20250912150338','2026-01-02 17:36:56',21),('Migrations\\Version20250912152038','2026-01-02 17:36:56',53),('Migrations\\Version20250912181307','2026-01-02 17:36:56',24),('Migrations\\Version20250917072949','2026-01-02 17:36:56',23),('Migrations\\Version20250919143710','2026-01-02 17:36:56',18),('Migrations\\Version20250920073436','2026-01-02 17:36:56',13),('Migrations\\Version20250924075627','2026-01-02 17:36:56',25),('Migrations\\Version20250930092405','2026-01-02 17:36:56',28),('Migrations\\Version20250930173255','2026-01-02 17:36:56',13),('Migrations\\Version20251013092944','2026-01-02 17:36:56',14),('Migrations\\Version20251014091711','2026-01-02 17:36:56',3),('Migrations\\Version20251015130941','2026-01-02 17:36:56',59),('Migrations\\Version20251016165537','2026-01-02 17:36:56',24),('Migrations\\Version20251020083347','2026-01-02 17:36:56',89),('Migrations\\Version20251021144834','2026-01-02 17:36:56',6),('Migrations\\Version20251022232142','2026-01-02 17:36:56',85),('Migrations\\Version20251030171255','2026-01-02 17:36:56',58),('Migrations\\Version20251103205053','2026-01-02 17:36:56',120),('Migrations\\Version20251104140908','2026-01-02 17:36:56',15),('Migrations\\Version20251107170113','2026-01-02 17:36:56',5),('Migrations\\Version20251120101147','2026-01-02 17:36:56',114),('Migrations\\Version20251125003333','2026-01-02 17:36:57',221),('Migrations\\Version20251126182523','2026-01-02 17:36:57',20),('Migrations\\Version20251127142258','2026-01-02 17:36:57',44),('Migrations\\Version20251127162906','2026-01-02 17:36:57',12),('Migrations\\Version20251128234343','2026-01-02 17:36:57',10),('Migrations\\Version20251129103559','2026-01-02 17:36:57',13),('Migrations\\Version20251205174729','2026-01-02 17:36:57',2),('Migrations\\Version20251208175641','2026-01-02 17:36:57',32),('Migrations\\Version20251224111850','2026-01-02 17:36:57',93),('Migrations\\Version20251231114250','2026-01-02 17:36:57',11);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6195,6 +6451,63 @@ LOCK TABLES `mooc_elements` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `moodle_user`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `moodle_user` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `moodle_id` int unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_5EB3C2D25F06C53` (`adherent_id`),
+  CONSTRAINT `FK_5EB3C2D25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `moodle_user`
+--
+
+LOCK TABLES `moodle_user` WRITE;
+/*!40000 ALTER TABLE `moodle_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `moodle_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `moodle_user_job`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `moodle_user_job` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `moodle_id` int unsigned NOT NULL,
+  `department` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `job_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_47A4CBDA76ED395` (`user_id`),
+  CONSTRAINT `FK_47A4CBDA76ED395` FOREIGN KEY (`user_id`) REFERENCES `moodle_user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `moodle_user_job`
+--
+
+LOCK TABLES `moodle_user_job` WRITE;
+/*!40000 ALTER TABLE `moodle_user_job` DISABLE KEYS */;
+/*!40000 ALTER TABLE `moodle_user_job` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `my_team`
 --
 
@@ -6224,32 +6537,6 @@ LOCK TABLES `my_team` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `my_team_delegate_access_committee`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `my_team_delegate_access_committee` (
-  `delegated_access_id` int unsigned NOT NULL,
-  `committee_id` int unsigned NOT NULL,
-  PRIMARY KEY (`delegated_access_id`,`committee_id`),
-  KEY `IDX_C52A163FED1A100B` (`committee_id`),
-  KEY `IDX_C52A163FFD98FA7A` (`delegated_access_id`),
-  CONSTRAINT `FK_C52A163FED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_C52A163FFD98FA7A` FOREIGN KEY (`delegated_access_id`) REFERENCES `my_team_delegated_access` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `my_team_delegate_access_committee`
---
-
-LOCK TABLES `my_team_delegate_access_committee` WRITE;
-/*!40000 ALTER TABLE `my_team_delegate_access_committee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `my_team_delegate_access_committee` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `my_team_delegated_access`
 --
 
@@ -6261,12 +6548,12 @@ CREATE TABLE `my_team_delegated_access` (
   `delegated_id` int unsigned NOT NULL,
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `accesses` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `restricted_cities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `scope_features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `role_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_421C13B9D17F50A6` (`uuid`),
   KEY `IDX_421C13B98825BEFA` (`delegator_id`),
@@ -6331,22 +6618,54 @@ CREATE TABLE `national_event` (
   `end_date` datetime NOT NULL,
   `ticket_start_date` datetime NOT NULL,
   `ticket_end_date` datetime NOT NULL,
-  `text_intro` longtext COLLATE utf8mb4_unicode_ci,
-  `text_help` longtext COLLATE utf8mb4_unicode_ci,
-  `text_confirmation` longtext COLLATE utf8mb4_unicode_ci,
-  `into_image_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `canonical_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text_intro` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `text_help` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `text_confirmation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `canonical_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `text_ticket_email` longtext COLLATE utf8mb4_unicode_ci,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `subject_ticket_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image_ticket_email` longtext COLLATE utf8mb4_unicode_ci,
+  `text_ticket_email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject_ticket_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_ticket_email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `og_image_id` int unsigned DEFAULT NULL,
+  `og_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `og_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `inscription_edit_deadline` datetime DEFAULT NULL,
+  `logo_image_id` int unsigned DEFAULT NULL,
+  `into_image_id` int unsigned DEFAULT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default',
+  `package_config` json DEFAULT NULL,
+  `mailchimp_sync` tinyint(1) NOT NULL DEFAULT '0',
+  `default_access` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `default_bracelet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `default_bracelet_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alert_logo_image_id` int unsigned DEFAULT NULL,
+  `connection_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `discount_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discount_help` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_AD037664D17F50A6` (`uuid`)
+  UNIQUE KEY `UNIQ_AD037664D17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_AD0376646EFCB8B8` (`og_image_id`),
+  UNIQUE KEY `UNIQ_AD0376646D947EBB` (`logo_image_id`),
+  UNIQUE KEY `UNIQ_AD037664DC0A230D` (`into_image_id`),
+  UNIQUE KEY `UNIQ_AD037664DD86B734` (`alert_logo_image_id`),
+  KEY `IDX_AD0376649DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_AD037664CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_AD0376646D947EBB` FOREIGN KEY (`logo_image_id`) REFERENCES `uploadable_file` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_AD0376646EFCB8B8` FOREIGN KEY (`og_image_id`) REFERENCES `uploadable_file` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_AD0376649DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_AD037664CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_AD037664DC0A230D` FOREIGN KEY (`into_image_id`) REFERENCES `uploadable_file` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_AD037664DD86B734` FOREIGN KEY (`alert_logo_image_id`) REFERENCES `uploadable_file` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6368,34 +6687,77 @@ UNLOCK TABLES;
 CREATE TABLE `national_event_inscription` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `event_id` int unsigned DEFAULT NULL,
-  `gender` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthdate` date DEFAULT NULL,
-  `phone` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `join_newsletter` tinyint(1) NOT NULL DEFAULT '0',
-  `client_ip` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `session_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `client_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_check` json DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `ticket_sent_at` datetime DEFAULT NULL,
-  `ticket_custom_detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ticket_qrcode_file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_custom_detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_qrcode_file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `qualities` json DEFAULT NULL,
+  `birth_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accessibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transport_needs` tinyint(1) NOT NULL DEFAULT '0',
+  `volunteer` tinyint(1) NOT NULL DEFAULT '0',
+  `referrer_id` int unsigned DEFAULT NULL,
+  `referrer_code` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `children` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_responsibility_waived` tinyint(1) NOT NULL DEFAULT '0',
+  `confirmed_at` datetime DEFAULT NULL,
+  `push_sent_at` datetime DEFAULT NULL,
+  `first_ticket_scanned_at` datetime DEFAULT NULL,
+  `is_jam` tinyint(1) NOT NULL DEFAULT '0',
+  `visit_day` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` smallint unsigned DEFAULT NULL,
+  `with_discount` tinyint(1) DEFAULT NULL,
+  `canceled_at` datetime DEFAULT NULL,
+  `payment_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `duplicate_inscription_for_status_id` int unsigned DEFAULT NULL,
+  `confirmation_sent_at` datetime DEFAULT NULL,
+  `accommodation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `roommate_identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `public_id` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validation_comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `validation_started_at` datetime DEFAULT NULL,
+  `validation_finished_at` datetime DEFAULT NULL,
+  `last_ticket_scanned_at` datetime DEFAULT NULL,
+  `ticket_bracelet_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `transport_detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `accommodation_detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `custom_detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ticket_bracelet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `package_plan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `package_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `package_departure_time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `package_donation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C3325557D17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_C3325557E3A4459E` (`ticket_uuid`),
+  UNIQUE KEY `UNIQ_C3325557B5B48B91` (`public_id`),
   KEY `IDX_C332555771F7E88B` (`event_id`),
   KEY `IDX_C332555725F06C53` (`adherent_id`),
+  KEY `IDX_C3325557798C22DB` (`referrer_id`),
+  KEY `IDX_C3325557CC613791` (`duplicate_inscription_for_status_id`),
   CONSTRAINT `FK_C332555725F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_C332555771F7E88B` FOREIGN KEY (`event_id`) REFERENCES `national_event` (`id`)
+  CONSTRAINT `FK_C332555771F7E88B` FOREIGN KEY (`event_id`) REFERENCES `national_event` (`id`),
+  CONSTRAINT `FK_C3325557798C22DB` FOREIGN KEY (`referrer_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_C3325557CC613791` FOREIGN KEY (`duplicate_inscription_for_status_id`) REFERENCES `national_event_inscription` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6406,6 +6768,132 @@ CREATE TABLE `national_event_inscription` (
 LOCK TABLES `national_event_inscription` WRITE;
 /*!40000 ALTER TABLE `national_event_inscription` DISABLE KEYS */;
 /*!40000 ALTER TABLE `national_event_inscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `national_event_inscription_payment`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `national_event_inscription_payment` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `inscription_id` int unsigned DEFAULT NULL,
+  `payload` json NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `amount` int unsigned NOT NULL DEFAULT '0',
+  `transport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `with_discount` tinyint(1) DEFAULT NULL,
+  `replacement_id` int unsigned DEFAULT NULL,
+  `accommodation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `to_refund` tinyint(1) NOT NULL DEFAULT '0',
+  `visit_day` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `expired_checked_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_D0696D12D17F50A6` (`uuid`),
+  KEY `IDX_D0696D125DAC5993` (`inscription_id`),
+  KEY `IDX_D0696D129D25CF90` (`replacement_id`),
+  CONSTRAINT `FK_D0696D125DAC5993` FOREIGN KEY (`inscription_id`) REFERENCES `national_event_inscription` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_D0696D129D25CF90` FOREIGN KEY (`replacement_id`) REFERENCES `national_event_inscription_payment` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `national_event_inscription_payment`
+--
+
+LOCK TABLES `national_event_inscription_payment` WRITE;
+/*!40000 ALTER TABLE `national_event_inscription_payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_event_inscription_payment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `national_event_inscription_payment_status`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `national_event_inscription_payment_status` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `payload` json NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `payment_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_746EBF594C3A3BB` (`payment_id`),
+  CONSTRAINT `FK_746EBF594C3A3BB` FOREIGN KEY (`payment_id`) REFERENCES `national_event_inscription_payment` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `national_event_inscription_payment_status`
+--
+
+LOCK TABLES `national_event_inscription_payment_status` WRITE;
+/*!40000 ALTER TABLE `national_event_inscription_payment_status` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_event_inscription_payment_status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `national_event_inscription_reminder`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `national_event_inscription_reminder` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `inscription_id` int unsigned DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_CD82035C5DAC5993` (`inscription_id`),
+  CONSTRAINT `FK_CD82035C5DAC5993` FOREIGN KEY (`inscription_id`) REFERENCES `national_event_inscription` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `national_event_inscription_reminder`
+--
+
+LOCK TABLES `national_event_inscription_reminder` WRITE;
+/*!40000 ALTER TABLE `national_event_inscription_reminder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_event_inscription_reminder` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `national_event_inscription_scan`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `national_event_inscription_scan` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `inscription_id` int unsigned DEFAULT NULL,
+  `scanned_by_id` int unsigned DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `inscription_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_284E9A8DD17F50A6` (`uuid`),
+  KEY `IDX_284E9A8D5DAC5993` (`inscription_id`),
+  KEY `IDX_284E9A8DEBBC642F` (`scanned_by_id`),
+  CONSTRAINT `FK_284E9A8D5DAC5993` FOREIGN KEY (`inscription_id`) REFERENCES `national_event_inscription` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_284E9A8DEBBC642F` FOREIGN KEY (`scanned_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `national_event_inscription_scan`
+--
+
+LOCK TABLES `national_event_inscription_scan` WRITE;
+/*!40000 ALTER TABLE `national_event_inscription_scan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_event_inscription_scan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -6459,8 +6947,12 @@ CREATE TABLE `notification` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `data` json DEFAULT NULL,
-  `scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `notification_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_BF5476CAD17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_BF5476CAB7E9E9E` (`notification_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -6490,13 +6982,16 @@ CREATE TABLE `oauth_access_tokens` (
   `created_at` datetime NOT NULL,
   `scopes` json NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `app_session_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CA42527C772E836A` (`identifier`),
   UNIQUE KEY `UNIQ_CA42527CD17F50A6` (`uuid`),
   KEY `IDX_CA42527C19EB6921` (`client_id`),
   KEY `IDX_CA42527C94A4C7D4` (`device_id`),
   KEY `IDX_CA42527CA76ED395` (`user_id`),
+  KEY `IDX_CA42527C372447A3` (`app_session_id`),
   CONSTRAINT `FK_CA42527C19EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`),
+  CONSTRAINT `FK_CA42527C372447A3` FOREIGN KEY (`app_session_id`) REFERENCES `app_session` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_CA42527C94A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_CA42527CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -6571,6 +7066,7 @@ CREATE TABLE `oauth_clients` (
   `updated_at` datetime NOT NULL,
   `requested_roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_enabled` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_13CE8101D17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -6627,22 +7123,22 @@ CREATE TABLE `ohme_contact` (
   `adherent_id` int unsigned DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `ohme_identifier` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `civility` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ohme_identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `civility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthdate` date DEFAULT NULL,
-  `address_street` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_street2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_post_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_street` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_street2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_post_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ohme_created_at` datetime DEFAULT NULL,
   `ohme_updated_at` datetime DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `payment_count` int DEFAULT NULL,
@@ -6816,7 +7312,7 @@ CREATE TABLE `pap_building_block_statistics` (
   `updated_at` datetime NOT NULL,
   `closed_by_id` int unsigned DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
-  `status_detail` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_detail` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8B79BF60D17F50A6` (`uuid`),
   KEY `IDX_8B79BF6032618357` (`building_block_id`),
@@ -6853,7 +7349,7 @@ CREATE TABLE `pap_building_event` (
   `author_id` int unsigned DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `close_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `close_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `programs` smallint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D9F29104D17F50A6` (`uuid`),
@@ -6897,7 +7393,7 @@ CREATE TABLE `pap_building_statistics` (
   `closed_by_id` int unsigned DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
   `nb_distributed_programs` smallint unsigned NOT NULL DEFAULT '0',
-  `status_detail` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_detail` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B6FB4E7BD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_B6FB4E7B4D2A7E12F639F774` (`building_id`,`campaign_id`),
@@ -7129,7 +7625,7 @@ CREATE TABLE `pap_floor_statistics` (
   `closed_at` datetime DEFAULT NULL,
   `visited_doors` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `nb_surveys` smallint unsigned NOT NULL DEFAULT '0',
-  `status_detail` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_detail` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_853B68C8D17F50A6` (`uuid`),
   KEY `IDX_853B68C8854679E2` (`floor_id`),
@@ -7213,6 +7709,47 @@ CREATE TABLE `pap_voter` (
 LOCK TABLES `pap_voter` WRITE;
 /*!40000 ALTER TABLE `pap_voter` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pap_voter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `petition_signature`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `petition_signature` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `civility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `petition_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `petition_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `validated_at` datetime DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `newsletter` tinyint(1) NOT NULL DEFAULT '0',
+  `reminded_at` datetime DEFAULT NULL,
+  `adherent_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_347C2710D17F50A6` (`uuid`),
+  KEY `IDX_347C271025F06C53` (`adherent_id`),
+  CONSTRAINT `FK_347C271025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `petition_signature`
+--
+
+LOCK TABLES `petition_signature` WRITE;
+/*!40000 ALTER TABLE `petition_signature` DISABLE KEYS */;
+/*!40000 ALTER TABLE `petition_signature` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -7425,17 +7962,17 @@ CREATE TABLE `procuration_v2_elections` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `request_title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `request_description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `request_confirmation` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `request_legal` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proxy_title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proxy_description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proxy_confirmation` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proxy_legal` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `request_title` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `request_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `request_confirmation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `request_legal` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proxy_title` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proxy_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proxy_confirmation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proxy_legal` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -7466,14 +8003,14 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_v2_initial_requests` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reminded_at` datetime DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -7504,7 +8041,7 @@ CREATE TABLE `procuration_v2_matching_history` (
   `proxy_id` int unsigned NOT NULL,
   `matcher_id` int unsigned DEFAULT NULL,
   `admin_matcher_id` int DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `email_copy` tinyint(1) NOT NULL DEFAULT '0',
   `round_id` int unsigned NOT NULL,
@@ -7544,34 +8081,34 @@ CREATE TABLE `procuration_v2_proxies` (
   `vote_zone_id` int unsigned NOT NULL,
   `vote_place_id` int unsigned DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
-  `elector_number` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `elector_number` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `slots` smallint unsigned NOT NULL DEFAULT '1',
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `first_names` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthdate` date NOT NULL,
-  `phone` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `distant_vote_place` tinyint(1) NOT NULL DEFAULT '0',
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `client_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_vote_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zone_ids` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_vote_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zone_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `join_newsletter` tinyint(1) NOT NULL DEFAULT '0',
-  `status_detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `accept_vote_nearby` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4D04EBA4D17F50A6` (`uuid`),
@@ -7611,10 +8148,10 @@ CREATE TABLE `procuration_v2_proxy_action` (
   `author_id` int unsigned DEFAULT NULL,
   `author_administrator_id` int DEFAULT NULL,
   `context` json DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B35088FD17F50A6` (`uuid`),
   KEY `IDX_B35088FDB26A4E` (`proxy_id`),
@@ -7647,7 +8184,7 @@ CREATE TABLE `procuration_v2_proxy_slot` (
   `updated_by_administrator_id` int DEFAULT NULL,
   `proxy_id` int unsigned NOT NULL,
   `round_id` int unsigned NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `manual` tinyint(1) NOT NULL DEFAULT '0',
@@ -7686,10 +8223,10 @@ CREATE TABLE `procuration_v2_proxy_slot_action` (
   `author_id` int unsigned DEFAULT NULL,
   `author_administrator_id` int DEFAULT NULL,
   `context` json DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_535D3E99D17F50A6` (`uuid`),
   KEY `IDX_535D3E994FCCD8F9` (`proxy_slot_id`),
@@ -7722,10 +8259,10 @@ CREATE TABLE `procuration_v2_request_action` (
   `author_id` int unsigned DEFAULT NULL,
   `author_administrator_id` int DEFAULT NULL,
   `context` json DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_24E294ABD17F50A6` (`uuid`),
   KEY `IDX_24E294AB427EB8A5` (`request_id`),
@@ -7759,7 +8296,7 @@ CREATE TABLE `procuration_v2_request_slot` (
   `request_id` int unsigned NOT NULL,
   `proxy_slot_id` int unsigned DEFAULT NULL,
   `round_id` int unsigned NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `manual` tinyint(1) NOT NULL DEFAULT '0',
@@ -7801,10 +8338,10 @@ CREATE TABLE `procuration_v2_request_slot_action` (
   `author_id` int unsigned DEFAULT NULL,
   `author_administrator_id` int DEFAULT NULL,
   `context` json DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A50F299D17F50A6` (`uuid`),
   KEY `IDX_A50F29973C163CB` (`request_slot_id`),
@@ -7838,33 +8375,33 @@ CREATE TABLE `procuration_v2_requests` (
   `vote_zone_id` int unsigned NOT NULL,
   `vote_place_id` int unsigned DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `first_names` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthdate` date NOT NULL,
-  `phone` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `distant_vote_place` tinyint(1) NOT NULL DEFAULT '0',
-  `client_ip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `client_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_vote_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_vote_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `join_newsletter` tinyint(1) NOT NULL DEFAULT '0',
   `from_france` tinyint(1) NOT NULL DEFAULT '1',
-  `status_detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zone_ids` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `status_detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zone_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_F6D458CBD17F50A6` (`uuid`),
   KEY `IDX_F6D458CB9DF5350C` (`created_by_administrator_id`),
@@ -7902,10 +8439,10 @@ CREATE TABLE `procuration_v2_rounds` (
   `election_id` int unsigned NOT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -7927,208 +8464,6 @@ CREATE TABLE `procuration_v2_rounds` (
 LOCK TABLES `procuration_v2_rounds` WRITE;
 /*!40000 ALTER TABLE `procuration_v2_rounds` DISABLE KEYS */;
 /*!40000 ALTER TABLE `procuration_v2_rounds` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_approach`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_approach` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `position` smallint NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_8B785227D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_approach`
---
-
-LOCK TABLES `programmatic_foundation_approach` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_approach` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_approach` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_measure`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_measure` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `sub_approach_id` int unsigned DEFAULT NULL,
-  `position` smallint NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_leading` tinyint(1) NOT NULL,
-  `is_expanded` tinyint(1) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_213A5F1ED17F50A6` (`uuid`),
-  KEY `IDX_213A5F1EF0ED738A` (`sub_approach_id`),
-  CONSTRAINT `FK_213A5F1EF0ED738A` FOREIGN KEY (`sub_approach_id`) REFERENCES `programmatic_foundation_sub_approach` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_measure`
---
-
-LOCK TABLES `programmatic_foundation_measure` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_measure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_measure` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_measure_tag`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_measure_tag` (
-  `measure_id` int unsigned NOT NULL,
-  `tag_id` int unsigned NOT NULL,
-  PRIMARY KEY (`measure_id`,`tag_id`),
-  KEY `IDX_F004297F5DA37D00` (`measure_id`),
-  KEY `IDX_F004297FBAD26311` (`tag_id`),
-  CONSTRAINT `FK_F004297F5DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `programmatic_foundation_measure` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_F004297FBAD26311` FOREIGN KEY (`tag_id`) REFERENCES `programmatic_foundation_tag` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_measure_tag`
---
-
-LOCK TABLES `programmatic_foundation_measure_tag` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_measure_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_measure_tag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_project`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_project` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `measure_id` int unsigned DEFAULT NULL,
-  `position` smallint NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_expanded` tinyint(1) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_8E8E96D5D17F50A6` (`uuid`),
-  KEY `IDX_8E8E96D55DA37D00` (`measure_id`),
-  CONSTRAINT `FK_8E8E96D55DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `programmatic_foundation_measure` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_project`
---
-
-LOCK TABLES `programmatic_foundation_project` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_project` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_project` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_project_tag`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_project_tag` (
-  `project_id` int unsigned NOT NULL,
-  `tag_id` int unsigned NOT NULL,
-  PRIMARY KEY (`project_id`,`tag_id`),
-  KEY `IDX_9F63872166D1F9C` (`project_id`),
-  KEY `IDX_9F63872BAD26311` (`tag_id`),
-  CONSTRAINT `FK_9F63872166D1F9C` FOREIGN KEY (`project_id`) REFERENCES `programmatic_foundation_project` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_9F63872BAD26311` FOREIGN KEY (`tag_id`) REFERENCES `programmatic_foundation_tag` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_project_tag`
---
-
-LOCK TABLES `programmatic_foundation_project_tag` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_project_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_project_tag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_sub_approach`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_sub_approach` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `approach_id` int unsigned DEFAULT NULL,
-  `position` smallint NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subtitle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `is_expanded` tinyint(1) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_735C1D01D17F50A6` (`uuid`),
-  KEY `IDX_735C1D0115140614` (`approach_id`),
-  CONSTRAINT `FK_735C1D0115140614` FOREIGN KEY (`approach_id`) REFERENCES `programmatic_foundation_approach` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_sub_approach`
---
-
-LOCK TABLES `programmatic_foundation_sub_approach` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_sub_approach` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_sub_approach` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `programmatic_foundation_tag`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `programmatic_foundation_tag` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_12127927EA750E8` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `programmatic_foundation_tag`
---
-
-LOCK TABLES `programmatic_foundation_tag` WRITE;
-/*!40000 ALTER TABLE `programmatic_foundation_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `programmatic_foundation_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -8165,7 +8500,6 @@ CREATE TABLE `projection_managed_users` (
   `vote_committee_id` int DEFAULT NULL,
   `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `certified_at` datetime DEFAULT NULL,
-  `is_committee_provisional_supervisor` tinyint(1) NOT NULL,
   `adherent_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `activated_at` datetime DEFAULT NULL,
   `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -8180,11 +8514,15 @@ CREATE TABLE `projection_managed_users` (
   `mandates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `declared_mandates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `zones_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `additional_tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `roles` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mailchimp_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mailchimp_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `resubscribe_email_sent_at` datetime DEFAULT NULL,
+  `first_membership_donation` datetime DEFAULT NULL,
+  `public_id` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_logged_at` datetime DEFAULT NULL,
+  `agora` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `agora_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   KEY `IDX_90A7D656108B7592` (`original_id`),
   KEY `IDX_90A7D6567B00651C` (`status`),
@@ -8347,21 +8685,15 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `push_token` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `adherent_id` int unsigned DEFAULT NULL,
-  `device_id` int unsigned DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `last_active_date` datetime DEFAULT NULL,
+  `last_activity_date` datetime DEFAULT NULL,
+  `unsubscribed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_51BC1381772E836A` (`identifier`),
-  UNIQUE KEY `UNIQ_51BC1381D17F50A6` (`uuid`),
-  KEY `IDX_51BC138125F06C53` (`adherent_id`),
-  KEY `IDX_51BC138194A4C7D4` (`device_id`),
-  CONSTRAINT `FK_51BC138125F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_51BC138194A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE
+  UNIQUE KEY `UNIQ_51BC1381D17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -8433,28 +8765,59 @@ LOCK TABLES `redirections` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `region`
+-- Table structure for table `referral`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `region` (
+CREATE TABLE `referral` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `referrer_id` int unsigned DEFAULT NULL,
+  `referred_id` int unsigned DEFAULT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nationality` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `birthdate` date DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `address_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
+  `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `civility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `identifier` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reported_at` datetime DEFAULT NULL,
+  `email_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `for_sympathizer` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_F62F17677153098` (`code`)
+  UNIQUE KEY `UNIQ_73079D00D17F50A6` (`uuid`),
+  UNIQUE KEY `UNIQ_73079D00772E836A` (`identifier`),
+  KEY `IDX_73079D00798C22DB` (`referrer_id`),
+  KEY `IDX_73079D00CFE2A98` (`referred_id`),
+  CONSTRAINT `FK_73079D00798C22DB` FOREIGN KEY (`referrer_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_73079D00CFE2A98` FOREIGN KEY (`referred_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `region`
+-- Dumping data for table `referral`
 --
 
-LOCK TABLES `region` WRITE;
-/*!40000 ALTER TABLE `region` DISABLE KEYS */;
-/*!40000 ALTER TABLE `region` ENABLE KEYS */;
+LOCK TABLES `referral` WRITE;
+/*!40000 ALTER TABLE `referral` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referral` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -8467,7 +8830,7 @@ CREATE TABLE `rememberme_token` (
   `series` varchar(88) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` varchar(88) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `lastUsed` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  `class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `username` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`series`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -8490,15 +8853,16 @@ UNLOCK TABLES;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `renaissance_newsletter_subscription` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zip_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zip_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `confirmed_at` datetime DEFAULT NULL,
   `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_46DB1A77E7927C74` (`email`),
   UNIQUE KEY `UNIQ_46DB1A77D17F50A6` (`uuid`)
@@ -8641,6 +9005,11 @@ CREATE TABLE `scope` (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `apps` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `canary_features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `color_primary` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color_soft` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color_hover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color_active` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AF55D377153098` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -8686,7 +9055,7 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `social_shares` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `social_share_category_id` bigint DEFAULT NULL,
   `media_id` bigint DEFAULT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -8754,9 +9123,9 @@ UNLOCK TABLES;
 CREATE TABLE `tax_receipt` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `donator_id` int unsigned NOT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -8887,6 +9256,73 @@ LOCK TABLES `team_member_history` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `timeline_item_private_message`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `timeline_item_private_message` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_notification_active` tinyint(1) NOT NULL DEFAULT '1',
+  `notification_sent_at` datetime DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notification_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notification_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `cta_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cta_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_CD291A19D17F50A6` (`uuid`),
+  KEY `IDX_CD291A199DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_CD291A19CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_CD291A199DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_CD291A19CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `timeline_item_private_message`
+--
+
+LOCK TABLES `timeline_item_private_message` WRITE;
+/*!40000 ALTER TABLE `timeline_item_private_message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_item_private_message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `timeline_item_private_message_adherent`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `timeline_item_private_message_adherent` (
+  `timeline_item_private_message_id` int unsigned NOT NULL,
+  `adherent_id` int unsigned NOT NULL,
+  PRIMARY KEY (`timeline_item_private_message_id`,`adherent_id`),
+  KEY `IDX_A4581DEC87293FB5` (`timeline_item_private_message_id`),
+  KEY `IDX_A4581DEC25F06C53` (`adherent_id`),
+  CONSTRAINT `FK_A4581DEC25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A4581DEC87293FB5` FOREIGN KEY (`timeline_item_private_message_id`) REFERENCES `timeline_item_private_message` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `timeline_item_private_message_adherent`
+--
+
+LOCK TABLES `timeline_item_private_message_adherent` WRITE;
+/*!40000 ALTER TABLE `timeline_item_private_message_adherent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_item_private_message_adherent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `transactional_email_template`
 --
 
@@ -8897,13 +9333,13 @@ CREATE TABLE `transactional_email_template` (
   `parent_id` int unsigned DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `identifier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `json_content` longtext COLLATE utf8mb4_unicode_ci,
+  `json_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `is_sync` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_65A0950AD17F50A6` (`uuid`),
@@ -8942,8 +9378,10 @@ CREATE TABLE `unregistrations` (
   `registered_at` datetime NOT NULL,
   `unregistered_at` datetime NOT NULL,
   `is_adherent` tinyint(1) NOT NULL DEFAULT '0',
-  `adherent_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `email_hash` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `is_renaissance` tinyint(1) NOT NULL DEFAULT '0',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   KEY `IDX_F9E4AA0C5B30B80B` (`excluded_by_id`),
   CONSTRAINT `FK_F9E4AA0C5B30B80B` FOREIGN KEY (`excluded_by_id`) REFERENCES `administrators` (`id`)
@@ -8960,6 +9398,36 @@ LOCK TABLES `unregistrations` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `uploadable_file`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `uploadable_file` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_original_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_mime_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` int DEFAULT NULL,
+  `file_dimensions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_55DF92E4D17F50A6` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uploadable_file`
+--
+
+LOCK TABLES `uploadable_file` WRITE;
+/*!40000 ALTER TABLE `uploadable_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `uploadable_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_action_history`
 --
 
@@ -8969,7 +9437,7 @@ CREATE TABLE `user_action_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `adherent_id` int unsigned NOT NULL,
   `impersonator_id` int DEFAULT NULL,
-  `TYPE` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `TYPE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
   `data` json DEFAULT NULL,
   `telegram_notified_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -9036,8 +9504,19 @@ CREATE TABLE `user_documents` (
   `type` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `author_id` int unsigned DEFAULT NULL,
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_theme` json DEFAULT NULL,
+  `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_A250FF6CD17F50A6` (`uuid`)
+  UNIQUE KEY `UNIQ_A250FF6CD17F50A6` (`uuid`),
+  KEY `IDX_A250FF6CF675F31B` (`author_id`),
+  KEY `IDX_A250FF6C8278FE91` (`instance_key`),
+  CONSTRAINT `FK_A250FF6CF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -9048,32 +9527,6 @@ CREATE TABLE `user_documents` (
 LOCK TABLES `user_documents` WRITE;
 /*!40000 ALTER TABLE `user_documents` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_documents` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_list_definition`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_list_definition` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `color` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_list_definition_type_code_unique` (`type`,`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_list_definition`
---
-
-LOCK TABLES `user_list_definition` WRITE;
-/*!40000 ALTER TABLE `user_list_definition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_list_definition` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -9248,6 +9701,8 @@ CREATE TABLE `voting_platform_election_pool` (
   `id` int NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned DEFAULT NULL,
   `code` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `is_separator` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `IDX_7225D6EFA708DAFF` (`election_id`),
   CONSTRAINT `FK_7225D6EFA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
@@ -9579,30 +10034,32 @@ UNLOCK TABLES;
 CREATE TABLE `vox_action` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `author_id` int unsigned DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_additional_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_additional_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'scheduled',
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'scheduled',
   `canceled_at` datetime DEFAULT NULL,
   `notified_at_first_notification` datetime DEFAULT NULL,
   `notified_at_second_notification` datetime DEFAULT NULL,
-  `author_role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_instance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_zone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `author_scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_instance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_zone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_theme` json DEFAULT NULL,
+  `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C721ED96D17F50A6` (`uuid`),
   KEY `IDX_C721ED96F675F31B` (`author_id`),
@@ -9630,7 +10087,7 @@ CREATE TABLE `vox_action_participant` (
   `action_id` int unsigned DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
   `is_present` tinyint(1) NOT NULL DEFAULT '0',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
