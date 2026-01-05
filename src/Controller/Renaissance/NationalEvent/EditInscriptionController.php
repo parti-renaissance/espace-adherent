@@ -91,7 +91,7 @@ class EditInscriptionController extends AbstractController
 
         if ($event->isPackageEventType()) {
             return $this->createForm(PackageEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
-                'validation_groups' => ['Default', 'inscription_campus_edit'],
+                'validation_groups' => ['Default', 'inscription:user_data', 'inscription:'.$event->type->value.':user_data'],
             ]));
         }
 

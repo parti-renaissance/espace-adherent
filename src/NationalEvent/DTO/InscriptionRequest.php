@@ -17,8 +17,8 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[AssertRecaptcha(groups: ['inscription_creation'])]
-#[NationalEventTransportMode(groups: ['event_type:campus', 'campus_transport_update'])]
+#[AssertRecaptcha(groups: ['inscription:creation'])]
+#[NationalEventTransportMode(groups: ['inscription:package'])]
 class InscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -45,17 +45,17 @@ class InscriptionRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank]
     #[Assert\Range(max: '-1 years')]
-    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['event_type:campus', 'event_type:jem'])]
+    #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['inscription:user_data'])]
     public ?\DateTime $birthdate = null;
 
     #[Assert\Sequentially([
         new Assert\NotBlank(),
         new Assert\Length(max: 255),
-    ], groups: ['event_type:default', 'event_type:campus'])]
+    ], groups: ['inscription:default:user_data', 'inscription:campus:user_data'])]
     public ?string $birthPlace = null;
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
-    #[Assert\NotBlank(groups: ['event_type:jem'])]
+    #[Assert\NotBlank(groups: ['inscription:jem:user_data'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Sequentially([
@@ -64,25 +64,24 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['event_type:campus', 'campus_transport_update'])]
+    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['inscription:campus:package'])]
     public ?string $visitDay = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['event_type:campus', 'campus_transport_update'])]
+    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['inscription:package'])]
     public ?string $transport = null;
 
-    #[Assert\NotBlank(groups: ['event_type:jem'])]
+    #[Assert\NotBlank(groups: ['inscription:jem:package'])]
     public ?string $packagePlan = null;
 
-    #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['event_type:jem'])]
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['inscription:jem:package'])]
     public ?string $packageCity = null;
 
-    #[Assert\Expression('this.transport != "avec_transport" or this.packageDepartureTime', message: 'Veillez sélectionner votre préférence de départ', groups: ['event_type:jem'])]
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageDepartureTime', message: 'Veillez sélectionner votre préférence de départ', groups: ['inscription:jem:package'])]
     public ?string $packageDepartureTime = null;
 
     public ?string $packageDonation = null;
 
     public ?string $accommodation = null;
-    public ?string $initialTransport = null;
     public bool $withDiscount = false;
 
     #[Assert\Length(min: 6, max: 7)]
@@ -150,8 +149,11 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         $request->visitDay = $inscription->visitDay;
         $request->transport = $inscription->transport;
         $request->accommodation = $inscription->accommodation;
-        $request->initialTransport = $inscription->transport;
         $request->withDiscount = $inscription->withDiscount ?? false;
+        $request->packagePlan = $inscription->packagePlan;
+        $request->packageCity = $inscription->packageCity;
+        $request->packageDepartureTime = $inscription->packageDepartureTime;
+        $request->packageDonation = $inscription->packageDonation;
 
         return $request;
     }

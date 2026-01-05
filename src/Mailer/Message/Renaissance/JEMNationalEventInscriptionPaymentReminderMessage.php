@@ -7,7 +7,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\Uuid;
 
-class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissanceMessage
+class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractRenaissanceMessage
 {
     public static function create(EventInscription $eventInscription, string $finalizeUrl): self
     {
@@ -23,8 +23,10 @@ class NationalEventInscriptionPaymentReminderMessage extends AbstractRenaissance
                 'last_name' => $eventInscription->lastName,
                 'primary_link' => $finalizeUrl,
                 'amount' => $eventInscription->amount / 100,
+                'package_plan_title' => $eventInscription->getPackagePlanConfig()['titre'] ?? null,
                 'transport_title' => $eventInscription->getTransportConfig()['titre'] ?? null,
-                'accommodation_title' => $eventInscription->getAccommodationConfig()['titre'] ?? null,
+                'package_city' => $eventInscription->packageCity,
+                'package_departure_time' => $eventInscription->packageDepartureTime,
                 'cancellation_date' => (clone $eventInscription->getCreatedAt())->modify(\sprintf('+%d hours', EventInscription::CANCELLATION_DELAY_IN_HOUR + 20))->format('d/m/Y à H:i'),
             ],
         );

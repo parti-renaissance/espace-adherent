@@ -381,7 +381,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {
-                                foreach ($event->getVisitDays() as $config) {
+                                foreach ($event->getVisitDays()['options'] as $config) {
                                     $choices[$event->getName().' : '.$config['titre']] = $config['id'];
                                 }
                             }
@@ -397,7 +397,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {
-                                foreach ($event->getTransports() as $config) {
+                                foreach ($event->getTransports()['options'] as $config) {
                                     $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
                                 }
                             }
@@ -413,7 +413,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                         'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
                             $choices = [];
                             foreach ($campusEvents as $event) {
-                                foreach ($event->getAccommodations() as $config) {
+                                foreach ($event->getAccommodations()['options'] as $config) {
                                     $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
                                 }
                             }

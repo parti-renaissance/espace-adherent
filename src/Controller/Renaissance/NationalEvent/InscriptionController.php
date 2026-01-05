@@ -126,7 +126,10 @@ class InscriptionController extends AbstractController
             'adherent' => $adherent,
             'disabled' => !$isOpen,
             'event_type' => $event->type,
-            'validation_groups' => ['Default', 'inscription_creation', 'event_type:'.$event->type->value],
+            'validation_groups' => array_merge(
+                ['Default', 'inscription:creation', 'inscription:user_data', 'inscription:'.$event->type->value.':user_data'],
+                $event->isPackageEventType() ? ['inscription:package', 'inscription:'.$event->type->value.':package'] : []
+            ),
         ];
 
         if ($event->isPackageEventType()) {
