@@ -71,8 +71,12 @@
                     {% endif %}
 
                     <div class="bg-ui_gray-5 rounded-lg p-6">
-                        Une question relative à l’inscription ?<br/>
-                        Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
+                        {% if event.textIntroContact %}
+                            {{ event.textIntroContact|raw|nl2br }}
+                        {% else %}
+                            Une question relative à l’inscription ?<br/>
+                            Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
+                        {% endif %}
                     </div>
 
                     {% if event.connectionEnabled and not app.user %}

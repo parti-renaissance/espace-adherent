@@ -52,9 +52,9 @@ class EditTransportController extends AbstractController
 
         $form = $this
             ->createForm(PackageConfigType::class, $inscriptionRequest, [
-                'package_config' => $event->packageConfig,
+                'package_config' => array_filter($event->packageConfig, static fn ($config) => 'packageDonation' !== $config['cle']),
                 'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
-                'validation_groups' => ['campus_transport_update'],
+                'validation_groups' => ['Default', 'inscription:package', 'inscription:'.$event->type->value.':package'],
             ])
             ->handleRequest($request)
         ;

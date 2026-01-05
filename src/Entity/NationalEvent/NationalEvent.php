@@ -51,6 +51,9 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textIntro = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $textIntroContact = null;
+
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textHelp = null;

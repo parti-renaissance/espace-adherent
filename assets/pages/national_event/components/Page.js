@@ -5,8 +5,9 @@
  *
  * @param {{
  *   packageConfig?: Object | null,
+ *   initialPackageValues?: Object | null,
  *   uncheckInputs?: boolean | null,
- *   initialPayedAmount?: int | null,
+ *   initialPayedAmount?: float | null,
  *   discountFactor?: float | null,
  *   discountLabel?: string | null,
  * }} props
@@ -15,8 +16,8 @@
  */
 const Page = (props) => ({
     packageConfig: props.packageConfig || null,
-    initialPayedAmount: props.initialPayedAmount || null,
-    packageValues: {},
+    initialPayedAmount: props.initialPayedAmount,
+    packageValues: props.initialPackageValues || {},
     availabilities: {},
     withDiscount: false,
     accessibility: false,
@@ -70,6 +71,17 @@ const Page = (props) => ({
         if (accessibilityCheckbox) {
             accessibilityCheckbox.checked = this.accessibility;
         }
+    },
+
+    getSignature(obj) {
+        return Object.keys(obj)
+            .sort()
+            .map((key) => `${key}:${obj[key]}`)
+            .join('|');
+    },
+
+    hasChanged() {
+        return this.initialPayedAmount !== this.getTotalPrice() || this.getSignature(this.packageValues) !== this.getSignature(props.initialPackageValues || {});
     },
 
     updateAvailabilities(uncheckInputs = true) {

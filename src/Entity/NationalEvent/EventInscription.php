@@ -546,6 +546,20 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         return null;
     }
 
+    public function getPackageValues(): array
+    {
+        $values = [];
+
+        foreach ($this->event->getIndexedPackageConfig() as $key => $config) {
+            if (null === $this->$key) {
+                continue;
+            }
+            $values[$key] = $this->$key;
+        }
+
+        return $values;
+    }
+
     public function isApproved(): bool
     {
         return \in_array($this->status, InscriptionStatusEnum::APPROVED_STATUSES);

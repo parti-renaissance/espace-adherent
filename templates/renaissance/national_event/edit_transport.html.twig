@@ -14,64 +14,50 @@
 {% block content_section %}
     <div
         class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20"
-        x-data="xNationalEventPage({transport: '{{ inscription.transport }}', accommodation: '{{ inscription.accommodation }}', initialPayedAmount: {{ inscription.getAmountInEuro() ?? 'null' }}, uncheckInputs: false, packageConfig: {{ event.packageConfig|json_encode }}})"
+        x-data="xNationalEventPage({initialPackageValues: {{ inscription.getPackageValues()|json_encode }}, discountLabel: '{{ event.discountLabel|e('js') }}', discountFactor: {{ event.getDiscountFactor() }}, initialPayedAmount: {{ inscription.getAmountInEuro() }}, uncheckInputs: false, packageConfig: {{ event.packageConfig|json_encode }}})"
     >
         {{ form_start(form, {attr: {class: 'max-w-[500px]'}}) }}
             <div class="flex flex-col gap-8">
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
+                <div class="!rounded-2xl !gap-6">
                     {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
                     <p class="font-medium text-2xl text-ui_gray-80">Changer de forfait</p>
 
                     {{ form_errors(form) }}
+                </div>
 
-                    {{ form_row(form.visitDay, {
-                        label: 'Quand venez-vous ?',
-                        attr: {
-                            validate: "['required']",
-                            '@change': 'handleVisitDayChange($event)',
-                        },
-                    }) }}
-                </twig:Atoms:ReCard>
+                {% set packageConfig = event.packageConfig %}
 
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableTransports.length > 0">
-                    {{ form_row(form.transport, {
-                        label: 'Choisissez un transport',
-                        attr: {
-                            validate: "['required']",
-                            'x-model': 'transport',
-                        },
-                    }) }}
-                </twig:Atoms:ReCard>
+                {% for child in form|filter(child => child.vars.attr['data-field-name'] is defined) %}
+                    {% set configKey = child.vars.attr['data-field-name'] %}
 
-                <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availableAccommodations.length > 0">
-                    {{ form_row(form.accommodation, {
-                        label: 'Choisissez un hébergement',
-                        attr: {
-                            validate: "['required']",
-                            'x-model': 'accommodation',
-                        },
-                    }) }}
+                    {% set currentConfig = packageConfig|filter(item => item.cle == configKey)|first %}
+                    {% set defaultVisibility = (currentConfig.dependence is defined and currentConfig.dependence is not empty) ? 'false' : 'true' %}
 
-                    <fieldset class="flex flex-col gap-4" x-show="selectedAccommodationConfig && !!selectedAccommodationConfig?.accompagnement">
-                        <twig:Atoms:ReLabel x-text="selectedAccommodationConfig?.pid_label"></twig:Atoms:ReLabel>
-                        <p x-html="selectedAccommodationConfig?.pid_description" class="text-[#919EAB]"></p>
-
-                        {{ form_row(form.roommateIdentifier, {label: false, attr: {
-                            placeholder: 'Code à 6 ou 7 caractères XXX-XXX ou XXXXXX',
-                            class: 'border border-ui_blue-50 rounded-lg',
-                        }}) }}
-                    </fieldset>
-                </twig:Atoms:ReCard>
+                    <twig:Atoms:ReCard
+                        class="!rounded-2xl !gap-6"
+                        data-field-group="{{ configKey }}"
+                        x-show="availabilities.{{ configKey }} ?? {{ defaultVisibility }}"
+                        x-cloak
+                    >
+                        {{ form_row(child, {
+                            widget_attr: {
+                                validate: "['required']",
+                            },
+                        }) }}
+                    </twig:Atoms:ReCard>
+                {% endfor %}
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
-                    <div x-show="selectedTransportConfig || selectedAccommodationConfig">
-                        <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-                            {{ form_row(form.withDiscount, {label: 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
-                                widget_side: 'right',
-                                'x-model': 'withDiscount',
-                            }}) }}
-                        </div>
+                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4" x-show="getSummaryItems().length > 0">
+                        {{ form_row(form.withDiscount, {label: event.discountLabel ?? 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
+                            widget_side: 'right',
+                            'x-model': 'withDiscount',
+                        }}) }}
+
+                        {% if event.discountHelp %}
+                            {{ event.discountHelp|raw|nl2br }}
+                        {% endif %}
                     </div>
 
                     {% if inscription.isPaymentSuccess() %}
@@ -100,7 +86,7 @@
                         </div>
                     </div>
 
-                    <twig:ReButton class="w-full" color="blue" disabled="x:initialTransport === transport && initialAccommodation === accommodation">Modifier ma réservation</twig:ReButton>
+                    <twig:ReButton class="w-full" color="blue" disabled="x:!hasChanged()">Modifier ma réservation</twig:ReButton>
 
                     <twig:ReButton tag="a" href="{{ path('app_national_event_my_inscription', {slug: event.slug, uuid: inscription.uuid}) }}" class="w-full" color="white">Annuler</twig:ReButton>
                 </twig:Atoms:ReCard>
