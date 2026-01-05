@@ -221,9 +221,7 @@ class LoadNationalEventData extends Fixture
         $event->logoImage->setUploadFile(new UploadedFile(__DIR__.'/../../../app/data/static/jem-logo.png', 'jem-logo.png', 'image/png', null, true));
 
         $event->discountLabel = 'Je souhaite bénéficier du fond de solidarité';
-        $event->discountHelp = '<p class="text-xs">Fidèles à nos valeurs d’égalité réelle et d’émancipation, nous avons mis en place un fonds de solidarité afin de permettre à toutes et tous de participer à l’événement, sans que la question financière ne constitue un frein.
-<br/><br/>
-Toute personne souhaitant en bénéficier peut en faire la demande en toute confidentialité auprès de Charles Léron (<a href="mailto:charles.leron@lesjem.fr" class="underline">charles.leron@lesjem.fr</a>).</p>';
+        $event->discountHelp = '<p class="text-xs">Fidèles à nos valeurs d’égalité réelle et d’émancipation, nous avons mis en place un fonds de solidarité afin de permettre à toutes et tous de participer à l’événement, sans que la question financière ne constitue un frein.<br/><br/>Toute personne souhaitant en bénéficier peut en faire la demande en toute confidentialité auprès de Charles Léron (<a href="mailto:charles.leron@lesjem.fr" class="underline">charles.leron@lesjem.fr</a>).</p>';
 
         $event->packageConfig = [
             [

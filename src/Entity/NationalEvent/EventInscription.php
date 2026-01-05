@@ -469,6 +469,53 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         return null;
     }
 
+    public function getPackagePlanConfig(): ?array
+    {
+        if (!$this->packagePlan) {
+            return null;
+        }
+
+        foreach ($this->event->getPackagePlans()['options'] as $packagePlan) {
+            if ($packagePlan['id'] === $this->packagePlan) {
+                return $packagePlan;
+            }
+        }
+
+        return null;
+    }
+
+    public function getPackageCityConfig(): ?array
+    {
+        if (!$this->packageCity) {
+            return null;
+        }
+
+        $config = $this->event->getPackageCities();
+        foreach ($config['options'] as $packageCity) {
+            if ($packageCity === $this->packageCity) {
+                return $config;
+            }
+        }
+
+        return null;
+    }
+
+    public function getPackageDepartureTimeConfig(): ?array
+    {
+        if (!$this->packageDepartureTime) {
+            return null;
+        }
+
+        $config = $this->event->getPackageDepartureTimes();
+        foreach ($config['options'] as $packageDepartureTime) {
+            if ($packageDepartureTime['titre'] === $this->packageDepartureTime) {
+                return $config;
+            }
+        }
+
+        return null;
+    }
+
     public function getTransportConfig(): ?array
     {
         if (!$this->transport) {

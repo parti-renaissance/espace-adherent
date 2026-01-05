@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content_section %}
-    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({})">
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({packageConfig: {{ event.packageConfig|json_encode }}})">
         {{ form_start(form, {attr: {class: 'max-w-[500px]'}}) }}
             <div class="flex flex-col gap-8">
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
@@ -89,24 +89,30 @@
                         {{ form_errors(form.birthdate) }}
                     </fieldset>
 
-                    {{ form_row(form.birthPlace, {
-                        label: 'Lieu de naissance',
-                        attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
-                    }) }}
+                    {% if form.birthPlace is defined %}
+                        {{ form_row(form.birthPlace, {
+                            label: 'Lieu de naissance',
+                            attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                        }) }}
+                    {% endif %}
 
                     <fieldset class="mb-4">
                         {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
-                    <div class="bg-ui_gray-1 rounded-lg p-6">
-                        {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
-                    </div>
+                    {% if form.isJAM is defined %}
+                        <div class="bg-ui_gray-1 rounded-lg p-6">
+                            {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}
+                        </div>
+                    {% endif %}
 
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-                        {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+                        {% if form.volunteer is defined %}
+                            {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+                        {% endif %}
 
                         <div>
-                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" @change="handleAccessibilityChange($event)">
+                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
                                 <label for="accessibility-checkbox">J’ai un handicap visible ou invisible nécessitant des aménagements spécifiques</label>
                             </twig:Molecules:ReCheckboxField>
                         </div>

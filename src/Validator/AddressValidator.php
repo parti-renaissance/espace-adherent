@@ -34,7 +34,7 @@ class AddressValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, AddressInterface::class);
         }
 
-        if ('fr' !== strtolower($value->getCountry())) {
+        if ('fr' !== strtolower((string) $value->getCountry())) {
             return;
         }
 

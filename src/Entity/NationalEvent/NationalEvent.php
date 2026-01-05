@@ -130,6 +130,9 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     public ?string $defaultBraceletColor = null;
 
     #[ORM\Column(nullable: true)]
+    public ?string $programUrl = null;
+
+    #[ORM\Column(nullable: true)]
     public ?string $discountLabel = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -259,6 +262,16 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         return $this->getIndexedPackageConfig()['packagePlan'] ?? [];
     }
 
+    public function getPackageCities(): array
+    {
+        return $this->getIndexedPackageConfig()['packageCity'] ?? [];
+    }
+
+    public function getPackageDepartureTimes(): array
+    {
+        return $this->getIndexedPackageConfig()['packageDepartureTime'] ?? [];
+    }
+
     public function getPackageDonations(): array
     {
         return $this->getIndexedPackageConfig()['packageDonation'] ?? [];
@@ -285,5 +298,10 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         }
 
         return 1;
+    }
+
+    public function isJAM(): bool
+    {
+        return NationalEventTypeEnum::JEM === $this->type;
     }
 }

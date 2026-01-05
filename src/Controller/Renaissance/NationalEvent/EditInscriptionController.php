@@ -86,6 +86,7 @@ class EditInscriptionController extends AbstractController
         $defaultOptions = [
             'is_edit' => true,
             'adherent' => $adherent,
+            'event_type' => $event->type,
         ];
 
         if ($event->isPackageEventType()) {
