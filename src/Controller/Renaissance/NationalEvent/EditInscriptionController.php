@@ -7,14 +7,12 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Form\NationalEvent\DefaultEventInscriptionType;
-use App\Form\NationalEvent\PackageEventInscriptionType;
+use App\Form\NationalEvent\UserDataFormType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,7 +51,12 @@ class EditInscriptionController extends AbstractController
         $inscriptionRequest = InscriptionRequest::fromInscription($inscription);
 
         $form = $this
-            ->createInscriptionForm($event, $inscriptionRequest, $user)
+            ->createForm(UserDataFormType::class, $inscriptionRequest, [
+                'is_edit' => true,
+                'adherent' => $user,
+                'event' => $event,
+                'validation_groups' => ['Default', 'inscription:user_data', 'inscription:user_data:'.$event->type->value],
+            ])
             ->handleRequest($request)
         ;
 
@@ -79,22 +82,5 @@ class EditInscriptionController extends AbstractController
             'is_open' => true,
             'is_edit' => true,
         ]);
-    }
-
-    protected function createInscriptionForm(NationalEvent $event, InscriptionRequest $eventInscriptionRequest, ?Adherent $adherent): FormInterface
-    {
-        $defaultOptions = [
-            'is_edit' => true,
-            'adherent' => $adherent,
-            'event_type' => $event->type,
-        ];
-
-        if ($event->isPackageEventType()) {
-            return $this->createForm(PackageEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
-                'validation_groups' => ['Default', 'inscription:user_data', 'inscription:'.$event->type->value.':user_data'],
-            ]));
-        }
-
-        return $this->createForm(DefaultEventInscriptionType::class, $eventInscriptionRequest, $defaultOptions);
     }
 }

@@ -1317,6 +1317,7 @@ besoindeurope.donation.autorisations: Je certifie sur l’honneur être une pers
 
 national_event.type.default: Meeting classique
 national_event.type.campus: Campus
+national_event.type.nrp: NRP
 national_event.type.jem: JEM
 
 national_event.payment.status.unknown: Statut inconnu

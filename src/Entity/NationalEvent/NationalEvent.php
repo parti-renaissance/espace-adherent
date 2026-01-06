@@ -179,61 +179,44 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         return $this->isPackageEventType();
     }
 
-    public function calculateInscriptionAmount(
-        ?string $transport,
-        ?string $accommodation,
-        ?string $packagePlan,
-        ?string $packageDonation,
-        ?bool $withDiscount,
-    ): ?int {
-        $amountRows = [];
+    public function calculateInscriptionAmount(array $packageValues, bool $withDiscount = false): ?int
+    {
+        $totalAmount = 0;
+        $hasChargeableItem = false;
 
-        if ($transport) {
-            foreach ($this->getTransports()['options'] ?? [] as $transportConfig) {
-                if ($transportConfig['id'] === $transport && !empty($transportConfig['montant'])) {
-                    $amountRows['transport'] = (int) $transportConfig['montant'];
+        foreach ($this->packageConfig as $fieldConfig) {
+            $fieldKey = $fieldConfig['cle'] ?? null;
+
+            if (!$fieldKey || empty($packageValues[$fieldKey])) {
+                continue;
+            }
+
+            $userValue = $packageValues[$fieldKey];
+
+            foreach ($fieldConfig['options'] ?? [] as $option) {
+                if ((string) ($option['id'] ?? '') === (string) $userValue) {
+                    if (!empty($option['montant'])) {
+                        $totalAmount += (int) $option['montant'];
+                        $hasChargeableItem = true;
+                    }
+
                     break;
                 }
             }
         }
 
-        if ($accommodation) {
-            foreach ($this->getAccommodations()['options'] ?? [] as $accommodationConfig) {
-                if ($accommodationConfig['id'] === $accommodation && !empty($accommodationConfig['montant'])) {
-                    $amountRows['accommodation'] = (int) $accommodationConfig['montant'];
-                    break;
-                }
-            }
+        if (!$hasChargeableItem && 0 === $totalAmount) {
+            return null;
         }
 
-        if ($packagePlan) {
-            foreach ($this->getPackagePlans()['options'] ?? [] as $packagePlanConfig) {
-                if ($packagePlanConfig['id'] === $packagePlan && !empty($packagePlanConfig['montant'])) {
-                    $amountRows['packagePlan'] = (int) $packagePlanConfig['montant'];
-                    break;
-                }
-            }
-        }
+        $discountFactor = $withDiscount ? $this->getDiscountFactor() : 1;
 
-        if ($packageDonation) {
-            foreach ($this->getPackageDonations()['options'] ?? [] as $packageDonationConfig) {
-                if ($packageDonationConfig['id'] === $packageDonation && !empty($packageDonationConfig['montant'])) {
-                    $amountRows['packageDonation'] = (int) $packageDonationConfig['montant'];
-                    break;
-                }
-            }
-        }
-
-        if ($amountRows) {
-            return (int) (array_sum($amountRows) * 100 * ($withDiscount ? $this->getDiscountFactor() : 1));
-        }
-
-        return null;
+        return (int) ($totalAmount * 100 * $discountFactor);
     }
 
     public function isPackageEventType(): bool
     {
-        return \in_array($this->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::JEM], true);
+        return !empty($this->packageConfig);
     }
 
     public function getSortableAlertDate(): \DateTimeInterface
@@ -292,12 +275,12 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     public function getDiscountFactor(): float
     {
-        if (NationalEventTypeEnum::CAMPUS === $this->type) {
-            return 0.5;
-        }
-
         if (NationalEventTypeEnum::JEM === $this->type) {
             return 0;
+        }
+
+        if ($this->isPackageEventType()) {
+            return 0.5;
         }
 
         return 1;

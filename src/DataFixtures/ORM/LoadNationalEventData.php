@@ -6,6 +6,8 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\UploadableFile;
+use App\Form\NationalEvent\PackageField\PlaceChoiceFieldFormType;
+use App\Form\NationalEvent\PackageField\SelectFieldFormType;
 use App\NationalEvent\NationalEventTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -35,7 +37,7 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Event national 2');
-        $event->startDate = new \DateTime('+1 month');
+        $event->startDate = new \DateTime('+1.1 month');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
@@ -109,7 +111,7 @@ class LoadNationalEventData extends Fixture
                 'options' => [
                     [
                         'id' => 'dimanche_train',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'recap_label' => 'Train aller-retour',
                         'quota' => 1000,
                         'titre' => 'Train (Paris >< Arras) Dimanche',
@@ -118,7 +120,7 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'dimanche_bus',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'recap_label' => 'Bus aller-retour',
                         'quota' => 600,
                         'titre' => 'Bus (Paris >< Arras) Dimanche',
@@ -127,7 +129,7 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'train_aller',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'recap_label' => 'Train aller uniquement',
                         'quota' => 200,
                         'titre' => 'Train (Paris > Arras) Dimanche',
@@ -136,7 +138,7 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'gratuit',
-                        'jours_ids' => ['weekend', 'dimanche'],
+                        'dependence' => ['weekend', 'dimanche'],
                         'titre' => 'Je viens par mes propres moyens',
                     ],
                 ],
@@ -147,7 +149,7 @@ class LoadNationalEventData extends Fixture
                 'options' => [
                     [
                         'id' => 'chambre_individuelle',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'recap_label' => 'Chambre individuelle',
                         'titre' => 'Chambre individuelle',
                         'montant' => 49,
@@ -159,7 +161,7 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'chambre_partagee',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'recap_label' => 'Chambre partagée (à deux)',
                         'titre' => 'Chambre partagée (à deux)',
                         'montant' => 49,
@@ -171,7 +173,7 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'gratuit',
-                        'jours_ids' => ['dimanche'],
+                        'dependence' => ['dimanche'],
                         'titre' => 'Je n\'ai pas besoin d\'hébergement',
                         'description' => 'Je trouve un hébergement par mes propres moyens',
                     ],
@@ -198,7 +200,7 @@ class LoadNationalEventData extends Fixture
         $event->setName('Event JEM');
         $event->type = NationalEventTypeEnum::JEM;
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1 hour');
+        $event->startDate = new \DateTime('-1.5 hour');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
@@ -282,6 +284,7 @@ class LoadNationalEventData extends Fixture
                 ],
             ],
             [
+                'type' => SelectFieldFormType::FIELD_NAME,
                 'cle' => 'packageCity',
                 'dependence' => ['avec_transport'],
                 'titre' => 'Votre ville de départ et de retour',
@@ -377,6 +380,79 @@ class LoadNationalEventData extends Fixture
         ];
 
         $this->setReference('event-national-5', $event);
+
+        $manager->persist($event = new NationalEvent());
+
+        $event->setName('Meeting NRP');
+        $event->alertEnabled = true;
+        $event->type = NationalEventTypeEnum::NRP;
+        $event->alertTitle = 'Venez nombreux !';
+        $event->inscriptionEditDeadline = new \DateTime('+1 month');
+        $event->startDate = new \DateTime('-1.6 hour');
+        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTime('-1 day');
+        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->textTicketEmail = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->imageTicketEmail = '/donation-bg.jpg';
+        $event->subjectTicketEmail = 'Meeting arrive bientôt !';
+        $event->intoImage = new UploadableFile();
+        $event->intoImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/renaissance/burex-renaissance.jpg', 'nrp.jpg', 'image/jpg', null, true));
+
+        $event->ogImage = new UploadableFile();
+        $event->ogImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/renaissance/burex-renaissance.jpg', 'nrp.jpg', 'image/jpg', null, true));
+
+        $event->alertLogoImage = new UploadableFile();
+        $event->alertLogoImage->setUploadFile(new UploadedFile(__DIR__.'/../../../public/images/renaissance/burex-renaissance.jpg', 'nrp.jpg', 'image/jpg', null, true));
+
+        $event->packageConfig = [
+            [
+                'cle' => 'visitDay',
+                'titre' => 'Choisissez votre soirée',
+                'description' => 'À vous de personnalisée votre soirée ! Première partie ou deuxième, voir les deux. Côté papilles, un cocktail dinatoire sera servi durant l’entracte commun.',
+                'options' => [
+                    [
+                        'id' => 'partie-1',
+                        'titre' => 'Première partie (18h - 20h45)',
+                        'description' => 'La première partie de soirée sera rythmée par des interventions inspirantes et des témoignages engagés.',
+                        'montant' => 20,
+                        'quota' => 500,
+                    ],
+                    [
+                        'id' => 'partie-2',
+                        'titre' => 'Deuxième partie (21h15 - Minuit)',
+                        'description' => 'La deuxième partie de soirée sera placée sous le signe de la fête avec des performances artistiques et un concert final endiablé.',
+                        'montant' => 20,
+                        'quota' => 500,
+                    ],
+                    [
+                        'id' => 'partie-1-et-2',
+                        'titre' => 'Deux parties (18h - Minuit)',
+                        'description' => 'La totale immersion dans le Meeting NRP avec les deux parties de soirée.',
+                        'montant' => 30,
+                        'quota' => 100,
+                    ],
+                ],
+            ],
+            [
+                'type' => PlaceChoiceFieldFormType::FIELD_NAME,
+                'cle' => 'partie1place',
+                'titre' => 'Choisissez votre place - Première partie',
+                'description' => 'Choisissez votre place idéale pour cette première partie. Le placement est numéroté pour votre confort.',
+                'dependence' => ['partie-1', 'partie-1-et-2'],
+            ],
+            [
+                'type' => PlaceChoiceFieldFormType::FIELD_NAME,
+                'cle' => 'partie2place',
+                'titre' => 'Choisissez votre place - Deuxième partie',
+                'description' => 'Choisissez votre place idéale pour cette deuxième partie. Le placement est numéroté pour votre confort.',
+                'dependence' => ['partie-2', 'partie-1-et-2'],
+            ],
+        ];
+
+        $this->setReference('event-national-6', $event);
 
         $manager->flush();
     }

@@ -191,6 +191,9 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true)]
     public ?string $packagePlan = null;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $packageValues = null;
+
     #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $packageCity = null;
@@ -397,13 +400,9 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         $this->packageDepartureTime = $inscriptionRequest->packageDepartureTime;
         $this->packageDonation = $inscriptionRequest->packageDonation;
 
-        $this->amount = $this->event->calculateInscriptionAmount(
-            $this->transport,
-            $this->accommodation,
-            $this->packagePlan,
-            $this->packageDonation,
-            $this->withDiscount
-        );
+        $this->packageValues = $inscriptionRequest->getPackageValues();
+
+        $this->amount = $this->event->calculateInscriptionAmount($this->packageValues, $this->withDiscount);
     }
 
     #[Groups(['event_inscription_read_for_validation', 'event_inscription_scan'])]
@@ -544,20 +543,6 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         }
 
         return null;
-    }
-
-    public function getPackageValues(): array
-    {
-        $values = [];
-
-        foreach ($this->event->getIndexedPackageConfig() as $key => $config) {
-            if (null === $this->$key) {
-                continue;
-            }
-            $values[$key] = $this->$key;
-        }
-
-        return $values;
     }
 
     public function isApproved(): bool

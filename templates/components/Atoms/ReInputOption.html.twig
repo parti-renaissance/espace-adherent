@@ -1,9 +1,16 @@
 <div {{ attributes.without('x-text').defaults({class: 're-input-option w-full h-12 bg-white flex-col justify-center items-center p-1 inline-flex cursor-pointer' ~ (selected ? ' re-input-option--selected')}) }}
-        :class="{'re-input-option--selected': {{ xSyncSelected is defined ? xSyncSelected : 'false' }}}"
+    :class="{
+         're-input-option--selected': {{ xSyncSelected is defined ? xSyncSelected : 'false' }},
+         'opacity-50 cursor-not-allowed pointer-events-none': option?.attr?.disabled
+     }"
 >
-    <div class="rounded-[10px] flex items-center w-full h-full box-border px-4 py-2">
-        <span {{ attributes.only('x-text') }} class="text-ui_gray-80 text-base font-normal font-maax">
+    <div class="rounded-[10px] flex items-center w-full h-full box-border px-4 py-2 gap-1">
+        <span {{ attributes.only('x-text') }} class="text-ui_gray-80 text-base font-normal font-maax truncate">
             {% block content '' %}
         </span>
+
+        <template x-if="option?.attr?.suffix">
+            - <span x-text="option.attr.suffix"></span>
+        </template>
     </div>
 </div>

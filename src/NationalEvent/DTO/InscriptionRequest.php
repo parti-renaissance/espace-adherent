@@ -6,9 +6,10 @@ namespace App\NationalEvent\DTO;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Validator\NationalEventTransportMode;
+use App\Validator\NationalEventPackage;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\RoommateIdentifier;
 use App\Validator\StrictEmail;
@@ -18,7 +19,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['inscription:creation'])]
-#[NationalEventTransportMode(groups: ['inscription:package'])]
+#[NationalEventPackage(groups: ['inscription:package'])]
 class InscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -51,11 +52,11 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\Sequentially([
         new Assert\NotBlank(),
         new Assert\Length(max: 255),
-    ], groups: ['inscription:default:user_data', 'inscription:campus:user_data'])]
+    ], groups: ['inscription:user_data:default', 'inscription:user_data:campus'])]
     public ?string $birthPlace = null;
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
-    #[Assert\NotBlank(groups: ['inscription:jem:user_data'])]
+    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Sequentially([
@@ -64,19 +65,17 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     ])]
     public ?string $postalCode = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner votre jour de visite.', groups: ['inscription:campus:package'])]
     public ?string $visitDay = null;
 
-    #[Assert\NotBlank(message: 'Veillez sélectionner le forfait.', groups: ['inscription:package'])]
     public ?string $transport = null;
 
-    #[Assert\NotBlank(groups: ['inscription:jem:package'])]
+    #[Assert\NotBlank(groups: ['inscription:package:jem'])]
     public ?string $packagePlan = null;
 
-    #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['inscription:jem:package'])]
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['inscription:package:jem'])]
     public ?string $packageCity = null;
 
-    #[Assert\Expression('this.transport != "avec_transport" or this.packageDepartureTime', message: 'Veillez sélectionner votre préférence de départ', groups: ['inscription:jem:package'])]
+    #[Assert\Expression('this.transport != "avec_transport" or this.packageDepartureTime', message: 'Veillez sélectionner votre préférence de départ', groups: ['inscription:package:jem'])]
     public ?string $packageDepartureTime = null;
 
     public ?string $packageDonation = null;
@@ -113,11 +112,13 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\Length(max: 255)]
     public ?string $accessibility = null;
 
+    private array $packageValues = [];
+
     public function __construct(
         public readonly int $eventId,
         public readonly string $sessionId,
         public readonly string $clientIp,
-        public readonly ?array $packageConfig = null,
+        public readonly NationalEvent $event,
     ) {
     }
 
@@ -127,7 +128,7 @@ class InscriptionRequest implements RecaptchaChallengeInterface
             $inscription->event->getId(),
             $inscription->sessionId ?? '',
             $inscription->clientIp ?? '',
-            $inscription->event->getIndexedPackageConfig()
+            $inscription->event,
         );
         $request->email = $inscription->addressEmail;
         $request->civility = $inscription->gender;
@@ -155,6 +156,8 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         $request->packageDepartureTime = $inscription->packageDepartureTime;
         $request->packageDonation = $inscription->packageDonation;
 
+        $request->packageValues = $inscription->packageValues ?? [];
+
         return $request;
     }
 
@@ -167,5 +170,15 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         $this->birthdate = $user->getBirthdate();
         $this->phone = $user->getPhone();
         $this->postalCode = $user->getPostalCode();
+    }
+
+    public function getPackageValues(): array
+    {
+        return $this->packageValues;
+    }
+
+    public function setPackageValues(array $values): void
+    {
+        $this->packageValues = array_filter($values, static fn ($v) => null !== $v && '' !== $v);
     }
 }

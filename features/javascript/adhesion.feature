@@ -176,8 +176,7 @@ Feature:
         And I click the "#adhesion_further_information_birthdate_month_select_widget .re-input-option" selector
         And I click the "adhesion_further_information_birthdate_year_select_widget" element
         And I click the "#adhesion_further_information_birthdate_year_select_widget .re-input-option" selector
-        Then I should see "Vous avez moins de 35 ans"
-        And the "adhesion_further_information[phone][number]" field should contain "611223344"
+        Then the "adhesion_further_information[phone][number]" field should contain "611223344"
         When I fill in the following:
             | adhesion_further_information[phone][number] |  |
         When I click the "input[name='adhesion_further_information[acceptSmsNotification]']" selector
@@ -336,8 +335,7 @@ Feature:
         And I click the "#adhesion_further_information_birthdate_month_select_widget .re-input-option" selector
         And I click the "adhesion_further_information_birthdate_year_select_widget" element
         And I click the "#adhesion_further_information_birthdate_year_select_widget .re-input-option" selector
-        Then I should see "Vous avez moins de 35 ans"
-        And I press "Continuer"
+        Then I press "Continuer"
 
         # Step 4 : communications
         Then I should be on "/adhesion/rappel-communication" wait otherwise

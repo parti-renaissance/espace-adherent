@@ -17,7 +17,7 @@
 const Page = (props) => ({
     packageConfig: props.packageConfig || null,
     initialPayedAmount: props.initialPayedAmount,
-    packageValues: props.initialPackageValues || {},
+    packageValues: 'object' === typeof props.initialPackageValues && null !== props.initialPackageValues ? props.initialPackageValues : {},
     availabilities: {},
     withDiscount: false,
     accessibility: false,
@@ -46,7 +46,8 @@ const Page = (props) => ({
         });
 
         this.withDiscount = !!dom('input[name*="[withDiscount]"]')?.checked;
-        this.accessibility = !!dom('#package_event_inscription_accessibility')?.value;
+        const accessibilityInput = dom('#inscription_form_accessibility');
+        this.accessibility = !!accessibilityInput?.value;
 
         this.$watch('packageValues', () => this.updateAvailabilities());
         this.$watch('withDiscount', () => {
@@ -56,8 +57,8 @@ const Page = (props) => ({
         });
 
         this.$watch('accessibility', () => {
-            if (false === this.accessibility) {
-                document.querySelector('#package_event_inscription_accessibility').value = '';
+            if (false === this.accessibility && accessibilityInput) {
+                accessibilityInput.value = '';
             }
         });
 

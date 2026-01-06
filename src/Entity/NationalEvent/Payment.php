@@ -63,6 +63,9 @@ class Payment
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $expiredCheckedAt = null;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $packageValues = null;
+
     public function __construct(
         UuidInterface $uuid,
         EventInscription $inscription,
