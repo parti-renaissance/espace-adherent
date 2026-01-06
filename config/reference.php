@@ -2434,7 +2434,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         name_prefix?: scalar|null|Param, // Default: ""
  *     }>,
  *     anonymous_template_directory?: scalar|null|Param, // Defaults to `components`
- *     profiler?: bool|Param, // Enables the profiler for Twig Component (in debug mode) // Default: "%kernel.debug%"
+ *     profiler?: bool|array{ // Enables the profiler for Twig Component
+ *         enabled?: bool|Param, // Default: "%kernel.debug%"
+ *         collect_components?: bool|Param, // Collect components instances // Default: true
+ *     },
  *     controllers_json?: scalar|null|Param, // Deprecated: The "twig_component.controllers_json" config option is deprecated, and will be removed in 3.0. // Default: null
  * }
  * @psalm-type FosCkEditorConfig = array{
