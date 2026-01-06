@@ -227,7 +227,7 @@
 
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
-                    {% if event.isJAM() %}
+                    {% if event.isJEM() %}
                         {% set accept_media_label = 'En participant à cet événement, je suis informé(e) qu’il sera filmé  et autorise les JEM ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et  la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)' %}
                     {% else %}
                         {% set accept_media_label = 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)' %}
