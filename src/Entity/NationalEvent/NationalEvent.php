@@ -303,8 +303,13 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         return 1;
     }
 
-    public function isJAM(): bool
+    public function isJEM(): bool
     {
         return NationalEventTypeEnum::JEM === $this->type;
+    }
+
+    public function isCampus(): bool
+    {
+        return NationalEventTypeEnum::CAMPUS === $this->type;
     }
 }

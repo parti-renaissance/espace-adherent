@@ -21,6 +21,7 @@ class RequestParamsBuilder
         $params = [
             'PSPID' => $this->ogonePspId,
             'ORDERID' => $orderId->toString(),
+            'COM' => $inscription->event->getSlug(),
             'COMPLUS' => $inscription->getUuid()->toString(),
             'AMOUNT' => $amount, // en cents
             'CURRENCY' => 'EUR',
