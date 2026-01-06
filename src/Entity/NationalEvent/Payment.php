@@ -31,6 +31,12 @@ class Payment
     public bool $toRefund = false;
 
     #[ORM\Column(nullable: true)]
+    public ?string $packagePlan = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $packageDonation = null;
+
+    #[ORM\Column(nullable: true)]
     public ?string $transport = null;
 
     #[ORM\Column(nullable: true)]
@@ -64,6 +70,8 @@ class Payment
         ?string $visitDay = null,
         ?string $transport = null,
         ?string $accommodation = null,
+        ?string $packagePlan = null,
+        ?string $packageDonation = null,
         ?bool $withDiscount = null,
         array $payload = [],
     ) {
@@ -73,6 +81,8 @@ class Payment
         $this->amount = $amount;
         $this->transport = $transport;
         $this->accommodation = $accommodation;
+        $this->packagePlan = $packagePlan;
+        $this->packageDonation = $packageDonation;
         $this->withDiscount = $withDiscount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();

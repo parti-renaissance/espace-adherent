@@ -7,10 +7,9 @@ namespace App\Controller\Renaissance\NationalEvent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
-use App\NationalEvent\Payment\RequestParamsBuilder;
+use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentController extends AbstractController
 {
@@ -27,7 +25,7 @@ class PaymentController extends AbstractController
         string $app_domain,
         #[MapEntity(mapping: ['slug' => 'slug'])] NationalEvent $event,
         #[MapEntity(mapping: ['uuid' => 'uuid'])] EventInscription $inscription,
-        RequestParamsBuilder $requestParamsBuilder,
+        EventInscriptionManager $eventInscriptionManager,
         EntityManagerInterface $entityManager,
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
@@ -50,29 +48,13 @@ class PaymentController extends AbstractController
             ]);
         }
 
-        $paymentParams = $requestParamsBuilder->build(
-            $uuid = Uuid::uuid4(),
-            $inscription->amount,
-            $inscription,
-            $this->generateUrl('app_national_event_payment_status', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain], UrlGeneratorInterface::ABSOLUTE_URL),
-        );
-
-        $inscription->addPayment(new Payment(
-            $uuid,
-            $inscription,
-            $inscription->amount,
-            $inscription->visitDay,
-            $inscription->transport,
-            $inscription->accommodation,
-            $inscription->withDiscount,
-            $paymentParams
-        ));
+        $payment = $eventInscriptionManager->createPayment($inscription);
 
         $entityManager->flush();
 
         return $this->redirectToRoute('app_national_event_payment', [
             'slug' => $event->getSlug(),
-            'uuid' => $uuid->toString(),
+            'uuid' => $payment->getUuid()->toString(),
             'app_domain' => $app_domain,
         ]);
     }

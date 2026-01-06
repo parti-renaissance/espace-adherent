@@ -460,7 +460,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getVisitDays()['options'] as $day) {
+        foreach ($this->event->getVisitDays()['options'] ?? [] as $day) {
             if ($day['id'] === $this->visitDay) {
                 return $day;
             }
@@ -475,7 +475,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getPackagePlans()['options'] as $packagePlan) {
+        foreach ($this->event->getPackagePlans()['options'] ?? [] as $packagePlan) {
             if ($packagePlan['id'] === $this->packagePlan) {
                 return $packagePlan;
             }
@@ -522,7 +522,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getTransports()['options'] as $transport) {
+        foreach ($this->event->getTransports()['options'] ?? [] as $transport) {
             if ($transport['id'] === $this->transport) {
                 return $transport;
             }
@@ -537,7 +537,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return null;
         }
 
-        foreach ($this->event->getAccommodations()['options'] as $accommodation) {
+        foreach ($this->event->getAccommodations()['options'] ?? [] as $accommodation) {
             if ($accommodation['id'] === $this->accommodation) {
                 return $accommodation;
             }

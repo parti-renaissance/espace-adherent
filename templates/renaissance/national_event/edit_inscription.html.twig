@@ -5,9 +5,13 @@
 
 {% block header %}
     <header class="flex py-10 md:py-20 justify-center w-full">
-        <a href="{{ path('renaissance_site') }}">
-            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo"/>
-        </a>
+        {% if event.logoImage %}
+            <img class="max-h-36" src="{{ vich_uploader_asset(event.logoImage) }}" alt="logo"/>
+        {% else %}
+            <a href="{{ path('renaissance_site') }}">
+                <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo" />
+            </a>
+        {% endif %}
     </header>
 {% endblock %}
 

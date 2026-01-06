@@ -4,6 +4,12 @@
 
 {% set items = [] %}
 
+{% if object.packagePlan %}
+    {% set package_plan_config = object.getPackagePlanConfig() %}
+    {% if package_plan_config %}
+        {% set items = items|merge([package_plan_config.titre]) %}
+    {% endif %}
+{% endif %}
 {% if object.visitDay %}
     {% set visit_day_config = object.getVisitDayConfig() %}
     {% if visit_day_config %}
@@ -15,6 +21,9 @@
     {% if transport_config %}
         {% set items = items|merge([transport_config.titre]) %}
     {% endif %}
+{% endif %}
+{% if object.packageCity %}
+    {% set items = items|merge(['Ville de départ : ' ~ object.packageCity]) %}
 {% endif %}
 {% if object.accommodation %}
     {% set accommodation_config = object.getAccommodationConfig() %}
@@ -33,6 +42,13 @@
 {% endif %}
 {% if object.accessibility %}
     {% set items = items|merge(['A un handicap']) %}
+{% endif %}
+
+{% if object.packageDonation %}
+    {% set package_donation_config = object.getPackageDonationConfig() %}
+    {% if package_donation_config %}
+        {% set items = items|merge([package_donation_config.titre]) %}
+    {% endif %}
 {% endif %}
 
 {% if items|length %}

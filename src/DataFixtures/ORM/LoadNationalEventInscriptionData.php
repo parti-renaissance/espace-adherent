@@ -78,6 +78,8 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
                 $eventInscription->visitDay,
                 $eventInscription->transport,
                 $eventInscription->accommodation,
+                $eventInscription->packagePlan,
+                $eventInscription->packageDonation,
                 $eventInscription->withDiscount,
                 ['orderID' => $uuid->toString()]
             ));
@@ -90,6 +92,8 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
                     $eventInscription->visitDay,
                     $eventInscription->transport,
                     $eventInscription->accommodation,
+                    $eventInscription->packagePlan,
+                    $eventInscription->packageDonation,
                     $eventInscription->withDiscount,
                     ['orderID' => $uuid->toString()]
                 ));

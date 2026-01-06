@@ -315,8 +315,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
     protected function configureFormFields(FormMapper $form): void
     {
-        /** @var NationalEvent[] $campusEvents */
-        $campusEvents = $this->getModelManager()->createQuery(NationalEvent::class, 'e')
+        /** @var NationalEvent[] $packageEvents */
+        $packageEvents = $this->getModelManager()->createQuery(NationalEvent::class, 'e')
             ->select('e')
             ->where('e.packageConfig IS NOT NULL')
             ->getQuery()
@@ -375,13 +375,29 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                         'choice_label' => fn (PaymentStatusEnum $status) => $status,
                         'required' => false,
                     ])
+                    ->add('packagePlan', ChoiceType::class, [
+                        'label' => 'Forfait',
+                        'required' => $currentEvent && $currentEvent->isJEM(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
+                            $choices = [];
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getPackagePlans()['options'] ?? [] as $config) {
+                                    $choices[$event->getName().' : '.$config['titre']] = $config['id'];
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
                     ->add('visitDay', ChoiceType::class, [
                         'label' => 'Jour de visite',
-                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
                             $choices = [];
-                            foreach ($campusEvents as $event) {
-                                foreach ($event->getVisitDays()['options'] as $config) {
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getVisitDays()['options'] ?? [] as $config) {
                                     $choices[$event->getName().' : '.$config['titre']] = $config['id'];
                                 }
                             }
@@ -394,10 +410,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('transport', ChoiceType::class, [
                         'label' => 'Choix de transport',
                         'required' => $currentEvent && $currentEvent->isPackageEventType(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
                             $choices = [];
-                            foreach ($campusEvents as $event) {
-                                foreach ($event->getTransports()['options'] as $config) {
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getTransports()['options'] ?? [] as $config) {
                                     $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
                                 }
                             }
@@ -409,12 +425,44 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ])
                     ->add('accommodation', ChoiceType::class, [
                         'label' => 'Choix d\'hébergement',
-                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($campusEvents) {
+                        'required' => $currentEvent && $currentEvent->isCampus(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
                             $choices = [];
-                            foreach ($campusEvents as $event) {
-                                foreach ($event->getAccommodations()['options'] as $config) {
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getAccommodations()['options'] ?? [] as $config) {
                                     $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
+                    ->add('packageCity', ChoiceType::class, [
+                        'label' => 'Ville de départ',
+                        'required' => $currentEvent && $currentEvent->isJEM(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
+                            $choices = [];
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getPackageCities()['options'] ?? [] as $city) {
+                                    $choices[$event->getName().' : '.$city] = $city;
+                                }
+                            }
+
+                            ksort($choices);
+
+                            return $choices;
+                        }),
+                    ])
+                    ->add('packageDepartureTime', ChoiceType::class, [
+                        'label' => 'Moment de départ',
+                        'required' => $currentEvent && $currentEvent->isJEM(),
+                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
+                            $choices = [];
+                            foreach ($packageEvents as $event) {
+                                foreach ($event->getPackageDepartureTimes()['options'] ?? [] as $departureTime) {
+                                    $choices[$event->getName().' : '.$departureTime['titre']] = $departureTime['titre'];
                                 }
                             }
 

@@ -94,23 +94,7 @@ class EventInscriptionManager
             return null;
         }
 
-        $paymentParams = $this->requestParamsBuilder->build(
-            $uuid = Uuid::uuid4(),
-            $newAmount,
-            $eventInscription,
-            $this->urlGenerator->generate('app_national_event_payment_status', ['slug' => $eventInscription->event->getSlug(), 'uuid' => $eventInscription->getUuid()->toString()], UrlGeneratorInterface::ABSOLUTE_URL),
-        );
-
-        $eventInscription->addPayment($payment = new Payment(
-            $uuid,
-            $eventInscription,
-            $newAmount,
-            $inscriptionRequest->visitDay,
-            $inscriptionRequest->transport,
-            $inscriptionRequest->accommodation,
-            $inscriptionRequest->withDiscount,
-            $paymentParams
-        ));
+        $payment = $this->createPayment($eventInscription, $newAmount, $inscriptionRequest);
 
         if (!$eventInscription->amount) {
             $eventInscription->amount = $newAmount;
@@ -123,6 +107,32 @@ class EventInscriptionManager
         $eventInscription->roommateIdentifier = $inscriptionRequest->roommateIdentifier;
 
         $this->entityManager->flush();
+
+        return $payment;
+    }
+
+    public function createPayment(EventInscription $eventInscription, ?int $newAmount = null, ?InscriptionRequest $inscriptionRequest = null): Payment
+    {
+        $amount = $newAmount ?? $eventInscription->amount;
+        $paymentParams = $this->requestParamsBuilder->build(
+            $uuid = Uuid::uuid4(),
+            $amount,
+            $eventInscription,
+            $this->urlGenerator->generate('app_national_event_payment_status', ['slug' => $eventInscription->event->getSlug(), 'uuid' => $eventInscription->getUuid()->toString()], UrlGeneratorInterface::ABSOLUTE_URL),
+        );
+
+        $eventInscription->addPayment($payment = new Payment(
+            $uuid,
+            $eventInscription,
+            $amount,
+            ($inscriptionRequest ?? $eventInscription)->visitDay,
+            ($inscriptionRequest ?? $eventInscription)->transport,
+            ($inscriptionRequest ?? $eventInscription)->accommodation,
+            ($inscriptionRequest ?? $eventInscription)->packagePlan,
+            ($inscriptionRequest ?? $eventInscription)->packageDonation,
+            ($inscriptionRequest ?? $eventInscription)->withDiscount,
+            $paymentParams
+        ));
 
         return $payment;
     }

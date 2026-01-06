@@ -36,7 +36,7 @@ class Notifier
             'uuid' => $originalInscription->getUuid()->toString(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        if ($originalInscription->event->isJAM()) {
+        if ($originalInscription->event->isJEM()) {
             $message = JEMNationalEventInscriptionDuplicateMessage::create($originalInscription, $url);
         } else {
             $message = NationalEventInscriptionDuplicateMessage::create($originalInscription, $url);
@@ -52,7 +52,7 @@ class Notifier
             'uuid' => $eventInscription->getUuid()->toString(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        if ($eventInscription->event->isJAM()) {
+        if ($eventInscription->event->isJEM()) {
             $message = JEMNationalEventInscriptionPaymentReminderMessage::create($eventInscription, $url);
         } else {
             $message = NationalEventInscriptionPaymentReminderMessage::create($eventInscription, $url);
@@ -65,7 +65,7 @@ class Notifier
     {
         $useAppMobile = !empty($eventInscription->adherent?->findAppSessions($this->clientRepository->getVoxClient(), true));
 
-        if ($eventInscription->event->isJAM()) {
+        if ($eventInscription->event->isJEM()) {
             $message = JEMNationalEventTicketMessage::create($eventInscription, $useAppMobile);
         } else {
             $message = NationalEventTicketMessage::create($eventInscription, $useAppMobile);
@@ -83,7 +83,7 @@ class Notifier
         $region = $zone['region_name'] ?? null;
         $department = $zone['name'] ?? null;
 
-        if ($eventInscription->event->isJAM()) {
+        if ($eventInscription->event->isJEM()) {
             $message = JEMNationalEventInscriptionConfirmationMessage::create($eventInscription, $editUrl, $eventUrl, $shareUrl, $civility, $region, $department);
         } else {
             $message = NationalEventInscriptionConfirmationMessage::create($eventInscription, $editUrl, $eventUrl, $shareUrl, $civility, $region, $department);
