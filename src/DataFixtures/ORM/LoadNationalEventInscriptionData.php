@@ -135,6 +135,50 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             }
         }
 
+        /** @var NationalEvent $event */
+        $event = $this->getReference('event-national-6', NationalEvent::class);
+
+        for ($i = 1; $i <= 5; ++$i) {
+            $place = \chr(64 + $i).$i;
+
+            $manager->persist($eventInscription = new EventInscription($event));
+            $eventInscription->firstName = $this->faker->firstName();
+            $eventInscription->lastName = $this->faker->lastName();
+            $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
+            $eventInscription->addressEmail = $this->faker->email();
+            $eventInscription->postalCode = '92110';
+            $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');
+            $eventInscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
+            $eventInscription->isJAM = 0 === $i % 2;
+            $eventInscription->volunteer = 0 === $i % 2;
+            $eventInscription->accessibility = 4 === $i ? null : 'handicap_moteur';
+            $eventInscription->amount = 5000;
+            $eventInscription->packageValues = [
+                'visitDay' => 'partie-1',
+                'partie1place' => $place,
+            ];
+            $eventInscription->addZone($zone92);
+
+            $eventInscription->addPayment($payment = new Payment(
+                $uuid = Uuid::uuid4(),
+                $eventInscription,
+                $eventInscription->amount,
+                $eventInscription->visitDay,
+                $eventInscription->transport,
+                $eventInscription->accommodation,
+                $eventInscription->packagePlan,
+                $eventInscription->packageDonation,
+                $eventInscription->withDiscount,
+                ['orderID' => $uuid->toString()]
+            ));
+            $payment->packageValues = $eventInscription->packageValues;
+            $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
+            $eventInscription->status = InscriptionStatusEnum::PENDING;
+            $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
+        }
+
         $manager->flush();
     }
 

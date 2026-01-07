@@ -39,8 +39,9 @@ class PackageValuesFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined(['package_config'])
+            ->setDefined(['package_config', 'reserved_places'])
             ->addAllowedTypes('package_config', 'array')
+            ->addAllowedTypes('reserved_places', 'array')
         ;
     }
 }

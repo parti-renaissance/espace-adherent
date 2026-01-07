@@ -25,6 +25,7 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UpdateAdherentLinkRepositoryInterface;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -289,64 +290,77 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         ;
     }
 
-    public function countPlacesByTransport(int $eventId, ?array $transportModes = null, ?array $accommodationModes = null): array
+    public function countPackageValues(int $eventId, array $targetKeys = []): array
     {
-        $results = [];
+        $sql = <<<SQL
+                SELECT
+                    combined.json_key as option_key,
+                    combined.json_value as option_value,
+                    COUNT(*) as total_count
+                FROM (
+                    -- PART A: Valid Inscriptions
+                    SELECT
+                        jt.dynamic_key as json_key,
+                        JSON_UNQUOTE(JSON_EXTRACT(ei.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
+                    FROM national_event_inscription ei,
+                    JSON_TABLE(JSON_KEYS(ei.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
+                    WHERE ei.event_id = :eventId
+                      AND ei.status IN (:inscriptionStatuses)
+                    UNION ALL
+                    -- PART B: Pending Payments (Modifications in progress)
+                    SELECT
+                        jt.dynamic_key as json_key,
+                        JSON_UNQUOTE(JSON_EXTRACT(p.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
+                    FROM national_event_inscription_payment p
+                    INNER JOIN national_event_inscription ei ON p.inscription_id = ei.id
+                    , JSON_TABLE(JSON_KEYS(p.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
+                    WHERE p.status = :paymentStatus
+                      AND ei.event_id = :eventId
+                      AND ei.status IN (:inscriptionStatuses)
+                ) as combined
+                WHERE (:filterKeys = 0 OR combined.json_key IN (:targetKeys))
+                GROUP BY combined.json_key, combined.json_value
+                ORDER BY combined.json_key, combined.json_value
+            SQL;
 
-        foreach (
-            [
-                'transport' => $transportModes,
-                'accommodation' => $accommodationModes,
-            ] as $index => $modes) {
-            $column = 'ei.'.$index;
+        $allStatuses = array_merge(InscriptionStatusEnum::APPROVED_STATUSES, [
+            InscriptionStatusEnum::WAITING_PAYMENT,
+            InscriptionStatusEnum::PENDING,
+            InscriptionStatusEnum::INCONCLUSIVE,
+        ]);
 
-            if ([] !== $modes) {
-                $qb = $this->createCountByTransportOrAccommodationQueryBuilder($eventId, $column);
+        $params = [
+            'eventId' => $eventId,
+            'inscriptionStatuses' => $allStatuses,
+            'paymentStatus' => PaymentStatusEnum::PENDING->value,
+            'targetKeys' => $targetKeys,
+            'filterKeys' => \count($targetKeys) > 0 ? 1 : 0,
+        ];
 
-                $qb
-                    ->andWhere($column.' IN (:modes)')
-                    ->setParameter('modes', $modes)
-                ;
+        $types = [
+            'eventId' => \PDO::PARAM_INT,
+            'inscriptionStatuses' => ArrayParameterType::STRING,
+            'paymentStatus' => \PDO::PARAM_STR,
+            'targetKeys' => ArrayParameterType::STRING,
+            'filterKeys' => \PDO::PARAM_INT,
+        ];
 
-                $results = array_merge($results, array_column($qb->getQuery()->getResult(), 'count', $index));
+        $connection = $this->getEntityManager()->getConnection();
+        $results = $connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
-                $qb = $this->createCountByTransportOrAccommodationQueryBuilderWithPendingPayment($eventId, $column = 'p.'.$index);
+        $formatted = [];
+        foreach ($results as $row) {
+            $key = $row['option_key'];
+            $value = $row['option_value'];
+            $count = $row['total_count'];
 
-                $qb
-                    ->andWhere($column.' IN (:modes)')
-                    ->setParameter('modes', $modes)
-                ;
-
-                foreach (array_column($qb->getQuery()->getResult(), 'count', $index) as $mode => $count) {
-                    if (isset($results[$mode])) {
-                        $results[$mode] += $count;
-                    } else {
-                        $results[$mode] = $count;
-                    }
-                }
+            if (!isset($formatted[$key])) {
+                $formatted[$key] = [];
             }
+            $formatted[$key][$value] = $count;
         }
 
-        return $results;
-    }
-
-    public function countPackageValueUsage(NationalEvent $event, string $key, string $value): int
-    {
-        return (int) $this->createQueryBuilder('i')
-            ->select('COUNT(i.id)')
-            ->where('i.event = :event')
-            ->andWhere('i.packageValues LIKE :pattern')
-             ->andWhere('i.status IN (:statuses)')
-            ->setParameter('statuses', [
-                InscriptionStatusEnum::APPROVED_STATUSES,
-                InscriptionStatusEnum::WAITING_PAYMENT,
-                InscriptionStatusEnum::PENDING,
-                InscriptionStatusEnum::INCONCLUSIVE,
-            ])
-            ->setParameter('event', $event)
-            ->setParameter('pattern', \sprintf('%%"%s":"%s"%%', $key, $value))
-            ->getQuery()
-            ->getSingleScalarResult();
+        return $formatted;
     }
 
     public function findAllWithPendingPayments(\DateTime $now): array

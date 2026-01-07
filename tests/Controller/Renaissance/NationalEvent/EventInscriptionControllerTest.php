@@ -613,7 +613,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'dimanche_train' => 7,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->client->submit($form, [
             'inscription_form' => [
@@ -635,7 +635,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
@@ -655,7 +655,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
@@ -670,7 +670,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
@@ -711,7 +711,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $inscription->status);
         $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s?confirmation=1', $inscription->getUuid()), $this->client);
@@ -752,7 +752,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
@@ -775,7 +775,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
 
@@ -791,7 +791,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
 
@@ -831,7 +831,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 7,
             'gratuit' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
 
@@ -875,7 +875,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 7,
             'gratuit' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->em->clear();
 
@@ -919,7 +919,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -932,7 +932,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $payment = $inscription->getPayments()[0];
 
@@ -941,7 +941,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -972,7 +972,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 7,
             'gratuit' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->em->clear();
 
@@ -1019,7 +1019,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1032,7 +1032,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $payment = $inscription->getPayments()[0];
 
@@ -1041,7 +1041,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -1072,7 +1072,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'dimanche_bus' => 1,
             'chambre_partagee' => 1,
             'chambre_individuelle' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->em->clear();
 
@@ -1124,7 +1124,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1137,7 +1137,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $payment = $inscription->getPayments()[0];
 
@@ -1146,7 +1146,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -1181,7 +1181,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'dimanche_bus' => 1,
             'chambre_partagee' => 1,
             'chambre_individuelle' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
 
@@ -1197,7 +1197,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'dimanche_train' => 7,
             'dimanche_bus' => 1,
             'chambre_individuelle' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertCount(2, $payments = $inscription->getPayments());
         self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
@@ -1262,7 +1262,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 8,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1302,7 +1302,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'dimanche_train' => 10,
             'chambre_partagee' => 2,
             'chambre_individuelle' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1319,7 +1319,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'dimanche_train' => 9,
             'chambre_individuelle' => 1,
             'chambre_partagee' => 1,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         self::assertCount(2, $payments = $inscription->getPayments());
         self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
@@ -1353,7 +1353,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'dimanche_train' => 9,
             'chambre_partagee' => 2,
-        ], $this->eventInscriptionRepository->countPlacesByTransport(3));
+        ], $this->eventInscriptionRepository->countPackageValues(3));
 
         $this->assertClientIsRedirectedTo('/grand-rassemblement/campus/'.$inscription->getUuid(), $this->client);
 

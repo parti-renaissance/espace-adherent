@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace App\Form\NationalEvent\PackageField;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractFieldFormType extends AbstractType
 {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefined(['reserved_places'])
+            ->addAllowedTypes('reserved_places', 'array')
+        ;
+    }
+
     public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
     {
         $fieldId = $fieldConfig['cle'];
         $choices = static::generateChoices($fieldConfig['options'] ?? []);
 
         return [
+            'reserved_places' => $reservedPlaces,
             'error_bubbling' => false,
             'label' => $fieldConfig['titre'] ?? null,
             'choices' => array_keys($choices),
@@ -30,6 +40,8 @@ abstract class AbstractFieldFormType extends AbstractType
                 return $choices[$choice]['titre'] ?? $choice;
             },
             'choice_attr' => function ($key) use ($fieldConfig, $fieldId, $reservedPlaces): array {
+                $reservedPlaces = $reservedPlaces[$fieldId] ?? [];
+
                 $options = [
                     'class' => 'rounded-lg p-6 border-2 hover:bg-white',
                     ':class' => \sprintf('packageValues.'.$fieldId." === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),

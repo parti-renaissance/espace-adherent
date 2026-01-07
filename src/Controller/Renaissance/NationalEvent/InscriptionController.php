@@ -91,6 +91,7 @@ class InscriptionController extends AbstractController
                 'adherent' => $user,
                 'disabled' => !$isOpen,
                 'event' => $event,
+                'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
                 'validation_groups' => array_merge(
                     ['Default', 'inscription:creation', 'inscription:user_data', 'inscription:user_data:'.$event->type->value],
                     $event->isPackageEventType() ? ['inscription:package', 'inscription:package:'.$event->type->value] : []

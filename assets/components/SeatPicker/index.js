@@ -245,7 +245,7 @@ const SeatPicker = ({ disabledSeats, initialSelectedSeat, onChange }) => {
 
     return (
         <div className="seat-picker-container" ref={containerRef}>
-            <TransformWrapper initialScale={1} minScale={0.7} maxScale={4} centerOnInit={true}>
+            <TransformWrapper initialScale={1.2} minScale={0.7} maxScale={4} centerOnInit={true}>
                 {({ zoomIn, zoomOut, resetTransform }) => (
                     <>
                         <TransformComponent wrapperClass="zoom-wrapper" contentClass="zoom-content">

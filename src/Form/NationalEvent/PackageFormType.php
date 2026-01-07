@@ -30,6 +30,7 @@ class PackageFormType extends AbstractType
 
         $builder->add('packageValues', PackageValuesFormType::class, [
             'package_config' => $event->packageConfig,
+            'reserved_places' => $options['reserved_places'] ?? [],
         ]);
     }
 
@@ -39,8 +40,9 @@ class PackageFormType extends AbstractType
             ->setDefaults([
                 'data_class' => InscriptionRequest::class,
             ])
-            ->setDefined(['event'])
+            ->setDefined(['event', 'reserved_places'])
             ->addAllowedTypes('event', NationalEvent::class)
+            ->addAllowedTypes('reserved_places', 'array')
         ;
     }
 }
