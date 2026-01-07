@@ -35,7 +35,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $reservedPlaces = array_keys(($options['reserved_places'] ?? [])[$builder->getName()] ?? []);
+        $reservedPlaces = $options['reserved_places'];
 
         $rows = $this->getRowChoices();
         $builder
@@ -87,7 +87,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['disabled_seats'] = array_keys(($options['reserved_places'] ?? [])[$form->getName()] ?? []);
+        $view->vars['reserved_places'] = $options['reserved_places'];
     }
 
     public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
@@ -95,7 +95,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
         $fieldId = $fieldConfig['cle'];
 
         return [
-            'reserved_places' => $reservedPlaces,
+            'reserved_places' => array_merge(array_keys($reservedPlaces[$fieldId] ?? []), $fieldConfig['places_reservees'] ?? []),
             'error_bubbling' => false,
             'label' => $fieldConfig['titre'] ?? null,
             'attr' => [
