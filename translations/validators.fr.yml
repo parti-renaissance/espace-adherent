@@ -500,7 +500,7 @@ admin.common.last_name.max_length: Le nom ne peut pas dépasser {{ limit }} cara
 admin.common.address.not_geocodable: L'adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.
 
 admin.common.birthdate.not_blank: Veuillez spécifier une date de naissance.
-admin.common.birthdate.minimum_required_age: L'âge minimum requis pour adhérer est de 15ans.
+admin.common.birthdate.minimum_required_age: L'âge minimum requis pour adhérer est de 15 ans.
 common.birthdate.out_of_range: L’âge de l’adhérent doit être compris entre 15 et 120 ans.
 
 admin.adherent.renaissance.membership_type.not_blank: Veuillez spécifier au moins un type d'adhésion.

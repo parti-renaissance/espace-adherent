@@ -6,8 +6,7 @@ namespace App\Controller\Renaissance\NationalEvent;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Form\NationalEvent\DefaultEventInscriptionType;
-use App\Form\NationalEvent\PackageEventInscriptionType;
+use App\Form\NationalEvent\InscriptionFormType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\NationalEventTypeEnum;
@@ -19,7 +18,6 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Utils\UtmParams;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -58,7 +56,7 @@ class InscriptionController extends AbstractController
             $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
         }
 
-        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->getIndexedPackageConfig());
+        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event);
 
         if ($user) {
             if ($existingInscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($user, $event)) {
@@ -89,7 +87,15 @@ class InscriptionController extends AbstractController
         $isOpen = !$event->isComplete($inscriptionRequest->utmSource);
 
         $form = $this
-            ->createInscriptionForm($event, $inscriptionRequest, $user, $isOpen)
+            ->createForm(InscriptionFormType::class, $inscriptionRequest, [
+                'adherent' => $user,
+                'disabled' => !$isOpen,
+                'event' => $event,
+                'validation_groups' => array_merge(
+                    ['Default', 'inscription:creation', 'inscription:user_data', 'inscription:user_data:'.$event->type->value],
+                    $event->isPackageEventType() ? ['inscription:package', 'inscription:package:'.$event->type->value] : []
+                ),
+            ])
             ->handleRequest($request)
         ;
 
@@ -114,31 +120,10 @@ class InscriptionController extends AbstractController
             'is_open' => $isOpen,
             'base_template' => match ($event->type) {
                 NationalEventTypeEnum::CAMPUS,
+                NationalEventTypeEnum::NRP,
                 NationalEventTypeEnum::JEM => 'package',
                 default => 'simple',
             },
         ]);
-    }
-
-    protected function createInscriptionForm(NationalEvent $event, InscriptionRequest $eventInscriptionRequest, ?Adherent $adherent, bool $isOpen): FormInterface
-    {
-        $defaultOptions = [
-            'adherent' => $adherent,
-            'disabled' => !$isOpen,
-            'event_type' => $event->type,
-            'validation_groups' => array_merge(
-                ['Default', 'inscription:creation', 'inscription:user_data', 'inscription:'.$event->type->value.':user_data'],
-                $event->isPackageEventType() ? ['inscription:package', 'inscription:'.$event->type->value.':package'] : []
-            ),
-        ];
-
-        if ($event->isPackageEventType()) {
-            return $this->createForm(PackageEventInscriptionType::class, $eventInscriptionRequest, array_merge($defaultOptions, [
-                'package_config' => $event->packageConfig,
-                'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
-            ]));
-        }
-
-        return $this->createForm(DefaultEventInscriptionType::class, $eventInscriptionRequest, $defaultOptions);
     }
 }

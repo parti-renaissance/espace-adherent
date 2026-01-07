@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\NationalEvent;
 
 use App\Entity\Adherent;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\BirthdateType;
 use App\Form\GenderCivilityType;
@@ -16,17 +17,24 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommonEventInscriptionType extends AbstractType
+class UserDataFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var NationalEvent $event */
+        $event = $options['event'];
         /** @var Adherent|null $adherent */
         $adherent = $options['adherent'];
         $isAdherent = $adherent instanceof Adherent;
+
+        $eventYear = (int) $event->startDate->format('Y');
+        $maxBirthYear = $eventYear - 16;
+        $minBirthYear = $maxBirthYear - 90;
 
         $builder
             ->add('email', EmailType::class, ['disabled' => $isAdherent])
@@ -34,19 +42,32 @@ class CommonEventInscriptionType extends AbstractType
             ->add('firstName', TextType::class, ['disabled' => $isAdherent && $adherent->getFirstName()])
             ->add('lastName', TextType::class, ['disabled' => $isAdherent && $adherent->getLastName()])
             ->add('birthdate', BirthdateType::class, [
-                'years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years),
+                'min_age' => 16,
                 'disabled' => $isAdherent && $adherent->getBirthDate(),
             ])
             ->add('phone', TelNumberType::class, [
-                'required' => NationalEventTypeEnum::JEM === $options['event_type'],
+                'required' => $event->isJEM(),
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('postalCode', TextType::class, ['disabled' => $isAdherent && $adherent->getPostalCode()])
+            ->add('accessibility', TextareaType::class, ['required' => false])
         ;
 
-        if (NationalEventTypeEnum::JEM !== $options['event_type']) {
+        if (NationalEventTypeEnum::DEFAULT === $event->type) {
             $builder
-                ->add('volunteer', CheckboxType::class, ['required' => false])
+                ->add('transportNeeds', CheckboxType::class, ['required' => false])
+                ->add('withChildren', CheckboxType::class, ['required' => false])
+                ->add('children', TextareaType::class, ['required' => false])
+                ->add('isResponsibilityWaived', CheckboxType::class, ['required' => false])
+            ;
+        }
+
+        if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT], true)) {
+            $builder->add('volunteer', CheckboxType::class, ['required' => false]);
+        }
+
+        if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::NRP], true)) {
+            $builder
                 ->add('birthPlace', TextType::class)
                 ->add('isJAM', CheckboxType::class, ['required' => false])
             ;
@@ -74,10 +95,10 @@ class CommonEventInscriptionType extends AbstractType
                 'adherent' => null,
                 'is_edit' => false,
             ])
-            ->setDefined(['adherent', 'is_edit', 'event_type'])
+            ->setDefined(['adherent', 'is_edit', 'event'])
             ->addAllowedTypes('adherent', ['null', Adherent::class])
-            ->addAllowedTypes('is_edit', ['bool'])
-            ->addAllowedTypes('event_type', ['null', NationalEventTypeEnum::class])
+            ->addAllowedTypes('is_edit', 'bool')
+            ->addAllowedTypes('event', NationalEvent::class)
         ;
     }
 }

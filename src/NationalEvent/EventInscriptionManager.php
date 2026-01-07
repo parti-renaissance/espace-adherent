@@ -64,10 +64,7 @@ class EventInscriptionManager
     public function updatePackage(InscriptionRequest $inscriptionRequest, EventInscription $eventInscription): ?Payment
     {
         $newAmount = $eventInscription->event->calculateInscriptionAmount(
-            $inscriptionRequest->transport,
-            $inscriptionRequest->accommodation,
-            $inscriptionRequest->packagePlan,
-            $inscriptionRequest->packageDonation,
+            $inscriptionRequest->getPackageValues(),
             $inscriptionRequest->withDiscount
         );
 
@@ -98,6 +95,7 @@ class EventInscriptionManager
 
         if (!$eventInscription->amount) {
             $eventInscription->amount = $newAmount;
+            $eventInscription->packageValues = $inscriptionRequest->getPackageValues();
             $eventInscription->visitDay = $inscriptionRequest->visitDay;
             $eventInscription->transport = $inscriptionRequest->transport;
             $eventInscription->accommodation = $inscriptionRequest->accommodation;
@@ -133,6 +131,8 @@ class EventInscriptionManager
             ($inscriptionRequest ?? $eventInscription)->withDiscount,
             $paymentParams
         ));
+
+        $payment->packageValues = $eventInscription->packageValues;
 
         return $payment;
     }

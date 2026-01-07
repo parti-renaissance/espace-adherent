@@ -6828,6 +6828,7 @@ __metadata:
     qs: "npm:^6.12.1"
     react: "npm:^19.2.1"
     react-dom: "npm:^19.2.1"
+    react-zoom-pan-pinch: "npm:^3.7.0"
     regenerator-runtime: "npm:^0.14.1"
     reqwest: "npm:^2.0.5"
     sass: "npm:^1.79.3"
@@ -7749,6 +7750,16 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
+  languageName: node
+  linkType: hard
+
+"react-zoom-pan-pinch@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "react-zoom-pan-pinch@npm:3.7.0"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  checksum: 10c0/96889849800a953128fe7f9e42bed0d5cbc48d03024995b136f5e972146236688efb24d7381d8e6f09598f5512b4897d2420f62d828a665fdf24b745b7d55911
   languageName: node
   linkType: hard
 

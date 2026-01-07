@@ -51,6 +51,10 @@
     {% endif %}
 {% endif %}
 
+{% for key, value in object.packageValues %}
+    {% set items = items|merge([key ~ ' : ' ~ value]) %}
+{% endfor %}
+
 {% if items|length %}
     <ul class="list-disc pl-5">
         {% for item in items %}

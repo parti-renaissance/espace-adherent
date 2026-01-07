@@ -49,6 +49,7 @@
     "qs": "^6.12.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-zoom-pan-pinch": "^3.7.0",
     "regenerator-runtime": "^0.14.1",
     "reqwest": "^2.0.5",
     "sass": "^1.79.3",

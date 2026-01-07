@@ -173,8 +173,8 @@
                     {% endif %}
                 </twig:Atoms:ReCard>
 
-                {% for child in form|filter(child => child.vars.attr['data-field-name'] is defined) %}
-                    {% set configKey = child.vars.attr['data-field-name'] %}
+                {% for child in form.packageValues %}
+                    {% set configKey = child.vars.name %}
 
                     {% set currentConfig = packageConfig|filter(item => item.cle == configKey)|first %}
                     {% set defaultVisibility = (currentConfig.dependence is defined and currentConfig.dependence is not empty) ? 'false' : 'true' %}
@@ -185,11 +185,7 @@
                         x-show="availabilities.{{ configKey }} ?? {{ defaultVisibility }}"
                         x-cloak
                     >
-                        {{ form_row(child, {
-                            widget_attr: {
-                                validate: "['required']",
-                            },
-                        }) }}
+                        {{ form_row(child) }}
                     </twig:Atoms:ReCard>
                 {% endfor %}
 
@@ -216,7 +212,7 @@
                                 <label for="accessibility-checkbox">J’ai une allergie, un régime spécial, un handicap ou autre question</label>
                             </twig:Molecules:ReCheckboxField>
                         </div>
-                        <div x-show="accessibility" x-transition>
+                        <div x-show="accessibility" x-transition x-cloak>
                             {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
                         </div>
                     </div>
@@ -239,7 +235,7 @@
                         {{ include('renaissance/partials/friendly-captcha.html.twig', {friendly_captcha_site_key: friendly_captcha_europe_site_key}) }}
                     </div>
 
-                    <div class="flex flex-col  bg-ui_gray-1 rounded-lg p-6 gap-4" x-show="getSummaryItems().length > 0">
+                    <div class="flex flex-col bg-ui_gray-1 rounded-lg p-6 gap-4" x-show="getSummaryItems().length > 0" x-cloak>
                         <twig:Atoms:ReLabel class="text-gray-950">Récapitulatif</twig:Atoms:ReLabel>
 
                         <template x-for="item in getSummaryItems()" :key="item.label">

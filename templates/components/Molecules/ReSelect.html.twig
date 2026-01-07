@@ -12,7 +12,7 @@
     @x-validate:{{ id }}.window="setData($event.detail)"
         {% endif %}>
 
-    <div class="flex-col flex justify-center">
+    <div class="flex-col flex justify-center relative">
         <script>
             if (!window.options_{{ id }}) {
                 window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw : '[]' }}`);
@@ -41,7 +41,7 @@
                           x-autogrow
                           autocomplete="off"
                           rows="1"
-                          class="re-field-frame w-full !border-0 min-h-[51px] overflow-hidden !outline-0 !rounded-none resize-none"
+                          class="!p-3 re-field-frame w-full !border-0 min-h-[51px] overflow-hidden !outline-0 !rounded-none resize-none"
                           @keyDown="handleKeyDown($event)"
                           x-model="query"
                           @input.debounce.600ms="handleInput($event);"
@@ -63,12 +63,12 @@
                     <span class="text-ui_blue-50 font-medium">Changer</span>
                 </div>
             </div>
-            <div x-show="toggle && filteredOptions.length > 0" class="max-h-[200px] overflow-y-scroll">
+            <div x-show="toggle && filteredOptions.length > 0" class="absolute top-full left-0 w-full z-50 bg-white border border-gray-200 shadow-lg max-h-[200px] overflow-y-scroll">
                 <hr>
                 <div>
                     <template x-for="option in filteredOptions">
                         <twig:Atoms:ReInputOption
-                                xSyncSelected="selected.value === option.value"
+                                xSyncSelected="selected?.value === option.value"
                                 @click.stop="setEndValues(option)"
                                 x-text="option.label"
                                 x-ref="`option-${option.value}`"

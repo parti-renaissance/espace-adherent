@@ -624,7 +624,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         ];
         yield 'Too young for adhesion' => [
             ['birthdate' => ['year' => new \DateTime('-5 years')->format('Y'), 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
+            ['birthdate' => ['L\'âge minimum requis pour adhérer est de 15 ans.']],
         ];
         yield 'No membership type' => [
             ['partyMembership' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],

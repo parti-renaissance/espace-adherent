@@ -242,3 +242,113 @@
         }}) }}
     </div>
 {% endblock %}
+
+{% block place_choice_field_form_widget %}
+    <div class="flex flex-col gap-4">
+        <div
+            class="seat-picker overflow-hidden border rounded-lg w-full box-border"
+            style="height: 280px;"
+            data-target-id="{{ form.place.vars.id }}"
+            data-selected-seat="{{ form.place.vars.value }}"
+        ></div>
+
+        <div class="flex flex-row items-center justify-center gap-6 w-full">
+            <div class="flex items-center gap-2">
+                <span class="block w-3 h-3 rounded-full bg-[#475569]"></span>
+                <span class="text-xs">Disponible</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="block w-3 h-3 rounded-full bg-[#E2E8F0]"></span>
+                <span class="text-xs">Réservée</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="block w-3 h-3 rounded-full bg-[#22C55E]"></span>
+                <span class="text-xs">Sélectionnée</span>
+            </div>
+        </div>
+
+        <div x-data="{ selectedRow: '' }">
+            <div class="flex gap-4">
+                {% set rowOptionsVar = 'window.options_' ~ form.row.vars.id %}
+
+                {{ form_row(form.row, {
+                    attr: {
+                        'x-init': "
+                            $watch('selected', val => {
+                                if (val && val.value !== selectedRow) {
+                                    selectedRow = val.value;
+                                } else if (!val) {
+                                    selectedRow = '';
+                                }
+                            });
+                            $watch('selectedRow', (val) => {
+                                if (selected && selected.value === val) return;
+                                if (val) {
+                                    let match = " ~ rowOptionsVar ~ '.find(opt => opt.value === val);
+                                    if (match) {
+                                        selected = match;
+                                        query = match.label;
+                                    }
+                                } else {
+                                    selected = null;
+                                }
+                            });
+                        ',
+                    },
+                }) }}
+
+                {% set placeOptionsVar = 'window.options_' ~ form.place.vars.id %}
+
+                {{ form_row(form.place, {
+                    attr: {
+                        '@seat-selected': '
+                            const seatValue = $event.detail.value;
+                            const foundOption = ' ~ placeOptionsVar ~ '.find(o => o.value === seatValue);
+                            if (foundOption) {
+                                selected = foundOption;
+                                query = foundOption.label;
+                            }
+                        ',
+                        'x-init': '
+                            const allPlaceOptions = ' ~ placeOptionsVar ~ ";
+                            const myId = '" ~ form.place.vars.id ~ "';
+                            const filterPlaces = (val) => {
+                                initialOptions = allPlaceOptions.filter(opt => opt.value.startsWith(val || ''));
+                                filteredOptions = initialOptions;
+                            };
+
+                            filterPlaces(selectedRow);
+
+                            $watch('selectedRow', (rowVal) => {
+                                filterPlaces(rowVal);
+                                if (selected && !selected.value.startsWith(rowVal)) {
+                                    selected = null;
+                                    if (typeof query !== 'undefined') query = '';
+                                }
+                            });
+
+                            $watch('selected', (placeVal) => {
+                                if (placeVal && placeVal.value) {
+                                    let extractedRow = placeVal.value.replace(/[^A-Z]/g, '');
+                                    if (selectedRow !== extractedRow) {
+                                        selectedRow = extractedRow;
+                                    }
+
+                                    const reactContainer = document.querySelector('.seat-picker[data-target-id=\"' + myId + '\"] .seat-picker-container');
+
+                                    if (reactContainer) {
+                                        reactContainer.dispatchEvent(new CustomEvent('update-seat-selection', {
+                                            detail: { value: placeVal.value }
+                                        }));
+                                    }
+                                }
+                            });
+                        ",
+                    },
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

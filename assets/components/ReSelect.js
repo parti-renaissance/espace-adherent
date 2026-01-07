@@ -53,6 +53,7 @@ const xReSelect = (props) => {
     const placeholder = props.placeholder || defaultOption.label;
 
     return {
+        initialOptions: options,
         filteredOptions: options,
         selected: defaultOption,
         selectedIndex: 0,
@@ -69,7 +70,7 @@ const xReSelect = (props) => {
                     if (defaultOption.value) this.$refs.select.value = defaultOption.value;
                 } else {
                     this.isValueSet = true;
-                    const option = options.find((o) => o.value === selectInput.value);
+                    const option = this.initialOptions.find((o) => o.value === selectInput.value);
 
                     if (option) {
                         this.selected = option;
@@ -107,7 +108,7 @@ const xReSelect = (props) => {
             if (false === this.toggle) return;
             if (!this.isValueSet) {
                 if (this.filteredOptions[0]) {
-                    this.setEndValues(this.filteredOptions[0]);
+                    this.setEndValues(this.filteredOptions[0]?.attr?.disabled ? null : this.filteredOptions[0]);
                 } else if (defaultOption.value) {
                     this.setEndValues(defaultOption);
                 } else {
@@ -175,6 +176,7 @@ const xReSelect = (props) => {
                 this.$refs.select.value = '';
                 this.$refs.select.dispatchEvent(new Event('change'));
                 this.$dispatch(`autocomplete_change:${props.id}`, '');
+                this.toggle = false;
                 return;
             }
 
@@ -214,7 +216,7 @@ const xReSelect = (props) => {
                     return opts;
                 });
             }
-            return filterOptions(query, options);
+            return filterOptions(query, this.initialOptions);
         },
     };
 };

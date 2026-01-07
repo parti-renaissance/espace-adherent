@@ -303,23 +303,19 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             if ([] !== $modes) {
                 $qb = $this->createCountByTransportOrAccommodationQueryBuilder($eventId, $column);
 
-                if (!empty($modes)) {
-                    $qb
-                        ->andWhere($column.' IN (:modes)')
-                        ->setParameter('modes', $modes)
-                    ;
-                }
+                $qb
+                    ->andWhere($column.' IN (:modes)')
+                    ->setParameter('modes', $modes)
+                ;
 
                 $results = array_merge($results, array_column($qb->getQuery()->getResult(), 'count', $index));
 
                 $qb = $this->createCountByTransportOrAccommodationQueryBuilderWithPendingPayment($eventId, $column = 'p.'.$index);
 
-                if (!empty($modes)) {
-                    $qb
-                        ->andWhere($column.' IN (:modes)')
-                        ->setParameter('modes', $modes)
-                    ;
-                }
+                $qb
+                    ->andWhere($column.' IN (:modes)')
+                    ->setParameter('modes', $modes)
+                ;
 
                 foreach (array_column($qb->getQuery()->getResult(), 'count', $index) as $mode => $count) {
                     if (isset($results[$mode])) {
@@ -332,6 +328,25 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         }
 
         return $results;
+    }
+
+    public function countPackageValueUsage(NationalEvent $event, string $key, string $value): int
+    {
+        return (int) $this->createQueryBuilder('i')
+            ->select('COUNT(i.id)')
+            ->where('i.event = :event')
+            ->andWhere('i.packageValues LIKE :pattern')
+             ->andWhere('i.status IN (:statuses)')
+            ->setParameter('statuses', [
+                InscriptionStatusEnum::APPROVED_STATUSES,
+                InscriptionStatusEnum::WAITING_PAYMENT,
+                InscriptionStatusEnum::PENDING,
+                InscriptionStatusEnum::INCONCLUSIVE,
+            ])
+            ->setParameter('event', $event)
+            ->setParameter('pattern', \sprintf('%%"%s":"%s"%%', $key, $value))
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function findAllWithPendingPayments(\DateTime $now): array
