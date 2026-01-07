@@ -61,7 +61,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
 
                     return [
                         'disabled' => true,
-                        'suffix' => ' - réservée',
+                        'suffix' => 'Réservée',
                     ];
                 },
                 'choices' => $this->getPlaceChoices($rows),
