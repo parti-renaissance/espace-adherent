@@ -105,6 +105,7 @@ class NationalEventPackageValidator extends ConstraintValidator
 
             $maxQuota = null;
             $optionLabel = $userValue;
+            $reserved = $existingReservations[$fieldKey] ?? [];
 
             if (isset($fieldConfig['options']) && \is_array($fieldConfig['options'])) {
                 $selectedOptionConfig = null;
@@ -128,10 +129,11 @@ class NationalEventPackageValidator extends ConstraintValidator
                 }
             } elseif (isset($fieldConfig['type']) && PlaceChoiceFieldFormType::FIELD_NAME === $fieldConfig['type']) {
                 $maxQuota = 1;
+                $reserved = array_merge($reserved, array_fill_keys($fieldConfig['places_reservees'] ?? [], 1));
             }
 
             if (null !== $maxQuota) {
-                $currentUsage = $existingReservations[$fieldKey][$userValue] ?? 0;
+                $currentUsage = $reserved[$userValue] ?? 0;
 
                 if ($currentUsage >= $maxQuota) {
                     $this->context->buildViolation($constraint->messageQuotaLimit)

@@ -250,7 +250,7 @@
             style="height: 280px;"
             data-target-id="{{ form.place.vars.id }}"
             data-selected-seat="{{ form.place.vars.value }}"
-            data-disabled-seats="{{ form.vars.disabled_seats|join(',') }}"
+            data-disabled-seats="{{ form.vars.reserved_places|join(',') }}"
         ></div>
 
         <div class="flex flex-row items-center justify-center gap-6 w-full p-2">
