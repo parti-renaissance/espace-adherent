@@ -11,6 +11,8 @@ class RadioFieldFormType extends AbstractFieldFormType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults([
             'expanded' => true,
         ]);

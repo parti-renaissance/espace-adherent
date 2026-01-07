@@ -418,14 +418,14 @@ class LoadNationalEventData extends Fixture
                         'titre' => 'Première partie (18h - 20h45)',
                         'description' => 'La première partie de soirée sera rythmée par des interventions inspirantes et des témoignages engagés.',
                         'montant' => 20,
-                        'quota' => 500,
+                        'quota' => 6,
                     ],
                     [
                         'id' => 'partie-2',
                         'titre' => 'Deuxième partie (21h15 - Minuit)',
                         'description' => 'La deuxième partie de soirée sera placée sous le signe de la fête avec des performances artistiques et un concert final endiablé.',
                         'montant' => 20,
-                        'quota' => 500,
+                        'quota' => 10,
                     ],
                     [
                         'id' => 'partie-1-et-2',

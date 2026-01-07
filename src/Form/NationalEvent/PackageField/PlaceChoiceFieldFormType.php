@@ -7,6 +7,8 @@ namespace App\Form\NationalEvent\PackageField;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class PlaceChoiceFieldFormType extends AbstractFieldFormType
 {
@@ -33,6 +35,8 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $reservedPlaces = array_keys(($options['reserved_places'] ?? [])[$builder->getName()] ?? []);
+
         $rows = $this->getRowChoices();
         $builder
             ->add('row', ChoiceType::class, [
@@ -50,6 +54,16 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
                 'attr' => [
                     'placeholder' => 'Place',
                 ],
+                'choice_attr' => function ($place) use ($reservedPlaces) {
+                    if (!\in_array($place, $reservedPlaces, true)) {
+                        return [];
+                    }
+
+                    return [
+                        'disabled' => true,
+                        'suffix' => ' - réservée',
+                    ];
+                },
                 'choices' => $this->getPlaceChoices($rows),
             ])
             ->addModelTransformer(new CallbackTransformer(function ($value) {
@@ -71,11 +85,17 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
         ;
     }
 
+    public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
+        $view->vars['disabled_seats'] = array_keys(($options['reserved_places'] ?? [])[$form->getName()] ?? []);
+    }
+
     public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
     {
         $fieldId = $fieldConfig['cle'];
 
         return [
+            'reserved_places' => $reservedPlaces,
             'error_bubbling' => false,
             'label' => $fieldConfig['titre'] ?? null,
             'attr' => [
@@ -102,6 +122,6 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
             }
         }
 
-        return array_combine(array_map(fn (string $place) => 'Place '.$place, $places), $places);
+        return array_combine(array_map(static fn (string $place) => 'Place '.$place, $places), $places);
     }
 }

@@ -1,5 +1,7 @@
+{% set isDisabled = attributes.has('disabled') %}
+
 <div {{ attributes.only('class', ':class', 'x-show') }}>
-    <label class="relative flex-col flex justify-center cursor-pointer">
+    <label class="relative flex-col flex justify-center {{ isDisabled ? 'cursor-not-allowed pointer-events-none' : 'cursor-pointer' }}">
         <div class="relative flex-col flex justify-center">
             <div class="justify-start gap-2.5 inline-flex items-center">
                 {% if widgetSide == 'left' %}

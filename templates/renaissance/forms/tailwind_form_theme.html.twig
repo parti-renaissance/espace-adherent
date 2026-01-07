@@ -250,9 +250,10 @@
             style="height: 280px;"
             data-target-id="{{ form.place.vars.id }}"
             data-selected-seat="{{ form.place.vars.value }}"
+            data-disabled-seats="{{ form.vars.disabled_seats|join(',') }}"
         ></div>
 
-        <div class="flex flex-row items-center justify-center gap-6 w-full">
+        <div class="flex flex-row items-center justify-center gap-6 w-full p-2">
             <div class="flex items-center gap-2">
                 <span class="block w-3 h-3 rounded-full bg-[#475569]"></span>
                 <span class="text-xs">Disponible</span>

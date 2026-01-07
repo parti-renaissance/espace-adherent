@@ -7,6 +7,7 @@ namespace App\Form\NationalEvent;
 use App\Entity\NationalEvent\NationalEvent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InscriptionFormType extends AbstractType
 {
@@ -18,6 +19,14 @@ class InscriptionFormType extends AbstractType
         if ($event->isPackageEventType()) {
             new PackageFormType()->buildForm($builder, $options);
         }
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefined(['reserved_places'])
+            ->addAllowedTypes('reserved_places', 'array')
+        ;
     }
 
     public function getParent(): string

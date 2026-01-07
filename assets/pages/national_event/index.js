@@ -8,6 +8,7 @@ export default () => {
 
     findAll(document, '.seat-picker').forEach((el) => {
         const initialSelectedSeat = el.dataset.selectedSeat || null;
+        const disabledSeats = el.dataset.disabledSeats.split(',') || [];
         const targetId = el.dataset.targetId;
 
         const handleSeatClick = (seatId) => {
@@ -18,6 +19,6 @@ export default () => {
             dom('#' + targetId).dispatchEvent(event);
         };
 
-        ReactDom.createRoot(el).render(<SeatPicker disabledSeats={[]} initialSelectedSeat={initialSelectedSeat} onChange={handleSeatClick} />);
+        ReactDom.createRoot(el).render(<SeatPicker disabledSeats={disabledSeats} initialSelectedSeat={initialSelectedSeat} onChange={handleSeatClick} />);
     });
 };
