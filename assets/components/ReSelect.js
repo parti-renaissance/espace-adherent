@@ -138,7 +138,7 @@ const xReSelect = (props) => {
                 this.selected = null;
             }
             const [first] = this.filteredOptions;
-            this.selected = first;
+            this.selected = first?.attr?.disabled ? null : first;
             this.selectedIndex = 0;
         },
 
@@ -146,15 +146,17 @@ const xReSelect = (props) => {
          * @param {KeyboardEvent} event
          */
         handleKeyDown(event) {
-            if ('ArrowDown' === event.key) {
-                this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
-                this.selected = this.filteredOptions[this.selectedIndex];
-            } else if ('ArrowUp' === event.key) {
-                this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
-                this.selected = this.filteredOptions[this.selectedIndex];
+            if ('ArrowDown' === event.key || 'ArrowUp' === event.key) {
+                let index = Math.max(this.selectedIndex - 1, 0);
+                if ('ArrowDown' === event.key) {
+                    index = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
+                }
+
+                const element = this.filteredOptions[index];
+                this.selected = element?.attr?.disabled ? this.selected : element;
             } else if ('Enter' === event.key) {
                 event.preventDefault();
-                this.setEndValues(this.filteredOptions[this.selectedIndex]);
+                this.setEndValues(this.filteredOptions[this.selectedIndex].attr?.disabled ? null : this.filteredOptions[this.selectedIndex]);
             }
         },
 
@@ -172,7 +174,7 @@ const xReSelect = (props) => {
             if (!option && defaultOption.value) {
                 option = defaultOption;
             }
-            if (!option) {
+            if (!option || option?.attr?.disabled) {
                 this.$refs.select.value = '';
                 this.$refs.select.dispatchEvent(new Event('change'));
                 this.$dispatch(`autocomplete_change:${props.id}`, '');
