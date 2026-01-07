@@ -85,6 +85,7 @@ jobs:
         name: Lint
         runs-on: ubuntu-24.04
         needs: [build]
+        if: github.ref != 'refs/heads/master' && vars.SKIP_TESTS_ON_DEPLOY != 'true'
         env:
             EXEC:
         steps:
@@ -169,6 +170,7 @@ jobs:
         name: PHPUnit
         runs-on: ubuntu-24.04
         needs: [build]
+        if: github.ref != 'refs/heads/master' && vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
             - uses: actions/checkout@v6
@@ -208,6 +210,7 @@ jobs:
         name: Behat
         runs-on: ubuntu-24.04
         needs: [build]
+        if: github.ref != 'refs/heads/master' && vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
             - uses: actions/checkout@v6
@@ -239,6 +242,7 @@ jobs:
         name: Behat/Selenium
         runs-on: ubuntu-24.04
         needs: [build, build-static]
+        if: github.ref != 'refs/heads/master' && vars.SKIP_TESTS_ON_DEPLOY != 'true'
         strategy:
             fail-fast: false
             matrix:
@@ -283,7 +287,10 @@ jobs:
         name: Build prod & push on registry
         runs-on: ubuntu-24.04
         needs: [lint, phpunit, behat, behat-selenium]
-        if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+        if: |
+            always() &&
+            (github.event.ref == 'refs/heads/master' || github.event_name == 'release') &&
+            !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
 
         steps:
             - uses: actions/checkout@v6
