@@ -86,7 +86,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     use EntityUTMTrait;
     use EntityZoneTrait;
 
-    public const int CANCELLATION_DELAY_IN_HOUR = 72;
+    public const int CANCELLATION_DELAY_IN_MIN = 30;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
@@ -455,13 +455,14 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     public function getVisitDayConfig(): ?array
     {
-        if (!$this->visitDay) {
+        $visitDay = $this->packageValues['visitDay'] ?? null;
+        if (!$visitDay) {
             return null;
         }
 
-        foreach ($this->event->getVisitDays()['options'] ?? [] as $day) {
-            if ($day['id'] === $this->visitDay) {
-                return $day;
+        foreach ($this->event->getVisitDays()['options'] ?? [] as $option) {
+            if ($option['id'] === $visitDay) {
+                return $option;
             }
         }
 
@@ -517,13 +518,14 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     public function getTransportConfig(): ?array
     {
-        if (!$this->transport) {
+        $transport = $this->packageValues['transport'] ?? null;
+        if (!$transport) {
             return null;
         }
 
-        foreach ($this->event->getTransports()['options'] ?? [] as $transport) {
-            if ($transport['id'] === $this->transport) {
-                return $transport;
+        foreach ($this->event->getTransports()['options'] ?? [] as $option) {
+            if ($option['id'] === $transport) {
+                return $option;
             }
         }
 
@@ -532,13 +534,14 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     public function getAccommodationConfig(): ?array
     {
-        if (!$this->accommodation) {
+        $accommodation = $this->packageValues['accommodation'] ?? null;
+        if (!$accommodation) {
             return null;
         }
 
-        foreach ($this->event->getAccommodations()['options'] ?? [] as $accommodation) {
-            if ($accommodation['id'] === $this->accommodation) {
-                return $accommodation;
+        foreach ($this->event->getAccommodations()['options'] ?? [] as $option) {
+            if ($option['id'] === $accommodation) {
+                return $option;
             }
         }
 
@@ -620,10 +623,13 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
             return true;
         }
 
-        return $this->visitDay === $payment->visitDay
-            && $this->transport === $payment->transport
-            && $this->accommodation === $payment->accommodation
-            && $this->amount === $payment->amount;
+        $paymentValues = $payment->packageValues;
+        ksort($paymentValues);
+
+        $inscriptionValues = $this->packageValues;
+        ksort($inscriptionValues);
+
+        return $this->amount === $payment->amount && json_encode($paymentValues) === json_encode($inscriptionValues);
     }
 
     public function getImageName(): ?string
