@@ -12,9 +12,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\InscriptionReminder;
 use App\Entity\NationalEvent\NationalEvent;
-use App\Entity\NationalEvent\Payment;
 use App\Entity\PushToken;
-use App\NationalEvent\InscriptionReminderTypeEnum;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
@@ -27,7 +25,6 @@ use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface, UpdateAdherentLinkRepositoryInterface
@@ -400,81 +397,20 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
 
     public function cancelAllWithWaitingPayments(\DateTime $now): void
     {
-        $ids = $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->select('DISTINCT ei.id')
-            ->from(InscriptionReminder::class, 'r')
-            ->innerJoin('r.inscription', 'ei')
-            ->where('r.type = :reminder_type AND ei.status = :status')
-            ->andWhere('r.createdAt < :since')
-            ->setParameter('reminder_type', InscriptionReminderTypeEnum::PAYMENT_20H)
-            ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
-            ->setParameter('since', (clone $now)->modify(\sprintf('-%d hours', EventInscription::CANCELLATION_DELAY_IN_HOUR)))
-            ->getQuery()
-            ->getSingleColumnResult()
-        ;
+        $cutoffDate = (clone $now)->modify(\sprintf('-%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN));
 
         $this->createQueryBuilder('ei')
             ->update()
             ->set('ei.status', ':new_status')
             ->set('ei.canceledAt', ':canceled_at')
             ->where('ei.status = :status')
-            ->andWhere('ei.updatedAt < :since')
-            ->andWhere('ei.id IN (:ids)')
+            ->andWhere('ei.updatedAt < :cutoff')
             ->setParameter('new_status', InscriptionStatusEnum::CANCELED)
+            ->setParameter('canceled_at', $now)
             ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
-            ->setParameter('since', (clone $now)->modify('-20 hours'))
-            ->setParameter('canceled_at', new \DateTime())
-            ->setParameter('ids', $ids)
+            ->setParameter('cutoff', $cutoffDate)
             ->getQuery()
-            ->execute()
-        ;
-    }
-
-    private function createCountByTransportOrAccommodationQueryBuilder(int $eventId, string $index): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('ei', $index)
-            ->select($index)
-            ->addSelect('COUNT(ei) AS count')
-            ->where('ei.event = :event_id')
-            ->andWhere('ei.status IN (:statuses)')
-            ->andWhere($index.' IS NOT NULL')
-            ->setParameter('event_id', $eventId)
-            ->setParameter('statuses', [
-                InscriptionStatusEnum::APPROVED_STATUSES,
-                InscriptionStatusEnum::WAITING_PAYMENT,
-                InscriptionStatusEnum::PENDING,
-                InscriptionStatusEnum::INCONCLUSIVE,
-            ])
-            ->groupBy($index)
-        ;
-    }
-
-    private function createCountByTransportOrAccommodationQueryBuilderWithPendingPayment(int $eventId, string $index): QueryBuilder
-    {
-        return $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->from(Payment::class, 'p')
-            ->select($index)
-            ->addSelect('COUNT(p.id) AS count')
-            ->innerJoin('p.inscription', 'ei')
-            ->where('p.status = :payment_status')
-            ->andWhere('ei.event = :event_id')
-            ->andWhere('ei.status IN (:statuses)')
-            ->andWhere($index.' IS NOT NULL')
-            ->setParameter('event_id', $eventId)
-            ->setParameter('statuses', [
-                InscriptionStatusEnum::APPROVED_STATUSES,
-                InscriptionStatusEnum::WAITING_PAYMENT,
-                InscriptionStatusEnum::PENDING,
-                InscriptionStatusEnum::INCONCLUSIVE,
-            ])
-            ->setParameter('payment_status', PaymentStatusEnum::PENDING)
-            ->groupBy($index)
-        ;
+            ->execute();
     }
 
     public function closeWithWaitingPayment(EventInscription $eventInscription): void
