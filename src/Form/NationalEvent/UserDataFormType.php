@@ -32,10 +32,6 @@ class UserDataFormType extends AbstractType
         $adherent = $options['adherent'];
         $isAdherent = $adherent instanceof Adherent;
 
-        $eventYear = (int) $event->startDate->format('Y');
-        $maxBirthYear = $eventYear - 16;
-        $minBirthYear = $maxBirthYear - 90;
-
         $builder
             ->add('email', EmailType::class, ['disabled' => $isAdherent])
             ->add('civility', GenderCivilityType::class, ['disabled' => $isAdherent && $adherent->getGender()])
@@ -43,6 +39,7 @@ class UserDataFormType extends AbstractType
             ->add('lastName', TextType::class, ['disabled' => $isAdherent && $adherent->getLastName()])
             ->add('birthdate', BirthdateType::class, [
                 'min_age' => 16,
+                'reference_date' => $event->startDate,
                 'disabled' => $isAdherent && $adherent->getBirthDate(),
             ])
             ->add('phone', TelNumberType::class, [
@@ -63,13 +60,15 @@ class UserDataFormType extends AbstractType
         }
 
         if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT], true)) {
-            $builder->add('volunteer', CheckboxType::class, ['required' => false]);
+            $builder
+                ->add('volunteer', CheckboxType::class, ['required' => false])
+                ->add('isJAM', CheckboxType::class, ['required' => false])
+            ;
         }
 
         if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::NRP], true)) {
             $builder
                 ->add('birthPlace', TextType::class)
-                ->add('isJAM', CheckboxType::class, ['required' => false])
             ;
 
             if (false === $options['is_edit']) {

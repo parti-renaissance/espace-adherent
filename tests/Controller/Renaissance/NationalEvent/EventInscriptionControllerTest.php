@@ -622,7 +622,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $form['inscription_form[acceptMedia]']->tick();
 
         self::assertSame([
-            'dimanche_train' => 7,
+            'dimanche_train' => 5,
         ], $this->eventInscriptionRepository->countPackageValues(3)['transport']);
 
         $this->client->submit($form, [
@@ -649,10 +649,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -673,13 +673,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -698,10 +698,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -748,10 +748,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -798,10 +798,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -825,13 +825,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -851,10 +851,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -900,11 +900,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'gratuit' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 7,
+                'dimanche_train' => 5,
                 'gratuit' => 1,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -954,11 +954,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'gratuit' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 7,
+                'dimanche_train' => 5,
                 'gratuit' => 1,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1008,10 +1008,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1025,13 +1025,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1044,10 +1044,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1084,11 +1084,11 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'gratuit' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 7,
+                'dimanche_train' => 5,
                 'gratuit' => 1,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1141,10 +1141,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1158,13 +1158,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1177,10 +1177,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1217,10 +1217,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             ],
             'transport' => [
                 'dimanche_bus' => 1,
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1257,10 +1257,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'transport' => [
-                'dimanche_train' => 7,
+                'dimanche_train' => 5,
             ],
             'visitDay' => [
-                'dimanche' => 7,
+                'dimanche' => 5,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1287,10 +1287,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1304,13 +1304,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1323,10 +1323,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1367,10 +1367,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             ],
             'transport' => [
                 'dimanche_bus' => 1,
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1390,10 +1390,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             ],
             'transport' => [
                 'dimanche_bus' => 1,
-                'dimanche_train' => 7,
+                'dimanche_train' => 5,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1464,10 +1464,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 8,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 8,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1510,13 +1510,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame([
             'accommodation' => [
                 'chambre_individuelle' => 1,
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 10,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 10,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1538,10 +1538,10 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
                 'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 
@@ -1578,13 +1578,13 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'accommodation' => [
-                'chambre_partagee' => 2,
+                'chambre_partagee' => 1,
             ],
             'transport' => [
-                'dimanche_train' => 9,
+                'dimanche_train' => 6,
             ],
             'visitDay' => [
-                'dimanche' => 9,
+                'dimanche' => 6,
             ],
         ], $this->eventInscriptionRepository->countPackageValues(3));
 

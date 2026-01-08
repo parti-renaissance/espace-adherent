@@ -64,7 +64,11 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                     InscriptionStatusEnum::DUPLICATE,
                     InscriptionStatusEnum::REFUSED,
                 ],
-                'types' => [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS],
+                'types' => [
+                    NationalEventTypeEnum::DEFAULT,
+                    NationalEventTypeEnum::CAMPUS,
+                    NationalEventTypeEnum::NRP,
+                ],
             ])
             ->getQuery()
             ->getResult()
@@ -294,33 +298,41 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     {
         $sql = <<<SQL
                 SELECT
-                    combined.json_key as option_key,
-                    combined.json_value as option_value,
+                    deduplicated.json_key as option_key,
+                    deduplicated.json_value as option_value,
                     COUNT(*) as total_count
                 FROM (
-                    -- PART A: Valid Inscriptions
-                    SELECT
-                        jt.dynamic_key as json_key,
-                        JSON_UNQUOTE(JSON_EXTRACT(ei.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
-                    FROM national_event_inscription ei,
-                    JSON_TABLE(JSON_KEYS(ei.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
-                    WHERE ei.event_id = :eventId
-                      AND ei.status IN (:inscriptionStatuses)
-                    UNION ALL
-                    -- PART B: Pending Payments (Modifications in progress)
-                    SELECT
-                        jt.dynamic_key as json_key,
-                        JSON_UNQUOTE(JSON_EXTRACT(p.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
-                    FROM national_event_inscription_payment p
-                    INNER JOIN national_event_inscription ei ON p.inscription_id = ei.id
-                    , JSON_TABLE(JSON_KEYS(p.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
-                    WHERE p.status = :paymentStatus
-                      AND ei.event_id = :eventId
-                      AND ei.status IN (:inscriptionStatuses)
-                ) as combined
-                WHERE (:filterKeys = 0 OR combined.json_key IN (:targetKeys))
-                GROUP BY combined.json_key, combined.json_value
-                ORDER BY combined.json_key, combined.json_value
+                    SELECT DISTINCT
+                        combined.inscription_id,
+                        combined.json_key,
+                        combined.json_value
+                    FROM (
+                        SELECT
+                            ei.id as inscription_id,
+                            jt.dynamic_key as json_key,
+                            JSON_UNQUOTE(JSON_EXTRACT(ei.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
+                        FROM national_event_inscription ei,
+                        JSON_TABLE(JSON_KEYS(ei.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
+                        WHERE ei.event_id = :eventId
+                          AND ei.status IN (:inscriptionStatuses)
+
+                        UNION ALL
+
+                        SELECT
+                            ei.id as inscription_id,
+                            jt.dynamic_key as json_key,
+                            JSON_UNQUOTE(JSON_EXTRACT(p.package_values, CONCAT('$.', jt.dynamic_key))) as json_value
+                        FROM national_event_inscription_payment p
+                        INNER JOIN national_event_inscription ei ON p.inscription_id = ei.id
+                        , JSON_TABLE(JSON_KEYS(p.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
+                        WHERE p.status = :paymentStatus
+                          AND ei.event_id = :eventId
+                          AND ei.status IN (:inscriptionStatuses)
+                    ) as combined
+                ) as deduplicated
+                WHERE (:filterKeys = 0 OR deduplicated.json_key IN (:targetKeys))
+                GROUP BY deduplicated.json_key, deduplicated.json_value
+                ORDER BY deduplicated.json_key, deduplicated.json_value
             SQL;
 
         $allStatuses = array_merge(InscriptionStatusEnum::APPROVED_STATUSES, [

@@ -859,6 +859,7 @@ Feature:
                                 "required": false,
                                 "choices": {
                                     "national_event:campus": "Campus",
+                                    "national_event:meeting-nrp": "Meeting NRP",
                                     "national_event:event-national-1": "Event national 1",
                                     "national_event:event-national-2": "Event national 2",
                                     "national_event:present:campus": "Présent Campus",

@@ -20,17 +20,21 @@ class BirthdateType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'min_age' => 15,
-            'max_age' => 120,
-            'widget' => 'choice',
-            'reference_date' => new \DateTime(),
-            'placeholder' => [
-                'year' => 'AAAA',
-                'month' => 'MM',
-                'day' => 'JJ',
-            ],
-        ]);
+        $resolver
+                ->setDefaults([
+                    'min_age' => 15,
+                    'max_age' => 120,
+                    'widget' => 'choice',
+                    'reference_date' => new \DateTime(),
+                    'years' => null, // reset initial value
+                    'placeholder' => [
+                        'year' => 'AAAA',
+                        'month' => 'MM',
+                        'day' => 'JJ',
+                    ],
+                ])
+            ->setAllowedTypes('years', ['null', 'array'])
+        ;
 
         $resolver->setAllowedTypes('min_age', 'int');
         $resolver->setAllowedTypes('max_age', 'int');
