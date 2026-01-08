@@ -23,7 +23,10 @@ class TagBuilder
 
     public function buildAll(): array
     {
-        $events = $this->nationalEventRepository->findAllSince(new \DateTime(EventTagGenerator::PERIOD), [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS]);
+        $events = $this->nationalEventRepository->findAllSince(
+            new \DateTime(EventTagGenerator::PERIOD),
+            [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::NRP]
+        );
 
         return array_values(array_unique(array_merge(
             array_map([$this, 'buildForEvent'], array_filter($events, static fn (NationalEvent $event) => $event->endDate > new \DateTime())),
