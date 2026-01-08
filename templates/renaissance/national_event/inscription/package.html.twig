@@ -34,7 +34,7 @@
                         class="relative overflow-hidden md:overflow-visible transition-all duration-300"
                         :class="expanded ? 'max-h-full' : 'max-h-[10rem]'"
                     >
-                        <div class="md:block">
+                        <div class="md:block formatted-text">
                             {{ event.textHelp|raw }}
                         </div>
 
@@ -70,7 +70,7 @@
                         <div class="text-subtitle1">{{ event.textIntro|tw_html }}</div>
                     {% endif %}
 
-                    <div class="bg-ui_gray-5 rounded-lg p-6">
+                    <div class="bg-ui_gray-5 rounded-lg p-6 formatted-text">
                         {% if event.textIntroContact %}
                             {{ event.textIntroContact|raw|nl2br }}
                         {% else %}
@@ -197,7 +197,9 @@
                         }}) }}
 
                         {% if event.discountHelp %}
-                            {{ event.discountHelp|raw|nl2br }}
+                            <div class="formatted-text">
+                                {{ event.discountHelp|raw|nl2br }}
+                            </div>
                         {% endif %}
                     </div>
 
