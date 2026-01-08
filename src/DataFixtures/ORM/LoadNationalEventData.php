@@ -146,10 +146,10 @@ class LoadNationalEventData extends Fixture
             [
                 'cle' => 'accommodation',
                 'titre' => 'Hébergement pour la nuit du samedi au dimanche',
+                'dependence' => ['dimanche'],
                 'options' => [
                     [
                         'id' => 'chambre_individuelle',
-                        'dependence' => ['dimanche'],
                         'recap_label' => 'Chambre individuelle',
                         'titre' => 'Chambre individuelle',
                         'montant' => 49,
@@ -161,7 +161,6 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'chambre_partagee',
-                        'dependence' => ['dimanche'],
                         'recap_label' => 'Chambre partagée (à deux)',
                         'titre' => 'Chambre partagée (à deux)',
                         'montant' => 49,
@@ -173,7 +172,6 @@ class LoadNationalEventData extends Fixture
                     ],
                     [
                         'id' => 'gratuit',
-                        'dependence' => ['dimanche'],
                         'titre' => 'Je n\'ai pas besoin d\'hébergement',
                         'description' => 'Je trouve un hébergement par mes propres moyens',
                     ],

@@ -63,17 +63,7 @@ class PaymentStatusUpdateCommandHandler
             }
 
             if ($isLastPayment) {
-                if ($inscription->visitDay !== $payment->visitDay) {
-                    $inscription->visitDay = $payment->visitDay;
-                }
-
-                if ($inscription->transport !== $payment->transport) {
-                    $inscription->transport = $payment->transport;
-                }
-
-                if ($inscription->accommodation !== $payment->accommodation) {
-                    $inscription->accommodation = $payment->accommodation;
-                }
+                $inscription->packageValues = $payment->packageValues;
 
                 if ($inscription->withDiscount !== $payment->withDiscount) {
                     $inscription->withDiscount = $payment->withDiscount;

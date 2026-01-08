@@ -33,15 +33,17 @@ class NationalEventPackageValidator extends ConstraintValidator
 
         $event = $value->event;
 
-        if (!($configs = $event->packageConfig) || empty($submittedValues = $value->getPackageValues())) {
+        if (!$configs = $event->packageConfig) {
             return;
         }
+
+        $submittedValues = $value->getPackageValues();
 
         $keysToCheck = [];
         foreach ($configs as $config) {
             if (isset($config['options']) && \is_array($config['options'])) {
                 foreach ($config['options'] as $option) {
-                    if (!empty($option['quota'])) {
+                    if (\array_key_exists('quota', $option)) {
                         $keysToCheck[] = $config['cle'];
                         break;
                     }
@@ -116,7 +118,29 @@ class NationalEventPackageValidator extends ConstraintValidator
                     continue;
                 }
 
-                if (!empty($selectedOptionConfig['quota'])) {
+                if (!empty($selectedOptionConfig['dependence'])) {
+                    $dependencyMet = false;
+
+                    foreach ($submittedValues as $submittedVal) {
+                        if (\in_array($submittedVal, $selectedOptionConfig['dependence'], true)) {
+                            $dependencyMet = true;
+                            break;
+                        }
+                    }
+
+                    if (!$dependencyMet) {
+                        $isActive = false;
+                    }
+                }
+
+                if (!$isActive) {
+                    $this->context->buildViolation($constraint->messageDependencyError)
+                        ->atPath("packageValues[$fieldKey]")
+                        ->addViolation();
+                    continue;
+                }
+
+                if (\array_key_exists('quota', $selectedOptionConfig)) {
                     $optionLabel = $selectedOptionConfig['titre'] ?? $userValue;
 
                     $isQuotaExceeded = $this->checkQuotaExceeded(
@@ -154,7 +178,7 @@ class NationalEventPackageValidator extends ConstraintValidator
             foreach ($targetOption['quota'] as $depId) {
                 $depConfig = $this->findOptionConfig($depId, $allOptions);
 
-                if ($depConfig && !empty($depConfig['quota'])) {
+                if ($depConfig && \array_key_exists('quota', $depConfig)) {
                     if (is_numeric($depConfig['quota'])) {
                         $depMax = (int) $depConfig['quota'];
                         $depConsumed = $this->getConsumedCount($depId, $allOptions, $reservations);

@@ -69,23 +69,15 @@ class Payment
     public function __construct(
         UuidInterface $uuid,
         EventInscription $inscription,
-        ?int $amount = null,
-        ?string $visitDay = null,
-        ?string $transport = null,
-        ?string $accommodation = null,
-        ?string $packagePlan = null,
-        ?string $packageDonation = null,
+        int $amount,
+        array $packageValues,
         ?bool $withDiscount = null,
         array $payload = [],
     ) {
         $this->uuid = $uuid;
         $this->inscription = $inscription;
-        $this->visitDay = $visitDay;
+        $this->packageValues = $packageValues;
         $this->amount = $amount;
-        $this->transport = $transport;
-        $this->accommodation = $accommodation;
-        $this->packagePlan = $packagePlan;
-        $this->packageDonation = $packageDonation;
         $this->withDiscount = $withDiscount;
         $this->payload = $payload;
         $this->statuses = new ArrayCollection();
