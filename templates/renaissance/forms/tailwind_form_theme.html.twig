@@ -307,9 +307,8 @@
                         '@seat-selected': '
                             const seatValue = $event.detail.value;
                             const foundOption = ' ~ placeOptionsVar ~ '.find(o => o.value === seatValue);
-                            if (foundOption) {
-                                selected = foundOption;
-                                query = foundOption.label;
+                            if (foundOption && !foundOption?.attr?.disabled) {
+                                setEndValues(foundOption);
                             }
                         ',
                         'x-init': '
