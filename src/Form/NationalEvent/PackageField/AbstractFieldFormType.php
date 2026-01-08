@@ -91,7 +91,7 @@ abstract class AbstractFieldFormType extends AbstractType
             $priceHtml = '<span class="text-ui_blue-60 font-semibold">'.($item['montant'] > 0 ? ($item['montant'].' €') : 'Gratuit').'</span>';
             $quotaHtml = null;
 
-            if (!empty($item['quota'])) {
+            if (\array_key_exists('quota', $item)) {
                 $availablePlaces = self::calculateAvailablePlaces($item, $allOptions, $reservations);
                 $quotaHtml = self::formatQuotaDisplay($availablePlaces, $attributes);
             }

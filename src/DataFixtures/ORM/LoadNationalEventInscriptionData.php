@@ -67,19 +67,17 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->volunteer = 0 === $i % 2;
             $eventInscription->accessibility = 4 === $i ? null : 'handicap_moteur';
             $eventInscription->amount = 5000;
-            $eventInscription->visitDay = 'dimanche';
-            $eventInscription->transport = 'dimanche_train';
+            $eventInscription->packageValues = [
+                'visitDay' => 'dimanche',
+                'transport' => 'dimanche_train',
+            ];
             $eventInscription->addZone($zone92);
 
             $eventInscription->addPayment($payment = new Payment(
                 $uuid = Uuid::uuid4(),
                 $eventInscription,
                 $eventInscription->amount,
-                $eventInscription->visitDay,
-                $eventInscription->transport,
-                $eventInscription->accommodation,
-                $eventInscription->packagePlan,
-                $eventInscription->packageDonation,
+                $eventInscription->packageValues,
                 $eventInscription->withDiscount,
                 ['orderID' => $uuid->toString()]
             ));
@@ -89,11 +87,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
                     $uuid = Uuid::uuid4(),
                     $eventInscription,
                     $eventInscription->amount,
-                    $eventInscription->visitDay,
-                    $eventInscription->transport,
-                    $eventInscription->accommodation,
-                    $eventInscription->packagePlan,
-                    $eventInscription->packageDonation,
+                    $eventInscription->packageValues,
                     $eventInscription->withDiscount,
                     ['orderID' => $uuid->toString()]
                 ));
@@ -125,8 +119,10 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->volunteer = 0 === $i % 2;
             $eventInscription->accessibility = 4 === $i ? null : 'handicap_moteur';
             $eventInscription->amount = 5000;
-            $eventInscription->visitDay = 'dimanche';
-            $eventInscription->transport = 'dimanche_train';
+            $eventInscription->packageValues = [
+                'visitDay' => 'dimanche',
+                'transport' => 'dimanche_train',
+            ];
             $eventInscription->addZone($zone92);
             $eventInscription->adherent = $this->getReference('adherent-'.($i + 30), Adherent::class);
 
@@ -165,15 +161,10 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
                 $uuid = Uuid::uuid4(),
                 $eventInscription,
                 $eventInscription->amount,
-                $eventInscription->visitDay,
-                $eventInscription->transport,
-                $eventInscription->accommodation,
-                $eventInscription->packagePlan,
-                $eventInscription->packageDonation,
+                $eventInscription->packageValues,
                 $eventInscription->withDiscount,
                 ['orderID' => $uuid->toString()]
             ));
-            $payment->packageValues = $eventInscription->packageValues;
             $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
             $eventInscription->status = InscriptionStatusEnum::PENDING;
             $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;

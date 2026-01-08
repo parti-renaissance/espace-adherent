@@ -144,7 +144,7 @@ const Page = (props) => ({
                 return;
             }
 
-            const selectedOption = fieldConfig.options.find((opt) => {
+            const selectedOption = (fieldConfig.options || []).find((opt) => {
                 if ('string' === typeof opt) {
                     return opt === selectedId;
                 }

@@ -123,16 +123,10 @@ class EventInscriptionManager
             $uuid,
             $eventInscription,
             $amount,
-            ($inscriptionRequest ?? $eventInscription)->visitDay,
-            ($inscriptionRequest ?? $eventInscription)->transport,
-            ($inscriptionRequest ?? $eventInscription)->accommodation,
-            ($inscriptionRequest ?? $eventInscription)->packagePlan,
-            ($inscriptionRequest ?? $eventInscription)->packageDonation,
+            $inscriptionRequest ? $inscriptionRequest->getPackageValues() : $eventInscription->packageValues,
             ($inscriptionRequest ?? $eventInscription)->withDiscount,
             $paymentParams
         ));
-
-        $payment->packageValues = $eventInscription->packageValues;
 
         return $payment;
     }
