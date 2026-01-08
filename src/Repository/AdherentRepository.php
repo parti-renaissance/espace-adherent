@@ -1647,13 +1647,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $joinPerimeter = $with = '';
 
         $managedZoneIds = $filter->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
-        $filterZoneId = $filter->getZone()?->getId();
 
         if (!ScopeEnum::isNational($message->getInstanceScope()) && empty($managedZoneIds) && !$filter->getCommittee()) {
             return 0;
         }
 
-        $targetZoneIds = array_unique(array_merge($managedZoneIds, $filterZoneId ? [$filterZoneId] : []));
+        $targetZoneIds = array_unique($managedZoneIds);
 
         if (!empty($targetZoneIds)) {
             $placeholders = [];
@@ -1666,7 +1665,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $inClause = implode(', ', $placeholders);
 
             $with = <<<SQL
-                    WITH RECURSIVE z_adherents AS (
+                    WITH z_adherents AS (
                         SELECT DISTINCT a.adherent_id
                         FROM adherent_zone a
                         LEFT JOIN geo_zone_parent p ON p.child_id = a.zone_id
@@ -1679,6 +1678,18 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $fromJoin = [];
         $where = [];
+
+        if ($filterZoneId = $filter->getZone()?->getId()) {
+            $where[] = 'EXISTS (
+                SELECT 1
+                FROM adherent_zone az_filter
+                LEFT JOIN geo_zone_parent p_filter ON p_filter.child_id = az_filter.zone_id
+                WHERE az_filter.adherent_id = a.id
+                AND (p_filter.parent_id = :filter_zone_id OR az_filter.zone_id = :filter_zone_id)
+            )';
+            $params['filter_zone_id'] = $filterZoneId;
+            $types['filter_zone_id'] = ParameterType::INTEGER;
+        }
 
         if ($filter->getCommittee() || null !== $filter->getIsCommitteeMember()) {
             $fromJoin[] = 'LEFT JOIN committees_memberships cm ON cm.adherent_id = a.id';
