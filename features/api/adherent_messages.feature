@@ -483,7 +483,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 7
+                    "visible_count": 3
                 },
                 "json_content": "@string@",
                 "sent_at": null,
@@ -1343,7 +1343,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 7
+                    "visible_count": 3
                 },
                 "json_content": "@string@",
                 "sent_at": null,
@@ -1436,13 +1436,13 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "push": 3,
-                "email": 5,
-                "push_email": 2,
+                "push": 2,
+                "email": 3,
+                "push_email": 1,
                 "only_push": 1,
-                "only_email": 3,
-                "contacts": 6,
-                "total": 6
+                "only_email": 2,
+                "contacts": 4,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
@@ -1451,8 +1451,8 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "contacts": 6,
-                "total": 6
+                "contacts": 4,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
@@ -1547,13 +1547,13 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "push": 3,
-                "email": 2,
-                "push_email": 1,
-                "only_push": 2,
-                "only_email": 1,
-                "contacts": 4,
-                "total": 7
+                "push": 1,
+                "email": 0,
+                "push_email": 0,
+                "only_push": 1,
+                "only_email": 0,
+                "contacts": 1,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=<scope>&partial=true"
@@ -1562,8 +1562,8 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "contacts": 4,
-                "total": 7
+                "contacts": 1,
+                "total": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>"
