@@ -138,8 +138,8 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
         /** @var NationalEvent $event */
         $event = $this->getReference('event-national-6', NationalEvent::class);
 
-        for ($i = 1; $i <= 5; ++$i) {
-            $place = \chr(64 + $i).$i;
+        for ($i = 1; $i <= 10; ++$i) {
+            $place = \chr(69 + $i).$i;
 
             $manager->persist($eventInscription = new EventInscription($event));
             $eventInscription->firstName = $this->faker->firstName();
@@ -156,8 +156,8 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->accessibility = 4 === $i ? null : 'handicap_moteur';
             $eventInscription->amount = 5000;
             $eventInscription->packageValues = [
-                'visitDay' => 'partie-1',
-                'partie1place' => $place,
+                'visitDay' => 'partie-'.$row = ($i > 5 ? '2' : '1'),
+                \sprintf('partie%dplace', $row) => $place,
             ];
             $eventInscription->addZone($zone92);
 

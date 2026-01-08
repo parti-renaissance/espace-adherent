@@ -432,7 +432,7 @@ class LoadNationalEventData extends Fixture
                         'titre' => 'Deux parties (18h - Minuit)',
                         'description' => 'La totale immersion dans le Meeting NRP avec les deux parties de soirée.',
                         'montant' => 30,
-                        'quota' => 100,
+                        'quota' => ['partie-1', 'partie-2'],
                     ],
                 ],
             ],
