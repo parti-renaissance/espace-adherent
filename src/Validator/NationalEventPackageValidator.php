@@ -103,18 +103,11 @@ class NationalEventPackageValidator extends ConstraintValidator
                 continue;
             }
 
-            $maxQuota = null;
             $optionLabel = $userValue;
-            $reserved = $existingReservations[$fieldKey] ?? [];
+            $fieldReservations = $existingReservations[$fieldKey] ?? [];
 
             if (isset($fieldConfig['options']) && \is_array($fieldConfig['options'])) {
-                $selectedOptionConfig = null;
-                foreach ($fieldConfig['options'] as $option) {
-                    if ((string) $option['id'] === (string) $userValue) {
-                        $selectedOptionConfig = $option;
-                        break;
-                    }
-                }
+                $selectedOptionConfig = $this->findOptionConfig($userValue, $fieldConfig['options']);
 
                 if (!$selectedOptionConfig) {
                     $this->context->buildViolation($constraint->messageInvalidOption)
@@ -124,16 +117,26 @@ class NationalEventPackageValidator extends ConstraintValidator
                 }
 
                 if (!empty($selectedOptionConfig['quota'])) {
-                    $maxQuota = (int) $selectedOptionConfig['quota'];
                     $optionLabel = $selectedOptionConfig['titre'] ?? $userValue;
+
+                    $isQuotaExceeded = $this->checkQuotaExceeded(
+                        $selectedOptionConfig,
+                        $fieldConfig['options'],
+                        $fieldReservations
+                    );
+
+                    if ($isQuotaExceeded) {
+                        $this->context->buildViolation($constraint->messageQuotaLimit)
+                            ->setParameter('{{ option }}', $optionLabel)
+                            ->atPath("packageValues[$fieldKey]")
+                            ->addViolation();
+                    }
                 }
             } elseif (isset($fieldConfig['type']) && PlaceChoiceFieldFormType::FIELD_NAME === $fieldConfig['type']) {
                 $maxQuota = 1;
-                $reserved = array_merge($reserved, array_fill_keys($fieldConfig['places_reservees'] ?? [], 1));
-            }
+                $reservedByType = array_merge($fieldReservations, array_fill_keys($fieldConfig['places_reservees'] ?? [], 1));
 
-            if (null !== $maxQuota) {
-                $currentUsage = $reserved[$userValue] ?? 0;
+                $currentUsage = $reservedByType[$userValue] ?? 0;
 
                 if ($currentUsage >= $maxQuota) {
                     $this->context->buildViolation($constraint->messageQuotaLimit)
@@ -143,5 +146,60 @@ class NationalEventPackageValidator extends ConstraintValidator
                 }
             }
         }
+    }
+
+    private function checkQuotaExceeded(array $targetOption, array $allOptions, array $reservations): bool
+    {
+        if (\is_array($targetOption['quota'])) {
+            foreach ($targetOption['quota'] as $depId) {
+                $depConfig = $this->findOptionConfig($depId, $allOptions);
+
+                if ($depConfig && !empty($depConfig['quota'])) {
+                    if (is_numeric($depConfig['quota'])) {
+                        $depMax = (int) $depConfig['quota'];
+                        $depConsumed = $this->getConsumedCount($depId, $allOptions, $reservations);
+
+                        if ($depConsumed >= $depMax) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        $max = (int) $targetOption['quota'];
+        $consumed = $this->getConsumedCount($targetOption['id'] ?? $targetOption['titre'], $allOptions, $reservations);
+
+        return $consumed >= $max;
+    }
+
+    private function getConsumedCount(string $targetId, array $allOptions, array $reservations): int
+    {
+        $count = $reservations[$targetId] ?? 0;
+
+        foreach ($allOptions as $otherOption) {
+            if (isset($otherOption['quota']) && \is_array($otherOption['quota'])) {
+                if (\in_array($targetId, $otherOption['quota'], true)) {
+                    $parentId = $otherOption['id'] ?? $otherOption['titre'];
+                    $count += ($reservations[$parentId] ?? 0);
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    private function findOptionConfig(string $value, array $options): ?array
+    {
+        foreach ($options as $option) {
+            $id = $option['id'] ?? $option['titre'];
+            if ((string) $id === $value) {
+                return \is_string($option) ? ['id' => $option, 'titre' => $option] : $option;
+            }
+        }
+
+        return null;
     }
 }
