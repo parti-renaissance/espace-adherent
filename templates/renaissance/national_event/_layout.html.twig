@@ -15,6 +15,14 @@
     {% endif %}
 {% endblock %}
 
+{% block favicons %}
+    {% if event is defined and event.faviconImage %}
+        <link rel="icon" type="image/png" href="{{ vich_uploader_asset(event.faviconImage) }}" sizes="32x32" />
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {%- block canonical_url -%}
     {% apply spaceless %}
         {% if event is defined %}
