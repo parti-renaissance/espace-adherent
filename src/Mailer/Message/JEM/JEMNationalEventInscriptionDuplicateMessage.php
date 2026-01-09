@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\Uuid;
 
-class JEMNationalEventInscriptionDuplicateMessage extends AbstractRenaissanceMessage
+class JEMNationalEventInscriptionDuplicateMessage extends AbstractJEMMessage
 {
     public static function create(EventInscription $eventInscription, string $myInscriptionUrl): self
     {
         $event = $eventInscription->event;
 
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
@@ -23,5 +23,7 @@ class JEMNationalEventInscriptionDuplicateMessage extends AbstractRenaissanceMes
                 'primary_link' => $myInscriptionUrl,
             ],
         );
+
+        return static::updateSenderInfo($message);
     }
 }

@@ -6,10 +6,10 @@ namespace App\NationalEvent;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\JEMNationalEventInscriptionConfirmationMessage;
-use App\Mailer\Message\Renaissance\JEMNationalEventInscriptionDuplicateMessage;
-use App\Mailer\Message\Renaissance\JEMNationalEventInscriptionPaymentReminderMessage;
-use App\Mailer\Message\Renaissance\JEMNationalEventTicketMessage;
+use App\Mailer\Message\JEM\JEMNationalEventInscriptionConfirmationMessage;
+use App\Mailer\Message\JEM\JEMNationalEventInscriptionDuplicateMessage;
+use App\Mailer\Message\JEM\JEMNationalEventInscriptionPaymentReminderMessage;
+use App\Mailer\Message\JEM\JEMNationalEventTicketMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionDuplicateMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionPaymentReminderMessage;

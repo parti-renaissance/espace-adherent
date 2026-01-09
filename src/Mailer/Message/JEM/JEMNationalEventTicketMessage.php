@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\Uuid;
 
-class JEMNationalEventTicketMessage extends AbstractRenaissanceMessage
+class JEMNationalEventTicketMessage extends AbstractJEMMessage
 {
     public static function create(EventInscription $eventInscription, bool $useAppMobile): self
     {
         $event = $eventInscription->event;
 
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
@@ -36,5 +36,7 @@ class JEMNationalEventTicketMessage extends AbstractRenaissanceMessage
                 'has_app_mobile' => $useAppMobile,
             ],
         );
+
+        return static::updateSenderInfo($message);
     }
 }

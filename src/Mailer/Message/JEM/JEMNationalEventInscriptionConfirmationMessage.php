@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
-class JEMNationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMessage
+class JEMNationalEventInscriptionConfirmationMessage extends AbstractJEMMessage
 {
     public static function create(EventInscription $eventInscription, string $editUrl, string $eventUrl, ?string $shareUrl, ?string $civility, ?string $region, ?string $department): self
     {
         $event = $eventInscription->event;
 
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
@@ -37,5 +37,7 @@ class JEMNationalEventInscriptionConfirmationMessage extends AbstractRenaissance
                 'share_url' => $shareUrl,
             ]
         );
+
+        return static::updateSenderInfo($message);
     }
 }
