@@ -44,7 +44,7 @@ class ProfileManagedZoneNormalizer implements NormalizerInterface, NormalizerAwa
 
             $managedZone = [
                 'type' => 'departement',
-                'code' => $role->getZonesCodes()[0],
+                'code' => preg_replace('/[^0-9].*$/', '', $role->getZonesCodes()[0] ?? ''),
             ];
         } elseif ($this->authorizationChecker->isGranted(Scope::generateRole(Scope::SCOPE_MUNICIPAL_CANDIDATE))) {
             $role = $object->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE);
