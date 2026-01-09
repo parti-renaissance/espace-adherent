@@ -191,6 +191,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true)]
     public ?string $packagePlan = null;
 
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $packageValues = null;
 
@@ -277,6 +278,14 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $customDetail = null;
+
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $emergencyContactName = null;
+
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
+    public ?PhoneNumber $emergencyContactPhone = null;
 
     #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
@@ -370,6 +379,8 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         $this->children = $inscriptionRequest->withChildren ? $inscriptionRequest->children : null;
         $this->isResponsibilityWaived = $inscriptionRequest->isResponsibilityWaived;
         $this->isJAM = $inscriptionRequest->isJAM;
+        $this->emergencyContactName = $inscriptionRequest->emergencyContactName;
+        $this->emergencyContactPhone = $inscriptionRequest->emergencyContactPhone;
 
         // Update only for creation
         if (!$this->id) {

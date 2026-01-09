@@ -359,6 +359,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                     ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
                     ->add('addressEmail', null, ['label' => 'E-mail'])
+                    ->add('emergencyContactName', null, ['label' => 'Nom du contact d’urgence'])
+                    ->add('emergencyContactPhone', TelNumberType::class, ['label' => 'Nom du contact d’urgence'])
                     ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
                     ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
                     ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
@@ -563,6 +565,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
                 'Lieu de naissance' => $inscription->birthPlace,
                 'Téléphone' => PhoneNumberUtils::format($inscription->phone),
+                'Contact urgence nom' => $inscription->emergencyContactName,
+                'Contact urgence téléphone' => PhoneNumberUtils::format($inscription->emergencyContactPhone),
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
                 'Date de confirmation' => $inscription->confirmedAt?->format('d/m/Y H:i:s'),
                 'Statut' => $translator->trans($inscription->status),
@@ -578,9 +582,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Handicap' => $inscription->accessibility,
                 'Enfants' => $inscription->children,
                 'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
-                'Jour de visite' => $inscription->visitDay,
-                'Choix de transport' => $inscription->transport,
-                'Choix d\'hébergement' => $inscription->accommodation,
+                'Choix de forfait' => implode("\n", array_map(
+                    static fn ($k, $v) => \sprintf('%s: %s', $k, $v),
+                    array_keys($inscription->packageValues),
+                    $inscription->packageValues
+                )),
                 'Transport info' => $inscription->transportDetail,
                 'Hébergement info' => $inscription->accommodationDetail,
                 'Numéro du partenaire' => $inscription->roommateIdentifier,
