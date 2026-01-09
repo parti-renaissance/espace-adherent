@@ -582,11 +582,34 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Handicap' => $inscription->accessibility,
                 'Enfants' => $inscription->children,
                 'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
-                'Choix de forfait' => implode("\n", array_map(
-                    static fn ($k, $v) => \sprintf('%s: %s', $k, $v),
-                    array_keys($inscription->packageValues),
-                    $inscription->packageValues
-                )),
+                'Choix de forfait' => (function (EventInscription $inscription) {
+                    $lines = [];
+                    $configs = $inscription->event->packageConfig;
+
+                    foreach ($inscription->packageValues as $key => $userValue) {
+                        $optionLabel = $userValue;
+
+                        foreach ($configs as $config) {
+                            if ($config['cle'] === $key) {
+                                if (isset($config['options']) && \is_array($config['options'])) {
+                                    foreach ($config['options'] as $option) {
+                                        $optId = \is_string($option) ? $option : ($option['id'] ?? $option['titre']);
+
+                                        if ((string) $optId === (string) $userValue) {
+                                            $optionLabel = \is_string($option) ? $option : ($option['titre'] ?? $userValue);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        $lines[] = $optionLabel;
+                    }
+
+                    return implode("\n", $lines);
+                })($inscription),
                 'Transport info' => $inscription->transportDetail,
                 'Hébergement info' => $inscription->accommodationDetail,
                 'Numéro du partenaire' => $inscription->roommateIdentifier,

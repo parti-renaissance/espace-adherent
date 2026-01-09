@@ -115,6 +115,10 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $faviconImage = null;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $intoImage = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
