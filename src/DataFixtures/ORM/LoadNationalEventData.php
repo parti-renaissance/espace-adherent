@@ -227,6 +227,7 @@ class LoadNationalEventData extends Fixture
             [
                 'cle' => 'packagePlan',
                 'titre' => 'Forfait',
+                'sequentiel' => true,
                 'options' => [
                     [
                         'id' => 'forfait_50',
