@@ -43,7 +43,7 @@ class NationalEventPackageValidator extends ConstraintValidator
         foreach ($configs as $config) {
             if (isset($config['options']) && \is_array($config['options'])) {
                 foreach ($config['options'] as $option) {
-                    if (\array_key_exists('quota', $option)) {
+                    if (\is_array($option) && \array_key_exists('quota', $option)) {
                         $keysToCheck[] = $config['cle'];
                         break;
                     }
@@ -218,7 +218,7 @@ class NationalEventPackageValidator extends ConstraintValidator
     private function findOptionConfig(string $value, array $options): ?array
     {
         foreach ($options as $option) {
-            $id = $option['id'] ?? $option['titre'];
+            $id = \is_array($option) ? ($option['id'] ?? $option['titre']) : $option;
             if ((string) $id === $value) {
                 return \is_string($option) ? ['id' => $option, 'titre' => $option] : $option;
             }

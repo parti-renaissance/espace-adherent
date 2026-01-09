@@ -193,6 +193,21 @@
                                 OUI
                             </div>
                         {% endif %}
+                        {% if inscription.emergencyContactName %}
+                            <div class="flex flex-col gap-2">
+                                <div class="font-medium">Contact d'urgence :</div>
+                                <div class="flex flex-col p-4 gap-2 bg-white rounded-lg ">
+                                    <div>
+                                        <span class="font-medium">Prénom Nom :</span>
+                                        {{ inscription.emergencyContactName }}
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">Téléphone :</span>
+                                        {{ inscription.emergencyContactPhone|phone_number_format }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -200,18 +215,21 @@
                     <twig:ReButton stroke tag="a" href="{{ path('app_national_event_edit_inscription', {slug: event.getSlug(), uuid: inscription.getUuid().toString()}) }}">Modifier mes informations</twig:ReButton>
                 {% endif %}
 
-                {% macro info_card(titre, description, montant, inscription) %}
+                {% macro info_card(title, value, description, amount, inscription) %}
                     <div class="flex flex-col bg-ui_gray-1 rounded-lg p-6 gap-2">
-                        <p class="font-medium">{{ titre }}</p>
+                        {% if title %}
+                            <p class="font-bold">{{ title }}</p>
+                        {% endif %}
+                        <p class="font-medium">{{ value }}</p>
 
                         {% if description is not empty %}
                             <div>{{ description|raw }}</div>
                         {% endif %}
 
-                        {% if montant is not null %}
-                            {% if montant > 0 %}
+                        {% if amount is not null %}
+                            {% if amount > 0 %}
                                 <div>
-                                    <span class="text-ui_blue-50 font-medium">{{ montant }} €</span>
+                                    <span class="text-ui_blue-50 font-medium">{{ amount }} €</span>
                                     {% if inscription.amount > 0 %}
                                         -
                                         {% if inscription.isPaymentSuccess() %}
@@ -242,6 +260,7 @@
                         'transport',
                         'packageCity',
                         'packageDepartureTime',
+                        'packageDonation',
                         'accommodation',
                     ] %}
 
@@ -252,6 +271,7 @@
                         {% if userValue and fieldConfig %}
                             {% if fieldConfig.options is not defined or fieldConfig.options is empty %}
                                 {{ display.info_card(
+                                    null,
                                     fieldConfig.titre,
                                     userValue,
                                     null,
@@ -261,14 +281,15 @@
                                 {% set selectedOption = null %}
 
                                 {% for option in fieldConfig.options %}
-                                    {% if option == userValue or option.id == userValue %}
+                                    {% if option == userValue or (option is iterable and ((option.id ?? null) == userValue or (option.titre ?? null) == userValue)) %}
                                         {% set selectedOption = option %}
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if selectedOption %}
                                     {{ display.info_card(
-                                        selectedOption.titre,
+                                        selectedOption is iterable and selectedOption.description is defined ? null : fieldConfig.titre,
+                                        selectedOption.titre ?? selectedOption.id ?? selectedOption,
                                         selectedOption.description ?? null,
                                         selectedOption.montant ?? null,
                                         inscription,
@@ -284,6 +305,7 @@
                         {% if userValue and fieldConfig %}
                             {% set row = userValue|first %}
                             {{ display.info_card(
+                                null,
                                 'Place' ~ (key == 'partie1place' ? ' première' : ' deuxième') ~ ' partie',
                                 'Rangée ' ~ row ~ ' - Place ' ~ userValue,
                                 null,

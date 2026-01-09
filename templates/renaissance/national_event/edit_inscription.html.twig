@@ -104,6 +104,20 @@
                         {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
+                    {% if form.emergencyContactName is defined %}
+                        <div class="flex flex-col bg-ui_gray-1 rounded-lg gap-4 p-6">
+                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">Contact en cas d’urgence (obligatoire)</label>
+
+                            <div class="text-ui_gray-50">En cas de problème nous contacterons cette personne.</div>
+
+                            {{ form_row(form.emergencyContactName) }}
+
+                            <fieldset>
+                                {{ form_row(form.emergencyContactPhone) }}
+                            </fieldset>
+                        </div>
+                    {% endif %}
+
                     {% if form.isJAM is defined %}
                         <div class="bg-ui_gray-1 rounded-lg p-6">
                             {{ form_row(form.isJAM, {label: 'Je suis membre des Jeunes avec Macron', attr: {widget_side: 'right'}}) }}

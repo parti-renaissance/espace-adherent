@@ -175,7 +175,7 @@ abstract class AbstractFieldFormType extends AbstractType
             }
 
             if (\is_array($option)) {
-                $choices[$id = $option['id'] ?? $option['titre']] = [
+                $choices[$id = \is_array($option) ? ($option['id'] ?? $option['titre']) : $option] = [
                     'id' => $id,
                     'titre' => $option['titre'],
                 ];

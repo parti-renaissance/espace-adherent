@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block form_help -%}
-    {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' mb-3')|trim}) -%}
+    {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' text-ui_gray-50 mb-3')|trim}) -%}
     {{- parent() -}}
 {% endblock %}
 

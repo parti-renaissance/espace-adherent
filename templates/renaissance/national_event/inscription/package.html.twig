@@ -130,7 +130,7 @@
                         attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"},
                     }) }}
 
-                    <fieldset class="relative">
+                    <fieldset class="relative flex flex-col">
                         <twig:Atoms:ReLabel class="mb-3">Date de naissance</twig:Atoms:ReLabel>
 
                         <fieldset class="flex gap-2.5 relative">
@@ -158,7 +158,15 @@
                             }}) }}
                         </fieldset>
 
+                        {{ form_help(form.birthdate, {help_attr: {class: 'mt-3'}}) }}
+
                         {{ form_errors(form.birthdate) }}
+
+                        {% if event.textHelpBirthdateField %}
+                            <div class="text-ui_gray-50 formatted-text">
+                                {{ event.textHelpBirthdateField|raw|nl2br }}
+                            </div>
+                        {% endif %}
                     </fieldset>
 
                     {% if form.birthPlace is defined %}
@@ -169,8 +177,22 @@
                     {% endif %}
 
                     <fieldset>
-                        {{ form_row(form.phone, {label: 'Numéro de téléphone', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
+                        {{ form_row(form.phone, {label: 'Numéro de téléphone', help: event.textHelpPhoneField ? event.textHelpPhoneField : 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
+
+                    {% if form.emergencyContactName is defined %}
+                        <div class="flex flex-col bg-ui_gray-1 rounded-lg gap-4 p-6">
+                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">Contact en cas d’urgence (obligatoire)</label>
+
+                            <div class="text-ui_gray-50">En cas de problème nous contacterons cette personne.</div>
+
+                            {{ form_row(form.emergencyContactName) }}
+
+                            <fieldset>
+                                {{ form_row(form.emergencyContactPhone) }}
+                            </fieldset>
+                        </div>
+                    {% endif %}
 
                     {% if form.isJAM is defined %}
                         <div class="bg-ui_gray-1 rounded-lg p-6 mt-4">
@@ -203,14 +225,13 @@
                         }}) }}
 
                         {% if event.discountHelp %}
-                            <div class="formatted-text">
+                            <div class="text-ui_gray-60 formatted-text">
                                 {{ event.discountHelp|raw|nl2br }}
                             </div>
                         {% endif %}
                     </div>
 
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-
                         {% if form.volunteer is defined %}
                             {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
                         {% endif %}

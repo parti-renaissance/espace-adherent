@@ -69,8 +69,13 @@ class InscriptionRequest implements RecaptchaChallengeInterface
 
     public ?string $transport = null;
 
-    #[Assert\NotBlank(groups: ['inscription:package:jem'])]
     public ?string $packagePlan = null;
+
+    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
+    public ?string $emergencyContactName = null;
+
+    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
+    public ?PhoneNumber $emergencyContactPhone = null;
 
     #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['inscription:package:jem'])]
     public ?string $packageCity = null;
@@ -155,6 +160,8 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         $request->packageCity = $inscription->packageCity;
         $request->packageDepartureTime = $inscription->packageDepartureTime;
         $request->packageDonation = $inscription->packageDonation;
+        $request->emergencyContactName = $inscription->emergencyContactName;
+        $request->emergencyContactPhone = $inscription->emergencyContactPhone;
 
         $request->packageValues = $inscription->packageValues ?? [];
 

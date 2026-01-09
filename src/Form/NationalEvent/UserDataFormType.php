@@ -41,6 +41,7 @@ class UserDataFormType extends AbstractType
                 'min_age' => 16,
                 'reference_date' => $event->startDate,
                 'disabled' => $isAdherent && $adherent->getBirthDate(),
+                'help' => 'Vous devez avoir minimum 16 ans le jour de l’événement.',
             ])
             ->add('phone', TelNumberType::class, [
                 'required' => $event->isJEM(),
@@ -74,6 +75,13 @@ class UserDataFormType extends AbstractType
             if (false === $options['is_edit']) {
                 $builder->add('allowNotifications', CheckboxType::class, ['required' => false]);
             }
+        }
+
+        if ($event->isJEM()) {
+            $builder
+                ->add('emergencyContactName', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Prénom Nom']])
+                ->add('emergencyContactPhone', TelNumberType::class, ['label' => false, 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT])
+            ;
         }
 
         if (false === $options['is_edit']) {

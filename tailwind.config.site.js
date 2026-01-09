@@ -34,6 +34,7 @@ module.exports = {
                     20: '#E1E5E8',
                     30: '#D1D5DA',
                     40: '#B5BDC1',
+                    50: '#919EAB',
                     60: '#737F87',
                     80: '#3F4951',
                     90: '#212B36',
@@ -158,9 +159,5 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        require('@tailwindcss/forms')({ strategy: 'base' }),
-        require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/typography'),
-    ],
+    plugins: [require('@tailwindcss/forms')({ strategy: 'base' }), require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography')],
 };
