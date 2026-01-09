@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
@@ -97,13 +96,17 @@ class NationalEventAdmin extends AbstractAdmin
             ->tab('Wording 📝')
                 ->with('Introduction', ['class' => 'col-md-6', 'description' => 'Texte d\'introduction et le text de contact affichés en haut de la page d\'inscription'])
                     ->add('textIntro', CkEditorType::class, ['label' => false])
-                    ->add('textIntroContact', CkEditorType::class, ['label' => 'Information de contact', 'help' => 'Affichée sur la page d\'inscription', 'required' => false])
+                    ->add('textIntroContact', CkEditorType::class, ['label' => 'Information de contact', 'required' => false])
                 ->end()
                 ->with('Message d\'aide', ['class' => 'col-md-6', 'description' => 'Texte d\'aide affiché en bas de la page d\'inscription, avant le bouton de Légalités'])
                     ->add('textHelp', CkEditorType::class, ['label' => false])
                 ->end()
                 ->with('Message de confirmation', ['class' => 'col-md-6', 'description' => 'Texte affiché sur la page de confirmation et dans le mail de confirmation'])
                     ->add('textConfirmation', CkEditorType::class, ['label' => false])
+                ->end()
+                ->with('Réduction', ['class' => 'col-md-6'])
+                    ->add('discountLabel', null, ['label' => 'Libellé de la case à cocher de la réduction', 'required' => false])
+                    ->add('discountHelp', CkEditorType::class, ['label' => 'Le text descriptif de la réduction', 'required' => false])
                 ->end()
                 ->with('Formulaire', ['class' => 'col-md-6'])
                     ->add('textHelpBirthdateField', CkEditorType::class, ['label' => 'Text d\'aide du champ date de naissance', 'required' => false])
@@ -146,14 +149,6 @@ class NationalEventAdmin extends AbstractAdmin
                 ->with('Connection & Synchronisation', ['class' => 'col-md-6'])
                     ->add('connectionEnabled', null, ['label' => 'Activer la connexion militant', 'required' => false])
                     ->add('mailchimpSync', null, ['label' => 'Synchronisation des participants vers Mailchimp', 'required' => false])
-                ->end()
-                ->with('Réduction', ['class' => 'col-md-6'])
-                    ->add('discountLabel', null, ['label' => 'Libellé de la case à cocher de la réduction', 'required' => false])
-                    ->add('discountHelp', TextareaType::class, [
-                        'label' => 'Le text descriptif de la réduction (optionnel, HTML acceptable)',
-                        'required' => false,
-                        'attr' => ['rows' => 7],
-                    ])
                 ->end()
             ->end()
         ;

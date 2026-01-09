@@ -20,13 +20,43 @@ abstract class AbstractFieldFormType extends AbstractType
     public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
     {
         $fieldId = $fieldConfig['cle'];
+        $isSequential = $fieldConfig['sequentiel'] ?? false;
         $choices = static::generateChoices($fieldConfig['options'] ?? []);
+
+        $visibleChoicesKeys = array_keys($choices);
+
+        if ($isSequential) {
+            $visibleChoicesKeys = [];
+            $activeTierFound = false;
+            $currentFieldReservations = $reservedPlaces[$fieldId] ?? [];
+
+            foreach ($choices as $key => $choiceData) {
+                if ($activeTierFound) {
+                    continue;
+                }
+
+                $visibleChoicesKeys[] = $key;
+
+                $optConfig = self::findOptionConfig($key, $fieldConfig['options']);
+
+                if (!$optConfig || !isset($optConfig['quota'])) {
+                    $activeTierFound = true;
+                    continue;
+                }
+
+                $places = self::calculateAvailablePlaces($optConfig, $fieldConfig['options'], $currentFieldReservations);
+
+                if ($places > 0) {
+                    $activeTierFound = true;
+                }
+            }
+        }
 
         return [
             'reserved_places' => $reservedPlaces,
             'error_bubbling' => false,
             'label' => $fieldConfig['titre'] ?? null,
-            'choices' => array_keys($choices),
+            'choices' => $visibleChoicesKeys,
             'attr' => [
                 'data-field-name' => $fieldId,
                 'placeholder' => $fieldConfig['placeholder'] ?? null,
