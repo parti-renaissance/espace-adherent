@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\Uuid;
 
-class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractRenaissanceMessage
+class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractJEMMessage
 {
     public static function create(EventInscription $eventInscription, string $finalizeUrl): self
     {
         $event = $eventInscription->event;
 
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
@@ -30,5 +30,7 @@ class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractRenaissa
                 'cancellation_date' => (clone $eventInscription->getCreatedAt())->modify(\sprintf('+%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN))->format('d/m/Y à H:i'),
             ],
         );
+
+        return static::updateSenderInfo($message);
     }
 }

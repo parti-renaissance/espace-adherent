@@ -27,28 +27,34 @@ abstract class AbstractFieldFormType extends AbstractType
 
         if ($isSequential) {
             $visibleChoicesKeys = [];
+            $lastUnavailableKey = null;
             $activeTierFound = false;
             $currentFieldReservations = $reservedPlaces[$fieldId] ?? [];
 
             foreach ($choices as $key => $choiceData) {
-                if ($activeTierFound) {
-                    continue;
-                }
-
-                $visibleChoicesKeys[] = $key;
-
                 $optConfig = self::findOptionConfig($key, $fieldConfig['options']);
 
-                if (!$optConfig || !isset($optConfig['quota'])) {
-                    $activeTierFound = true;
-                    continue;
+                $places = 999;
+                if ($optConfig && isset($optConfig['quota'])) {
+                    $places = self::calculateAvailablePlaces($optConfig, $fieldConfig['options'], $currentFieldReservations);
                 }
-
-                $places = self::calculateAvailablePlaces($optConfig, $fieldConfig['options'], $currentFieldReservations);
 
                 if ($places > 0) {
+                    if (null !== $lastUnavailableKey) {
+                        $visibleChoicesKeys[] = $lastUnavailableKey;
+                    }
+
+                    $visibleChoicesKeys[] = $key;
+
                     $activeTierFound = true;
+                    break;
                 }
+
+                $lastUnavailableKey = $key;
+            }
+
+            if (!$activeTierFound && null !== $lastUnavailableKey) {
+                $visibleChoicesKeys[] = $lastUnavailableKey;
             }
         }
 
