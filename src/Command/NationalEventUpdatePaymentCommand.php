@@ -66,7 +66,9 @@ class NationalEventUpdatePaymentCommand extends Command
 
             $payload = current(json_decode($content, true, 512, \JSON_THROW_ON_ERROR));
 
-            $this->messageBus->dispatch(new PaymentStatusUpdateCommand($payload));
+            if ('0' !== $payload['STATUS']) {
+                $this->messageBus->dispatch(new PaymentStatusUpdateCommand($payload));
+            }
         }
     }
 

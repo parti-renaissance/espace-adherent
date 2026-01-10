@@ -41,8 +41,11 @@ class PaymentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.status IN (:statuses) OR (p.status = :expired_status AND p.expiredCheckedAt IS NULL)')
+            ->andWhere('p.createdAt < :from')
+            ->setParameter('from', new \DateTime()->modify('-20 minutes'))
             ->setParameter('statuses', [PaymentStatusEnum::PENDING, PaymentStatusEnum::UNKNOWN])
             ->setParameter('expired_status', PaymentStatusEnum::EXPIRED)
+            ->orderBy('p.createdAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
