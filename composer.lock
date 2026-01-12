@@ -24178,36 +24178,35 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "3.11.0",
+            "version": "3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "866af065fd09980b6390ee5c69e45b08053101e8"
+                "reference": "4efdb0ec7f2d30a34f85fb1f887f4584a742d3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/866af065fd09980b6390ee5c69e45b08053101e8",
-                "reference": "866af065fd09980b6390ee5c69e45b08053101e8",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/4efdb0ec7f2d30a34f85fb1f887f4584a742d3ba",
+                "reference": "4efdb0ec7f2d30a34f85fb1f887f4584a742d3ba",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0.0",
                 "ext-ctype": "*",
-                "ext-json": "*",
                 "php": ">=8.0",
                 "symfony/console": "^5.4.9 || ^6.4 || ^7.0 || ^8.0",
                 "symfony/filesystem": "^5.4 || ^6.4 || ^7.0 || ^8.0",
                 "symfony/finder": "^5.4 || ^6.4 || ^7.0 || ^8.0",
                 "symfony/string": "^5.4.42 || ^6.4.10 || ~7.0.10 || ^7.1.3 || ^8.0",
                 "twig/twig": "^3.4",
-                "webmozart/assert": "^1.10"
+                "webmozart/assert": "^1.10 || ^2.0"
             },
             "require-dev": {
                 "composer/semver": "^3.2.0",
                 "dereuromark/composer-prefer-lowest": "^0.1.10",
                 "ergebnis/composer-normalize": "^2.29",
                 "friendsofphp/php-cs-fixer": "^3.13.0",
-                "infection/infection": "^0.26.16 || ^0.29.14",
+                "infection/infection": "^0.26.16 || ^0.32.0",
                 "phpstan/phpstan": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
@@ -24243,7 +24242,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.11.0"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.12.0"
             },
             "funding": [
                 {
@@ -24251,27 +24250,27 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-24T18:13:18+00:00"
+            "time": "2025-12-25T20:29:37+00:00"
         },
         {
             "name": "webmozart/assert",
-            "version": "1.12.1",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68"
+                "reference": "bdbabc199a7ba9965484e4725d66170e5711323b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/9be6926d8b485f55b9229203f962b51ed377ba68",
-                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bdbabc199a7ba9965484e4725d66170e5711323b",
+                "reference": "bdbabc199a7ba9965484e4725d66170e5711323b",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-date": "*",
                 "ext-filter": "*",
-                "php": "^7.2 || ^8.0"
+                "php": "^8.2"
             },
             "suggest": {
                 "ext-intl": "",
@@ -24281,7 +24280,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10-dev"
+                    "dev-feature/2-0": "2.0-dev"
                 }
             },
             "autoload": {
@@ -24297,6 +24296,10 @@
                 {
                     "name": "Bernhard Schussek",
                     "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com"
                 }
             ],
             "description": "Assertions to validate method input/output with nice error messages.",
@@ -24307,9 +24310,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.12.1"
+                "source": "https://github.com/webmozarts/assert/tree/2.1.1"
             },
-            "time": "2025-10-29T15:56:20+00:00"
+            "time": "2026-01-08T11:28:40+00:00"
         }
     ],
     "aliases": [],
