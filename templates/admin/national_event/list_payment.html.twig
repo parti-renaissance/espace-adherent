@@ -3,7 +3,8 @@
 {% block field %}
     {% if object.amount > 0 %}
         <div>
-            <a href="{{ path('admin_app_nationalevent_payment_list', {filter: {inscription: {value: object.id}}}) }}">
+            {% set targetAdmin = admin.getConfigurationPool().getAdminByAdminCode(admin.getCode() ~ '_payments') %}
+            <a href="{{ targetAdmin.generateUrl('list', {filter: {inscription: {value: object.id}}}) }}">
                 {{ object.amountInEuro }} € ({{ object.countPayments() }})
             </a>
         </div>

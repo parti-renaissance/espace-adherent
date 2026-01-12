@@ -22,6 +22,7 @@ use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
@@ -52,6 +53,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAdminInterface
@@ -83,6 +85,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
+        $allowedTypes = $this->getAllowedEventTypes();
+        $forbiddenTypes = $this->getForbiddenEventTypes();
+
         $filter
             ->add('search', CallbackFilter::class, [
                 'label' => 'Recherche',
@@ -121,11 +126,20 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'label' => 'Event',
                 'show_filter' => true,
                 'field_options' => [
-                    'query_builder' => function (NationalEventRepository $er): QueryBuilder {
-                        return $er
-                            ->createQueryBuilder('e')
-                            ->orderBy('e.startDate', 'DESC')
-                        ;
+                    'query_builder' => function (NationalEventRepository $er) use ($allowedTypes, $forbiddenTypes): QueryBuilder {
+                        $qb = $er->createQueryBuilder('e')->orderBy('e.startDate', 'DESC');
+
+                        if (!empty($allowedTypes)) {
+                            $qb->andWhere('e.type IN (:allowedTypes)')
+                                ->setParameter('allowedTypes', $allowedTypes);
+                        }
+
+                        if (!empty($forbiddenTypes)) {
+                            $qb->andWhere('e.type NOT IN (:forbiddenTypes)')
+                                ->setParameter('forbiddenTypes', $forbiddenTypes);
+                        }
+
+                        return $qb;
                     },
                 ],
             ])
@@ -582,7 +596,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Handicap' => $inscription->accessibility,
                 'Enfants' => $inscription->children,
                 'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
-                'Choix de forfait' => (function (EventInscription $inscription) {
+                'Choix de forfait' => (static function (EventInscription $inscription) {
                     $lines = [];
                     $configs = $inscription->event->packageConfig;
 
@@ -608,7 +622,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                         $lines[] = $optionLabel;
                     }
 
-                    return implode("\n", $lines);
+                    return implode(',', $lines);
                 })($inscription),
                 'Transport info' => $inscription->transportDetail,
                 'Hébergement info' => $inscription->accommodationDetail,
@@ -632,15 +646,60 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 '_delegated_access',
                 '_zone_based_role',
                 '_zone_based_role_zone',
+                '_event',
             )
             ->leftJoin("$alias.adherent", '_adherent')
             ->leftJoin('_adherent.adherentMandates', '_adherent_mandate')
             ->leftJoin('_adherent.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin('_adherent.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
+            ->innerJoin("$alias.event", '_event')
         ;
 
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && \count($allowed) > 0) {
+            $query
+                ->andWhere('_event.type IN (:allowed_types)')
+                ->setParameter('allowed_types', $allowed);
+        }
+
+        if (null !== $forbidden && \count($forbidden) > 0) {
+            $query
+                ->andWhere('_event.type NOT IN (:forbidden_types)')
+                ->setParameter('forbidden_types', $forbidden);
+        }
+
         return $query;
+    }
+
+    protected function getAllowedEventTypes(): ?array
+    {
+        return null;
+    }
+
+    protected function getForbiddenEventTypes(): ?array
+    {
+        return [NationalEventTypeEnum::JEM];
+    }
+
+    /** @param EventInscription $object */
+    protected function alterObject(object $object): void
+    {
+        parent::alterObject($object);
+
+        $type = $object->event->type;
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && !\in_array($type, $allowed, true)) {
+            throw new NotFoundHttpException();
+        }
+
+        if (null !== $forbidden && \in_array($type, $forbidden, true)) {
+            throw new NotFoundHttpException();
+        }
     }
 
     /** @param EventInscription $object */

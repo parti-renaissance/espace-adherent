@@ -120,4 +120,9 @@ class Payment
     {
         return PaymentStatusEnum::EXPIRED === $this->status;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->uuid;
+    }
 }

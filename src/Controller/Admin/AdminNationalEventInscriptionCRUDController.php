@@ -14,8 +14,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminNationalEventInscriptionCRUDController extends CRUDController
 {
-    public function sendTicketAction(Request $request, EventInscription $inscription, MessageBusInterface $messageBus): Response
+    public function sendTicketAction(Request $request, int $id, MessageBusInterface $messageBus): Response
     {
+        /** @var EventInscription $inscription */
+        $inscription = $this->admin->getObject($id);
+
+        if (!$inscription) {
+            throw $this->createNotFoundException(\sprintf('unable to find the object with id: %s', $id));
+        }
+
         $this->admin->checkAccess('sendTicket', $inscription);
 
         if (!$inscription->isApproved()) {

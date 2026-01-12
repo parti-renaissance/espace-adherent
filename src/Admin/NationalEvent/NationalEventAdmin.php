@@ -5,18 +5,21 @@ declare(strict_types=1);
 namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Form\Admin\UploadableFileType;
 use App\Form\CkEditorType;
 use App\Form\ColorType;
 use App\Form\JsonType;
 use App\NationalEvent\NationalEventTypeEnum;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NationalEventAdmin extends AbstractAdmin
 {
@@ -152,5 +155,56 @@ class NationalEventAdmin extends AbstractAdmin
                 ->end()
             ->end()
         ;
+    }
+
+    protected function getAllowedEventTypes(): ?array
+    {
+        return null;
+    }
+
+    protected function getForbiddenEventTypes(): ?array
+    {
+        return [NationalEventTypeEnum::JEM];
+    }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+        $rootAlias = current($query->getRootAliases());
+
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && \count($allowed) > 0) {
+            $query
+                ->andWhere($rootAlias.'.type IN (:allowed_types)')
+                ->setParameter('allowed_types', $allowed);
+        }
+
+        if (null !== $forbidden && \count($forbidden) > 0) {
+            $query
+                ->andWhere($rootAlias.'.type NOT IN (:forbidden_types)')
+                ->setParameter('forbidden_types', $forbidden);
+        }
+
+        return $query;
+    }
+
+    /** @param NationalEvent $object */
+    protected function alterObject(object $object): void
+    {
+        parent::alterObject($object);
+
+        $type = $object->type;
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && !\in_array($type, $allowed, true)) {
+            throw new NotFoundHttpException();
+        }
+
+        if (null !== $forbidden && \in_array($type, $forbidden, true)) {
+            throw new NotFoundHttpException();
+        }
     }
 }
