@@ -6,18 +6,22 @@ namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\Payment;
+use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentAdmin extends AbstractAdmin
 {
@@ -28,6 +32,9 @@ class PaymentAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
+        $allowedTypes = $this->getAllowedEventTypes();
+        $forbiddenTypes = $this->getForbiddenEventTypes();
+
         $filter
             ->add('inscription', ModelFilter::class, [
                 'label' => 'Inscrit',
@@ -51,11 +58,21 @@ class PaymentAdmin extends AbstractAdmin
                 'label' => 'Event',
                 'show_filter' => true,
                 'field_options' => [
-                    'query_builder' => function (NationalEventRepository $er): QueryBuilder {
-                        return $er
-                            ->createQueryBuilder('e')
-                            ->orderBy('e.startDate', 'DESC')
-                        ;
+                    'query_builder' => function (NationalEventRepository $er) use ($allowedTypes, $forbiddenTypes): QueryBuilder {
+                        $qb = $er->createQueryBuilder('e')
+                            ->orderBy('e.startDate', 'DESC');
+
+                        if (!empty($allowedTypes)) {
+                            $qb->andWhere('e.type IN (:allowedTypes)')
+                                ->setParameter('allowedTypes', $allowedTypes);
+                        }
+
+                        if (!empty($forbiddenTypes)) {
+                            $qb->andWhere('e.type NOT IN (:forbiddenTypes)')
+                                ->setParameter('forbiddenTypes', $forbiddenTypes);
+                        }
+
+                        return $qb;
                     },
                 ],
             ])
@@ -127,5 +144,65 @@ class PaymentAdmin extends AbstractAdmin
     {
         $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function getAllowedEventTypes(): ?array
+    {
+        return null;
+    }
+
+    protected function getForbiddenEventTypes(): ?array
+    {
+        return [NationalEventTypeEnum::JEM];
+    }
+
+    /** @param Payment $object */
+    protected function alterObject(object $object): void
+    {
+        parent::alterObject($object);
+
+        $type = $object->inscription->event->type;
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && !\in_array($type, $allowed, true)) {
+            throw new NotFoundHttpException();
+        }
+
+        if (null !== $forbidden && \in_array($type, $forbidden, true)) {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    /** @param QueryBuilder|ProxyQueryInterface $query */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $alias = $query->getRootAliases()[0];
+
+        $query
+            ->addSelect(
+                '_inscription',
+                '_event',
+            )
+            ->innerJoin("$alias.inscription", '_inscription')
+            ->innerJoin('_inscription.event', '_event')
+        ;
+
+        $allowed = $this->getAllowedEventTypes();
+        $forbidden = $this->getForbiddenEventTypes();
+
+        if (null !== $allowed && \count($allowed) > 0) {
+            $query
+                ->andWhere('_event.type IN (:allowed_types)')
+                ->setParameter('allowed_types', $allowed);
+        }
+
+        if (null !== $forbidden && \count($forbidden) > 0) {
+            $query
+                ->andWhere('_event.type NOT IN (:forbidden_types)')
+                ->setParameter('forbidden_types', $forbidden);
+        }
+
+        return $query;
     }
 }

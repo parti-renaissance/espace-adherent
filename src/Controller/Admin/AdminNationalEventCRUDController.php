@@ -17,8 +17,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminNationalEventCRUDController extends CRUDController
 {
-    public function inscriptionsAction(Request $request, NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository): Response
+    public function inscriptionsAction(Request $request, int $id, EventInscriptionRepository $eventInscriptionRepository): Response
     {
+        /** @var NationalEvent $event */
+        $event = $this->admin->getObject($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException(\sprintf('unable to find the object with id: %s', $id));
+        }
+
         $this->admin->checkAccess('inscriptions', $event);
 
         return $this->renderWithExtraParams('admin/national_event/inscriptions.html.twig', [
@@ -41,8 +48,17 @@ class AdminNationalEventCRUDController extends CRUDController
         ]);
     }
 
-    public function sendTicketsAction(Request $request, NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
+    public function sendTicketsAction(Request $request, int $id, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
     {
+        /** @var NationalEvent $event */
+        $event = $this->admin->getObject($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException(\sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $this->admin->checkAccess('inscriptions', $event);
+
         $inscriptions = [];
 
         if ($request->query->has('all')) {
@@ -66,8 +82,17 @@ class AdminNationalEventCRUDController extends CRUDController
         return $this->redirect($this->admin->generateObjectUrl('inscriptions', $event));
     }
 
-    public function sendPushAction(Request $request, NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
+    public function sendPushAction(Request $request, int $id, MessageBusInterface $messageBus): Response
     {
+        /** @var NationalEvent $event */
+        $event = $this->admin->getObject($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException(\sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $this->admin->checkAccess('inscriptions', $event);
+
         $type = 'only_missing';
         if ($request->query->has('all')) {
             $type = 'all';
@@ -82,8 +107,17 @@ class AdminNationalEventCRUDController extends CRUDController
         return $this->redirect($this->admin->generateObjectUrl('inscriptions', $event));
     }
 
-    public function generateTicketQRCodesAction(NationalEvent $event, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
+    public function generateTicketQRCodesAction(int $id, EventInscriptionRepository $eventInscriptionRepository, MessageBusInterface $messageBus): Response
     {
+        /** @var NationalEvent $event */
+        $event = $this->admin->getObject($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException(\sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $this->admin->checkAccess('inscriptions', $event);
+
         $inscriptions = $eventInscriptionRepository->findAllWithoutTickets($event);
 
         foreach ($inscriptions as $inscription) {

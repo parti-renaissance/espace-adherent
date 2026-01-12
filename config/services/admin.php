@@ -102,19 +102,31 @@ return static function (ContainerConfigurator $configurator) {
     ;
     $services
         ->set('app.admin.national_event', App\Admin\NationalEvent\NationalEventAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\NationalEvent::class, 'controller' => App\Controller\Admin\AdminNationalEventCRUDController::class, 'label' => 'Meetings', 'group' => 'Meetings'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\NationalEvent::class, 'controller' => App\Controller\Admin\AdminNationalEventCRUDController::class, 'label' => 'Meetings', 'group' => 'Meetings', 'default' => true])
     ;
     $services
         ->set('app.admin.national_event_inscriptions', App\Admin\NationalEvent\NationalEventInscriptionsAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'controller' => App\Controller\Admin\AdminNationalEventInscriptionCRUDController::class, 'label' => 'Inscrits', 'group' => 'Meetings'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'controller' => App\Controller\Admin\AdminNationalEventInscriptionCRUDController::class, 'label' => 'Inscrits', 'group' => 'Meetings', 'default' => true])
     ;
     $services
-        ->set('app.admin.national_event_inscription_payments', App\Admin\NationalEvent\PaymentAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\Payment::class, 'label' => 'Paiements', 'group' => 'Meetings'])
+        ->set('app.admin.national_event_inscriptions_payments', App\Admin\NationalEvent\PaymentAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\Payment::class, 'label' => 'Paiements', 'group' => 'Meetings', 'default' => true])
     ;
     $services
         ->set('app.admin.national_event_scan', App\Admin\NationalEvent\NationalEventScanAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\TicketScan::class, 'label' => 'Scans', 'group' => 'Meetings'])
+    ;
+    $services
+        ->set('app.admin.national_event_jem', App\Admin\NationalEvent\JEM\JEMNationalEventAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\NationalEvent::class, 'controller' => App\Controller\Admin\AdminNationalEventCRUDController::class, 'label' => 'Meetings', 'group' => 'Meetings JEM'])
+    ;
+    $services
+        ->set('app.admin.national_event_jem_inscriptions', App\Admin\NationalEvent\JEM\JEMNationalEventInscriptionsAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\EventInscription::class, 'controller' => App\Controller\Admin\AdminNationalEventInscriptionCRUDController::class, 'label' => 'Inscrits', 'group' => 'Meetings JEM'])
+    ;
+    $services
+        ->set('app.admin.national_event_jem_inscriptions_payments', App\Admin\NationalEvent\JEM\JEMPaymentAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\NationalEvent\Payment::class, 'label' => 'Paiements', 'group' => 'Meetings JEM'])
     ;
     $services
         ->set('app.admin.committee', App\Admin\CommitteeAdmin::class)
@@ -565,6 +577,7 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent_elected_representative'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_inscriptions'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_inscriptions_jem'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.committee'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.event'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent_message'])
