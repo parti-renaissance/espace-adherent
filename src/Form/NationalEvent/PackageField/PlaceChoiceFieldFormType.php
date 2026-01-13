@@ -36,10 +36,12 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $reservedPlaces = $options['reserved_places'];
+        $currentValue = $options['current_value'];
 
         $rows = $this->getRowChoices();
-        $builder
-            ->add('row', ChoiceType::class, [
+
+        if (true !== $options['from_admin']) {
+            $builder->add('row', ChoiceType::class, [
                 'label' => false,
                 'required' => false,
                 'attr' => [
@@ -47,22 +49,25 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
                     'x-model' => 'selectedRow',
                 ],
                 'choices' => array_combine(array_map(fn (string $val) => 'Rangée '.$val, $rows), $rows),
-            ])
+            ]);
+        }
+
+        $builder
             ->add('place', ChoiceType::class, [
                 'label' => false,
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Place',
                 ],
-                'choice_attr' => function ($place) use ($reservedPlaces) {
-                    if (!\in_array($place, $reservedPlaces, true)) {
-                        return [];
+                'choice_attr' => function ($place) use ($reservedPlaces, $currentValue) {
+                    if (\in_array($place, $reservedPlaces, true) && (!$currentValue || $place !== $currentValue)) {
+                        return [
+                            'disabled' => true,
+                            'suffix' => 'Réservée',
+                        ];
                     }
 
-                    return [
-                        'disabled' => true,
-                        'suffix' => 'Réservée',
-                    ];
+                    return [];
                 },
                 'choices' => $this->getPlaceChoices($rows),
             ])
@@ -71,10 +76,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
                     return ['row' => null, 'place' => null];
                 }
 
-                $row = mb_substr($value, 0, 1);
-                $place = mb_substr($value, 1);
-
-                return ['row' => $row, 'place' => $row.$place];
+                return ['row' => mb_substr($value, 0, 1), 'place' => $value];
             }, function ($value) {
                 if (!\is_array($value) || !isset($value['place']) || '' === $value['place']) {
                     return null;
@@ -90,7 +92,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
         $view->vars['reserved_places'] = $options['reserved_places'];
     }
 
-    public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
+    public static function getFieldOptions(array $fieldConfig, array $reservedPlaces, ?string $currentValue = null): array
     {
         $fieldId = $fieldConfig['cle'];
 

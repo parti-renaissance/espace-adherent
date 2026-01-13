@@ -65,7 +65,7 @@ class DownloadInscriptionsController extends AbstractController
                     'Forfait transport' => $eventInscription->getTransportConfig()['titre'] ?? null,
                     'Forfait hébergement' => $eventInscription->getAccommodationConfig()['titre'] ?? null,
                     'Partenaire de chambre' => $eventInscription->roommateIdentifier,
-                    'Est JAM' => $eventInscription->isJAM ? 'Oui' : 'Non',
+                    'Est JEM' => $eventInscription->isJAM ? 'Oui' : 'Non',
                     'Handicap' => $eventInscription->accessibility,
                     'Montant' => (string) $eventInscription->getAmountInEuro(),
                     'Statut du paiement' => $eventInscription->paymentStatus->value,

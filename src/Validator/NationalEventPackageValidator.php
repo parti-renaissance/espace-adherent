@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
+use App\Entity\NationalEvent\EventInscription;
 use App\Form\NationalEvent\PackageField\PlaceChoiceFieldFormType;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -27,8 +28,13 @@ class NationalEventPackageValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof InscriptionRequest) {
+        if (!$value instanceof InscriptionRequest && !$value instanceof EventInscription) {
             throw new UnexpectedTypeException($value, InscriptionRequest::class);
+        }
+
+        $excludeInscriptionId = null;
+        if ($value instanceof EventInscription) {
+            $excludeInscriptionId = $value->getId();
         }
 
         $event = $value->event;
@@ -58,7 +64,11 @@ class NationalEventPackageValidator extends ConstraintValidator
 
         $existingReservations = [];
         if (!empty($keysToCheck)) {
-            $existingReservations = $this->inscriptionRepository->countPackageValues($event->getId(), $keysToCheck);
+            $existingReservations = $this->inscriptionRepository->countPackageValues(
+                $event->getId(),
+                $keysToCheck,
+                $excludeInscriptionId
+            );
         }
 
         foreach ($configs as $fieldConfig) {

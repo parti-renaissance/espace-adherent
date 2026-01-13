@@ -113,7 +113,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
                 $roommateRows['Partenaire Dpt '.$id] = $roommateInscription->getAssemblyZone()?->getCode();
                 $roommateRows['Partenaire Forfait hébergement '.$id] = $roommateInscription->getAccommodationConfig()['titre'] ?? null;
                 $roommateRows['Partenaire Code '.$id] = $roommateInscription->roommateIdentifier;
-                $roommateRows['Partenaire JAM '.$id] = $roommateInscription->isJAM ? 'Oui' : 'Non';
+                $roommateRows['Partenaire JEM '.$id] = $roommateInscription->isJAM ? 'Oui' : 'Non';
             }
         } elseif ($roommateAdherent) {
             $roommateRows['Partenaire Public ID 1'] = $roommateAdherent->getPublicId();
@@ -124,7 +124,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
             $roommateRows['Partenaire Dpt 1'] = $roommateAdherent->getAssemblyZone()?->getCode();
             $roommateRows['Partenaire Forfait hébergement 1'] = null;
             $roommateRows['Partenaire Code 1'] = null;
-            $roommateRows['Partenaire JAM 1'] = null;
+            $roommateRows['Partenaire JEM 1'] = null;
         }
 
         return [
@@ -141,7 +141,7 @@ class NationalEventExportValidateInscriptionCommand extends Command
             'Forfait transport' => $inscription->getTransportConfig()['titre'] ?? null,
             'Forfait hôtellerie' => $inscription->getAccommodationConfig()['titre'] ?? null,
             'Champ handicap' => $inscription->accessibility,
-            'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
+            'JEM' => $inscription->isJAM ? 'Oui' : 'Non',
             'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
         ] + $roommateRows;
     }
