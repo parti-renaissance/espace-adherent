@@ -17,8 +17,9 @@
 const Page = (props) => ({
     packageConfig: props.packageConfig || null,
     initialPayedAmount: props.initialPayedAmount,
-    packageValues: 'object' === typeof props.initialPackageValues && null !== props.initialPackageValues ? props.initialPackageValues : {},
+    packageValues: 'object' === typeof props.initialPackageValues ? props.initialPackageValues : {},
     availabilities: {},
+    allowedOptions: {},
     withDiscount: false,
     accessibility: false,
 
@@ -85,50 +86,66 @@ const Page = (props) => ({
         return this.initialPayedAmount !== this.getTotalPrice() || this.getSignature(this.packageValues) !== this.getSignature(props.initialPackageValues || {});
     },
 
-    updateAvailabilities(uncheckInputs = true) {
-        const activeValues = Object.values(this.packageValues).flat();
+    updateAvailabilities(resetHiddenValues = true) {
+        const activeValues = Object.values(this.packageValues).flat().map(String);
 
         this.packageConfig.forEach((config) => {
             const fieldKey = config.cle;
+            if (!fieldKey) return;
 
-            if (!fieldKey) {
+            let isFieldVisible = true;
+            if (config.dependence && Array.isArray(config.dependence) && 0 < config.dependence.length) {
+                isFieldVisible = config.dependence.some((depId) => activeValues.includes(String(depId)));
+            }
+
+            this.availabilities[fieldKey] = isFieldVisible;
+
+            if (!isFieldVisible) {
+                this.allowedOptions[fieldKey] = [];
+                if (resetHiddenValues && this.packageValues[fieldKey] !== undefined) {
+                    delete this.packageValues[fieldKey];
+                }
                 return;
             }
 
-            let isAvailable = true;
+            let validOptionIds = [];
 
-            if (config.dependence && Array.isArray(config.dependence)) {
-                const dependencyMet = config.dependence.some((depId) => activeValues.includes(depId));
+            if (config.options && Array.isArray(config.options)) {
+                config.options.forEach((option) => {
+                    const optionId = 'string' === typeof option ? option : (option.id ?? option.titre);
+                    const optionDeps = 'object' === typeof option && option.dependence ? option.dependence : null;
 
-                if (!dependencyMet) {
-                    isAvailable = false;
-                }
-            }
+                    let isOptionVisible = true;
 
-            const container = document.querySelector(`[data-field-group="${fieldKey}"]`);
+                    if (optionDeps && Array.isArray(optionDeps) && 0 < optionDeps.length) {
+                        isOptionVisible = optionDeps.some((depId) => activeValues.includes(String(depId)));
+                    }
 
-            if (container) {
-                container.style.display = isAvailable ? '' : 'none';
-
-                container.querySelectorAll('input, select, textarea').forEach((input) => {
-                    input.disabled = !isAvailable;
-                });
-            }
-
-            if (!isAvailable && uncheckInputs) {
-                if (this.packageValues[fieldKey] !== undefined) {
-                    delete this.packageValues[fieldKey];
-                }
-
-                const inputsToReset = document.querySelectorAll(`[data-field-name="${fieldKey}"]`);
-
-                inputsToReset.forEach((input) => {
-                    if ('checkbox' === input.type || 'radio' === input.type) {
-                        input.checked = false;
-                    } else {
-                        input.value = '';
+                    if (isOptionVisible) {
+                        validOptionIds.push(String(optionId));
                     }
                 });
+            } else {
+                validOptionIds = ['__ALL__'];
+            }
+
+            this.allowedOptions[fieldKey] = validOptionIds;
+
+            if (0 === validOptionIds.length) {
+                this.availabilities[fieldKey] = false;
+            }
+
+            if (resetHiddenValues && this.packageValues[fieldKey]) {
+                const currentValue = this.packageValues[fieldKey];
+
+                if (Array.isArray(currentValue)) {
+                    const newValue = currentValue.filter((val) => validOptionIds.includes(String(val)));
+                    if (newValue.length !== currentValue.length) {
+                        this.packageValues[fieldKey] = newValue;
+                    }
+                } else if (!validOptionIds.includes(String(currentValue)) && '__ALL__' !== validOptionIds[0]) {
+                    delete this.packageValues[fieldKey];
+                }
             }
         });
     },

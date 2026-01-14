@@ -56,7 +56,7 @@ class InscriptionController extends AbstractController
             $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
         }
 
-        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event);
+        $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->packageConfig);
 
         if ($user) {
             if ($existingInscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($user, $event)) {
