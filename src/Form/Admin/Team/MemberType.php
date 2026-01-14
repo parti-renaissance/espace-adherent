@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Admin\Team;
 
 use App\Entity\Team\Member;
+use App\Form\Admin\AdherentAutocompleteType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +16,7 @@ class MemberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('adherent', MemberAdherentAutocompleteType::class, [
+            ->add('adherent', AdherentAutocompleteType::class, [
                 'model_manager' => $options['model_manager'],
             ])
         ;
@@ -27,7 +28,8 @@ class MemberType extends AbstractType
             ->setDefaults([
                 'data_class' => Member::class,
             ])
-            ->setDefined('model_manager')
+            ->setDefined(['model_manager'])
+            ->setRequired(['model_manager'])
             ->setAllowedTypes('model_manager', ModelManagerInterface::class)
         ;
     }

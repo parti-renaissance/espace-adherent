@@ -19,6 +19,7 @@ use App\Entity\Administrator;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
 use App\Form\Admin\Adherent\UnregistrationType;
 use App\Form\Admin\Adherent\VerifyEmailType;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
 use App\History\Command\MergeAdherentActionHistoryCommand;
@@ -27,10 +28,12 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -395,17 +398,9 @@ class AdminAdherentCRUDController extends CRUDController
         }
 
         $form = $this->createFormBuilder(null, ['validation_groups' => ['Admin:merge']])
-            ->add('adherent', ModelAutocompleteType::class, [
-                'class' => Adherent::class,
-                'property' => ['search'],
-                'model_manager' => $this->admin->getModelManager(),
+            ->add('adherent', AdherentAutocompleteType::class, [
                 'label' => 'Adhérent cible',
-                'minimum_input_length' => 1,
-                'items_per_page' => 10,
-                'req_params' => [
-                    '_sonata_admin' => 'app.admin.agora_membership',
-                ],
-                'safe_label' => true,
+                'model_manager' => $this->admin->getModelManager(),
                 'constraints' => [
                     new NotBlank(groups: ['Admin:merge']),
                     new Callback(function ($object, ExecutionContextInterface $context) use ($adherentSource) {
@@ -511,6 +506,62 @@ class AdminAdherentCRUDController extends CRUDController
             'adherent_source_id' => $id,
             'adherent_target' => $this->admin->getObject((int) $request->query->get('target_id')),
             'history' => $history,
+        ]);
+    }
+
+    public function autocompleteSearchAction(Request $request): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_APP_ADMIN_ADHERENT_SEARCH');
+
+        $searchText = $request->get('q', '');
+        if (!\is_string($searchText) || mb_strlen($searchText, 'UTF-8') < 1) {
+            return new JsonResponse(['status' => 'KO', 'message' => 'Too short search string.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $datagrid = $this->admin->getDatagrid();
+
+        if ($datagrid->hasFilter('search')) {
+            $datagrid->setValue('search', null, $searchText);
+        } else {
+            throw new BadRequestHttpException('Le filtre "search" n\'est pas configuré dans AdherentAdmin.');
+        }
+
+        $itemsPerPage = (int) $request->get('_per_page', 10);
+        $page = (int) $request->get('_page', 1);
+
+        $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);
+        $datagrid->setValue(DatagridInterface::PAGE, null, $page);
+
+        $datagrid->buildPager();
+        $pager = $datagrid->getPager();
+
+        $items = [];
+        $results = $pager->getCurrentPageResults();
+
+        foreach ($results as $adherent) {
+            $label = \sprintf(
+                '%s (%s) [%s]',
+                $adherent->getFullName(),
+                $adherent->getEmailAddress(),
+                $adherent->getPublicId()
+            );
+
+            if ($adherent->isRenaissanceAdherent()) {
+                $label .= ' <span class="label label-primary" style="margin-left: 4px; background-color: #00205F; color: white; padding: 2px 5px;">Adhérent</span>';
+            } else {
+                $label .= ' <span class="label label-info" style="margin-left: 4px; background-color: #73C0F1; color: white; padding: 2px 5px;">Sympathisant</span>';
+            }
+
+            $items[] = [
+                'id' => $adherent->getId(),
+                'label' => $label,
+            ];
+        }
+
+        return new JsonResponse([
+            'status' => 'OK',
+            'more' => \count($items) > 0 && !$pager->isLastPage(),
+            'items' => $items,
         ]);
     }
 

@@ -27,6 +27,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AdherentAdmin extends AbstractAdherentAdmin
 {
+    public const ADHERENT_AUTOCOMPLETE_ROUTE = 'admin_app_adherent_autocompleteSearch';
+
     protected function getAccessMapping(): array
     {
         return [
@@ -47,6 +49,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
         parent::configureRoutes($collection);
 
         $collection
+            ->add('autocompleteSearch', 'autocomplete-search')
             ->add('ban', $this->getRouterIdParameter().'/ban')
             ->add('terminate_membership', $this->getRouterIdParameter().'/terminate-membership')
             ->add('certify', $this->getRouterIdParameter().'/certify')

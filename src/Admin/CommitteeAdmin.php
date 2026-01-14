@@ -14,7 +14,7 @@ use App\Committee\Event\EditCommitteeEvent;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Form\Admin\RenaissanceAdherentAutocompleteType;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\History\AdministratorActionEvents;
 use App\History\AdministratorCommitteeActionEvent;
 use App\Query\Utils\MultiColumnsSearchHelper;
@@ -225,13 +225,9 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                     ])
                 ->end()
                 ->with('Responsable comité local', ['class' => 'col-md-5'])
-                    ->add('animator', RenaissanceAdherentAutocompleteType::class, [
+                    ->add('animator', AdherentAutocompleteType::class, [
                         'label' => false,
                         'required' => false,
-                        'req_params' => [
-                            'field' => 'animator',
-                            '_sonata_admin' => 'app.admin.committee',
-                        ],
                     ])
                 ->end()
             ->end()

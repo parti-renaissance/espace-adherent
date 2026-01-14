@@ -12,6 +12,7 @@ security:
         ## ALL
         ROLE_ADMIN_DASHBOARD:
             - ROLE_APP_ADMIN_GEO_ZONE_LIST
+            - ROLE_APP_ADMIN_ADHERENT_SEARCH
 
         ## Renaissance
         ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS:

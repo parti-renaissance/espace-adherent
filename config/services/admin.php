@@ -165,10 +165,6 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Team\Team::class, 'label' => 'Équipes', 'group' => 'Territoires'])
     ;
     $services
-        ->set('app.admin.team.member', App\Admin\Team\MemberAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Team\Member::class, 'show_in_dashboard' => false])
-    ;
-    $services
         ->set('app.admin.reporting.team_member_history', App\Admin\Reporting\TeamMemberHistoryAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Reporting\TeamMemberHistory::class, 'label' => 'Historique des équipes', 'group' => 'Territoires'])
     ;

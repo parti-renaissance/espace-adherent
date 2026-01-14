@@ -6,12 +6,13 @@ namespace App\Admin\Phoning;
 
 use App\Admin\AbstractAdmin;
 use App\Admin\Audience\AudienceAdmin;
+use App\Entity\Adherent;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\SimpleMDEContent;
-use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityRepository;
@@ -143,8 +144,9 @@ class CampaignAdmin extends AbstractAdmin
             ->add('team.members.adherent', ModelFilter::class, [
                 'label' => 'Appelant',
                 'show_filter' => true,
-                'field_type' => MemberAdherentAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
                 ],
             ])
