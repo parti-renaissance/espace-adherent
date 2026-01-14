@@ -40,6 +40,9 @@ updates:
           tiptap:
               patterns:
                   - '@tiptap/*'
+          babel:
+              patterns:
+                  - '@babel/*'
 
     - package-ecosystem: 'github-actions'
       directory: '/'
