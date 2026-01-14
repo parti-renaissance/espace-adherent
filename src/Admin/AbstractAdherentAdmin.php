@@ -528,7 +528,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
             ->add('search', CallbackFilter::class, [
                 'label' => 'Recherche',
                 'show_filter' => true,
-                'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
                         return false;

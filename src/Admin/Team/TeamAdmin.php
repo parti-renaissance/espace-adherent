@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Team;
 
+use App\Entity\Adherent;
 use App\Entity\Team\Team;
-use App\Form\Admin\Team\MemberAdherentAutocompleteType;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
 use App\Team\TeamMemberHistoryManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -66,8 +67,10 @@ class TeamAdmin extends AbstractAdmin
             ->add('members.adherent', ModelFilter::class, [
                 'label' => 'Adhérent',
                 'show_filter' => true,
-                'field_type' => MemberAdherentAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
+                'class' => Adherent::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
                 ],
             ])
