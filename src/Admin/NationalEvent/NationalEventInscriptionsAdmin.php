@@ -439,7 +439,6 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             $adherent = $inscription->adherent;
 
             $code = substr($inscription->postalCode, 0, 2);
-
             $zone = $departments[$code] ?? null;
 
             return [
@@ -447,12 +446,29 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Département' => $zone['name'] ?? null,
                 'Événement national' => $nationalEvent->getName(),
                 'Événement national UUID' => $nationalEvent->getUuid()->toString(),
+                'Statut' => $translator->trans($inscription->status),
+                'Statut paiement' => $inscription->paymentStatus->trans($translator),
+                'Montant' => $inscription->amount > 0 ? $inscription->amount / 100 : null,
                 'Participant UUID' => $inscription->getUuid()->toString(),
-                'Email' => $inscription->addressEmail,
                 'PublicId' => $inscription->getPublicId(),
                 'Civilité' => $inscription->gender ? $translator->trans(array_search($inscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
                 'Prénom' => $inscription->firstName,
                 'Nom' => $inscription->lastName,
+                'Email' => $inscription->addressEmail,
+                'Téléphone' => PhoneNumberUtils::format($inscription->phone),
+                'Code postal' => $inscription->postalCode,
+                'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
+                'Lieu de naissance' => $inscription->birthPlace,
+                'Contact urgence nom' => $inscription->emergencyContactName,
+                'Contact urgence téléphone' => PhoneNumberUtils::format($inscription->emergencyContactPhone),
+                'Est JEM' => $inscription->isJAM ? 'Oui' : 'Non',
+                'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
+                'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',
+                'Numéro du partenaire' => $inscription->roommateIdentifier,
+                'Réduction' => true === $inscription->withDiscount ? 'Oui' : 'Non',
+                'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
+                'Handicap' => $inscription->accessibility,
+                'Enfants' => $inscription->children,
                 'Labels Adhérent' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ADHERENT) || str_starts_with($tag, TagEnum::SYMPATHISANT)))),
                 'Labels Élu' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => str_starts_with($tag, TagEnum::ELU)))),
                 'Labels Divers' => implode(', ', array_map([$this->tagTranslator, 'trans'], array_filter($adherent?->tags ?? [], fn (string $tag) => !str_starts_with($tag, TagEnum::ADHERENT) && !str_starts_with($tag, TagEnum::SYMPATHISANT) && !str_starts_with($tag, TagEnum::ELU)))),
@@ -485,60 +501,31 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
                     return $str;
                 }, $adherent?->getElectedRepresentativeMandates() ?? [])),
-                'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
-                'Lieu de naissance' => $inscription->birthPlace,
-                'Téléphone' => PhoneNumberUtils::format($inscription->phone),
-                'Contact urgence nom' => $inscription->emergencyContactName,
-                'Contact urgence téléphone' => PhoneNumberUtils::format($inscription->emergencyContactPhone),
+                'UTM source' => $inscription->utmSource,
+                'UTM campagne' => $inscription->utmCampaign,
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
                 'Date de confirmation' => $inscription->confirmedAt?->format('d/m/Y H:i:s'),
-                'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
+                'Billet scanné le' => $inscription->firstTicketScannedAt?->format('d/m/Y H:i:s'),
                 'Billet champ libre / Porte' => $inscription->ticketCustomDetail,
                 'Label bracelet' => $inscription->ticketBracelet,
                 'Couleur bracelet' => $inscription->ticketBraceletColor,
-                'Billet scanné le' => $inscription->firstTicketScannedAt?->format('d/m/Y H:i:s'),
-                'Code postal' => $inscription->postalCode,
-                'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
-                'Besoin d\'un transport organisé' => $inscription->transportNeeds ? 'Oui' : 'Non',
-                'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
-                'Handicap' => $inscription->accessibility,
-                'Enfants' => $inscription->children,
-                'Est JEM' => $inscription->isJAM ? 'Oui' : 'Non',
-                'Choix de forfait' => (static function (EventInscription $inscription) {
-                    $lines = [];
-                    $configs = $inscription->event->packageConfig;
-
-                    foreach ($inscription->packageValues ?? [] as $key => $userValue) {
-                        $optionLabel = $userValue;
-
-                        foreach ($configs as $config) {
-                            if ($config['cle'] === $key) {
-                                if (isset($config['options']) && \is_array($config['options'])) {
-                                    foreach ($config['options'] as $option) {
-                                        $optId = \is_string($option) ? $option : ($option['id'] ?? $option['titre']);
-
-                                        if ((string) $optId === (string) $userValue) {
-                                            $optionLabel = \is_string($option) ? $option : ($option['titre'] ?? $userValue);
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
-
-                        $lines[] = $optionLabel;
-                    }
-
-                    return implode(',', $lines);
-                })($inscription),
                 'Transport info' => $inscription->transportDetail,
                 'Hébergement info' => $inscription->accommodationDetail,
-                'Numéro du partenaire' => $inscription->roommateIdentifier,
-                'Bénéficie de la réduction' => true === $inscription->withDiscount ? 'Oui' : 'Non',
-                'UTM source' => $inscription->utmSource,
-                'UTM campagne' => $inscription->utmCampaign,
+                'Forfaits' => (static function (EventInscription $inscription) {
+                    $values = [];
+
+                    if (empty($inscription->packageValues)) {
+                        return null;
+                    }
+
+                    foreach ($inscription->event->packageConfig ?? [] as $config) {
+                        $key = $config['cle'];
+                        $values[$key] = $inscription->packageValues[$key] ?? null;
+                    }
+
+                    return implode(';', $values);
+                })($inscription),
             ];
         }];
     }
