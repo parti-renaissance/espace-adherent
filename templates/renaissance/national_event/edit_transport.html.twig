@@ -33,17 +33,7 @@
                 {% set packageConfig = event.packageConfig %}
 
                 {% for child in form.packageValues %}
-                    {% set configKey = child.vars.name %}
-
-                    {% set currentConfig = packageConfig|filter(item => item.cle == configKey)|first %}
-                    {% set defaultVisibility = (currentConfig.dependence is defined and currentConfig.dependence is not empty) ? 'false' : 'true' %}
-
-                    <twig:Atoms:ReCard
-                        class="!rounded-2xl !gap-6"
-                        data-field-group="{{ configKey }}"
-                        x-show="availabilities.{{ configKey }} ?? {{ defaultVisibility }}"
-                        x-cloak
-                    >
+                    <twig:Atoms:ReCard class="!rounded-2xl !gap-6" x-show="availabilities['{{ child.vars.name }}']" x-cloak>
                         {{ form_row(child) }}
                     </twig:Atoms:ReCard>
                 {% endfor %}

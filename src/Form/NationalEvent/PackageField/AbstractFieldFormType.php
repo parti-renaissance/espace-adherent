@@ -108,7 +108,8 @@ abstract class AbstractFieldFormType extends AbstractType
             'label_attr_class' => 'grow shrink basis-0 text-gray-700',
             'widget_side' => 'right',
             'data-field-name' => $fieldId,
-            'x-show' => '!availabilities.'.$fieldId.' || availabilities.'.$fieldId.'.some(i => { return (i.id ?? i.titre) === \''.$key.'\'})',
+            'x-show' => "allowedOptions['$fieldId'] && allowedOptions['$fieldId'].includes('$key')",
+            'x-bind:disabled' => "!allowedOptions['$fieldId'] || !allowedOptions['$fieldId'].includes('$key')",
             'x-model' => 'packageValues[\''.$fieldId.'\']',
         ];
     }

@@ -32,14 +32,19 @@ class NationalEventPackageValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, InscriptionRequest::class);
         }
 
-        $excludeInscriptionId = null;
+        $excludeInscriptionId = $configs = $eventId = null;
+
         if ($value instanceof EventInscription) {
             $excludeInscriptionId = $value->getId();
+            $configs = $value->event->packageConfig;
+            $eventId = $value->event->getId();
+        } else {
+            $excludeInscriptionId = $value->inscriptionId;
+            $configs = $value->packageConfig;
+            $eventId = $value->eventId;
         }
 
-        $event = $value->event;
-
-        if (!$configs = $event->packageConfig) {
+        if (!$configs) {
             return;
         }
 
@@ -65,7 +70,7 @@ class NationalEventPackageValidator extends ConstraintValidator
         $existingReservations = [];
         if (!empty($keysToCheck)) {
             $existingReservations = $this->inscriptionRepository->countPackageValues(
-                $event->getId(),
+                $eventId,
                 $keysToCheck,
                 $excludeInscriptionId
             );

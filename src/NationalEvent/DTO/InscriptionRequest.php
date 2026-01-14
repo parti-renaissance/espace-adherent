@@ -6,7 +6,6 @@ namespace App\NationalEvent\DTO;
 
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
-use App\Entity\NationalEvent\NationalEvent;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\NationalEventPackage;
@@ -123,7 +122,8 @@ class InscriptionRequest implements RecaptchaChallengeInterface
         public readonly int $eventId,
         public readonly string $sessionId,
         public readonly string $clientIp,
-        public readonly NationalEvent $event,
+        public readonly ?array $packageConfig = null,
+        public readonly ?int $inscriptionId = null,
     ) {
     }
 
@@ -133,7 +133,8 @@ class InscriptionRequest implements RecaptchaChallengeInterface
             $inscription->event->getId(),
             $inscription->sessionId ?? '',
             $inscription->clientIp ?? '',
-            $inscription->event,
+            $inscription->event->packageConfig,
+            $inscription->getId(),
         );
         $request->email = $inscription->addressEmail;
         $request->civility = $inscription->gender;
