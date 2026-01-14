@@ -21,14 +21,14 @@ class RedirectAppController extends AbstractController
     {
         $currentApp = $appUrlManager->getAppCodeFromRequest($request);
         $urlGenerator = $appUrlManager->getUrlGenerator($currentApp ?? '');
-        $client = null;
 
-        if ($clientCode) {
-            $client = $clientRepository->findOneBy(['code' => $clientCode]);
-        }
+        $client = ($clientCode ? $clientRepository->findOneBy(['code' => $clientCode]) : null) ?? $clientRepository->getVoxClient();
 
-        if (!$client) {
-            $client = $clientRepository->getVoxClient();
+        if ($client->isCadreClient() && str_contains($state = $request->query->get('state', ''), 'cartographie-electorale')) {
+            $stateParams = [];
+            parse_str(parse_url(urldecode($state), \PHP_URL_QUERY), $stateParams);
+
+            return $this->redirectToRoute('eaggle_app_redirect', ['scope' => $stateParams['scope']]);
         }
 
         $isAdmin = $this->isGranted('IS_IMPERSONATOR');

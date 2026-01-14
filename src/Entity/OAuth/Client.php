@@ -234,4 +234,9 @@ class Client implements \Stringable, EntitySoftDeletedInterface
     {
         $this->code = $code;
     }
+
+    public function isCadreClient(): bool
+    {
+        return AppCodeEnum::JEMENGAGE_WEB === $this->code;
+    }
 }
