@@ -19,10 +19,18 @@ class PackageValuesFormType extends AbstractType
     {
         $packageConfig = $options['package_config'] ?? [];
         $reservedPlaces = $options['reserved_places'] ?? [];
+        $currentValues = $options['current_values'] ?? [];
 
         foreach ($packageConfig as $fieldConfig) {
             $fieldType = $fieldConfig['type'] ?? null;
             $fieldId = $fieldConfig['cle'];
+
+            $optionToPropagate = [
+                'required' => false,
+                'reserved_places' => $reservedPlaces[$fieldId] ?? [],
+                'current_value' => $currentValue = $currentValues[$fieldId] ?? null,
+                'from_admin' => $options['from_admin'] ?? false,
+            ];
 
             /** @var AbstractFieldFormType|string $fieldTypeClass */
             $fieldTypeClass = match ($fieldType) {
@@ -32,16 +40,21 @@ class PackageValuesFormType extends AbstractType
                 default => RadioFieldFormType::class,
             };
 
-            $builder->add($fieldId, $fieldTypeClass, $fieldTypeClass::getFieldOptions($fieldConfig, $reservedPlaces));
+            $builder->add($fieldId, $fieldTypeClass, array_merge($optionToPropagate, $fieldTypeClass::getFieldOptions($fieldConfig, $reservedPlaces, $currentValue)));
         }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined(['package_config', 'reserved_places'])
+            ->setDefaults([
+                'current_values' => [],
+            ])
+            ->setDefined(['package_config', 'reserved_places', 'from_admin', 'current_values'])
             ->addAllowedTypes('package_config', 'array')
+            ->addAllowedTypes('current_values', 'array')
             ->addAllowedTypes('reserved_places', 'array')
+            ->addAllowedTypes('from_admin', 'bool')
         ;
     }
 }

@@ -293,7 +293,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         ;
     }
 
-    public function countPackageValues(int $eventId, array $targetKeys = []): array
+    public function countPackageValues(int $eventId, array $targetKeys = [], ?int $excludeInscriptionId = null): array
     {
         $sql = <<<SQL
                 SELECT
@@ -314,6 +314,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                         JSON_TABLE(JSON_KEYS(ei.package_values), "$[*]" COLUMNS (dynamic_key VARCHAR(255) PATH "$")) as jt
                         WHERE ei.event_id = :eventId
                           AND ei.status IN (:inscriptionStatuses)
+                          AND (:filterExclude = 0 OR ei.id != :excludeId)
 
                         UNION ALL
 
@@ -327,6 +328,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                         WHERE p.status = :paymentStatus
                           AND ei.event_id = :eventId
                           AND ei.status IN (:inscriptionStatuses)
+                          AND (:filterExclude = 0 OR ei.id != :excludeId)
                     ) as combined
                 ) as deduplicated
                 WHERE (:filterKeys = 0 OR deduplicated.json_key IN (:targetKeys))
@@ -346,6 +348,8 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             'paymentStatus' => PaymentStatusEnum::PENDING->value,
             'targetKeys' => $targetKeys,
             'filterKeys' => \count($targetKeys) > 0 ? 1 : 0,
+            'excludeId' => $excludeInscriptionId,
+            'filterExclude' => null !== $excludeInscriptionId ? 1 : 0,
         ];
 
         $types = [
@@ -354,6 +358,8 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             'paymentStatus' => \PDO::PARAM_STR,
             'targetKeys' => ArrayParameterType::STRING,
             'filterKeys' => \PDO::PARAM_INT,
+            'excludeId' => \PDO::PARAM_INT,
+            'filterExclude' => \PDO::PARAM_INT,
         ];
 
         $connection = $this->getEntityManager()->getConnection();

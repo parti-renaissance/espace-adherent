@@ -63,7 +63,7 @@ class UserDataFormType extends AbstractType
         if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT], true)) {
             $builder
                 ->add('volunteer', CheckboxType::class, ['required' => false])
-                ->add('isJAM', CheckboxType::class, ['required' => false])
+                ->add('isJAM', CheckboxType::class, ['required' => false, 'label' => 'Je suis membre des Jeunes en marche'])
             ;
         }
 

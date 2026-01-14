@@ -35,6 +35,7 @@ use App\NationalEvent\PaymentStatusEnum;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use App\Validator\NationalEventPackage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -76,6 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 50,
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'rentree')"
 )]
+#[NationalEventPackage(groups: ['Admin'])]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Table('national_event_inscription')]
 class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface
@@ -740,5 +742,15 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         }
 
         $this->lastTicketScannedAt = $scan->getCreatedAt();
+    }
+
+    public function getPackageValues(): array
+    {
+        return $this->packageValues;
+    }
+
+    public function setPackageValues(array $values): void
+    {
+        $this->packageValues = array_filter($values, static fn ($v) => null !== $v && '' !== $v);
     }
 }

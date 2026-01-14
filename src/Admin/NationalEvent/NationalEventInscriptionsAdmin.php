@@ -15,12 +15,13 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
-use App\Entity\NationalEvent\NationalEvent;
 use App\Form\ColorType;
 use App\Form\GenderCivilityType;
+use App\Form\NationalEvent\PackageValuesFormType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
+use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
@@ -63,6 +64,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
     public function __construct(
         private readonly ZoneRepository $zoneRepository,
         private readonly TagTranslator $tagTranslator,
+        private readonly EventInscriptionManager $eventInscriptionManager,
         private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
@@ -329,16 +331,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
     protected function configureFormFields(FormMapper $form): void
     {
-        /** @var NationalEvent[] $packageEvents */
-        $packageEvents = $this->getModelManager()->createQuery(NationalEvent::class, 'e')
-            ->select('e')
-            ->where('e.packageConfig IS NOT NULL')
-            ->getQuery()
-            ->getResult()
-        ;
-
-        /** @var NationalEvent|null $currentEvent */
-        $currentEvent = $this->getSubject()?->event;
+        /** @var EventInscription $inscription */
+        $inscription = $this->getSubject();
+        $currentPackageValues = $inscription->packageValues;
+        $currentEvent = $inscription->event;
 
         $form
             ->tab('Inscription ❤️')
@@ -349,7 +345,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('postalCode', null, ['label' => 'Code postal'])
                     ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
                     ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
-                    ->add('isJAM', null, ['label' => 'Jeunes avec Macron', 'required' => false])
+                    ->add('isJAM', null, ['label' => 'Jeunes en marche', 'required' => false])
                     ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
                     ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
                     ->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false])
@@ -384,112 +380,25 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 ->end()
             ->end()
             ->tab('Forfait ✅')
-                ->with('', ['class' => 'col-md-6', 'description' => '⚠️ Attention, si vous modifiez le forfait en tant qu\'admin, le prix ne changera pas automatiquement et le statut ne changera pas non plus. Pour obliger une personne à repayer, il faut la passer "En attente de paiement"'])
+                ->with('Forfait', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-warning', 'description' => '⚠️ Attention, si vous modifiez le forfait en tant qu\'admin, le prix ne changera pas automatiquement et le statut ne changera pas non plus. Pour obliger une personne à repayer, il faut la passer "En attente de paiement"'])
+                    ->add('packageValues', PackageValuesFormType::class, [
+                        'label' => false,
+                        'package_config' => $currentEvent?->packageConfig,
+                        'current_values' => $currentPackageValues ?? [],
+                        'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($currentEvent),
+                        'from_admin' => true,
+                    ])
+                ->end()
+                ->with('Statut', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-info'])
                     ->add('paymentStatus', ChoiceType::class, [
                         'label' => 'Statut du paiement',
                         'choices' => PaymentStatusEnum::all(),
                         'choice_label' => fn (PaymentStatusEnum $status) => $status,
                         'required' => false,
                     ])
-                    ->add('packagePlan', ChoiceType::class, [
-                        'label' => 'Forfait',
-                        'required' => $currentEvent && $currentEvent->isJEM(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getPackagePlans()['options'] ?? [] as $config) {
-                                    $choices[$event->getName().' : '.$config['titre']] = $config['id'];
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
-                    ->add('visitDay', ChoiceType::class, [
-                        'label' => 'Jour de visite',
-                        'required' => $currentEvent && $currentEvent->isCampus(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getVisitDays()['options'] ?? [] as $config) {
-                                    $choices[$event->getName().' : '.$config['titre']] = $config['id'];
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
-                    ->add('transport', ChoiceType::class, [
-                        'label' => 'Choix de transport',
-                        'required' => $currentEvent && $currentEvent->isPackageEventType(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getTransports()['options'] ?? [] as $config) {
-                                    $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
-                    ->add('accommodation', ChoiceType::class, [
-                        'label' => 'Choix d\'hébergement',
-                        'required' => $currentEvent && $currentEvent->isCampus(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getAccommodations()['options'] ?? [] as $config) {
-                                    $choices[$event->getName().' : '.$config['titre'].' ('.(!empty($config['montant']) ? $config['montant'].' €' : 'gratuit').')'] = $config['id'];
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
-                    ->add('packageCity', ChoiceType::class, [
-                        'label' => 'Ville de départ',
-                        'required' => $currentEvent && $currentEvent->isJEM(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getPackageCities()['options'] ?? [] as $city) {
-                                    $choices[$event->getName().' : '.$city] = $city;
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
-                    ->add('packageDepartureTime', ChoiceType::class, [
-                        'label' => 'Moment de départ',
-                        'required' => $currentEvent && $currentEvent->isJEM(),
-                        'choice_loader' => new CallbackChoiceLoader(function () use ($packageEvents) {
-                            $choices = [];
-                            foreach ($packageEvents as $event) {
-                                foreach ($event->getPackageDepartureTimes()['options'] ?? [] as $departureTime) {
-                                    $choices[$event->getName().' : '.$departureTime['titre']] = $departureTime['titre'];
-                                }
-                            }
-
-                            ksort($choices);
-
-                            return $choices;
-                        }),
-                    ])
                     ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
                     ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false])
-                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de -50%', 'required' => false])
+                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de la réduction', 'required' => false])
                 ->end()
             ->end()
             ->tab('Billet 🎟️')
@@ -595,12 +504,12 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Souhaite être bénévole' => $inscription->volunteer ? 'Oui' : 'Non',
                 'Handicap' => $inscription->accessibility,
                 'Enfants' => $inscription->children,
-                'JAM' => $inscription->isJAM ? 'Oui' : 'Non',
+                'Est JEM' => $inscription->isJAM ? 'Oui' : 'Non',
                 'Choix de forfait' => (static function (EventInscription $inscription) {
                     $lines = [];
                     $configs = $inscription->event->packageConfig;
 
-                    foreach ($inscription->packageValues as $key => $userValue) {
+                    foreach ($inscription->packageValues ?? [] as $key => $userValue) {
                         $optionLabel = $userValue;
 
                         foreach ($configs as $config) {
@@ -627,7 +536,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Transport info' => $inscription->transportDetail,
                 'Hébergement info' => $inscription->accommodationDetail,
                 'Numéro du partenaire' => $inscription->roommateIdentifier,
-                'Bénéficie de -50%' => true === $inscription->withDiscount ? 'Oui' : 'Non',
+                'Bénéficie de la réduction' => true === $inscription->withDiscount ? 'Oui' : 'Non',
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];

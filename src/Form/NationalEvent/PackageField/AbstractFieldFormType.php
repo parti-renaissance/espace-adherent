@@ -12,12 +12,18 @@ abstract class AbstractFieldFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefined(['reserved_places'])
+            ->setDefaults([
+                'from_admin' => false,
+                'current_value' => null,
+            ])
+            ->setDefined(['reserved_places', 'from_admin', 'current_value'])
             ->addAllowedTypes('reserved_places', 'array')
+            ->addAllowedTypes('current_value', ['string', 'int', 'float', 'bool', 'null'])
+            ->addAllowedTypes('from_admin', 'bool')
         ;
     }
 
-    public static function getFieldOptions(array $fieldConfig, array $reservedPlaces): array
+    public static function getFieldOptions(array $fieldConfig, array $reservedPlaces, ?string $currentValue = null): array
     {
         $fieldId = $fieldConfig['cle'];
         $isSequential = $fieldConfig['sequentiel'] ?? false;
@@ -36,7 +42,7 @@ abstract class AbstractFieldFormType extends AbstractType
 
                 $places = 999;
                 if ($optConfig && isset($optConfig['quota'])) {
-                    $places = self::calculateAvailablePlaces($optConfig, $fieldConfig['options'], $currentFieldReservations);
+                    $places = self::calculateAvailablePlaces($optConfig, $fieldConfig['options'], $currentFieldReservations, $currentValue);
                 }
 
                 if ($places > 0) {
@@ -59,7 +65,6 @@ abstract class AbstractFieldFormType extends AbstractType
         }
 
         return [
-            'reserved_places' => $reservedPlaces,
             'error_bubbling' => false,
             'label' => $fieldConfig['titre'] ?? null,
             'choices' => $visibleChoicesKeys,
@@ -71,7 +76,7 @@ abstract class AbstractFieldFormType extends AbstractType
             'placeholder' => $fieldConfig['placeholder'] ?? null,
             'choice_value' => static fn ($choice) => $choices[$choice]['id'] ?? $choice,
             'choice_label' => static fn ($choice) => $choices[$choice]['titre'] ?? $choice,
-            'choice_attr' => function ($key) use ($fieldConfig, $fieldId, $reservedPlaces): array {
+            'choice_attr' => function ($key) use ($fieldConfig, $fieldId, $reservedPlaces, $currentValue): array {
                 $currentFieldReservations = $reservedPlaces[$fieldId] ?? [];
 
                 $attributes = self::getBaseChoiceAttributes($key, $fieldId);
@@ -86,7 +91,8 @@ abstract class AbstractFieldFormType extends AbstractType
                     $optionConfig,
                     $fieldConfig['options'],
                     $currentFieldReservations,
-                    $attributes
+                    $attributes,
+                    $currentValue
                 );
 
                 return $attributes;
@@ -99,7 +105,7 @@ abstract class AbstractFieldFormType extends AbstractType
         return [
             'class' => 'rounded-lg p-6 border-2 hover:bg-white',
             ':class' => \sprintf('packageValues.'.$fieldId." === '%s' ? 'border-ui_blue-50 bg-white' : 'bg-ui_gray-1 border-ui_gray-1 hover:border-ui_gray-20'", $key),
-            'label_attr' => ['class' => 'grow shrink basis-0 text-gray-700'],
+            'label_attr_class' => 'grow shrink basis-0 text-gray-700',
             'widget_side' => 'right',
             'data-field-name' => $fieldId,
             'x-show' => '!availabilities.'.$fieldId.' || availabilities.'.$fieldId.'.some(i => { return (i.id ?? i.titre) === \''.$key.'\'})',
@@ -119,7 +125,7 @@ abstract class AbstractFieldFormType extends AbstractType
         return null;
     }
 
-    private static function buildDescriptionHtml(array $item, array $allOptions, array $reservations, array &$attributes): string
+    private static function buildDescriptionHtml(array $item, array $allOptions, array $reservations, array &$attributes, ?string $userCurrentValue): string
     {
         $descriptionParts = [$item['description'] ?? null];
 
@@ -128,17 +134,19 @@ abstract class AbstractFieldFormType extends AbstractType
             $quotaHtml = null;
 
             if (\array_key_exists('quota', $item)) {
-                $availablePlaces = self::calculateAvailablePlaces($item, $allOptions, $reservations);
+                $availablePlaces = self::calculateAvailablePlaces($item, $allOptions, $reservations, $userCurrentValue);
                 $quotaHtml = self::formatQuotaDisplay($availablePlaces, $attributes);
             }
 
             $descriptionParts[] = $priceHtml.$quotaHtml;
         }
 
-        return '<div>'.implode('</div><div>', array_filter($descriptionParts)).'</div>';
+        $descriptionParts = array_filter($descriptionParts);
+
+        return $descriptionParts ? '<div>'.implode('</div><div>', $descriptionParts).'</div>' : '';
     }
 
-    private static function calculateAvailablePlaces(array $targetItem, array $allOptions, array $reservations): int
+    private static function calculateAvailablePlaces(array $targetItem, array $allOptions, array $reservations, ?string $userCurrentValue): int
     {
         if (\is_array($targetItem['quota'])) {
             $dependenciesAvailability = [];
@@ -147,8 +155,14 @@ abstract class AbstractFieldFormType extends AbstractType
                 $depConfig = self::findOptionConfig($depId, $allOptions);
 
                 if ($depConfig) {
-                    $depMax = $depConfig['quota'];
+                    $depMax = (int) $depConfig['quota'];
                     $depConsumed = self::getConsumedCount($depId, $allOptions, $reservations);
+
+                    if (self::doesUserConsumeTarget($userCurrentValue, $depId, $allOptions)) {
+                        --$depConsumed;
+                    }
+
+                    $depConsumed = max(0, $depConsumed);
 
                     $dependenciesAvailability[] = $depMax - $depConsumed;
                 }
@@ -157,10 +171,33 @@ abstract class AbstractFieldFormType extends AbstractType
             return empty($dependenciesAvailability) ? 0 : min($dependenciesAvailability);
         }
 
-        $max = $targetItem['quota'];
+        $max = (int) $targetItem['quota'];
         $consumed = self::getConsumedCount($targetItem['id'] ?? $targetItem['titre'], $allOptions, $reservations);
 
-        return $max - $consumed;
+        $targetId = $targetItem['id'] ?? $targetItem['titre'];
+        if (self::doesUserConsumeTarget($userCurrentValue, $targetId, $allOptions)) {
+            --$consumed;
+        }
+
+        return $max - max(0, $consumed);
+    }
+
+    private static function doesUserConsumeTarget(?string $userValue, string $targetId, array $allOptions): bool
+    {
+        if (empty($userValue)) {
+            return false;
+        }
+
+        if ($userValue === $targetId) {
+            return true;
+        }
+
+        $userOptionConfig = self::findOptionConfig($userValue, $allOptions);
+        if ($userOptionConfig && isset($userOptionConfig['quota']) && \is_array($userOptionConfig['quota'])) {
+            return \in_array($targetId, $userOptionConfig['quota'], true);
+        }
+
+        return false;
     }
 
     private static function getConsumedCount(string $targetId, array $allOptions, array $reservations): int
