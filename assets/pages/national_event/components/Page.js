@@ -17,7 +17,7 @@
 const Page = (props) => ({
     packageConfig: props.packageConfig || null,
     initialPayedAmount: props.initialPayedAmount,
-    packageValues: 'object' === typeof props.initialPackageValues ? props.initialPackageValues : {},
+    packageValues: 'object' === typeof props.initialPackageValues ? { ...props.initialPackageValues } : {},
     availabilities: {},
     allowedOptions: {},
     withDiscount: false,
@@ -61,10 +61,6 @@ const Page = (props) => ({
             if (false === this.accessibility && accessibilityInput) {
                 accessibilityInput.value = '';
             }
-        });
-
-        findAll(document, 'input[data-field-name]:checked').forEach((input) => {
-            this.packageValues[input.dataset.fieldName] = input.value;
         });
 
         this.updateAvailabilities('boolean' === typeof props.uncheckInputs ? props.uncheckInputs : true);

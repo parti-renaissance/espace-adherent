@@ -49,6 +49,7 @@ class EditPackageController extends AbstractController
         $form = $this
             ->createForm(PackageFormType::class, $inscriptionRequest, [
                 'event' => $event,
+                'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
                 'validation_groups' => ['Default', 'inscription:package', 'inscription:package:'.$event->type->value],
             ])
             ->handleRequest($request)
