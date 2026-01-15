@@ -447,7 +447,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                 'Événement national' => $nationalEvent->getName(),
                 'Événement national UUID' => $nationalEvent->getUuid()->toString(),
                 'Statut' => $translator->trans($inscription->status),
-                'Statut paiement' => $inscription->paymentStatus->trans($translator),
+                'Statut paiement' => $inscription->paymentStatus?->trans($translator),
                 'Montant' => $inscription->amount > 0 ? $inscription->amount / 100 : null,
                 'Participant UUID' => $inscription->getUuid()->toString(),
                 'PublicId' => $inscription->getPublicId(),
