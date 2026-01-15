@@ -117,6 +117,7 @@ class InscriptionController extends AbstractController
         return $this->render('renaissance/national_event/inscription/layout.html.twig', [
             'form' => $form->createView(),
             'event' => $event,
+            'inscription' => $inscriptionRequest,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'is_open' => $isOpen,
             'base_template' => match ($event->type) {

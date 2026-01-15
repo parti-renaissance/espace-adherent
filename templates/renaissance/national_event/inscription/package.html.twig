@@ -18,7 +18,7 @@
 {% block content_section %}
     {% set packageConfig = event.packageConfig %}
 
-    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({uncheckInputs: {{ form.vars.valid ? 'true' : 'false' }}, packageConfig: {{ packageConfig|json_encode }}, discountLabel: '{{ event.discountLabel|e('js') }}', discountFactor: {{ event.getDiscountFactor() }}})">
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start w-full px-5 pb-20" x-data="xNationalEventPage({initialPackageValues: {{ inscription.packageValues|json_encode }}, uncheckInputs: {{ form.vars.valid ? 'true' : 'false' }}, packageConfig: {{ packageConfig|json_encode }}, discountLabel: '{{ event.discountLabel|e('js') }}', discountFactor: {{ event.getDiscountFactor() }}})">
         <div class="flex flex-col gap-8 max-w-[500px] md:w-[500px]">
             {% if event.intoImage %}
                 <div

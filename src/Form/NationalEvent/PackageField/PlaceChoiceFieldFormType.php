@@ -58,6 +58,7 @@ class PlaceChoiceFieldFormType extends AbstractFieldFormType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Place',
+                    'x-model' => 'packageValues[\''.$builder->getName().'\']',
                 ],
                 'choice_attr' => function ($place) use ($reservedPlaces, $currentValue) {
                     if (\in_array($place, $reservedPlaces, true) && (!$currentValue || $place !== $currentValue)) {

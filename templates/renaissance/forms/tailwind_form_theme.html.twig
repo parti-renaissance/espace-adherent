@@ -287,16 +287,17 @@
                             $watch('selectedRow', (val) => {
                                 if (selected && selected.value === val) return;
                                 if (val) {
-                                    let match = " ~ rowOptionsVar ~ '.find(opt => opt.value === val);
+                                    let match = " ~ rowOptionsVar ~ ".find(opt => opt.value === val);
                                     if (match) {
                                         selected = match;
                                         query = match.label;
+                                        $dispatch('input', match.value);
                                     }
                                 } else {
                                     selected = null;
                                 }
                             });
-                        ',
+                        ",
                     },
                 }) }}
 
@@ -326,12 +327,14 @@
                                 if (selected && !selected.value.startsWith(rowVal)) {
                                     selected = null;
                                     if (typeof query !== 'undefined') query = '';
+                                    $dispatch('input', '');
                                 }
                             });
 
                             $watch('selected', (placeVal) => {
-                                if (placeVal && placeVal.value) {
-                                    let extractedRow = placeVal.value.replace(/[^A-Z]/g, '');
+                                const safeValue = placeVal?.value ?? '';
+                                if (safeValue) {
+                                    let extractedRow = safeValue.replace(/[^A-Z]/g, '');
                                     if (selectedRow !== extractedRow) {
                                         selectedRow = extractedRow;
                                     }
@@ -340,9 +343,10 @@
 
                                     if (reactContainer) {
                                         reactContainer.dispatchEvent(new CustomEvent('update-seat-selection', {
-                                            detail: { value: placeVal.value }
+                                            detail: { value: safeValue }
                                         }));
                                     }
+                                    $dispatch('input', safeValue);
                                 }
                             });
                         ",
