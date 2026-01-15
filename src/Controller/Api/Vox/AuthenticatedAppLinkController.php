@@ -48,7 +48,7 @@ class AuthenticatedAppLinkController extends AbstractController
         }
 
         if ('cadre' === $key && $this->isGranted(Scope::generateRole(Scope::IMPERSONATOR))) {
-            return $this->json($this->getCadreLink());
+            return $this->json($this->getCadreLink($request));
         }
 
         $context = $urlGenerator->getContext();
@@ -86,7 +86,7 @@ class AuthenticatedAppLinkController extends AbstractController
         return [$routeName, $parameters];
     }
 
-    private function getCadreLink(): array
+    private function getCadreLink(Request $request): array
     {
         $client = $this->clientRepository->getCadreClient();
 
@@ -97,6 +97,7 @@ class AuthenticatedAppLinkController extends AbstractController
                 'client_id' => $client->getUuid()->toString(),
                 'redirect_uri' => $client->getRedirectUris()[0],
                 'scope' => implode(' ', $client->getSupportedScopes()),
+                'state' => $request->query->get('state'),
             ], UrlGeneratorInterface::ABSOLUTE_URL),
             'expires_at' => new \DateTimeImmutable()->add(new \DateInterval('PT10M')),
         ];
