@@ -73,7 +73,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
             $adherentUuid,
             $timestamp,
             new \DateTime($lifetime),
-            SHA1::hash($adherentUuid->toString().$timestamp->format('U'))
+            SHA1::hash($adherentUuid->toString().$timestamp->format('U.u'))
         );
     }
 
