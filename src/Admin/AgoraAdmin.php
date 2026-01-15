@@ -10,13 +10,12 @@ use App\Agora\Event\RemoveAgoraMemberEvent;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Agora;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Form\Admin\SimpleMDEContent;
 use App\History\UserActionHistoryHandler;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -101,45 +100,25 @@ class AgoraAdmin extends AbstractAdmin
             ->add('president', ModelFilter::class, [
                 'label' => 'Président',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
+                    'req_params' => [
+                        AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME => 'autocompleteCallbackFilterAgoraPresidents',
                     ],
-                    'callback' => [$this, 'prepareAdherentPresidentCallback'],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
                 ],
             ])
             ->add('generalSecretaries', ModelFilter::class, [
                 'label' => 'Secrétaire général',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
+                    'req_params' => [
+                        AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME => 'autocompleteCallbackFilterAgoraGeneralSecretaries',
                     ],
-                    'callback' => [$this, 'prepareAdherentGeneralSecretaryCallback'],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
                 ],
             ])
             ->add('createdAt', DateRangeFilter::class, [
@@ -182,42 +161,14 @@ class AgoraAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Privilèges 🗝️', ['class' => 'col-md-6'])
-                ->add('president', ModelAutocompleteType::class, [
+                ->add('president', AdherentAutocompleteType::class, [
                     'label' => 'Président',
                     'required' => true,
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
-                    'btn_add' => false,
                 ])
-                ->add('generalSecretaries', ModelAutocompleteType::class, [
+                ->add('generalSecretaries', AdherentAutocompleteType::class, [
                     'label' => 'Secrétaire généraux',
                     'multiple' => true,
                     'required' => false,
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
-                    'btn_add' => false,
                 ])
             ->end()
             ->with('Membres 👥', ['class' => 'col-md-12'])
@@ -354,24 +305,6 @@ class AgoraAdmin extends AbstractAdmin
                 $this->agoraMembershipHandler->add($generalSecretary, $agora);
             }
         }
-    }
-
-    public function prepareAdherentPresidentCallback(AbstractAdmin $admin): void
-    {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $qb->innerJoin("$alias.presidentOfAgoras", 'a');
-    }
-
-    public function prepareAdherentGeneralSecretaryCallback(AbstractAdmin $admin): void
-    {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'a');
     }
 
     private function getAdministrator(): Administrator

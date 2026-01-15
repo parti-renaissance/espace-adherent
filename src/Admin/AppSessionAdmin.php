@@ -8,6 +8,7 @@ use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\Adherent;
 use App\Entity\AppSession;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Repository\AppSessionRepository;
 use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -16,7 +17,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
@@ -51,16 +51,11 @@ class AppSessionAdmin extends AbstractAdmin
             ->add('adherent', ModelFilter::class, [
                 'label' => 'Militant',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
-                'field_options' => ['property' => ['search']],
-                'to_string_callback' => static function (Adherent $adherent): string {
-                    return \sprintf(
-                        '%s (%s) [%s]',
-                        $adherent->getFullName(),
-                        $adherent->getEmailAddress(),
-                        $adherent->getPublicId()
-                    );
-                },
+                'field_type' => AdherentAutocompleteType::class,
+                'field_options' => [
+                    'class' => Adherent::class,
+                    'model_manager' => $this->getModelManager(),
+                ],
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',

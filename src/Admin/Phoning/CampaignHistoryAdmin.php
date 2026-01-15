@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin\Phoning;
 
+use App\Entity\Adherent;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Phoning\CampaignHistoryEngagementEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
@@ -39,25 +40,19 @@ class CampaignHistoryAdmin extends AbstractAdmin
             ->add('adherent', ModelFilter::class, [
                 'label' => 'Appelé',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'property' => [
-                        'firstName',
-                        'lastName',
-                    ],
                 ],
             ])
             ->add('caller', ModelFilter::class, [
                 'label' => 'Appelant',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'property' => [
-                        'firstName',
-                        'lastName',
-                    ],
                 ],
             ])
             ->add('beginAt', DateRangeFilter::class, [

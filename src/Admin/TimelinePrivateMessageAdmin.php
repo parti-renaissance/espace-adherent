@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
-use App\Entity\Adherent;
 use App\Entity\TimelineItemPrivateMessage;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\JeMengage\Push\Command\PrivateMessageNotificationCommand;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -54,29 +53,9 @@ class TimelinePrivateMessageAdmin extends AbstractAdmin
                 ->add('notificationSentAt', null, ['label' => 'Date d\'envoi de la notification', 'widget' => 'single_text', 'disabled' => true])
             ->end()
             ->with('Militants')
-                ->add('adherents', ModelAutocompleteType::class, [
+                ->add('adherents', AdherentAutocompleteType::class, [
                     'label' => false,
-                    'btn_add' => false,
-                    'property' => ['search'],
                     'multiple' => true,
-                    'minimum_input_length' => 1,
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        $label = \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-
-                        if ($adherent->isRenaissanceAdherent()) {
-                            $label .= '<span class="label" style="margin-left: 4px;background-color: #00205F;">Adhérent</span>';
-                        } else {
-                            $label .= '<span class="label" style="margin-left: 4px;background-color: #73C0F1;">Sympathisant</span>';
-                        }
-
-                        return $label;
-                    },
-                    'safe_label' => true,
                 ])
             ->end()
         ;
