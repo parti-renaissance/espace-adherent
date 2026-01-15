@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Adherent;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\History\UserActionHistoryTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -37,20 +38,10 @@ class UserActionHistoryAdmin extends AbstractAdmin
             ->add('adherent', ModelFilter::class, [
                 'label' => 'Adhérent',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getId()
-                        );
-                    },
                 ],
             ])
             ->add('impersonator', ModelFilter::class, [

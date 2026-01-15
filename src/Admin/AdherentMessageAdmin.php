@@ -8,6 +8,7 @@ use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\Geo\Zone;
+use App\Form\Admin\AdherentAutocompleteType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -116,43 +117,19 @@ class AdherentMessageAdmin extends AbstractAdmin implements ZoneableAdminInterfa
             ->add('sender', ModelFilter::class, [
                 'label' => 'Expéditeur',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
                 ],
             ])
             ->add('author', ModelFilter::class, [
                 'label' => 'Auteur',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getPublicId()
-                        );
-                    },
                 ],
             ])
             ->add('createdAt', DateRangeFilter::class, [

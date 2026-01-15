@@ -14,6 +14,7 @@ use App\Adherent\Merge\AdherentMergeManager;
 use App\Adherent\Merge\ProcessTracker;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Adherent\UnregistrationManager;
+use App\Admin\AdherentAdmin;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
@@ -524,6 +525,18 @@ class AdminAdherentCRUDController extends CRUDController
             $datagrid->setValue('search', null, $searchText);
         } else {
             throw new BadRequestHttpException('Le filtre "search" n\'est pas configuré dans AdherentAdmin.');
+        }
+
+        if ($filterMethod = $request->get(AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME)) {
+            if (!str_starts_with($filterMethod, 'autocompleteCallback')) {
+                throw new BadRequestHttpException('Invalid filter method name.');
+            }
+
+            if (!method_exists($this->admin, $filterMethod)) {
+                throw new BadRequestHttpException(\sprintf('Method "%s" not found in %s', $filterMethod, \get_class($this->admin)));
+            }
+
+            $this->admin->{$filterMethod}($datagrid->getQuery());
         }
 
         $itemsPerPage = (int) $request->get('_per_page', 10);

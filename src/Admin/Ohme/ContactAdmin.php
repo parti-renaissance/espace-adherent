@@ -6,6 +6,7 @@ namespace App\Admin\Ohme;
 
 use App\Entity\Adherent;
 use App\Entity\Ohme\Contact;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Ohme\ContactHandler;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -14,7 +15,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -41,23 +41,9 @@ class ContactAdmin extends AbstractAdmin
     {
         $form
             ->with('Metadonnées 🧱', ['class' => 'col-md-6'])
-                ->add('adherent', ModelAutocompleteType::class, [
+                ->add('adherent', AdherentAutocompleteType::class, [
                     'label' => 'Adhérent',
                     'required' => false,
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getId()
-                        );
-                    },
-                    'btn_add' => false,
                 ])
             ->end()
         ;

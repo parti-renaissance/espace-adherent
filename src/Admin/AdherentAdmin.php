@@ -15,6 +15,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -28,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class AdherentAdmin extends AbstractAdherentAdmin
 {
     public const ADHERENT_AUTOCOMPLETE_ROUTE = 'admin_app_adherent_autocompleteSearch';
+    public const ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME = '_filter_method';
 
     protected function getAccessMapping(): array
     {
@@ -292,5 +294,21 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'lastMembershipDonation',
             'lastLoggedAt',
         ]);
+    }
+
+    public function autocompleteCallbackFilterAgoraGeneralSecretaries(ProxyQueryInterface $query): void
+    {
+        $qb = $query->getQueryBuilder();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->innerJoin("$alias.generalSecretaryOfAgoras", 'gs_agora');
+    }
+
+    public function autocompleteCallbackFilterAgoraPresidents(ProxyQueryInterface $query): void
+    {
+        $qb = $query->getQueryBuilder();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->innerJoin("$alias.presidentOfAgoras", 'p_agora');
     }
 }

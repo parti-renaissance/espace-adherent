@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Form\Admin\AdherentAutocompleteType;
 use App\Form\Admin\SimpleMDEContent;
 use App\GeneralConvention\MeetingTypeEnum;
 use App\GeneralConvention\OrganizerEnum;
@@ -69,20 +70,10 @@ class GeneralConventionAdmin extends AbstractAdmin
             ->add('reporter', ModelFilter::class, [
                 'label' => 'Auteur',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdherentAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'model_manager' => $this->getModelManager(),
-                    'property' => [
-                        'search',
-                    ],
-                    'to_string_callback' => static function (Adherent $adherent): string {
-                        return \sprintf(
-                            '%s (%s) [%s]',
-                            $adherent->getFullName(),
-                            $adherent->getEmailAddress(),
-                            $adherent->getId()
-                        );
-                    },
                 ],
             ])
             ->add('reportedAt', DateRangeFilter::class, [
@@ -145,23 +136,9 @@ class GeneralConventionAdmin extends AbstractAdmin
                     return 'general_convention.organizer.'.$organizer->value;
                 },
             ])
-            ->add('reporter', ModelAutocompleteType::class, [
+            ->add('reporter', AdherentAutocompleteType::class, [
                 'label' => 'Auteur de la remontée',
                 'required' => true,
-                'minimum_input_length' => 1,
-                'items_per_page' => 20,
-                'property' => [
-                    'search',
-                ],
-                'to_string_callback' => static function (Adherent $adherent): string {
-                    return \sprintf(
-                        '%s (%s) [%s]',
-                        $adherent->getFullName(),
-                        $adherent->getEmailAddress(),
-                        $adherent->getId()
-                    );
-                },
-                'btn_add' => false,
             ])
             ->add('reportedAt', null, [
                 'label' => 'Date de la remontée',
