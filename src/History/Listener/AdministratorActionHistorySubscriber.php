@@ -94,7 +94,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
     public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
-        $routeName = $request->get('_route');
+        $routeName = $request->attributes->get('_route');
 
         if (!$routeName || !preg_match('/^admin_(.)+_export$/', $routeName)) {
             return;

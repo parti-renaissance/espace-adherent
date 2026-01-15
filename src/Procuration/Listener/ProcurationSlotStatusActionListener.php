@@ -42,7 +42,7 @@ class ProcurationSlotStatusActionListener implements EventSubscriberInterface
             return;
         }
 
-        $object = $request->get('data');
+        $object = $request->attributes->get('data');
 
         if (!$object instanceof AbstractSlot) {
             return;
