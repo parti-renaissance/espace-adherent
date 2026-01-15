@@ -62,6 +62,9 @@ class DelegatedAccessManager
         if ($delegatedAccess = $this->findDelegatedAccess($member)) {
             if ($member->getScopeFeatures()) {
                 $delegatedAccess->setScopeFeatures($this->calculateFeatures($member->getScopeFeatures()));
+                $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()] ?? $member->getRole());
+                $delegatedAccess->roleCode = $member->getRole();
+
                 $this->entityManager->flush();
 
                 $this->userActionHistoryHandler->createDelegatedAccessEdit($delegatedAccess);

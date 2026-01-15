@@ -30,14 +30,14 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
     public function updateDelegatedAccess(ViewEvent $event): void
     {
         $request = $event->getRequest();
-        if (Member::class !== $request->get('_api_resource_class')) {
+        if (Member::class !== $request->attributes->get('_api_resource_class')) {
             return;
         }
 
         // suppression
-        if ('_api_/v3/my_team_members/{uuid}_delete' === $request->get('_api_operation_name')) {
+        if ('_api_/v3/my_team_members/{uuid}_delete' === $request->attributes->get('_api_operation_name')) {
             /** @var Member $member */
-            $member = $event->getRequest()->get('data');
+            $member = $event->getRequest()->attributes->get('data');
             if ($delegatedAccess = $this->delegatedAccessManager->findDelegatedAccess($member)) {
                 $this->delegatedAccessManager->removeDelegatedAccess($delegatedAccess);
             }
@@ -52,17 +52,13 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // creation
-        if ('_api_/v3/my_team_members_post' === $request->get('_api_operation_name')
-            && $member->getScopeFeatures()) {
+        if ('_api_/v3/my_team_members_post' === $request->attributes->get('_api_operation_name') && $member->getScopeFeatures()) {
             $this->delegatedAccessManager->createDelegatedAccessForMember($member);
 
             return;
         }
 
         // modification
-        $this->delegatedAccessManager->updateDelegatedAccessForMember(
-            $member,
-            $request->attributes->get('previous_data')
-        );
+        $this->delegatedAccessManager->updateDelegatedAccessForMember($member, $request->attributes->get('previous_data'));
     }
 }

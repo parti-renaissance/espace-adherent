@@ -199,6 +199,184 @@ Feature:
                 "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
             }
             """
+        When I am logged with "francis.brioul@yahoo.com" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/profile/me/scopes"
+        Then the JSON should be equal to:
+            """
+            [
+                {
+                    "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
+                    "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Responsable communication",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [
+                        {
+                            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+                            "code": "75",
+                            "name": "Paris"
+                        },
+                        {
+                            "code": "77",
+                            "name": "Seine-et-Marne",
+                            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+                        }
+                    ],
+                    "apps": ["data_corner"],
+                    "features": ["dashboard", "events", "mobile_app", "pap", "team", "survey", "referrals"]
+                },
+                {
+                    "code": "delegated_@uuid@",
+                    "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Responsable logistique",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [
+                        {
+                            "code": "77",
+                            "name": "Seine-et-Marne",
+                            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "92",
+                            "name": "Hauts-de-Seine",
+                            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "76",
+                            "name": "Seine-Maritime",
+                            "uuid": "e3efef5d-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "59",
+                            "name": "Nord",
+                            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "13",
+                            "name": "Bouches-du-Rhône",
+                            "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+                        }
+                    ],
+                    "apps": ["data_corner"],
+                    "features": ["dashboard", "events", "mobile_app", "featurebase"]
+                }
+            ]
+            """
+        When I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "PUT" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly" with body:
+            """
+            {
+                "adherent": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                "role": "Test role pérsonnalisé",
+                "scope_features": ["events"]
+            }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "team": {
+                    "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
+                },
+                "adherent": {
+                    "first_name": "Francis",
+                    "last_name": "Brioul",
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4"
+                },
+                "role": "Test role pérsonnalisé",
+                "scope_features": ["events"],
+                "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
+            }
+            """
+        When I am logged with "francis.brioul@yahoo.com" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/profile/me/scopes"
+        Then the JSON should be equal to:
+            """
+            [
+                {
+                    "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
+                    "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Responsable communication",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [
+                        {
+                            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+                            "code": "75",
+                            "name": "Paris"
+                        },
+                        {
+                            "code": "77",
+                            "name": "Seine-et-Marne",
+                            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+                        }
+                    ],
+                    "apps": ["data_corner"],
+                    "features": ["dashboard", "events", "mobile_app", "pap", "team", "survey", "referrals"]
+                },
+                {
+                    "code": "delegated_@uuid@",
+                    "name": "Président d'assemblée départementale délégué",
+                    "role_name": "Test role pérsonnalisé",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [
+                        {
+                            "code": "77",
+                            "name": "Seine-et-Marne",
+                            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "92",
+                            "name": "Hauts-de-Seine",
+                            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "76",
+                            "name": "Seine-Maritime",
+                            "uuid": "e3efef5d-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "59",
+                            "name": "Nord",
+                            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                        },
+                        {
+                            "code": "13",
+                            "name": "Bouches-du-Rhône",
+                            "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+                        }
+                    ],
+                    "apps": ["data_corner"],
+                    "features": ["dashboard", "events", "mobile_app", "featurebase"]
+                }
+            ]
+            """
 
     Scenario: As a referent I can get a member of my team
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"

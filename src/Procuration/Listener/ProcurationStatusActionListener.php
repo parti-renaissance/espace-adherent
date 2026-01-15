@@ -45,7 +45,7 @@ class ProcurationStatusActionListener implements EventSubscriberInterface
             return;
         }
 
-        $object = $request->get('data');
+        $object = $request->attributes->get('data');
 
         if (!$object instanceof AbstractProcuration) {
             return;

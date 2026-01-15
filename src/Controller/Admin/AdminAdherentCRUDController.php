@@ -514,7 +514,7 @@ class AdminAdherentCRUDController extends CRUDController
     {
         $this->denyAccessUnlessGranted('ROLE_APP_ADMIN_ADHERENT_SEARCH');
 
-        $searchText = $request->get('q', '');
+        $searchText = $request->query->get('q', '');
         if (!\is_string($searchText) || mb_strlen($searchText, 'UTF-8') < 1) {
             return new JsonResponse(['status' => 'KO', 'message' => 'Too short search string.'], Response::HTTP_BAD_REQUEST);
         }
@@ -527,7 +527,7 @@ class AdminAdherentCRUDController extends CRUDController
             throw new BadRequestHttpException('Le filtre "search" n\'est pas configuré dans AdherentAdmin.');
         }
 
-        if ($filterMethod = $request->get(AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME)) {
+        if ($filterMethod = $request->query->get(AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME)) {
             if (!str_starts_with($filterMethod, 'autocompleteCallback')) {
                 throw new BadRequestHttpException('Invalid filter method name.');
             }
@@ -539,8 +539,8 @@ class AdminAdherentCRUDController extends CRUDController
             $this->admin->{$filterMethod}($datagrid->getQuery());
         }
 
-        $itemsPerPage = (int) $request->get('_per_page', 10);
-        $page = (int) $request->get('_page', 1);
+        $itemsPerPage = (int) $request->query->get('_per_page', 10);
+        $page = (int) $request->query->get('_page', 1);
 
         $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);
         $datagrid->setValue(DatagridInterface::PAGE, null, $page);
