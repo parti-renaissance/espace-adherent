@@ -7,7 +7,6 @@ namespace App\Controller\Api\Vox;
 use App\Controller\Renaissance\Adhesion\AdhesionController;
 use App\Entity\Adherent;
 use App\OAuth\Model\Scope;
-use App\Repository\OAuth\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,33 +35,31 @@ class AuthenticatedAppLinkController extends AbstractController
     ];
 
     public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
         private readonly string $adminRenaissanceHost,
-        private readonly ClientRepository $clientRepository,
     ) {
     }
 
-    public function __invoke(Request $request, string $userVoxHost, LoginLinkHandlerInterface $loginLinkHandler, string $key, #[CurrentUser] Adherent $user, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function __invoke(Request $request, string $key, #[CurrentUser] Adherent $user): JsonResponse
     {
         if (!\array_key_exists($key, self::KEYS_TO_ROUTES)) {
             throw new BadRequestHttpException(\sprintf('No route found for key "%s".', $key));
         }
 
-        if ('cadre' === $key && $this->isGranted(Scope::generateRole(Scope::IMPERSONATOR))) {
-            return $this->json($this->getCadreLink($request));
+        $targetPath = $this->prepareTargetPath($key, $request);
+
+        if ($this->isGranted(Scope::generateRole(Scope::IMPERSONATOR))) {
+            return $this->json([
+                'url' => \sprintf('//%s%s', $this->adminRenaissanceHost, $targetPath),
+                'expires_at' => null,
+            ]);
         }
 
-        $context = $urlGenerator->getContext();
-        $originalHost = $context->getHost();
-        $context->setHost($userVoxHost);
-
-        $targetPath = $urlGenerator->generate(...$this->prepareRouteParams($key, $request));
-
-        $context->setHost($originalHost);
-
-        return $this->json($loginLinkHandler->createLoginLink($user, $request, targetPath: $targetPath));
+        return $this->json($this->loginLinkHandler->createLoginLink($user, $request, targetPath: $targetPath));
     }
 
-    private function prepareRouteParams(string $key, Request $request): array
+    private function prepareTargetPath(string $key, Request $request): string
     {
         $route = $routeName = self::KEYS_TO_ROUTES[$key];
         $parameters = [];
@@ -83,23 +80,13 @@ class AuthenticatedAppLinkController extends AbstractController
             }
         }
 
-        return [$routeName, $parameters];
-    }
+        $url = $this->urlGenerator->generate($routeName, $parameters);
 
-    private function getCadreLink(Request $request): array
-    {
-        $client = $this->clientRepository->getCadreClient();
+        $urlParts = parse_url($url);
+        $path = $urlParts['path'] ?? '/';
+        $query = isset($urlParts['query']) ? '?'.$urlParts['query'] : '';
+        $fragment = isset($urlParts['fragment']) ? '#'.$urlParts['fragment'] : '';
 
-        return [
-            'url' => $this->generateUrl('app_front_oauth_authorize', [
-                'app_domain' => $this->adminRenaissanceHost,
-                'response_type' => 'code',
-                'client_id' => $client->getUuid()->toString(),
-                'redirect_uri' => $client->getRedirectUris()[0],
-                'scope' => implode(' ', $client->getSupportedScopes()),
-                'state' => $request->query->get('state'),
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
-            'expires_at' => new \DateTimeImmutable()->add(new \DateInterval('PT10M')),
-        ];
+        return $path.$query.$fragment;
     }
 }

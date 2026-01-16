@@ -531,7 +531,7 @@ security:
         - { host: '%admin_renaissance_host%', path: '^/login/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
         - { host: '%admin_renaissance_host%', path: '^/login', roles: [PUBLIC_ACCESS] }
         - { host: '%admin_renaissance_host%', path: '^/robots.txt', roles: [PUBLIC_ACCESS] }
-        - { host: '%admin_renaissance_host%', path: '^/(?!(oauth|vox))', roles: [ROLE_ADMIN_DASHBOARD] }
+        - { host: '%admin_renaissance_host%', path: '^/(?!(oauth|vox|cadre|elecmap))', roles: [ROLE_ADMIN_DASHBOARD] }
         - { host: '%user_vox_host%', path: '^/formation', roles: [ROLE_USER] }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_USER] }

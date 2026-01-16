@@ -15,7 +15,7 @@
  * @returns {AlpineComponent}
  */
 const Page = (props) => ({
-    packageConfig: props.packageConfig || null,
+    packageConfig: props.packageConfig || [],
     initialPayedAmount: props.initialPayedAmount,
     packageValues: 'object' === typeof props.initialPackageValues ? { ...props.initialPackageValues } : {},
     availabilities: {},

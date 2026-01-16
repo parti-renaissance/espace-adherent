@@ -28,7 +28,7 @@ class RedirectAppController extends AbstractController
             $stateParams = [];
             parse_str(parse_url(urldecode($state), \PHP_URL_QUERY), $stateParams);
 
-            return $this->redirectToRoute('eaggle_app_redirect', ['scope' => $stateParams['scope']]);
+            return $this->redirectToRoute('elecmap_app_redirect', ['scope' => $stateParams['scope']]);
         }
 
         $isAdmin = $this->isGranted('IS_IMPERSONATOR');

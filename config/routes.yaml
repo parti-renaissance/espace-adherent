@@ -216,19 +216,25 @@ vox_app_redirect_from_admin:
 
 cadre_app_redirect:
     methods: GET
-    host: '%user_vox_host%'
+    host: '{app_domain}'
     path: /cadre
     controller: App\Controller\OAuth\RedirectAppController
     defaults:
         clientCode: jemengage_web
+        app_domain: '%user_vox_host%'
+    requirements:
+        app_domain: '%admin_renaissance_host%|%user_vox_host%'
 
-eaggle_app_redirect:
+elecmap_app_redirect:
     methods: GET
-    host: '%user_vox_host%'
-    path: /eaggle
+    host: '{app_domain}'
+    path: /elecmap
     controller: App\Controller\OAuth\RedirectAppController
     defaults:
         clientCode: eaggle
+        app_domain: '%user_vox_host%'
+    requirements:
+        app_domain: '%admin_renaissance_host%|%user_vox_host%'
 
 formation_auth_start_redirect:
     methods: GET
