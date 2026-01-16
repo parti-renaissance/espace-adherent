@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace App\AdherentMessage\Listener;
 
-use App\Entity\AdherentMessage\AdherentMessageReach;
+use App\AdherentMessage\Command\CreatePublicationReachFromAppCommand;
 use App\JeMengage\Hit\Event\NewHitSavedEvent;
 use App\JeMengage\Hit\TargetTypeEnum;
-use App\Repository\AdherentMessageRepository;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class SavePublicationReachFromHitListener implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly AdherentMessageRepository $adherentMessageRepository,
-    ) {
+    public function __construct(private readonly MessageBusInterface $messageBus)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -33,19 +29,10 @@ class SavePublicationReachFromHitListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$adherentMessage = $this->adherentMessageRepository->findOneByUuid($hit->objectId)) {
-            return;
-        }
-
-        $this->entityManager->persist(AdherentMessageReach::createApp(
-            $adherentMessage,
-            $hit->adherent,
-            $hit->getCreatedAt(),
+        $this->messageBus->dispatch(new CreatePublicationReachFromAppCommand(
+            $hit->objectId,
+            $hit->adherent->getId(),
+            $hit->getCreatedAt()
         ));
-
-        try {
-            $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException $e) {
-        }
     }
 }
