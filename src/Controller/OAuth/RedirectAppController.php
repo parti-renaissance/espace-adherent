@@ -23,15 +23,18 @@ class RedirectAppController extends AbstractController
         $urlGenerator = $appUrlManager->getUrlGenerator($currentApp ?? '');
 
         $client = ($clientCode ? $clientRepository->findOneBy(['code' => $clientCode]) : null) ?? $clientRepository->getVoxClient();
+        $isAdmin = $this->isGranted('IS_IMPERSONATOR');
 
         if ($client->isCadreClient() && str_contains($state = $request->query->get('state', ''), 'cartographie-electorale')) {
             $stateParams = [];
             parse_str(parse_url(urldecode($state), \PHP_URL_QUERY), $stateParams);
 
-            return $this->redirectToRoute('eaggle_app_redirect', ['scope' => $stateParams['scope']]);
+            return $this->redirectToRoute('elecmap_app_redirect', [
+                'app_domain' => $isAdmin ? $this->adminRenaissanceHost : $urlGenerator->getAppHost(),
+                'scope' => $stateParams['scope'],
+            ]);
         }
 
-        $isAdmin = $this->isGranted('IS_IMPERSONATOR');
         $supportedScopes = $client->getSupportedScopes();
         $scopesToUse = $isAdmin ? $client->getSupportedScopes(true) : $client->getUserScopes(true);
 

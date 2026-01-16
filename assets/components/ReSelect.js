@@ -156,7 +156,7 @@ const xReSelect = (props) => {
                 this.selected = element?.attr?.disabled ? this.selected : element;
             } else if ('Enter' === event.key) {
                 event.preventDefault();
-                this.setEndValues(this.filteredOptions[this.selectedIndex].attr?.disabled ? null : this.filteredOptions[this.selectedIndex]);
+                this.setEndValues(this.filteredOptions[this.selectedIndex]?.attr?.disabled ? null : this.filteredOptions[this.selectedIndex]);
             }
         },
 
