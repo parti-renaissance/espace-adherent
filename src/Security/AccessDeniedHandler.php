@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authorization\AccessDeniedHandlerInterface;
+use Symfony\Component\Security\Http\Firewall\SwitchUserListener;
 
 class AccessDeniedHandler implements AccessDeniedHandlerInterface
 {
@@ -38,7 +39,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
         if ($this->security->isGranted('IS_IMPERSONATOR')) {
             try {
                 return new RedirectResponse(
-                    $this->urlGenerator->generate($request->attributes->get('_route'), ['_switch_user' => '_exit'])
+                    $this->urlGenerator->generate($request->attributes->get('_route'), ['_switch_user' => SwitchUserListener::EXIT_VALUE])
                 );
             } catch (MissingMandatoryParametersException $exception) {
             }
