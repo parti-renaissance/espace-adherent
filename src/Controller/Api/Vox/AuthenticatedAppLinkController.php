@@ -49,7 +49,7 @@ class AuthenticatedAppLinkController extends AbstractController
 
         $targetPath = $this->prepareTargetPath($key, $request);
 
-        if ($this->isGranted(Scope::generateRole(Scope::IMPERSONATOR))) {
+        if ('cadre' === $key && $this->isGranted(Scope::generateRole(Scope::IMPERSONATOR))) {
             return $this->json([
                 'url' => \sprintf('//%s%s', $this->adminRenaissanceHost, $targetPath),
                 'expires_at' => null,
