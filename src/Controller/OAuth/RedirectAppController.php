@@ -6,15 +6,17 @@ namespace App\Controller\OAuth;
 
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\OAuth\ClientRepository;
-use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectAppController extends AbstractController
 {
-    public function __construct(private readonly string $adminRenaissanceHost)
-    {
+    public function __construct(
+        private readonly string $adminRenaissanceHost,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+    ) {
     }
 
     public function __invoke(Request $request, AuthAppUrlManager $appUrlManager, ClientRepository $clientRepository, ?string $clientCode = null): Response
@@ -38,8 +40,8 @@ class RedirectAppController extends AbstractController
         $supportedScopes = $client->getSupportedScopes();
         $scopesToUse = $isAdmin ? $client->getSupportedScopes(true) : $client->getUserScopes(true);
 
-        if (($requestedScope = $request->query->get('scope')) && ScopeEnum::isValid($requestedScope)) {
-            $requestedScope = 'scope:'.$requestedScope;
+        if ($scopeGenerator = $this->scopeGeneratorResolver->resolve()) {
+            $requestedScope = 'scope:'.$scopeGenerator->getCode();
             if (\in_array($requestedScope, $supportedScopes, true)) {
                 $scopesToUse[] = $requestedScope;
             }
