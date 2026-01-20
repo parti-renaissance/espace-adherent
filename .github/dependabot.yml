@@ -21,6 +21,26 @@ updates:
           symfony-framework:
               patterns:
                   - 'symfony/*'
+                  - 'twig/*'
+          admin:
+              patterns:
+                  - 'sonata-project/*'
+          db:
+              patterns:
+                  - 'doctrine/*'
+          code-quality:
+              patterns:
+                  - 'friendsofphp/php-cs-fixer'
+                  - 'vincentlanglet/twig-cs-fixer'
+                  - 'phpstan/*'
+          test:
+              patterns:
+                  - 'behat/*'
+                  - 'friends-of-behat/*'
+                  - 'phpunit/*'
+                  - 'coduo/php-matcher'
+                  - 'dama/doctrine-test-bundle'
+                  - 'fakerphp/faker'
 
     - package-ecosystem: 'npm'
       directory: '/'
