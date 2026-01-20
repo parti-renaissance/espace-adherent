@@ -639,6 +639,7 @@ Feature:
                     "contacts",
                     "contacts_export",
                     "messages",
+                    "publications",
                     "events",
                     "my_team",
                     "my_team_custom_role",
