@@ -23,9 +23,9 @@ class EventFilterType extends AbstractType
                 'required' => false,
                 'group_by' => function ($category) {
                     /** @var EventCategory $category */
-                    return $category->getEventGroupCategory()->getName();
+                    return $category->getEventGroupCategory()?->getName();
                 },
-                'choice_label' => fn ($value) => ucfirst($value),
+                'choice_label' => fn (EventCategory $value) => ucfirst($value->getName()),
             ])
         ;
     }
