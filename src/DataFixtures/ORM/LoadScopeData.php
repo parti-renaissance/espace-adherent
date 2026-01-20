@@ -47,10 +47,6 @@ class LoadScopeData extends Fixture
     {
         $scope = new Scope($code, $this->translator->trans('role.'.$code, ['gender' => 'male']), $this->getFeatures($code), $apps);
 
-        if (ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY === $code) {
-            $scope->canaryFeatures = [FeatureEnum::PUBLICATIONS];
-        }
-
         $scope->colorPrimary = '#3A7DFF';
         $scope->colorSoft = '#E8F0FF';
         $scope->colorHover = '#2F6FE0';

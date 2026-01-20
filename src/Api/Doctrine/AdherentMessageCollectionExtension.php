@@ -7,7 +7,6 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
@@ -34,9 +33,8 @@ class AdherentMessageCollectionExtension implements QueryCollectionExtensionInte
         }
 
         $queryBuilder
-            ->andWhere(\sprintf('%1$s.author = :author OR (%1$s.status = :draft AND %1$s.teamOwner = :team_owner)', $queryBuilder->getRootAliases()[0]))
+            ->andWhere(\sprintf('%1$s.author = :author OR %1$s.teamOwner = :team_owner', $queryBuilder->getRootAliases()[0]))
             ->setParameter('author', $scope->getCurrentUser())
-            ->setParameter('draft', AdherentMessageStatusEnum::DRAFT)
             ->setParameter('team_owner', $scope->getMainUser())
         ;
     }
