@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\JeMengage\Hit\Stats\Provider;
 
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AdherentMessageRepository;
@@ -45,7 +46,7 @@ class PublicationProvider extends AbstractProvider
 
         $result = [
             'sent_at' => $message->getSentAt()?->format(\DateTimeInterface::RFC3339),
-            'visible_count' => $this->adherentRepository->countAdherentsForMessage($message),
+            'visible_count' => AdherentMessageInterface::SOURCE_VOX === $message->getSource() ? $this->adherentRepository->countAdherentsForMessage($message) : 0,
             'contacts' => $allReach['email_push'],
             'unique_notifications' => $totalReachByPush,
             'unique_emails' => $totalReachByEmail,
