@@ -91,7 +91,7 @@ Feature:
                                 "total": 0,
                                 "total_rate": 0
                             },
-                            "visible_count": 4
+                            "visible_count": 0
                         }
                     },
                     {
@@ -164,7 +164,7 @@ Feature:
                                 "total": 0,
                                 "total_rate": 0
                             },
-                            "visible_count": 4
+                            "visible_count": 0
                         }
                     }
                 ]
@@ -578,7 +578,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 4
+                    "visible_count": 0
                 },
                 "json_content": "@string@",
                 "sent_at": null,
