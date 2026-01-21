@@ -22,18 +22,24 @@ class ConfirmInscriptionController extends AbstractController
             ->handleRequest($request)
         ;
 
-        if ($isConfirmed = $form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             if (!$inscription->confirmedAt) {
                 $inscription->confirmedAt = new \DateTime();
                 $entityManager->flush();
             }
+
+            $this->addFlash('success', 'Merci d\'avoir confirmé votre présence !');
+
+            return $this->redirectToRoute('app_national_event_my_inscription', [
+                'slug' => $inscription->event->getSlug(),
+                'uuid' => $inscription->getUuid()->toString(),
+            ]);
         }
 
         return $this->render('renaissance/national_event/confirm_inscription.html.twig', [
             'form' => $form->createView(),
             'event' => $inscription->event,
             'inscription' => $inscription,
-            'is_confirmed' => $isConfirmed,
         ]);
     }
 }
