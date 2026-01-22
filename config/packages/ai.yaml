@@ -1,0 +1,10 @@
+ai:
+    platform:
+        gemini:
+            api_key: '%env(GEMINI_API_KEY)%'
+
+    agent:
+        default:
+            platform: 'ai.platform.gemini'
+            model:
+                name: 'gemini-2.5-flash-lite'
