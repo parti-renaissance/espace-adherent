@@ -7,8 +7,6 @@ namespace App\Normalizer;
 use App\AdherentMessage\Variable\Renderer;
 use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\JeMengage\Hit\Stats\AggregatorInterface;
-use App\JeMengage\Hit\TargetTypeEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Security\Voter\PublicationVoter;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -22,7 +20,6 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     use NormalizerAwareTrait;
 
     public function __construct(
-        private readonly AggregatorInterface $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly Renderer $variableRenderer,
@@ -57,14 +54,17 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
             $data['editable'] = $this->authorizationChecker->isGranted(PublicationVoter::PERMISSION, $object);
 
+            if (!$data['editable'] || $object->isStatutory()) {
+                unset($data['statistics']);
+            }
+
             if ($data['editable']) {
                 if (!$object->isStatutory()) {
-                    $data['statistics'] = $this->statisticsAggregator->getStats(TargetTypeEnum::Publication, $object->getUuid());
                     $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
                 }
             } else {
                 foreach (array_keys($data) as $key) {
-                    if (!\in_array($key, ['uuid', 'sender', 'json_content', 'sent_at', 'subject', 'updated_at'])) {
+                    if (!\in_array($key, ['uuid', 'sender', 'json_content', 'sent_at', 'subject', 'updated_at', 'statistics'])) {
                         unset($data[$key]);
                     }
                 }

@@ -262,6 +262,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isStatutory = false;
 
+    #[Groups(['message_read', 'message_read_list'])]
+    #[ORM\OneToOne(mappedBy: 'message', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?PublicationStatistics $statistics = null;
+
     public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -576,5 +580,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         if (!QueryChecker::hasJoin($queryBuilder, $rootAlias, 'filter')) {
             $queryBuilder->innerJoin("$rootAlias.filter", 'filter');
         }
+    }
+
+    public function getStatistics(): PublicationStatistics
+    {
+        return $this->statistics ?? $this->statistics = new PublicationStatistics($this);
     }
 }
