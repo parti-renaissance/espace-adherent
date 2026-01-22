@@ -9,7 +9,6 @@ use App\DataFixtures\ORM\LoadAdherentMessageData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventData;
 use App\JeMengage\Hit\Stats\AggregatorInterface;
-use App\JeMengage\Hit\Stats\CachedAggregator;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -466,7 +465,7 @@ class AppHitControllerTest extends AbstractApiTestCase
     {
         parent::setUp();
 
-        $this->aggregator = self::getContainer()->get(CachedAggregator::class.'.inner');
+        $this->aggregator = self::getContainer()->get(AggregatorInterface::class);
 
         $this->accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_13_UUID,

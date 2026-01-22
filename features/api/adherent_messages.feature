@@ -298,7 +298,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 3
+                    "visible_count": 0
                 },
                 "json_content": "@string@",
                 "sent_at": null,
@@ -382,7 +382,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 3
+                    "visible_count": 0
                 },
                 "json_content": "@string@",
                 "sent_at": null,
@@ -483,7 +483,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 3
+                    "visible_count": 0
                 },
                 "json_content": "@string@",
                 "sent_at": null,
@@ -1345,7 +1345,7 @@ Feature:
                         "total": 0,
                         "total_rate": 0
                     },
-                    "visible_count": 3
+                    "visible_count": 0
                 },
                 "json_content": "@string@",
                 "sent_at": null,
