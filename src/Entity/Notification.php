@@ -174,4 +174,10 @@ class Notification
 
         return hash('sha256', json_encode($data, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES));
     }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+    }
 }
