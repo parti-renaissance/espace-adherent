@@ -50,6 +50,7 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
             NewsletterTypeEnum::SITE_NRP,
             NewsletterTypeEnum::SITE_EU,
             NewsletterTypeEnum::SITE_ENSEMBLE,
+            NewsletterTypeEnum::SITE_STOPRESEAUX,
         ];
     }
 }

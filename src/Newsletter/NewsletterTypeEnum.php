@@ -20,4 +20,5 @@ class NewsletterTypeEnum extends Enum
     public const FROM_EVENT = 'from_event';
     public const FROM_MEETING = 'from_meeting';
     public const SITE_PROCURATION = 'site_procuration';
+    public const SITE_STOPRESEAUX = 'site_stopreseaux';
 }

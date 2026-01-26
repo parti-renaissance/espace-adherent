@@ -51,11 +51,11 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     {
         $object = new self();
 
-        $object->firstName = $request->firstName;
-        $object->lastName = $request->lastName;
-        $object->zipCode = $request->postalCode;
+        $object->firstName = $request->firstName ?: $object->firstName;
+        $object->lastName = $request->lastName ?: $object->lastName;
+        $object->zipCode = $request->postalCode ?: $object->zipCode;
         $object->email = $request->email;
-        $object->source = $request->source;
+        $object->source = $request->source ?: $object->source;
 
         return $object;
     }
