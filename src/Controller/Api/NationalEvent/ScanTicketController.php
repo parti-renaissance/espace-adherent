@@ -39,6 +39,12 @@ class ScanTicketController extends AbstractController
         }
 
         if ($inscription->isApproved()) {
+            $visitDayParts = array_filter([
+                $inscription->getVisitDayConfig()['titre'] ?? $inscription->packageValues['visitDay'] ?? null,
+                !empty($inscription->packageValues['partie1place']) ? 'Place 1 : '.$inscription->packageValues['partie1place'] : null,
+                !empty($inscription->packageValues['partie2place']) ? 'Place 2 : '.$inscription->packageValues['partie2place'] : null,
+            ]);
+
             return $this->json([
                 'status' => [
                     'code' => 'valid',
@@ -57,7 +63,7 @@ class ScanTicketController extends AbstractController
                     TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
                     'groups' => ['event_inscription_scan', ImageExposeNormalizer::NORMALIZATION_GROUP],
                 ]),
-                'visit_day' => $inscription->getVisitDayConfig()['titre'] ?? $inscription->visitDay,
+                'visit_day' => !empty($visitDayParts) ? implode("\n", $visitDayParts) : null,
                 'transport' => $inscription->getTransportConfig()['titre'] ?? $inscription->transport,
                 'accommodation' => $inscription->getAccommodationConfig()['titre'] ?? $inscription->accommodation,
                 'scan_history' => array_map(static fn (TicketScan $scan) => [

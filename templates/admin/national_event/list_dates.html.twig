@@ -5,6 +5,9 @@
         <span>Inscription :</span> <b>{{ object.createdAt|date('d/m/Y H:i') }}</b>
     </div>
     <div>
+        <span>Confirmation :</span> <b>{{ object.confirmedAt ? object.confirmedAt|date('d/m/Y H:i') : '~' }}</b>
+    </div>
+    <div>
         <span>Dernier billet mail :</span> <b>{{ object.ticketSentAt ? object.ticketSentAt|date('d/m/Y H:i') : '~' }}</b>
     </div>
     <div>
