@@ -23,144 +23,87 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueMembership(groups: ['Default', 'api_email_change'])]
 class AdherentProfile implements MembershipInterface
 {
-    /**
-     * @var string|null
-     */
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Default', 'api_put_validation'])]
     #[Assert\NotBlank(message: 'common.gender.not_blank')]
     #[Groups(['profile_write'])]
-    private $gender;
+    private ?string $gender = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['profile_write'])]
-    private $customGender;
+    private ?string $customGender = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'api_put_validation'])]
     #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write'])]
-    private $firstName;
+    private ?string $firstName = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'api_put_validation'])]
     #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write'])]
-    private $lastName;
+    private ?string $lastName = null;
 
-    /**
-     * @var Address
-     */
     #[Assert\Valid]
     #[Groups(['profile_write'])]
-    private $postAddress;
+    private Address $postAddress;
 
-    /**
-     * @var string|null
-     */
     #[Assert\Choice(callback: [ActivityPositionsEnum::class, 'all'], message: 'adherent.activity_position.invalid_choice')]
     #[Groups(['profile_write'])]
-    private $position;
+    private ?string $position = null;
 
-    /**
-     * @var string|null
-     */
     #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'api_put_validation'])]
     #[Assert\Expression('value or !this.isAdherent', message: 'adherent_profile.nationality.not_blank')]
     #[Groups(['profile_write'])]
-    private $nationality;
+    private ?string $nationality = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Email(message: 'common.email.invalid', groups: ['Default', 'api_put_validation', 'api_email_change'])]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Default', 'api_put_validation', 'api_email_change'])]
     #[Assert\NotBlank(message: 'adherent_profile.email.not_blank', groups: ['Default', 'api_put_validation', 'api_email_change'])]
     #[Groups(['profile_write', 'profile_email_change'])]
-    private $emailAddress;
+    private ?string $emailAddress = null;
 
-    /**
-     * @var PhoneNumber|null
-     */
     #[AssertPhoneNumber]
     #[Groups(['profile_write'])]
-    private $phone;
+    private ?PhoneNumber $phone = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
     #[Assert\Range(minMessage: 'adherent.birthdate.maximum_required_age', min: '-120 years', groups: ['Default', 'api_put_validation'])]
     #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write', 'empty_profile_data'])]
-    private $birthdate;
+    private ?\DateTime $birthdate = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'adherent_profile.facebook_page_url.invalid')]
     #[Groups(['profile_write'])]
-    private $facebookPageUrl;
+    private ?string $facebookPageUrl = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'adherent_profile.twitter_page_url.invalid')]
     #[Groups(['profile_write'])]
-    private $twitterPageUrl;
+    private ?string $twitterPageUrl = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?linkedin.com\/#', message: 'adherent_profile.linkedin_page_url.invalid')]
     #[Groups(['profile_write'])]
-    private $linkedinPageUrl;
+    private ?string $linkedinPageUrl = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?t.me\/#', message: 'adherent_profile.telegram_page_url.invalid')]
     #[Groups(['profile_write'])]
-    private $telegramPageUrl;
+    private ?string $telegramPageUrl = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Choice(choices: JobEnum::JOBS, message: 'adherent.job.invalid_choice')]
     #[Groups(['profile_write'])]
-    private $job;
+    private ?string $job = null;
 
-    /**
-     * @var string
-     */
     #[Assert\Choice(choices: ActivityAreaEnum::ACTIVITIES, message: 'adherent.activity_area.invalid_choice')]
     #[Groups(['profile_write'])]
-    private $activityArea;
+    private ?string $activityArea = null;
 
-    /**
-     * @var array
-     */
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true, multipleMessage: 'adherent_profile.mandates.invalid_choice')]
     #[Groups(['profile_write'])]
-    private $mandates = [];
+    private array $mandates = [];
 
-    /**
-     * @var array
-     */
     #[AdherentInterests]
     #[Groups(['profile_write'])]
-    private $interests = [];
+    private array $interests = [];
 
-    /**
-     * @var array
-     */
     #[Groups(['profile_write'])]
-    private $subscriptionTypes = [];
+    private array $subscriptionTypes = [];
 
     #[Assert\Choice(choices: MembershipTypeEnum::CHOICES)]
     #[Groups(['profile_write'])]
