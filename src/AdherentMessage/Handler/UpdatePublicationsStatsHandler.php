@@ -24,6 +24,10 @@ class UpdatePublicationsStatsHandler
 
     public function __invoke(SyncReportCommand $command): void
     {
+        if (3 !== $command->step) {
+            return;
+        }
+
         if (!$adherentMessage = $this->adherentMessageRepository->findOneByUuid($command->getUuid())) {
             return;
         }
