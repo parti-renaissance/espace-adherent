@@ -12,7 +12,7 @@ class NationalTokenProvider extends AbstractTokenProvider
 {
     public function supports(NotificationInterface $notification, NotificationObjectInterface $object): bool
     {
-        return $object->isNational();
+        return $object->isNational() && !\in_array($notification::class, ObjectTokenProvider::SUPPORTED_NOTIFICATIONS);
     }
 
     public function getTokens(NotificationInterface $notification, NotificationObjectInterface $object, SendNotificationCommandInterface $command): array
