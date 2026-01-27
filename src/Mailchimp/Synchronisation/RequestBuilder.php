@@ -694,9 +694,9 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_INSCRIPTION_DATE] = $this->inscriptionDate->format(MemberRequest::DATE_FORMAT);
         }
 
-        $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate->format(MemberRequest::DATE_FORMAT);
-        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt->format(MemberRequest::DATE_FORMAT);
-        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate?->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt?->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt?->format(MemberRequest::DATE_FORMAT);
         $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail;
 
         if (null !== $this->isVolunteer) {
