@@ -65,6 +65,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ACCOMODATION = 'ACCMDTION';
     public const MERGE_FIELD_IS_WITH_DISCOUNT = 'IS_DISC';
     public const MERGE_FIELD_PARTICIPANT_UUID = 'PRTCPNT_ID';
+    public const MERGE_FIELD_EVENT_SLUG = 'EVENT_SLG';
     public const MERGE_FIELD_STATUS = 'STATUS';
     public const MERGE_FIELD_UTM_SOURCE = 'UTM_SOURCE';
     public const MERGE_FIELD_UTM_CAMPAIGN = 'UTM_CMPGN';
