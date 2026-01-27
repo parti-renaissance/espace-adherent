@@ -46,7 +46,7 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $paginator = $this->getQueryBuilder($input->getOption('emails'), $input->getOption('event-id'));
+        $paginator = $this->getQueryBuilder($input->getOption('emails'), (int) $input->getOption('event-id'));
 
         $count = $paginator->count();
 

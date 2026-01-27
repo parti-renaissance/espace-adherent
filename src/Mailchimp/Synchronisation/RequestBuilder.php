@@ -76,6 +76,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?string $accessibility = null;
     private ?string $transport = null;
     private ?string $accommodation = null;
+    private ?string $eventSlug = null;
     private ?bool $isTransportNeeds = null;
     private ?bool $isWithDiscount = null;
     private ?UuidInterface $participantUuid = null;
@@ -196,6 +197,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setAccommodation($eventInscription->accommodation)
             ->setIsWithDiscount($eventInscription->withDiscount)
             ->setParticipantUuid($eventInscription->getUuid())
+            ->setEventSlug($eventInscription->event->getSlug())
             ->setStatus($eventInscription->status)
             ->setUtmSource($eventInscription->utmSource)
             ->setUtmCampaign($eventInscription->utmCampaign)
@@ -692,21 +694,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_INSCRIPTION_DATE] = $this->inscriptionDate->format(MemberRequest::DATE_FORMAT);
         }
 
-        if ($this->confirmationDate) {
-            $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate->format(MemberRequest::DATE_FORMAT);
-        }
-
-        if ($this->ticketSentAt) {
-            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt->format(MemberRequest::DATE_FORMAT);
-        }
-
-        if ($this->ticketScannedAt) {
-            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt->format(MemberRequest::DATE_FORMAT);
-        }
-
-        if ($this->ticketCustomDetail) {
-            $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail;
-        }
+        $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt->format(MemberRequest::DATE_FORMAT);
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail;
 
         if (null !== $this->isVolunteer) {
             $mergeFields[MemberRequest::MERGE_FIELD_IS_VOLUNTEER] = $this->isVolunteer ? 'oui' : 'non';
@@ -716,32 +707,19 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_IS_JAM] = $this->isJAM ? 'oui' : 'non';
         }
 
-        if ($this->visitDay) {
-            $mergeFields[MemberRequest::MERGE_FIELD_VISIT_DAY] = $this->visitDay;
-        }
-
-        if ($this->accessibility) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ACCESSIBILITY] = $this->accessibility;
-        }
-
-        if (null !== $this->isTransportNeeds) {
-            $mergeFields[MemberRequest::MERGE_FIELD_IS_TRANSPORT_NEEDS] = $this->isTransportNeeds ? 'oui' : 'non';
-        }
-
-        if (null !== $this->transport) {
-            $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport;
-        }
-
-        if (null !== $this->accommodation) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accommodation;
-        }
-
-        if (null !== $this->isWithDiscount) {
-            $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
-        }
+        $mergeFields[MemberRequest::MERGE_FIELD_VISIT_DAY] = $this->visitDay;
+        $mergeFields[MemberRequest::MERGE_FIELD_ACCESSIBILITY] = $this->accessibility;
+        $mergeFields[MemberRequest::MERGE_FIELD_IS_TRANSPORT_NEEDS] = $this->isTransportNeeds ? 'oui' : 'non';
+        $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport;
+        $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accommodation;
+        $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
 
         if ($this->participantUuid) {
             $mergeFields[MemberRequest::MERGE_FIELD_PARTICIPANT_UUID] = $this->participantUuid->toString();
+        }
+
+        if ($this->eventSlug) {
+            $mergeFields[MemberRequest::MERGE_FIELD_EVENT_SLUG] = $this->eventSlug;
         }
 
         if ($this->status) {
@@ -935,6 +913,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setParticipantUuid(?UuidInterface $participantUuid = null): self
     {
         $this->participantUuid = $participantUuid;
+
+        return $this;
+    }
+
+    public function setEventSlug(string $slug): self
+    {
+        $this->eventSlug = $slug;
 
         return $this;
     }
