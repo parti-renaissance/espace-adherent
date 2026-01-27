@@ -72,12 +72,14 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
                 return $this->isFemale()
                     ? CommitteeAdherentMandateTypeEnum::PROVISIONAL_SUPERVISOR_FEMALE
                     : CommitteeAdherentMandateTypeEnum::PROVISIONAL_SUPERVISOR_MALE;
-            } else {
-                return $this->isFemale()
-                    ? CommitteeAdherentMandateTypeEnum::SUPERVISOR_FEMALE
-                    : CommitteeAdherentMandateTypeEnum::SUPERVISOR_MALE;
             }
-        } elseif (!$this->getQuality()) {
+
+            return $this->isFemale()
+                ? CommitteeAdherentMandateTypeEnum::SUPERVISOR_FEMALE
+                : CommitteeAdherentMandateTypeEnum::SUPERVISOR_MALE;
+        }
+
+        if (!$this->getQuality()) {
             return $this->isFemale()
                 ? CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_FEMALE
                 : CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_MALE;

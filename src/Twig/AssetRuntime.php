@@ -47,20 +47,19 @@ class AssetRuntime implements RuntimeExtensionInterface
             $parameters['is_video'] = true;
 
             return $this->urlGenerator->generate('asset_url', $parameters, $referenceType);
-        } else {
-            // No compression and no resizing if no compressed display
-            if (!$media->isCompressedDisplay()) {
-                unset($parameters['q'], $parameters['w']);
-            }
-
-            $appDomain = null;
-            if (!empty($parameters['app_domain'])) {
-                $appDomain = $parameters['app_domain'];
-                unset($parameters['app_domain']);
-            }
-
-            return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType, $appDomain);
         }
+        // No compression and no resizing if no compressed display
+        if (!$media->isCompressedDisplay()) {
+            unset($parameters['q'], $parameters['w']);
+        }
+
+        $appDomain = null;
+        if (!empty($parameters['app_domain'])) {
+            $appDomain = $parameters['app_domain'];
+            unset($parameters['app_domain']);
+        }
+
+        return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType, $appDomain);
     }
 
     public function webpackAsset(string $path, $packageName = null): string
