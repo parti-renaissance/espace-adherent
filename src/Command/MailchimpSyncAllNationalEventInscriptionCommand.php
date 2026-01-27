@@ -63,7 +63,7 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
         $this->io->progressStart($count);
 
         foreach ($paginator as $i => $eventInscription) {
-            $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
+            $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid(), batch: true));
 
             $this->io->progressAdvance();
 
