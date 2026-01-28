@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Donation;
 
 use App\Entity\Adherent;
+use App\Entity\Donation;
 use App\Entity\Donator;
+use App\Entity\Transaction;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
 use Ramsey\Uuid\UuidInterface;
@@ -32,7 +34,7 @@ class DonationManager
                 $donation->getType(),
                 $donation->isSubscription(),
                 $donation->isMembership(),
-                $donation->getStatus(),
+                Transaction::PAYBOX_SUCCESS === $transaction->getPayboxResultCode() ? Donation::STATUS_FINISHED : $donation->getStatus(),
                 $donation->getUuid(),
                 $donation->getDonator()
             );
