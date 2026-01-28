@@ -708,7 +708,7 @@ donation.status.waiting_confirmation: En attente de confirmation
 donation.status.subscription_in_progress: Souscription en cours
 donation.status.refunded: Remboursé
 donation.status.canceled: Souscription annulée/désabonnée
-donation.status.finished: Don terminé avec succes
+donation.status.finished: Don terminé avec succès
 donation.status.error: Erreur
 donation.source.membership: Adhésion RE
 donation.destination.local: Mixte

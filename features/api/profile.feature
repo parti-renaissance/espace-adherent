@@ -1102,7 +1102,7 @@ Feature:
                     "type_label": "Carte bleue",
                     "subscription": true,
                     "membership": false,
-                    "status": "subscription_in_progress",
+                    "status": "finished",
                     "amount": 42
                 },
                 {
