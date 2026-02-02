@@ -36,6 +36,9 @@ class AdherentStaticLabel implements \Stringable
     #[ORM\ManyToOne(targetEntity: AdherentStaticLabelCategory::class)]
     public ?AdherentStaticLabelCategory $category = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $type = null;
+
     public function getIdentifier(): string
     {
         return implode(':', array_filter([$this->category?->code, $this->code]));
