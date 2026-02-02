@@ -50,6 +50,7 @@ final class ZoneBasedRoleTypeEnum
         ],
         ScopeEnum::MUNICIPAL_PILOT => [
             Zone::CITY,
+            Zone::BOROUGH,
         ],
         ScopeEnum::DEPUTY => [
             Zone::DISTRICT,

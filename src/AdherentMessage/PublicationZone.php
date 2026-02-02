@@ -43,6 +43,7 @@ abstract class PublicationZone
             ],
             ScopeEnum::MUNICIPAL_PILOT => [
                 Zone::CITY,
+                Zone::BOROUGH,
             ],
             ScopeEnum::REGIONAL_COORDINATOR,
             ScopeEnum::REGIONAL_DELEGATE,
