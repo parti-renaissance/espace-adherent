@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formation\Moodle;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentStaticLabel;
 use App\Entity\Moodle\User;
 use App\Entity\Moodle\UserJob;
 use App\Repository\AdherentRepository;
@@ -97,16 +98,16 @@ class UserManager
     {
         $jobs = [];
         $startData = new \DateTime('2022-01-01 00:00:00')->getTimestamp();
+        $adherentAssembly = null;
+
+        if ($assembly = $adherent->getAssemblyZone()) {
+            $adherentAssembly = 'departement:'.$assembly->getCode();
+        } else {
+            $this->logger->error('Assembly zone is missing for adherent', ['adherentId' => $adherent->getId()]);
+        }
 
         if ($adherent->isRenaissanceAdherent()) {
-            $endDate = $assemblyCode = null;
-
-            if ($assembly = $adherent->getAssemblyZone()) {
-                $assemblyCode = $assembly->getCode();
-            } else {
-                $this->logger->error('Assembly zone is missing for adherent', ['adherentId' => $adherent->getId()]);
-            }
-
+            $endDate = null;
             $year = (int) date('Y');
             if (!$adherent->hasActiveMembership()) {
                 $year = $adherent->getLastMembershipDonation()?->format('Y') ?? $adherent->getFirstMembershipDonation()?->format('Y') ?? 2022;
@@ -114,7 +115,7 @@ class UserManager
             }
 
             $zones = [
-                $assemblyCode ? ['code' => 'departement:'.$assemblyCode] : null,
+                $adherentAssembly,
                 ($committeeMembership = $adherent->getCommitteeMembership()) ? [
                     'code' => ($committee = $committeeMembership->getCommittee())->getUuidAsString(),
                     'name' => $committee->getName(),
@@ -225,6 +226,24 @@ class UserManager
                     'startdate' => $startData,
                 ],
                 'zone' => $zone,
+            ];
+        }
+
+        foreach ($adherent->getStaticLabels()->filter(fn (AdherentStaticLabel $label) => \in_array($label->type, ['pilote', 'espoir'])) as $label) {
+            $key = array_filter([
+                $adherentAssembly,
+                $label->type,
+            ]);
+
+            $jobs[implode('-', $key)] = [
+                'request' => [
+                    'jobdepartment' => $adherentAssembly,
+                    'jobposition' => $label->type,
+                    'startdate' => $startData,
+                ],
+                'zone' => [
+                    'code' => $adherentAssembly,
+                ],
             ];
         }
 
