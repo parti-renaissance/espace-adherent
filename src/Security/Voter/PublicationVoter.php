@@ -63,7 +63,7 @@ class PublicationVoter extends AbstractAdherentVoter
             return true;
         }
 
-        return array_any($scopes, static fn ($scope) => $scope->getMainUser()?->getId() === $publicationData['team_owner_id']);
+        return array_any($scopes, static fn (Scope $scope) => $scope->isNational() || $scope->getMainUser()?->getId() === $publicationData['team_owner_id']);
     }
 
     protected function supports(string $attribute, $subject): bool
