@@ -41,7 +41,7 @@ class CreateAccountCommandHandler
         if ($currentUser = $command->currentUser) {
             $currentUser->updateFromMembershipRequest($membershipRequest);
             $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
-            $currentUser->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
+
             if ($currentUser->getPassword()) {
                 $currentUser->finishAdhesionStep(AdhesionStepEnum::PASSWORD);
             }
