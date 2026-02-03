@@ -41,6 +41,10 @@ class PublicationVoter extends AbstractAdherentVoter
             return false;
         }
 
+        if ($scope->isNational()) {
+            return true;
+        }
+
         return $subject->getAuthor() === $adherent || $subject->teamOwner === $scope->getMainUser();
     }
 
