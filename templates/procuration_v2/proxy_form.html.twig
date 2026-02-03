@@ -3,7 +3,7 @@
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
 {% block open_graph_image 'https://assets.parti-renaissance.fr/sharer/mandataire.png' %}
-{% block open_graph_title 'Votez pour une personne proche de chez vous • ENSEMBLE' %}
+{% block open_graph_title 'Votez pour une personne proche de chez vous • Renaissance' %}
 {% block open_graph_description 'Entre le front populiste et le front nationaliste, aucune voie ne doit manquer pour nos candidats.' %}
 {% block canonical_url url('app_procuration_v2_proxy', {slug: election.slug}) %}
 
@@ -37,7 +37,7 @@
 
 {% block round_additional_form %}
     <fieldset>
-        {{ form_row(form.acceptVoteNearby, {label: 'Si il n\'y a plus de candidat ENSEMBLE en lice au 2e tour, je souhaite porter une procuration dans une circonscription législative proche de la mienne'}) }}
+        {{ form_row(form.acceptVoteNearby, {label: 'Si il n\'y a plus de candidat Renaissance en lice au 2e tour, je souhaite porter une procuration dans une circonscription législative proche de la mienne'}) }}
     </fieldset>
 
     <fieldset>

@@ -1,10 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block app_title 'ENSEMBLE' %}
-{% block meta_description 'ENSEMBLE est la coalition de la Majorité présidentielle.' %}
-
-{% block canonical_url 'https://' ~ legislative_host %}
-{% set default_sharer_image = 'https://doc.ensemble-2024.fr/images/ensemble.webp' %}
+{% block app_title 'Renaissance' %}
 
 {% block open_graph %}
     <meta property="og:image" content="{% block open_graph_image default_sharer_image %}" />
@@ -14,46 +10,10 @@
     <meta name="twitter:image" content="{{ block('open_graph_image') }}" />
 {% endblock %}
 
-{% block body_classes 're_new_ui bde-theme' %}
-
-{% block favicons %}
-    <link rel="icon" type="image/png" href="{{ asset('images/ensemble/favicon.png') }}" sizes="32x32" />
-{% endblock %}
-
-{% block stylesheets %}
-    <link href="{{ asset('fonts/SharpGrotesk/stylesheet.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block analytics %}
-    {% if app_environment == 'production' %}
-        <!-- Matomo -->
-        <script>
-            var _paq = window._paq = window._paq || [];
-            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-            _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-            _paq.push(["setDoNotTrack", true]);
-            _paq.push(["disableCookies"]);
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                var u="https://matomo.parti-renaissance.fr/";
-                _paq.push(['setTrackerUrl', u+'matomo.php']);
-                _paq.push(['setSiteId', '5']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-            })();
-        </script>
-        <!-- End Matomo Code -->
-    {% endif %}
-{% endblock %}
-
 {% block header %}
     <header class="w-full fixed z-30 border-b-2 border-black bg-white">
         <div class="max-w-8xl flex items-center mx-auto pt-0 px-6 md:px-6 md:py-6 md:h-[80px] h-[56px] ">
-            <a href="//{{ legislative_host }}" class="flex flex-col">
-                <img src="{{ asset('/images/ensemble/logo.png') }}" alt="logo" class="h-10"/>
-            </a>
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" alt="logo" />
         </div>
     </header>
 {% endblock %}
@@ -67,7 +27,7 @@
         <footer class="flex flex-col bg-black items-center md:justify-center gap-[56px] py-[80px] text-white text-sm border-t-[2px] border-white z-10">
             {# --------------- SOCIALS -------------- -#}
             <div class="flex bg-black items-center md:justify-center gap-[40px]">
-                {{ include('besoindeurope/partials/sn_links.html.twig') }}
+                {{ include('renaissance/national_event/partials/sn_links.html.twig') }}
             </div>
 
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
