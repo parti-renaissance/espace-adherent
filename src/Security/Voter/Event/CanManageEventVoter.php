@@ -64,6 +64,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
             return false;
         }
 
+        if ($scope->isNational()) {
+            return true;
+        }
+
         if ($subject->getInstanceKey()) {
             return $subject->getInstanceKey() === $scope->getInstanceKey();
         }
@@ -88,8 +92,8 @@ class CanManageEventVoter extends AbstractAdherentVoter
         try {
             $scopes = array_filter(
                 $this->generalScopeGenerator->generateScopes($adherent),
-                function (Scope $scope) use ($event) {
-                    if (!empty($event['is_national']) && ScopeEnum::NATIONAL === $scope->getMainCode() && $scope->hasFeature(FeatureEnum::EVENTS)) {
+                static function (Scope $scope) use ($event) {
+                    if (ScopeEnum::NATIONAL === $scope->getMainCode() && $scope->hasFeature(FeatureEnum::EVENTS)) {
                         return true;
                     }
 
@@ -106,6 +110,10 @@ class CanManageEventVoter extends AbstractAdherentVoter
 
         if (empty($scopes)) {
             return false;
+        }
+
+        if (array_any($scopes, static fn (Scope $scope) => $scope->isNational())) {
+            return true;
         }
 
         foreach ($scopes as $scope) {
