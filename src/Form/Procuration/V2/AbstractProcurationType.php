@@ -53,6 +53,7 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class)
             ->add('phone', TelNumberType::class, [
+                'label' => false,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('address', AutocompleteAddressType::class, [
