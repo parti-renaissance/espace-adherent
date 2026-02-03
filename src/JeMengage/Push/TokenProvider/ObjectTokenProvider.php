@@ -23,7 +23,7 @@ use App\JeMengage\Push\Notification\PrivateMessageNotification;
 
 class ObjectTokenProvider extends AbstractTokenProvider
 {
-    private const SUPPORTED_NOTIFICATIONS = [
+    public const SUPPORTED_NOTIFICATIONS = [
         ActionBeginNotification::class,
         ActionCancelledNotification::class,
         ActionUpdatedNotification::class,

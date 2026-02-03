@@ -37,6 +37,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             case ScopeEnum::NATIONAL_FORMATION_DIVISION:
             case ScopeEnum::NATIONAL_IDEAS_DIVISION:
             case ScopeEnum::NATIONAL_TERRITORIES_DIVISION:
+            case ScopeEnum::NATIONAL:
                 return [];
             case ScopeEnum::REGIONAL_COORDINATOR:
             case ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY:
