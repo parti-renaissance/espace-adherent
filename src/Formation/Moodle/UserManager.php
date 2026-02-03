@@ -79,12 +79,12 @@ class UserManager
                 && !empty($jobData['zone']['code'])
                 && Uuid::isValid($jobData['zone']['code'])
                 && $this->driver->createDepartment(
-                    $jobData['zone']['name'] ?? $jobData['zone']['code'],
-                    $jobData['zone']['code'],
-                    $jobData['zone']['parent']
+                        $jobData['zone']['name'] ?? $jobData['zone']['code'],
+                        $jobData['zone']['code'],
+                        $jobData['zone']['parent']
                 )
             ) {
-                $jobId = $this->driver->createJob($moodleUser->moodleId, $jobData['request']);
+                        $jobId = $this->driver->createJob($moodleUser->moodleId, $jobData['request']);
             }
 
             if ($jobId) {
@@ -115,7 +115,7 @@ class UserManager
             }
 
             $zones = [
-                $adherentAssembly,
+                $adherentAssembly ? ['code' => $adherentAssembly] : null,
                 ($committeeMembership = $adherent->getCommitteeMembership()) ? [
                     'code' => ($committee = $committeeMembership->getCommittee())->getUuidAsString(),
                     'name' => $committee->getName(),
@@ -234,6 +234,8 @@ class UserManager
                 $adherentAssembly,
                 $label->type,
             ]);
+
+            $this->logger->error('Adding static label job for adherent', ['adherentId' => $adherent->getId(), 'labelType' => $label->type]);
 
             $jobs[implode('-', $key)] = [
                 'request' => [
