@@ -11,7 +11,6 @@ use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\FeatureEnum;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 
@@ -93,7 +92,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
             $scopes = array_filter(
                 $this->generalScopeGenerator->generateScopes($adherent),
                 static function (Scope $scope) use ($event) {
-                    if (ScopeEnum::NATIONAL === $scope->getMainCode() && $scope->hasFeature(FeatureEnum::EVENTS)) {
+                    if ($scope->isNational() && $scope->hasFeature(FeatureEnum::EVENTS)) {
                         return true;
                     }
 
