@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Query\Mysql;
+namespace App\Doctrine\DBAL;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;

@@ -6,6 +6,7 @@ namespace App\Repository\NationalEvent;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagGenerator\EventTagGenerator;
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
@@ -17,7 +18,6 @@ use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\PublicIdRepositoryInterface;
-use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UpdateAdherentLinkRepositoryInterface;

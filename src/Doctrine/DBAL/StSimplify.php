@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Query\Mysql;
+namespace App\Doctrine\DBAL;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
@@ -26,6 +27,6 @@ class StSimplify extends AbstractSpatialDQLFunction implements ReturnsGeometryIn
 
     protected function getPlatforms(): array
     {
-        return ['mysql'];
+        return [MySQLPlatform::class];
     }
 }

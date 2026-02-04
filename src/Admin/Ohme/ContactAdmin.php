@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Ohme;
 
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Entity\Adherent;
 use App\Entity\Ohme\Contact;
 use App\Form\Admin\AdherentAutocompleteType;
 use App\Ohme\ContactHandler;
-use App\Query\Utils\MultiColumnsSearchHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

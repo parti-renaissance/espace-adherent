@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Query\Utils;
+namespace App\Doctrine\Utils;
 
 use Doctrine\ORM\QueryBuilder;
 
