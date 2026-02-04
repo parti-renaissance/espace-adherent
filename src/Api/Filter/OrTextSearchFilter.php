@@ -7,7 +7,7 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use Doctrine\ORM\QueryBuilder;
 
 final class OrTextSearchFilter extends AbstractFilter

@@ -7,8 +7,8 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Doctrine\Utils\QueryChecker;
-use App\Query\Utils\MultiColumnsSearchHelper;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyInfo\Type;
 

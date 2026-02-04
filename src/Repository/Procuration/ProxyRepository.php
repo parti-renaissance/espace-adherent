@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Repository\Procuration;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Entity\ProcurationV2\Round;
 use App\Procuration\V2\ProxyStatusEnum;
-use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;

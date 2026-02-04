@@ -6,13 +6,13 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
+use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
-use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
