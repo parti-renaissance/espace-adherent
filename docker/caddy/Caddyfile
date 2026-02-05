@@ -68,7 +68,7 @@ test.*.code:80 {
 		header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
 		@noLiveEvent not path /live-event/*
-		header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+		header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://parti-renaissance.fr https://*.parti-renaissance.fr"
 
 		# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
 		header X-Content-Type-Options "nosniff"
