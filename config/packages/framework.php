@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+return static function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('framework', [
+        'secret' => '%env(SECRET)%',
+        'form' => null,
+        'csrf_protection' => null,
+        'serializer' => [
+            'name_converter' => 'serializer.name_converter.camel_case_to_snake_case',
+        ],
+        'trusted_hosts' => null,
+        'session' => [
+            'name' => 'renaissance',
+            'handler_id' => Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler::class,
+        ],
+        'fragments' => null,
+        'http_method_override' => true,
+        'assets' => [
+            'json_manifest_path' => '%kernel.project_dir%/public/built/manifest.json',
+        ],
+        'cache' => [
+            'app' => 'cache.adapter.redis_tag_aware',
+            'default_redis_provider' => '%env(REDIS_DSN)%',
+            'prefix_seed' => 'app_v_%env(APP_VERSION)%',
+            'pools' => [
+                'doctrine.metadata_cache_pool' => [
+                    'adapter' => 'cache.adapter.redis',
+                    'tags' => false,
+                    'default_lifetime' => 2592000,
+                ],
+                'doctrine.query_cache_pool' => [
+                    'adapter' => 'cache.adapter.redis',
+                    'tags' => false,
+                    'default_lifetime' => 2592000,
+                ],
+                'doctrine.result_cache_pool' => [
+                    'adapter' => 'cache.app',
+                    'default_lifetime' => 86400,
+                    'tags' => true,
+                ],
+                'app.cache.redirection' => [
+                    'default_lifetime' => 86400,
+                ],
+                'app.cache.france_cities' => [
+                    'default_lifetime' => 86400,
+                ],
+                'app.cache.geocoder' => [
+                    'default_lifetime' => 86400,
+                ],
+                'app.cache.event_notifications' => [
+                    'default_lifetime' => 86400,
+                ],
+            ],
+        ],
+    ]);
+};

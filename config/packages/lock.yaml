@@ -1,2 +1,0 @@
-framework:
-    lock: '%env(REDIS_DSN)%'

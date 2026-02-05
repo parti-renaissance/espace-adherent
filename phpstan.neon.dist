@@ -5,6 +5,8 @@ parameters:
         - src
         - config
         - migrations
+    bootstrapFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
     ignoreErrors:

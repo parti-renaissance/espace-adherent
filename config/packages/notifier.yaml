@@ -1,4 +1,0 @@
-framework:
-    notifier:
-        chatter_transports:
-            telegram: '%env(REBOT_TELEGRAM_DSN)%'

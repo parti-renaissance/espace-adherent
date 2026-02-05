@@ -1,7 +1,0 @@
-framework:
-    trusted_proxies: '%env(TRUSTED_PROXIES)%'
-    trusted_headers: ['x-forwarded-for', 'x-forwarded-proto']
-    session:
-        cookie_secure: true
-        cookie_samesite: lax
-        cookie_httponly: true

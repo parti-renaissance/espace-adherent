@@ -1,9 +1,0 @@
-parameters:
-    sonata.exporter.writer.csv.delimiter: ';'
-    sonata.exporter.writer.csv.with_bom: true
-
-sonata_exporter:
-    exporter:
-        default_writers:
-            - csv
-            - xlsx

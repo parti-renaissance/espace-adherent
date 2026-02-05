@@ -1,4 +1,0 @@
-kreait_firebase:
-    projects:
-        jemarche_app:
-            credentials: '%kernel.project_dir%/tests/Fixtures/gcloud-service-key.json'

@@ -1,0 +1,678 @@
+<?php
+
+declare(strict_types=1);
+
+return static function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('security', [
+        'hide_user_not_found' => false,
+        'erase_credentials' => false,
+        'password_hashers' => [
+            App\Entity\Administrator::class => 'bcrypt',
+            App\Entity\Adherent::class => 'bcrypt',
+        ],
+        'role_hierarchy' => [
+            'ROLE_ADMIN_DASHBOARD' => [
+                'ROLE_APP_ADMIN_GEO_ZONE_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_SEARCH',
+            ],
+            'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS' => [
+                'ROLE_APP_ADMIN_ADHERENT_FORMATION_ALL',
+            ],
+            'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES' => [
+                'ROLE_APP_ADMIN_RENAISSANCE_DEPARTMENT_SITE_ALL',
+            ],
+            'ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT' => [
+                'ROLE_APP_ADMIN_ADHERENT_CREATE_RENAISSANCE',
+                'ROLE_APP_ADMIN_ADHERENT_CREATE_RENAISSANCE_VERIFY_EMAIL',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_MEDIAS' => [
+                'ROLE_APP_ADMIN_MEDIA_ALL',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_PAGES' => [
+                'ROLE_APP_ADMIN_PAGE_CREATE',
+                'ROLE_APP_ADMIN_PAGE_LIST',
+                'ROLE_APP_ADMIN_PAGE_EDIT',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_CMS_BLOCKS' => [
+                'ROLE_APP_ADMIN_CMS_BLOCK_VIEW',
+                'ROLE_APP_ADMIN_CMS_BLOCK_EDIT',
+                'ROLE_APP_ADMIN_CMS_BLOCK_LIST',
+                'ROLE_APP_ADMIN_CMS_BLOCK_EXPORT',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_REDIRECTIONS' => [
+                'ROLE_APP_ADMIN_REDIRECTION_ALL',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_NEWSLETTER_SUBSCRIPTIONS' => [
+                'ROLE_APP_ADMIN_NEWSLETTER_SUBSCRIPTION_ALL',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_QR_CODES' => [
+                'ROLE_APP_ADMIN_QR_CODE_ALL',
+            ],
+            'ROLE_ADMIN_COMMUNICATION_CHATBOTS' => [
+                'ROLE_APP_ADMIN_CHATBOT_CHATBOT_ALL',
+            ],
+            'ROLE_ADMIN_ADHERENT_ADHERENTS' => [
+                'ROLE_APP_ADMIN_ADHERENT_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_VIEW',
+                'ROLE_APP_ADMIN_ADHERENT_EDIT',
+                'ROLE_APP_ADMIN_DISTRICT_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_ZONE_BASED_ROLE_ADMIN_ALL',
+                'ROLE_APP_ADMIN_POLITICAL_COMMITTEE_ALL',
+                'ROLE_APP_ADMIN_ADHERENT_REFRESH_TAGS',
+            ],
+            'ROLE_ADMIN_STATS_ALL' => [
+                'ROLE_ADMIN_ADHERENT_STATS',
+                'ROLE_ADMIN_PROCURATION_STATS',
+            ],
+            'ROLE_ADMIN_ADHERENTS_READONLY' => [
+                'ROLE_APP_ADMIN_ADHERENT_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_VIEW',
+            ],
+            'ROLE_ADMIN_ADHERENT_IMPERSONATE' => [
+                'ROLE_ALLOWED_TO_SWITCH',
+            ],
+            'ROLE_ADMIN_ADHERENT_BAN' => [
+                'ROLE_APP_ADMIN_ADHERENT_BAN',
+            ],
+            'ROLE_ADMIN_ADHERENT_CONSEIL' => [
+                'ROLE_APP_ADMIN_ADHERENT_CONSEIL',
+            ],
+            'ROLE_ADMIN_ADHERENT_UNREGISTER' => [
+                'ROLE_APP_ADMIN_ADHERENT_TERMINATE_MEMBERSHIP',
+            ],
+            'ROLE_ADMIN_ADHERENT_CERTIFICATIONS' => [
+                'ROLE_APP_ADMIN_ADHERENT_CERTIFY',
+                'ROLE_APP_ADMIN_ADHERENT_UNCERTIFY',
+                'ROLE_APP_ADMIN_CERTIFICATION_REQUEST_ALL',
+            ],
+            'ROLE_ADMIN_ADHERENT_CERTIFICATION_HISTORIES' => [
+                'ROLE_APP_ADMIN_REPORTING_ADHERENT_CERTIFICATION_HISTORY_LIST',
+            ],
+            'ROLE_ADMIN_ADHERENT_DECLARED_MANDATE_HISTORIES' => [
+                'ROLE_APP_ADMIN_REPORTING_DECLARED_MANDATE_HISTORY_LIST',
+            ],
+            'ROLE_ADMIN_ADHERENT_INVITATIONS' => [
+                'ROLE_APP_ADMIN_INVITE_EXPORT',
+                'ROLE_APP_ADMIN_INVITE_LIST',
+                'ROLE_APP_ADMIN_INVITE_VIEW',
+                'ROLE_APP_ADMIN_INVITE_DELETE',
+            ],
+            'ROLE_ADMIN_ADHERENT_UNREGISTRATIONS' => [
+                'ROLE_APP_ADMIN_UNREGISTRATION_LIST',
+                'ROLE_APP_ADMIN_UNREGISTRATION_VIEW',
+                'ROLE_APP_ADMIN_UNREGISTRATION_EXPORT',
+            ],
+            'ROLE_ADMIN_ADHERENT_ADHESION_REQUEST' => [
+                'ROLE_APP_ADMIN_ADHESION_REQUEST_LIST',
+            ],
+            'ROLE_ADMIN_ADHERENT_REFERRALS' => [
+                'ROLE_APP_ADMIN_REFERRAL_ALL',
+            ],
+            'ROLE_ADMIN_ADHERENT_REFERRERS' => [
+                'ROLE_APP_ADMIN_ADHERENT_REFERRER_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_REFERRER_EXPORT',
+            ],
+            'ROLE_ADMIN_ADHERENT_USER_ACTION_HISTORIES' => [
+                'ROLE_APP_ADMIN_USER_ACTION_HISTORY_LIST',
+            ],
+            'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES' => [
+                'ROLE_APP_ADMIN_ADHERENT_ELECTED_REPRESENTATIVE_EXPORT',
+                'ROLE_APP_ADMIN_ADHERENT_ELECTED_REPRESENTATIVE_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_ELECTED_REPRESENTATIVE_VIEW',
+                'ROLE_APP_ADMIN_ADHERENT_ELECTED_REPRESENTATIVE_EDIT',
+                'ROLE_APP_ADMIN_DISTRICT_LIST',
+                'ROLE_APP_ADMIN_ADHERENT_ZONE_BASED_ROLE_ADMIN_ALL',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_ADHERENT_MANDATE_ALL',
+            ],
+            'ROLE_ADMIN_POLITIQUE_REPUBLICAN_SILENCES' => [
+                'ROLE_APP_ADMIN_REPUBLICAN_SILENCE_ALL',
+            ],
+            'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_CANDIDATES' => [
+                'ROLE_APP_ADMIN_LEGISLATIVE_CANDIDATE_ALL',
+            ],
+            'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_DISTRICT_ZONES' => [
+                'ROLE_APP_ADMIN_LEGISLATIVE_DISTRICT_ZONE_ALL',
+            ],
+            'ROLE_ADMIN_POLITIQUE_ELECTED_REPRESENTATIVES' => [
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_EDIT',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_VIEW',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_LIST',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_EXPORT',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_DELETE',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_SHOW',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_LABEL_ALL',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_MANDATE_ALL',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_POLITICAL_FUNCTION_ALL',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_SOCIAL_NETWORK_LINK_ALL',
+                'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_ZONE_LIST',
+            ],
+            'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARDS' => [
+                'ROLE_APP_ADMIN_ELECTION_CITY_CARD_ALL',
+                'ROLE_APP_ADMIN_ELECTION_CITY_PARTNER_ALL',
+                'ROLE_APP_ADMIN_ELECTION_CITY_CONTACT_ALL',
+            ],
+            'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARD_MANAGERS' => [
+                'ROLE_APP_ADMIN_ELECTION_CITY_CARD_MANAGERS_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS' => [
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_ALL',
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_INSCRIPTIONS_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_INSCRIPTIONS' => [
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_INSCRIPTIONS_ALL',
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_INSCRIPTIONS_PAYMENTS_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_INSCRIPTIONS_ADVANCED' => [
+                'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_INSCRIPTIONS',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_NATIONAL_EVENTS_JEM' => [
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_JEM_ALL',
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_JEM_INSCRIPTIONS_ALL',
+                'ROLE_APP_ADMIN_NATIONAL_EVENT_JEM_INSCRIPTIONS_PAYMENTS_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_COMMITTEES' => [
+                'ROLE_APP_ADMIN_COMMITTEE_EXPORT',
+                'ROLE_APP_ADMIN_COMMITTEE_LIST',
+                'ROLE_APP_ADMIN_COMMITTEE_VIEW',
+                'ROLE_APP_ADMIN_COMMITTEE_EDIT',
+                'ROLE_APP_ADMIN_COMMITTEE_DELETE',
+                'ROLE_APP_ADMIN_COMMITTEE_APPROVE',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_EVENTS' => [
+                'ROLE_APP_ADMIN_EVENT_EXPORT',
+                'ROLE_APP_ADMIN_EVENT_LIST',
+                'ROLE_APP_ADMIN_EVENT_VIEW',
+                'ROLE_APP_ADMIN_EVENT_EDIT',
+                'ROLE_APP_ADMIN_EVENT_DELETE',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_EVENT_REGISTRATIONS' => [
+                'ROLE_APP_ADMIN_EVENT_REGISTRATION_LIST',
+                'ROLE_APP_ADMIN_EVENT_REGISTRATION_EXPORT',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_EVENT_CATEGORIES' => [
+                'ROLE_APP_ADMIN_EVENT_CATEGORY_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_EVENT_GROUP_CATEGORIES' => [
+                'ROLE_APP_ADMIN_EVENT_GROUP_CATEGORY_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_ELECTIONS' => [
+                'ROLE_APP_ADMIN_ELECTION_LIST',
+                'ROLE_APP_ADMIN_ELECTION_VIEW',
+                'ROLE_APP_ADMIN_ELECTION_EDIT',
+                'ROLE_APP_ADMIN_ELECTION_CREATE',
+                'ROLE_APP_ADMIN_ELECTION_DELETE',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_REPORTS' => [
+                'ROLE_APP_ADMIN_REPORT_APPROVE',
+                'ROLE_APP_ADMIN_REPORT_VIEW',
+                'ROLE_APP_ADMIN_REPORT_LIST',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_CITIES' => [
+                'ROLE_APP_ADMIN_CITY_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_FILES' => [
+                'ROLE_APP_ADMIN_FILE_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_TEAMS' => [
+                'ROLE_APP_ADMIN_TEAM_TEAM_ALL',
+                'ROLE_APP_ADMIN_TEAM_MEMBER_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_TEAM_MEMBER_HISTORIES' => [
+                'ROLE_APP_ADMIN_REPORTING_TEAM_MEMBER_HISTORY_LIST',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_CONSULTATIONS' => [
+                'ROLE_APP_ADMIN_CONSULTATION_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_JME_DOCUMENTS' => [
+                'ROLE_APP_ADMIN_DOCUMENT_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_JME_GENERAL_MEETING_REPORTS' => [
+                'ROLE_APP_ADMIN_GENERAL_MEETING_REPORT_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_JME_EMAIL_TEMPLATES' => [
+                'ROLE_APP_ADMIN_EMAIL_TEMPLATE_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_PROCURATION_V2_ELECTIONS' => [
+                'ROLE_APP_ADMIN_PROCURATION_V2_ELECTION_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_PROCURATION_V2_MANAGERS' => [
+                'ROLE_APP_ADMIN_PROCURATION_V2_REQUEST_ALL',
+                'ROLE_APP_ADMIN_PROCURATION_V2_PROXY_ALL',
+                'ROLE_APP_ADMIN_PROCURATION_V2_PROCURATION_REQUEST_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_AGORAS' => [
+                'ROLE_APP_ADMIN_AGORA_ALL',
+                'ROLE_APP_ADMIN_AGORA_MEMBERSHIP_ALL',
+            ],
+            'ROLE_ADMIN_TERRITOIRES_PUBLICATIONS' => [
+                'ROLE_APP_ADMIN_ADHERENT_MESSAGE_ALL',
+            ],
+            'ROLE_ADMIN_IDEES_GENERAL_CONVENTIONS' => [
+                'ROLE_APP_ADMIN_GENERAL_CONVENTION_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS' => [
+                'ROLE_APP_ADMIN_JECOUTE_NEWS_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_NEWS' => [
+                'ROLE_APP_ADMIN_JECOUTE_NATIONAL_REGION_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_REGIONAL_NEWS' => [
+                'ROLE_APP_ADMIN_JECOUTE_CANDIDATE_REGION_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_DEPARTMENTAL_NEWS' => [
+                'ROLE_APP_ADMIN_JECOUTE_REFERENT_REGION_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_SUGGESTED_QUESTIONS' => [
+                'ROLE_APP_ADMIN_JECOUTE_SUGGESTED_QUESTION_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_LOCAL_SURVEYS' => [
+                'ROLE_APP_ADMIN_JECOUTE_LOCAL_SURVEY_ALL',
+                'ROLE_APP_ADMIN_JECOUTE_DATA_SURVEY_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_SURVEYS' => [
+                'ROLE_APP_ADMIN_JECOUTE_NATIONAL_SURVEY_ALL',
+                'ROLE_APP_ADMIN_JECOUTE_DATA_SURVEY_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_POLLS' => [
+                'ROLE_APP_ADMIN_POLL_POLL_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_RIPOSTES' => [
+                'ROLE_APP_ADMIN_JECOUTE_RIPOSTE_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_RESSOURCE_LINKS' => [
+                'ROLE_APP_ADMIN_JECOUTE_RESOURCE_LINK_ALL',
+            ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_HEADER_BLOCKS' => [
+                'ROLE_APP_ADMIN_JE_MENGAGE_HEADER_BLOCK_ALL',
+            ],
+            'ROLE_ADMIN_PHONING_CAMPAIGNS' => [
+                'ROLE_APP_ADMIN_PHONING_CAMPAIGN_ALL',
+                'ROLE_APP_ADMIN_PHONING_CAMPAIGN_HISTORY_ALL',
+                'ROLE_APP_ADMIN_AUDIENCE_ALL',
+            ],
+            'ROLE_ADMIN_PHONING_CAMPAIGN_HISTORIES' => [
+                'ROLE_APP_ADMIN_PHONING_CAMPAIGN_HISTORY_ALL',
+            ],
+            'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGNS' => [
+                'ROLE_APP_ADMIN_PAP_CAMPAIGN_ALL',
+            ],
+            'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGN_HISTORIES' => [
+                'ROLE_APP_ADMIN_PAPCAMPAIGN_HISTORY_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATIONS' => [
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_POLLS' => [
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_POLL_ALL',
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_POLL_QUESTION_CHOICE_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOLS' => [
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOL_ALL',
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOL_CANDIDACIES_GROUPS_ALL',
+                'ROLE_APP_ADMIN_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOL_CANDIDACY_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_DESIGNATION_ELECTIONS' => [
+                'ROLE_APP_ADMIN_DESIGNATION_ELECTION_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_DESIGNATION_CANDIDATURES' => [
+                'ROLE_APP_ADMIN_DESIGNATION_CANDIDATURE_ALL',
+            ],
+            'ROLE_ADMIN_INSTANCES_DESIGNATION_VOTES' => [
+                'ROLE_APP_ADMIN_DESIGNATION_VOTE_ALL',
+            ],
+            'ROLE_ADMIN_FINANCES_DONATIONS' => [
+                'ROLE_APP_ADMIN_DONATOR_ALL',
+                'ROLE_APP_ADMIN_DONATION_ALL',
+                'ROLE_APP_ADMIN_DONATOR_TAG_ALL',
+                'ROLE_APP_ADMIN_DONATION_TAG_ALL',
+                'ROLE_APP_ADMIN_ADHERENT_EXTRACT',
+                'ROLE_APP_ADMIN_OHME_CONTACT_ALL',
+            ],
+            'ROLE_ADMIN_TECH_ADMINISTRATORS' => [
+                'ROLE_APP_ADMIN_ADMINISTRATOR_ALL',
+                'ROLE_APP_ADMIN_ADMINISTRATOR_ROLE_LIST',
+                'ROLE_APP_ADMIN_ADMINISTRATOR_ACTION_HISTORY_LIST',
+            ],
+            'ROLE_ADMIN_TECH_EMAIL_TEMPLATES' => [
+                'ROLE_APP_ADMIN_TRANSACTIONAL_EMAIL_TEMPLATE_ALL',
+            ],
+            'ROLE_ADMIN_TECH_EMAIL_LOGS' => [
+                'ROLE_APP_ADMIN_EMAIL_ALL',
+            ],
+            'ROLE_ADMIN_TECH_SUBSCRIPTION_TYPES' => [
+                'ROLE_APP_ADMIN_SUBSCRIPTION_TYPE_ALL',
+            ],
+            'ROLE_ADMIN_TECH_OAUTH_CLIENTS' => [
+                'ROLE_APP_ADMIN_CLIENT_ALL',
+            ],
+            'ROLE_ADMIN_TECH_SCOPES' => [
+                'ROLE_APP_ADMIN_SCOPE_ALL',
+            ],
+            'ROLE_ADMIN_FORMATION_FORMATIONS' => [
+                'ROLE_APP_ADMIN_FORMATION_AXE_ALL',
+                'ROLE_APP_ADMIN_FORMATION_MODULE_ALL',
+                'ROLE_APP_ADMIN_FORMATION_PATH_ALL',
+            ],
+            'ROLE_ADMIN_FORMATION_MOOC' => [
+                'ROLE_APP_ADMIN_MOOC_MOOC_ALL',
+                'ROLE_APP_ADMIN_MOOC_CHAPTER_ALL',
+                'ROLE_APP_ADMIN_MOOC_ELEMENT_ALL',
+            ],
+            'ROLE_ADMIN_ARCHIVES_CONTENU' => [
+                'ROLE_APP_ADMIN_CUSTOM_SEARCH_RESULT_ALL',
+                'ROLE_APP_ADMIN_FACEBOOK_VIDEO_ALL',
+            ],
+            'ROLE_ADMIN_ARCHIVES_JE_PARTAGE' => [
+                'ROLE_APP_ADMIN_SOCIAL_SHARE_CATEGORY_ALL',
+                'ROLE_APP_ADMIN_SOCIAL_SHARE_ALL',
+            ],
+            'ROLE_ADMIN_ARCHIVES_EXPLICATIONS' => [
+                'ROLE_APP_ADMIN_ORDER_SECTION_ALL',
+            ],
+            'ROLE_ADMIN_ARCHIVES_FACEBOOK_PROFILES' => [
+                'ROLE_APP_ADMIN_FACEBOOK_PROFILE_LIST',
+                'ROLE_APP_ADMIN_FACEBOOK_PROFILE_VIEW',
+            ],
+            'ROLE_ADMIN_ARCHIVES_PROPOSALS' => [
+                'ROLE_APP_ADMIN_PROPOSAL_THEME_ALL',
+                'ROLE_APP_ADMIN_PROPOSAL_ALL',
+            ],
+            'ROLE_ADMIN_ARCHIVES_JE_MARCHE' => [
+                'ROLE_APP_ADMIN_JE_MARCHE_EXPORT',
+                'ROLE_APP_ADMIN_JE_MARCHE_LIST',
+                'ROLE_APP_ADMIN_JE_MARCHE_VIEW',
+                'ROLE_APP_ADMIN_JE_MARCHE_DELE',
+            ],
+            'ROLE_ADMIN_ELECTIONS_DEPARTEMENTALES_ALL' => [
+                'ROLE_APP_ADMIN_LOCAL_ELECTION_ALL',
+                'ROLE_APP_ADMIN_LOCAL_ELECTION_CANDIDACIES_GROUP_ALL',
+                'ROLE_APP_ADMIN_LOCAL_ELECTION_CANDIDACY_ALL',
+                'ROLE_APP_ADMIN_LOCAL_ELECTION_SUBSTITUTE_CANDIDACY_ALL',
+                'ROLE_APP_ADMIN_LOCAL_ELECTION_CANDIDATE_IMPORT',
+            ],
+            'ROLE_SUPER_ADMIN' => [
+                'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
+                'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
+                'ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT',
+                'ROLE_ADMIN_COMMUNICATION_MEDIAS',
+                'ROLE_ADMIN_COMMUNICATION_PAGES',
+                'ROLE_ADMIN_COMMUNICATION_CMS_BLOCKS',
+                'ROLE_ADMIN_COMMUNICATION_REDIRECTIONS',
+                'ROLE_ADMIN_COMMUNICATION_NEWSLETTER_SUBSCRIPTIONS',
+                'ROLE_ADMIN_COMMUNICATION_QR_CODES',
+                'ROLE_ADMIN_ADHERENT_ADHERENTS',
+                'ROLE_ADMIN_ADHERENTS_READONLY',
+                'ROLE_ADMIN_ADHERENT_IMPERSONATE',
+                'ROLE_ADMIN_ADHERENT_BAN',
+                'ROLE_ADMIN_ADHERENT_UNREGISTER',
+                'ROLE_ADMIN_ADHERENT_CERTIFICATIONS',
+                'ROLE_ADMIN_ADHERENT_CERTIFICATION_HISTORIES',
+                'ROLE_ADMIN_ADHERENT_INVITATIONS',
+                'ROLE_ADMIN_ADHERENT_UNREGISTRATIONS',
+                'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES',
+                'ROLE_ADMIN_POLITIQUE_REPUBLICAN_SILENCES',
+                'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_CANDIDATES',
+                'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_DISTRICT_ZONES',
+                'ROLE_ADMIN_POLITIQUE_ELECTED_REPRESENTATIVES',
+                'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARDS',
+                'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARD_MANAGERS',
+                'ROLE_ADMIN_TERRITOIRES_COMMITTEES',
+                'ROLE_ADMIN_TERRITOIRES_EVENTS',
+                'ROLE_ADMIN_TERRITOIRES_EVENT_CATEGORIES',
+                'ROLE_ADMIN_TERRITOIRES_EVENT_GROUP_CATEGORIES',
+                'ROLE_ADMIN_TERRITOIRES_PROCURATION_REQUESTS',
+                'ROLE_ADMIN_TERRITOIRES_PROCURATION_PROXIES',
+                'ROLE_ADMIN_TERRITOIRES_VOTE_PLACES',
+                'ROLE_ADMIN_TERRITOIRES_ELECTIONS',
+                'ROLE_ADMIN_TERRITOIRES_REPORTS',
+                'ROLE_ADMIN_TERRITOIRES_CITIES',
+                'ROLE_ADMIN_TERRITOIRES_FILES',
+                'ROLE_ADMIN_TERRITOIRES_TEAMS',
+                'ROLE_ADMIN_TERRITOIRES_TEAM_MEMBER_HISTORIES',
+                'ROLE_ADMIN_TERRITOIRES_CONSULTATIONS',
+                'ROLE_ADMIN_TERRITOIRES_JME_DOCUMENTS',
+                'ROLE_ADMIN_TERRITOIRES_JME_GENERAL_MEETING_REPORTS',
+                'ROLE_ADMIN_TERRITOIRES_JME_EMAIL_TEMPLATES',
+                'ROLE_ADMIN_TERRITOIRES_AGORAS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_NEWS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_REGIONAL_NEWS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_DEPARTMENTAL_NEWS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_SUGGESTED_QUESTIONS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_LOCAL_SURVEYS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_SURVEYS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_POLLS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_RIPOSTES',
+                'ROLE_ADMIN_APPLICATION_MOBILE_RESSOURCE_LINKS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_HEADER_BLOCKS',
+                'ROLE_ADMIN_PHONING_CAMPAIGNS',
+                'ROLE_ADMIN_PHONING_CAMPAIGN_HISTORIES',
+                'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGNS',
+                'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGN_HISTORIES',
+                'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATIONS',
+                'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_POLLS',
+                'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOLS',
+                'ROLE_ADMIN_INSTANCES_DESIGNATION_ELECTIONS',
+                'ROLE_ADMIN_INSTANCES_DESIGNATION_CANDIDATURES',
+                'ROLE_ADMIN_INSTANCES_DESIGNATION_VOTES',
+                'ROLE_ADMIN_FINANCES_DONATIONS',
+                'ROLE_ADMIN_TECH_ADMINISTRATORS',
+                'ROLE_ADMIN_TECH_EMAIL_TEMPLATES',
+                'ROLE_ADMIN_TECH_EMAIL_LOGS',
+                'ROLE_ADMIN_TECH_SUBSCRIPTION_TYPES',
+                'ROLE_ADMIN_TECH_OAUTH_CLIENTS',
+                'ROLE_ADMIN_TECH_SCOPES',
+                'ROLE_ADMIN_FORMATION_FORMATIONS',
+                'ROLE_ADMIN_FORMATION_MOOC',
+                'ROLE_ADMIN_ARCHIVES_CONTENU',
+                'ROLE_ADMIN_ARCHIVES_JE_PARTAGE',
+                'ROLE_ADMIN_ARCHIVES_EXPLICATIONS',
+                'ROLE_ADMIN_ARCHIVES_FACEBOOK_PROFILES',
+                'ROLE_ADMIN_ARCHIVES_PROPOSALS',
+                'ROLE_ADMIN_ARCHIVES_JE_MARCHE',
+                'ROLE_ADMIN_COMMUNAUTES_THEMATIQUES_ALL',
+                'ROLE_ADMIN_ELECTIONS_DEPARTEMENTALES_ALL',
+                'ROLE_ADMIN_STATS_ALL',
+            ],
+            'ROLE_ADMIN_PETITION' => [
+                'ROLE_APP_ADMIN_PETITION_SIGNATURE_ALL',
+            ],
+            'ROLE_CANDIDATE_REGIONAL_HEADED' => [
+                'ROLE_CANDIDATE',
+                'ROLE_JECOUTE_NEWS',
+                'ROLE_JECOUTE_REGION',
+                'ROLE_AUDIENCE',
+            ],
+            'ROLE_CANDIDATE_REGIONAL_LEADER' => [
+                'ROLE_CANDIDATE',
+                'ROLE_JECOUTE_NEWS',
+            ],
+            'ROLE_CANDIDATE_DEPARTMENTAL' => [
+                'ROLE_CANDIDATE',
+            ],
+            'ROLE_CORRESPONDENT' => [
+                'ROLE_AUDIENCE',
+            ],
+            'ROLE_DEPUTY' => [
+                'ROLE_AUDIENCE',
+            ],
+            'ROLE_SENATOR' => [
+                'ROLE_AUDIENCE',
+            ],
+            'ROLE_NATIONAL' => [
+                'ROLE_AUDIENCE',
+            ],
+            'ROLE_VOTE_INSPECTOR' => [
+                'ROLE_NATIONAL_COUNCIL_MEMBER',
+            ],
+            'ROLE_PHONING_MANAGER' => [
+                'ROLE_AUDIENCE',
+            ],
+        ],
+        'access_decision_manager' => [
+            'strategy' => 'unanimous',
+        ],
+        'providers' => [
+            'admins_db' => [
+                'entity' => [
+                    'class' => App\Entity\Administrator::class,
+                ],
+            ],
+            'users_db' => [
+                'entity' => [
+                    'class' => App\Entity\Adherent::class,
+                ],
+            ],
+        ],
+        'firewalls' => [
+            'dev' => [
+                'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
+                'security' => false,
+            ],
+            'api_oauth' => [
+                'pattern' => '^/api/(me$|webhooks|statistics/|jecoute/|crm-paris/|v3/)',
+                'stateless' => true,
+                'provider' => 'users_db',
+                'custom_authenticators' => [
+                    App\OAuth\OAuthAuthenticator::class,
+                ],
+            ],
+            'admin' => [
+                'context' => 'main_context',
+                'host' => '%admin_renaissance_host%',
+                'pattern' => '^/(?!(oauth|vox))',
+                'provider' => 'admins_db',
+                'switch_user' => true,
+                'access_denied_handler' => App\Security\AccessDeniedHandler::class,
+                'login_throttling' => null,
+                'form_login' => [
+                    'login_path' => 'app_admin_login',
+                    'check_path' => 'app_admin_login',
+                    'enable_csrf' => true,
+                    'default_target_path' => 'sonata_admin_dashboard',
+                    'always_use_default_target_path' => true,
+                    'form_only' => true,
+                    'failure_handler' => App\Security\Http\AuthenticationFailureHandler::class,
+                ],
+                'two_factor' => [
+                    'auth_form_path' => 'admin_security_2fa',
+                    'check_path' => 'admin_security_2fa_check',
+                    'default_target_path' => 'sonata_admin_dashboard',
+                    'always_use_default_target_path' => true,
+                ],
+                'logout' => [
+                    'path' => 'logout',
+                    'target' => 'sonata_admin_dashboard',
+                ],
+            ],
+            'main' => [
+                'context' => 'main_context',
+                'provider' => 'users_db',
+                'switch_user' => true,
+                'login_throttling' => null,
+                'remember_me' => [
+                    'secret' => '%kernel.secret%',
+                    'lifetime' => 7890000,
+                    'path' => '/',
+                    'token_provider' => [
+                        'doctrine' => true,
+                    ],
+                ],
+                'logout' => [
+                    'path' => 'logout',
+                    'target' => 'vox_app',
+                ],
+                'user_checker' => App\Security\UserChecker::class,
+                'form_login' => [
+                    'login_path' => 'app_renaissance_login',
+                    'check_path' => 'app_renaissance_login',
+                    'enable_csrf' => true,
+                    'default_target_path' => 'vox_app_redirect',
+                    'form_only' => true,
+                    'success_handler' => App\Security\Http\AuthenticationSuccessHandler::class,
+                    'failure_handler' => App\Security\Http\AuthenticationFailureHandler::class,
+                ],
+                'access_denied_handler' => App\Security\AccessDeniedHandler::class,
+                'entry_point' => App\Security\ApiAuthenticationEntryPoint::class,
+                'login_link' => [
+                    'check_route' => 'app_user_connect_with_magic_link',
+                    'check_post_only' => true,
+                    'signature_properties' => [
+                        'uuid',
+                        'emailAddress',
+                        'registeredAt',
+                    ],
+                    'max_uses' => 1,
+                    'lifetime' => 600,
+                    'failure_path' => 'app_renaissance_login',
+                    'default_target_path' => 'vox_app_redirect',
+                ],
+            ],
+        ],
+        'access_control' => [
+            [
+                'path' => '^/parametres',
+                'roles' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'path' => '^/espace-adherent',
+                'roles' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'host' => '%admin_renaissance_host%',
+                'path' => '^/login/(2fa|logout)',
+                'role' => [
+                    'IS_AUTHENTICATED_2FA_IN_PROGRESS',
+                ],
+            ],
+            [
+                'host' => '%admin_renaissance_host%',
+                'path' => '^/login',
+                'roles' => [
+                    'PUBLIC_ACCESS',
+                ],
+            ],
+            [
+                'host' => '%admin_renaissance_host%',
+                'path' => '^/robots.txt',
+                'roles' => [
+                    'PUBLIC_ACCESS',
+                ],
+            ],
+            [
+                'host' => '%admin_renaissance_host%',
+                'path' => '^/(?!(oauth|vox|cadre|elecmap))',
+                'roles' => [
+                    'ROLE_ADMIN_DASHBOARD',
+                ],
+            ],
+            [
+                'host' => '%user_vox_host%',
+                'path' => '^/formation',
+                'roles' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'path' => '^/membre/.*',
+                'roles' => [
+                    'IS_AUTHENTICATED_REMEMBERED',
+                ],
+            ],
+            [
+                'path' => '^/elections/.+',
+                'roles' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'path' => '^/(adhesion|don|espace-elus)',
+                'allow_if' => 'not is_granted(\'ROLE_ADMIN_DASHBOARD\')',
+            ],
+        ],
+    ]);
+};

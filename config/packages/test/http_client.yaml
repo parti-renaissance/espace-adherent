@@ -1,3 +1,0 @@
-framework:
-    http_client:
-        mock_response_factory: Tests\App\HttpClient\MockHttpClientCallback
