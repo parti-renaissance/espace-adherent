@@ -1,2 +1,0 @@
-lexik_paybox:
-    public_key: '%env(SSL_PUBLIC_KEY)%'

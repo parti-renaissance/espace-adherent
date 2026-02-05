@@ -1,5 +1,0 @@
-kreait_firebase:
-    projects:
-        jemarche_app:
-            default: true
-            public: false
