@@ -56,15 +56,12 @@ class NewChatController extends AbstractController
 
             try {
                 $result = $this->geminiAgent->call($messageBag);
+                $content = $result->getContent();
 
-                $iterator = is_iterable($result) ? $result : [$result];
-
-                foreach ($iterator as $chunk) {
+                foreach (is_iterable($content) ? $content : [$content] as $content) {
                     if (connection_aborted()) {
                         break;
                     }
-
-                    $content = $chunk->getContent();
 
                     if (empty($content)) {
                         continue;
