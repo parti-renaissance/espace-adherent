@@ -33,7 +33,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
             'sentry' => [
                 'type' => 'sentry',
-                'level' => Monolog\Level::Error,
+                'level' => Monolog\Level::Error->value,
                 'hub_id' => Sentry\State\HubInterface::class,
                 'fill_extra_context' => true,
                 'process_psr_3_messages' => false,
