@@ -8,3 +8,5 @@ ai:
             platform: 'ai.platform.gemini'
             model:
                 name: 'gemini-2.5-flash-lite'
+                options:
+                    stream: true
