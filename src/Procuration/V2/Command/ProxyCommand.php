@@ -12,7 +12,6 @@ class ProxyCommand extends AbstractCommand
     #[Assert\Regex(pattern: '/^[0-9]+$/i')]
     public ?string $electorNumber = null;
 
-    #[Assert\NotNull(message: 'Veuillez cocher une réponse')]
     public ?bool $acceptVoteNearby = null;
 
     #[Assert\Expression(expression: 'value >= 1 and ((!this.isFDE() and value <= 2) or (this.isFDE() and value <= 3))', message: 'procuration.proxy.slots.invalid')]

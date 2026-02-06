@@ -17,16 +17,7 @@ class ProxyType extends AbstractProcurationType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('electorNumber', TextType::class, [
-                'required' => false,
-            ])
-            ->add('acceptVoteNearby', ChoiceType::class, [
-                'expanded' => true,
-                'choices' => [
-                    'global.yes' => true,
-                    'global.no' => false,
-                ],
-            ])
+            ->add('electorNumber', TextType::class, ['required' => false])
             ->add('slots', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
