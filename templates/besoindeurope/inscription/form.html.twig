@@ -8,13 +8,6 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% block final_javascripts %}
-    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
-
-    <script>
-        Bootstrap.onLoad(() => Main.runBDEInscriptionPage());
-    </script>
-{% endblock %}
 
 {% block sub_content %}
     <div class="bg-[#17211c]">

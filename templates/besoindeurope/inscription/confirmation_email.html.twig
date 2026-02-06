@@ -5,12 +5,6 @@
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 {% form_theme new_code_form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% block final_javascripts %}
-    <script>
-        Bootstrap.onLoad(() => Main.runBDEInscriptionPage());
-    </script>
-{% endblock %}
-
 {% block sub_content %}
     <div class="bg-[#F4F5F7] flex flex-col items-center py-20">
         <twig:Atoms:ReCard class="max-w-[500px]"
