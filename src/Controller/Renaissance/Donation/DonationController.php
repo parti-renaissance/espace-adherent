@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
+#[Route('/grands-donateurs', name: 'app_major_donator_donation_index', defaults: ['majorDonator' => true], methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
     private const DEFAULT_STEP = 0;
@@ -27,7 +28,7 @@ class DonationController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, AnonymousFollowerSession $anonymousFollowerSession): Response
+    public function __invoke(Request $request, AnonymousFollowerSession $anonymousFollowerSession, bool $majorDonator = false): Response
     {
         if ($response = $anonymousFollowerSession->start($request)) {
             return $response;
@@ -36,7 +37,7 @@ class DonationController extends AbstractController
         /** @var Adherent|null $adherent */
         $adherent = $this->getUser();
 
-        $donationRequest = $this->getDonationRequest($request, $adherent);
+        $donationRequest = $this->getDonationRequest($request, $adherent, $majorDonator);
 
         $form = $this
             ->createForm(DonationRequestType::class, $donationRequest)
@@ -49,14 +50,15 @@ class DonationController extends AbstractController
             return $this->redirectToRoute('app_payment', ['uuid' => $donation->getUuid()]);
         }
 
-        return $this->render('renaissance/donation/form.html.twig', [
+        return $this->render($majorDonator ? 'renaissance/donation/form_major_donator.html.twig' : 'renaissance/donation/form.html.twig', [
             'form' => $form->createView(),
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'step' => $this->getCurrentStep($request, $adherent),
+            'major_donator' => $majorDonator,
         ]);
     }
 
-    private function getDonationRequest(Request $request, ?Adherent $currentUser): DonationRequest
+    private function getDonationRequest(Request $request, ?Adherent $currentUser, bool $majorDonator): DonationRequest
     {
         $duration = $request->query->getInt('duration', PayboxPaymentSubscription::NONE);
 
@@ -64,17 +66,17 @@ class DonationController extends AbstractController
             $duration = PayboxPaymentSubscription::NONE;
         }
 
-        $isSubscription = PayboxPaymentSubscription::NONE === $duration;
+        $isUnique = PayboxPaymentSubscription::NONE === $duration;
 
         $amount = max(
             min(
                 $request->query->getInt(
                     'amount',
-                    $isSubscription ? DonationRequest::DEFAULT_AMOUNT : DonationRequest::DEFAULT_AMOUNT_SUBSCRIPTION
+                    $isUnique ? ($majorDonator ? 1500 : DonationRequest::DEFAULT_AMOUNT) : DonationRequest::DEFAULT_AMOUNT_SUBSCRIPTION
                 ),
-                $isSubscription ? DonationRequest::MAX_AMOUNT : DonationRequest::MAX_AMOUNT_SUBSCRIPTION
+                $isUnique ? DonationRequest::MAX_AMOUNT : DonationRequest::MAX_AMOUNT_SUBSCRIPTION
             ),
-            $isSubscription ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
+            $isUnique ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
         );
 
         $localDestination = $request->query->getBoolean('localDestination');

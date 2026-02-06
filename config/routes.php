@@ -129,18 +129,6 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->import('../src/Controller/Renaissance', 'attribute')
         ->host('%user_vox_host%');
 
-    $routingConfigurator->add('app_national_event_redirect', '/{slug}')
-        ->host('%national_event_host%')
-        ->controller(Symfony\Bundle\FrameworkBundle\Controller\RedirectController::class)
-        ->defaults([
-            'route' => 'app_national_event_by_slug',
-            'slug' => 'slug',
-            'keepQueryParams' => true,
-        ])
-        ->requirements([
-            'slug' => '[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*',
-        ]);
-
     $routingConfigurator->import('../src/Controller/Renaissance/NationalEvent', 'attribute')
         ->prefix('/grand-rassemblement')
         ->defaults([

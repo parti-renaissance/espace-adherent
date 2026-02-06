@@ -2,19 +2,19 @@
 
 {% block page_title 'Don' %}
 
-{% block canonical_url url('app_donation_index') %}
+{% block canonical_url url(app.request.attributes.get('_route')) %}
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
+    <main class="bg-[#F6F7F4] re_new_ui">
         <section
             x-data="xFunnelPage({
                     initStep: {{ step }},
                     amount: '{{ form.vars.value.amount }}',
                     duration: '{{ form.vars.value.duration }}',
                     localDestination: '{{ form.vars.value.localDestination }}',
-                    connectUrl: '{{ login_path_for_anonymous_follower('app_donation_index', {step: 1}) }}'
+                    connectUrl: '{{ login_path_for_anonymous_follower(app.request.attributes.get('_route'), {step: 1}) }}'
                    })"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
@@ -35,23 +35,24 @@
                         initStep="currentStep"
                 />
             </header>
-            <div class="bg-[#F6F7F4] md:flex">
-
-                <div class="w-full relative mb-8">
-                    <div class="md:sticky top-[80px] md:pt-[6vh]">
-                        <div class="flex flex-col md:items-center text-2xl md:text-4xl w-full pt-10 pl-10 md:p-0">
-                            <h1 class="">
-                                Faites un don à <br>
-                                <img class="h-4 md:h-8 inline" src="{{ asset('images/renaissance/logo-dark.svg') }}" alt="">
-                            </h1>
+            <div class="md:flex">
+                {% block left_side_column %}
+                    <div class="w-full relative mb-8">
+                        <div class="md:sticky top-[80px] md:pt-[6vh]">
+                            <div class="flex flex-col md:items-center text-2xl md:text-4xl w-full pt-10 pl-10 md:p-0">
+                                <h1 class="">
+                                    Faites un don à <br>
+                                    <img class="h-4 md:h-8 inline" src="{{ asset('images/renaissance/logo-dark.svg') }}" alt="">
+                                </h1>
+                            </div>
+                            <figure class="w-full max-w-[75vw] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[1000px] md:pt-[80px]">
+                                {{ include('renaissance/donation/form_visual.svg.twig') }}
+                            </figure>
                         </div>
-                        <figure class="w-full max-w-[75vw] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[1000px] md:pt-[80px]">
-                            {{ include('renaissance/donation/form_visual.svg.twig') }}
-                        </figure>
                     </div>
-                </div>
+                {% endblock %}
 
-                <div class="flex flex-col justify-center items-center xl:items-start xl:pl-20 mt-8 gap-10 w-full">
+                <div class="flex flex-col justify-center items-center mt-8 gap-10 w-full {{ block('left_side_column') ? 'xl:items-start xl:pl-20' }}">
                     <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
                         email: '{{ form.vars.value.emailAddress }}'
                     }}">
@@ -71,22 +72,27 @@
                                     </twig:ReParagraphStatus>
                                 {% endif %}
 
-                                <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
-                                    <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
-                                        <twig:Atoms:ReToggleButton
-                                            id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
-                                            x-model="duration"
-                                            @click="amount = 10" >
-                                            Mensuel
-                                        </twig:Atoms:ReToggleButton>
-                                        <twig:Atoms:ReToggleButton
-                                            id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
-                                            x-model="duration"
-                                            @click="amount = 60" >
-                                            Unique
-                                        </twig:Atoms:ReToggleButton>
-                                    </twig:Atoms:ReLinkedToggle>
-                                    {{ form_errors(form.duration) }}
+                                <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep({{ major_donator ? '{amounts: [1500,5000,7500]}' }})" id="step_1">
+                                    {% if major_donator %}
+                                        <twig:Atoms:ReLabel>Choix du montant</twig:Atoms:ReLabel>
+                                    {% else %}
+                                        <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
+                                            <twig:Atoms:ReToggleButton
+                                                id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
+                                                x-model="duration"
+                                                @click="amount = 10" >
+                                                Mensuel
+                                            </twig:Atoms:ReToggleButton>
+                                            <twig:Atoms:ReToggleButton
+                                                id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
+                                                x-model="duration"
+                                                @click="amount = 60" >
+                                                Unique
+                                            </twig:Atoms:ReToggleButton>
+                                        </twig:Atoms:ReLinkedToggle>
+                                        {{ form_errors(form.duration) }}
+                                    {% endif %}
+
                                     <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
                                         <template x-for="amt in getAmounts()" :key="amt">
                                             <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
