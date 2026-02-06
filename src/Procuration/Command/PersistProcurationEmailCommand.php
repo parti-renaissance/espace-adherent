@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Procuration\Command;
 
-use App\Procuration\V2\InitialRequestTypeEnum;
+use App\Procuration\InitialRequestTypeEnum;
 
 class PersistProcurationEmailCommand
 {

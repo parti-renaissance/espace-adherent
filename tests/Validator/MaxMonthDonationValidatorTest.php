@@ -15,7 +15,7 @@ class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
     #[DataProvider('getDataDonation')]
     public function testValidation($amount, int $subscription, int $violation = 0): void
     {
-        $donationRequest = new DonationRequest('123.0.0.1', $amount, $subscription);
+        $donationRequest = new DonationRequest($amount, $subscription, clientIp: '123.0.0.1');
         $this->setObject($donationRequest);
         $this->validator->validate($donationRequest, new MaxMonthDonation());
 

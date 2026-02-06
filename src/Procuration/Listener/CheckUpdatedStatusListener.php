@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Procuration\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\ProcurationV2\AbstractSlot;
-use App\Entity\ProcurationV2\ProxySlot;
-use App\Entity\ProcurationV2\RequestSlot;
-use App\Procuration\V2\ProcurationHandler;
+use App\Entity\Procuration\AbstractProcuration;
+use App\Entity\Procuration\AbstractSlot;
+use App\Entity\Procuration\ProxySlot;
+use App\Entity\Procuration\RequestSlot;
+use App\Procuration\ProcurationHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

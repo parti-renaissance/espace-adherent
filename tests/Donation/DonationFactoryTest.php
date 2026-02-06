@@ -23,7 +23,7 @@ class DonationFactoryTest extends TestCase
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0123456789');
 
-        $request = new DonationRequest('3.3.3.3');
+        $request = new DonationRequest(DonationRequest::DEFAULT_AMOUNT, clientIp: '3.3.3.3');
         $request->firstName = 'Damien';
         $request->lastName = 'DUPONT';
         $request->gender = 'male';

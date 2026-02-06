@@ -8,7 +8,7 @@ use App\Admin\AbstractAdmin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Entity\Adherent;
-use App\Entity\ProcurationV2\ProcurationRequest;
+use App\Entity\Procuration\ProcurationRequest;
 use App\Form\Admin\Procuration\InitialRequestTypeEnumType;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -37,7 +37,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ])
             ->add('type', null, [
                 'label' => 'Type',
-                'template' => 'admin/procuration_v2/_list_initial_request_type.html.twig',
+                'template' => 'admin/procuration/_list_initial_request_type.html.twig',
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',

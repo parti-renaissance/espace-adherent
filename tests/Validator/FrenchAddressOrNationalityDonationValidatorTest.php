@@ -76,7 +76,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         ?string $nationality = AddressInterface::FRANCE,
         ?string $country = AddressInterface::FRANCE,
     ): DonationRequest {
-        $donationRequest = new DonationRequest('123.0.0.1');
+        $donationRequest = new DonationRequest(DonationRequest::DEFAULT_AMOUNT, clientIp: '123.0.0.1');
 
         $donationRequest->setNationality($nationality);
         $donationRequest->getAddress()->setCountry($country);

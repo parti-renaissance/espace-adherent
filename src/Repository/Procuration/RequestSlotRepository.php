@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repository\Procuration;
 
-use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\RequestSlot;
-use App\Entity\ProcurationV2\Round;
+use App\Entity\Procuration\Proxy;
+use App\Entity\Procuration\Request;
+use App\Entity\Procuration\RequestSlot;
+use App\Entity\Procuration\Round;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;

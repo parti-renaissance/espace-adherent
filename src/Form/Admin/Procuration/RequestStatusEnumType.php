@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin\Procuration;
 
-use App\Procuration\V2\RequestStatusEnum;
+use App\Procuration\RequestStatusEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

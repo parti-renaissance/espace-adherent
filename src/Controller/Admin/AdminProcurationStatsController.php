@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\ProcurationV2\Round;
-use App\Procuration\V2\ProcurationStatsHandler;
+use App\Entity\Procuration\Round;
+use App\Procuration\ProcurationStatsHandler;
 use App\Repository\Procuration\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

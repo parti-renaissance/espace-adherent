@@ -8,7 +8,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\NationalEvent\EventInscription;
-use App\Entity\ProcurationV2\AbstractProcuration;
+use App\Entity\Procuration\AbstractProcuration;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;

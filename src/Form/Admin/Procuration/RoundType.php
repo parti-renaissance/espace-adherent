@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin\Procuration;
 
-use App\Entity\ProcurationV2\Round;
+use App\Entity\Procuration\Round;
 use App\Form\Admin\SimpleMDEContent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

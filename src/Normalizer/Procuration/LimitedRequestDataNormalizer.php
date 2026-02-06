@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Normalizer\Procuration;
 
-use App\Entity\ProcurationV2\Request;
+use App\Entity\Procuration\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

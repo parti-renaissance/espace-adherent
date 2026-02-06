@@ -8,7 +8,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Geo\Zone;
-use App\Entity\ProcurationV2\AbstractProcuration;
+use App\Entity\Procuration\AbstractProcuration;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;

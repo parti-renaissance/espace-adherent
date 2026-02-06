@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Admin\Procuration;
 
 use App\Admin\Exporter\IteratorCallbackDataSource;
-use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\ProxySlot;
+use App\Entity\Procuration\Proxy;
+use App\Entity\Procuration\ProxySlot;
 use App\Form\Admin\Procuration\ProxyStatusEnumType;
-use App\Procuration\V2\Event\ProcurationEvent;
-use App\Procuration\V2\Event\ProcurationEvents;
+use App\Procuration\Event\ProcurationEvent;
+use App\Procuration\Event\ProcurationEvents;
 use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -70,11 +70,11 @@ class ProxyAdmin extends AbstractProcurationAdmin
         $list
             ->add('proxySlots', null, [
                 'label' => 'Mandants',
-                'template' => 'admin/procuration_v2/_list_proxy_slots.html.twig',
+                'template' => 'admin/procuration/_list_proxy_slots.html.twig',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
-                'template' => 'admin/procuration_v2/_list_proxy_status.html.twig',
+                'template' => 'admin/procuration/_list_proxy_status.html.twig',
             ])
             ->reorder([
                 'id',

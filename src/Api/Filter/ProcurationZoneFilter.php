@@ -7,7 +7,7 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\ProcurationV2\AbstractProcuration;
+use App\Entity\Procuration\AbstractProcuration;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;

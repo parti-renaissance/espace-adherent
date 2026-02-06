@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Adhesion\Request;
 
-use App\Procuration\V2\InitialRequestTypeEnum;
+use App\Procuration\InitialRequestTypeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;

@@ -6,7 +6,7 @@
     Bureau: <i>{{ object.customVotePlace ?? object.votePlace }}</i>
 
     {% if
-        object is instanceof('App\\Entity\\ProcurationV2\\Request')
+        object is instanceof('App\\Entity\\Procuration\\Request')
         and object.isFDE()
         and object.fromFrance
     %}

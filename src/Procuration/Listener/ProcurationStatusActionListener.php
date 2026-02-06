@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Procuration\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\Request;
-use App\Procuration\V2\ProcurationActionHandler;
-use App\Procuration\V2\ProxyStatusEnum;
-use App\Procuration\V2\RequestStatusEnum;
+use App\Entity\Procuration\AbstractProcuration;
+use App\Entity\Procuration\Proxy;
+use App\Entity\Procuration\Request;
+use App\Procuration\ProcurationActionHandler;
+use App\Procuration\ProxyStatusEnum;
+use App\Procuration\RequestStatusEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;

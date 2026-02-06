@@ -1,0 +1,12 @@
+{% extends 'procuration/_layout_thanks.html.twig' %}
+
+{% block page_title 'Procuration - Proposition (Mandataire)' %}
+
+{% set copylink = url('app_procuration_proxy', {slug: procuration_proxy.rounds.first.election.slug}) %}
+
+{% block thanks_text %}
+    {{ procuration_proxy.rounds.first.election.proxyConfirmation|replace({
+        '{{ email }}': procuration_proxy.email,
+        '{{email}}': procuration_proxy.email,
+    })|markdown_to_html }}
+{% endblock %}

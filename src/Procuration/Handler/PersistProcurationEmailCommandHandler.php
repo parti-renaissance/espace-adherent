@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Procuration\Handler;
 
-use App\Entity\ProcurationV2\ProcurationRequest;
+use App\Entity\Procuration\ProcurationRequest;
 use App\Procuration\Command\PersistProcurationEmailCommand;
 use App\Repository\AdherentRepository;
 use App\Repository\Procuration\ProcurationRequestRepository;

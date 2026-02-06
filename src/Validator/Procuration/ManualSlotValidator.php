@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Validator\Procuration;
 
-use App\Entity\ProcurationV2\AbstractSlot;
-use App\Entity\ProcurationV2\ProxySlot;
-use App\Entity\ProcurationV2\RequestSlot;
+use App\Entity\Procuration\AbstractSlot;
+use App\Entity\Procuration\ProxySlot;
+use App\Entity\Procuration\RequestSlot;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
