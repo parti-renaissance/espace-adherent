@@ -23,6 +23,6 @@ class Kernel extends BaseKernel
         $this->baseConfigureContainer($container, $loader, $builder);
 
         $configDir = $this->getConfigDir();
-        $container->import($configDir.'/{services}/*.{php,yaml}');
+        $container->import($configDir.'/{services}/*.php');
     }
 }
