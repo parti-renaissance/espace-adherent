@@ -42,8 +42,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('vox_host', '%env(VOX_HOST)%');
 
-    $parameters->set('besoindeurope_host', '%env(BESOINDEUROPE_HOST)%');
-
     $parameters->set('procuration_host', '%env(PROCURATION_HOST)%');
 
     $parameters->set('renaissance_host', '%env(RENAISSANCE_HOST)%');
@@ -97,9 +95,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$openAIApiKey', '%env(OPENAI_API_KEY)%')
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
         ->bind('$friendlyCaptchaNRPSiteKey', '%env(FRIENDLY_CAPTCHA_NRP_SITE_KEY)%')
-        ->bind('$systemPayMode', '%env(SYSTEMPAY_MODE)%')
-        ->bind('$systemPaySiteId', '%env(SYSTEMPAY_SITE_ID)%')
-        ->bind('$systemPayKey', '%env(SYSTEMPAY_KEY)%')
         ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
         ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
         ->bind('$ogoneUserPwd', '%env(OGONE_USER_PWD)%')
@@ -530,12 +525,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ]);
 
     $services->alias(Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface::class, App\Security\Http\LoginLink\LoginLinkHandler::class);
-
-    $services->set(App\Security\Http\LoginLink\Authentication\DefaultAuthenticationSuccessHandler::class)
-        ->decorate('security.authentication.success_handler.main.login_link')
-        ->args([
-            service('.inner'),
-        ]);
 
     $services->set(League\CommonMark\CommonMarkConverter::class);
 

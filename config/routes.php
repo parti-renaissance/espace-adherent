@@ -129,9 +129,6 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->import('../src/Controller/Renaissance', 'attribute')
         ->host('%user_vox_host%');
 
-    $routingConfigurator->import('../src/Controller/BesoinDEurope', 'attribute')
-        ->host('%user_vox_host%');
-
     $routingConfigurator->add('app_national_event_redirect', '/{slug}')
         ->host('%national_event_host%')
         ->controller(Symfony\Bundle\FrameworkBundle\Controller\RedirectController::class)
@@ -162,9 +159,6 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
 
     $routingConfigurator->add('renaissance_site', '/')
         ->host('%renaissance_host%');
-
-    $routingConfigurator->add('besoindeurope_site', '/')
-        ->host('%besoindeurope_host%');
 
     $routingConfigurator->add('legislative_site', '/')
         ->host('%legislative_host%');
