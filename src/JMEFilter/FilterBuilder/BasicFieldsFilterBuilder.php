@@ -22,7 +22,6 @@ class BasicFieldsFilterBuilder implements FilterBuilderInterface
     {
         return new FilterCollectionBuilder()
             ->createFrom(GenderSelect::class)
-            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->createFrom(AgeRange::class)
             ->getFilters()
         ;

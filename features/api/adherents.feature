@@ -761,11 +761,14 @@ Feature:
                             "code": "age",
                             "label": "Âge",
                             "options": {
+                                "suffix": "ans",
                                 "first": {
+                                    "label": "Âgé d'au moins",
                                     "min": 1,
                                     "max": 200
                                 },
                                 "second": {
+                                    "label": "Âgé de maximum",
                                     "min": 1,
                                     "max": 200
                                 }
@@ -882,7 +885,7 @@ Feature:
                         },
                         {
                             "code": "registered",
-                            "label": "Inscrit",
+                            "label": "Création du compte",
                             "options": null,
                             "type": "date_interval"
                         }
