@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Command;
 
-use App\DataFixtures\ORM\LoadProcurationV2ElectionData;
-use App\Entity\ProcurationV2\RequestSlot;
-use App\Entity\ProcurationV2\Round;
-use App\Mailer\Message\Procuration\V2\ProcurationMatchReminderMessage;
+use App\DataFixtures\ORM\LoadProcurationElectionData;
+use App\Entity\Procuration\RequestSlot;
+use App\Entity\Procuration\Round;
+use App\Mailer\Message\Procuration\ProcurationMatchReminderMessage;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Repository\Procuration\RoundRepository;
 use PHPUnit\Framework\Attributes\Group;
@@ -21,7 +21,7 @@ class RemindProcurationMatchedSlotCommandTest extends AbstractCommandTestCase
 
     public function testCommandSuccess(): void
     {
-        $round = $this->roundRepository->findOneByUuid(LoadProcurationV2ElectionData::UUID_LEGISLATIVES_ROUND_1);
+        $round = $this->roundRepository->findOneByUuid(LoadProcurationElectionData::UUID_LEGISLATIVES_ROUND_1);
 
         $this->assertInstanceOf(Round::class, $round);
         $this->assertCountMails(0, ProcurationMatchReminderMessage::class);

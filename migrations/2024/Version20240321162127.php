@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Migrations;
 
-use App\Procuration\V2\ProxyStatusEnum;
-use App\Procuration\V2\RequestStatusEnum;
+use App\Procuration\ProxyStatusEnum;
+use App\Procuration\RequestStatusEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

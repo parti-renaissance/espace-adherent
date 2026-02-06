@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Migrations;
 
-use App\Procuration\V2\InitialRequestTypeEnum;
+use App\Procuration\InitialRequestTypeEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

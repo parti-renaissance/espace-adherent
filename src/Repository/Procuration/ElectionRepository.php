@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Procuration;
 
-use App\Entity\ProcurationV2\Election;
+use App\Entity\Procuration\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

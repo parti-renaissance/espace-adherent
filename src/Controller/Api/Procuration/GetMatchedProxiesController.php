@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Procuration;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Entity\ProcurationV2\Request;
+use App\Entity\Procuration\Request;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Procuration\ProxyRepository;
 use App\Repository\Procuration\RoundRepository;

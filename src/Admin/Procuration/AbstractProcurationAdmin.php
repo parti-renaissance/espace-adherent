@@ -10,8 +10,8 @@ use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Doctrine\Utils\MultiColumnsSearchHelper;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\ProcurationV2\Round;
+use App\Entity\Procuration\AbstractProcuration;
+use App\Entity\Procuration\Round;
 use App\Form\GenderType;
 use App\Form\ReCountryType;
 use App\Form\TelNumberType;
@@ -127,26 +127,26 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ])
             ->add('rounds', null, [
                 'label' => 'Tours',
-                'template' => 'admin/procuration_v2/_list_rounds.html.twig',
+                'template' => 'admin/procuration/_list_rounds.html.twig',
             ])
             ->add('_fullName', null, [
                 'label' => 'Identité',
                 'virtual_field' => true,
-                'template' => 'admin/procuration_v2/_list_full_name.html.twig',
+                'template' => 'admin/procuration/_list_full_name.html.twig',
             ])
             ->add('email', null, [
                 'label' => 'Addresse email',
             ])
             ->add('phone', null, [
                 'label' => 'Téléphone',
-                'template' => 'admin/procuration_v2/_list_phone.html.twig',
+                'template' => 'admin/procuration/_list_phone.html.twig',
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
             ])
             ->add('voteZone', null, [
                 'label' => 'Lieu de vote',
-                'template' => 'admin/procuration_v2/_list_vote_zone.html.twig',
+                'template' => 'admin/procuration/_list_vote_zone.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Créé le',

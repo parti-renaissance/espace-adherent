@@ -237,20 +237,20 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\RepublicanSilence::class, 'label' => 'Silence républicain', 'group' => 'Élections'])
     ;
     $services
-        ->set('app.admin.procuration_v2.election', App\Admin\Procuration\ElectionAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProcurationV2\Election::class, 'label' => 'Procurations » Élections', 'group' => 'Élections'])
+        ->set('app.admin.procuration.election', App\Admin\Procuration\ElectionAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Procuration\Election::class, 'label' => 'Procurations » Élections', 'group' => 'Élections'])
     ;
     $services
-        ->set('app.admin.procuration_v2.procuration_request', App\Admin\Procuration\ProcurationRequestAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProcurationV2\ProcurationRequest::class, 'label' => 'Procurations » Demandes incomplètes', 'group' => 'Élections'])
+        ->set('app.admin.procuration.procuration_request', App\Admin\Procuration\ProcurationRequestAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Procuration\ProcurationRequest::class, 'label' => 'Procurations » Demandes incomplètes', 'group' => 'Élections'])
     ;
     $services
-        ->set('app.admin.procuration_v2.request', App\Admin\Procuration\RequestAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProcurationV2\Request::class, 'label' => 'Procurations » Mandants', 'group' => 'Élections'])
+        ->set('app.admin.procuration.request', App\Admin\Procuration\RequestAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Procuration\Request::class, 'label' => 'Procurations » Mandants', 'group' => 'Élections'])
     ;
     $services
-        ->set('app.admin.procuration_v2.proxy', App\Admin\Procuration\ProxyAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ProcurationV2\Proxy::class, 'label' => 'Procurations » Mandataires', 'group' => 'Élections'])
+        ->set('app.admin.procuration.proxy', App\Admin\Procuration\ProxyAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Procuration\Proxy::class, 'label' => 'Procurations » Mandataires', 'group' => 'Élections'])
     ;
     $services
         ->set('app.admin.election', App\Admin\ElectionAdmin::class)
@@ -592,7 +592,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.email_template'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.consultation'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.chatbot_chatbot'])
-        ->tag('sonata.admin.extension', ['target' => 'app.admin.procuration_v2.election'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.procuration.election'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.hub_item'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.transactional_email_template'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.jecoute.news'])

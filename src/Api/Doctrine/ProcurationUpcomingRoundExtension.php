@@ -7,8 +7,8 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\ProcurationV2\Proxy;
+use App\Entity\Procuration\AbstractProcuration;
+use App\Entity\Procuration\Proxy;
 use Doctrine\ORM\QueryBuilder;
 
 class ProcurationUpcomingRoundExtension implements QueryCollectionExtensionInterface

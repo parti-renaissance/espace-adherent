@@ -6,8 +6,8 @@ namespace App\Command;
 
 use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
-use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\Request;
+use App\Entity\Procuration\Proxy;
+use App\Entity\Procuration\Request;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;

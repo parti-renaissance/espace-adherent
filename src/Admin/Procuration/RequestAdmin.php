@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Admin\Procuration;
 
 use App\Admin\Exporter\IteratorCallbackDataSource;
-use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\RequestSlot;
+use App\Entity\Procuration\Request;
+use App\Entity\Procuration\RequestSlot;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
-use App\Procuration\V2\Event\ProcurationEvent;
-use App\Procuration\V2\Event\ProcurationEvents;
+use App\Procuration\Event\ProcurationEvent;
+use App\Procuration\Event\ProcurationEvents;
 use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -71,11 +71,11 @@ class RequestAdmin extends AbstractProcurationAdmin
         $list
             ->add('requestSlots', null, [
                 'label' => 'Mandataire(s)',
-                'template' => 'admin/procuration_v2/_list_request_slots.html.twig',
+                'template' => 'admin/procuration/_list_request_slots.html.twig',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
-                'template' => 'admin/procuration_v2/_list_request_status.html.twig',
+                'template' => 'admin/procuration/_list_request_status.html.twig',
             ])
             ->reorder([
                 'id',

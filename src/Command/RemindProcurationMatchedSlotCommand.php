@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\ProcurationV2\RequestSlot;
-use App\Entity\ProcurationV2\Round;
-use App\Procuration\V2\Command\MatchedRequestSlotReminderCommand;
+use App\Entity\Procuration\RequestSlot;
+use App\Entity\Procuration\Round;
+use App\Procuration\Command\MatchedRequestSlotReminderCommand;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Repository\Procuration\RoundRepository;
 use Doctrine\ORM\EntityManagerInterface;

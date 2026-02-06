@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Procuration;
 
 use App\Entity\Adherent;
-use App\Entity\ProcurationV2\Request;
+use App\Entity\Procuration\Request;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

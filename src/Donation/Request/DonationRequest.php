@@ -27,9 +27,8 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 {
     use RecaptchaChallengeTrait;
 
-    public const DEFAULT_AMOUNT = 50.0;
-    public const DEFAULT_AMOUNT_V2 = 60;
-    public const DEFAULT_AMOUNT_SUBSCRIPTION_V2 = 10;
+    public const DEFAULT_AMOUNT = 60;
+    public const DEFAULT_AMOUNT_SUBSCRIPTION = 10;
 
     public const MIN_AMOUNT = 10;
     public const MIN_AMOUNT_SUBSCRIPTION = 5;
@@ -89,10 +88,10 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public ?string $utmCampaign = null;
 
     public function __construct(
-        ?string $clientIp = null,
-        float $amount = self::DEFAULT_AMOUNT,
+        float $amount,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB,
+        ?string $clientIp = null,
     ) {
         $this->clientIp = $clientIp;
         $this->address = new Address();
@@ -108,7 +107,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         ?Adherent $adherent = null,
         string $type = Donation::TYPE_CB,
     ): self {
-        $dto = new self($httpRequest?->getClientIp(), $amount, $duration, $type);
+        $dto = new self($amount, $duration, $type, $httpRequest?->getClientIp());
 
         if ($adherent) {
             $dto->gender = $adherent->getGender();

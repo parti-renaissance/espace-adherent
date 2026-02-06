@@ -151,7 +151,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
 
     private function createDonationRequest(?string $email = 'test@test.test'): DonationRequest
     {
-        $donationRequest = new DonationRequest('123.0.0.1', 50.);
+        $donationRequest = new DonationRequest(50., clientIp: '123.0.0.1');
         $donationRequest->setEmailAddress($email);
 
         return $donationRequest;

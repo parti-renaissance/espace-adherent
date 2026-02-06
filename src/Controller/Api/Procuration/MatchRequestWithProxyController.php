@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Procuration;
 
-use App\Entity\ProcurationV2\Request;
-use App\Procuration\V2\ProcurationHandler;
+use App\Entity\Procuration\Request;
+use App\Procuration\ProcurationHandler;
 use App\Repository\Procuration\ProxyRepository;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Repository\Procuration\RoundRepository;

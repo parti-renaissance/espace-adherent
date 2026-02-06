@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\ProcurationV2\ProcurationRequest;
-use App\Procuration\V2\Command\InitialRequestReminderCommand;
+use App\Entity\Procuration\ProcurationRequest;
+use App\Procuration\Command\InitialRequestReminderCommand;
 use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
