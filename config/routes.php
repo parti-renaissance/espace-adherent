@@ -84,7 +84,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
         ])
         ->host('{app_domain}');
 
-    $routingConfigurator->import('@SonataAdminBundle/Resources/config/routing/sonata_admin.xml')
+    $routingConfigurator->import('@SonataAdminBundle/Resources/config/routing/sonata_admin.php')
         ->host('%admin_renaissance_host%');
 
     $routingConfigurator->import('.', 'sonata_admin')
