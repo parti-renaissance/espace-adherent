@@ -64,9 +64,9 @@ class SaveAppHitCommandHandler
 
         try {
             $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatch(new NewHitSavedEvent($hit));
         } catch (UniqueConstraintViolationException $e) {
         }
-
-        $this->eventDispatcher->dispatch(new NewHitSavedEvent($hit));
     }
 }
