@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Adhesion;
 
-use App\Controller\BesoinDEurope\Inscription;
 use App\Controller\Renaissance\Adhesion;
 
 final class AdhesionStepEnum
@@ -50,17 +49,6 @@ final class AdhesionStepEnum
         ];
     }
 
-    public static function allBesoinDEurope(): array
-    {
-        return [
-            Inscription\InscriptionController::ROUTE_NAME => self::MAIN_INFORMATION,
-            Inscription\ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
-            Inscription\CreatePasswordController::ROUTE_NAME => self::PASSWORD,
-            Inscription\FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
-            Inscription\CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
-        ];
-    }
-
     public static function getNextStep(bool $isAdherent, array $finishedSteps): ?string
     {
         return self::getNextStepInCollection(self::all($isAdherent), $finishedSteps);
@@ -78,11 +66,6 @@ final class AdhesionStepEnum
         }
 
         return $previousStep;
-    }
-
-    public static function getBesoinDEuropeNextStep(array $finishedSteps): ?string
-    {
-        return self::getNextStepInCollection(self::allBesoinDEurope(), $finishedSteps);
     }
 
     private static function getNextStepInCollection(array $collection, array $finishedSteps): ?string

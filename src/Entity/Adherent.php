@@ -2522,11 +2522,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return empty(array_diff(AdhesionStepEnum::all($this->isRenaissanceAdherent()), $this->finishedAdhesionSteps));
     }
 
-    public function isFullyCompletedBesoinDEuropeInscription(): bool
-    {
-        return empty(array_diff(AdhesionStepEnum::allBesoinDEurope(), $this->finishedAdhesionSteps));
-    }
-
     public function getFinishedAdhesionSteps(): array
     {
         return $this->finishedAdhesionSteps;

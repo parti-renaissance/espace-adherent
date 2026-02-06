@@ -8,7 +8,6 @@ use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
-use App\BesoinDEurope\Inscription\InscriptionRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
@@ -107,32 +106,6 @@ class AdherentFactory
         if ($membershipRequest->originalEmail && $membershipRequest->originalEmail === $adherent->getEmailAddress()) {
             $adherent->enable();
         }
-
-        return $adherent;
-    }
-
-    public function createFromBesoinDEuropeMembershipRequest(InscriptionRequest $inscriptionRequest): Adherent
-    {
-        $adherent = Adherent::create(
-            uuid: Uuid::uuid4(),
-            publicId: $this->generatePublicId(),
-            emailAddress: $inscriptionRequest->email,
-            password: null,
-            gender: $inscriptionRequest->civility,
-            firstName: $inscriptionRequest->firstName,
-            lastName: $inscriptionRequest->lastName,
-            postAddress: PostAddressFactory::createFromAddress($inscriptionRequest->address),
-            status: Adherent::ENABLED
-        );
-
-        $adherent->tags = [TagEnum::SYMPATHISANT_ENSEMBLE2024];
-        $adherent->setPapUserRole(true);
-        $adherent->setV2(true);
-        $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
-        $adherent->setSource(MembershipSourceEnum::LEGISLATIVE);
-
-        $adherent->utmSource = $inscriptionRequest->utmSource;
-        $adherent->utmCampaign = $inscriptionRequest->utmCampaign;
 
         return $adherent;
     }

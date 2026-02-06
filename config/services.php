@@ -42,8 +42,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('vox_host', '%env(VOX_HOST)%');
 
-    $parameters->set('besoindeurope_host', '%env(BESOINDEUROPE_HOST)%');
-
     $parameters->set('procuration_host', '%env(PROCURATION_HOST)%');
 
     $parameters->set('renaissance_host', '%env(RENAISSANCE_HOST)%');
@@ -527,12 +525,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ]);
 
     $services->alias(Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface::class, App\Security\Http\LoginLink\LoginLinkHandler::class);
-
-    $services->set(App\Security\Http\LoginLink\Authentication\DefaultAuthenticationSuccessHandler::class)
-        ->decorate('security.authentication.success_handler.main.login_link')
-        ->args([
-            service('.inner'),
-        ]);
 
     $services->set(League\CommonMark\CommonMarkConverter::class);
 

@@ -30,7 +30,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'friendly_captcha_site_key' => '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%',
             'friendly_captcha_europe_site_key' => '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%',
             'unlayer_project_id' => '%env(UNLAYER_PROJECT_ID)%',
-            'besoindeurope_host' => '%env(BESOINDEUROPE_HOST)%',
             'legislative_host' => '%env(LEGISLATIVE_HOST)%',
             'user_vox_host' => '%env(USER_VOX_HOST)%',
             'mapbox_token' => '%env(MAPBOX_TOKEN)%',
