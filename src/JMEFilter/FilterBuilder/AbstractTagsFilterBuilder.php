@@ -34,7 +34,6 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS], true))
-            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature, $this->placeholder)
             ->setChoices($this->getTranslatedChoices())
             ->setRequired($isRequired)
         ;

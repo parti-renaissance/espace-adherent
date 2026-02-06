@@ -17,7 +17,12 @@ class AgeRange extends IntegerInterval
     {
         parent::__construct('age', 'Âge');
 
+        $this->addOption('suffix', 'ans');
+
         $this->addFirstOptions(self::OPTIONS);
+        $this->addFirstOption('label', 'Âgé d\'au moins');
+
         $this->addSecondOptions(self::OPTIONS);
+        $this->addSecondOption('label', 'Âgé de maximum');
     }
 }

@@ -32,7 +32,6 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
         return new FilterCollectionBuilder()
             ->createSelect(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]) ? 'committee' : 'committeeUuids', 'Comités')
-            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices($this->getCommitteeChoices($scopeObject))
             ->setMultiple(!\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
             ->getFilters()

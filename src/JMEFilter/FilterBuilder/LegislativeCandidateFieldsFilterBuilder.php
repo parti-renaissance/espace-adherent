@@ -23,7 +23,6 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
         return new FilterCollectionBuilder()
             ->createSelect('audienceType', 'Audience')
             ->setRequired(true)
-            ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature)
             ->setChoices([
                 AudienceTypeEnum::ADHERENT => 'Adhérents',
                 AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER => 'Inscrit newsletter',

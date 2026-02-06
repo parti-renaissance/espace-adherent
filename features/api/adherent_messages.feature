@@ -719,11 +719,14 @@ Feature:
                             "code": "age",
                             "label": "Âge",
                             "options": {
+                                "suffix": "ans",
                                 "first": {
+                                    "label": "Âgé d'au moins",
                                     "min": 1,
                                     "max": 200
                                 },
                                 "second": {
+                                    "label": "Âgé de maximum",
                                     "min": 1,
                                     "max": 200
                                 }
@@ -847,7 +850,7 @@ Feature:
                         },
                         {
                             "code": "registered",
-                            "label": "Inscrit",
+                            "label": "Création du compte",
                             "options": null,
                             "type": "date_interval"
                         },
@@ -995,7 +998,6 @@ Feature:
                                 "favorite": true,
                                 "required": true,
                                 "choices": {
-                                    "": "Tous mes militants",
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2026": "Adhérent - À jour 2026",
                                     "adherent:a_jour_2026:primo": "Adhérent - À jour 2026 - Primo-adhérent",
@@ -1022,7 +1024,6 @@ Feature:
                             "label": "Civilité",
                             "options": {
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "female": "Madame",
                                     "male": "Monsieur"
                                 }
@@ -1033,11 +1034,14 @@ Feature:
                             "code": "age",
                             "label": "Âge",
                             "options": {
+                                "suffix": "ans",
                                 "first": {
+                                    "label": "Âgé d'au moins",
                                     "min": 1,
                                     "max": 200
                                 },
                                 "second": {
+                                    "label": "Âgé de maximum",
                                     "min": 1,
                                     "max": 200
                                 }
@@ -1049,7 +1053,6 @@ Feature:
                             "label": "Comités",
                             "options": {
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
                                     "508d4ac0-27d6-4635-8953-4cc8600018f9": "En Marche - Comité de Rouen",
                                     "b0cd0e52-a5a4-410b-bba3-37afdd326a0a": "En Marche Dammarie-les-Lys",
@@ -1065,7 +1068,6 @@ Feature:
                             "label": "Membre d'un comité",
                             "options": {
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "0": "Non",
                                     "1": "Oui"
                                 }
@@ -1080,7 +1082,6 @@ Feature:
                                 "favorite": true,
                                 "required": false,
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "national_event:campus": "Campus",
                                     "national_event:meeting-nrp": "Meeting NRP",
                                     "national_event:event-national-1": "Event national 1",
@@ -1099,7 +1100,7 @@ Feature:
                     "filters": [
                         {
                             "code": "registered",
-                            "label": "Inscrit",
+                            "label": "Création du compte",
                             "options": null,
                             "type": "date_interval"
                         },
@@ -1129,7 +1130,6 @@ Feature:
                                 "favorite": true,
                                 "required": false,
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "elu": "Élu",
                                     "elu:attente_declaration": "Élu - En attente de déclaration",
                                     "elu:cotisation_ok": "Élu - À jour de cotisation",
@@ -1148,7 +1148,6 @@ Feature:
                             "options": {
                                 "advanced": true,
                                 "choices": {
-                                    "": "Aucune sélection",
                                     "depute_europeen": "Député européen",
                                     "senateur": "Sénateur",
                                     "depute": "Député",
