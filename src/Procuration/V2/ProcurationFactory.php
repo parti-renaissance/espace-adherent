@@ -70,7 +70,7 @@ class ProcurationFactory
             $command->clientIp
         );
 
-        $proxy->acceptVoteNearby = $command->acceptVoteNearby;
+        $proxy->acceptVoteNearby = (bool) $command->acceptVoteNearby;
         $proxy->electorNumber = $command->electorNumber;
         $proxy->slots = $command->slots;
 

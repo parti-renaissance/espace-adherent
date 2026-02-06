@@ -37,10 +37,6 @@
 
 {% block round_additional_form %}
     <fieldset>
-        {{ form_row(form.acceptVoteNearby, {label: 'Si il n\'y a plus de candidat Renaissance en lice au 2e tour, je souhaite porter une procuration dans une circonscription législative proche de la mienne'}) }}
-    </fieldset>
-
-    <fieldset>
         <twig:Atoms:ReLabel class="mb-6">Je prends une procuration pour :</twig:Atoms:ReLabel>
         {{ form_row(form.rounds) }}
     </fieldset>
@@ -48,9 +44,10 @@
 
 {% block inner_content_section %}
     <fieldset>
-        <twig:Atoms:ReLabel class="mb-6">Mon numéro d’électeur</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel class="mb-6">Mon numéro d’électeur (optionnel)</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
         {{ form_row(form.electorNumber, {attr: {placeholder: 'Mon numéro d’électeur', 'x-numberonly': '', validate: '["max:9"]'}}) }}
+        <p class="text-[#555555] opacity-60">Pour trouver votre numéro d'électeur <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/R51788" class="underline" target="_blank">cliquer ici</a></p>
     </fieldset>
 
     <fieldset x-show="isNotInFrance">
