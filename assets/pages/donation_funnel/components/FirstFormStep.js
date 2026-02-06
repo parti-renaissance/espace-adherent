@@ -62,7 +62,7 @@ const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}
             });
             indexesToAnimate.forEach((i) => {
                 setTimeout(() => {
-                    document.querySelector(`#p_${i + 1}`).classList.add('active');
+                    document.querySelector(`#p_${i + 1}`)?.classList.add('active');
                 }, i * 100);
             });
         },
