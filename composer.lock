@@ -6271,26 +6271,26 @@
         },
         {
             "name": "league/flysystem-bundle",
-            "version": "3.6.1",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-bundle.git",
-                "reference": "61e7f989f14080abb14d5ade80629303691555cf"
+                "reference": "123ab96910177751faf3b6cc85eecc360ec12a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-bundle/zipball/61e7f989f14080abb14d5ade80629303691555cf",
-                "reference": "61e7f989f14080abb14d5ade80629303691555cf",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-bundle/zipball/123ab96910177751faf3b6cc85eecc360ec12a1f",
+                "reference": "123ab96910177751faf3b6cc85eecc360ec12a1f",
                 "shasum": ""
             },
             "require": {
                 "league/flysystem": "^3.0",
-                "php": ">=8.0",
-                "symfony/config": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "php": ">=8.2",
+                "symfony/config": "^6.0 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^6.0 || ^7.0 || ^8.0",
                 "symfony/deprecation-contracts": "^2.1 || ^3",
-                "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-                "symfony/options-resolver": "^5.4 || ^6.0 || ^7.0 || ^8.0"
+                "symfony/http-kernel": "^6.0 || ^7.0 || ^8.0",
+                "symfony/options-resolver": "^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "doctrine/mongodb-odm": "^2.0",
@@ -6305,10 +6305,10 @@
                 "league/flysystem-sftp-v3": "^3.1",
                 "league/flysystem-webdav": "^3.29",
                 "platformcommunity/flysystem-bunnycdn": "^3.3",
-                "symfony/dotenv": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-                "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-                "symfony/phpunit-bridge": "^5.4 || ^6.0 || ^7.0 || ^8.0",
-                "symfony/var-dumper": "^5.4 || ^6.0 || ^7.0 || ^8.0"
+                "symfony/dotenv": "^6.0 || ^7.0 || ^8.0",
+                "symfony/framework-bundle": "^6.0 || ^7.0 || ^8.0",
+                "symfony/phpunit-bridge": "^6.0 || ^7.0 || ^8.0",
+                "symfony/var-dumper": "^6.0 || ^7.0 || ^8.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -6335,9 +6335,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-bundle/issues",
-                "source": "https://github.com/thephpleague/flysystem-bundle/tree/3.6.1"
+                "source": "https://github.com/thephpleague/flysystem-bundle/tree/3.6.2"
             },
-            "time": "2025-12-11T15:40:58+00:00"
+            "time": "2026-02-05T15:26:57+00:00"
         },
         {
             "name": "league/flysystem-google-cloud-storage",
@@ -25258,5 +25258,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
