@@ -74,7 +74,7 @@
         "nelmio/cors-bundle": "^2.2",
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^4.1",
-        "openai-php/client": "^0.18.0",
+        "openai-php/client": "^0.19.0",
         "phpoffice/phpspreadsheet": "^5.0",
         "ramsey/uuid": "^4.1",
         "ramsey/uuid-doctrine": "^2.0",
