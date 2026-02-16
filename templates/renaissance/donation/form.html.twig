@@ -128,10 +128,12 @@
                                     {{ form_row(form.amount, {attr: {'x-bind:value': 'amount'}}) }}
                                     {{ form_row(form.duration, {attr: {'x-bind:value': 'duration'}}) }}
 
-                                    {{ form_row(form.localDestination, {
-                                        label: 'donation.local_destination.label', label_html: true,
-                                        attr: {onCheck: "setFieldValid('localDestination')", 'x-model': 'localDestination'},
-                                    }) }}
+                                    {% if form.localDestination is defined %}
+                                        {{ form_row(form.localDestination, {
+                                            label: 'donation.local_destination.label', label_html: true,
+                                            attr: {onCheck: "setFieldValid('localDestination')", 'x-model': 'localDestination'},
+                                        }) }}
+                                    {% endif %}
 
                                     <div>
                                         <twig:Atoms:ReLabel class="mb-6">Après réduction d’impôt :</twig:Atoms:ReLabel>
@@ -144,7 +146,7 @@
 
                                     <p class="text-center">Vous préférez effectuer votre contribution<br/>par chèque ? Retrouvez ici nos<br/>coordonnées bancaires.</p>
 
-                                    <a href="https://doc.parti.re/bulletin-don.pdf" class="re-button text-sm sm:text-base font-medium px-8 py-2 transition-colors rounded-[10px] justify-center items-center gap-2.5 border border-ui_green-50 inline-flex focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20 text-ui_green-50 hover:bg-ui_green-50 hover:text-white active:bg-ui_green-70 w-full">Téléchargez le PDF</a>
+                                    <a href="{{ major_donator ? 'https://doc.parti.re/bulletin-grand-donateur.pdf' : 'https://doc.parti.re/bulletin-don.pdf' }}" class="re-button text-sm sm:text-base font-medium px-8 py-2 transition-colors rounded-[10px] justify-center items-center gap-2.5 border border-ui_green-50 inline-flex focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20 text-ui_green-50 hover:bg-ui_green-50 hover:text-white active:bg-ui_green-70 w-full">Téléchargez le PDF</a>
                                 </twig:Atoms:ReCard>
                                 <div class="re-step flex-col flex gap-8" id="step_2" x-data="SecondFormStep">
                                     {% if not (app.user and app.user.hasActiveMembership()) %}

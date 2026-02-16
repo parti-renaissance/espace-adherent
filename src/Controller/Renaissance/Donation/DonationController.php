@@ -40,7 +40,7 @@ class DonationController extends AbstractController
         $donationRequest = $this->getDonationRequest($request, $adherent, $majorDonator);
 
         $form = $this
-            ->createForm(DonationRequestType::class, $donationRequest)
+            ->createForm(DonationRequestType::class, $donationRequest, ['major_donator' => $majorDonator])
             ->handleRequest($request)
         ;
 
