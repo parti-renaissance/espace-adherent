@@ -329,7 +329,7 @@ jobs:
                   hash: ${{ env.HASH }}
                   tag: ${{ env.TAG }}
 
-            - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.yaml
+            - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.php
 
             - run: |-
                   docker build \
