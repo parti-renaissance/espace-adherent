@@ -180,7 +180,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
         $this->assertTrue($this->seeMembersCount($crawler, 1), 'The adherent should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 1), 'The adherent should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The adherent should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The adherent should not see the host navigation');
         $this->assertFalse($this->seeMessageForm($crawler));
     }
@@ -198,7 +197,6 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The follower should see the "unfollow link"');
         $this->assertTrue($this->seeMembersCount($crawler, 1), 'The follower should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 1), 'The follower should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The follower should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
         $this->assertFalse($this->seeMessageForm($crawler));
     }
@@ -241,33 +239,14 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
     private function assertSeeHosts(Crawler $crawler, array $hosts, bool $isConnected = true): void
     {
         $this->assertCount(\count($hosts), $nodes = $crawler->filter('.committee-host'));
-        $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
             [$initials, $name, $role] = $host;
-            $this->assertMatchesRegularExpression(
-                '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.$contact.'?$/',
-                trim($nodes->eq($position)->text())
-            );
-        }
-    }
-
-    private function assertSeeDesignedAdherents(Crawler $crawler, array $adherents): void
-    {
-        $this->assertCount(\count($adherents), $nodes = $crawler->filter('.committee-designed-adherents'));
-
-        foreach ($adherents as $position => $adherent) {
-            [$initials, $name, $role] = $adherent;
             $this->assertMatchesRegularExpression(
                 '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.'?$/',
                 trim($nodes->eq($position)->text())
             );
         }
-    }
-
-    private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
-    {
-        return $hostsCount === \count($crawler->filter('.committee__card .committee-host a'));
     }
 
     private function seeMessageForContactHosts(Crawler $crawler): void

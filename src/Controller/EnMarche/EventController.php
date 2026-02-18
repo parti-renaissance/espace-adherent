@@ -6,14 +6,11 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
-use App\Event\EventInvitation;
-use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
-use App\Form\EventInvitationType;
 use App\Form\EventRegistrationType;
 use App\Repository\Event\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -178,59 +175,6 @@ class EventController extends AbstractController
         return $this->render('events/attend_confirmation.html.twig', [
             'event' => $event,
             'registration' => $registration,
-        ]);
-    }
-
-    #[Route(path: '/invitation', name: '_invite', methods: ['GET', 'POST'])]
-    public function inviteAction(
-        Request $request,
-        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        Event $event,
-        EventInvitationHandler $handler,
-    ): Response {
-        $eventInvitation = EventInvitation::createFromAdherent(
-            $this->getUser(),
-            $request->request->get('g-recaptcha-response')
-        );
-
-        $form = $this
-            ->createForm(EventInvitationType::class, $eventInvitation, ['validation_groups' => ['Default', 'em_event_invitation']])
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var EventInvitation $invitation */
-            $invitation = $form->getData();
-
-            $handler->handle($invitation, $event);
-            $request->getSession()->set('event_invitations_count', \count($invitation->guests));
-
-            return $this->redirectToRoute('app_committee_event_invitation_sent', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('events/invitation.html.twig', [
-            'event' => $event,
-            'invitation_form' => $form->createView(),
-        ]);
-    }
-
-    #[Route(path: '/invitation/merci', name: '_invitation_sent', methods: ['GET'])]
-    public function invitationSentAction(
-        Request $request,
-        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
-        Event $event,
-    ): Response {
-        if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
-            return $this->redirectToRoute('app_committee_event_invite', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('events/invitation_sent.html.twig', [
-            'event' => $event,
-            'invitations_count' => $invitationsCount,
         ]);
     }
 

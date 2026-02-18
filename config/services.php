@@ -291,10 +291,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->alias(Geocoder\Geocoder::class, 'bazinga_geocoder.geocoder');
 
-    $services->set(App\Recaptcha\RecaptchaApiClient::class)
-        ->arg('$projectId', '%env(GCP_PROJECT_ID)%')
-        ->arg('$defaultSiteKey', '%env(RECAPTCHA_PUBLIC_KEY)%');
-
     $services->set(App\Recaptcha\FriendlyCaptchaApiClient::class)
         ->arg('$privateKey', '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%')
         ->arg('$defaultSiteKey', '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%');

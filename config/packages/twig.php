@@ -14,7 +14,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'app_environment' => '%env(APP_ENVIRONMENT)%',
             'app_version' => '%env(APP_VERSION)%',
             'sentry_dsn' => '%env(SENTRY_DSN)%',
-            'recaptcha_public_key' => '%env(RECAPTCHA_PUBLIC_KEY)%',
             'google_maps_api_key' => '%env(GMAPS_PUBLIC_API_KEY)%',
             'url_legacy' => 'https://adherents.en-marche.fr',
             'legacy_adhesion' => 'https://adherents.en-marche.fr/adherer.html',

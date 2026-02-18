@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[AssertRecaptcha(api: RecaptchaApiClient::NAME, groups: ['em_event_invitation'])]
 #[AssertRecaptcha(groups: ['re_event_invitation'])]
 class EventInvitation implements RecaptchaChallengeInterface
 {

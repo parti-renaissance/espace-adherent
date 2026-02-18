@@ -134,24 +134,6 @@
                         À propos
                     </a>
                 </li>
-                {% if event.active %}
-                    <li>
-                        <a href="{{ path('app_committee_event_invite', {slug: event.slug}) }}">
-                            Inviter des amis
-                        </a>
-                    </li>
-                {% endif %}
-                {% if event.organizer %}
-                <li>
-                    {% if has_role_user %}
-                        <a href="{{ path('app_adherent_contact', {uuid: event.organizer.uuid, from: 'event', id: event.uuid.toString}) }}">
-                            Contact
-                        </a>
-                    {% else %}
-                        Contact <span class="text--smallest">(connectez-vous pour pouvoir contacter l'organisateur de l'événement)</span>
-                    {% endif %}
-                </li>
-                {% endif %}
             </ul>
             <div class="committee-event-description text--with-bullet b__nudge--bottom-huge l__wrapper--slim">
                 {%- block main_section -%}
