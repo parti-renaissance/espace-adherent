@@ -733,7 +733,7 @@ Feature:
                     "color": "",
                     "filters": [
                         {
-                            "code": "searchTerm",
+                            "code": "search_term",
                             "label": "Recherche",
                             "options": {
                                 "favorite": true
@@ -776,7 +776,7 @@ Feature:
                             "type": "integer_interval"
                         },
                         {
-                            "code": "emailSubscription",
+                            "code": "email_subscription",
                             "label": "Abonné email",
                             "options": {
                                 "choices": ["Non", "Oui"]
@@ -784,19 +784,19 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "firstName",
+                            "code": "first_name",
                             "label": "Prénom",
                             "options": null,
                             "type": "text"
                         },
                         {
-                            "code": "lastName",
+                            "code": "last_name",
                             "label": "Nom",
                             "options": null,
                             "type": "text"
                         },
                         {
-                            "code": "smsSubscription",
+                            "code": "sms_subscription",
                             "label": "Abonné SMS",
                             "options": {
                                 "choices": ["Non", "Oui"]
@@ -872,13 +872,13 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "firstMembership",
+                            "code": "first_membership",
                             "label": "Première cotisation",
                             "options": null,
                             "type": "date_interval"
                         },
                         {
-                            "code": "lastMembership",
+                            "code": "last_membership",
                             "label": "Dernière cotisation",
                             "options": null,
                             "type": "date_interval"
@@ -896,7 +896,7 @@ Feature:
                     "color": "#2563EB",
                     "filters": [
                         {
-                            "code": "declaredMandates",
+                            "code": "declared_mandates",
                             "label": "Déclaration de mandat",
                             "options": {
                                 "advanced": false,

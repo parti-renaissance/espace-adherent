@@ -29,8 +29,6 @@ use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
 use App\Doctrine\Utils\QueryChecker;
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -226,7 +224,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     /**
      * @var AdherentMessageFilterInterface|null
      */
-    #[ORM\OneToOne(inversedBy: 'message', targetEntity: AbstractAdherentMessageFilter::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OneToOne(inversedBy: 'message', targetEntity: AdherentMessageFilter::class, cascade: ['all'], orphanRemoval: true)]
     private $filter;
 
     /**
@@ -548,7 +546,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function getZones(): Collection
     {
-        if ($this->filter instanceof AudienceFilter) {
+        if ($this->filter instanceof AdherentMessageFilter) {
             return $this->filter->getZones();
         }
 

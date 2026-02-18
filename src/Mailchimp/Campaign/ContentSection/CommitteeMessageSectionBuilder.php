@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Scope\ScopeEnum;
 use App\Utils\StringCleaner;
@@ -27,7 +25,7 @@ class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface
     {
         $filter = $message->getFilter();
 
-        if (!($filter instanceof CommitteeFilter || $filter instanceof MessageFilter) || !($committee = $filter->getCommittee())) {
+        if (!$committee = $filter?->getCommittee()) {
             return;
         }
 

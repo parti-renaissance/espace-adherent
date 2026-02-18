@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Mailchimp\Manager;
 
 class AdherentInterestConditionBuilder extends AbstractConditionBuilder
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter;
+        return $filter instanceof AdherentMessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -27,7 +26,7 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
     }
 
     /**
-     * @param ReferentUserFilter|AudienceFilter $filter
+     * @param AdherentMessageFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
@@ -35,7 +34,7 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
         $interestIncludeKeys = [];
         $interestExcludeKeys = [];
 
-        if (!$filter instanceof AudienceFilter) {
+        if (!$filter instanceof AdherentMessageFilter) {
             if ($filter->includeAdherentsInCommittee() ^ $filter->includeAdherentsNoCommittee()) {
                 $interestIncludeKeys[] = true === $filter->includeAdherentsNoCommittee() ? Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER : Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
             }

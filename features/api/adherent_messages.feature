@@ -734,13 +734,13 @@ Feature:
                             "type": "integer_interval"
                         },
                         {
-                            "code": "firstName",
+                            "code": "first_name",
                             "label": "Prénom",
                             "options": null,
                             "type": "text"
                         },
                         {
-                            "code": "lastName",
+                            "code": "last_name",
                             "label": "Nom",
                             "options": null,
                             "type": "text"
@@ -811,7 +811,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "isCommitteeMember",
+                            "code": "is_committee_member",
                             "label": "Membre d'un comité",
                             "options": {
                                 "choices": ["Non", "Oui"]
@@ -819,7 +819,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "donatorStatus",
+                            "code": "donator_status",
                             "label": "Donateur",
                             "options": {
                                 "choices": {
@@ -855,13 +855,13 @@ Feature:
                             "type": "date_interval"
                         },
                         {
-                            "code": "firstMembership",
+                            "code": "first_membership",
                             "label": "Première cotisation",
                             "options": null,
                             "type": "date_interval"
                         },
                         {
-                            "code": "lastMembership",
+                            "code": "last_membership",
                             "label": "Dernière cotisation",
                             "options": null,
                             "type": "date_interval"
@@ -873,7 +873,7 @@ Feature:
                     "color": "#2563EB",
                     "filters": [
                         {
-                            "code": "declaredMandate",
+                            "code": "declared_mandate",
                             "label": "Déclaration de mandat",
                             "options": {
                                 "advanced": true,
@@ -921,7 +921,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "mandateType",
+                            "code": "mandate_type",
                             "label": "Type de mandat",
                             "options": {
                                 "advanced": true,
@@ -1064,7 +1064,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "isCommitteeMember",
+                            "code": "is_committee_member",
                             "label": "Membre d'un comité",
                             "options": {
                                 "choices": {
@@ -1105,13 +1105,13 @@ Feature:
                             "type": "date_interval"
                         },
                         {
-                            "code": "firstMembership",
+                            "code": "first_membership",
                             "label": "Première cotisation",
                             "options": null,
                             "type": "date_interval"
                         },
                         {
-                            "code": "lastMembership",
+                            "code": "last_membership",
                             "label": "Dernière cotisation",
                             "options": null,
                             "type": "date_interval"
@@ -1143,7 +1143,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "mandateType",
+                            "code": "mandate_type",
                             "label": "Type de mandat",
                             "options": {
                                 "advanced": true,
@@ -1358,6 +1358,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "uuid": "@uuid@",
                 "is_certified": null,
                 "zone": {
                     "code": "77",
@@ -1462,6 +1463,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "uuid": "@uuid@",
                 "is_certified": null,
                 "zone": {
                     "type": "department",
@@ -1573,6 +1575,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "uuid": "@uuid@",
                 "is_certified": null,
                 "zone": {
                     "type": "department",
@@ -1676,6 +1679,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
+                "uuid": "@uuid@",
                 "is_certified": null,
                 "zone": null,
                 "committee": {

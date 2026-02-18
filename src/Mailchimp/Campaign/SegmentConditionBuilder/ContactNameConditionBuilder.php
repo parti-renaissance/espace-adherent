@@ -4,26 +4,16 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof ReferentUserFilter
-            || $filter instanceof MessageFilter
-            || $filter instanceof AdherentGeoZoneFilter
-            || $filter instanceof CommitteeFilter
-            || $filter instanceof AbstractElectedRepresentativeFilter
-            || $filter instanceof AudienceFilter;
+        return $filter instanceof AdherentMessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -36,7 +26,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     }
 
     /**
-     * @param ReferentUserFilter|AdherentGeoZoneFilter|AudienceFilter $filter
+     * @param AdherentMessageFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {

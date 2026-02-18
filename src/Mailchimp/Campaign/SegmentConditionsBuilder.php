@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign;
 
 use App\AdherentMessage\DynamicSegmentInterface;
-use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
 
@@ -53,7 +51,7 @@ class SegmentConditionsBuilder
         }
 
         return [
-            'list_id' => $this->getListId($message, $campaign),
+            'list_id' => $this->getListId($campaign),
             'segment_opts' => array_merge($savedSegment, [
                 'match' => 'all',
                 'conditions' => $conditions,
@@ -88,14 +86,8 @@ class SegmentConditionsBuilder
         ];
     }
 
-    private function getListId(AdherentMessageInterface $message, MailchimpCampaign $campaign): string
+    private function getListId(MailchimpCampaign $campaign): string
     {
-        if ($filter = $message->getFilter()) {
-            if ($filter instanceof AbstractElectedRepresentativeFilter) {
-                return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
-            }
-        }
-
         if ($campaign->getMailchimpListType()) {
             return $this->mailchimpObjectIdMapping->getListIdFromSource($campaign->getMailchimpListType());
         }

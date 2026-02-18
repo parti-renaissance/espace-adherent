@@ -7,8 +7,8 @@ namespace App\DataFixtures\ORM;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\Committee;
 use App\Repository\Geo\ZoneRepository;
@@ -46,7 +46,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $author)->generate($author));
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(10);
-        $message->setFilter(new AudienceFilter([$parisZone]));
+        $message->setFilter(new AdherentMessageFilter([$parisZone]));
         $message->setContent($faker->randomHtml());
         $message->setSubject($faker->sentence(5));
         $message->setLabel($faker->sentence(2));
@@ -64,7 +64,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message1->setLabel($faker->sentence(2));
 
         $message1->addMailchimpCampaign(new MailchimpCampaign($message1));
-        $message1->setFilter(new AudienceFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
+        $message1->setFilter(new AdherentMessageFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
 
         // message sent
         $message2 = AdherentMessage::createFromAdherent(
@@ -78,7 +78,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message2->setLabel($faker->sentence(2));
 
         $message2->addMailchimpCampaign(new MailchimpCampaign($message2));
-        $message2->setFilter(new AudienceFilter([$parisZone]));
+        $message2->setFilter(new AdherentMessageFilter([$parisZone]));
         $message2->markAsSent();
 
         $manager->persist($message1);
@@ -88,7 +88,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $pad)->generate($pad));
         $message->setSource(AdherentMessageInterface::SOURCE_VOX);
         $message->setRecipientCount(2);
-        $message->setFilter(new AudienceFilter([$parisZone]));
+        $message->setFilter(new AdherentMessageFilter([$parisZone]));
         $message->markAsSent();
         $message->setContent($faker->randomHtml());
         $message->setSubject($faker->sentence(5));
@@ -99,7 +99,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message->updateFromScope($this->generalScopeGenerator->getGenerator(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $author)->generate($author));
         $message->setSource(AdherentMessageInterface::SOURCE_CADRE);
         $message->setRecipientCount(2);
-        $message->setFilter(new AudienceFilter([$parisZone]));
+        $message->setFilter(new AdherentMessageFilter([$parisZone]));
         $message->markAsSent();
         $message->setContent($faker->randomHtml());
         $message->setSubject($faker->sentence(5));
@@ -175,12 +175,12 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         switch ($instanceScope) {
             case ScopeEnum::ANIMATOR:
-                $filter = new AudienceFilter();
+                $filter = new AdherentMessageFilter();
                 $filter->setCommittee($this->getReference('committee-10', Committee::class));
 
                 return $filter;
             case ScopeEnum::DEPUTY:
-                return new AudienceFilter([LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')]);
+                return new AdherentMessageFilter([LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')]);
         }
 
         return null;

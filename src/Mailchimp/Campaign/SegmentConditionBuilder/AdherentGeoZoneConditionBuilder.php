@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Address\AddressInterface;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Campaign\AudienceTypeEnum;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -18,9 +16,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AdherentGeoZoneFilter
-            || $filter instanceof AudienceFilter
-            || $filter instanceof MessageFilter;
+        return $filter instanceof AdherentMessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -43,7 +39,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
     }
 
     /**
-     * @param AdherentGeoZoneFilter|AudienceFilter $filter
+     * @param AdherentMessageFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
@@ -52,7 +48,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
             $zones[] = $filter->getZones()->first();
         }
 
-        if (!$filter instanceof MessageFilter && ($zone = $filter->getZone())) {
+        if ($zone = $filter->getZone()) {
             $zones[] = $zone;
         }
 

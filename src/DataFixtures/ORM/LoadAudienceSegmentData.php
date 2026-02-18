@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
@@ -59,7 +59,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
     ): AudienceSegment {
         $segment = new AudienceSegment(Uuid::fromString($uuid));
         $segment->setAuthor($author);
-        $filter = new AudienceFilter();
+        $filter = new AdherentMessageFilter();
         $filter->setScope($scope);
         $filter->setZone($zone);
         $filter->setFirstName($firstName);

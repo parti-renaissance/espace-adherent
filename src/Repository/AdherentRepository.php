@@ -18,7 +18,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -1635,7 +1635,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         $filter = $message->getFilter();
 
-        if (!$filter instanceof AudienceFilter) {
+        if (!$filter instanceof AdherentMessageFilter) {
             return 0;
         }
 

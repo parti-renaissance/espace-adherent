@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\AdherentMessage\Handler;
 
+use App\Adherent\Tag\TagTranslator;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
@@ -12,10 +13,8 @@ use App\AdherentMessage\Variable\Parser;
 use App\AdherentMessage\Variable\Renderer;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\JecouteFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
@@ -29,15 +28,17 @@ use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentGeoZoneConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentTagsConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\CampusRegistrationConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\CertifiedConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\JecouteConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\DeclaredMandateConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\DonatorStatusConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\JMECommitteeConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\MandateTypeConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\MembershipDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ToElectedRepresentativeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
@@ -66,8 +67,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ScopeEnum::ANIMATOR);
-        $message->setFilter($committeeFilter = new MessageFilter());
+        $message->setFilter($committeeFilter = new AdherentMessageFilter());
         $committeeFilter->setCommittee($this->createConfiguredMock(Committee::class, [
+            'getUuidAsString' => '9106f810-9e1f-4ed8-b0dd-5c5ddc17cf61',
             'getName' => 'Committee name',
             'getMailchimpId' => 456,
         ]));
@@ -89,10 +91,10 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'match' => 'all',
                         'conditions' => [
                             [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 456,
+                                'condition_type' => 'TextMerge',
+                                'op' => 'is',
+                                'field' => 'COMMITTEE',
+                                'value' => '9106f810-9e1f-4ed8-b0dd-5c5ddc17cf61',
                             ],
                             [
                                 'condition_type' => 'Interests',
@@ -134,7 +136,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testCandidateMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
-        $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
         new GenericMailchimpCampaignHandler()->handle($message);
 
@@ -201,7 +203,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testCandidateJecouteMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
-        $message->setFilter(new JecouteFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
         new GenericMailchimpCampaignHandler()->handle($message);
 
@@ -223,9 +225,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'conditions' => [
                             [
                                 'condition_type' => 'TextMerge',
-                                'op' => 'is',
-                                'field' => 'CODE_DPT',
-                                'value' => 'code1',
+                                'op' => 'contains',
+                                'field' => 'ZONE_DPT',
+                                'value' => ' (code1)',
                             ],
                             [
                                 'condition_type' => 'Interests',
@@ -268,7 +270,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testCorrespondentMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ScopeEnum::CORRESPONDENT);
-        $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
         new GenericMailchimpCampaignHandler()->handle($message);
 
@@ -331,7 +333,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testRegionalCoordinatorMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ScopeEnum::REGIONAL_COORDINATOR);
-        $message->setFilter(new MessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
+        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
         new GenericMailchimpCampaignHandler()->handle($message);
 
@@ -463,15 +465,17 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     new AdherentGeoZoneConditionBuilder(),
                     new AdherentInterestConditionBuilder($this->mailchimpMapping),
                     new AdherentRegistrationDateConditionBuilder(),
-                    new AdherentSegmentConditionBuilder($this->mailchimpMapping),
-                    new CommitteeConditionBuilder($this->mailchimpMapping),
+                    new AdherentTagsConditionBuilder($this->createMock(TagTranslator::class)),
+                    new CampusRegistrationConditionBuilder(),
+                    new CertifiedConditionBuilder(),
                     new ContactNameConditionBuilder(),
                     new ContactAgeConditionBuilder(),
-                    new ContactCityConditionBuilder(),
-                    new JecouteConditionBuilder(),
-                    new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
+                    new DeclaredMandateConditionBuilder(),
+                    new DonatorStatusConditionBuilder(),
+                    new JMECommitteeConditionBuilder(),
+                    new MandateTypeConditionBuilder(),
+                    new MembershipDateConditionBuilder(),
                     new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
-                    new ToElectedRepresentativeConditionBuilder($this->mailchimpMapping),
                 ])
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(

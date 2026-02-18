@@ -161,18 +161,4 @@ class MemberRequest implements MemberRequestInterface
                 throw new ZoneNotSynchronizedException($zone);
         }
     }
-
-    public static function getMergeCodeFieldFromZone(Zone $zone): string
-    {
-        switch ($zone->getType()) {
-            case Zone::CANTON:
-                return self::MERGE_FIELD_CODE_CANTON;
-            case Zone::DEPARTMENT:
-                return self::MERGE_FIELD_CODE_DEPARTMENT;
-            case Zone::REGION:
-                return self::MERGE_FIELD_CODE_REGION;
-            default:
-                throw new \InvalidArgumentException(\sprintf('Zone code type "%s" is not synchronized with mailchimp.', $zone->getType()));
-        }
-    }
 }

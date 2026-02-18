@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Extension;
 
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\ZoneableEntityInterface;
@@ -70,7 +70,7 @@ class FilterByZonesAdminExtension extends AbstractAdminExtension
                         'filter',
                         $zones,
                         $queryBuilder,
-                        AudienceFilter::class,
+                        AdherentMessageFilter::class,
                         'admin_extension_filter_by_zones',
                         'zones',
                         'admin_extension_filter_by_zones_param',

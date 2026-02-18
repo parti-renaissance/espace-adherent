@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpCampaignReport;
 use App\Scope\ScopeEnum;
@@ -32,7 +32,7 @@ class MailchimpCampaignReportRepository extends ServiceEntityRepository
     public function findLocalReportRation(string $instanceScope, array $zones, int $maxHistory = 30): array
     {
         return $this->createReportRationQueryBuilder($instanceScope, $maxHistory)
-            ->innerJoin(AudienceFilter::class, 'filter', Join::WITH, 'message.filter = filter')
+            ->innerJoin(AdherentMessageFilter::class, 'filter', Join::WITH, 'message.filter = filter')
             ->innerJoin('filter.zone', 'zone', Join::WITH, 'zone IN (:zones)')
             ->addSelect('COUNT(mc) as nb_campaigns')
             ->setParameter('zones', $zones)

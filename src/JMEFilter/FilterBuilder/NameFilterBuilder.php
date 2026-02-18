@@ -18,8 +18,8 @@ class NameFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, ?string $feature = null): array
     {
         return new FilterCollectionBuilder()
-            ->createText('firstName', 'Prénom')
-            ->createText('lastName', 'Nom')
+            ->createText('first_name', 'Prénom')
+            ->createText('last_name', 'Nom')
             ->getFilters()
         ;
     }

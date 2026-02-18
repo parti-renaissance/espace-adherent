@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\DynamicSegmentTrait;
@@ -56,13 +56,13 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     use AuthoredTrait;
 
     /**
-     * @var AudienceFilter|null
+     * @var AdherentMessageFilter|null
      */
     #[Assert\NotNull]
     #[Assert\Valid]
     #[Groups(['audience_segment_read', 'audience_segment_write'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\OneToOne(targetEntity: AudienceFilter::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OneToOne(targetEntity: AdherentMessageFilter::class, cascade: ['all'], orphanRemoval: true)]
     private $filter;
 
     /**
@@ -78,12 +78,12 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public function getFilter(): ?AudienceFilter
+    public function getFilter(): ?AdherentMessageFilter
     {
         return $this->filter;
     }
 
-    public function setFilter(?AudienceFilter $filter): void
+    public function setFilter(?AdherentMessageFilter $filter): void
     {
         $this->filter = $filter;
     }

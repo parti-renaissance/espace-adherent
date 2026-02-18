@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
@@ -14,7 +14,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter
+        return $filter instanceof AdherentMessageFilter
             || \in_array($filter->getMessage()?->getInstanceScope(), [
                 ScopeEnum::DEPUTY,
                 ScopeEnum::ANIMATOR,
@@ -86,7 +86,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     }
 
     /**
-     * @param AudienceFilter $filter
+     * @param AdherentMessageFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
