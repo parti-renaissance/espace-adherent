@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Normalizer;
 
 use App\AdherentSpace\AdherentSpaceEnum;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\CommitteeRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -28,7 +28,7 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
-        /** @var AudienceFilter $audienceFilter */
+        /** @var AdherentMessageFilter $audienceFilter */
         $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
@@ -58,12 +58,12 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
     public function getSupportedTypes(?string $format): array
     {
         return [
-            AudienceFilter::class => false,
+            AdherentMessageFilter::class => false,
         ];
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__]) && AudienceFilter::class === $type;
+        return !isset($context[__CLASS__]) && AdherentMessageFilter::class === $type;
     }
 }

@@ -10,7 +10,7 @@ use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AppSessionPushTokenLink;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
@@ -140,7 +140,7 @@ class PushTokenRepository extends ServiceEntityRepository
 
     public function findAllForAdherentMessage(AdherentMessage $message): array
     {
-        /** @var AudienceFilter $filter */
+        /** @var AdherentMessageFilter $filter */
         $filter = $message->getFilter();
 
         $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');

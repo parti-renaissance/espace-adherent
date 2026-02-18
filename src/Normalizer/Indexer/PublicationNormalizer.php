@@ -7,7 +7,7 @@ namespace App\Normalizer\Indexer;
 use App\AdherentMessage\PublicationZone;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\Geo\Zone;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -96,7 +96,7 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
         $enabledFilters = parent::getAudience($object);
         $filter = $object->getFilter();
 
-        if (!$filter instanceof AudienceFilter) {
+        if (!$filter instanceof AdherentMessageFilter) {
             return $enabledFilters;
         }
 

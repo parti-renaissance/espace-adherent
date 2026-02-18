@@ -6,6 +6,7 @@ namespace App\JMEFilter\Types;
 
 use App\JMEFilter\FilterInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\String\UnicodeString;
 
 abstract class AbstractFilter implements FilterInterface
 {
@@ -16,7 +17,7 @@ abstract class AbstractFilter implements FilterInterface
 
     public function __construct(string $code, string $label)
     {
-        $this->code = $code;
+        $this->code = new UnicodeString($code)->snake()->toString();
         $this->label = $label;
     }
 

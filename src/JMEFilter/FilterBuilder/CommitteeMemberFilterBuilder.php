@@ -18,7 +18,7 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, ?string $feature = null): array
     {
         return new FilterCollectionBuilder()
-            ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')
+            ->createBooleanSelect('is_committee_member', 'Membre d\'un comité')
             ->getFilters()
         ;
     }

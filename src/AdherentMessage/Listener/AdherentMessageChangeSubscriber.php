@@ -6,8 +6,8 @@ namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Command\AdherentMessageDeleteCommand;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\CampaignAdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -52,7 +52,7 @@ class AdherentMessageChangeSubscriber
 
         if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
             $this->objects[] = $object;
-        } elseif ($object instanceof CampaignAdherentMessageFilterInterface && false === $object->isSynchronized()) {
+        } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
             $this->objects[] = $object->getMessage();
         }
     }
@@ -63,7 +63,7 @@ class AdherentMessageChangeSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $object) {
-            if (!$object instanceof CampaignAdherentMessageFilterInterface) {
+            if (!$object instanceof AdherentMessageFilterInterface) {
                 continue;
             }
 

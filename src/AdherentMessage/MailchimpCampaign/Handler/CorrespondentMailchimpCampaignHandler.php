@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Membership\MembershipSourceEnum;
 use App\Scope\ScopeEnum;
 
@@ -14,11 +14,11 @@ class CorrespondentMailchimpCampaignHandler extends AbstractMailchimpCampaignHan
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return ScopeEnum::CORRESPONDENT === $message->getInstanceScope() && $message->getFilter() instanceof AudienceFilter;
+        return ScopeEnum::CORRESPONDENT === $message->getInstanceScope() && $message->getFilter() instanceof AdherentMessageFilter;
     }
 
     /**
-     * @param AdherentMessageFilterInterface|AudienceFilter $filter
+     * @param AdherentMessageFilterInterface|AdherentMessageFilter $filter
      */
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {

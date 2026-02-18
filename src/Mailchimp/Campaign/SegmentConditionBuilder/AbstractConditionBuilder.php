@@ -12,11 +12,8 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
     protected const OP_INTEREST_ALL = 'interestcontainsall';
     protected const OP_INTEREST_NONE = 'interestnotcontains';
 
-    protected $mailchimpObjectIdMapping;
-
-    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
+    public function __construct(protected readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping)
     {
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     protected function buildInterestCondition(
@@ -31,16 +28,6 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
             'value' => array_values(
                 array_intersect_key($this->getListInterestIds(), array_fill_keys($interestKeys, true))
             ),
-        ];
-    }
-
-    protected function buildStaticSegmentCondition(int $externalId): array
-    {
-        return [
-            'condition_type' => 'StaticSegment',
-            'op' => 'static_is',
-            'field' => 'static_segment',
-            'value' => $externalId,
         ];
     }
 

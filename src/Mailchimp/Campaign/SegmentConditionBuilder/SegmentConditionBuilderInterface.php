@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 
 interface SegmentConditionBuilderInterface
 {

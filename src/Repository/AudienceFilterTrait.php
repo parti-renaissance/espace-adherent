@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 trait AudienceFilterTrait
 {
-    public function applyAudienceFilter(AudienceFilter $filter, QueryBuilder $qb, string $mainAlias = 'a'): void
+    public function applyAudienceFilter(AdherentMessageFilter $filter, QueryBuilder $qb, string $mainAlias = 'a'): void
     {
         $perimeterFilterWasApplied = false;
 

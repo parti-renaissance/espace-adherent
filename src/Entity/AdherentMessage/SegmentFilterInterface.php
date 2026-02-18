@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage;
 
 interface SegmentFilterInterface
 {

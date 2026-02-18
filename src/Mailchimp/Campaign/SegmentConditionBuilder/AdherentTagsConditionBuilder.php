@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Adherent\Tag\TagTranslator;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Mailchimp\Exception\InvalidAdherentTagValueException;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -19,7 +19,7 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
 
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter;
+        return $filter instanceof AdherentMessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -32,7 +32,7 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
     }
 
     /**
-     * @param AudienceFilter $filter
+     * @param AdherentMessageFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {

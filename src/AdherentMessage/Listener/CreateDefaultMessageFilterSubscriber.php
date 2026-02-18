@@ -7,7 +7,7 @@ namespace App\AdherentMessage\Listener;
 use App\Adherent\Tag\TagEnum;
 use App\AdherentMessage\Events;
 use App\AdherentMessage\MessageEvent;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Repository\CommitteeRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -39,7 +39,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $filter = new AudienceFilter();
+        $filter = new AdherentMessageFilter();
 
         if (!$message->isStatutory()) {
             $filter->adherentTags = TagEnum::ADHERENT;

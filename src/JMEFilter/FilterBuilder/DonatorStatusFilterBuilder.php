@@ -20,7 +20,7 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, ?string $feature = null): array
     {
         return new FilterCollectionBuilder()
-            ->createSelect('donatorStatus', 'Donateur')
+            ->createSelect('donator_status', 'Donateur')
             ->setChoices([
                 DonatorStatusEnum::DONATOR_N => 'Donateur année en cours',
                 DonatorStatusEnum::DONATOR_N_X => 'Donateur années passées uniquement',
