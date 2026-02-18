@@ -3,10 +3,6 @@
 {% block page_title 'Inviter une connaissance' %}
 {% block canonical_url url('invitation_form') %}
 
-{% block javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
-{% endblock %}
-
 {% block content %}
     <main>
         <section class="l__wrapper--500">
@@ -45,13 +41,6 @@
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
                         {{ form_row(form.personalDataCollection, {label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous"}) }}
                     </div>
-
-                    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                    {% if recaptcha_public_key is not empty %}
-                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
-                    {% elseif app.debug %}
-                        <input type="hidden" name="g-recaptcha-response" value="fake" />
-                    {% endif %}
 
                     <div class="text--center">
                         {{ form_widget(form.submit, {label: 'Envoyer l\'invitation'}) }}

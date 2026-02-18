@@ -677,11 +677,6 @@ interactive.form.friend_email: Email de votre ami
 interactive.form.submit_send: Envoyer
 
 #
-# Errors
-#
-recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
-
-#
 # Coordinator
 #
 coordinator.sector.committee: Secteur - Comités

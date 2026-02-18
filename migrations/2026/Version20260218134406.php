@@ -17,13 +17,25 @@ final class Version20260218134406 extends AbstractMigration
                 ALTER TABLE
                   adherent_message_filters
                 ADD
-                  uuid CHAR(36) NOT NULL COMMENT '(DC2Type:uuid)',
+                  uuid CHAR(36) DEFAULT NULL COMMENT '(DC2Type:uuid)',
                 DROP
                   adherent_segment_id,
                 CHANGE
                   dtype dtype VARCHAR(255) DEFAULT NULL,
                 CHANGE
                   postal_code postal_code VARCHAR(255) DEFAULT NULL
+            SQL);
+        $this->addSql(<<<'SQL'
+                UPDATE
+                  adherent_message_filters
+                SET
+                  uuid = UUID()
+            SQL);
+        $this->addSql(<<<'SQL'
+                ALTER TABLE
+                  adherent_message_filters
+                MODIFY
+                  uuid CHAR(36) NOT NULL COMMENT '(DC2Type:uuid)'
             SQL);
         $this->addSql('CREATE UNIQUE INDEX UNIQ_28CA9F94D17F50A6 ON adherent_message_filters (uuid)');
     }

@@ -5,17 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
-use App\Contact\ContactMessage;
-use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
-use App\Entity\Committee;
-use App\Entity\Event\Event;
 use App\Event\EventRegistrationManager;
-use App\Exception\BadUuidRequestException;
 use App\Exception\EventRegistrationException;
-use App\Exception\InvalidUuidException;
 use App\Form\AdherentInterestsFormType;
-use App\Form\ContactMessageType;
 use App\Geocoder\Exception\GeocodingException;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -31,8 +24,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/espace-adherent')]
 class AdherentController extends AbstractController
@@ -130,66 +121,6 @@ class AdherentController extends AbstractController
 
         return $this->render('adherent/my_activity_events.html.twig', [
             'registrations' => $registration,
-        ]);
-    }
-
-    #[Route(path: '/contacter/{uuid}', name: 'app_adherent_contact', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
-    public function contactAction(
-        Request $request,
-        Adherent $adherent,
-        ContactMessageHandler $handler,
-        EntityManagerInterface $entityManager,
-        TranslatorInterface $translator,
-    ): Response {
-        $fromType = $request->query->get('from');
-        $fromId = $request->query->get('id');
-        $from = null;
-
-        try {
-            if ($fromType && $fromId) {
-                if ('committee' === $fromType) {
-                    $from = $entityManager->getRepository(Committee::class)->findOneByUuid($fromId);
-                } else {
-                    $from = $entityManager->getRepository(Event::class)->findOneByUuid($fromId);
-                }
-            }
-        } catch (InvalidUuidException $e) {
-            throw new BadUuidRequestException($e);
-        }
-
-        $message = ContactMessage::createWithCaptcha($this->getUser(), $adherent, $request->request->get('g-recaptcha-response'));
-
-        $form = $this->createForm(ContactMessageType::class, $message, ['validation_groups' => ['Default', 'em_event_contact_organizer']]);
-
-        try {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $handler->handle($message);
-                $this->addFlash('info', 'adherent.contact.success');
-
-                if ($from instanceof Committee) {
-                    return $this->redirectToRoute('app_committee_show', [
-                        'slug' => $from->getSlug(),
-                    ]);
-                }
-
-                if ($from->getCommittee()) {
-                    return $this->redirectToRoute('app_committee_event_show', [
-                        'slug' => $from->getSlug(),
-                    ]);
-                }
-
-                return $this->redirectToRoute('homepage');
-            }
-        } catch (ExceptionInterface $e) {
-            $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
-        }
-
-        return $this->render('adherent/contact.html.twig', [
-            'adherent' => $adherent,
-            'form' => $form->createView(),
-            'fromType' => $fromType,
-            'from' => $from,
         ]);
     }
 }

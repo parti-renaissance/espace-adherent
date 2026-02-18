@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\NewsletterSubscriptionRepository;
@@ -18,7 +17,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[AssertRecaptcha(api: RecaptchaApiClient::NAME, groups: ['Subscription'])]
+#[AssertRecaptcha(groups: ['Subscription'])]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
 #[ORM\Table(name: 'newsletter_subscriptions')]

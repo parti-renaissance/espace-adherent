@@ -7,9 +7,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\Entity\Event\EventInvite;
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Mailer\Message\Renaissance\RenaissanceEventInvitationMessage;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -91,51 +89,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testAdherentCanInviteToEvent()
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
-        $eventUrl = \sprintf('/evenements/%s', $event->getSlug());
-
-        $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
-
-        // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl.'/invitation');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->filter('form[name=event_invitation]')->form([
-            'event_invitation[message]' => 'Venez !',
-            'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
-            'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
-            'g-recaptcha-response' => 'foobar',
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo($eventUrl.'/invitation/merci', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertStringContainsString('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
-
-        // Invitation should have been saved
-        $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
-
-        /** @var EventInvite $invite */
-        $invite = $invitations[0];
-
-        self::assertSame('carl999@example.fr', $invite->getEmail());
-        self::assertSame('Carl Mirabeau', $invite->getFullName());
-        self::assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
-        self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
-
-        // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(RenaissanceEventInvitationMessage::class));
-        $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
-    }
-
     #[DataProvider('dataProviderNearbyEvents')]
     public function testAnonymousCanSeeThreeNearbyEvents(string $name, string $cityName)
     {
@@ -153,62 +106,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         yield ['Marche Parisienne', 'Paris 8ème'];
         yield ['Événement à Paris 2', 'Paris 8ème'];
         yield ['Événement à Paris 1', 'Paris 8ème'];
-    }
-
-    public function testAnonymousCanInviteToEvent()
-    {
-        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_4_UUID);
-        $eventUrl = \sprintf('/evenements/%s', $event->getSlug());
-
-        $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
-
-        // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl.'/invitation');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->filter('form[name=event_invitation]')->form([
-            'event_invitation[email]' => 'titouan@en-marche.fr',
-            'event_invitation[firstName]' => 'Titouan',
-            'event_invitation[lastName]' => 'Galopin',
-            'event_invitation[message]' => '',
-            'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
-            'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
-            'g-recaptcha-response' => 'foobar',
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo($eventUrl.'/invitation/merci', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertStringContainsString('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
-
-        // Invitation should have been saved
-        $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
-
-        /** @var EventInvite $invite */
-        $invite = $invitations[0];
-
-        self::assertSame('titouan@en-marche.fr', $invite->getEmail());
-        self::assertSame('Titouan Galopin', $invite->getFullName());
-        self::assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
-        self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
-
-        // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(RenaissanceEventInvitationMessage::class));
-        $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
-    }
-
-    public function testInvitationSentWithoutRedirection()
-    {
-        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
-
-        $this->client->request(Request::METHOD_GET, \sprintf('/evenements/%s/invitation/merci', $event->getSlug()));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
     public function testAttendConfirmationWithoutRegistration()
