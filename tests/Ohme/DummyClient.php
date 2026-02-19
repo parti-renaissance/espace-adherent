@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Ohme;
 
 use App\Ohme\ClientInterface;
+use App\Ohme\PaymentStatusEnum;
 
 class DummyClient implements ClientInterface
 {
@@ -63,7 +64,7 @@ class DummyClient implements ClientInterface
             'id' => $id,
             'date' => $date,
             'payment_method_name' => 'IBAN',
-            'payment_status' => 'paid_out',
+            'payment_status' => PaymentStatusEnum::PAID_OUT,
             'amount' => 5,
         ];
     }
