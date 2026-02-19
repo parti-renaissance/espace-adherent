@@ -1608,6 +1608,188 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertFalse($payments[1]->toRefund);
     }
 
+    public function testPaymentFailureSetsErrorStatusOnInscription(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => $email = 'test-payment-failure@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'packageValues' => [
+                    'visitDay' => 'dimanche',
+                    'transport' => 'dimanche_train',
+                    'accommodation' => 'chambre_partagee',
+                ],
+            ],
+        ]);
+
+        /** @var EventInscription $inscription */
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $inscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement-process', $inscription->getPayments()[0]->getUuid()), $this->client);
+
+        self::assertCount(1, $payments = $inscription->getPayments());
+        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $inscription->status);
+        self::assertSame(PaymentStatusEnum::PENDING, $inscription->paymentStatus);
+
+        /** @var Payment $payment */
+        $payment = $payments[0];
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '4']));
+
+        $this->em->clear();
+
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(InscriptionStatusEnum::WAITING_PAYMENT, $inscription->status);
+        self::assertSame(PaymentStatusEnum::ERROR, $inscription->paymentStatus);
+        self::assertTrue($inscription->isPaymentFailed());
+        self::assertSame(9900, $inscription->amount);
+        self::assertSame('dimanche_train', $inscription->packageValues['transport']);
+        self::assertSame('chambre_partagee', $inscription->packageValues['accommodation']);
+
+        $this->assertCountMails(0, NationalEventInscriptionConfirmationMessage::class);
+    }
+
+    public function testRefundOfSolePaymentSetsRefundedStatusOnInscription(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => $email = 'test-refund-sole-payment@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'packageValues' => [
+                    'visitDay' => 'dimanche',
+                    'transport' => 'dimanche_train',
+                    'accommodation' => 'chambre_partagee',
+                ],
+            ],
+        ]);
+
+        /** @var EventInscription $inscription */
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $inscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement-process', $inscription->getPayments()[0]->getUuid()), $this->client);
+
+        /** @var Payment $payment */
+        $payment = $inscription->getPayments()[0];
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
+        self::assertTrue($inscription->isPaymentSuccess());
+
+        $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '8']));
+
+        $this->em->clear();
+
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
+        self::assertSame(PaymentStatusEnum::REFUNDED, $inscription->paymentStatus);
+        self::assertFalse($inscription->isPaymentSuccess());
+        self::assertSame(PaymentStatusEnum::REFUNDED, $inscription->getPayments()[0]->status);
+    }
+
+    public function testDuplicateWebhookPayloadIsIgnored(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => $email = 'test-duplicate-webhook@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'packageValues' => [
+                    'visitDay' => 'dimanche',
+                    'transport' => 'dimanche_train',
+                    'accommodation' => 'chambre_partagee',
+                ],
+            ],
+        ]);
+
+        /** @var EventInscription $inscription */
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $inscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement-process', $inscription->getPayments()[0]->getUuid()), $this->client);
+
+        /** @var Payment $payment */
+        $payment = $inscription->getPayments()[0];
+
+        $payload = ['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'];
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($payload));
+
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
+        self::assertCount(1, $inscription->getPayments()[0]->getStatuses());
+
+        $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($payload));
+
+        $this->em->clear();
+
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
+        self::assertCount(1, $inscription->getPayments()[0]->getStatuses());
+
+        $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
+    }
+
     public static function provideReferrerCodes(): iterable
     {
         yield ['123-456', 'michelle.dufour@example.ch'];

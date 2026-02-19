@@ -12,6 +12,7 @@ use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -23,6 +24,7 @@ class PaymentStatusUpdateCommandHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PaymentRepository $paymentRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -30,25 +32,39 @@ class PaymentStatusUpdateCommandHandler
     {
         $payload = $command->payload;
 
-        if (empty($paymentUuid = ($payload['orderID'] ?? null)) || !Uuid::isValid($paymentUuid)) {
+        $paymentUuid = $payload['orderID'] ?? null;
+        if (empty($paymentUuid) || !Uuid::isValid($paymentUuid)) {
+            $this->logger->error('Invalid or missing orderID in payment webhook payload.');
+
             return;
         }
 
         $payment = $this->paymentRepository->findOneByUuid($paymentUuid);
         if (!$payment instanceof Payment) {
+            $this->logger->error('Payment not found for UUID: {uuid}.', ['uuid' => $paymentUuid]);
+
             return;
+        }
+
+        foreach ($payment->getStatuses() as $existingStatus) {
+            if ($existingStatus->payload === $payload) {
+                $this->logger->info('Duplicate webhook payload for payment {uuid}, skipping.', ['uuid' => $paymentUuid]);
+
+                return;
+            }
         }
 
         $inscription = $payment->inscription;
 
-        $payment->addStatus($paymentStatus = new PaymentStatus($payment, $payload));
-
-        $this->entityManager->flush();
+        $paymentStatus = new PaymentStatus($payment, $payload);
+        $payment->addStatus($paymentStatus);
 
         $isLastPayment = true;
 
         foreach ($inscription->getSuccessPayments() as $successPayment) {
-            $isLastPayment = $successPayment === $payment || $payment->getCreatedAt() > $successPayment->getCreatedAt();
+            if ($successPayment !== $payment && $payment->getCreatedAt() < $successPayment->getCreatedAt()) {
+                $isLastPayment = false;
+            }
 
             if (!$paymentStatus->isSuccess() || $successPayment === $payment || $successPayment->toRefund) {
                 continue;
@@ -76,7 +92,10 @@ class PaymentStatusUpdateCommandHandler
         }
 
         if ($inscription->isCurrentPayment($payment) && ($isLastPayment || PaymentStatusEnum::PENDING === $inscription->paymentStatus)) {
-            $inscription->paymentStatus = $paymentStatus->isSuccess() ? PaymentStatusEnum::CONFIRMED : PaymentStatusEnum::ERROR;
+            $inscription->paymentStatus = match ($paymentStatus->getStatus()) {
+                PaymentStatusEnum::CONFIRMED, PaymentStatusEnum::REFUNDED => $paymentStatus->getStatus(),
+                default => PaymentStatusEnum::ERROR,
+            };
         }
 
         $this->entityManager->flush();
