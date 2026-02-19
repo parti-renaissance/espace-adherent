@@ -13,4 +13,6 @@ class EventTypeEnum extends Enum
     public const SUBSCRIBE = 'subscribe';
     public const UNSUBSCRIBE = 'unsubscribe';
     public const CLEANED = 'cleaned';
+    public const SMS_SUBSCRIBE = 'sms_subscribe';
+    public const SMS_UNSUBSCRIBE = 'sms_unsubscribe';
 }

@@ -16,6 +16,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_LAST_NAME = 'LNAME';
     public const MERGE_FIELD_CITY = 'CITY';
     public const MERGE_FIELD_GENDER = 'GENDER';
+    public const MERGE_FIELD_PHONE = 'SMSPHONE';
     public const MERGE_FIELD_BIRTHDATE = 'BIRTHDATE';
     public const MERGE_FIELD_ZIP_CODE = 'ZIP_CODE';
     public const MERGE_FIELD_COUNTRY = 'COUNTRY';
