@@ -130,6 +130,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
+            ->setPhone(PhoneNumberUtils::format($adherent->getPhone()))
             ->setLastName($adherent->getLastName())
             ->setBirthDay($adherent->getBirthdate())
             ->setZipCode($adherent->getPostalCode())
@@ -560,6 +561,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->gender) {
             $mergeFields[MemberRequest::MERGE_FIELD_GENDER] = $this->gender;
+        }
+
+        if ($this->phone) {
+            $mergeFields[MemberRequest::MERGE_FIELD_PHONE] = $this->phone;
         }
 
         if ($this->firstName) {
