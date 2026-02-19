@@ -27,6 +27,7 @@ class PlaceAutocompleteController extends AbstractController
         $response = [];
 
         if ($input = trim($request->query->get('input'))) {
+            $input = urlencode(substr($input, 0, 150));
             $response = $this->googlePlaceClient->request('GET', 'autocomplete/json?language=fr&key='.$this->googlePlaceApiKey.'&input='.$input)->toArray();
         }
 
