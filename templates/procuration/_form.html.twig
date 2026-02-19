@@ -150,7 +150,7 @@
 
                 <fieldset>
                     <twig:Atoms:ReLabel class="mb-6">Numéro de téléphone</twig:Atoms:ReLabel>
-                    <p class="text-[#555555] opacity-50">Nous n’utiliserons ce numéro de téléphone que dans le cadre de la procuration, pour traiter votre demande.</p>
+                    <p class="text-[#555555] opacity-80">Nous n’utiliserons ce numéro de téléphone que dans le cadre de la procuration, pour traiter votre demande.</p>
                     {{ form_row(form.phone) }}
                 </fieldset>
 
@@ -158,8 +158,8 @@
                     Mon bureau de vote
                 </h3>
 
-                <p class="text-[#555555] opacity-50">
-                    Sachez que ces informations sont indiquées sur votre carte d'électeur. En cas de besoin vous pouvez également les récupérer en allant sur ce site <a class="text-ui_blue-50 hover:text-ui_blue-70" href="https://www.service-public.fr/particuliers/vosdroits/demarches-et-outils/ISE">(Interroger votre situation électorale | Service-Public.fr)</a>
+                <p class="text-[#555555] opacity-80">
+                    Sachez que ces informations sont indiquées sur votre carte d'électeur. En cas de besoin, vous pouvez également les récupérer en allant sur ce site <a class="text-ui_blue-50 hover:text-ui_blue-70" href="https://www.service-public.fr/particuliers/vosdroits/demarches-et-outils/ISE" target="_blank">(Interroger votre situation électorale | Service-Public.fr)</a>
                 </p>
 
                 <fieldset class="flex flex-col gap-8 relative">
@@ -176,7 +176,7 @@
                     <fieldset>
                         <template x-if="showManualBDV || (votePlaceUuid && isNotInFrance)">
                             <twig:Atoms:ReLabel class="mb-6" x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
-                            <p class="text-[#555555] opacity-50 pb-4" x-show="isNotInFrance">
+                            <p class="text-[#555555] opacity-80 pb-4" x-show="isNotInFrance">
                                 Si vous connaissez votre bureau de vote, il aidera notre équipe à vous trouver le meilleur mandataire. Si vous ne l’avez pas, nous utiliserons votre adresse postale.
                             </p>
                         </template>
