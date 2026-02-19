@@ -1408,16 +1408,24 @@ Feature:
                     }
                 ],
                 "gender": null,
-                "age_min": null,
-                "age_max": null,
+                "age": {
+                    "start": null,
+                    "end": null
+                },
                 "first_name": null,
                 "last_name": null,
-                "registered_since": null,
-                "registered_until": null,
-                "first_membership_since": null,
-                "first_membership_before": null,
-                "last_membership_since": null,
-                "last_membership_before": null
+                "registered": {
+                    "start": null,
+                    "end": null
+                },
+                "first_membership": {
+                    "start": null,
+                    "end": null
+                },
+                "last_membership": {
+                    "start": null,
+                    "end": null
+                }
             }
             """
         When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
@@ -1425,8 +1433,8 @@ Feature:
             {
                 "gender": "male",
                 "age": {
-                    "min": 18,
-                    "max": 70
+                    "start": 18,
+                    "end": 70
                 },
                 "is_committee_member": true,
                 "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
@@ -1513,16 +1521,24 @@ Feature:
                     }
                 ],
                 "gender": "male",
-                "age_min": 18,
-                "age_max": 70,
+                "age": {
+                    "start": 18,
+                    "end": 70
+                },
                 "first_name": null,
                 "last_name": null,
-                "registered_since": null,
-                "registered_until": null,
-                "first_membership_since": null,
-                "first_membership_before": null,
-                "last_membership_since": null,
-                "last_membership_before": null
+                "registered": {
+                    "start": null,
+                    "end": null
+                },
+                "first_membership": {
+                    "start": null,
+                    "end": null
+                },
+                "last_membership": {
+                    "start": null,
+                    "end": null
+                }
             }
             """
         When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
@@ -1625,16 +1641,24 @@ Feature:
                     }
                 ],
                 "gender": null,
-                "age_min": null,
-                "age_max": null,
+                "age": {
+                    "start": null,
+                    "end": null
+                },
                 "first_name": null,
                 "last_name": null,
-                "registered_since": "2016-01-01T00:00:00+01:00",
-                "registered_until": "2030-01-01T00:00:00+01:00",
-                "first_membership_since": "2020-01-01T00:00:00+01:00",
-                "first_membership_before": "2030-01-01T00:00:00+01:00",
-                "last_membership_since": "2020-01-01T00:00:00+01:00",
-                "last_membership_before": "2030-01-01T00:00:00+01:00"
+                "registered": {
+                    "start": "2016-01-01T00:00:00+01:00",
+                    "end": "2030-01-01T00:00:00+01:00"
+                },
+                "first_membership": {
+                    "start": "2020-01-01T00:00:00+01:00",
+                    "end": "2030-01-01T00:00:00+01:00"
+                },
+                "last_membership": {
+                    "start": "2020-01-01T00:00:00+01:00",
+                    "end": "2030-01-01T00:00:00+01:00"
+                }
             }
             """
         When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=<scope>" with body:
@@ -1728,16 +1752,24 @@ Feature:
                     }
                 ],
                 "gender": null,
-                "age_min": null,
-                "age_max": null,
+                "age": {
+                    "start": null,
+                    "end": null
+                },
                 "first_name": null,
                 "last_name": null,
-                "registered_since": null,
-                "registered_until": null,
-                "first_membership_since": null,
-                "first_membership_before": null,
-                "last_membership_since": null,
-                "last_membership_before": null
+                "registered": {
+                    "start": null,
+                    "end": null
+                },
+                "first_membership": {
+                    "start": null,
+                    "end": null
+                },
+                "last_membership": {
+                    "start": null,
+                    "end": null
+                }
             }
             """
 
