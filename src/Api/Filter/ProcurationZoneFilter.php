@@ -17,11 +17,6 @@ class ProcurationZoneFilter extends AbstractFilter
 {
     private ZoneRepository $zoneRepository;
 
-    protected function needApplyFilter(string $property, string $resourceClass): bool
-    {
-        return is_a($resourceClass, AbstractProcuration::class, true);
-    }
-
     protected function filterProperty(
         string $property,
         $value,
@@ -32,6 +27,10 @@ class ProcurationZoneFilter extends AbstractFilter
         array $context = [],
     ): void {
         if ('zone' !== $property || empty($value) || !Uuid::isValid($value)) {
+            return;
+        }
+
+        if (!is_a($resourceClass, AbstractProcuration::class, true)) {
             return;
         }
 

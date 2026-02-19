@@ -40,6 +40,10 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
 
         $scope = $scopeGenerator->generate($this->security->getUser());
 
+        if ($scope->isNational()) {
+            return;
+        }
+
         $zones = $scope->getZones();
 
         $zoneQueryBuilder = $this->entityManager
