@@ -45,14 +45,14 @@
 {% block inner_content_section %}
     <fieldset>
         <twig:Atoms:ReLabel class="mb-6">Mon numéro d’électeur (optionnel)</twig:Atoms:ReLabel>
-        <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
+        <p class="text-[#555555] opacity-80">Il facilitera la démarche pour vous faire procuration.</p>
         {{ form_row(form.electorNumber, {attr: {placeholder: 'Mon numéro d’électeur', 'x-numberonly': '', validate: '["max:9"]'}}) }}
-        <p class="text-[#555555] opacity-60">Pour trouver votre numéro d'électeur <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/R51788" class="underline" target="_blank">cliquer ici</a></p>
+        <p class="text-[#555555] opacity-80">Pour trouver votre numéro d'électeur <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/R51788" class="underline" target="_blank">cliquer ici</a></p>
     </fieldset>
 
     <fieldset x-show="isNotInFrance">
         <twig:Atoms:ReLabel class="mb-6">Et si vous votiez une 3e ou 4e fois ?</twig:Atoms:ReLabel>
-        <p class="text-[#555555] opacity-50">En tant que FDE, vous pouvez porter jusqu’à 3 procurations dès lors que seule l’une d’entre elles, au maximum, a été enregistrée dans une gendarmerie ou un commissariat en France.</p>
+        <p class="text-[#555555] opacity-80">En tant que FDE, vous pouvez porter jusqu’à 3 procurations dès lors que seule l’une d’entre elles, au maximum, a été enregistrée dans une gendarmerie ou un commissariat en France.</p>
         {{ form_row(form.slots) }}
     </fieldset>
     <twig:ReParagraphStatus status="default" x-show="isNotInFrance">
