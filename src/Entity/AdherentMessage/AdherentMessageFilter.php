@@ -55,7 +55,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
      */
     #[Assert\GreaterThanOrEqual(1)]
     #[Assert\LessThanOrEqual(200)]
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMin;
 
@@ -64,7 +64,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
      */
     #[Assert\GreaterThanOrEqual(1)]
     #[Assert\LessThanOrEqual(200)]
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMax;
 
@@ -100,36 +100,36 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     /**
      * @var \DateTime|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $registeredSince;
 
     /**
      * @var \DateTime|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $registeredUntil;
 
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $firstMembershipSince = null;
 
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $firstMembershipBefore = null;
 
     /**
      * @var \DateTime|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $lastMembershipSince;
 
     /**
      * @var \DateTime|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $lastMembershipBefore;
 
@@ -302,10 +302,16 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
-    public function setAge(?array $minMax): void
+    public function setAge(?array $startEnd): void
     {
-        $this->setAgeMin(empty($minMax['min']) ? null : $minMax['min']);
-        $this->setAgeMax(empty($minMax['max']) ? null : $minMax['max']);
+        $this->setAgeMin(empty($startEnd['start']) ? null : $startEnd['start']);
+        $this->setAgeMax(empty($startEnd['end']) ? null : $startEnd['end']);
+    }
+
+    #[Groups(['adherent_message_read_filter'])]
+    public function getAge(): array
+    {
+        return ['start' => $this->ageMin, 'end' => $this->ageMax];
     }
 
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
@@ -315,6 +321,12 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->setRegisteredUntil(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
     }
 
+    #[Groups(['adherent_message_read_filter'])]
+    public function getRegistered(): array
+    {
+        return ['start' => $this->registeredSince, 'end' => $this->registeredUntil];
+    }
+
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setFirstMembership(?array $startEnd): void
     {
@@ -322,11 +334,23 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->firstMembershipBefore = empty($startEnd['end']) ? null : new \DateTime($startEnd['end']);
     }
 
+    #[Groups(['adherent_message_read_filter'])]
+    public function getFirstMembership(): array
+    {
+        return ['start' => $this->firstMembershipSince, 'end' => $this->firstMembershipBefore];
+    }
+
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setLastMembership(?array $startEnd): void
     {
         $this->setLastMembershipSince(empty($startEnd['start']) ? null : new \DateTime($startEnd['start']));
         $this->setLastMembershipBefore(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
+    }
+
+    #[Groups(['adherent_message_read_filter'])]
+    public function getLastMembership(): array
+    {
+        return ['start' => $this->lastMembershipSince, 'end' => $this->lastMembershipBefore];
     }
 
     public function getAudienceType(): ?string

@@ -22,10 +22,8 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?string $gender = null;
 
-    #[Groups(['filter_write'])]
     public ?int $ageMin = null;
 
-    #[Groups(['filter_write'])]
     public ?int $ageMax = null;
 
     #[Assert\Length(max: 255)]
@@ -42,10 +40,8 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public array $interests = [];
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $registeredSince = null;
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $registeredUntil = null;
 
     #[Groups(['filter_write'])]
@@ -126,16 +122,12 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?bool $isCertified = null;
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $firstMembershipSince = null;
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $firstMembershipBefore = null;
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipSince = null;
 
-    #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipBefore = null;
 
     #[Groups(['filter_write'])]
@@ -168,14 +160,14 @@ class ManagedUsersFilter
     }
 
     #[Groups(['filter_write'])]
-    public function setAge(array $minMax): void
+    public function setAge(array $startEnd): void
     {
-        if (!empty($minMax['min'])) {
-            $this->ageMin = (int) $minMax['min'];
+        if (!empty($startEnd['start'])) {
+            $this->ageMin = (int) $startEnd['start'];
         }
 
-        if (!empty($minMax['max'])) {
-            $this->ageMax = (int) $minMax['max'];
+        if (!empty($startEnd['end'])) {
+            $this->ageMax = (int) $startEnd['end'];
         }
     }
 
