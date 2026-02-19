@@ -6,6 +6,7 @@ namespace App\Repository\Contribution;
 
 use App\Entity\Adherent;
 use App\Entity\Contribution\Payment;
+use App\Ohme\PaymentStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -44,9 +45,9 @@ class PaymentRepository extends ServiceEntityRepository
             ->setParameters([
                 'adherent' => $adherent,
                 'status' => [
-                    'paid_out',
-                    'confirmed',
-                    'cheque_cashed',
+                    PaymentStatusEnum::PAID_OUT,
+                    PaymentStatusEnum::CONFIRMED,
+                    PaymentStatusEnum::CHEQUE_CASHED,
                 ],
             ])
             ->groupBy('year')
