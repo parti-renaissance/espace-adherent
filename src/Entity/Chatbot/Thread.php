@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Chatbot;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -15,6 +17,14 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+    ],
+    routePrefix: '/v3/ai',
+    normalizationContext: ['groups' => ['chatbot:thread_read']],
+    security: "is_granted('ROLE_CANARY_TESTER')"
+)]
 #[ORM\Entity(repositoryClass: ThreadRepository::class)]
 #[ORM\Table(name: 'chatbot_thread')]
 class Thread
@@ -26,9 +36,13 @@ class Thread
     #[ORM\Column(nullable: true)]
     public ?string $telegramChatId = null;
 
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['chatbot:thread_read'])]
+    #[ORM\Column(nullable: true)]
+    public ?string $title = null;
+
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Chatbot::class)]
-    public Chatbot $chatbot;
+    public ?Chatbot $chatbot = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -37,16 +51,18 @@ class Thread
     /**
      * @var Message[]|Collection
      */
-    #[Groups(['chatbot:read'])]
     #[ORM\OneToMany(mappedBy: 'thread', targetEntity: Message::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['date' => 'ASC'])]
     public Collection $messages;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Run::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public ?Run $currentRun = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(Adherent $adherent, ?string $title = null, ?UuidInterface $uuid = null)
     {
+        $this->adherent = $adherent;
+        $this->title = $title;
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->messages = new ArrayCollection();
     }
@@ -64,7 +80,7 @@ class Thread
         $this->currentRun = null;
     }
 
-    public function addAssistantMessage(string $content, \DateTimeInterface $date, string $externalId): Message
+    public function addAssistantMessage(string $content, \DateTimeInterface $date, ?string $externalId = null): Message
     {
         return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
     }

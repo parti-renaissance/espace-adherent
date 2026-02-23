@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Chatbot;
 
+use App\Chatbot\ChatbotManager;
+use App\Entity\Adherent;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\AgentInterface;
-use Symfony\AI\Platform\Message\Message;
-use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_CANARY_TESTER')]
-#[Route('/v3/chatbot/start', methods: ['POST'])]
-class NewChatController extends AbstractController
+#[Route('/v3/ai/chat', methods: ['POST'])]
+class PostMessageController extends AbstractController
 {
     public function __construct(
         private readonly AgentInterface $geminiAgent,
@@ -25,34 +26,27 @@ class NewChatController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): StreamedResponse
+    public function __invoke(Request $request, ChatbotManager $chatbotManager, #[CurrentUser] Adherent $user): StreamedResponse
     {
         try {
             $data = $request->toArray();
-            $messagesData = $data['messages'] ?? [];
+            $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';
+            $threadId = isset($data['thread_id']) && \is_string($data['thread_id']) ? $data['thread_id'] : null;
         } catch (\Throwable) {
             throw new BadRequestHttpException('JSON invalide');
         }
 
-        if (empty($messagesData)) {
+        if ('' === $message) {
             throw new BadRequestHttpException('Aucun message');
         }
 
-        $messageBag = new MessageBag();
+        $thread = $chatbotManager->handleUserMessage($message, $threadId, $user);
+        $messageBag = $chatbotManager->buildContextMessageBag($thread);
 
-        foreach ($messagesData as $msg) {
-            $role = $msg['role'] ?? 'user';
-            $content = $msg['content'] ?? '';
-
-            if ('user' === $role) {
-                $messageBag->add(Message::ofUser($content));
-            } elseif ('assistant' === $role || 'system' === $role) {
-                $messageBag->add(Message::ofAssistant($content));
-            }
-        }
-
-        return new StreamedResponse(function () use ($messageBag) {
+        return new StreamedResponse(function () use ($messageBag, $thread, $chatbotManager) {
             set_time_limit(0);
+
+            $fullResponse = '';
 
             try {
                 $result = $this->geminiAgent->call($messageBag);
@@ -66,6 +60,8 @@ class NewChatController extends AbstractController
                     if (empty($content)) {
                         continue;
                     }
+
+                    $fullResponse .= $content;
 
                     echo 'data: '.json_encode($content, \JSON_UNESCAPED_UNICODE)."\n\n";
 
@@ -84,6 +80,16 @@ class NewChatController extends AbstractController
                 echo 'data: '.$errorPayload."\n\n";
 
                 flush();
+            } finally {
+                if ($thread && !empty($fullResponse)) {
+                    try {
+                        $chatbotManager->handleBotResponse($thread, $fullResponse);
+                    } catch (\Throwable $e) {
+                        $this->logger->error('[CHATBOT] Failed to persist bot response', [
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
             }
         }, 200, [
             'Content-Type' => 'text/event-stream; charset=utf-8',
@@ -91,6 +97,7 @@ class NewChatController extends AbstractController
             'X-Accel-Buffering' => 'no',
             'x-vercel-ai-ui-message-stream' => 'v1',
             'Connection' => 'keep-alive',
+            'X-Chatbot-Thread-UUID' => $thread->getUuid()->toString(),
         ]);
     }
 }
