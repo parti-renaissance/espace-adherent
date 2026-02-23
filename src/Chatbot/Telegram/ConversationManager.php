@@ -31,26 +31,8 @@ class ConversationManager
         $this->bus->dispatch(new RefreshThreadCommand($thread->getUuid()));
     }
 
-    private function getCurrentThread(Chatbot $chatbot, string $telegramChatId): Thread
+    private function getCurrentThread(Chatbot $chatbot, string $telegramChatId): ?Thread
     {
-        if ($thread = $this->threadRepository->findOneForTelegram($chatbot, $telegramChatId)) {
-            return $thread;
-        }
-
-        $thread = $this->createThread($chatbot, $telegramChatId);
-
-        $this->entityManager->persist($thread);
-        $this->entityManager->flush();
-
-        return $thread;
-    }
-
-    private function createThread(Chatbot $chatbot, string $telegramChatId): Thread
-    {
-        $thread = new Thread();
-        $thread->chatbot = $chatbot;
-        $thread->telegramChatId = $telegramChatId;
-
-        return $thread;
+        return $this->threadRepository->findOneForTelegram($chatbot, $telegramChatId);
     }
 }

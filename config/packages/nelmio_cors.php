@@ -28,6 +28,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 ],
                 'expose_headers' => [
                     'Content-Disposition',
+                    'X-Chatbot-Thread-UUID',
                 ],
                 'max_age' => 3600,
             ],

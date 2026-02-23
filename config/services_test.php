@@ -60,4 +60,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->args([
             '%env(SSL_PRIVATE_KEY)%',
         ]);
+
+    $services->set(Tests\App\Test\Chatbot\DummyAgent::class);
+    $services->alias(Symfony\AI\Agent\AgentInterface::class, Tests\App\Test\Chatbot\DummyAgent::class);
 };

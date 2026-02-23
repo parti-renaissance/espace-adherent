@@ -146,6 +146,7 @@ trait EntityIdentityTrait
         'adherent_message_sender',
         'event_inscription_read',
         'event_inscription_read_for_validation',
+        'chatbot:thread_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
