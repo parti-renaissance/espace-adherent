@@ -266,9 +266,9 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     }
 
     #[Groups(['audience_segment_write'])]
-    public function setIsCommitteeMember(?bool $value): void
+    public function setIsCommitteeMember(mixed $value): void
     {
-        $this->isCommitteeMember = $value;
+        $this->isCommitteeMember = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
     }
 
     public function getIsCertified(): ?bool
@@ -276,9 +276,9 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         return $this->isCertified;
     }
 
-    public function setIsCertified(?bool $isCertified): void
+    public function setIsCertified(mixed $value): void
     {
-        $this->isCertified = $isCertified;
+        $this->isCertified = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
     }
 
     public function getZone(): ?Zone

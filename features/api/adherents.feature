@@ -779,7 +779,7 @@ Feature:
                             "code": "email_subscription",
                             "label": "Abonné email",
                             "options": {
-                                "choices": ["Non", "Oui"]
+                                "choices": { "false": "Non", "true": "Oui" }
                             },
                             "type": "select"
                         },
@@ -799,7 +799,7 @@ Feature:
                             "code": "sms_subscription",
                             "label": "Abonné SMS",
                             "options": {
-                                "choices": ["Non", "Oui"]
+                                "choices": { "false": "Non", "true": "Oui" }
                             },
                             "type": "select"
                         },

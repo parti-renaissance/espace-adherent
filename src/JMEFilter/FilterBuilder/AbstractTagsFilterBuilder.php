@@ -39,7 +39,10 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         ;
 
         if ($this->placeholder) {
-            $builder->setPlaceholder($this->placeholder);
+            $builder
+                ->setPlaceholder($this->placeholder)
+                ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature, $this->placeholder)
+            ;
         }
 
         return $builder->getFilters();

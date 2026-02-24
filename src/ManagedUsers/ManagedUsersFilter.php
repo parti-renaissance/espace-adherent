@@ -243,4 +243,19 @@ class ManagedUsersFilter
             $this->firstMembershipBefore = new \DateTime($startEnd['end']);
         }
     }
+
+    public function setIsCommitteeMember(mixed $value): void
+    {
+        $this->isCommitteeMember = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
+    }
+
+    public function setSmsSubscription(mixed $value): void
+    {
+        $this->smsSubscription = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
+    }
+
+    public function setIsCertified(mixed $value): void
+    {
+        $this->isCertified = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
+    }
 }

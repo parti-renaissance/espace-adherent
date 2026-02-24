@@ -174,9 +174,9 @@ class ListFilter
         return $this->emailSubscription;
     }
 
-    public function setEmailSubscription(?bool $emailSubscription = null): void
+    public function setEmailSubscription(mixed $value = null): void
     {
-        $this->emailSubscription = $emailSubscription;
+        $this->emailSubscription = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
     }
 
     public function isRevenueDeclared(): ?bool

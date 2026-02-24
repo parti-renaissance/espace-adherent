@@ -188,9 +188,9 @@ trait AudienceFieldsTrait
         return $this->isCommitteeMember;
     }
 
-    public function setIsCommitteeMember(?bool $value): void
+    public function setIsCommitteeMember(mixed $value): void
     {
-        $this->isCommitteeMember = $value;
+        $this->isCommitteeMember = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
     }
 
     public function getIsCertified(): ?bool
