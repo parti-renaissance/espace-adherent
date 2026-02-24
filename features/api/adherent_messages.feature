@@ -814,7 +814,7 @@ Feature:
                             "code": "is_committee_member",
                             "label": "Membre d'un comité",
                             "options": {
-                                "choices": ["Non", "Oui"]
+                                "choices": { "false": "Non", "true": "Oui" }
                             },
                             "type": "select"
                         },
@@ -998,6 +998,7 @@ Feature:
                                 "favorite": true,
                                 "required": true,
                                 "choices": {
+                                    "": "Tous mes militants",
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2026": "Adhérent - À jour 2026",
                                     "adherent:a_jour_2026:primo": "Adhérent - À jour 2026 - Primo-adhérent",
@@ -1067,10 +1068,7 @@ Feature:
                             "code": "is_committee_member",
                             "label": "Membre d'un comité",
                             "options": {
-                                "choices": {
-                                    "0": "Non",
-                                    "1": "Oui"
-                                }
+                                "choices": { "false": "Non", "true": "Oui" }
                             },
                             "type": "select"
                         },
