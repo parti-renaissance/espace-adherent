@@ -41,10 +41,8 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
     private function getCommitteeChoices(Scope $scope): array
     {
         return array_reduce(
-            ScopeEnum::ANIMATOR === $scope->getCode() ?
-                $this->committeeRepository->findByUuid($scope->getCommitteeUuids())
-                : $this->committeeRepository->findInZones($scope->getZones()),
-            function ($carry, Committee $item) {
+            $this->committeeRepository->findInZones($scope->getZones()),
+            static function ($carry, Committee $item) {
                 $carry[$item->getUuid()->toString()] = $item->getName();
 
                 return $carry;

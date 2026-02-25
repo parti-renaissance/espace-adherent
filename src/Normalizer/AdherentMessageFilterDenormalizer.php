@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class AdherentMessageFilterDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
 

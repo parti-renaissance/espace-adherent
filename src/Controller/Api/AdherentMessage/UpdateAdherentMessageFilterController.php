@@ -7,7 +7,6 @@ namespace App\Controller\Api\AdherentMessage;
 use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
-use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,11 +26,8 @@ class UpdateAdherentMessageFilterController extends AbstractController
     ) {
     }
 
-    public function __invoke(
-        Request $request,
-        AdherentMessage $data,
-        ScopeGeneratorResolver $scopeGeneratorResolver,
-    ): Response {
+    public function __invoke(Request $request, AdherentMessage $data): Response
+    {
         if ($data->isSent()) {
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }
@@ -42,7 +38,7 @@ class UpdateAdherentMessageFilterController extends AbstractController
 
         $filter->reset();
 
-        $this->serializer->deserialize($request->getContent(), $filter::class, JsonEncoder::FORMAT, [
+        $this->serializer->deserialize($request->getContent(), AdherentMessageFilter::class, JsonEncoder::FORMAT, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
             AbstractNormalizer::GROUPS => ['adherent_message_update_filter'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
