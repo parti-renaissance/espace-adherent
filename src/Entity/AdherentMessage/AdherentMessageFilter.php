@@ -154,7 +154,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
-    protected ?Committee $committee = null;
+    private ?Committee $committee = null;
 
     /**
      * @var AudienceSegment|null
@@ -169,7 +169,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
-    protected $isCertified;
+    private $isCertified;
 
     /**
      * @var Zone|null
@@ -207,7 +207,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
 
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(type: 'boolean', nullable: true)]
-    protected ?bool $isCampusRegistered = null;
+    private ?bool $isCampusRegistered = null;
 
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
@@ -550,6 +550,16 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->adherentTags = null;
         $this->electTags = null;
         $this->staticTags = null;
+        $this->zone = null;
+        $this->mandate = null;
+        $this->politicalFunction = null;
+        $this->label = null;
+        $this->postalCode = null;
+        $this->includeAdherentsNoCommittee = null;
+        $this->includeAdherentsInCommittee = null;
+        $this->includeCommitteeSupervisors = null;
+        $this->includeCommitteeHosts = null;
+        $this->zones->clear();
     }
 
     public function setSynchronized(bool $value): void
