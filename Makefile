@@ -204,7 +204,7 @@ phpstan: vendor
 phplint: phpcsfix phpstan
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
-	$(EXEC) local-php-security-checker --path=/app
+	$(EXEC) local-php-security-checker --path=/srv/app
 
 
 ##

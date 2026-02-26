@@ -16,22 +16,22 @@ services:
                     - test.enmarche.code
                     - test.renaissance.code
         volumes:
-            - ./:/app
-            - /app/var/cache
-            - /app/var/log
-            - /app/var/.php_cs
+            - ./:/srv/app
+            - /srv/app/var/cache
+            - /srv/app/var/log
+            - /srv/app/var/.php_cs
             - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.ini:ro
             - caddy_data:/data
             - caddy_config:/config
             # If you develop on Mac or Windows you can remove the vendor/ directory
             # from the bind-mount for better performance by enabling the next line:
-            # - /app/vendor
+            # - /srv/app/vendor
         depends_on:
             - db
             - rabbitmq
             - redis
         healthcheck:
-            test: [ 'CMD', 'curl', '-f', 'http://localhost:2019/metrics' ]
+            test: ['CMD', 'curl', '-f', 'http://localhost:2019/metrics']
             interval: 30s
             timeout: 3s
             retries: 3
@@ -67,7 +67,7 @@ services:
             context: .
             target: node
         volumes:
-            - ./:/app
+            - ./:/srv/app
 
     selenium:
         image: selenium/standalone-chrome:90.0

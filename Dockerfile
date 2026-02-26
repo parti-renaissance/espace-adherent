@@ -8,7 +8,7 @@ FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
-WORKDIR /app
+WORKDIR /srv/app
 
 FROM mlocati/php-extension-installer:2.9 AS php_extension_installer
 
@@ -21,7 +21,7 @@ ENV LC_ALL fr_FR.UTF-8
 
 ARG BUILD_DEV
 
-WORKDIR /app
+WORKDIR /srv/app
 
 # php extensions installer: https://github.com/mlocati/docker-php-extension-installer
 COPY --link --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/

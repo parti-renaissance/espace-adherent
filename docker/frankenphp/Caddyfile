@@ -11,7 +11,7 @@
 		{$FRANKENPHP_CONFIG}
 
 		worker {
-			file /app/public/index.php
+			file /srv/app/public/index.php
 			{$FRANKENPHP_WORKER_CONFIG}
 		}
 	}
@@ -24,12 +24,21 @@
 {$CADDY_EXTRA_CONFIG}
 
 test.*.code:80 {
-	root * /app/public
+	root * /srv/app/public
 
-	php {
+	@phpRoute {
+		not file {path}
+	}
+	rewrite @phpRoute index.php
+
+	@frontController path index.php
+	php @frontController {
 		env APP_ENV test
 	}
-	file_server
+
+	file_server {
+		hide *.php
+	}
 }
 
 :80 {
@@ -56,13 +65,10 @@ test.*.code:80 {
 				resp_headers delete
 				request.cookies delete
 			}
-			request>uri query {
-				replace authorization REDACTED
-			}
 		}
 	}
 
-	root /app/public
+	root /srv/app/public
 	encode zstd br gzip
 
 	mercure {
