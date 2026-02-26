@@ -6,28 +6,25 @@ namespace App\Formation\Moodle;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentStaticLabel;
+use App\Entity\AgoraMembership;
 use App\Entity\Moodle\User;
 use App\Entity\Moodle\UserJob;
 use App\Repository\AdherentRepository;
 use App\Repository\Moodle\MoodleUserRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 class UserManager
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly MoodleUserRepository $moodleUserRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly Driver $driver,
-        LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->logger = $logger;
     }
 
     public function updateUser(string $userUuid): void
@@ -140,6 +137,22 @@ class UserManager
                     'zone' => $zone,
                 ];
             }
+        }
+
+        /** @var AgoraMembership $membership */
+        foreach ($adherent->agoraMemberships as $membership) {
+            $key = [
+                $department = 'agora:'.$membership->agora->getId(),
+                $position = 'adherent',
+            ];
+
+            $jobs[implode('-', $key)] = [
+                'request' => [
+                    'jobdepartment' => $department,
+                    'jobposition' => $position,
+                    'startdate' => $startData,
+                ],
+            ];
         }
 
         foreach ($adherent->getZoneBasedRoles() as $role) {
