@@ -28,6 +28,9 @@ updates:
           db:
               patterns:
                   - 'doctrine/*'
+          2fa:
+              patterns:
+                  - 'scheb/*'
           code-quality:
               patterns:
                   - 'friendsofphp/php-cs-fixer'
@@ -63,6 +66,29 @@ updates:
           babel:
               patterns:
                   - '@babel/*'
+          tailwindcss:
+              patterns:
+                  - 'tailwindcss'
+                  - '@tailwindcss/*'
+                  - 'postcss'
+                  - 'autoprefixer'
+          webpack:
+              patterns:
+                  - 'webpack'
+                  - 'webpack-cli'
+                  - 'webpack-manifest-plugin'
+                  - 'webpack-merge'
+          eslint:
+              patterns:
+                  - 'eslint'
+                  - '@eslint/*'
+                  - 'eslint-*'
+                  - 'globals'
+          prettier:
+              patterns:
+                  - 'prettier'
+                  - 'prettier-plugin-*'
+                  - 'eslint-config-prettier'
 
     - package-ecosystem: 'github-actions'
       directory: '/'
