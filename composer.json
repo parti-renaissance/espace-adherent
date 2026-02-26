@@ -78,6 +78,7 @@
         "ramsey/uuid": "^4.1",
         "ramsey/uuid-doctrine": "^2.0",
         "runroom-packages/sortable-behavior-bundle": "^0.21.0",
+        "runtime/frankenphp-symfony": "^1.0",
         "sabre/dav": "^4.1",
         "scheb/2fa-bundle": "^7.13",
         "scheb/2fa-google-authenticator": "^7.13",

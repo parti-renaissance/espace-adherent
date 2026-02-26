@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1.4
 # Adapted from https://github.com/dunglas/symfony-docker
 
-ARG CADDY_VERSION=2
 ARG PHP_VERSION=8.4
 ARG NODE_VERSION=20
 
@@ -9,29 +8,20 @@ FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
-WORKDIR /srv/app
-
-FROM caddy:${CADDY_VERSION}-alpine AS caddy
+WORKDIR /app
 
 FROM mlocati/php-extension-installer:2.9 AS php_extension_installer
 
-FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
+FROM dunglas/frankenphp:1-php${PHP_VERSION}-alpine AS frankenphp_base
 
 ENV TZ Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 ENV LC_ALL fr_FR.UTF-8
 
-ENV PHP_FPM_MAX_CHILDREN=15 \
-    PHP_FPM_START_SERVERS=4 \
-    PHP_FPM_MIN_SPARE_SERVERS=2 \
-    PHP_FPM_MAX_SPARE_SERVERS=6 \
-    PHP_FPM_MAX_REQUESTS=100 \
-    PHP_MEMORY_LIMIT=512M
-
 ARG BUILD_DEV
 
-WORKDIR /srv/app
+WORKDIR /app
 
 # php extensions installer: https://github.com/mlocati/docker-php-extension-installer
 COPY --link --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/
@@ -39,11 +29,9 @@ COPY --link --from=php_extension_installer /usr/bin/install-php-extensions /usr/
 # persistent / runtime deps
 RUN apk add --no-cache \
         acl \
-        fcgi \
         file \
         gettext \
         git \
-        multirun \
         unzip \
         libzip-dev \
     ;
@@ -54,7 +42,6 @@ RUN set -eux; \
         intl \
         opcache \
         mbstring \
-        exif \
         gd \
         bcmath \
         pdo \
@@ -73,9 +60,6 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php/conf.d/default.ini $PHP_INI_DIR/conf.d/
 COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/app.ini
 
-COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-RUN mkdir -p /var/run/php
-
 COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
@@ -86,7 +70,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
 COPY --link . .
 
-RUN mkdir -p var/cache var/log /var/run/php
+RUN mkdir -p var/cache var/log
 
 RUN test -z "$BUILD_DEV" && ( \
         set -eux; \
@@ -98,13 +82,12 @@ RUN test -z "$BUILD_DEV" && ( \
         chmod +x bin/console; sync \
     ) || :
 
-RUN chown -R www-data:www-data var/ /var/run/php
+RUN chown -R www-data:www-data var/
 
-COPY --link --from=caddy /usr/bin/caddy /usr/bin/caddy
-COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
+COPY --link docker/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
 
 EXPOSE 80
 
-USER www-data
+ENTRYPOINT ["docker-entrypoint"]
 
-CMD ["multirun", "docker-entrypoint php-fpm -F", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

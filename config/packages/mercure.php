@@ -6,8 +6,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $containerConfigurator->extension('mercure', [
         'hubs' => [
             'default' => [
-                'url' => 'http://%env(MERCURE_HOST)%/.well-known/mercure',
-                'public_url' => '/.well-known/mercure',
+                'url' => '%env(MERCURE_URL)%',
+                'public_url' => '%env(MERCURE_PUBLIC_URL)%',
                 'jwt' => [
                     'secret' => '%env(MERCURE_JWT_SECRET)%',
                     'publish' => '*',

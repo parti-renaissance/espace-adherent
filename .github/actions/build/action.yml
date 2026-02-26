@@ -35,7 +35,7 @@ runs:
                   --cache-from=$REGISTRY:$TAG-$HASH \
                   --cache-from=$REGISTRY:$TAG \
                   --tag=$REGISTRY:$TAG-$HASH \
-                  --target=php_caddy \
+                  --target=frankenphp_base \
                   --build-arg BUILDKIT_INLINE_CACHE=1 \
                   --build-arg BUILD_DEV=1 \
                   --compress \

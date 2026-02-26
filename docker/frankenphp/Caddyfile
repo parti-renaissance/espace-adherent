@@ -1,0 +1,98 @@
+{
+	skip_install_trust
+
+	{$CADDY_GLOBAL_OPTIONS}
+
+	servers {
+		trusted_proxies static {$TRUSTED_PROXIES_WITH_SPACE:}
+	}
+
+	frankenphp {
+		{$FRANKENPHP_CONFIG}
+
+		worker {
+			file /app/public/index.php
+			{$FRANKENPHP_WORKER_CONFIG}
+		}
+	}
+
+	# Debug
+	{$CADDY_DEBUG}
+	auto_https off
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+test.*.code:80 {
+	root * /app/public
+
+	php {
+		env APP_ENV test
+	}
+	file_server
+}
+
+:80 {
+	@health_checks {
+		path /health/ready /healthcheck /ping
+	}
+
+	@static {
+		path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff *.woff2 *.ico
+	}
+
+	log_skip @health_checks
+	log_skip @static
+
+	log {
+		output stderr
+		level INFO
+		format filter {
+			wrap json {
+				time_format iso8601
+			}
+			fields {
+				request.headers delete
+				resp_headers delete
+				request.cookies delete
+			}
+			request>uri query {
+				replace authorization REDACTED
+			}
+		}
+	}
+
+	root /app/public
+	encode zstd br gzip
+
+	mercure {
+		publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} HS256
+		subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} HS256
+		anonymous
+		subscriptions
+	}
+
+	route {
+		# Security headers
+		header ?Permissions-Policy "interest-cohort=()"
+		header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		@noLiveEvent not path /live-event/*
+		header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+		header X-Content-Type-Options "nosniff"
+		header X-XSS-Protection "1; mode=block"
+
+		@phpRoute {
+			not path /.well-known/mercure*
+			not file {path}
+		}
+		rewrite @phpRoute index.php
+
+		@frontController path index.php
+		php @frontController
+
+		file_server {
+			hide *.php
+		}
+	}
+}

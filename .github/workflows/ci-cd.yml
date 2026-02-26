@@ -336,7 +336,7 @@ jobs:
                       --quiet \
                       --cache-from=${{ env.REGISTRY }}:${{ env.TAG }} \
                       --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
-                      --target=php_caddy \
+                      --target=frankenphp_base \
                       --build-arg BUILDKIT_INLINE_CACHE=1 \
                       .
 
