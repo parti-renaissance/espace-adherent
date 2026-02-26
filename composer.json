@@ -121,6 +121,7 @@
         "symfony/routing": "^7.4",
         "symfony/runtime": "^7.4",
         "symfony/security-bundle": "^7.4",
+        "symfony/security-core": "^7.4",
         "symfony/security-csrf": "^7.4",
         "symfony/serializer": "^7.4",
         "symfony/string": "^7.4",
