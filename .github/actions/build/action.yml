@@ -25,6 +25,9 @@ inputs:
 runs:
     using: composite
     steps:
+        - name: Install composer dependencies
+          uses: ./.github/actions/setup-composer
+
         - name: Build docker image
           shell: bash
           env:
@@ -35,7 +38,7 @@ runs:
                   --cache-from=$REGISTRY:$TAG-$HASH \
                   --cache-from=$REGISTRY:$TAG \
                   --tag=$REGISTRY:$TAG-$HASH \
-                  --target=php_caddy \
+                  --target=frankenphp_base \
                   --build-arg BUILDKIT_INLINE_CACHE=1 \
                   --build-arg BUILD_DEV=1 \
                   --compress \
@@ -48,10 +51,6 @@ runs:
               HASH: ${{ inputs.hash }}
               CONTAINERS: app
           run: make up-no-deps
-
-        - name: Install composer dependencies
-          shell: bash
-          run: make vendor
 
         - name: Create private & public key
           if: inputs.keys == 'true'

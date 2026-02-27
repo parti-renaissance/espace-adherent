@@ -9,6 +9,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 return static function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
+    $parameters->set('.container.dumper.inline_factories', true);
+
     $parameters->set('locale', 'fr');
 
     $parameters->set('locales', [

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return static function (Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('app_health_check', '/health/ready')
+    $routingConfigurator->add('app_health_check', '/healthcheck')
         ->controller(App\Controller\HealthCheckController::class);
 
     $routingConfigurator->add('logout', '/deconnexion')

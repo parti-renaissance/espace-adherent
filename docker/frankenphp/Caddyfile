@@ -1,0 +1,116 @@
+{
+	skip_install_trust
+
+	{$CADDY_GLOBAL_OPTIONS}
+
+	servers {
+		trusted_proxies static {$TRUSTED_PROXIES_WITH_SPACE:}
+	}
+
+	frankenphp {
+		{$FRANKENPHP_CONFIG}
+
+		worker {
+			file /srv/app/public/index.php
+			{$FRANKENPHP_WORKER_CONFIG}
+		}
+	}
+
+	# Debug
+	{$CADDY_DEBUG}
+	auto_https off
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+test.*.code:80 {
+	root * /srv/app/public
+
+	@phpRoute {
+		not file {path}
+	}
+	rewrite @phpRoute index.php
+
+	@frontController path index.php
+	php @frontController {
+		env APP_ENV test
+	}
+
+	file_server {
+		hide *.php
+	}
+}
+
+:80 {
+	@health_checks {
+		path /healthcheck /ping
+	}
+
+	@static {
+		path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff *.woff2 *.ico
+	}
+
+	@maintenance {
+		not path /healthcheck /ping
+		expression {env.ENABLE_MAINTENANCE} == "1"
+	}
+	rewrite @maintenance /maintenance.html
+
+	log_skip @health_checks
+	log_skip @static
+
+	log {
+		output stderr
+		level INFO
+		format filter {
+			wrap json {
+				time_format iso8601
+			}
+			fields {
+				request.headers delete
+				resp_headers delete
+				request.cookies delete
+			}
+		}
+	}
+
+	root /srv/app/public
+	encode zstd br gzip
+
+	route {
+		@ping path /ping
+		respond @ping "pong" 200
+
+		# Security headers
+		header ?Permissions-Policy "interest-cohort=()"
+		header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		@noLiveEvent not path /live-event/*
+		header @noLiveEvent Content-Security-Policy "frame-ancestors 'self' https://*.parti-renaissance.fr"
+		header X-Content-Type-Options "nosniff"
+		header X-XSS-Protection "1; mode=block"
+
+		@mercure path /.well-known/mercure*
+		reverse_proxy @mercure {$MERCURE_HOST:mercure}:80 {
+			header_up Host {host}
+
+			# SSE: disable read and write buffers
+			transport http {
+				read_buffer 0
+				write_buffer 0
+			}
+		}
+
+		@phpRoute {
+			not file {path}
+		}
+		rewrite @phpRoute index.php
+
+		@frontController path index.php
+		php @frontController
+
+		file_server {
+			hide *.php
+		}
+	}
+}
