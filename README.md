@@ -99,7 +99,7 @@ php bin/console app:oauth:generate-keys
 ## Sécurité
 
 Vous avez découvert une vulnérabilité ? Ne créez pas d'issue publique.
-Contactez-nous à `security@parti-renaissance.fr`
+→ [SECURITY.md](SECURITY.md) · `security@parti-renaissance.fr`
 
 ---
 
