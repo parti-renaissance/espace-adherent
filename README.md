@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="docs/assets/header.png" alt="Renaissance Plateforme" width="60%">
-  <br/><br/>
+
+  <h2>Renaissance Plateforme</h2>
 
   [![CI/CD](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml)
-  [![CodeQL](https://github.com/parti-renaissance/espace-adherent/workflows/codeql-analysis.yml/badge.svg)](https://github.com/parti-renaissance/espace-adherent/actions)
+  [![CodeQL](https://github.com/parti-renaissance/espace-adherent/workflows/CodeQL/badge.svg)](https://github.com/parti-renaissance/espace-adherent/actions)
   [![CodeFactor](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent/badge)](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent)
   [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 </div>
