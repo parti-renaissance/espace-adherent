@@ -1,57 +1,99 @@
 <div align="center">
-  <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
+  <h1>Renaissance Plateforme</h1>
+  <p>La plateforme politique open source de <a href="https://parti-renaissance.fr">Parti Renaissance</a></p>
+
+  [![CI/CD](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml)
+  [![CodeQL](https://github.com/parti-renaissance/espace-adherent/workflows/CodeQL/badge.svg)](https://github.com/parti-renaissance/espace-adherent/actions)
+  [![CodeFactor](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent/badge)](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent)
+  [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 </div>
 
-Powered by : 
-<div>
-  <a href="https://symfony.com">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Symfony2.svg/1280px-Symfony2.svg.png" height=25% width=25% alt="Symfony Logo">
-  </a>
-</div>
+---
 
-Le projet En Marche s'efforce de respecter les meilleures pratiques en matière de développement de logiciels open source:
+## Présentation
 
-| Type        | Status |
-|-------------| ------ |
-| CI / CD     | [![CI & CD](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml) |
-| CodeQL      | ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg) |
-| Code Factor | [![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr) |
-| Codacy      | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade) |
+Renaissance Plateforme est le cœur technique de l'engagement numérique de **Parti Renaissance**. Il propulse l'ensemble des interfaces militantes du parti — à commencer par [l'app mobile Vox](https://github.com/parti-renaissance/espace-militant).
 
-> An English ReadMe is available after the French one.
+Ce projet est open source depuis l'origine, dans la continuité de la philosophie portée par En Marche ! en 2017 : un mouvement politique appartient à ses membres, et son code aussi.
 
-## Comment puis-je aider ?
+---
 
-A *En Marche !*, nous avons fait le choix de l'open-source car cela s'accorde avec notre idée d'un mouvement qui
-n'existe que par ses membres. Nous serions donc bien évidemment ravis que vous songiez à contribuer au projet.
+## Stack
 
-* Pour commencer à contribuer, suivez [le guide de contribution](CONTRIBUTING.md).
-* Pour installer le projet en local, suivez
-[la documentation](docs).
-* Regardez la [liste de nos projets](https://github.com/EnMarche/en-marche.fr/issues) pour trouver quelque chose qui vous intéresse.
+| | |
+|---|---|
+| **Langage** | PHP 8.4 |
+| **Framework** | Symfony 7.4 |
+| **API** | API Platform 4 |
+| **Base de données** | MySQL + Doctrine ORM |
+| **Cache / Queue** | Redis + RabbitMQ |
+| **Recherche** | Algolia |
+| **Stockage** | Google Cloud Storage |
+| **Auth** | OAuth2 + 2FA |
+| **Monitoring** | Sentry |
 
+---
 
-[Remerciez](https://github.com/symfony/thanks) la communauté open-source PHP, qui a rendu ce projet possible, en
-lancant `composer thanks` à la racine du projet, une fois téléchargé.
+## Architecture
 
+Le projet suit une approche **Domain-Driven Design** — chaque domaine métier est un module indépendant dans `src/` :
 
-------------------------------------
+```
+src/
+├── Adherent/       # Profil sympathisant
+├── Event/          # Événements et rassemblements
+├── Pap/            # Porte-à-porte
+├── Phoning/        # Campagnes téléphoniques
+├── JeMengage/      # Hub d'actions terrain
+├── VotingPlatform/ # Votes internes
+├── Donation/       # Dons et contributions
+├── OAuth/          # Authentification
+├── Mailer/         # Communications
+└── ...             # 80+ modules — voir docs/architecture.md
+```
 
-This repository is the Symfony application powering the [en-marche.fr](https://en-marche.fr) platform.
+---
 
-*En Marche !* is the political movement created by Emmanuel Macron in April 2016.
+## Installation locale
 
-## How can I help?
+**Prérequis :** Docker, PHP 8.4, Composer, Node.js 20+
 
-At *En Marche !*, we chose Open-Source as it corresponds to our idea of creating a democratic movement ran by its
-members. Thus we would be glad to help you contribute!
+```bash
+git clone https://github.com/parti-renaissance/espace-adherent.git
+cd espace-adherent
 
-* The first step to contribute is to read
-[the contribution guide (French)](https://github.com/EnMarche/en-marche.fr/blob/master/CONTRIBUTING.md).
-* To install the project locally, follow [the developer documentation (French)](docs).
-* Look at [our current projects](https://github.com/EnMarche/en-marche.fr/issues) to find something that interests you
+cp .env .env.local          # compléter avec vos valeurs locales
+docker compose up -d
+composer install
 
-Questions? Need help? Say hello [in GitHub Discussions](https://github.com/EnMarche/en-marche.fr/discussions).
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+php bin/console app:oauth:generate-keys
+```
 
-Give [thanks](https://github.com/symfony/thanks) to the open-source PHP community, which made this project
-possible, by running `composer thanks` in the project root once downloaded!
+📖 [docs/getting-started.md](docs/getting-started.md)
+
+---
+
+## Contribuer
+
+Les issues [`good first issue`](https://github.com/parti-renaissance/espace-adherent/issues?q=label%3A%22good+first+issue%22) sont de bons points d'entrée. Lisez [CONTRIBUTING.md](CONTRIBUTING.md) avant d'ouvrir une PR.
+
+```bash
+php bin/phpunit
+php bin/phpstan analyse
+php vendor/bin/php-cs-fixer fix --dry-run
+```
+
+---
+
+## Sécurité
+
+Vous avez découvert une vulnérabilité ? Ne créez pas d'issue publique.
+→ [SECURITY.md](SECURITY.md) · `security@parti-renaissance.fr`
+
+---
+
+## Licence
+
+GNU GPL-3.0 — voir [LICENSE](LICENSE).
