@@ -1,188 +1,136 @@
-# Contribuer
+# Guide de contribution
 
-Merci de penser à vouloir nous aider ! Sur quoi souhaiteriez-vous travailler ?
+Merci de l'intérêt que vous portez à **Renaissance Plateforme**. Ce guide décrit comment contribuer efficacement au projet.
 
-- [Avant de démarrer](#avant-de-démarrer)
-- [Outils de travail recommandés](#outils-de-travail-recommandés)
-- [Je veux améliorer la documentation pour développeurs](#je-veux-améliorer-la-documentation-pour-développeurs)
-- [Je veux proposer une nouvelle fonctionnalité](#je-veux-proposer-une-nouvelle-fonctionnalité)
-- [Je veux aider au développement de fonctionnalités](#je-veux-aider-au-développement-de-fonctionnalités)
-- [Je veux corriger un problème](#je-veux-corriger-un-problème)
-- [Je ne sais pas comment aider](#je-ne-sais-pas-comment-aider)
-- [J'ai fini mes modifications, je voudrais les proposer](#jai-fini-mes-modifications-je-voudrais-les-proposer)
+---
 
-## Avant de démarrer
+## Avant de commencer
 
-Ce projet utilise Git, l'outil de gestion de version le plus utilisé au monde. Pour l'installer et découvrir l'outil,
-rendez-vous sur [le site officiel (en anglais)](https://git-scm.com). 
+1. **Forkez** le repository et clonez votre fork en local
+2. **Installez** le projet en suivant [docs/1-Installer-le-projet-en-local.md](docs/1-Installer-le-projet-en-local.md)
+3. **Consultez** les [issues ouvertes](https://github.com/parti-renaissance/espace-adherent/issues) pour trouver une tâche
 
-1. La première chose à faire est de [forker le repository](https://help.github.com/articles/fork-a-repo/).
+> Pour tout changement significatif, ouvrez d'abord une issue pour en discuter avec l'équipe avant d'écrire du code. Cela évite les PRs orphelines.
 
-2. Récupérez le code de votre fork.
+---
 
-3. Installez ensuite le projet en suivant [les instructions d'installation](docs/1-Installer-le-projet-en-local.md).
+## Workflow de développement
 
-4. Lorsque nous travaillons avec Git, nous utilisons un processus de développement basé sur "une branche par fonctionnalité/bug".
-   La première chose à faire une fois que votre projet est installé est donc de créer une branche pour votre travail.
-   
-   Imaginons par exemple que vous souhaitez travailler sur l'issue 1500 qui résoud un problème d'affichage sur l'accueil.
-   Vous pourriez suivre les étapes suivantes:
-   
-   - Récupérer le code le plus récent du projet principal (`git pull git@github.com:EnMarche/en-marche.fr.git`)
-   - Commenter sur l'issue 1500 que vous commencez à travailler dessus
-   - Créer une nouvelle branche, nommée par exemple `6000-fix-home-display`, dans votre fork (`git branch 6000-fix-home-display`).
-     Le nom de la branche ne nous importe pas à En Marche mais vous permettra de travailler sur plusieurs problèmes en
-     même temps si vous le souhaitez. Nous vous conseillons d'inclure le numéro de l'issue en prefixe.
-   - Une fois votre code écrit, l'envoyer sur votre fork (`git push`) et une fois votre modification terminée,
-     créer une pull request pour proposer vos modifications au repository principal.
+Nous utilisons un modèle **une branche par fonctionnalité / correctif**.
 
-Vous voilà prêt à contribuer !
+```bash
+# 1. Synchroniser votre fork avec le repo principal
+git remote add upstream git@github.com:parti-renaissance/espace-adherent.git
+git fetch upstream
+git checkout master && git merge upstream/master
 
+# 2. Créer une branche depuis master
+# Convention : <type>/<numéro-issue>-<description-courte>
+git checkout -b fix/1234-correction-affichage-evenement
+git checkout -b feat/5678-export-csv-adherents
 
-## Outils de travail recommandés
+# 3. Développer, committer (voir conventions ci-dessous)
+# 4. Pousser et ouvrir une PR vers master
+git push origin fix/1234-correction-affichage-evenement
+```
 
-### Git
+### Types de branches
 
-- Github a créé un outil en ligne de commande appelé **hub** qui est très pratique pour cloner des repositories
-  et créer des pull requests. Essayez-le sur [https://hub.github.com](https://hub.github.com).
-- Si vous utilisez Bash (sous Linux ou Mac OS), essayez
-  [l'autocomplétion Git](https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Bash) qui vous facilitera
-  la vie jour après jour.
-- Si vous utilisez Zsh (sous Linux ou Mac OS), essayez [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
-  avec le plugin git qui lui aussi vous facilitera énormément la vie.
-- Si vous travaillez sous Windows, nous vous recommandons d'utiliser [Cmder](http://cmder.net/) qui émule une console
-  pour vous fournir plus de possibilités qu'avec la console de base de Windows. Vous pouvez aussi utiliser le
-  [sous-système Ubuntu intégré nativement à Windows](https://blogs.msdn.microsoft.com/wsl/2016/04/22/windows-subsystem-for-linux-overview/)
-  depuis quelques mois.
+| Préfixe | Usage |
+|---|---|
+| `feat/` | Nouvelle fonctionnalité |
+| `fix/` | Correctif de bug |
+| `chore/` | Maintenance, dépendances, config |
+| `docs/` | Documentation uniquement |
+| `refactor/` | Refactoring sans changement de comportement |
 
-### Environnement de développement
+---
 
-Le meilleur environnement de développement pour Symfony (et de loin) à nos yeux est
-[PHPStorm](https://www.jetbrains.com/phpstorm/) accompagné de son extraordinaire plugin pour Symfony.
-Cet IDE est cependant payant au delà de 30 jours (vous pouvez aussi l'obtenir gratuitement en tant qu'étudiant).
-Si vous l'avez n'hésitez pas à l'utiliser.
+## Conventions de commit
 
-Si vous ne l'avez pas, ne vous en faites pas : de très nombreux IDE ont un plugin pour Symfony. Que vous travailliez avec
-Netbeans, Eclipse, Atom, ou n'importe quel autre outil, vous devriez pourvoir trouver un plugin pour Symfony.
+Format : `<type>(<scope>): <sujet>`
 
-Il est aussi bien sûr possible de travailler sans plugin, mais nous ne vous le recommandons pas.
+```
+feat(event): ajout de l'export PDF pour les événements
+fix(donation): correction du calcul de la TVA sur les reçus fiscaux
+chore(deps): mise à jour de symfony/security-bundle 7.3 → 7.4
+docs(contributing): mise à jour du guide de contribution
+```
 
+**Types :** `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `perf`
 
-## Je veux améliorer la documentation pour développeurs
+**Scope :** nom du module concerné (`event`, `pap`, `donation`, `oauth`...) — facultatif mais recommandé.
 
-Si vous souhaitez améliorer la documentation pour développeurs, il y a certaines choses à savoir :
+**Sujet :** impératif, minuscule, sans point final, en français.
 
-- La documentation pour développeurs est disponible dans le dossier `docs`
-- Pour de grosses modifications, il est généralement préférable d'ouvrir une issue pour discuter des modifications
-- Nous essayons de garder le document README.md léger et de l'utiliser comme un point d'entrée vers le reste de la documentation
-- Quand vous ajoutez ou modifiez de la documentation, essayez de mettre en place une navigation simple entre les documents
+---
 
-Pour travailler concrètement sur la documentation, créez une
-[pull request](https://help.github.com/articles/about-pull-requests/) et proposez votre modification. Essayez d'expliquer
-dans cette pull request en quoi cette modification est utile.
+## Standards de code
 
+Ce projet suit les standards **PSR-12** et les bonnes pratiques Symfony.
 
-## Je veux proposer une nouvelle fonctionnalité
+```bash
+# Vérifier le style avant de committer
+php vendor/bin/php-cs-fixer fix --dry-run --diff
 
-Vous avez une idée de fonctionnalité pour la plateforme en-marche.fr ? N'hésitez pas à la proposer à nos équipes !
+# Appliquer les corrections automatiquement
+php vendor/bin/php-cs-fixer fix
+```
 
-Pour cela, la première chose à faire est de vérifier que cette idée n'a pas déjà été proposée. Allez sur la liste des
-[issues du projet](https://github.com/EnMarche/en-marche.fr/issues) et recherchez si votre idée n'a pas déjà été proposée.
-Si c'est le cas et qu'elle n'a pas été acceptée, vous comprendrez probablement pourquoi, et si c'est le cas mais qu'elle
-est en cours de développement, vous pourrez apporter votre opinion sur le sujet en commentant sur l'issue.
+L'analyse statique est assurée par PHPStan au niveau 6 :
 
-Si votre idée n'a jamais été proposée, alors n'hésitez pas à la proposer. Pour cela, créez une
-[nouvelle issue](https://github.com/EnMarche/en-marche.fr/issues/new) en décrivant votre idée. 
+```bash
+php bin/phpstan analyse
+```
 
-La meilleure manière pour décrire votre idée est de décrire son fonctionnement final et à quoi l'interface devrait 
-ressembler. Vous pouvez en plus décrire votre idée en terme de "user story":
+---
 
-> En tant que [acteur], je voudrais pouvoir [action], afin de [intérêt].
+## Tests
 
-Par exemple : en tant qu'utilisateur anonyme intéressé par le mouvement, je voudrais pouvoir effectuer un don à
-En Marche, afin de soutenir son action.
+Toute PR doit passer les tests existants et, dans la mesure du possible, inclure des tests pour les nouveaux comportements.
 
-N'hésitez pas à ajouter des captures d'écrans de ce à quoi vous avez pensé ou à décrire les comportements attendus
-dans le détail. Si besoin, nous vous poserons des questions dans l'issue afin de détailler tous les cas possibles.
+```bash
+# Lancer tous les tests
+php bin/phpunit
 
-Si vous êtes un développeur et que vous souhaitez travailler sur votre idée, n'hésitez pas à lier votre idée à
-une [pull request](https://help.github.com/articles/about-pull-requests/) pour démarrer votre travail. Notez cependant
-que nous devrons valider votre idée avant d'accepter votre code.
+# Lancer les tests d'un module spécifique
+php bin/phpunit tests/Event/
 
+# Lancer un test précis
+php bin/phpunit tests/Event/EventManagerTest.php --filter testCreateEvent
+```
 
-## Je veux aider au développement de fonctionnalités
+Nous utilisons **PHPUnit** pour les tests unitaires et fonctionnels. Les tests Behat (scénarios BDD) sont dans `features/`.
 
-Pour développer une fonctionnalité, la meilleure façon de faire est de vous rendre sur l'outil de gestion de
-projet public : https://github.com/EnMarche/en-marche.fr/projects/1.
+---
 
-Cet outil est découpé en 4 colonnes. La colonne qui vous intéresse ici est *A faire* : les tâches présentes dans cette
-colonne sont à réaliser et sont ordonnées par priorité (ce qui veut dire que la tâche en haut de la colonne est
-la plus prioritaire). Selon ce que vous vous sentez capable de faire, choisissez une tâche dans cette colonne.
+## Ouvrir une Pull Request
 
-Une fois votre tâche choisie, ajoutez un commentaire à cette tâche afin de signifier que vous commencez à travailler sur
-celle-ci. Cela permettra aux autres développeurs de ne pas travailler sur la même tâche en parallèle.
+Avant de soumettre :
 
-Dès que vous avez commencé à écrire du code, n'hésitez pas à rapidement créer une
-[pull request](https://help.github.com/articles/about-pull-requests/). Faire ainsi transférera la tâche que vous avez
-choisie dans la colonne *En cours* et permettra à quiconque de commenter votre modification.
+- [ ] Les tests passent (`php bin/phpunit`)
+- [ ] L'analyse statique ne remonte pas de nouvelles erreurs (`php bin/phpstan analyse`)
+- [ ] Le code est formaté (`php vendor/bin/php-cs-fixer fix --dry-run`)
+- [ ] Le titre de la PR suit le format de commit (`feat(scope): description`)
+- [ ] La PR est liée à une issue si elle en résout une (`Closes #1234`)
 
-N'hésitez pas à lire la [documentation pour développeurs](docs) qui vous aidera à comprendre l'organisation
-technique du projet.
+Les PRs sont reviewées par l'équipe tech de Renaissance. Comptez **2 à 5 jours ouvrés** pour un premier retour.
 
+Nous pouvons demander des modifications — ne le prenez pas personnellement, c'est notre façon de maintenir un haut niveau de qualité.
 
-## Je veux corriger un problème
+---
 
-Pour corriger un problème, la première chose à faire est de vérifier que ce problème n'a pas déjà été résolu sans être
-encore déployé en production. Allez sur la liste des [issues du projet](https://github.com/EnMarche/en-marche.fr/issues)
-et recherchez si votre problème n'a pas déjà été signalé.
+## Environnement recommandé
 
-Si c'est le cas et qu'il n'a pas été résolu, vous comprendrez probablement pourquoi, et si c'est le cas mais qu'il
-est en cours de développement, vous pourrez apporter votre opinion sur le sujet en commentant sur l'issue.
+| Outil | Recommandation |
+|---|---|
+| IDE | PHPStorm + plugin Symfony |
+| Git | Version ≥ 2.40 |
+| PHP | 8.4 avec extensions `intl`, `gd`, `pdo_mysql` |
+| Docker | Docker Desktop ou OrbStack |
 
-Si vous n'avez pas trouvé de signalement de votre problème, vous pouvez alors créez une
-[nouvelle issue](https://github.com/EnMarche/en-marche.fr/issues/new) en y décrivant le bug.
+---
 
-Si vous êtes un développeur et que vous souhaitez travailler sur le problème, n'hésitez pas à créer une
-une [pull request](https://help.github.com/articles/about-pull-requests/) pour démarrer votre travail et à
-lire la [documentation pour développeurs](docs) qui vous aidera à comprendre l'organisation technique du projet.
+## Questions ?
 
-
-## Je ne sais pas comment aider
-
-Ce n'est pas un problème ! A En Marche, lorsque nous avons des fonctionnalités ou des problèmes de petite envergure,
-nous les marquons "easy pick", ce qui signifie que cette tâche est accessible aux nouveaux contributeurs. Allez dans la
-[liste des issues](https://github.com/EnMarche/en-marche.fr/issues) et explorer ce que vous pourriez faire. N'hésitez pas
-à bien lire toute l'issue pour vérifier que personne ne travaille déjà sur la tâche.
-
-La [documentation pour développeurs](docs) est aussi un bon moyen de commencer à apréhender le code et le projet.
-
-
-## J'ai fini mes modifications, je voudrais les proposer
-
-Maintenant que vous avez terminé votre travail, vous devez simplement le "pusher" sur votre "fork" et créer une
-pull request sur le repository principal (https://github.com/EnMarche/en-marche.fr).
-
-Lorsque vous ouvrirez cette pull request, automatiquement, les tests automatisés et d'autres outils seront lancés
-pour tester, analyser et vérifier votre code (ce processus s'appelle l'intégration continue).
-
-Si les tests automatisés ne se passent pas correctement (si vous avez un croix rouge en face de
-`continuous-integration/travis-ci/pr`), alors vous devez corriger votre code. Vous pouvez cliquer sur "Details" pour
-comprendre le problème. Pour réenvoyer du code dans la pull request, réexécutez simplement un push sur votre fork.
-Tant que Travis aura une croix rouge, nous ne pourrons pas accepter votre code dans le projet principal.
-
-Si d'autres outils ont une croix rouge, nous ne serons pas aussi stricts qu'avec Travis, mais nous vous demandrons
-peut-être des modifications. Il ne faut pas prendre mal ces demandes, nous souhaitons simplement toujours garder un haut
-niveau de qualité dans notre code.
-
-Pour améliorer votre pull request et lui donner plus de chances d'être acceptée, nous vous recommandons les choses
-suivantes :
-
-- Suivez les façons de faire de Symfony (http://symfony.com/doc/current/best_practices/index.html) là où vous le pouvez
-- Ajoutez à votre code des tests automatisés qui échoueraient sans votre code et qui fonctionnent avec
-- Mettez à jour la documentation pour développeurs par rapport à votre modification
-
-Une fois votre code prêt et qu'il passe avec succès les différents tests automatisés, vous devez finir par quelques
-petites choses avant que nous puissions accepter votre pull request :
-
-- vous devrez rebaser votre pull request sur `master` pour éviter les conflits
-- vous devrez squasher vos commits en un seul commit pour améliorer la lisibilité de notre historique Git
+Ouvrez une [discussion GitHub](https://github.com/parti-renaissance/espace-adherent/discussions) ou commentez directement sur l'issue concernée.
