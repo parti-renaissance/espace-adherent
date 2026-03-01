@@ -10,7 +10,7 @@
 
 ---
 
-**Renaissance Plateforme** est le back-end et l'API qui alimentent les services numériques de Parti Renaissance : événements, actions de terrain, communications, votes internes et dons. Il est consommé principalement par [l'app mobile Vox](https://github.com/parti-renaissance/espace-militant).
+**Renaissance Plateforme** est le back-end et l'API qui alimentent les services numériques de Parti Renaissance : événements, actions de terrain, communications, votes internes et dons. Il est consommé principalement par [Renaissance App](https://github.com/parti-renaissance/espace-militant).
 
 Nous avons choisi l'open source car cela s'accorde avec notre idée d'un mouvement qui n'existe que par ses membres — une conviction portée depuis En Marche ! en 2017, et que nous continuons avec Renaissance.
 
