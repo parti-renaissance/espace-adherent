@@ -1,208 +1,120 @@
-# 1. Installer le projet en local pour développer
+# 1. Installer le projet en local
 
 [Suivant : 2. Architecture du projet](2-Architecture-du-projet.md)
 
-La plateforme en-marche.fr est basée sur les outils open-source suivants :
+**Renaissance Plateforme** est une API Symfony. Elle repose sur les outils open source suivants :
 
-- [Symfony](http://symfony.com/), framework PHP développé par la société française [SensioLabs](https://sensiolabs.com/fr)
-- [Sass](http://sass-lang.com/), language étendant les possibilités de CSS
-- [Webpack](https://webpack.github.io/docs/), aggrégateur de modules JavaScript
-- [MariaDB](https://mariadb.org/), moteur de base de donnée dérivé de MySQL
+- [Symfony](https://symfony.com) — framework PHP
+- [API Platform](https://api-platform.com) — couche API REST/GraphQL
+- [MySQL](https://www.mysql.com) — base de données relationnelle
+- [Redis](https://redis.io) — cache et sessions
+- [RabbitMQ](https://www.rabbitmq.com) — file de messages asynchrones
 
+---
 
-## 1.1.1 Installer les pré-requis du projet
+## Prérequis
 
-Le projet En Marche utilise [Docker](https://www.docker.com/), un outil de container permettant de mettre en
-place un environnement de développement rapidement. Le projet n'a donc que trois prérequis :
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (ou [OrbStack](https://orbstack.dev) sous macOS)
+- PHP 8.4 avec les extensions `intl`, `gd`, `pdo_mysql`, `amqp`
+- [Composer](https://getcomposer.org)
+- Node.js 20+
 
-- Docker (1.12+)
-- docker-compose (1.10+)
-- GNU make
+---
 
-Pour installer Docker, référez-vous à la documentation officielle adaptée à votre système d'exploitation :
-https://docs.docker.com/engine/installation/.
+## Installation
 
-Une fois Docker installé, pour vérifier son bon fonctionnement, exécutez `docker -v`, vous devriez obtenir quelque
-chose comme suit :
+### 1. Cloner le dépôt
 
-```
-$ docker -v
-Docker version 1.12.4, build 1564f02
-```
-
-> Vous devez utiliser la version 1.12 minimum de Docker.
-
-Pour installer docker-compose, référez-vous là aussi à la documentation officielle :
-https://docs.docker.com/compose/install/.
-
-Une fois docker-compose installé (installez-le globalement pour pouvoir y accéder depuis n'importe où),
-pour vérifier son bon fonctionnement, exécutez `docker-compose -v`, vous devriez obtenir quelque chose comme suit :
-
-```
-$ docker-compose -v
-docker-compose version 1.10.0, build 4bd6f1a
+```bash
+git clone git@github.com:parti-renaissance/espace-adherent.git
+cd espace-adherent
 ```
 
-> Vous devez utiliser la version 1.10 minimum de docker-compose.
+### 2. Configurer les variables d'environnement
 
-## 1.1.2 Préparer le projet pour développer
-
-Le projet fonctionne grâce à différents containers Docker coordonnés par docker-compose. De plus, un Makefile vous
-permettra d'exécuter les actions classiques lors du développement (vider le cache, fabriquer les assets, etc.).
-Il faut donc que vous puissiez exécuter `make -v`, ce qui devrait vous donner quelque chose comme :
-
-```
-$ make -v
-GNU Make 4.1
-Construit pour x86_64-pc-linux-gnu
-Copyright (C) 1988-2014 Free Software Foundation, Inc.
-Licence GPLv3+ : GNU GPL version 3 ou ultérieure <http://gnu.org/licenses/gpl.html>
-Ceci est un logiciel libre : vous êtes autorisé à le modifier et à la redistribuer.
-Il ne comporte AUCUNE GARANTIE, dans la mesure de ce que permet la loi.
+```bash
+cp .env .env.local
 ```
 
-> **Note**: si vous utilisez Windows, nous vous recommandons très fortement d'utiliser la console Linux intgrée à
-> Windows 10 (https://msdn.microsoft.com/fr-fr/commandline/wsl/install_guide) ou d'utiliser un émulateur de ligne de
-> commande pour pouvoir utiliser `make` qui vous facilitera grandement le travail.
-**Note**: Pour les utilisateurs de Windows, vous pouvez utiliser [l'équivalent Windows de make](http://gnuwin32.sourceforge.net/packages/make.htm)
+Éditez `.env.local` et renseignez les valeurs nécessaires. Les clés requises en développement sont :
 
-Si Docker, docker-compose et make fonctionnent correctement, vous êtes prêt à préparer le projet pour développer.
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | URL de connexion MySQL (préconfigurée pour Docker) |
+| `REDIS_URL` | URL Redis (préconfigurée pour Docker) |
+| `APP_SECRET` | Secret Symfony — générez-en un avec `openssl rand -hex 32` |
+| `ALGOLIA_APP_ID` / `ALGOLIA_API_KEY` | Clés Algolia — obtenez un compte de test sur [algolia.com](https://www.algolia.com) |
+| `SENTRY_DSN` | Optionnel en local, laissez vide |
 
-### 1.1.2.1 Cloner le projet
+> Les autres variables (GoCardless, Mailjet, etc.) peuvent être laissées vides pour un environnement de développement basique.
 
-Clonez votre fork du repository Git quelque part sur votre machine puis allez dans le dossier créé :
+### 3. Démarrer les containers
 
-```
-$ git clone git@github.com:<votre-fork>/en-marche.fr.git
-$ cd en-marche.fr
-```
-
-Vous devriez alors pouvoir lancer `make` qui vous affichera l'aide du Makefile :
-
-```
-$ make
- Project setup
----------------------------------------------------------------------------
-start:           Install and start the project
-stop:            Remove docker containers
-reset:           Reset the whole project
-clear:           Remove all the cache, the logs, the sessions and the built assets
-clean:           Clear and remove dependencies
-cc:              Clear the cache in dev env
-
- Database
----------------------------------------------------------------------------
-db:              Reset the database and load fixtures
-db-diff:         Generate a migration by comparing your current database to your mapping information
-db-migrate:      Migrate database schema to the latest available version
-db-rollback:     Rollback the latest executed migration
-db-load:         Reset the database fixtures
-
- Assets
----------------------------------------------------------------------------
-watch:           Watch the assets and build their development version on change
-assets:          Build the development version of the assets
-assets-prod:     Build the production version of the assets
-
- Tests
----------------------------------------------------------------------------
-test:            Run the PHP and the Javascript tests
-tu:              Run the PHP unit tests
-tf:              Run the PHP functional tests
-tj:              Run the Javascript tests
-lint:            Run lint on Twig, YAML and Javascript files
-ls:              Lint Symfony (Twig and YAML) files
-lj:              Lint the Javascript to follow the convention
-
- Dependencies
----------------------------------------------------------------------------
-deps:            Install the project PHP and JS dependencies
+```bash
+docker compose up -d
 ```
 
-### 1.1.2.2 Lancer l'initialisation du projet
+Cela démarre MySQL, Redis et RabbitMQ.
 
-Tout d'abord, créez une copie du fichier `docker-compose.override.yml.dist` appelée `docker-compose.override.yml`
-afin de choisir le port à utiliser pour le projet.
+### 4. Installer les dépendances
 
-Si vous avez décommenté la section `networks` de votre fichier `docker-compose.override.yml`, créez votre réseau `enmarche` :
-
-```
-$ docker network create enmarche
+```bash
+composer install
 ```
 
-Lancez l'initialisation du projet avec `make start` :
+### 5. Initialiser la base de données
 
-```
-$ make start          # Sous macOS ou si vous avez configuré votre utilisateur Linux pour Docker
-$ sudo make start     # Sous Linux si vous avez simplement installé Docker
-Pulling db (mariadb:latest)...
-latest: Pulling from library/mariadb
-...
+```bash
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 ```
 
-Cela risque de prendre un peu de temps.
+### 6. Générer les clés OAuth
 
-## 1.1.3 Accéder au site local
-
-Dans votre fichier `/etc/hosts` :
-
-```
-127.0.0.1       enmarche.code
-127.0.0.1       m.enmarche.code
-127.0.0.1       legislatives.enmarche.code
+```bash
+php bin/console app:oauth:generate-keys
 ```
 
-Voici par defaut les noms de domaine pour les differentes applications, configurés dans `app/config/parameters.yml`.
+### 7. Vérifier l'installation
 
-```
-env(APP_HOST): enmarche.code
-```
-
-Le projet devrait être accessible sur
-[http://enmarche.code:8000](http://enmarche.code:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
-machine virtuelle de votre instance Docker).
-
-Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.code:8000](http://enmarche.code:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)`.
-
-### 1.1.3.1 Accéder à l'espace d'administration
-
-Une fois le projet installé, vous pouvez accéder à l'espace d'administration en allant sur
-[http://enmarche.code:8000/admin](http://enmarche.dev:8000/admin).
-
-Vous pouvez alors y entrer les identifiants suivants :
-```
-admin@en-marche-dev.fr / admin        pour l'accès en mode administrateur
-writer@en-marche-dev.fr / writer      pour l'accès en mode rédacteur
-referent@en-marche-dev.fr / referent  pour l'accès en mode référent
+```bash
+php bin/phpunit --testsuite unit
 ```
 
-### 1.1.3.2 Accéder à l'espace adhérent
+Tous les tests unitaires doivent passer sans erreur.
 
-Une fois le projet installé, vous pouvez accéder à l'espace adhérent en cliquant sur "Connexion".
-Vous pouvez alors y entrer l'identifiant suivant :
+---
+
+## Accéder à l'API en local
+
+L'API est disponible sur `http://localhost:8000`.
+
+La documentation interactive (Swagger UI) est disponible sur `http://localhost:8000/api`.
+
+Comptes de test disponibles après le chargement des fixtures :
+
 ```
-jacques.picard@en-marche.fr / secret!12345
+adherent@example.com / secret!12345   # compte sympathisant
+admin@example.com / secret!12345      # compte administrateur
 ```
 
-## 1.1.4 Services disponibles
+---
 
-Docker et docker-compose vous ont permis d'initialiser très rapidement le projet. Pour cela, docker-compose a
-créé 4 containers :
+## Lancer les tests
 
-- `app`, l'application en elle-même
-- `db`, la base de donnée utilisée par l'application
-- `redis`, une base de donnée clé-valeur en mémoire, utilisée en tant que cache de données
-- `rabbitmq`, un système permettant de gérer des files de messages
+```bash
+php bin/phpunit              # tous les tests
+php bin/phpunit tests/Event/ # tests d'un module spécifique
+```
 
-Par défaut, si vous avez copié le `docker-compose.override.yml.dist` en `docker-compose.override.yml` vous avez access à des containers supplémentaires :
-- `pma`, PHPMyAdmin, pour travailler avec la base de donnée
-- `blackfire`, un profiler PHP
+---
 
-De plus vous devriez pouvoir accéder aux containers sur les ports suivants de votre machine locale :
+## Profiling (optionnel)
 
-- `app`, HTTP sur le port 8000
-- `db`, MySQL sur le port 3306
-- `pma`, HTTP sur le port 8080
-- `rabbitmq`, HTTP sur le port 15672
+Le projet est compatible avec [Blackfire](https://blackfire.io). Pour l'activer, décommentez le service `blackfire` dans `docker-compose.override.yml` et renseignez vos clés `BLACKFIRE_CLIENT_ID`, `BLACKFIRE_CLIENT_TOKEN`, `BLACKFIRE_SERVER_ID`, `BLACKFIRE_SERVER_TOKEN`.
+
+```bash
+docker compose run --rm app blackfire run php bin/phpunit
+```
 
 [Suivant : 2. Architecture du projet](2-Architecture-du-projet.md)

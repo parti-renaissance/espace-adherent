@@ -133,4 +133,4 @@ Nous pouvons demander des modifications — ne le prenez pas personnellement, c'
 
 ## Questions ?
 
-Ouvrez une [discussion GitHub](https://github.com/parti-renaissance/espace-adherent/discussions) ou commentez directement sur l'issue concernée.
+Ouvrez une [issue GitHub](https://github.com/parti-renaissance/espace-adherent/issues) ou commentez directement sur l'issue concernée.
