@@ -1,57 +1,116 @@
 <div align="center">
-  <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
+
+  <h2>Renaissance Plateforme</h2>
+
+  [![CI/CD](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/parti-renaissance/espace-adherent/actions/workflows/ci-cd.yml)
+  [![CodeQL](https://github.com/parti-renaissance/espace-adherent/workflows/CodeQL/badge.svg)](https://github.com/parti-renaissance/espace-adherent/actions)
+  [![CodeFactor](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent/badge)](https://www.codefactor.io/repository/github/parti-renaissance/espace-adherent)
+  [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 </div>
 
-Powered by : 
-<div>
-  <a href="https://symfony.com">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Symfony2.svg/1280px-Symfony2.svg.png" height=25% width=25% alt="Symfony Logo">
-  </a>
-</div>
+---
 
-Le projet En Marche s'efforce de respecter les meilleures pratiques en matière de développement de logiciels open source:
+**Renaissance Plateforme** est le back-end et l'API qui alimentent les services numériques de Parti Renaissance : événements, actions de terrain, communications, votes internes et dons. Il est consommé principalement par [Renaissance App](https://github.com/parti-renaissance/espace-militant).
 
-| Type        | Status |
-|-------------| ------ |
-| CI / CD     | [![CI & CD](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml) |
-| CodeQL      | ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg) |
-| Code Factor | [![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr) |
-| Codacy      | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade) |
+Nous avons choisi l'open source, car cela s'accorde avec notre idée d'un mouvement qui n'existe que par ses membres — une conviction portée depuis En Marche ! en 2017, et que nous continuons avec Renaissance.
 
-> An English ReadMe is available after the French one.
+---
 
 ## Comment puis-je aider ?
 
-A *En Marche !*, nous avons fait le choix de l'open-source car cela s'accorde avec notre idée d'un mouvement qui
-n'existe que par ses membres. Nous serions donc bien évidemment ravis que vous songiez à contribuer au projet.
+Toutes les contributions comptent : code, tests, documentation, remontées de bugs ou retours d'usage.
 
-* Pour commencer à contribuer, suivez [le guide de contribution](CONTRIBUTING.md).
-* Pour installer le projet en local, suivez
-[la documentation](docs).
-* Regardez la [liste de nos projets](https://github.com/EnMarche/en-marche.fr/issues) pour trouver quelque chose qui vous intéresse.
+**1. Trouver une tâche**
+Parcourez les [issues ouvertes](https://github.com/parti-renaissance/espace-adherent/issues) pour trouver quelque chose qui vous intéresse. Pour un changement significatif, **ouvrez d'abord une issue** pour en discuter avec l'équipe — cela évite les PRs orphelines.
 
+**2. Installer le projet**
+Suivez le [guide d'installation](docs/1-Installer-le-projet-en-local.md).
 
-[Remerciez](https://github.com/symfony/thanks) la communauté open-source PHP, qui a rendu ce projet possible, en
-lancant `composer thanks` à la racine du projet, une fois téléchargé.
+**3. Soumettre une PR**
+Lisez [CONTRIBUTING.md](CONTRIBUTING.md) pour les conventions de commit, les standards de code et le [processus de développement](docs/3-Processus-de-developpement.md). Vérifiez que les tests passent avant de soumettre :
 
+```bash
+php bin/phpunit              # tests unitaires et fonctionnels
+php bin/phpstan analyse      # analyse statique
+php vendor/bin/php-cs-fixer fix --dry-run  # style
+```
 
-------------------------------------
+Les PRs sont reviewées par l'équipe tech de Renaissance, en général sous **2 à 5 jours ouvrés**.
 
-This repository is the Symfony application powering the [en-marche.fr](https://en-marche.fr) platform.
+---
 
-*En Marche !* is the political movement created by Emmanuel Macron in April 2016.
+## Stack
 
-## How can I help?
+|                     |                      |
+|---------------------|----------------------|
+| **Langage**         | PHP 8.4              |
+| **Framework**       | Symfony 7.4          |
+| **API**             | API Platform 4       |
+| **Base de données** | MySQL + Doctrine ORM |
+| **Cache / Queue**   | Redis + RabbitMQ     |
+| **Recherche**       | Algolia              |
+| **Stockage**        | Google Cloud Storage |
+| **Auth**            | OAuth2 + 2FA         |
+| **Monitoring**      | Sentry               |
 
-At *En Marche !*, we chose Open-Source as it corresponds to our idea of creating a democratic movement ran by its
-members. Thus we would be glad to help you contribute!
+---
 
-* The first step to contribute is to read
-[the contribution guide (French)](https://github.com/EnMarche/en-marche.fr/blob/master/CONTRIBUTING.md).
-* To install the project locally, follow [the developer documentation (French)](docs).
-* Look at [our current projects](https://github.com/EnMarche/en-marche.fr/issues) to find something that interests you
+## Architecture
 
-Questions? Need help? Say hello [in GitHub Discussions](https://github.com/EnMarche/en-marche.fr/discussions).
+Le projet est un **monolithe Symfony** mature, structuré par domaine métier. Chaque dossier de `src/` correspond à une thématique fonctionnelle, ce qui facilite la navigation dans un codebase riche de plus de 80 domaines :
 
-Give [thanks](https://github.com/symfony/thanks) to the open-source PHP community, which made this project
-possible, by running `composer thanks` in the project root once downloaded!
+```
+src/
+├── Event/          # Événements et rassemblements
+├── Pap/            # Porte-à-porte
+├── Phoning/        # Campagnes téléphoniques
+├── JeMengage/      # Hub d'actions terrain
+├── VotingPlatform/ # Votes internes du parti
+├── Donation/       # Dons et contributions
+├── OAuth/          # Authentification et tokens
+├── Mailer/         # Communications e-mail
+├── Adherent/       # Profil sympathisant
+└── ...             # voir docs/2-Architecture-du-projet.md
+```
+
+> Pour comprendre l'organisation du code et les conventions du projet, consultez la [documentation d'architecture](docs/2-Architecture-du-projet.md).
+
+---
+
+## Installation locale
+
+**Prérequis :** Docker, Docker Compose
+
+```bash
+git clone https://github.com/parti-renaissance/espace-adherent.git
+cd espace-adherent
+
+make start                  # build, up, assets, DB, clés OAuth, cache
+```
+
+Le Makefile embarque toutes les commandes courantes (`make help` pour la liste) :
+
+| Commande        | Description                                     |
+|-----------------|-------------------------------------------------|
+| `make start`    | Installation complète (build, DB, assets, clés) |
+| `make stop`     | Arrêter et supprimer les conteneurs             |
+| `make db`       | Réinitialiser la base et charger les fixtures   |
+| `make tu`       | Tests unitaires                                 |
+| `make tf`       | Tests fonctionnels (Behat + PHPUnit)            |
+| `make lint`     | Lint complet (PHP, Twig, YAML, JS)              |
+| `make phpcsfix` | Corriger le style PHP automatiquement           |
+
+> 📖 Guide complet : [docs/1-Installer-le-projet-en-local.md](docs/1-Installer-le-projet-en-local.md)
+
+---
+
+## Sécurité
+
+Vous avez découvert une vulnérabilité ? Ne créez pas d'issue publique.
+→ [SECURITY.md](SECURITY.md) · `security@parti-renaissance.fr`
+
+---
+
+## Licence
+
+GNU GPL-3.0 — voir [LICENSE](LICENSE).

@@ -2,106 +2,70 @@
 
 [Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)
 
-## Organisation et conseils
+---
 
-Le processus de développement de la plateforme En Marche est basé sur certains fondamentaux :
+## Principes
 
-- Lorsque vous travaillez sur un sujet, annoncez-le sur l'issue associée au sujet afin de tenir tout le monde
-  informé de votre travail ;
-- Créez une pull request le plus rapidement possible (même si elle ne contient que très peu de code) et marquez là
-  "En cours" : cela permettra à tous de voir l'avancement de votre travail et cela vous permettra à vous de lancer
-  les tests automatiques et les analyses du style de code ;
-- A chaque ajout, modification et suppression de code, il est important de garder une suite de tests à jour et
-  fonctionnelle. En testant ainsi toutes les fonctionnalités que nous ajoutons à la plateforme, nous serons capables
-  dans le futur de corriger des bugs et d'ajouter des fonctionnalités en étant certains que ces changements n'entraîneront
-  pas de problèmes.
+- **Une branche par sujet** — travaillez toujours sur une branche dédiée, jamais directement sur `master`
+- **PR tôt, PR souvent** — ouvrez une PR dès que vous avez du code à montrer, même incomplet. Utilisez le statut "Draft" pour signaler qu'elle n'est pas prête
+- **Tests systématiques** — tout nouveau comportement doit être couvert par un test ; tout bug corrigé doit avoir son test de non-régression
+- **Commentez sur l'issue** — signalez sur l'issue que vous commencez à travailler dessus pour éviter les doublons
 
-Typiquement, lorsque vous développez sur la plateforme En Marche, nous vous conseillons suivre les étapes suivantes :
+---
 
-### Si vous développez une nouvelle fonctionnalité
+## Développer une fonctionnalité
 
-1. Développez votre fonctionnalité
-2. En parallèle, manipulez manuellement le site internet en local pour tester votre code 
-  (il vous faudra bien sûr [avoir le projet en local](https://github.com/EnMarche/en-marche.fr/blob/archi-documentation/docs/1.%20Installer%20le%20projet%20en%20local.md))
-3. Une fois que vous pensez avoir terminé votre fonctionnalité, ajoutez des tests automatisés afin de vérifier le bon
-   fonctionnement de la fonctionnalité. Cette étape sera utile tout au long du projet pour vérifier que votre fonctionnalité
-   est encore stable après des changements dans le code. Il est important que vous testiez tous les scénarios possibles
-   de votre fonctionnalités afin que nous soyons alertés si un problème se produit avec.
+1. Créez votre branche : `git checkout -b feat/1234-ma-fonctionnalite`
+2. Développez et testez en local
+3. Ajoutez des tests automatisés
+4. Ouvrez une PR vers `master` avec une description claire
+5. Attendez la review de l'équipe (2 à 5 jours ouvrés)
 
-### Si vous corrigez un problème
+---
 
-Dans le cadre de la résolution de problème, il est conseillé de démarrer par créer un test automatisé exposant le problème
-(un test automatisé ne passant pas les vérifications car il montre qu'il y a un problème). De cette manière, une fois le
-problème exposé avec le test, vous pouvez aisément vérifier sa résolution, et en l'ajoutant à notre suite de tests dans le
-projet, nous serons assurés que ce problème ne réapparaitra pas.
+## Corriger un bug
 
+1. Écrivez d'abord un test qui expose le problème (il doit échouer)
+2. Corrigez le bug jusqu'à ce que le test passe
+3. Vérifiez que l'ensemble de la suite de tests passe toujours
+4. Ouvrez une PR en référençant l'issue (`Closes #1234`)
 
-## Lancer les tests automatisés en local
+---
 
-Afin de développer correctement, vous devez bien évidemment 
-[avoir installé le projet en local](https://github.com/EnMarche/en-marche.fr/blob/archi-documentation/docs/1.%20Installer%20le%20projet%20en%20local.md)
-mais aussi être capable de lancer les tests automatisés afin de vous assurer que votre code n'a pas entrainé de problème
-dans le reste de l'application.
+## Lancer les tests en local
 
-Il y a deux groupes de tests automatisés : les tests serveur (Symfony) et les tests client (React/JSX).
-
-### Lancer les tests serveur
-
-Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
-
-```
-make tu # tests unitaires
-make tf # tests fonctionnels
+```bash
+make tu   # tests unitaires
+make tf   # tests fonctionnels (Behat + PHPUnit)
+make test # tous les tests (unitaires + fonctionnels + JS)
 ```
 
-### Lancer les tests client
+---
 
-Lorsque vous êtes dans le dossier du projet, lancez la commande suivante :
+## Synchroniser votre fork avec le repo principal
 
-```
-make tj
-```
-
-
-## Récupérer les modifications du projet principal
-
-Lorsque vous travaillez, votre code est stocké dans votre "fork", une copie du repository principal dans votre espace
-personnel. Lorsque vous travaillez sur le code, vous aurez sans doute besoin de mettre à jour votre repository personnel
-à partir du repository principal.
-
-Pour cela, dans le répertoire du projet, quand vous souhaitez synchroniser votre repository personnel avec le principal,
-lancez les commandes suivantes :
-
-```
-$ cd /dossier/du/projet
-$ git checkout master
-$ git pull git@github.com:EnMarche/en-marche.fr.git
-$ git push
+```bash
+git remote add upstream git@github.com:parti-renaissance/espace-adherent.git
+git fetch upstream
+git checkout master
+git merge upstream/master
+git push
 ```
 
-Une fois synchronisé, vous devez aussi synchroniser les dépendances PHP et JavaScript (si jamais elles ont changé
-par rapport au repository principal) :
+Mettez à jour les dépendances si elles ont changé :
 
-```
-$ cd /dossier/du/projet
-$ make deps
+```bash
+make deps
 ```
 
-## Profiling avec Blackfire
+---
 
-Uncomment the `blackfire` service in docker-compose.override.yml
+## Avant de merger
 
-Set the environment variables BLACKFIRE_CLIENT_* AND BLACKFIRE_SERVER_*, which are available in [https://blackfire.io/account](https://blackfire.io/account).
-
-Download the companion [here](https://chrome.google.com/webstore/detail/blackfire-companion/miefikpgahefdbcgoiicnmpbeeomffld) and start profiling !
-
-You can profile CLI commands like this:
-
-`docker-compose run --rm app blackfire run **You command**`
-
-For example, profiling phpunit:
-
-`docker-compose run --rm app blackfire run vendor/bin/phpunit`
-
+- [ ] `make test` — tous les tests passent
+- [ ] `make phpstan` — pas de nouvelles erreurs
+- [ ] `make phpcsfix` — style PHP corrigé
+- [ ] La branche est rebasée sur `master` (pas de conflits)
+- [ ] Les commits sont propres (squash si besoin)
 
 [Précédent : 2. Architecture du projet](2-Architecture-du-projet.md)
