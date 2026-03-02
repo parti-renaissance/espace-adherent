@@ -21,12 +21,18 @@ inputs:
         description: Set to 'true' to clear and warmup cache
         required: false
         default: 'false'
+    skip-composer-install:
+        description: Set to 'true' to skip composer install (when vendor cache is restored)
+        required: false
+        default: 'false'
 
 runs:
     using: composite
     steps:
         - name: Install composer dependencies
           uses: ./.github/actions/setup-composer
+          with:
+              skip-install: ${{ inputs.skip-composer-install }}
 
         - name: Build docker image
           shell: bash

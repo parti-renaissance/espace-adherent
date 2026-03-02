@@ -34,6 +34,7 @@ jobs:
             - uses: actions/checkout@v6
 
             - name: Cache composer
+              id: composer-cache
               uses: actions/cache@v5
               with:
                   path: vendor/
@@ -48,6 +49,7 @@ jobs:
             - uses: ./.github/actions/build
               with:
                   hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  skip-composer-install: ${{ steps.composer-cache.outputs.cache-hit }}
 
             - uses: ./.github/actions/docker-push
               with:
@@ -95,6 +97,7 @@ jobs:
               run: echo "CACHE_MONTH=$(date +'%Y-%m')" >> $GITHUB_ENV
 
             - name: Cache composer
+              id: composer-cache
               uses: actions/cache@v5
               with:
                   path: vendor/
@@ -123,6 +126,8 @@ jobs:
                       cache-${{ env.CACHE_KEY }}-phpstan-
 
             - uses: ./.github/actions/setup-composer
+              with:
+                  skip-install: ${{ steps.composer-cache.outputs.cache-hit }}
             - uses: ./.github/actions/setup-yarn
 
             - name: PHP Coding Standards Fixer
@@ -146,25 +151,8 @@ jobs:
             - name: PHPStan - PHP Static Analysis Tool
               run: make phpstan
 
-            - name: Cache Local PHP Security Checker
-              id: cache-security-checker
-              uses: actions/cache@v5
-              with:
-                  path: ./local-php-security-checker
-                  key: local-php-security-checker-${{ runner.os }}-${{ env.CACHE_MONTH }}
-                  restore-keys: |
-                      local-php-security-checker-${{ runner.os }}-
-
-            - name: Download Local PHP Security Checker if not cached
-              if: steps.cache-security-checker.outputs.cache-hit != 'true'
-              run: |-
-                  lastReleaseInfo=$(curl --silent "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest")
-                  securityCheckVersion=$(echo "${lastReleaseInfo}" | grep '"tag_name":' | sed -E 's/.*"v(.+)",/\1/')
-                  curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${securityCheckVersion}/local-php-security-checker_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
-                  chmod +x ./local-php-security-checker
-
-            - name: Run Local PHP Security Checker
-              run: ./local-php-security-checker
+            - name: Composer Security Audit
+              run: composer audit --abandoned=report
 
     phpunit:
         name: PHPUnit
