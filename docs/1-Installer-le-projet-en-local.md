@@ -6,6 +6,7 @@
 
 - [Symfony](https://symfony.com) — framework PHP
 - [API Platform](https://api-platform.com) — couche API REST/GraphQL
+- [Sonata-Admin](https://sonata-project.org) — back-office d'administration
 - [MySQL](https://www.mysql.com) — base de données relationnelle
 - [Redis](https://redis.io) — cache et sessions
 - [RabbitMQ](https://www.rabbitmq.com) — file de messages asynchrones
@@ -14,14 +15,13 @@
 
 ## Prérequis
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (ou [OrbStack](https://orbstack.dev) sous macOS)
-- PHP 8.4 avec les extensions `intl`, `gd`, `pdo_mysql`, `amqp`
-- [Composer](https://getcomposer.org)
-- Node.js 20+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ---
 
 ## Installation
+
+Le projet utilise un **Makefile** qui encapsule toutes les commandes Docker. Tapez `make help` pour la liste complète.
 
 ### 1. Cloner le dépôt
 
@@ -30,91 +30,54 @@ git clone git@github.com:parti-renaissance/espace-adherent.git
 cd espace-adherent
 ```
 
-### 2. Configurer les variables d'environnement
+### 2. Lancer l'installation complète
 
 ```bash
-cp .env .env.local
+make start
 ```
 
-Éditez `.env.local` et renseignez les valeurs nécessaires. Les clés requises en développement sont :
+Cette unique commande effectue : build des images Docker, démarrage des conteneurs, installation des dépendances (Composer + Yarn), build des assets, initialisation de la base de données (migrations + fixtures) et génération des clés OAuth.
 
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | URL de connexion MySQL (préconfigurée pour Docker) |
-| `REDIS_URL` | URL Redis (préconfigurée pour Docker) |
-| `APP_SECRET` | Secret Symfony — générez-en un avec `openssl rand -hex 32` |
-| `ALGOLIA_APP_ID` / `ALGOLIA_API_KEY` | Clés Algolia — obtenez un compte de test sur [algolia.com](https://www.algolia.com) |
-| `SENTRY_DSN` | Optionnel en local, laissez vide |
-
-> Les autres variables (GoCardless, Mailjet, etc.) peuvent être laissées vides pour un environnement de développement basique.
-
-### 3. Démarrer les containers
+### 3. Vérifier l'installation
 
 ```bash
-docker compose up -d
+make tu
 ```
 
-Cela démarre MySQL, Redis et RabbitMQ.
-
-### 4. Installer les dépendances
-
-```bash
-composer install
-```
-
-### 5. Initialiser la base de données
-
-```bash
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-```
-
-### 6. Générer les clés OAuth
-
-```bash
-php bin/console app:oauth:generate-keys
-```
-
-### 7. Vérifier l'installation
-
-```bash
-php bin/phpunit --testsuite unit
-```
-
-Tous les tests unitaires doivent passer sans erreur.
-
----
-
-## Accéder à l'API en local
-
-L'API est disponible sur `http://localhost:8000`.
-
-La documentation interactive (Swagger UI) est disponible sur `http://localhost:8000/api`.
-
-Comptes de test disponibles après le chargement des fixtures :
-
-```
-adherent@example.com / secret!12345   # compte sympathisant
-admin@example.com / secret!12345      # compte administrateur
-```
+Les tests unitaires doivent passer sans erreur.
 
 ---
 
 ## Lancer les tests
 
 ```bash
-php bin/phpunit              # tous les tests
-php bin/phpunit tests/Event/ # tests d'un module spécifique
+make tu   # tests unitaires
+make tf   # tests fonctionnels (Behat + PHPUnit)
+make test # tous les tests (unitaires + fonctionnels + JS)
 ```
 
 ---
 
+## Commandes utiles
+
+| Commande        | Description                                      |
+|-----------------|--------------------------------------------------|
+| `make start`    | Installation complète (build, DB, assets, clés)  |
+| `make stop`     | Arrêter et supprimer les conteneurs              |
+| `make reset`    | Stop + rebuild complet                           |
+| `make db`       | Réinitialiser la base et charger les fixtures    |
+| `make cc`       | Vider le cache Symfony                           |
+| `make tu`       | Tests unitaires                                  |
+| `make tf`       | Tests fonctionnels                               |
+| `make test`     | Tous les tests                                   |
+| `make lint`     | Lint complet (PHP, Twig, YAML, JS)               |
+| `make phpcsfix` | Corriger le style PHP                            |
+| `make lintfix`  | Corriger tout le style (PHP, JS, Prettier, Twig) |
+| `make tty`      | Shell interactif dans le conteneur app           |
+| `make help`     | Liste complète des commandes                     |
+
 ## Profiling (optionnel)
 
 Le projet est compatible avec [Blackfire](https://blackfire.io). Pour l'activer, décommentez le service `blackfire` dans `docker-compose.override.yml` et renseignez vos clés `BLACKFIRE_CLIENT_ID`, `BLACKFIRE_CLIENT_TOKEN`, `BLACKFIRE_SERVER_ID`, `BLACKFIRE_SERVER_TOKEN`.
-
-```bash
-docker compose run --rm app blackfire run php bin/phpunit
-```
 
 [Suivant : 2. Architecture du projet](2-Architecture-du-projet.md)

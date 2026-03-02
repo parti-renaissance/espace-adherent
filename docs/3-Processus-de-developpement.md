@@ -35,17 +35,9 @@
 ## Lancer les tests en local
 
 ```bash
-# Tous les tests
-php bin/phpunit
-
-# Tests unitaires uniquement
-php bin/phpunit --testsuite unit
-
-# Tests fonctionnels uniquement
-php bin/phpunit --testsuite functional
-
-# Tests d'un module
-php bin/phpunit tests/Event/
+make tu   # tests unitaires
+make tf   # tests fonctionnels (Behat + PHPUnit)
+make test # tous les tests (unitaires + fonctionnels + JS)
 ```
 
 ---
@@ -63,16 +55,16 @@ git push
 Mettez à jour les dépendances si elles ont changé :
 
 ```bash
-composer install
+make deps
 ```
 
 ---
 
 ## Avant de merger
 
-- [ ] Tous les tests passent
-- [ ] PHPStan ne remonte pas de nouvelles erreurs
-- [ ] php-cs-fixer est satisfait
+- [ ] `make test` — tous les tests passent
+- [ ] `make phpstan` — pas de nouvelles erreurs
+- [ ] `make phpcsfix` — style PHP corrigé
 - [ ] La branche est rebasée sur `master` (pas de conflits)
 - [ ] Les commits sont propres (squash si besoin)
 

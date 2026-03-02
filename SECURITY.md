@@ -4,9 +4,9 @@
 
 Seule la version en cours sur la branche `master` reçoit des correctifs de sécurité.
 
-| Branche | Support |
-|---|---|
-| `master` | ✅ Supportée |
+| Branche         | Support          |
+|-----------------|------------------|
+| `master`        | ✅ Supportée      |
 | Autres branches | ❌ Non supportées |
 
 ---
@@ -28,10 +28,10 @@ Envoyez un e-mail à **`security@parti-renaissance.fr`** avec :
 
 ### Ce que vous pouvez attendre
 
-| Étape | Délai estimé |
-|---|---|
-| Accusé de réception | sous 48h ouvrées |
-| Évaluation initiale | sous 5 jours ouvrés |
+| Étape                      | Délai estimé                     |
+|----------------------------|----------------------------------|
+| Accusé de réception        | sous 48h ouvrées                 |
+| Évaluation initiale        | sous 5 jours ouvrés              |
 | Correctif ou plan d'action | sous 30 jours pour les critiques |
 
 Nous vous tiendrons informé de l'avancement et vous créditerons dans le changelog si vous le souhaitez.

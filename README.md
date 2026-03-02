@@ -12,7 +12,7 @@
 
 **Renaissance Plateforme** est le back-end et l'API qui alimentent les services numériques de Parti Renaissance : événements, actions de terrain, communications, votes internes et dons. Il est consommé principalement par [Renaissance App](https://github.com/parti-renaissance/espace-militant).
 
-Nous avons choisi l'open source car cela s'accorde avec notre idée d'un mouvement qui n'existe que par ses membres — une conviction portée depuis En Marche ! en 2017, et que nous continuons avec Renaissance.
+Nous avons choisi l'open source, car cela s'accorde avec notre idée d'un mouvement qui n'existe que par ses membres — une conviction portée depuis En Marche ! en 2017, et que nous continuons avec Renaissance.
 
 ---
 
@@ -24,7 +24,7 @@ Toutes les contributions comptent : code, tests, documentation, remontées de bu
 Parcourez les [issues ouvertes](https://github.com/parti-renaissance/espace-adherent/issues) pour trouver quelque chose qui vous intéresse. Pour un changement significatif, **ouvrez d'abord une issue** pour en discuter avec l'équipe — cela évite les PRs orphelines.
 
 **2. Installer le projet**
-Suivez le [guide d'installation](docs/1-Installer-le-projet-en-local.md). Les clés d'API nécessaires en développement y sont documentées.
+Suivez le [guide d'installation](docs/1-Installer-le-projet-en-local.md).
 
 **3. Soumettre une PR**
 Lisez [CONTRIBUTING.md](CONTRIBUTING.md) pour les conventions de commit, les standards de code et le [processus de développement](docs/3-Processus-de-developpement.md). Vérifiez que les tests passent avant de soumettre :
@@ -41,23 +41,23 @@ Les PRs sont reviewées par l'équipe tech de Renaissance, en général sous **2
 
 ## Stack
 
-| | |
-|---|---|
-| **Langage** | PHP 8.4 |
-| **Framework** | Symfony 7.4 |
-| **API** | API Platform 4 |
+|                     |                      |
+|---------------------|----------------------|
+| **Langage**         | PHP 8.4              |
+| **Framework**       | Symfony 7.4          |
+| **API**             | API Platform 4       |
 | **Base de données** | MySQL + Doctrine ORM |
-| **Cache / Queue** | Redis + RabbitMQ |
-| **Recherche** | Algolia |
-| **Stockage** | Google Cloud Storage |
-| **Auth** | OAuth2 + 2FA |
-| **Monitoring** | Sentry |
+| **Cache / Queue**   | Redis + RabbitMQ     |
+| **Recherche**       | Algolia              |
+| **Stockage**        | Google Cloud Storage |
+| **Auth**            | OAuth2 + 2FA         |
+| **Monitoring**      | Sentry               |
 
 ---
 
 ## Architecture
 
-Le projet suit une approche **Domain-Driven Design** — chaque domaine métier est un module indépendant dans `src/` :
+Le projet est un **monolithe Symfony** mature, structuré par domaine métier. Chaque dossier de `src/` correspond à une thématique fonctionnelle, ce qui facilite la navigation dans un codebase riche de plus de 80 domaines :
 
 ```
 src/
@@ -70,27 +70,35 @@ src/
 ├── OAuth/          # Authentification et tokens
 ├── Mailer/         # Communications e-mail
 ├── Adherent/       # Profil sympathisant
-└── ...             # 80+ modules — voir docs/2-Architecture-du-projet.md
+└── ...             # voir docs/2-Architecture-du-projet.md
 ```
+
+> Pour comprendre l'organisation du code et les conventions du projet, consultez la [documentation d'architecture](docs/2-Architecture-du-projet.md).
 
 ---
 
 ## Installation locale
 
-**Prérequis :** Docker, PHP 8.4, Composer, Node.js 20+
+**Prérequis :** Docker, Docker Compose
 
 ```bash
 git clone https://github.com/parti-renaissance/espace-adherent.git
 cd espace-adherent
 
-cp .env .env.local   # compléter avec vos valeurs — voir docs/1-Installer-le-projet-en-local.md
-docker compose up -d
-composer install
-
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-php bin/console app:oauth:generate-keys
+make start                  # build, up, assets, DB, clés OAuth, cache
 ```
+
+Le Makefile embarque toutes les commandes courantes (`make help` pour la liste) :
+
+| Commande        | Description                                     |
+|-----------------|-------------------------------------------------|
+| `make start`    | Installation complète (build, DB, assets, clés) |
+| `make stop`     | Arrêter et supprimer les conteneurs             |
+| `make db`       | Réinitialiser la base et charger les fixtures   |
+| `make tu`       | Tests unitaires                                 |
+| `make tf`       | Tests fonctionnels (Behat + PHPUnit)            |
+| `make lint`     | Lint complet (PHP, Twig, YAML, JS)              |
+| `make phpcsfix` | Corriger le style PHP automatiquement           |
 
 > 📖 Guide complet : [docs/1-Installer-le-projet-en-local.md](docs/1-Installer-le-projet-en-local.md)
 
