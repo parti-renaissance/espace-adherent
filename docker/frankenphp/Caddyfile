@@ -9,11 +9,6 @@
 
 	frankenphp {
 		{$FRANKENPHP_CONFIG}
-
-		worker {
-			file /srv/app/public/index.php
-			{$FRANKENPHP_WORKER_CONFIG}
-		}
 	}
 
 	# Debug
