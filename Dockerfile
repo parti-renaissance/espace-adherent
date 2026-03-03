@@ -10,7 +10,7 @@ ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
 WORKDIR /srv/app
 
-FROM mlocati/php-extension-installer:2.9 AS php_extension_installer
+FROM mlocati/php-extension-installer:2.10 AS php_extension_installer
 
 FROM dunglas/frankenphp:1-php${PHP_VERSION} AS frankenphp_base
 
