@@ -490,6 +490,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $lastMailchimpFailedSyncResponse = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $mailchimpContactId = null;
+
     /**
      * @var Registration[]|Collection
      */

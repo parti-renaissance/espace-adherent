@@ -43,10 +43,12 @@ use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
+use App\Repository\SmsOptOutRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -431,58 +433,62 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         return $message;
     }
 
-    private function creatRequestBuildersLocator(): ContainerInterface
+    private function creatRequestBuildersLocator(): ServiceLocator
     {
-        return new SimpleContainer([
-            CampaignRequestBuilder::class => new CampaignRequestBuilder(
-                $this->mailchimpMapping = new MailchimpObjectIdMapping(
-                    'main_list_id',
-                    'newsletter_list_id',
-                    'elected_representative_list_id',
-                    'event_inscription_list_id',
-                    'jecoute_list_id',
-                    'jemengage_list_id',
-                    'newsletter_legislative_candidate_list_id',
-                    'newsletter_renaissance_list_id',
-                    array_flip(ScopeEnum::ALL),
-                    array_flip(ScopeEnum::ALL),
-                    [
-                        'subscribed_emails_referents' => 1,
-                        'COMMITTEE_SUPERVISOR' => 3,
-                        'COMMITTEE_HOST' => 4,
-                        'COMMITTEE_FOLLOWER' => 5,
-                        'COMMITTEE_NO_FOLLOWER' => 6,
-                        'deputy_email' => 7,
-                        'senator_email' => 8,
-                    ],
-                    'A',
-                    'B',
-                    'C',
-                    'https://mailchimp.com',
-                    'xyz'
-                ),
-                new SegmentConditionsBuilder($this->mailchimpMapping, [
-                    new AdherentGeoZoneConditionBuilder(),
-                    new AdherentInterestConditionBuilder($this->mailchimpMapping),
-                    new AdherentRegistrationDateConditionBuilder(),
-                    new AdherentTagsConditionBuilder($this->createMock(TagTranslator::class)),
-                    new CampusRegistrationConditionBuilder(),
-                    new CertifiedConditionBuilder(),
-                    new ContactNameConditionBuilder(),
-                    new ContactAgeConditionBuilder(),
-                    new DeclaredMandateConditionBuilder(),
-                    new DonatorStatusConditionBuilder(),
-                    new JMECommitteeConditionBuilder(),
-                    new MandateTypeConditionBuilder(),
-                    new MembershipDateConditionBuilder(),
-                    new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
-                ])
+        $campaignRequestBuilder = new CampaignRequestBuilder(
+            $this->mailchimpMapping = new MailchimpObjectIdMapping(
+                'main_list_id',
+                'newsletter_list_id',
+                'elected_representative_list_id',
+                'event_inscription_list_id',
+                'jecoute_list_id',
+                'jemengage_list_id',
+                'newsletter_legislative_candidate_list_id',
+                'newsletter_renaissance_list_id',
+                array_flip(ScopeEnum::ALL),
+                array_flip(ScopeEnum::ALL),
+                [
+                    'subscribed_emails_referents' => 1,
+                    'COMMITTEE_SUPERVISOR' => 3,
+                    'COMMITTEE_HOST' => 4,
+                    'COMMITTEE_FOLLOWER' => 5,
+                    'COMMITTEE_NO_FOLLOWER' => 6,
+                    'deputy_email' => 7,
+                    'senator_email' => 8,
+                ],
+                'A',
+                'B',
+                'C',
+                'https://mailchimp.com',
+                'xyz'
             ),
-            CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
-                $this->mailchimpMapping,
-                $this->createMockRenderer(),
-                $this->createSectionRequestBuildersIterable()
-            ),
+            new SegmentConditionsBuilder($this->mailchimpMapping, [
+                new AdherentGeoZoneConditionBuilder(),
+                new AdherentInterestConditionBuilder($this->mailchimpMapping),
+                new AdherentRegistrationDateConditionBuilder(),
+                new AdherentTagsConditionBuilder($this->createMock(TagTranslator::class)),
+                new CampusRegistrationConditionBuilder(),
+                new CertifiedConditionBuilder(),
+                new ContactNameConditionBuilder(),
+                new ContactAgeConditionBuilder(),
+                new DeclaredMandateConditionBuilder(),
+                new DonatorStatusConditionBuilder(),
+                new JMECommitteeConditionBuilder(),
+                new MandateTypeConditionBuilder(),
+                new MembershipDateConditionBuilder(),
+                new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
+            ])
+        );
+
+        $campaignContentRequestBuilder = new CampaignContentRequestBuilder(
+            $this->mailchimpMapping,
+            $this->createMockRenderer(),
+            $this->createSectionRequestBuildersIterable()
+        );
+
+        return new ServiceLocator([
+            CampaignRequestBuilder::class => fn () => $campaignRequestBuilder,
+            CampaignContentRequestBuilder::class => fn () => $campaignContentRequestBuilder,
         ]);
     }
 
@@ -515,6 +521,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 $this->mailchimpMapping,
                 $this->createBus(),
                 $serviceLocator,
+                $this->createMock(SmsOptOutRepository::class),
             ),
             $this->createMock(ObjectManager::class)
         );

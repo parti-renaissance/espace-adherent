@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeCandidacyInvitation;
-use App\Image\ImageManager;
+use App\Storage\ImageStorage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureInterface
 {
     public function __construct(
-        private readonly ImageManager $imageManager,
+        private readonly ImageStorage $imageStorage,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
     ) {
     }
@@ -127,15 +127,18 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
         $candidacy->setBiography('Voluptas ea rerum eligendi rerum ipsum optio iusto qui. Harum minima labore tempore odio doloribus sint nihil veniam. Sint voluptas et ea cum ipsa aut. Odio ut sequi at optio mollitia asperiores voluptas.');
 
         if ($withPhoto) {
-            $candidacy->setImage(new UploadedFile(
+            $sourceFile = new UploadedFile(
                 \sprintf('%s/../../../app/data/dist/avatar_%s_0%d.jpg', __DIR__, $adherent->isFemale() ? 'femme' : 'homme', random_int(1, 2)),
                 'image.jpg',
                 'image/jpeg',
                 null,
                 true
-            ));
+            );
 
-            $this->imageManager->saveImage($candidacy);
+            $ref = new \ReflectionProperty($candidacy, 'imageName');
+            $ref->setValue($candidacy, md5('candidacy-'.$adherent->getEmailAddress()).'.jpg');
+
+            $this->imageStorage->save($sourceFile, $candidacy->getImagePath());
         }
 
         return $candidacy;
