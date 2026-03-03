@@ -6,8 +6,6 @@ namespace App\Agora\Handler;
 
 use App\Agora\Command\InviteAdherentForAllFuturAgoraEventCommand;
 use App\Agora\Notifier;
-use App\Entity\Adherent;
-use App\Entity\Agora;
 use App\Entity\Event\RegistrationStatusEnum;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
@@ -30,7 +28,6 @@ class InviteAdherentForAllFuturAgoraEventCommandHandler
 
     public function __invoke(InviteAdherentForAllFuturAgoraEventCommand $command): void
     {
-        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid()->toString())) {
             return;
         }
@@ -39,7 +36,6 @@ class InviteAdherentForAllFuturAgoraEventCommandHandler
             return;
         }
 
-        /** @var Agora $agora */
         if (!$agora = $this->agoraRepository->find($command->agoraId)) {
             return;
         }

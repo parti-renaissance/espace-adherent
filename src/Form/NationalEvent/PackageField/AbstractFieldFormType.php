@@ -27,7 +27,7 @@ abstract class AbstractFieldFormType extends AbstractType
     {
         $fieldId = $fieldConfig['cle'];
         $isSequential = $fieldConfig['sequentiel'] ?? false;
-        $choices = static::generateChoices($fieldConfig['options'] ?? []);
+        $choices = self::generateChoices($fieldConfig['options'] ?? []);
 
         $visibleChoicesKeys = array_keys($choices);
 

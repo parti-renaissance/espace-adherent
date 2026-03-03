@@ -17,12 +17,12 @@ class Processor
             $quotients = [];
 
             foreach ($election->partyLists as $list) {
-                $quotients[$list->identifier] = static::calculateQuotient($list);
+                $quotients[$list->identifier] = self::calculateQuotient($list);
             }
 
             arsort($quotients, \SORT_NUMERIC);
 
-            if ($list = static::findWinnerList($election, $quotients)) {
+            if ($list = self::findWinnerList($election, $quotients)) {
                 $list->increaseSeats();
             }
         }

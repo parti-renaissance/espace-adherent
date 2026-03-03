@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Event\Handler;
 
-use App\Entity\Event\EventRegistration;
 use App\Event\Command\SendEmailReminderCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\EventReminderMessage;
@@ -26,7 +25,6 @@ class SendEmailReminderHandler
 
     public function __invoke(SendEmailReminderCommand $command): void
     {
-        /** @var EventRegistration $eventRegistration */
         if (!$eventRegistration = $this->eventRegistrationRepository->findOneByUuid($command->getUuid()->toString())) {
             return;
         }

@@ -24,6 +24,7 @@ use App\JMEFilter\Types\Text;
  * @method self setHelp(?string $message)
  * @method self setFavorite(bool $value)
  * @method self setAdvanced(bool $value)
+ * @method self setInstances(array $instances)
  */
 class FilterCollectionBuilder
 {

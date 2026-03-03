@@ -11,7 +11,6 @@ use App\Entity\Mooc\MoocElementTypeEnum;
 use App\Form\Admin\BaseFileType;
 use App\Form\AttachmentLinkType;
 use App\Form\ImageType;
-use Doctrine\ORM\QueryBuilder;
 use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -31,7 +30,6 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        /** @var QueryBuilder $proxyQuery */
         $query->addOrderBy('o.chapter', 'ASC');
         $query->addOrderBy('o.position', 'ASC');
 

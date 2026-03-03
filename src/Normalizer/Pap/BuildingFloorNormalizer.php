@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Floor;
-use App\Entity\Pap\FloorStatistics;
 use App\Repository\Pap\CampaignRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -39,7 +38,6 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
             }
         }
 
-        /** @var FloorStatistics $stats */
         if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
             $data['campaign_statistics'] = [
                 'visited_doors' => $stats->getVisitedDoors(),

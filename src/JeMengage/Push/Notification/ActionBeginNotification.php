@@ -13,8 +13,8 @@ class ActionBeginNotification extends AbstractMulticastNotification
     public static function create(Action $action, bool $firstNotification): self
     {
         return new self(
-            static::createTitle($action, $firstNotification),
-            static::createBody($action, $firstNotification),
+            self::createTitle($action, $firstNotification),
+            self::createBody($action, $firstNotification),
         );
     }
 

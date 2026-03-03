@@ -17,7 +17,7 @@ class RenaissanceAdherentTerminateMembershipMessage extends AbstractRenaissanceM
             $adherent->getFullName(),
             'Votre départ de Renaissance !',
             [],
-            static::getRecipientVars($adherent->getFirstName())
+            self::getRecipientVars($adherent->getFirstName())
         );
     }
 

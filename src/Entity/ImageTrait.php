@@ -27,7 +27,7 @@ trait ImageTrait
                 md5(
                     \sprintf(
                         '%s@%s',
-                        method_exists($this, 'getUuid') ? $this->getUuid()->toString() : ($this->getId() ?? Uuid::uuid4()),
+                        method_exists($this, 'getUuid') ? (string) $this->getUuid() : ($this->getId() ?? Uuid::uuid4()),
                         $image->getClientOriginalName()
                     )
                 ),

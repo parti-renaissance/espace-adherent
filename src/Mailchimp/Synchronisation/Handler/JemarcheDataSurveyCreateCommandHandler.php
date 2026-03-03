@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Entity\Geo\Zone;
-use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Geo\ZoneMatcher;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\JemarcheDataSurveyCommandInterface;
@@ -41,7 +40,6 @@ class JemarcheDataSurveyCreateCommandHandler implements LoggerAwareInterface
 
     public function __invoke(JemarcheDataSurveyCommandInterface $message): void
     {
-        /** @var JemarcheDataSurvey $dataSurvey */
         if (!$dataSurvey = $this->dataSurveyRepository->findLastAvailableToContactByEmail($email = $message->getEmail())) {
             $this->logger->warning(\sprintf('DataSurvey contact available to contact with email "%s" not found, message skipped', $email));
 

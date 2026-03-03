@@ -9,7 +9,6 @@ use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
-use App\Entity\Adherent;
 use App\Membership\AdherentFactory;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
@@ -37,7 +36,6 @@ class CreateAccountCommandHandler
     {
         $membershipRequest = $command->membershipRequest;
 
-        /** @var Adherent $currentUser */
         if ($currentUser = $command->currentUser) {
             $currentUser->updateFromMembershipRequest($membershipRequest);
             $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);

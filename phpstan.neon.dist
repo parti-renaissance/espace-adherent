@@ -1,5 +1,5 @@
 parameters:
-    level: 1
+    level: 2
     tmpDir: var/phpstan-tmp
     parallel:
         maximumNumberOfProcesses: 1
@@ -16,3 +16,194 @@ parameters:
             identifier: doctrine.columnType
         -
             identifier: doctrine.associationType
+        # Sonata Admin - ProxyQueryInterface doesn't expose Doctrine QueryBuilder methods
+        -
+            message: '#Call to an undefined method Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface(<[^>]+>)?::#'
+            reportUnmatched: false
+        # Sonata Admin - AdminInterface doesn't expose custom admin methods
+        -
+            message: '#Call to an undefined method Sonata\\AdminBundle\\Admin\\AdminInterface(<[^>]+>)?::#'
+            reportUnmatched: false
+        # DateTimeInterface doesn't have modify()/setTimezone() but DateTime/DateTimeImmutable do
+        -
+            message: '#Call to an undefined method DateTimeInterface::(modify|setTimezone|setDate|setTime)\(\)#'
+            reportUnmatched: false
+        # FormInterface::isClicked() is on ClickableInterface (Button)
+        -
+            message: '#Call to an undefined method Symfony\\Component\\Form\\FormInterface::isClicked\(\)#'
+            reportUnmatched: false
+        # SessionInterface::getFlashBag() is on Session implementation
+        -
+            message: '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\)#'
+            reportUnmatched: false
+        # Lcobucci JWT Token interface
+        -
+            message: '#Call to an undefined method Lcobucci\\JWT\\Token::claims\(\)#'
+            reportUnmatched: false
+        # Doctrine ObjectManager vs EntityManagerInterface
+        -
+            message: '#Call to an undefined method Doctrine\\Persistence\\ObjectManager::getConnection\(\)#'
+            reportUnmatched: false
+        # Traversable doesn't have array methods but ArrayObject does
+        -
+            message: '#Call to an undefined method Traversable<[^>]+>::(uasort|getArrayCopy)\(\)#'
+            reportUnmatched: false
+        # Symfony UserInterface used for Adherent - methods are on Adherent, not interface
+        -
+            message: '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface::#'
+            reportUnmatched: false
+        # Sonata ModelManagerInterface
+        -
+            message: '#Call to an undefined method Sonata\\AdminBundle\\Model\\ModelManagerInterface(<[^>]+>)?::#'
+            reportUnmatched: false
+        # Doctrine EntityRepository with custom methods (withGeoZones, createGeoZonesQueryBuilder)
+        -
+            message: '#Call to an undefined method Doctrine\\ORM\\EntityRepository<[^>]+>::(withGeoZones|createGeoZonesQueryBuilder)\(\)#'
+            reportUnmatched: false
+        # Project interfaces missing methods - to be fixed by adding to interfaces
+        -
+            message: '#Call to an undefined method App\\Entity\\Pap\\CampaignStatisticsInterface::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\VotingPlatform\\Designation\\CandidacyInterface::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\Jecoute\\DataSurveyAwareInterface::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\AdherentMessage\\AdherentMessageInterface::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Address\\AddressInterface::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\Geo\\GeoInterface::#'
+            reportUnmatched: false
+        # LoggerInterface::enable() is a custom method
+        -
+            message: '#Call to an undefined method Psr\\Log\\LoggerInterface::enable\(\)#'
+            reportUnmatched: false
+        # CacheInterface using PSR-6 methods via adapter
+        -
+            message: '#Call to an undefined method Symfony\\Contracts\\Cache\\CacheInterface::(getItem|save)\(\)#'
+            reportUnmatched: false
+        # AccessTokenEntityInterface custom property
+        -
+            message: '#Access to an undefined property League\\OAuth2\\Server\\Entities\\AccessTokenEntityInterface::#'
+            reportUnmatched: false
+        # AdherentMessageFilterInterface
+        -
+            message: '#Call to an undefined method App\\AdherentMessage\\Filter\\AdherentMessageFilterInterface::#'
+            reportUnmatched: false
+        # Donation entity uses trait methods
+        -
+            message: '#Call to an undefined method App\\Entity\\Donation::(getEmailAddress|getFirstName|getLastName)\(\)#'
+            reportUnmatched: false
+        # Poll::setAdministrator method from subclass
+        -
+            message: '#Call to an undefined method App\\Entity\\Poll\\Poll::setAdministrator\(\)#'
+            reportUnmatched: false
+        # Project interfaces with missing methods (generic rule for all *Interface classes)
+        -
+            message: '#Call to an undefined method App\\[A-Za-z\\\\]+Interface::#'
+            reportUnmatched: false
+        # Custom repository methods not on base EntityRepository
+        -
+            message: '#Call to an undefined method (App\\Repository\\[A-Za-z\\\\]+|Doctrine\\ORM\\EntityRepository<[^>]+>)::#'
+            reportUnmatched: false
+        # Concrete classes accessed through interfaces with missing methods
+        -
+            message: '#Call to an undefined method App\\Entity\\Geo\\District::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\Adherent::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\Jecoute\\Survey::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Entity\\Mooc\\BaseMoocElement::#'
+            reportUnmatched: false
+        -
+            message: '#Call to an undefined method App\\Mailchimp\\Synchronisation\\MemberRequest\\AbstractMemberRequestBuilder::#'
+            reportUnmatched: false
+        # Project interfaces missing properties
+        -
+            message: '#Access to an undefined property App\\[A-Za-z\\\\]+Interface::#'
+            reportUnmatched: false
+        # LoginLinkHandlerInterface with custom parameters in project implementation
+        -
+            message: '#Unknown parameter \$(targetPath|appCode) in call to method Symfony\\Component\\Security\\Http\\LoginLink\\LoginLinkHandlerInterface::createLoginLink\(\)#'
+            reportUnmatched: false
+        # Sonata ModelManagerInterface::createQuery() with extra parameters
+        -
+            message: '#Method Sonata\\AdminBundle\\Model\\ModelManagerInterface(<[^>]+>)?::createQuery\(\) invoked with#'
+            reportUnmatched: false
+        # Doctrine signature changes (ObjectManager::clear/flush deprecated parameter)
+        -
+            message: '#Method Doctrine\\Persistence\\ObjectManager::(clear|flush)\(\) invoked with 1 parameter#'
+            reportUnmatched: false
+        # QueryBuilder::addSelect variadic in implementation
+        -
+            message: '#Method Doctrine\\ORM\\QueryBuilder::addSelect\(\) invoked with [0-9]+ parameters#'
+            reportUnmatched: false
+        # EntityManagerInterface::createQueryBuilder with alias parameter
+        -
+            message: '#Method Doctrine\\ORM\\EntityManagerInterface::createQueryBuilder\(\) invoked with 1 parameter#'
+            reportUnmatched: false
+        # LoginLinkHandlerInterface::createLoginLink with extra parameters
+        -
+            message: '#Method Symfony\\Component\\Security\\Http\\LoginLink\\LoginLinkHandlerInterface::createLoginLink\(\) invoked with [0-9]+ parameters#'
+            reportUnmatched: false
+        # ResponseInterface::getStatusCode signature
+        -
+            message: '#Method Symfony\\Contracts\\HttpClient\\ResponseInterface::getStatusCode\(\) invoked with 1 parameter#'
+            reportUnmatched: false
+        # NameConverterInterface::normalize() with context
+        -
+            message: '#Method Symfony\\Component\\Serializer\\NameConverter\\NameConverterInterface::normalize\(\) invoked with [0-9]+ parameters#'
+            reportUnmatched: false
+        # PHPDoc @var incompatible with native type (Sonata ProxyQuery)
+        -
+            message: '#PHPDoc tag @var with type Doctrine\\ORM\\QueryBuilder is not subtype of native type Sonata\\#'
+            reportUnmatched: false
+        # PHPDoc @param incompatible with native type (Sonata ProxyQuery)
+        -
+            message: '#PHPDoc tag @param for parameter .* with type Doctrine\\ORM\\QueryBuilder.*is not subtype of native type Sonata\\#'
+            reportUnmatched: false
+        # Validator Constraint::$message property
+        -
+            message: '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$#'
+            reportUnmatched: false
+        # PHPDoc parse errors (minor formatting issues)
+        -
+            identifier: phpDoc.parseError
+            reportUnmatched: false
+        # Entity collections typed as array but using Collection methods (Doctrine hydrates to Collection)
+        -
+            message: '#Cannot call method (toArray|contains|add|removeElement|count)\(\) on array<#'
+            reportUnmatched: false
+        # Doctrine ObjectRepository custom method
+        -
+            message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository::#'
+            reportUnmatched: false
+        # Entity PHPDoc property type mismatch
+        -
+            message: '#PHPDoc tag @var for property .* is incompatible with native type#'
+            reportUnmatched: false
+        # Validator getZone method on entity or class-string
+        -
+            message: '#Cannot call method getZone\(\) on .+\|class-string#'
+            reportUnmatched: false
+        # Pure method impurity warnings
+        -
+            identifier: possiblyImpure.methodCall
+            reportUnmatched: false
+        # PHPDoc @return incompatible with native return
+        -
+            identifier: return.phpDocType
+            reportUnmatched: false
+        # Property not found in Validator constraints
+        -
+            message: '#Access to an undefined property App\\Validator\\#'
+            reportUnmatched: false

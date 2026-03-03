@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 class CampaignContentRequestBuilder
 {
     /**
-     * @var ContentSectionBuilderInterface[]
+     * @param ContentSectionBuilderInterface[] $builders
      */
     public function __construct(
         private readonly MailchimpObjectIdMapping $objectIdMapping,

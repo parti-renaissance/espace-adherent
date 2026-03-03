@@ -47,7 +47,7 @@ class MailchimpSyncAllEventsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('type', InputArgument::REQUIRED, implode('|', static::$allTypes))
+            ->addArgument('type', InputArgument::REQUIRED, implode('|', self::$allTypes))
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
@@ -61,7 +61,7 @@ class MailchimpSyncAllEventsCommand extends Command
     {
         $type = $input->getArgument('type');
 
-        if (!\in_array($type, static::$allTypes)) {
+        if (!\in_array($type, self::$allTypes)) {
             throw new \InvalidArgumentException('Type value is invalid');
         }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Synchronisation\Handler;
 
-use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -29,7 +28,6 @@ class NationalEventInscriptionChangeCommandHandler implements LoggerAwareInterfa
 
     public function __invoke(NationalEventInscriptionChangeCommand $message): void
     {
-        /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->repository->findOneByUuid($uuid = $message->uuid->toString())) {
             $this->logger->warning(\sprintf('EventInscription with UUID "%s" not found, message skipped', $uuid));
 

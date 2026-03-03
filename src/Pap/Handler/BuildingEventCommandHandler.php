@@ -7,7 +7,6 @@ namespace App\Pap\Handler;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\BuildingStatistics;
-use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\CampaignStatisticsOwnerInterface;
 use App\Pap\BuildingEventActionEnum;
 use App\Pap\BuildingEventTypeEnum;
@@ -80,7 +79,6 @@ class BuildingEventCommandHandler
     ): void {
         $status = BuildingEventActionEnum::CLOSE === $buildingEvent->getAction() ? BuildingStatusEnum::COMPLETED : BuildingStatusEnum::ONGOING;
         $campaign = $buildingEvent->getCampaign();
-        /** @var CampaignStatisticsInterface $stats */
         if (!$stats = $object->findStatisticsForCampaign($campaign)) {
             if ($isAsync && $object instanceof Building) {
                 $stats = $this->buildingStatisticsManager->updateStats($object, $campaign);

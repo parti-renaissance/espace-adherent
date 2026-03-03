@@ -13,8 +13,8 @@ class ActionUpdatedNotification extends AbstractMulticastNotification
     public static function create(Action $action): self
     {
         return new self(
-            static::createTitle($action),
-            static::createBody($action),
+            self::createTitle($action),
+            self::createBody($action),
         );
     }
 

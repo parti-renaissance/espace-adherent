@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Action\Handler;
 
 use App\Action\RegisterManager;
-use App\Entity\Action\Action;
 use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\Repository\Action\ActionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -25,7 +24,6 @@ class RegisterAuthorAsFirstParticipantHandler
             return;
         }
 
-        /** @var Action $action */
         if (
             (!$action = $this->actionRepository->findOneByUuid($command->getUuid()))
             || !$action->getAuthor()

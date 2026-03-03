@@ -72,47 +72,47 @@ class AdherentZoneBasedRole
 
     public static function createCorrespondent(Zone $zone): self
     {
-        return static::create(ScopeEnum::CORRESPONDENT, [$zone]);
+        return self::create(ScopeEnum::CORRESPONDENT, [$zone]);
     }
 
     public static function createLegislativeCandidate(Zone $zone): self
     {
-        return static::create(ScopeEnum::LEGISLATIVE_CANDIDATE, [$zone]);
+        return self::create(ScopeEnum::LEGISLATIVE_CANDIDATE, [$zone]);
     }
 
     public static function createDeputy(Zone $zone): self
     {
-        return static::create(ScopeEnum::DEPUTY, [$zone]);
+        return self::create(ScopeEnum::DEPUTY, [$zone]);
     }
 
     public static function createRegionalCoordinator(array $zones): self
     {
-        return static::create(ScopeEnum::REGIONAL_COORDINATOR, $zones);
+        return self::create(ScopeEnum::REGIONAL_COORDINATOR, $zones);
     }
 
     public static function createPresidentDepartmentalAssembly(array $zones): self
     {
-        return static::create(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $zones);
+        return self::create(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $zones);
     }
 
     public static function createProcurationManager(array $zones): self
     {
-        return static::create(ScopeEnum::PROCURATIONS_MANAGER, $zones);
+        return self::create(ScopeEnum::PROCURATIONS_MANAGER, $zones);
     }
 
     public static function createMunicipalPilot(array $zones): self
     {
-        return static::create(ScopeEnum::MUNICIPAL_PILOT, $zones);
+        return self::create(ScopeEnum::MUNICIPAL_PILOT, $zones);
     }
 
     public static function createFdeCoordinator(array $zones): self
     {
-        return static::create(ScopeEnum::FDE_COORDINATOR, $zones);
+        return self::create(ScopeEnum::FDE_COORDINATOR, $zones);
     }
 
     public static function createNational(string $nationalScope): self
     {
-        return static::create($nationalScope, []);
+        return self::create($nationalScope, []);
     }
 
     private static function create(string $scope, array $zones): self
@@ -128,7 +128,7 @@ class AdherentZoneBasedRole
 
     public static function createSenator(Zone $zone): self
     {
-        return static::create(ScopeEnum::SENATOR, [$zone]);
+        return self::create(ScopeEnum::SENATOR, [$zone]);
     }
 
     public function getType(): ?string

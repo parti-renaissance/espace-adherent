@@ -32,22 +32,22 @@ class Dictionary extends Enum
     {
         return [
             [
-                'code' => static::makeCode(self::SALUTATION),
+                'code' => self::makeCode(self::SALUTATION),
                 'description' => null,
                 'value' => fn (Adherent $adherent) => \sprintf('%s %s', $adherent->isFemale() ? 'Chère' : 'Cher', $adherent->getFirstName()),
             ],
             [
-                'code' => static::makeCode(self::FIRST_NAME),
+                'code' => self::makeCode(self::FIRST_NAME),
                 'description' => null,
                 'value' => fn (Adherent $adherent) => $adherent->getFirstName(),
             ],
             [
-                'code' => static::makeCode(self::LAST_NAME),
+                'code' => self::makeCode(self::LAST_NAME),
                 'description' => null,
                 'value' => fn (Adherent $adherent) => $adherent->getLastName(),
             ],
             [
-                'code' => static::makeCode(self::PUBLIC_ID),
+                'code' => self::makeCode(self::PUBLIC_ID),
                 'description' => null,
                 'value' => fn (Adherent $adherent) => $adherent->getPublicId(),
             ],

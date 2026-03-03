@@ -6,15 +6,13 @@ namespace App\Form\DataTransformer;
 
 use App\Entity\UuidEntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class UuidToObjectTransformer implements DataTransformerInterface
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository
-     */
-    private $repository;
+    private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManager, string $className)
     {

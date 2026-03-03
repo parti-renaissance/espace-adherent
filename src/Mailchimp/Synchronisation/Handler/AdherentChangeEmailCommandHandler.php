@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Synchronisation\Handler;
 
-use App\Entity\Adherent;
-use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\AdherentRepository;
@@ -38,7 +36,6 @@ class AdherentChangeEmailCommandHandler implements LoggerAwareInterface
 
     public function __invoke(AdherentChangeCommandInterface $message): void
     {
-        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($uuid = $message->getUuid()->toString())) {
             $this->logger->warning(\sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
 
@@ -46,7 +43,6 @@ class AdherentChangeEmailCommandHandler implements LoggerAwareInterface
         }
 
         if ($adherent->getEmailAddress() !== $message->getEmailAddress()) {
-            /** @var ElectedRepresentative $electedRepresentative */
             if ($electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent])) {
                 $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
                     $electedRepresentative->getUuid(),

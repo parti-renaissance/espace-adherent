@@ -29,7 +29,6 @@ class UserManager
 
     public function updateUser(string $userUuid): void
     {
-        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($userUuid)) {
             return;
         }

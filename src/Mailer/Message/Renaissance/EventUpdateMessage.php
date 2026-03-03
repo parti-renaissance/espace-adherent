@@ -23,8 +23,8 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
             'Un événement a été modifié',
-            static::getTemplateVars($event, $eventUrl),
-            static::getRecipientVars($recipient)
+            self::getTemplateVars($event, $eventUrl),
+            self::getRecipientVars($recipient)
         );
 
         /* @var EventRegistration[] $recipients */
@@ -32,7 +32,7 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFirstName().' '.$recipient->getLastName(),
-                static::getRecipientVars($recipient)
+                self::getRecipientVars($recipient)
             );
         }
 

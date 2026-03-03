@@ -321,7 +321,6 @@ class AdminCommitteeController extends AbstractController
     private function addMandateAdherentWarning(array $mandates): void
     {
         $msg = '';
-        /** @var CommitteeAdherentMandate $activeMandate */
         array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
             $msg .= \sprintf(
                 '%s dans le comité "%s", ',

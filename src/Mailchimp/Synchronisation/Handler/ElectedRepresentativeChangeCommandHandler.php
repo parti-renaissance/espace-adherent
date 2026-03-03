@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Synchronisation\Handler;
 
-use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -36,7 +35,6 @@ class ElectedRepresentativeChangeCommandHandler implements LoggerAwareInterface
 
     public function __invoke(ElectedRepresentativeChangeCommandInterface $message): void
     {
-        /** @var ElectedRepresentative $electedRepresentative */
         if (!$electedRepresentative = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {
             $this->logger->warning(\sprintf('ElectedRepresentative with UUID "%s" not found, message skipped', $uuid));
 

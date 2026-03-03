@@ -40,7 +40,7 @@ class AdherentActivationCode
     {
         $code = new self();
         $code->adherent = $adherent;
-        $code->value = static::generateValue();
+        $code->value = self::generateValue();
         $code->createdAt = new \DateTime();
         $code->expiredAt = new \DateTime('+'.$codeTtl.' min');
 

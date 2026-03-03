@@ -30,7 +30,6 @@ class LinkReferrerWithNewAdherentCommandHandler
 
     public function __invoke(LinkReferrerWithNewAdherentCommand $command): void
     {
-        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid())) {
             return;
         }

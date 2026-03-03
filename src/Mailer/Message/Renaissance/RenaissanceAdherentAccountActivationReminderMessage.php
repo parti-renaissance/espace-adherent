@@ -17,7 +17,7 @@ class RenaissanceAdherentAccountActivationReminderMessage extends AbstractRenais
             $adherent->getFullName(),
             'Confirmez votre compte Renaissance',
             [],
-            static::getRecipientVars($adherent, $confirmationLink)
+            self::getRecipientVars($adherent, $confirmationLink)
         );
     }
 

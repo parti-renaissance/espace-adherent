@@ -29,7 +29,7 @@ class EventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
                 'visio_url' => $event->getVisioUrl(),
                 'live_url' => $event->liveUrl,
             ],
-            static::getRecipientVars($firstName)
+            self::getRecipientVars($firstName)
         );
     }
 

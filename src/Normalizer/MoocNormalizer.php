@@ -25,7 +25,6 @@ class MoocNormalizer implements NormalizerInterface
     {
         $elements = [];
 
-        /** @var Mooc $object */
         foreach ($object->getChapters() as $chapter) {
             $elements[] = $this->normalizeChapter($chapter);
 

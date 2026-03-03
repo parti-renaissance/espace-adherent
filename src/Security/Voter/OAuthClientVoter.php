@@ -22,7 +22,6 @@ class OAuthClientVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        /** @var Client $subject */
         foreach ($subject->getRequestedRoles() ?? [] as $role) {
             $roleParts = explode('|', $role, 2);
             if (!$this->security->isGranted($roleParts[0], $roleParts[1] ?? $adherent)) {
