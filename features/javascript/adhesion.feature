@@ -1,8 +1,8 @@
 @renaissance_user
 @javascript
-@javascript2
 Feature:
 
+    @javascript2
     Scenario: I can become adherent
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
@@ -221,6 +221,7 @@ Feature:
         When I click the ".re-button" selector
         Then I should be on "/app" wait otherwise
 
+    @javascript2
     Scenario: I can become sympathizer
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
@@ -353,7 +354,7 @@ Feature:
         When I click the ".re-button" selector
         Then I should be on "/app" wait otherwise
 
-    @javascript1
+    @javascript2
     Scenario: I can become adherent from EM account
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
