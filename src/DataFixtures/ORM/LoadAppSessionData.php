@@ -23,6 +23,7 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
         $clientCadre = $this->getReference('client-cadre', Client::class);
 
         $faker = Factory::create('fr_FR');
+        $faker->seed(5678);
         $pushTokenRepository = $manager->getRepository(PushToken::class);
         $pushTokens = $pushTokenRepository->findAll();
 

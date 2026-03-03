@@ -43,8 +43,8 @@ class AppHitRepository extends ServiceEntityRepository
             // Clicks
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click, h.adherent, null)) as unique_clicks')
             ->addSelect('CAST(COALESCE(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open, h.adherent, null)), 0), 2), 0.0) AS DOUBLE) as unique_clicks__total_rate')
-            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.source = :source_email, h.adherent, null)) as unique_clicks__email')
-            ->addSelect('CAST(COALESCE(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.source = :source_email, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_email, h.adherent, null)), 0), 2), 0.0) AS DOUBLE) as unique_clicks__email_rate')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.source = :source_email AND h.suspicious = false, h.adherent, null)) as unique_clicks__email')
+            ->addSelect('CAST(COALESCE(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.source = :source_email AND h.suspicious = false, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_email, h.adherent, null)), 0), 2), 0.0) AS DOUBLE) as unique_clicks__email_rate')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.sourceGroup = :source_group_app, h.adherent, null)) as unique_clicks__app')
             ->addSelect('CAST(COALESCE(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.sourceGroup = :source_group_app, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.sourceGroup = :source_group_app, h.adherent, null)), 0), 2), 0.0) AS DOUBLE) AS unique_clicks__app_rate')
 
