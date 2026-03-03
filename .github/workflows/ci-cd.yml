@@ -186,15 +186,6 @@ jobs:
                   keys: true
                   cache-warmup: true
 
-            - name: Cache static assets
-              uses: actions/cache@v5
-              with:
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
-                  path: |
-                      public/built/
-                      public/css/
-                      public/select2/
-
             - name: Prepare app (assets, cache, db, rabbitmq)
               run: make tfp-rabbitmq tfp-db
 
@@ -226,15 +217,6 @@ jobs:
                   extra-containers: db redis rabbitmq
                   keys: true
                   cache-warmup: true
-
-            - name: Cache static assets
-              uses: actions/cache@v5
-              with:
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
-                  path: |
-                      public/built/
-                      public/css/
-                      public/select2/
 
             - name: Prepare app (assets, cache, db, rabbitmq)
               run: make tfp-rabbitmq tfp-db
@@ -274,15 +256,6 @@ jobs:
                   extra-containers: db redis rabbitmq selenium
                   keys: true
 
-            - name: Cache static assets
-              uses: actions/cache@v5
-              with:
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
-                  path: |
-                      public/built/
-                      public/css/
-                      public/select2/
-
             - name: Prepare app (assets, cache, db, rabbitmq)
               run: make tfp-rabbitmq tfp-db
 
@@ -316,17 +289,14 @@ jobs:
                   path: vendor/
                   key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
-            - name: Cache yarn dependencies
+            - name: Cache static assets
               uses: actions/cache@v5
               with:
-                  path: node_modules/
-                  key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
-
-            - name: Setup yarn
-              uses: ./.github/actions/setup-yarn
-
-            - name: Build static assets
-              run: yarn build-prod
+                  path: |
+                      public/built/
+                      public/css/
+                      public/select2/
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
             - uses: ./.github/actions/docker-login
 

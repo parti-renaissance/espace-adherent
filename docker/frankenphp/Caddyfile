@@ -42,7 +42,7 @@ test.*.code:80 {
 	}
 
 	@static {
-		path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.woff *.woff2 *.ico
+		path *.css *.js *.map *.png *.jpg *.jpeg *.gif *.svg *.webp *.avif *.woff *.woff2 *.ttf *.otf *.eot *.ico
 	}
 
 	@maintenance {
