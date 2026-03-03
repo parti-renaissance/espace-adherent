@@ -87,7 +87,7 @@ jobs:
         name: Lint
         runs-on: ubuntu-24.04
         needs: [build]
-        if: vars.SKIP_TESTS_ON_DEPLOY != 'true'
+        if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
         env:
             EXEC:
         steps:
@@ -158,7 +158,7 @@ jobs:
         name: PHPUnit
         runs-on: ubuntu-24.04
         needs: [build]
-        if: vars.SKIP_TESTS_ON_DEPLOY != 'true'
+        if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
             - uses: actions/checkout@v6
@@ -198,7 +198,7 @@ jobs:
         name: Behat
         runs-on: ubuntu-24.04
         needs: [build]
-        if: vars.SKIP_TESTS_ON_DEPLOY != 'true'
+        if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
             - uses: actions/checkout@v6
@@ -230,7 +230,7 @@ jobs:
         name: Behat/Selenium
         runs-on: ubuntu-24.04
         needs: [build, build-static]
-        if: vars.SKIP_TESTS_ON_DEPLOY != 'true'
+        if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
         strategy:
             fail-fast: false
             matrix:
