@@ -22,6 +22,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Index(fields: ['eventType', 'sourceGroup'])]
 #[ORM\Index(fields: ['objectType'])]
 #[ORM\Index(fields: ['objectId'])]
+#[ORM\Index(fields: ['suspicious'])]
 class AppHit
 {
     use EntityIdentityTrait;
@@ -101,6 +102,9 @@ class AppHit
 
     #[ORM\Column(type: 'json', nullable: true)]
     public array $raw = [];
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $suspicious = false;
 
     public function __construct()
     {

@@ -134,11 +134,12 @@ class SyncReportCommandHandler
                 }
 
                 return $rows;
-            }
+            },
+            detectSuspicious: true
         );
     }
 
-    private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage, callable $extractRows): void
+    private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage, callable $extractRows, bool $detectSuspicious = false): void
     {
         $conn = $this->entityManager->getConnection();
         $objectId = $adherentMessage->getUuid()->toString();
@@ -178,6 +179,9 @@ class SyncReportCommandHandler
             }
 
             if ($rows) {
+                if ($detectSuspicious) {
+                    $rows = $this->markSuspiciousClicks($rows);
+                }
                 $this->insertBatchAppHits($conn, $rows);
             }
 
@@ -189,6 +193,32 @@ class SyncReportCommandHandler
     private function buildFingerprint(array $parts): string
     {
         return hash('sha256', implode('|', $parts));
+    }
+
+    /**
+     * Marks clicks as suspicious if the same adherent clicked multiple links at the same second.
+     * This typically indicates a bot/scanner (antivirus, email proxy) following all links automatically.
+     */
+    private function markSuspiciousClicks(array $rows): array
+    {
+        if (!$rows) {
+            return [];
+        }
+
+        // Group by (adherent_id, app_date truncated to second)
+        $grouped = [];
+        foreach ($rows as $i => $row) {
+            $key = $row['adherent_id'].'|'.$row['app_date'];
+            $grouped[$key][] = $i;
+        }
+
+        // Mark as suspicious if >=2 clicks in the same group
+        foreach ($rows as $i => $row) {
+            $key = $row['adherent_id'].'|'.$row['app_date'];
+            $rows[$i]['suspicious'] = \count($grouped[$key]) >= 2;
+        }
+
+        return $rows;
     }
 
     private function insertBatchAppHits(Connection $conn, array $rows): void

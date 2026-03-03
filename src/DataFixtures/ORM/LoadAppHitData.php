@@ -23,6 +23,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $faker->seed(1234);
 
         $adherentRepo = $manager->getRepository(Adherent::class);
         $eventRepo = $manager->getRepository(Event::class);
