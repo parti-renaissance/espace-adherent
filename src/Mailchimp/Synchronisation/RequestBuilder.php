@@ -15,13 +15,16 @@ use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Contact\MarketingConsentStatusEnum;
 use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
 use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Request\ContactRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use App\Repository\DonationRepository;
 use App\Repository\Geo\ZoneRepository;
+use App\Repository\SmsOptOutRepository;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -64,6 +67,8 @@ class RequestBuilder implements LoggerAwareInterface
     private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $isSubscribeRequest = true;
+    private bool $smsSubscribed = false;
+    private MarketingConsentStatusEnum $emailMarketingConsent = MarketingConsentStatusEnum::UNKNOWN;
 
     private ?\DateTime $inscriptionDate = null;
     private ?\DateTime $confirmationDate = null;
@@ -111,6 +116,7 @@ class RequestBuilder implements LoggerAwareInterface
         private readonly TagTranslator $tagTranslator,
         private readonly ZoneRepository $zoneRepository,
         private readonly TranslatorInterface $translator,
+        private readonly SmsOptOutRepository $smsOptOutRepository,
     ) {
         $this->logger = new NullLogger();
     }
@@ -144,6 +150,8 @@ class RequestBuilder implements LoggerAwareInterface
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
+            ->setSmsSubscribed($adherent->hasSmsSubscriptionType())
+            ->setEmailMarketingConsent(MarketingConsentStatusEnum::fromContactStatus($adherent->getMailchimpStatus()))
             ->setZones($adherent->getZones())
             ->setDonationYears($this->findDonationYears($adherent))
             ->setCommitteeUuid($adherent->getCommitteeMembership()?->getCommitteeUuid())
@@ -238,7 +246,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function setPhone(string $phone): self
     {
-        $this->phone = $phone;
+        $this->phone = str_replace(' ', '', $phone);
 
         return $this;
     }
@@ -381,6 +389,20 @@ class RequestBuilder implements LoggerAwareInterface
     public function setInactiveTags(array $inactiveTags): self
     {
         $this->inactiveTags = $inactiveTags;
+
+        return $this;
+    }
+
+    public function setSmsSubscribed(bool $smsSubscribed): self
+    {
+        $this->smsSubscribed = $smsSubscribed;
+
+        return $this;
+    }
+
+    public function setEmailMarketingConsent(MarketingConsentStatusEnum $emailMarketingConsent): self
+    {
+        $this->emailMarketingConsent = $emailMarketingConsent;
 
         return $this;
     }
@@ -536,6 +558,22 @@ class RequestBuilder implements LoggerAwareInterface
         return $request;
     }
 
+    public function buildContactRequest(string $email): ContactRequest
+    {
+        $request = new ContactRequest($email);
+
+        $request->setEmailConsent($this->emailMarketingConsent);
+
+        if ($this->phone && !$this->smsOptOutRepository->isBlacklisted($this->phone)) {
+            $request->setSmsPhone($this->phone);
+            $request->setSmsSubscribed($this->smsSubscribed);
+        }
+
+        $request->setMergeFields($this->buildMergeFields());
+
+        return $request;
+    }
+
     public function createMemberTagsRequest(string $memberIdentifier, array $removedTags = []): MemberTagsRequest
     {
         $request = new MemberTagsRequest($memberIdentifier);
@@ -561,10 +599,6 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->gender) {
             $mergeFields[MemberRequest::MERGE_FIELD_GENDER] = $this->gender;
-        }
-
-        if ($this->phone) {
-            $mergeFields[MemberRequest::MERGE_FIELD_PHONE] = $this->phone;
         }
 
         if ($this->firstName) {

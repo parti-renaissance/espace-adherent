@@ -8,8 +8,11 @@ use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
+use App\Mailchimp\Exception\InvalidPayloadException;
 use App\Mailchimp\Exception\RemovedContactStatusException;
+use App\Mailchimp\Exception\SmsPhoneAlreadySubscribedException;
 use App\Mailchimp\MailchimpSegment\Request\EditSegmentRequest;
+use App\Mailchimp\Synchronisation\Request\ContactRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use Psr\Log\LoggerAwareInterface;
@@ -33,7 +36,7 @@ class Driver implements LoggerAwareInterface
     }
 
     /**
-     * Create or update a member
+     * Create or update a member (legacy /members endpoint)
      */
     public function editMember(MemberRequest $request, string $listId, bool $throw = false): bool
     {
@@ -48,20 +51,45 @@ class Driver implements LoggerAwareInterface
         }
 
         if ($throw) {
-            $responseContent = $response->getContent(false);
+            $this->throwSyncException($response->getContent(false));
+        }
 
-            if (
-                str_contains($responseContent, 'looks fake or invalid, please enter a real email address')
-                || str_contains($responseContent, 'Please provide a valid email address')
-            ) {
-                throw new InvalidContactEmailException();
-            } elseif (str_contains($responseContent, 'contact must re-subscribe to get back on the list')) {
-                throw new RemovedContactStatusException('Permanently deleted');
-            } elseif (str_contains($responseContent, 'is already a list member in compliance state due to unsubscribe')) {
-                throw new RemovedContactStatusException('Unsubscribed');
-            }
+        return false;
+    }
 
-            throw new FailedSyncException($responseContent);
+    public function addContact(ContactRequest $request, string $listId, bool $throw = false): ?string
+    {
+        $response = $this->send(
+            'POST',
+            \sprintf('/audiences/%s/contacts', $listId),
+            $request->toArray(),
+        );
+
+        if ($this->isSuccessfulResponse($response)) {
+            return $response->toArray()['id'] ?? null;
+        }
+
+        if ($throw) {
+            $this->throwContactSyncException($response->getContent(false), $request->getPhone());
+        }
+
+        return null;
+    }
+
+    public function updateContact(string $contactId, ContactRequest $request, string $listId, bool $throw = false): bool
+    {
+        $response = $this->send(
+            'PATCH',
+            \sprintf('/audiences/%s/contacts/%s', $listId, $contactId),
+            $request->toArray()
+        );
+
+        if ($this->isSuccessfulResponse($response)) {
+            return true;
+        }
+
+        if ($throw) {
+            $this->throwContactSyncException($response->getContent(false), $request->getPhone());
         }
 
         return false;
@@ -157,6 +185,19 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? $response->toArray()['segments'] : [];
     }
 
+    public function getMembers(string $listId, int $offset = 0, int $limit = 1000): array
+    {
+        $params = [
+            'offset' => $offset,
+            'count' => $limit,
+            'fields' => 'members.email_address,members.contact_id',
+        ];
+
+        $response = $this->send('GET', \sprintf('/lists/%s/members?%s', $listId, http_build_query($params)));
+
+        return $this->isSuccessfulResponse($response) ? $response->toArray()['members'] : [];
+    }
+
     public function createStaticSegment(string $name, string $listId, array $emails = []): ResponseInterface
     {
         return $this->send('POST', \sprintf('/lists/%s/segments', $listId), [
@@ -211,15 +252,20 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('POST', \sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, $this->createHash($mail)));
     }
 
-    public function getMemberStatus(string $mail, string $listId): ?string
+    public function getMemberInfo(string $mail, string $listId): array
     {
-        $response = $this->send('GET', \sprintf('/lists/%s/members/%s?fields=status', $listId, $this->createHash($mail)));
+        $response = $this->send('GET', \sprintf('/lists/%s/members/%s?fields=status,contact_id', $listId, $this->createHash($mail)));
 
         if ($this->isSuccessfulResponse($response)) {
-            return $response->toArray()['status'] ?? null;
+            $data = $response->toArray();
+
+            return [
+                'status' => $data['status'] ?? null,
+                'contact_id' => $data['contact_id'] ?? null,
+            ];
         }
 
-        return null;
+        return ['status' => null, 'contact_id' => null];
     }
 
     public function getReportData(string $campaignId): array
@@ -272,6 +318,39 @@ class Driver implements LoggerAwareInterface
         }
 
         return $isSuccessful;
+    }
+
+    private function throwSyncException(string $responseContent): void
+    {
+        if (
+            str_contains($responseContent, 'looks fake or invalid, please enter a real email address')
+            || str_contains($responseContent, 'Please provide a valid email address')
+        ) {
+            throw new InvalidContactEmailException();
+        }
+
+        if (str_contains($responseContent, 'contact must re-subscribe to get back on the list')) {
+            throw new RemovedContactStatusException('Permanently deleted');
+        }
+
+        if (str_contains($responseContent, 'is already a list member in compliance state due to unsubscribe')) {
+            throw new RemovedContactStatusException('Unsubscribed');
+        }
+
+        throw new FailedSyncException($responseContent);
+    }
+
+    private function throwContactSyncException(string $responseContent, ?string $phone): void
+    {
+        if (str_contains($responseContent, 'already subscribed to another contact')) {
+            throw new SmsPhoneAlreadySubscribedException($phone ?? '', $responseContent);
+        }
+
+        if (str_contains($responseContent, 'Invalid Resource') || str_contains($responseContent, 'Invalid phone')) {
+            throw new InvalidPayloadException($responseContent);
+        }
+
+        $this->throwSyncException($responseContent);
     }
 
     private function sendRequest(string $method, string $uri, array $body = [], bool $log = false): bool

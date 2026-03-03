@@ -19,12 +19,15 @@ use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Contact\ContactStatusEnum;
+use App\Mailchimp\Contact\SmsOptOutSourceEnum;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
+use App\Mailchimp\Exception\InvalidPayloadException;
 use App\Mailchimp\Exception\RemovedContactStatusException;
+use App\Mailchimp\Exception\SmsPhoneAlreadySubscribedException;
 use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
@@ -34,9 +37,11 @@ use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
 use App\Newsletter\NewsletterValueObject;
-use Psr\Container\ContainerInterface;
+use App\Repository\SmsOptOutRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -53,16 +58,14 @@ class Manager implements LoggerAwareInterface
     public const INTEREST_KEY_COORDINATOR = 'COORDINATOR';
     public const INTEREST_KEY_PROCURATION_MANAGER = 'PROCURATION_MANAGER';
 
-    private $requestBuildersLocator;
-
     public function __construct(
         private readonly Driver $driver,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly MessageBusInterface $bus,
-        ContainerInterface $requestBuildersLocator,
+        private readonly ServiceLocator $requestBuildersLocator,
+        private readonly SmsOptOutRepository $smsOptOutRepository,
     ) {
-        $this->requestBuildersLocator = $requestBuildersLocator;
     }
 
     /**
@@ -72,7 +75,9 @@ class Manager implements LoggerAwareInterface
     {
         $listId = $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource());
 
-        if ($adherentStatus = $this->driver->getMemberStatus($adherent->getEmailAddress(), $listId)) {
+        $memberInfo = $this->driver->getMemberInfo($adherent->getEmailAddress(), $listId);
+
+        if ($adherentStatus = $memberInfo['status']) {
             if (!$adherent->unsubscribeRequestedAt && \in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED]) && $adherentStatus !== $adherent->getMailchimpStatus()) {
                 $adherent->setEmailUnsubscribed(ContactStatusEnum::UNSUBSCRIBED === $adherentStatus);
             } elseif (ContactStatusEnum::CLEANED === $adherentStatus) {
@@ -82,6 +87,10 @@ class Manager implements LoggerAwareInterface
             }
         }
 
+        if (!$adherent->mailchimpContactId && $memberInfo['contact_id']) {
+            $adherent->mailchimpContactId = $memberInfo['contact_id'];
+        }
+
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
             ->updateFromAdherent($adherent)
@@ -89,19 +98,81 @@ class Manager implements LoggerAwareInterface
 
         $result = false;
         try {
-            $result = $this->driver->editMember(
-                $requestBuilder->buildMemberRequest($message->getEmailAddress()),
-                $listId,
-                true
-            );
+            $contactRequest = $requestBuilder->buildContactRequest($message->getEmailAddress());
+
+            if ($adherent->mailchimpContactId) {
+                $result = $this->driver->updateContact(
+                    $adherent->mailchimpContactId,
+                    $contactRequest,
+                    $listId,
+                    true
+                );
+            } else {
+                $contactId = $this->driver->addContact($contactRequest, $listId, true);
+
+                if (null !== $contactId) {
+                    $adherent->mailchimpContactId = $contactId;
+                    $result = true;
+                }
+            }
+
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
             // Reset unsubscription request date
             $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
             $adherent->emailStatusComment = 'Email invalid';
+        } catch (InvalidPayloadException $e) {
+            // Fallback to legacy /members endpoint
+            $this->logger?->warning('BETA contact endpoint failed, falling back to member endpoint', [
+                'email' => $message->getEmailAddress(),
+                'error' => $e->getMessage(),
+            ]);
+            try {
+                $result = $this->driver->editMember(
+                    $requestBuilder->buildMemberRequest($message->getEmailAddress()),
+                    $listId,
+                    true
+                );
+                $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
+            } catch (InvalidContactEmailException) {
+                $adherent->emailStatusComment = 'Email invalid';
+            } catch (RemovedContactStatusException $fallbackException) {
+                $adherent->setEmailUnsubscribed(true);
+                $adherent->emailStatusComment = $fallbackException->getMessage();
+            } catch (FailedSyncException $fallbackException) {
+                $adherent->lastMailchimpFailedSyncResponse = $fallbackException->getMessage();
+            }
+        } catch (SmsPhoneAlreadySubscribedException $e) {
+            $this->smsOptOutRepository->add($e->phone, SmsOptOutSourceEnum::Mailchimp);
+
+            $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+
+            $contactRequestWithoutSms = $requestBuilder->buildContactRequest($message->getEmailAddress());
+
+            if ($adherent->mailchimpContactId) {
+                $result = $this->driver->updateContact(
+                    $adherent->mailchimpContactId,
+                    $contactRequestWithoutSms,
+                    $listId,
+                    true
+                );
+            } else {
+                $contactId = $this->driver->addContact($contactRequestWithoutSms, $listId, true);
+
+                if (null !== $contactId) {
+                    $adherent->mailchimpContactId = $contactId;
+                    $result = true;
+                }
+            }
+
+            $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
         } catch (RemovedContactStatusException $e) {
             $adherent->setEmailUnsubscribed(true);
             $adherent->emailStatusComment = $e->getMessage();
+            // Redispatch to re-sync after Mailchimp has processed the unsubscription
+            $this->bus->dispatch($message, [new DelayStamp(5000)]);
+
+            return;
         } catch (FailedSyncException $e) {
             $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
         }
