@@ -6194,10 +6194,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide@npm:^0.576.0":
-  version: 0.576.0
-  resolution: "lucide@npm:0.576.0"
-  checksum: 10c0/dee862a9311cab90bec310e89657f65b2cd1fd6a5d0aa11add51945dc9047c65aeff1b4c1ad8b53032b42aa070be06e8702074c1cafe00cb67bd1e3bb420e3d6
+"lucide@npm:^0.577.0":
+  version: 0.577.0
+  resolution: "lucide@npm:0.577.0"
+  checksum: 10c0/82ec050e03a21268d00c76158accb0caf35c3417964e0f5755a6681a46d91022c224305059e8157fa0b117c8abab83f08392e4332e4ee31cf4098e7cacacb89f
   languageName: node
   linkType: hard
 
@@ -6834,7 +6834,7 @@ __metadata:
     interactjs: "npm:^1.10.27"
     js-cookie: "npm:^3.0.5"
     lodash: "npm:^4.17.21"
-    lucide: "npm:^0.576.0"
+    lucide: "npm:^0.577.0"
     mini-css-extract-plugin: "npm:^2.9.0"
     postcss: "npm:^8.4.38"
     postcss-loader: "npm:^8.1.1"
