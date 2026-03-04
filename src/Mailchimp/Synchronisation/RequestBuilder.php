@@ -564,11 +564,21 @@ class RequestBuilder implements LoggerAwareInterface
 
         $request->setEmailConsent($this->emailMarketingConsent);
 
-        if ($this->phone && !$this->smsOptOutRepository->isBlacklisted($this->phone)) {
+        if ($this->phone && !$this->smsOptOutRepository->isOptedOut($this->phone)) {
             $request->setSmsPhone($this->phone);
             $request->setSmsSubscribed($this->smsSubscribed);
         }
 
+        $request->setMergeFields($this->buildMergeFields());
+
+        return $request;
+    }
+
+    public function buildContactRequestWithoutSms(string $email): ContactRequest
+    {
+        $request = new ContactRequest($email);
+
+        $request->setEmailConsent($this->emailMarketingConsent);
         $request->setMergeFields($this->buildMergeFields());
 
         return $request;

@@ -254,7 +254,7 @@ class Driver implements LoggerAwareInterface
 
     public function getMemberInfo(string $mail, string $listId): array
     {
-        $response = $this->send('GET', \sprintf('/lists/%s/members/%s?fields=status,contact_id', $listId, $this->createHash($mail)));
+        $response = $this->send('GET', \sprintf('/lists/%s/members/%s?fields=status,contact_id,sms_subscription_status', $listId, $this->createHash($mail)));
 
         if ($this->isSuccessfulResponse($response)) {
             $data = $response->toArray();
@@ -262,10 +262,11 @@ class Driver implements LoggerAwareInterface
             return [
                 'status' => $data['status'] ?? null,
                 'contact_id' => $data['contact_id'] ?? null,
+                'sms_subscription_status' => $data['sms_subscription_status'] ?? null,
             ];
         }
 
-        return ['status' => null, 'contact_id' => null];
+        return ['status' => null, 'contact_id' => null, 'sms_subscription_status' => null];
     }
 
     public function getReportData(string $campaignId): array

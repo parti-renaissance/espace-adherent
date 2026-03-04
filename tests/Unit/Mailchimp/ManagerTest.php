@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp;
 
 use App\Entity\Adherent;
+use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use App\Mailchimp\Contact\SmsOptOutSourceEnum;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
@@ -19,6 +19,8 @@ use App\Mailchimp\Synchronisation\Request\ContactRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Repository\SmsOptOutRepository;
+use App\Repository\SubscriptionTypeRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -35,7 +37,8 @@ final class ManagerTest extends TestCase
     private MailchimpObjectIdMapping&MockObject $mailchimpObjectIdMapping;
     private ServiceLocator&MockObject $requestBuildersLocator;
     private RequestBuilder&MockObject $requestBuilder;
-    private SmsOptOutRepository&MockObject $smsBlacklistChecker;
+    private SmsOptOutRepository&MockObject $smsOptOutRepository;
+    private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
     private Manager $manager;
 
     protected function setUp(): void
@@ -45,7 +48,8 @@ final class ManagerTest extends TestCase
         $this->mailchimpObjectIdMapping = $this->createMock(MailchimpObjectIdMapping::class);
         $this->requestBuildersLocator = $this->createMock(ServiceLocator::class);
         $this->requestBuilder = $this->createMock(RequestBuilder::class);
-        $this->smsBlacklistChecker = $this->createMock(SmsOptOutRepository::class);
+        $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
+        $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
@@ -61,7 +65,8 @@ final class ManagerTest extends TestCase
             $this->mailchimpObjectIdMapping,
             $this->bus,
             $this->requestBuildersLocator,
-            $this->smsBlacklistChecker,
+            $this->smsOptOutRepository,
+            $this->subscriptionTypeRepository,
         );
     }
 
@@ -358,7 +363,7 @@ final class ManagerTest extends TestCase
         self::assertNull($adherent->emailStatusComment);
     }
 
-    public function testEditMemberOnSmsPhoneAlreadySubscribedBlacklistsAndRetries(): void
+    public function testEditMemberOnSmsPhoneConflictRetriesWithoutSms(): void
     {
         $adherent = $this->createAdherent();
         $message = $this->createCommand($adherent);
@@ -381,98 +386,41 @@ final class ManagerTest extends TestCase
             ->willReturnSelf()
         ;
 
-        // First call returns request with SMS, second call returns request without SMS (after blacklist)
         $this->requestBuilder
             ->method('buildContactRequest')
-            ->willReturnOnConsecutiveCalls($contactRequest, $contactRequestWithoutSms)
+            ->willReturn($contactRequest)
         ;
 
-        // First call fails with SmsPhoneAlreadySubscribedException
+        $this->requestBuilder
+            ->expects($this->once())
+            ->method('buildContactRequestWithoutSms')
+            ->with('test@example.com')
+            ->willReturn($contactRequestWithoutSms)
+        ;
+
+        // First addContact fails with SMS conflict
         $this->driver
             ->expects($this->exactly(2))
             ->method('addContact')
-            ->willReturnCallback(function () {
-                static $callCount = 0;
-                ++$callCount;
-
-                if (1 === $callCount) {
-                    throw new SmsPhoneAlreadySubscribedException('+33612345678', 'already subscribed to another contact');
-                }
-
-                return 'new-contact-id';
-            })
+            ->willReturnOnConsecutiveCalls(
+                $this->throwException(new SmsPhoneAlreadySubscribedException('+33612345678', 'already subscribed')),
+                'new-contact-id'
+            )
         ;
 
-        // Should blacklist the phone (flush happens inside add())
-        $this->smsBlacklistChecker
-            ->expects($this->once())
-            ->method('add')
-            ->with('+33612345678', SmsOptOutSourceEnum::Mailchimp)
-        ;
+        // Should NOT fallback to legacy
+        $this->driver->expects($this->never())->method('editMember');
+
+        // Should NOT add to opt-out
+        $this->smsOptOutRepository->expects($this->never())->method('add');
 
         $this->manager->editMember($adherent, $message);
 
         self::assertSame('new-contact-id', $adherent->mailchimpContactId);
-        self::assertNull($adherent->emailStatusComment);
-    }
-
-    public function testEditMemberOnSmsPhoneAlreadySubscribedWithExistingContactUpdates(): void
-    {
-        $adherent = $this->createAdherent();
-        $adherent->mailchimpContactId = 'existing-contact-id';
-        $message = $this->createCommand($adherent);
-        $contactRequest = new ContactRequest('test@example.com');
-        $contactRequest->setSmsPhone('+33698765432');
-        $contactRequestWithoutSms = new ContactRequest('test@example.com');
-
-        $this->mailchimpObjectIdMapping
-            ->method('getListIdFromSource')
-            ->willReturn('list-id')
-        ;
-
-        $this->driver
-            ->method('getMemberInfo')
-            ->willReturn(['status' => null, 'contact_id' => null])
-        ;
-
-        $this->requestBuilder
-            ->method('updateFromAdherent')
-            ->willReturnSelf()
-        ;
-
-        $this->requestBuilder
-            ->method('buildContactRequest')
-            ->willReturnOnConsecutiveCalls($contactRequest, $contactRequestWithoutSms)
-        ;
-
-        // First updateContact call fails, second succeeds
-        $this->driver
-            ->expects($this->exactly(2))
-            ->method('updateContact')
-            ->willReturnCallback(function (string $contactId, ContactRequest $request, string $listId, bool $throw) {
-                static $callCount = 0;
-                ++$callCount;
-
-                self::assertTrue($throw, 'updateContact should be called with throw=true');
-
-                if (1 === $callCount) {
-                    throw new SmsPhoneAlreadySubscribedException('+33698765432', 'already subscribed to another contact');
-                }
-
-                return true;
-            })
-        ;
-
-        // Should blacklist the phone (flush happens inside add())
-        $this->smsBlacklistChecker
-            ->expects($this->once())
-            ->method('add')
-            ->with('+33698765432', SmsOptOutSourceEnum::Mailchimp)
-        ;
-
-        $this->manager->editMember($adherent, $message);
-
-        self::assertNull($adherent->emailStatusComment);
+        self::assertSame('contact', $adherent->mailchimpSyncEndpoint);
+        self::assertNotNull($adherent->mailchimpLastSyncedAt);
+        // Original SMS conflict error is preserved for monitoring
+        self::assertSame('already subscribed', $adherent->lastMailchimpFailedSyncResponse);
     }
 
     public function testEditMemberContactIdRetrievedFromMemberInfo(): void
@@ -491,7 +439,7 @@ final class ManagerTest extends TestCase
         // getMemberInfo returns contact_id alongside status
         $this->driver
             ->method('getMemberInfo')
-            ->willReturn(['status' => null, 'contact_id' => 'fetched-contact-id'])
+            ->willReturn(['status' => null, 'contact_id' => 'fetched-contact-id', 'sms_subscription_status' => null])
         ;
 
         $this->requestBuilder
@@ -520,6 +468,278 @@ final class ManagerTest extends TestCase
         $this->manager->editMember($adherent, $message);
 
         self::assertSame('fetched-contact-id', $adherent->mailchimpContactId);
+    }
+
+    public function testEditMemberOnSmsPhoneConflictRetryFails(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+        $contactRequest->setSmsPhone('+33612345678');
+        $contactRequestWithoutSms = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequestWithoutSms')
+            ->willReturn($contactRequestWithoutSms)
+        ;
+
+        // First addContact fails with SMS conflict, retry also fails
+        $this->driver
+            ->expects($this->exactly(2))
+            ->method('addContact')
+            ->willReturnOnConsecutiveCalls(
+                $this->throwException(new SmsPhoneAlreadySubscribedException('+33612345678', 'already subscribed')),
+                $this->throwException(new FailedSyncException('Server error'))
+            )
+        ;
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame('Server error', $adherent->lastMailchimpFailedSyncResponse);
+        self::assertNull($adherent->mailchimpSyncEndpoint);
+    }
+
+    public function testEditMemberSmsReconciliationAddsLocalSubscription(): void
+    {
+        $adherent = $this->createAdherent();
+        $adherent->mailchimpContactId = 'existing-contact-id';
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $smsType = new SubscriptionType('SMS', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        // getMemberInfo returns sms_subscription_status = subscribed
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null, 'sms_subscription_status' => 'subscribed'])
+        ;
+
+        $this->subscriptionTypeRepository
+            ->expects($this->once())
+            ->method('findOneByCode')
+            ->with(SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+            ->willReturn($smsType)
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->method('updateContact')
+            ->willReturn(true)
+        ;
+
+        self::assertFalse($adherent->hasSmsSubscriptionType());
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertTrue($adherent->hasSmsSubscriptionType());
+    }
+
+    public function testEditMemberSmsReconciliationRemovesLocalSubscriptionOnOptOut(): void
+    {
+        $adherent = $this->createAdherent();
+        $adherent->mailchimpContactId = 'existing-contact-id';
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        // Give the adherent SMS subscription to verify removal
+        $smsType = new SubscriptionType('SMS', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+        $adherent->addSubscriptionType($smsType);
+        self::assertTrue($adherent->hasSmsSubscriptionType());
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        // getMemberInfo returns sms_subscription_status = unsubscribed
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null, 'sms_subscription_status' => 'unsubscribed'])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->method('updateContact')
+            ->willReturn(true)
+        ;
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertFalse($adherent->hasSmsSubscriptionType());
+    }
+
+    public function testEditMemberNoSmsStatusSkipsReconciliation(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        // No sms_subscription_status returned
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null, 'sms_subscription_status' => null])
+        ;
+
+        // Should NOT try to reconcile SMS
+        $this->subscriptionTypeRepository
+            ->expects($this->never())
+            ->method('findOneByCode')
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->method('addContact')
+            ->willReturn('new-contact-id')
+        ;
+
+        $this->manager->editMember($adherent, $message);
+    }
+
+    public function testEditMemberMonitoringColumnsOnSuccess(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->method('addContact')
+            ->willReturn('new-contact-id')
+        ;
+
+        self::assertNull($adherent->mailchimpSyncEndpoint);
+        self::assertNull($adherent->mailchimpLastSyncedAt);
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame('contact', $adherent->mailchimpSyncEndpoint);
+        self::assertNotNull($adherent->mailchimpLastSyncedAt);
+    }
+
+    public function testEditMemberMonitoringColumnsOnLegacyFallback(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+        $memberRequest = new MemberRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => null, 'contact_id' => null])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->requestBuilder
+            ->method('buildMemberRequest')
+            ->willReturn($memberRequest)
+        ;
+
+        $this->driver
+            ->method('addContact')
+            ->willThrowException(new InvalidPayloadException('Invalid Resource'))
+        ;
+
+        $this->driver
+            ->method('editMember')
+            ->willReturn(true)
+        ;
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame('member', $adherent->mailchimpSyncEndpoint);
+        self::assertNotNull($adherent->mailchimpLastSyncedAt);
+        // BETA error is preserved for monitoring
+        self::assertSame('Invalid Resource', $adherent->lastMailchimpFailedSyncResponse);
     }
 
     private function createAdherent(): Adherent

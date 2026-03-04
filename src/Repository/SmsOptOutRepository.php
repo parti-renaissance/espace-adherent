@@ -16,7 +16,7 @@ class SmsOptOutRepository extends ServiceEntityRepository
         parent::__construct($registry, SmsOptOut::class);
     }
 
-    public function isBlacklisted(string $phone): bool
+    public function isOptedOut(string $phone): bool
     {
         $lastOptOut = $this->createQueryBuilder('o')
             ->where('o.phone = :phone')
@@ -58,6 +58,6 @@ class SmsOptOutRepository extends ServiceEntityRepository
 
     private function normalizePhone(string $phone): string
     {
-        return preg_replace('/\D+/', '', $phone);
+        return preg_replace('/\s+/', '', $phone);
     }
 }
