@@ -1,6 +1,8 @@
 parameters:
     level: 1
     tmpDir: var/phpstan-tmp
+    parallel:
+        maximumNumberOfProcesses: 1
     paths:
         - src
         - config

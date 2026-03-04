@@ -38,14 +38,14 @@ final class RequestBuilderTest extends TestCase
         );
     }
 
-    public function testBuildContactRequestWithBlacklistedPhoneDoesNotIncludeSmsChannel(): void
+    public function testBuildContactRequestWithOptedOutPhoneDoesNotIncludeSmsChannel(): void
     {
         $phone = '+33612345678';
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::once())
-            ->method('isBlacklisted')
+            ->method('isOptedOut')
             ->with($phone)
             ->willReturn(true)
         ;
@@ -62,14 +62,14 @@ final class RequestBuilderTest extends TestCase
         self::assertArrayHasKey('email_channel', $data);
     }
 
-    public function testBuildContactRequestWithNonBlacklistedPhoneIncludesSmsChannel(): void
+    public function testBuildContactRequestWithNonOptedOutPhoneIncludesSmsChannel(): void
     {
         $phone = '+33612345678';
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::once())
-            ->method('isBlacklisted')
+            ->method('isOptedOut')
             ->with($phone)
             ->willReturn(false)
         ;
@@ -87,13 +87,13 @@ final class RequestBuilderTest extends TestCase
         self::assertSame('confirmed', $data['sms_channel']['marketing_consent']['status']);
     }
 
-    public function testBuildContactRequestWithoutPhoneDoesNotCheckBlacklist(): void
+    public function testBuildContactRequestWithoutPhoneDoesNotCheckOptOut(): void
     {
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::never())
-            ->method('isBlacklisted')
+            ->method('isOptedOut')
         ;
 
         $this->requestBuilder->setEmailMarketingConsent(MarketingConsentStatusEnum::CONFIRMED);
@@ -104,13 +104,13 @@ final class RequestBuilderTest extends TestCase
         self::assertArrayNotHasKey('sms_channel', $data);
     }
 
-    public function testBuildContactRequestWithEmptyPhoneDoesNotCheckBlacklist(): void
+    public function testBuildContactRequestWithEmptyPhoneDoesNotCheckOptOut(): void
     {
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::never())
-            ->method('isBlacklisted')
+            ->method('isOptedOut')
         ;
 
         $this->requestBuilder

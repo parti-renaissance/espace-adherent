@@ -38,7 +38,9 @@ use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
 use App\Newsletter\NewsletterValueObject;
 use App\Repository\SmsOptOutRepository;
+use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\PhoneNumberUtils;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -58,6 +60,9 @@ class Manager implements LoggerAwareInterface
     public const INTEREST_KEY_COORDINATOR = 'COORDINATOR';
     public const INTEREST_KEY_PROCURATION_MANAGER = 'PROCURATION_MANAGER';
 
+    private const string API_CONTACT = 'contact';
+    private const string API_MEMBER = 'member';
+
     public function __construct(
         private readonly Driver $driver,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -65,6 +70,7 @@ class Manager implements LoggerAwareInterface
         private readonly MessageBusInterface $bus,
         private readonly ServiceLocator $requestBuildersLocator,
         private readonly SmsOptOutRepository $smsOptOutRepository,
+        private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
     ) {
     }
 
@@ -89,6 +95,27 @@ class Manager implements LoggerAwareInterface
 
         if (!$adherent->mailchimpContactId && $memberInfo['contact_id']) {
             $adherent->mailchimpContactId = $memberInfo['contact_id'];
+        }
+
+        // SMS reconciliation: align local SMS subscription with Mailchimp state before sync
+        if ($smsStatus = $memberInfo['sms_subscription_status']) {
+            if (ContactStatusEnum::SUBSCRIBED === $smsStatus && !$adherent->hasSmsSubscriptionType()) {
+                $smsType = $this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+                if ($smsType) {
+                    $adherent->addSubscriptionType($smsType);
+                    $this->logger?->info('[Mailchimp] SMS reconciled: added locally to match Mailchimp', [
+                        'email' => $adherent->getEmailAddress(),
+                    ]);
+                }
+            } elseif (ContactStatusEnum::UNSUBSCRIBED === $smsStatus) {
+                $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+                if ($adherent->getPhone()) {
+                    $this->smsOptOutRepository->add(PhoneNumberUtils::format($adherent->getPhone()), SmsOptOutSourceEnum::Mailchimp);
+                }
+                $this->logger?->info('[Mailchimp] SMS reconciled: removed locally (carrier opt-out)', [
+                    'email' => $adherent->getEmailAddress(),
+                ]);
+            }
         }
 
         $requestBuilder = $this->requestBuildersLocator
@@ -128,6 +155,8 @@ class Manager implements LoggerAwareInterface
             $this->logger?->info('[Mailchimp] contact sync OK', ['email' => $email]);
 
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
+            $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
+            $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
             // Reset unsubscription request date
             $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
@@ -146,7 +175,10 @@ class Manager implements LoggerAwareInterface
                     true
                 );
                 $this->logger?->info('[Mailchimp] legacy member sync OK', ['email' => $email]);
-                $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
+                $adherent->emailStatusComment = null;
+                $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
+                $adherent->mailchimpSyncEndpoint = self::API_MEMBER;
+                $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
             } catch (InvalidContactEmailException) {
                 $adherent->emailStatusComment = 'Email invalid';
             } catch (RemovedContactStatusException $fallbackException) {
@@ -157,36 +189,44 @@ class Manager implements LoggerAwareInterface
                 $adherent->lastMailchimpFailedSyncResponse = $fallbackException->getMessage();
             }
         } catch (SmsPhoneAlreadySubscribedException $e) {
-            $this->logger?->warning('[Mailchimp] SMS phone already subscribed, blacklisting and retrying without SMS', [
+            $this->logger?->warning('[Mailchimp] SMS phone conflict, retrying without SMS', [
                 'email' => $email,
                 'phone' => $e->phone,
+                'error' => $e->getMessage(),
             ]);
 
-            $this->smsOptOutRepository->add($e->phone, SmsOptOutSourceEnum::Mailchimp);
+            try {
+                $contactRequestWithoutSms = $requestBuilder->buildContactRequestWithoutSms($email);
 
-            $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
-
-            $contactRequestWithoutSms = $requestBuilder->buildContactRequest($email);
-
-            if ($adherent->mailchimpContactId) {
-                $result = $this->driver->updateContact(
-                    $adherent->mailchimpContactId,
-                    $contactRequestWithoutSms,
-                    $listId,
-                    true
-                );
-            } else {
-                $contactId = $this->driver->addContact($contactRequestWithoutSms, $listId, true);
-
-                if (null !== $contactId) {
-                    $adherent->mailchimpContactId = $contactId;
-                    $result = true;
+                if ($adherent->mailchimpContactId) {
+                    $result = $this->driver->updateContact(
+                        $adherent->mailchimpContactId,
+                        $contactRequestWithoutSms,
+                        $listId,
+                        true
+                    );
+                } else {
+                    $contactId = $this->driver->addContact($contactRequestWithoutSms, $listId, true);
+                    if (null !== $contactId) {
+                        $adherent->mailchimpContactId = $contactId;
+                        $result = true;
+                    }
                 }
+
+                if ($result) {
+                    $this->logger?->info('[Mailchimp] retry without SMS OK', ['email' => $email]);
+                    $adherent->emailStatusComment = null;
+                    $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
+                    $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
+                    $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
+                }
+            } catch (\Throwable $retryException) {
+                $this->logger?->error('[Mailchimp] retry without SMS failed', [
+                    'email' => $email,
+                    'error' => $retryException->getMessage(),
+                ]);
+                $adherent->lastMailchimpFailedSyncResponse = $retryException->getMessage();
             }
-
-            $this->logger?->info('[Mailchimp] retry without SMS OK', ['email' => $email]);
-
-            $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
         } catch (RemovedContactStatusException $e) {
             $this->logger?->warning('[Mailchimp] removed contact status, redispatching', ['email' => $email]);
             $adherent->setEmailUnsubscribed(true);

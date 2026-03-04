@@ -44,6 +44,7 @@ use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\SmsOptOutRepository;
+use App\Repository\SubscriptionTypeRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Container\ContainerInterface;
@@ -522,6 +523,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 $this->createBus(),
                 $serviceLocator,
                 $this->createMock(SmsOptOutRepository::class),
+                $this->createMock(SubscriptionTypeRepository::class),
             ),
             $this->createMock(ObjectManager::class)
         );
