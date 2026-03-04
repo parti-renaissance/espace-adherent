@@ -196,6 +196,19 @@ final class DriverTest extends TestCase
         $this->driver->updateContact('contact-id', $request, 'list-id', true);
     }
 
+    public function testAddContactOnPhoneAlreadySubscribedToSmsListThrowsException(): void
+    {
+        $response = $this->stubResponse(400, '{"detail":"1029 Failed to complete operation: The number you provided is already subscribed to our SMS marketing list. Want to try another?"}');
+        $this->httpClient->method('request')->willReturn($response);
+
+        $request = new ContactRequest('test@example.com');
+        $request->setSmsPhone('+33612345678');
+
+        $this->expectException(SmsPhoneAlreadySubscribedException::class);
+
+        $this->driver->addContact($request, 'list-id', true);
+    }
+
     private function stubResponse(int $statusCode, string $content): ResponseInterface&Stub
     {
         $response = $this->createStub(ResponseInterface::class);

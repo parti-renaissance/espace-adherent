@@ -342,7 +342,10 @@ class Driver implements LoggerAwareInterface
 
     private function throwContactSyncException(string $responseContent, ?string $phone): void
     {
-        if (str_contains($responseContent, 'already subscribed to another contact')) {
+        if (
+            str_contains($responseContent, 'already subscribed to another contact')
+            || str_contains($responseContent, 'already subscribed to our SMS marketing list')
+        ) {
             throw new SmsPhoneAlreadySubscribedException($phone ?? '', $responseContent);
         }
 
