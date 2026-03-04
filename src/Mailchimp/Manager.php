@@ -97,10 +97,18 @@ class Manager implements LoggerAwareInterface
         ;
 
         $result = false;
+        $email = $message->getEmailAddress();
+
+        $this->logger?->info('[Mailchimp] editMember start', [
+            'email' => $email,
+            'contactId' => $adherent->mailchimpContactId,
+        ]);
+
         try {
-            $contactRequest = $requestBuilder->buildContactRequest($message->getEmailAddress());
+            $contactRequest = $requestBuilder->buildContactRequest($email);
 
             if ($adherent->mailchimpContactId) {
+                $this->logger?->info('[Mailchimp] updateContact', ['email' => $email, 'contactId' => $adherent->mailchimpContactId]);
                 $result = $this->driver->updateContact(
                     $adherent->mailchimpContactId,
                     $contactRequest,
@@ -108,6 +116,7 @@ class Manager implements LoggerAwareInterface
                     true
                 );
             } else {
+                $this->logger?->info('[Mailchimp] addContact', ['email' => $email]);
                 $contactId = $this->driver->addContact($contactRequest, $listId, true);
 
                 if (null !== $contactId) {
@@ -116,23 +125,27 @@ class Manager implements LoggerAwareInterface
                 }
             }
 
+            $this->logger?->info('[Mailchimp] contact sync OK', ['email' => $email]);
+
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
             // Reset unsubscription request date
             $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
+            $this->logger?->warning('[Mailchimp] invalid email', ['email' => $email]);
             $adherent->emailStatusComment = 'Email invalid';
         } catch (InvalidPayloadException $e) {
             // Fallback to legacy /members endpoint
-            $this->logger?->warning('BETA contact endpoint failed, falling back to member endpoint', [
-                'email' => $message->getEmailAddress(),
+            $this->logger?->warning('[Mailchimp] BETA contact endpoint failed, falling back to member endpoint', [
+                'email' => $email,
                 'error' => $e->getMessage(),
             ]);
             try {
                 $result = $this->driver->editMember(
-                    $requestBuilder->buildMemberRequest($message->getEmailAddress()),
+                    $requestBuilder->buildMemberRequest($email),
                     $listId,
                     true
                 );
+                $this->logger?->info('[Mailchimp] legacy member sync OK', ['email' => $email]);
                 $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
             } catch (InvalidContactEmailException) {
                 $adherent->emailStatusComment = 'Email invalid';
@@ -140,14 +153,20 @@ class Manager implements LoggerAwareInterface
                 $adherent->setEmailUnsubscribed(true);
                 $adherent->emailStatusComment = $fallbackException->getMessage();
             } catch (FailedSyncException $fallbackException) {
+                $this->logger?->error('[Mailchimp] legacy member sync failed', ['email' => $email, 'error' => $fallbackException->getMessage()]);
                 $adherent->lastMailchimpFailedSyncResponse = $fallbackException->getMessage();
             }
         } catch (SmsPhoneAlreadySubscribedException $e) {
+            $this->logger?->warning('[Mailchimp] SMS phone already subscribed, blacklisting and retrying without SMS', [
+                'email' => $email,
+                'phone' => $e->phone,
+            ]);
+
             $this->smsOptOutRepository->add($e->phone, SmsOptOutSourceEnum::Mailchimp);
 
             $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
 
-            $contactRequestWithoutSms = $requestBuilder->buildContactRequest($message->getEmailAddress());
+            $contactRequestWithoutSms = $requestBuilder->buildContactRequest($email);
 
             if ($adherent->mailchimpContactId) {
                 $result = $this->driver->updateContact(
@@ -165,8 +184,11 @@ class Manager implements LoggerAwareInterface
                 }
             }
 
+            $this->logger?->info('[Mailchimp] retry without SMS OK', ['email' => $email]);
+
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
         } catch (RemovedContactStatusException $e) {
+            $this->logger?->warning('[Mailchimp] removed contact status, redispatching', ['email' => $email]);
             $adherent->setEmailUnsubscribed(true);
             $adherent->emailStatusComment = $e->getMessage();
             // Redispatch to re-sync after Mailchimp has processed the unsubscription
@@ -174,12 +196,14 @@ class Manager implements LoggerAwareInterface
 
             return;
         } catch (FailedSyncException $e) {
+            $this->logger?->error('[Mailchimp] sync failed', ['email' => $email, 'error' => $e->getMessage()]);
             $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
         }
 
         if ($result) {
+            $this->logger?->info('[Mailchimp] updating member tags', ['email' => $email]);
             $this->updateMemberTags(
-                $message->getEmailAddress(),
+                $email,
                 $this->mailchimpObjectIdMapping->getMainListId(),
                 $requestBuilder
             );
@@ -188,14 +212,10 @@ class Manager implements LoggerAwareInterface
 
     public function editNewsletterMember(NewsletterValueObject $newsletter): void
     {
-        switch ($newsletter->getType()) {
-            case NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE:
-                $listId = $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId();
-                break;
-            default:
-                $listId = $this->mailchimpObjectIdMapping->getNewsletterRenaissanceListId();
-                break;
-        }
+        $listId = match ($newsletter->getType()) {
+            NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE => $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId(),
+            default => $this->mailchimpObjectIdMapping->getNewsletterRenaissanceListId(),
+        };
 
         $requestBuilder = $this->requestBuildersLocator->get(NewsletterMemberRequestBuilder::class);
 
