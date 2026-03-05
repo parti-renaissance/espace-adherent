@@ -44,7 +44,7 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
             $user = $this->getReference($ref, Adherent::class);
 
             $client = $clientVox;
-            $appSystem = SystemEnum::all()[random_int(0, 2)];
+            $appSystem = $faker->randomElement(SystemEnum::all());
 
             if (0 === $i % 3) {
                 $appSystem = SystemEnum::WEB;
@@ -61,7 +61,7 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
                 $session->addPushToken($token);
             }
 
-            $nbPast = random_int(0, 3);
+            $nbPast = $faker->numberBetween(0, 3);
             for ($j = 0; $j < $nbPast; ++$j) {
                 $manager->persist($pastSession = new AppSession($user, $client));
                 $pastSession->appSystem = $appSystem;
