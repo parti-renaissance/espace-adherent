@@ -47,7 +47,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             }
             $pool = $sessionsByAdherent[$aid];
             /** @var AppSession $sess */
-            $sess = $pool[array_rand($pool)];
+            $sess = $faker->randomElement($pool);
 
             $created = $sess->getCreatedAt();
             $diff = $when->diff($created)->days ?: 999;
@@ -90,18 +90,18 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             $sessionsCount = $random ? $faker->numberBetween(8, 18) : 10;
 
             for ($s = 0; $s < $sessionsCount; ++$s) {
-                shuffle($copyAdherents);
+                $copyAdherents = $faker->shuffleArray($copyAdherents);
                 $adherent = array_shift($copyAdherents);
-                $maybeRef = $adherents[array_rand($adherents)];
+                $maybeRef = $faker->randomElement($adherents);
                 $referrer = $maybeRef !== $adherent ? $maybeRef : null;
 
-                $activityUuid = Uuid::uuid4();
+                $activityUuid = Uuid::fromString($faker->uuid());
                 $sessionStart = $now
                     ->sub(new \DateInterval('P'.$faker->numberBetween(0, 14).'D'))
                     ->setTime($faker->numberBetween(8, 22), $faker->numberBetween(0, 59))
                 ;
 
-                $appSystem = $systems[array_rand($systems)];
+                $appSystem = $faker->randomElement($systems);
                 $appVersion = 'v5.15.5#5';
 
                 $appSessionForSessionStart = $pickAppSession($adherent, $sessionStart);
