@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/v3/threads/{uuid}/messages',
+            uriTemplate: '/threads/{uuid}/messages',
             uriVariables: [
                 'uuid' => new Link(
                     fromProperty: 'messages',
@@ -29,6 +29,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             order: ['date' => 'DESC'],
         ),
     ],
+    routePrefix: '/v3/ai',
     normalizationContext: ['groups' => ['chatbot:message_read']],
     security: "is_granted('ROLE_CANARY_TESTER')",
 )]
