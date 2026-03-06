@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\OAuth\Model\Scope;
 use App\Scope\ScopeEnum;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -58,9 +59,21 @@ class ProfileManagedZoneNormalizer implements NormalizerInterface, NormalizerAwa
                 $role = $delegatedAccesses->first()->getDelegator()->findZoneBasedRole(ScopeEnum::MUNICIPAL_CANDIDATE);
             }
 
+            /** @var Zone|null $zone */
+            $zone = $role->getZones()->first() ?: null;
+            $code = null;
+
+            if ($zone) {
+                $code = $zone->getCode();
+                if ($zone->isBorough()) {
+                    $parentCity = current($zone->getParentsOfType(Zone::CITY));
+                    $code = $parentCity ? $parentCity->getCode() : $code;
+                }
+            }
+
             $managedZone = [
                 'type' => 'commune',
-                'code' => $role->getZonesCodes()[0],
+                'code' => $code,
             ];
         }
 
