@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\AdherentList;
 
+use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
+use App\OAuth\Model\Scope;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\InvalidScopeException;
@@ -80,14 +82,18 @@ class AdherentListController extends AbstractController
             min($request->query->getInt('page_size', 25), 200)
         );
 
-        return $this->json(
-            $adherents,
-            Response::HTTP_OK,
-            [],
-            [
-                'groups' => ['managed_users_list', ImageExposeNormalizer::NORMALIZATION_GROUP],
-                TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
-            ]
-        );
+        $isVox = $this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP));
+
+        $context = [
+            'groups' => $isVox
+                ? [ManagedUserContextBuilder::GROUP_VOX]
+                : ['managed_users_list', ImageExposeNormalizer::NORMALIZATION_GROUP],
+        ];
+
+        if (!$isVox) {
+            $context[TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR] = true;
+        }
+
+        return $this->json($adherents, Response::HTTP_OK, [], $context);
     }
 }

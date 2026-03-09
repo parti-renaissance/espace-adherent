@@ -111,7 +111,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'uuid', nullable: true)]
     private $adherentUuid;
 
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(length: 7, nullable: true)]
     public ?string $publicId = null;
 
@@ -177,25 +177,25 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     /**
      * @var string|null
      */
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(length: 50, nullable: true)]
     private $firstName;
 
     /**
      * @var string|null
      */
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(length: 50, nullable: true)]
     private $lastName;
 
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
     /**
      * @var int|null
      */
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(type: 'smallint', nullable: true)]
     private $age;
 
@@ -209,7 +209,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     /**
      * @var string|null
      */
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox_detail'])]
     #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
@@ -342,6 +342,52 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $campusRegisteredAt;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $lastActivityAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $twitterUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $facebookUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $instagramUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $linkedinUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $telegramUrl = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    public ?string $civility = null;
+
+    #[Groups(['managed_user_vox_detail'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $sessions = null;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $adherentTags = null;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $staticTags = null;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $electTags = null;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $instances = null;
+
+    #[Groups(['managed_user_vox'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $subscriptions = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $zonesIds;
@@ -589,7 +635,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
     }
 
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox_detail'])]
     public function isAvailableForResubscribeEmail(): bool
     {
         return !$this->isEmailSubscribed() && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTime())->y >= 1);
@@ -706,5 +752,60 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function getImagePath(): string
     {
         return $this->imageName ? \sprintf('images/profile/%s', $this->getImageName()) : '';
+    }
+
+    #[Groups(['managed_user_vox'])]
+    public function getUuid(): ?string
+    {
+        return $this->adherentUuid?->toString();
+    }
+
+    #[Groups(['managed_user_vox'])]
+    public function getCivility(): ?string
+    {
+        return $this->civility ?? (Genders::CIVILITY_LABELS[$this->gender] ?? null);
+    }
+
+    #[Groups(['managed_user_vox'])]
+    public function getImageUrl(): ?string
+    {
+        return $this->getImagePath() ?: null;
+    }
+
+    #[Groups(['managed_user_vox'])]
+    public function getAccountCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    #[Groups(['managed_user_vox_detail'])]
+    public function isPhoneAvailable(): bool
+    {
+        return null !== $this->phone;
+    }
+
+    #[Groups(['managed_user_vox_detail'])]
+    public function getSocialLinks(): array
+    {
+        return [
+            'facebook' => $this->facebookUrl,
+            'twitter' => $this->twitterUrl,
+            'instagram' => $this->instagramUrl,
+            'linkedin' => $this->linkedinUrl,
+            'telegram' => $this->telegramUrl,
+        ];
+    }
+
+    #[Groups(['managed_user_vox'])]
+    public function getFirstContributionAt(): ?string
+    {
+        return $this->firstMembershipDonation?->format(\DateTimeInterface::ATOM);
+    }
+
+    #[Groups(['managed_user_vox_detail'])]
+    #[SerializedName('subscription_types')]
+    public function getFormattedSubscriptionTypes(): array
+    {
+        return [];
     }
 }

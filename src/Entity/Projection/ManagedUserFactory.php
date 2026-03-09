@@ -55,6 +55,28 @@ class ManagedUserFactory
 
         $managedUser->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
+        if (isset($data['sessions'])) {
+            $managedUser->setSessions($data['sessions']);
+        }
+        if (isset($data['adherent_tags'])) {
+            $managedUser->setAdherentTags($data['adherent_tags']);
+        }
+        if (isset($data['static_tags'])) {
+            $managedUser->setStaticTags($data['static_tags']);
+        }
+        if (isset($data['elect_tags'])) {
+            $managedUser->setElectTags($data['elect_tags']);
+        }
+        if (isset($data['instances'])) {
+            $managedUser->setInstances($data['instances']);
+        }
+        if (isset($data['subscriptions'])) {
+            $managedUser->setSubscriptions($data['subscriptions']);
+        }
+        if (isset($data['civility'])) {
+            $managedUser->setCivility($data['civility']);
+        }
+
         return $managedUser;
     }
 
