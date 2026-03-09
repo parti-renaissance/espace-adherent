@@ -144,3 +144,69 @@ Feature:
         Examples:
             | user                      | scope                           |
             | referent@en-marche-dev.fr | president_departmental_assembly |
+
+    Scenario: As a non logged-in user I cannot access sensitive data endpoint
+        Given I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            { "type": "phone" }
+            """
+        Then the response status code should be 401
+
+    Scenario: As a deputy I can get phone of an adherent in my zone
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            { "type": "phone" }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            { "phone": "+33187264236" }
+            """
+
+    Scenario: As a deputy I can get email of an adherent in my zone
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            { "type": "email" }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            { "email": "jacques.picard@en-marche.fr" }
+            """
+
+    Scenario: As a deputy I can get address of an adherent in my zone
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            { "type": "address" }
+            """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "address": {
+                    "address": "36 rue de la Paix",
+                    "postal_code": "75008",
+                    "city": "Paris 8ème",
+                    "country": "FR"
+                }
+            }
+            """
+
+    Scenario: As a deputy I cannot get sensitive data with invalid type
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            { "type": "invalid" }
+            """
+        Then the response status code should be 400
+
+    Scenario: As a deputy I cannot get sensitive data without type parameter
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data" with body:
+            """
+            {}
+            """
+        Then the response status code should be 400

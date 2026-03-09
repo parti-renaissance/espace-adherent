@@ -8,8 +8,10 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
+use App\Controller\Api\Adherent\GetSensitiveDataController;
 use App\Controller\Api\AdherentList\AdherentListController;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
@@ -49,6 +51,17 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
             requirements: ['format' => 'json|csv|xlsx'],
             controller: AdherentListController::class,
             read: false,
+        ),
+        new Post(
+            uriTemplate: '/v3/adherents/{adherentUuid}/sensitive-data',
+            requirements: ['adherentUuid' => '%pattern_uuid%'],
+            controller: GetSensitiveDataController::class,
+            read: false,
+            deserialize: false,
+            validate: false,
+            write: false,
+            serialize: false,
+            name: 'api_adherents_sensitive_data',
         ),
     ]
 )]

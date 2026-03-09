@@ -31,4 +31,5 @@ enum UserActionHistoryTypeEnum: string
     case COMMITTEE_CREATE = 'committee_create';
     case COMMITTEE_UPDATE = 'committee_update';
     case COMMITTEE_DELETE = 'committee_delete';
+    case SENSITIVE_DATA_ACCESS = 'sensitive_data_access';
 }
