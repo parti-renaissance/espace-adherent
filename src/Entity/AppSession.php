@@ -39,6 +39,9 @@ class AppSession implements \Stringable
     public ?string $userAgent = null;
 
     #[ORM\Column(nullable: true)]
+    public ?string $deviceInfo = null;
+
+    #[ORM\Column(nullable: true)]
     public ?string $ip = null;
 
     #[ORM\Column(nullable: true, enumType: SystemEnum::class)]
@@ -66,13 +69,14 @@ class AppSession implements \Stringable
         $this->pushTokenLinks = new ArrayCollection();
     }
 
-    public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null, ?string $ip = null): void
+    public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null, ?string $ip = null, ?string $deviceInfo = null): void
     {
         $this->lastActivityDate = new \DateTime();
         $this->userAgent = $userAgent ?: $this->userAgent;
         $this->appVersion = $appVersion ?: $this->appVersion;
         $this->appSystem = $system ?: $this->appSystem;
         $this->ip = $ip ?: $this->ip;
+        $this->deviceInfo = $deviceInfo ?: $this->deviceInfo;
     }
 
     public function terminate(): void

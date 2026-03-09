@@ -141,6 +141,26 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'tags' => $adherent->tags,
+            'civility' => 'Madame',
+            'adherent_tags' => [
+                ['code' => 'adherent:a_jour_2024', 'label' => 'Adhérente à jour 2024'],
+            ],
+            'static_tags' => [
+                ['code' => 'national_event:event-national-1:2022-12-12', 'label' => 'Participant événement national'],
+            ],
+            'elect_tags' => [
+                ['code' => 'elu:conseiller_municipal', 'label' => 'Conseillère municipale'],
+            ],
+            'instances' => [
+                ['type' => 'assembly', 'code' => '92', 'name' => 'Hauts-de-Seine (92)'],
+                ['type' => 'committee', 'name' => 'En Marche Paris 8', 'uuid' => '515a56c0-bde8-56ef-b90c-4745b1c93818'],
+            ],
+            'subscriptions' => [
+                'mobile' => ['available' => true, 'subscribed' => false],
+                'web' => ['available' => true, 'subscribed' => true],
+                'sms' => ['available' => true, 'subscribed' => true],
+                'email' => ['available' => true, 'subscribed' => true],
+            ],
         ]);
         $managedUser3->setRoles($this->getRoles($adherent));
 
@@ -196,8 +216,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                 ['code' => 'elu:conseiller_municipal', 'label' => 'Conseiller municipal'],
             ],
             'instances' => [
-                ['name' => 'Seine-et-Marne (1)', 'type' => 'district'],
-                ['name' => 'Melun', 'type' => 'district'],
+                ['type' => 'assembly', 'code' => '77', 'name' => 'Seine-et-Marne (77)'],
+                ['type' => 'circonscription', 'code' => '77-1', 'name' => '1ère circonscription • Seine-et-Marne (77-1)'],
             ],
             'subscriptions' => [
                 'mobile' => ['available' => true, 'subscribed' => true],
@@ -299,6 +319,23 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-02 15:34:12',
             'declared_mandates' => [MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'tags' => $adherent->tags,
+            'civility' => 'Monsieur',
+            'adherent_tags' => [
+                ['code' => 'adherent:a_jour_2023', 'label' => 'Adhérent à jour 2023'],
+            ],
+            'static_tags' => [
+                ['code' => 'national_event:event-national-2:2023-06-15', 'label' => 'Participant événement national 2023'],
+            ],
+            'elect_tags' => null,
+            'instances' => [
+                ['type' => 'assembly', 'code' => '92', 'name' => 'Hauts-de-Seine (92)'],
+            ],
+            'subscriptions' => [
+                'mobile' => ['available' => true, 'subscribed' => true],
+                'web' => ['available' => true, 'subscribed' => true],
+                'sms' => ['available' => false, 'subscribed' => false],
+                'email' => ['available' => true, 'subscribed' => true],
+            ],
         ]);
         $managedUser7->setRoles($this->getRoles($adherent));
 

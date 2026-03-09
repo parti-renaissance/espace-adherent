@@ -124,7 +124,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 3,
-                    "items_per_page": 25,
+                    "items_per_page": 50,
                     "count": 3,
                     "current_page": 1,
                     "last_page": 1
@@ -357,7 +357,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 1,
-                    "items_per_page": 25,
+                    "items_per_page": 50,
                     "count": 1,
                     "current_page": 1,
                     "last_page": 1
@@ -539,7 +539,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 2,
-                    "items_per_page": 25,
+                    "items_per_page": 50,
                     "count": 2,
                     "current_page": 1,
                     "last_page": 1
@@ -990,7 +990,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 2,
-                    "items_per_page": 25,
+                    "items_per_page": 50,
                     "count": 2,
                     "current_page": 1,
                     "last_page": 1
@@ -1131,7 +1131,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": 1,
-                    "items_per_page": 25,
+                    "items_per_page": 50,
                     "count": 1,
                     "current_page": 1,
                     "last_page": 1

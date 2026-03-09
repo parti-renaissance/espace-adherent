@@ -289,11 +289,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $supervisorTags;
 
-    /**
-     * @var array
-     */
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    private $subscriptionTypes;
+    private ?array $subscriptionTypes;
 
     /**
      * @var int|null
@@ -360,19 +357,19 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $lastActivityAt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $twitterUrl = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $facebookUrl = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $instagramUrl = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $linkedinUrl = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $telegramUrl = null;
 
     #[ORM\Column(length: 20, nullable: true)]
@@ -635,12 +632,12 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
 
     public function getSubscriptionTypes(): array
     {
-        return $this->subscriptionTypes;
+        return $this->subscriptionTypes ?? [];
     }
 
     public function hasSmsSubscriptionType(): bool
     {
-        return $this->phone && \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+        return $this->phone && \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes ?? [], true);
     }
 
     public function isEmailSubscribed(): bool
@@ -724,7 +721,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[Groups(['managed_users_list', 'managed_user_read'])]
     public function getSmsSubscription(): bool
     {
-        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes ?? [], true);
     }
 
     public function getCommittee(): ?string
@@ -792,12 +789,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     }
 
     #[Groups(['managed_user_vox_detail'])]
-    public function isPhoneAvailable(): bool
-    {
-        return null !== $this->phone;
-    }
-
-    #[Groups(['managed_user_vox_detail'])]
     public function getSocialLinks(): array
     {
         return [
@@ -813,12 +804,5 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function getFirstContributionAt(): ?string
     {
         return $this->firstMembershipDonation?->format(\DateTimeInterface::ATOM);
-    }
-
-    #[Groups(['managed_user_vox_detail'])]
-    #[SerializedName('subscription_types')]
-    public function getFormattedSubscriptionTypes(): array
-    {
-        return [];
     }
 }
