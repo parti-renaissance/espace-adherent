@@ -29,4 +29,12 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['code' => $code]);
     }
+
+    /**
+     * @return SubscriptionType[]
+     */
+    public function findAllOrderedByPosition(): array
+    {
+        return $this->findBy([], ['position' => 'ASC']);
+    }
 }

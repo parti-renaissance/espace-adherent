@@ -129,11 +129,7 @@ class AppSessionAdmin extends AbstractAdmin
                 'use_value' => true,
             ])
             ->add('appVersion', null, ['label' => 'Version'])
-            ->add('userAgent', null, [
-                'label' => 'Détail système',
-                'template' => 'admin/app_session/list_system_detail.html.twig',
-                'sortable' => false,
-            ])
+            ->add('deviceInfo', null, ['label' => 'Détail système'])
             ->add('isSubscribed', 'boolean', ['label' => 'Abonné'])
             ->add('createdAt', null, ['label' => 'Date de création'])
             ->add('lastActivityDate', null, ['label' => 'Dernière activité'])
@@ -164,11 +160,7 @@ class AppSessionAdmin extends AbstractAdmin
                 ->add('appVersion', null, ['label' => 'Version'])
                 ->add('uuid', null, ['label' => 'UUID'])
                 ->add('userAgent', null, ['label' => 'User-Agent'])
-                ->add('systemDetail', null, [
-                    'label' => 'Détail système',
-                    'template' => 'admin/app_session/show_system_detail.html.twig',
-                    'virtual_field' => true,
-                ])
+                ->add('deviceInfo', null, ['label' => 'Détail système'])
                 ->add('ip')
             ->end()
             ->with('Dates', ['class' => 'col-md-4'])

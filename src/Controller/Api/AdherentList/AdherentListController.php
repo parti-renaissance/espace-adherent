@@ -79,7 +79,7 @@ class AdherentListController extends AbstractController
         $adherents = $this->repository->searchByFilter(
             $filter,
             $request->query->getInt('page', 1),
-            min($request->query->getInt('page_size', 25), 200)
+            min($request->query->getInt('page_size', 50), 200)
         );
 
         $isVox = $this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP));
