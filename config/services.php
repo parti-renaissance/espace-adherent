@@ -416,6 +416,12 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             service('.inner'),
         ]);
 
+    $services->set(App\Api\Serializer\ManagedUserContextBuilder::class)
+        ->decorate('api_platform.serializer.context_builder', priority: -10)
+        ->args([
+            service('.inner'),
+        ]);
+
     $services->set(App\Api\Serializer\CommitteeGroupsContextBuilder::class)
         ->decorate('api_platform.serializer.context_builder')
         ->args([

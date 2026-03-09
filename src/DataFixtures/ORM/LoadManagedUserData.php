@@ -176,6 +176,35 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'supervisor_tags' => ['77'],
             'tags' => $adherent->tags,
+            'civility' => 'Monsieur',
+            'sessions' => [
+                [
+                    'type' => 'mobile',
+                    'device' => 'iPhone 14',
+                    'active_since' => '2024-01-15T10:30:00+01:00',
+                    'last_activity_at' => '2024-03-01T14:22:00+01:00',
+                    'subscribed' => true,
+                ],
+            ],
+            'adherent_tags' => [
+                ['code' => 'adherent:a_jour_2024', 'label' => 'Adhérent à jour 2024'],
+            ],
+            'static_tags' => [
+                ['code' => 'national_event:present:congres-2024', 'label' => 'Présent au Congrès 2024'],
+            ],
+            'elect_tags' => [
+                ['code' => 'elu:conseiller_municipal', 'label' => 'Conseiller municipal'],
+            ],
+            'instances' => [
+                ['name' => 'Seine-et-Marne (1)', 'type' => 'district'],
+                ['name' => 'Melun', 'type' => 'district'],
+            ],
+            'subscriptions' => [
+                'mobile' => ['available' => true, 'subscribed' => true],
+                'web' => ['available' => true, 'subscribed' => false],
+                'sms' => ['available' => false, 'subscribed' => false],
+                'email' => ['available' => true, 'subscribed' => true],
+            ],
         ]);
         $managedUser4->setRoles($this->getRoles($adherent));
 

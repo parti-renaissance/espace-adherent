@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
 use App\Scope\ScopeGeneratorResolver;
 use App\Subscription\SubscriptionTypeEnum;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,7 +20,6 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly Security $security,
     ) {
     }
 
@@ -104,6 +103,12 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__]) && $data instanceof ManagedUser;
+        if (!$data instanceof ManagedUser || isset($context[__CLASS__])) {
+            return false;
+        }
+
+        $groups = $context['groups'] ?? [];
+
+        return !\is_array($groups) || !\in_array(ManagedUserContextBuilder::GROUP_VOX, $groups, true);
     }
 }

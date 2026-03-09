@@ -273,6 +273,22 @@ class UserActionHistoryHandler
         );
     }
 
+    public function createSensitiveDataAccess(
+        Adherent $requester,
+        Adherent $target,
+        string $dataType,
+    ): void {
+        $this->dispatch(
+            $requester,
+            UserActionHistoryTypeEnum::SENSITIVE_DATA_ACCESS,
+            [
+                'target_adherent_uuid' => $target->getUuid()->toString(),
+                'data_type' => $dataType,
+            ],
+            $this->getImpersonator()
+        );
+    }
+
     private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();
