@@ -55,26 +55,27 @@ class ManagedUserFactory
 
         $managedUser->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
+        // Pre-computed JSON columns (populated by Go worker)
         if (isset($data['sessions'])) {
-            $managedUser->setSessions($data['sessions']);
+            $managedUser->sessions = $data['sessions'];
         }
         if (isset($data['adherent_tags'])) {
-            $managedUser->setAdherentTags($data['adherent_tags']);
+            $managedUser->adherentTags = $data['adherent_tags'];
         }
         if (isset($data['static_tags'])) {
-            $managedUser->setStaticTags($data['static_tags']);
+            $managedUser->staticTags = $data['static_tags'];
         }
         if (isset($data['elect_tags'])) {
-            $managedUser->setElectTags($data['elect_tags']);
+            $managedUser->electTags = $data['elect_tags'];
         }
         if (isset($data['instances'])) {
-            $managedUser->setInstances($data['instances']);
+            $managedUser->instances = $data['instances'];
         }
         if (isset($data['subscriptions'])) {
-            $managedUser->setSubscriptions($data['subscriptions']);
+            $managedUser->subscriptions = $data['subscriptions'];
         }
         if (isset($data['civility'])) {
-            $managedUser->setCivility($data['civility']);
+            $managedUser->civility = $data['civility'];
         }
 
         return $managedUser;
