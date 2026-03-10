@@ -47,7 +47,8 @@ Feature:
                     "twitter": null,
                     "instagram": null,
                     "linkedin": null,
-                    "telegram": null
+                    "telegram": null,
+                    "tiktok": null
                 },
                 "nationality": null,
                 "sessions": [

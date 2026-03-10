@@ -113,6 +113,8 @@ adherent_profile.facebook_page_url.invalid: Cette URL ne semble pas être une UR
 adherent_profile.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
 adherent_profile.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
 adherent_profile.telegram_page_url.invalid: Cette URL ne semble pas être une URL Telegram valide.
+adherent_profile.instagram_page_url.invalid: Cette URL ne semble pas être une URL Instagram valide.
+adherent_profile.tiktok_page_url.invalid: Cette URL ne semble pas être une URL TikTok valide.
 adherent_profile.nationality.not_blank: La nationalité est requise.
 adherent_profile.email.not_blank: L'adresse email est requise.
 adherent_profile.mandates.invalid_choice: Une ou plusieurs des valeurs des mandats sont invalides. Merci de contacter le support.

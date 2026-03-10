@@ -361,6 +361,20 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                                 'placeholder' => 'https://t.me/alexandre-dumoulin',
                             ],
                         ])
+                        ->add('instagramPageUrl', UrlType::class, [
+                            'label' => 'Instagram',
+                            'required' => false,
+                            'attr' => [
+                                'placeholder' => 'https://instagram.com/alexandre-dumoulin',
+                            ],
+                        ])
+                        ->add('tiktokPageUrl', UrlType::class, [
+                            'label' => 'TikTok',
+                            'required' => false,
+                            'attr' => [
+                                'placeholder' => 'https://tiktok.com/@alexandre-dumoulin',
+                            ],
+                        ])
                     ->end()
                     ->with('Zone expérimentale 🚧', [
                         'class' => 'col-md-6',

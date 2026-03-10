@@ -372,6 +372,9 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(nullable: true)]
     public ?string $telegramUrl = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $tiktokUrl = null;
+
     #[ORM\Column(length: 20, nullable: true)]
     public ?string $civility = null;
 
@@ -797,6 +800,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
             'instagram' => $this->instagramUrl,
             'linkedin' => $this->linkedinUrl,
             'telegram' => $this->telegramUrl,
+            'tiktok' => $this->tiktokUrl,
         ];
     }
 
