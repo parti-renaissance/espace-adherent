@@ -86,7 +86,7 @@ class AdherentListController extends AbstractController
 
         $context = [
             'groups' => $isVox
-                ? [ManagedUserContextBuilder::GROUP_VOX]
+                ? [ManagedUserContextBuilder::GROUP_VOX, ImageExposeNormalizer::NORMALIZATION_GROUP]
                 : ['managed_users_list', ImageExposeNormalizer::NORMALIZATION_GROUP],
         ];
 

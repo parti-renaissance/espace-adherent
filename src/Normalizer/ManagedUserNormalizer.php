@@ -61,11 +61,13 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                         $data['tags'] ?? [],
                         array_map(
                             function (array $role) use ($object) {
+                                $code = $role['code'];
+
                                 return [
                                     'type' => 'role',
                                     'label' => \sprintf(
                                         '%s%s',
-                                        ($label = $this->translator->trans($key = 'role.'.$role['role'], ['gender' => $object->getGender()])) === $key ? $role['role'] : $label,
+                                        ($label = $this->translator->trans($key = 'role.'.$code, ['gender' => $object->getGender()])) === $key ? $code : $label,
                                         !empty($role['is_delegated']) ? (' délégué'.('female' === $object->getGender() ? 'e' : '')) : ''
                                     ),
                                     'tooltip' => $role['function'] ?? null,
@@ -126,17 +128,24 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     {
         $roles = [];
 
-        foreach ($managedUser->getRolesAsArray() as $role) {
+        foreach ($managedUser->getRoles() as $role) {
+            $code = $role['code'] ?? '';
+            if ('' === $code) {
+                continue;
+            }
+
             $label = $this->translator->trans(
-                $key = 'role.'.$role['role'],
+                $key = 'role.'.$code,
                 ['gender' => $managedUser->getGender()]
             );
 
             $roles[] = [
-                'code' => $role['role'],
-                'label' => $label === $key ? $role['role'] : $label,
+                'code' => $code,
+                'label' => $label === $key ? $code : $label,
                 'is_delegated' => $role['is_delegated'] ?? false,
                 'function' => $role['function'] ?? null,
+                'zones' => $role['zones'] ?? null,
+                'zone_codes' => $role['zone_codes'] ?? null,
             ];
         }
 
@@ -153,7 +162,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             $result[] = [
                 'code' => $code,
                 'label' => $label,
-                'checked' => \in_array($code, $userCodes, true),
+                'subscribed' => \in_array($code, $userCodes, true),
             ];
         }
 

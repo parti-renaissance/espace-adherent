@@ -52,7 +52,7 @@ Feature:
                     "scope": null,
                     "role": null,
                     "instance": null,
-                    "image_url": null,
+                    "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                     "zone": null,
                     "theme": null
                 },
@@ -187,7 +187,7 @@ Feature:
                             "scope": null,
                             "role": null,
                             "instance": null,
-                            "image_url": null,
+                            "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                             "zone": null,
                             "theme": null
                         },
@@ -317,7 +317,7 @@ Feature:
                             "scope": null,
                             "role": null,
                             "instance": null,
-                            "image_url": null,
+                            "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                             "zone": null,
                             "theme": null
                         },
@@ -370,7 +370,7 @@ Feature:
                             "scope": null,
                             "role": null,
                             "instance": null,
-                            "image_url": null,
+                            "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                             "zone": null,
                             "theme": null
                         },
@@ -713,7 +713,7 @@ Feature:
                             "scope": null,
                             "role": null,
                             "instance": null,
-                            "image_url": null,
+                            "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                             "zone": null,
                             "theme": null
                         },
@@ -2096,7 +2096,7 @@ Feature:
                         "last_name": "Brioul",
                         "postal_code": "77000",
                         "email_address": "francis.brioul@yahoo.com",
-                        "image_url": null,
+                        "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                         "phone": "+33 6 73 65 43 49",
                         "tags": [],
                         "referrer": {

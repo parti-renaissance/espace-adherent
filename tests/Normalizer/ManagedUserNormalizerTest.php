@@ -65,10 +65,10 @@ final class ManagedUserNormalizerTest extends TestCase
     {
         $managedUser = $this->createMock(ManagedUser::class);
         $managedUser
-            ->method('getRolesAsArray')
+            ->method('getRoles')
             ->willReturn([
-                ['role' => 'president_departmental_assembly'],
-                ['role' => 'animator', 'is_delegated' => true, 'function' => 'Communication'],
+                ['code' => 'president_departmental_assembly', 'zones' => 'Paris', 'zone_codes' => '75'],
+                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication'],
             ])
         ;
         $managedUser
@@ -128,19 +128,19 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertSame([
             'code' => 'subscribed_emails_movement_information',
             'label' => 'Recevoir les emails du national',
-            'checked' => true,
+            'subscribed' => true,
         ], $result['subscription_types'][0]);
 
         self::assertSame([
             'code' => 'subscribed_emails_weekly_letter',
             'label' => 'Recevoir la newsletter hebdomadaire',
-            'checked' => false,
+            'subscribed' => false,
         ], $result['subscription_types'][1]);
 
         self::assertSame([
             'code' => 'militant_action_sms',
             'label' => 'Recevoir les SMS militants',
-            'checked' => true,
+            'subscribed' => true,
         ], $result['subscription_types'][2]);
 
         self::assertArrayHasKey('roles', $result);
@@ -151,6 +151,8 @@ final class ManagedUserNormalizerTest extends TestCase
             'label' => "Président d'Assemblée Départementale",
             'is_delegated' => false,
             'function' => null,
+            'zones' => 'Paris',
+            'zone_codes' => '75',
         ], $result['roles'][0]);
 
         self::assertSame([
@@ -158,6 +160,8 @@ final class ManagedUserNormalizerTest extends TestCase
             'label' => 'Animateur',
             'is_delegated' => true,
             'function' => 'Communication',
+            'zones' => null,
+            'zone_codes' => null,
         ], $result['roles'][1]);
     }
 
@@ -165,8 +169,8 @@ final class ManagedUserNormalizerTest extends TestCase
     {
         $managedUser = $this->createMock(ManagedUser::class);
         $managedUser
-            ->method('getRolesAsArray')
-            ->willReturn([['role' => 'animator']])
+            ->method('getRoles')
+            ->willReturn([['code' => 'animator']])
         ;
         $managedUser
             ->method('getGender')
@@ -191,6 +195,45 @@ final class ManagedUserNormalizerTest extends TestCase
         $result = $this->normalizer->normalize($managedUser, null, $context);
 
         self::assertArrayNotHasKey('subscription_types', $result);
+        self::assertArrayHasKey('roles', $result);
+        self::assertCount(1, $result['roles']);
+        self::assertSame('animator', $result['roles'][0]['code']);
+    }
+
+    public function testNormalizeSkipsEmptyRoleCodes(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('getRoles')
+            ->willReturn([
+                ['code' => 'animator'],
+                ['code' => ''],
+                ['code' => null],
+                [],
+            ])
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('male')
+        ;
+
+        $context = [
+            'groups' => [ManagedUserContextBuilder::GROUP_VOX],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn(['uuid' => '123e4567-e89b-12d3-a456-426614174000'])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->with('role.animator', ['gender' => 'male'])
+            ->willReturn('Animateur')
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
         self::assertArrayHasKey('roles', $result);
         self::assertCount(1, $result['roles']);
         self::assertSame('animator', $result['roles'][0]['code']);
@@ -223,7 +266,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'uuid' => '123e4567-e89b-12d3-a456-426614174000',
                 'tags' => [],
                 'roles' => [
-                    ['role' => 'animator'],
+                    ['code' => 'animator'],
                 ],
             ])
         ;

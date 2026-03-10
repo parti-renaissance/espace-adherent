@@ -8,10 +8,8 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
-use App\Controller\Api\Adherent\GetSensitiveDataController;
 use App\Controller\Api\AdherentList\AdherentListController;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
@@ -28,7 +26,6 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Serializer\Attribute\SerializedName;
 
 /**
  * This entity is a projection: do not insert, update or delete objects using this class.
@@ -51,17 +48,6 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
             requirements: ['format' => 'json|csv|xlsx'],
             controller: AdherentListController::class,
             read: false,
-        ),
-        new Post(
-            uriTemplate: '/v3/adherents/{adherentUuid}/sensitive-data',
-            requirements: ['adherentUuid' => '%pattern_uuid%'],
-            controller: GetSensitiveDataController::class,
-            read: false,
-            deserialize: false,
-            validate: false,
-            write: false,
-            serialize: false,
-            name: 'api_adherents_sensitive_data',
         ),
     ]
 )]
@@ -238,11 +224,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $committeeUuids;
 
-    /**
-     * @var string[]|null
-     */
-    #[ORM\Column(type: 'simple_array', nullable: true)]
-    private $roles;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $roles = null;
 
     /**
      * @var string[]|null
@@ -455,6 +438,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         array $declaredMandates = [],
         array $cotisationDates = [],
         ?\DateTime $campusRegisteredAt = null,
+        ?string $imageName = null,
     ) {
         $this->status = $status;
         $this->source = $source;
@@ -501,6 +485,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         $this->declaredMandates = $declaredMandates;
         $this->cotisationDates = $cotisationDates;
         $this->campusRegisteredAt = $campusRegisteredAt;
+        $this->imageName = $imageName;
     }
 
     public function getId(): int
@@ -660,27 +645,9 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     }
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
-    #[SerializedName('roles')]
-    public function getRolesAsArray(): array
+    public function getRoles(): array
     {
-        $roles = [];
-
-        foreach ($this->roles as $role) {
-            $roleData = [
-                'role' => $role,
-            ];
-
-            if (str_contains($role, '|')) {
-                $rolePart = explode('|', $role);
-
-                $roleData['role'] = $rolePart[0];
-                $roleData['is_delegated'] = true;
-                $roleData['function'] = $rolePart[1];
-            }
-            $roles[] = $roleData;
-        }
-
-        return $roles;
+        return $this->roles ?? [];
     }
 
     public function setRoles(array $roles): void
@@ -779,7 +746,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->civility ?? (Genders::CIVILITY_LABELS[$this->gender] ?? null);
     }
 
-    #[Groups(['managed_user_vox'])]
     public function getImageUrl(): ?string
     {
         return $this->getImagePath() ?: null;
