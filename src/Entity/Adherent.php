@@ -339,6 +339,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(nullable: true)]
     private $telegramPageUrl;
 
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Groups(['profile_read', 'profile_update'])]
+    #[ORM\Column(nullable: true)]
+    private ?string $instagramPageUrl = null;
+
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Groups(['profile_read', 'profile_update'])]
+    #[ORM\Column(nullable: true)]
+    private ?string $tiktokPageUrl = null;
+
     /**
      * @var string|null
      */
@@ -1150,6 +1162,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->twitterPageUrl = $adherentProfile->getTwitterPageUrl();
         $this->telegramPageUrl = $adherentProfile->getTelegramPageUrl();
         $this->linkedinPageUrl = $adherentProfile->getLinkedinPageUrl();
+        $this->instagramPageUrl = $adherentProfile->getInstagramPageUrl();
+        $this->tiktokPageUrl = $adherentProfile->getTiktokPageUrl();
         $this->job = $adherentProfile->getJob();
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
@@ -1969,6 +1983,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setTelegramPageUrl(?string $telegramPageUrl): void
     {
         $this->telegramPageUrl = $telegramPageUrl;
+    }
+
+    public function getInstagramPageUrl(): ?string
+    {
+        return $this->instagramPageUrl;
+    }
+
+    public function setInstagramPageUrl(?string $instagramPageUrl): void
+    {
+        $this->instagramPageUrl = $instagramPageUrl;
+    }
+
+    public function getTiktokPageUrl(): ?string
+    {
+        return $this->tiktokPageUrl;
+    }
+
+    public function setTiktokPageUrl(?string $tiktokPageUrl): void
+    {
+        $this->tiktokPageUrl = $tiktokPageUrl;
     }
 
     public function getJob(): ?string

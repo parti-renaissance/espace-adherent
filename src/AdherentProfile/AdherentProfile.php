@@ -86,6 +86,14 @@ class AdherentProfile implements MembershipInterface
     #[Groups(['profile_write'])]
     private ?string $telegramPageUrl = null;
 
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?instagram\.com\/#', message: 'adherent_profile.instagram_page_url.invalid')]
+    #[Groups(['profile_write'])]
+    private ?string $instagramPageUrl = null;
+
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?tiktok\.com\/#', message: 'adherent_profile.tiktok_page_url.invalid')]
+    #[Groups(['profile_write'])]
+    private ?string $tiktokPageUrl = null;
+
     #[Assert\Choice(choices: JobEnum::JOBS, message: 'adherent.job.invalid_choice')]
     #[Groups(['profile_write'])]
     private ?string $job = null;
@@ -134,6 +142,8 @@ class AdherentProfile implements MembershipInterface
         $dto->twitterPageUrl = $adherent->getTwitterPageUrl();
         $dto->linkedinPageUrl = $adherent->getLinkedinPageUrl();
         $dto->telegramPageUrl = $adherent->getTelegramPageUrl();
+        $dto->instagramPageUrl = $adherent->getInstagramPageUrl();
+        $dto->tiktokPageUrl = $adherent->getTiktokPageUrl();
         $dto->job = $adherent->getJob();
         $dto->activityArea = $adherent->getActivityArea();
         $dto->mandates = $adherent->getMandates();
@@ -283,6 +293,26 @@ class AdherentProfile implements MembershipInterface
     public function setTelegramPageUrl(?string $telegramPageUrl): void
     {
         $this->telegramPageUrl = $telegramPageUrl;
+    }
+
+    public function getInstagramPageUrl(): ?string
+    {
+        return $this->instagramPageUrl;
+    }
+
+    public function setInstagramPageUrl(?string $instagramPageUrl): void
+    {
+        $this->instagramPageUrl = $instagramPageUrl;
+    }
+
+    public function getTiktokPageUrl(): ?string
+    {
+        return $this->tiktokPageUrl;
+    }
+
+    public function setTiktokPageUrl(?string $tiktokPageUrl): void
+    {
+        $this->tiktokPageUrl = $tiktokPageUrl;
     }
 
     public function getJob(): ?string

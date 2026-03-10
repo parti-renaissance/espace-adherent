@@ -42,6 +42,8 @@ Feature:
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
                 "telegram_page_url": null,
+                "instagram_page_url": null,
+                "tiktok_page_url": null,
                 "position": "retired",
                 "job": null,
                 "main_zone": {
@@ -597,7 +599,9 @@ Feature:
                 "facebook_page_url": "https://not-facebook.com/johndoe",
                 "twitter_page_url": "https://not-twitter.com/johndoe",
                 "linkedin_page_url": "https://not-linkedin.com/johndoe",
-                "telegram_page_url": "https://not-t.me/johndoe"
+                "telegram_page_url": "https://not-t.me/johndoe",
+                "instagram_page_url": "https://not-instagram.com/johndoe",
+                "tiktok_page_url": "https://not-tiktok.com/johndoe"
             }
             """
         Then the response status code should be 400
@@ -623,6 +627,14 @@ Feature:
                     {
                         "propertyPath": "telegram_page_url",
                         "message": "Cette URL ne semble pas être une URL Telegram valide."
+                    },
+                    {
+                        "propertyPath": "instagram_page_url",
+                        "message": "Cette URL ne semble pas être une URL Instagram valide."
+                    },
+                    {
+                        "propertyPath": "tiktok_page_url",
+                        "message": "Cette URL ne semble pas être une URL TikTok valide."
                     }
                 ]
             }
@@ -633,7 +645,9 @@ Feature:
                 "facebook_page_url": "https://facebook.com/johndoe",
                 "twitter_page_url": "https://twitter.com/johndoe",
                 "linkedin_page_url": "https://linkedin.com/johndoe",
-                "telegram_page_url": "https://t.me/johndoe"
+                "telegram_page_url": "https://t.me/johndoe",
+                "instagram_page_url": "https://instagram.com/johndoe",
+                "tiktok_page_url": "https://tiktok.com/@johndoe"
             }
             """
         Then the response status code should be 200
@@ -646,7 +660,9 @@ Feature:
                 "facebook_page_url": "https://facebook.com/johndoe",
                 "twitter_page_url": "https://twitter.com/johndoe",
                 "linkedin_page_url": "https://linkedin.com/johndoe",
-                "telegram_page_url": "https://t.me/johndoe"
+                "telegram_page_url": "https://t.me/johndoe",
+                "instagram_page_url": "https://instagram.com/johndoe",
+                "tiktok_page_url": "https://tiktok.com/@johndoe"
             }
             """
 
@@ -751,6 +767,8 @@ Feature:
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
                 "telegram_page_url": null,
+                "instagram_page_url": null,
+                "tiktok_page_url": null,
                 "job": null,
                 "main_zone": null,
                 "activity_area": null,
@@ -1265,6 +1283,8 @@ Feature:
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
                 "telegram_page_url": null,
+                "instagram_page_url": null,
+                "tiktok_page_url": null,
                 "job": null,
                 "main_zone": {
                     "uuid": "@uuid@",
@@ -1400,6 +1420,8 @@ Feature:
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
                 "telegram_page_url": null,
+                "instagram_page_url": null,
+                "tiktok_page_url": null,
                 "job": null,
                 "main_zone": {
                     "uuid": "@uuid@",
@@ -1491,6 +1513,8 @@ Feature:
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
                 "telegram_page_url": null,
+                "instagram_page_url": null,
+                "tiktok_page_url": null,
                 "job": null,
                 "main_zone": {
                     "uuid": "@uuid@",
