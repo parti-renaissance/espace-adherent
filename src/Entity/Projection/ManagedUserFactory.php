@@ -50,7 +50,9 @@ class ManagedUserFactory
             $data['interests'] ?? [],
             $data['mandates'] ?? [],
             $data['declared_mandates'] ?? [],
-            $data['cotisation_dates'] ?? []
+            $data['cotisation_dates'] ?? [],
+            null,
+            $data['image_name'] ?? null
         );
 
         $managedUser->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;

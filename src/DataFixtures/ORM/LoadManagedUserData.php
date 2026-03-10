@@ -197,14 +197,18 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'supervisor_tags' => ['77'],
             'tags' => $adherent->tags,
             'civility' => 'Monsieur',
+            'image_name' => $adherent->getImageName(),
             'sessions' => [
-                [
-                    'type' => 'mobile',
-                    'device' => 'iPhone 14',
-                    'active_since' => '2024-01-15T10:30:00+01:00',
-                    'last_activity_at' => '2024-03-01T14:22:00+01:00',
-                    'subscribed' => true,
+                'mobile' => [
+                    [
+                        'device' => 'iPhone 14',
+                        'active_since' => '2024-01-15T10:30:00+01:00',
+                        'last_activity_at' => '2024-03-01T14:22:00+01:00',
+                        'subscribed' => true,
+                        'status' => 'active',
+                    ],
                 ],
+                'web' => null,
             ],
             'adherent_tags' => [
                 ['code' => 'adherent:a_jour_2024', 'label' => 'Adhérent à jour 2024'],
@@ -360,11 +364,29 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $roles = [];
 
         foreach ($adherent->getZoneBasedRoles() as $role) {
-            $roles[] = $role->getType();
+            $zones = $role->getZones()->toArray();
+            $zoneNames = array_map(fn ($zone) => $zone->getName(), $zones);
+            $zoneCodes = array_map(fn ($zone) => $zone->getCode(), $zones);
+            sort($zoneNames);
+            sort($zoneCodes);
+
+            $roles[] = [
+                'code' => $role->getType(),
+                'is_delegated' => false,
+                'function' => null,
+                'zones' => $zoneNames ? implode('. ', $zoneNames) : null,
+                'zone_codes' => $zoneCodes ? implode(', ', $zoneCodes) : null,
+            ];
         }
 
         foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            $roles[] = $delegatedAccess->getType().'|'.$delegatedAccess->getRole();
+            $roles[] = [
+                'code' => $delegatedAccess->getType(),
+                'is_delegated' => true,
+                'function' => $delegatedAccess->getRole(),
+                'zones' => null,
+                'zone_codes' => null,
+            ];
         }
 
         return $roles;

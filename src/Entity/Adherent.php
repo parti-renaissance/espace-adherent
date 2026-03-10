@@ -24,6 +24,8 @@ use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Controller\Api\Adherent\GetDonationsController;
+use App\Controller\Api\Adherent\GetSensitiveDataController;
 use App\Controller\Api\Mailchimp\SendResubscribeEmailController;
 use App\Controller\Api\UpdateImageController;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
@@ -110,6 +112,22 @@ use Symfony\Component\Validator\Constraints as Assert;
             controller: UpdateImageController::class,
             security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and object === user",
             deserialize: false,
+        ),
+        new Get(
+            uriTemplate: '/adherents/{uuid}/sensitive-data',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetSensitiveDataController::class,
+            security: "is_granted('IS_AUTHENTICATED_REMEMBERED')",
+            serialize: false,
+            name: 'api_adherents_sensitive_data',
+        ),
+        new Get(
+            uriTemplate: '/adherents/{uuid}/donations',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetDonationsController::class,
+            security: "is_granted('IS_AUTHENTICATED_REMEMBERED')",
+            serialize: false,
+            name: 'api_adherents_donations',
         ),
     ],
     routePrefix: '/v3',

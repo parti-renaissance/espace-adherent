@@ -251,6 +251,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
+        $adherent7->setImageName(new UploadedFile(
+            __DIR__.'/../../../app/data/images/profile/example.jpg',
+            'example.jpg',
+            'image/jpeg',
+        ));
         $adherent7->clean();
         $adherent7->setSubscriptionTypes($subscriptionTypes);
         $adherent7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));

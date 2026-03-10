@@ -6,6 +6,7 @@ namespace App\Api\Serializer;
 
 use ApiPlatform\State\SerializerContextBuilderInterface;
 use App\Entity\Projection\ManagedUser;
+use App\Normalizer\ImageExposeNormalizer;
 use Symfony\Component\HttpFoundation\Request;
 
 class ManagedUserContextBuilder implements SerializerContextBuilderInterface
@@ -28,7 +29,7 @@ class ManagedUserContextBuilder implements SerializerContextBuilderInterface
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
         if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
-            $context['groups'] = [self::GROUP_VOX, self::GROUP_VOX_DETAIL];
+            $context['groups'] = [self::GROUP_VOX, self::GROUP_VOX_DETAIL, ImageExposeNormalizer::NORMALIZATION_GROUP];
         }
 
         return $context;
