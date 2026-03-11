@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Migrations;
 
+use App\AppSession\DeviceInfoParser;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use UAParser\Parser;
 
 final class Version20260309223500 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $parser = Parser::create();
-
+        $parser = new DeviceInfoParser();
         $batchSize = 1000;
         $offset = 0;
 
@@ -25,15 +24,7 @@ final class Version20260309223500 extends AbstractMigration
             );
 
             foreach ($sessions as $session) {
-                $result = $parser->parse($session['user_agent']);
-                $family = $result->device->family;
-                $model = $result->device->model;
-
-                if ($model && $model !== $family && 'Other' !== $model) {
-                    $deviceInfo = $model;
-                } else {
-                    $deviceInfo = 'Other' !== $family ? $family : $result->ua->family;
-                }
+                $deviceInfo = $parser->parse($session['user_agent']);
 
                 $this->connection->executeStatement(
                     'UPDATE app_session SET device_info = ? WHERE id = ?',
