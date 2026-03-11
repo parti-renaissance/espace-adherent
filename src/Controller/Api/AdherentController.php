@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Entity\Adherent;
-use App\Security\Voter\ManagedUserVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,18 +47,5 @@ class AdherentController extends AbstractController
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    #[Route(path: '/adherents/{uuid}/committees', name: 'api_adherent_committees', methods: ['GET'])]
-    public function getAdherentCommittees(Adherent $adherent): Response
-    {
-        $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);
-
-        return $this->json(
-            array_filter([$adherent->getCommitteeMembership()]),
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['adherent_committees_modal']]
-        );
     }
 }
