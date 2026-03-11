@@ -245,7 +245,7 @@ Feature:
 
     Scenario: As a deputy I can get phone of an adherent in my zone
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?type=phone"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?scope=deputy&type=phone"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -254,7 +254,7 @@ Feature:
 
     Scenario: As a deputy I can get email of an adherent in my zone
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?type=email"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?scope=deputy&type=email"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -263,7 +263,7 @@ Feature:
 
     Scenario: As a deputy I can get address of an adherent in my zone
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?type=address"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?scope=deputy&type=address"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
@@ -279,12 +279,12 @@ Feature:
 
     Scenario: As a deputy I cannot get sensitive data with invalid type
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?type=invalid"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?scope=deputy&type=invalid"
         Then the response status code should be 400
 
     Scenario: As a deputy I cannot get sensitive data without type parameter
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/sensitive-data?scope=deputy"
         Then the response status code should be 400
 
     Scenario: As a non logged-in user I cannot access donations endpoint
@@ -293,7 +293,7 @@ Feature:
 
     Scenario: As a deputy I can get donations of an adherent in my zone
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/donations"
+        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/donations?scope=deputy"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:

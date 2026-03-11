@@ -6,7 +6,6 @@ namespace App\Controller\Api\Adherent;
 
 use App\Entity\Adherent;
 use App\History\UserActionHistoryHandler;
-use App\Security\Voter\ManagedUserVoter;
 use App\Utils\PhoneNumberUtils;
 use libphonenumber\PhoneNumberFormat;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,7 @@ class GetSensitiveDataController extends AbstractController
 
     public function __invoke(#[CurrentUser] $user, Request $request, Adherent $adherent): JsonResponse
     {
-        $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);
+        $this->denyAccessUnlessGranted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', $adherent);
 
         $type = $this->validateAndExtractType($request);
         $value = $this->getSensitiveValue($adherent, $type);

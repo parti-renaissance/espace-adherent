@@ -6,7 +6,6 @@ namespace App\Controller\Api\Adherent;
 
 use App\Donation\DonationManager;
 use App\Entity\Adherent;
-use App\Security\Voter\ManagedUserVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -19,7 +18,7 @@ class GetDonationsController extends AbstractController
 
     public function __invoke(Adherent $adherent): JsonResponse
     {
-        $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);
+        $this->denyAccessUnlessGranted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', $adherent);
 
         return $this->json(
             $this->donationManager->getHistory($adherent, false),

@@ -19,6 +19,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     use NormalizerAwareTrait;
 
     private ?array $subscriptionTypesCache = null;
+    private array $roleTranslationCache = [];
 
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -56,20 +57,20 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
 
             if (array_intersect(['managed_users_list', 'managed_user_read'], $groups)) {
+                $gender = $object->getGender();
+
                 if (isset($data['roles'])) {
+                    $delegatedSuffix = 'female' === $gender ? ' déléguée' : ' délégué';
+
                     $data['tags'] = array_merge(
                         $data['tags'] ?? [],
                         array_map(
-                            function (array $role) use ($object) {
+                            function (array $role) use ($gender, $delegatedSuffix) {
                                 $code = $role['code'];
 
                                 return [
                                     'type' => 'role',
-                                    'label' => \sprintf(
-                                        '%s%s',
-                                        ($label = $this->translator->trans($key = 'role.'.$code, ['gender' => $object->getGender()])) === $key ? $code : $label,
-                                        !empty($role['is_delegated']) ? (' délégué'.('female' === $object->getGender() ? 'e' : '')) : ''
-                                    ),
+                                    'label' => $this->getTranslatedRoleLabel($code, $gender).(!empty($role['is_delegated']) ? $delegatedSuffix : ''),
                                     'tooltip' => $role['function'] ?? null,
                                 ];
                             },
@@ -83,12 +84,10 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                     $data['tags'] = array_merge(
                         $data['tags'] ?? [],
                         array_map(
-                            function (string $mandate) {
-                                return [
-                                    'type' => 'mandate',
-                                    'label' => ($label = $this->translator->trans($key = 'adherent.mandate.type.'.$mandate)) === $key ? $mandate : $label,
-                                ];
-                            },
+                            fn (string $mandate) => [
+                                'type' => 'mandate',
+                                'label' => $this->getTranslatedMandateLabel($mandate),
+                            ],
                             $data['mandates']
                         )
                     );
@@ -96,12 +95,10 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                     $data['tags'] = array_merge(
                         $data['tags'] ?? [],
                         array_map(
-                            function (string $mandate) {
-                                return [
-                                    'type' => 'declared_mandate',
-                                    'label' => ($label = $this->translator->trans($key = 'adherent.mandate.type.'.$mandate)) === $key ? $mandate : $label,
-                                ];
-                            },
+                            fn (string $mandate) => [
+                                'type' => 'declared_mandate',
+                                'label' => $this->getTranslatedMandateLabel($mandate),
+                            ],
                             $data['declared_mandates']
                         )
                     );
@@ -127,6 +124,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     private function formatRolesVox(ManagedUser $managedUser): array
     {
         $roles = [];
+        $gender = $managedUser->getGender();
 
         foreach ($managedUser->getRoles() as $role) {
             $code = $role['code'] ?? '';
@@ -134,14 +132,9 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                 continue;
             }
 
-            $label = $this->translator->trans(
-                $key = 'role.'.$code,
-                ['gender' => $managedUser->getGender()]
-            );
-
             $roles[] = [
                 'code' => $code,
-                'label' => $label === $key ? $code : $label,
+                'label' => $this->getTranslatedRoleLabel($code, $gender),
                 'is_delegated' => $role['is_delegated'] ?? false,
                 'function' => $role['function'] ?? null,
                 'zones' => $role['zones'] ?? null,
@@ -150,6 +143,19 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return $roles;
+    }
+
+    private function getTranslatedRoleLabel(string $code, ?string $gender): string
+    {
+        $cacheKey = $code.'_'.$gender;
+
+        if (!isset($this->roleTranslationCache[$cacheKey])) {
+            $key = 'role.'.$code;
+            $label = $this->translator->trans($key, ['gender' => $gender]);
+            $this->roleTranslationCache[$cacheKey] = $label === $key ? $code : $label;
+        }
+
+        return $this->roleTranslationCache[$cacheKey];
     }
 
     private function formatSubscriptionTypes(ManagedUser $managedUser): array
@@ -179,5 +185,18 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return $this->subscriptionTypesCache;
+    }
+
+    private function getTranslatedMandateLabel(string $mandate): string
+    {
+        $cacheKey = 'mandate_'.$mandate;
+
+        if (!isset($this->roleTranslationCache[$cacheKey])) {
+            $key = 'adherent.mandate.type.'.$mandate;
+            $label = $this->translator->trans($key);
+            $this->roleTranslationCache[$cacheKey] = $label === $key ? $mandate : $label;
+        }
+
+        return $this->roleTranslationCache[$cacheKey];
     }
 }
