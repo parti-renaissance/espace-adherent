@@ -21733,16 +21733,16 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.18",
+            "version": "2.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "44a216a5cd9fe52be489dcf1e2d565c473daa1ca"
+                "reference": "27cd48bc59b4913464095288fbf197a66dacb9b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/44a216a5cd9fe52be489dcf1e2d565c473daa1ca",
-                "reference": "44a216a5cd9fe52be489dcf1e2d565c473daa1ca",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/27cd48bc59b4913464095288fbf197a66dacb9b8",
+                "reference": "27cd48bc59b4913464095288fbf197a66dacb9b8",
                 "shasum": ""
             },
             "require": {
@@ -21803,9 +21803,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.18"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.19"
             },
-            "time": "2026-02-24T10:01:00+00:00"
+            "time": "2026-03-10T16:59:12+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
