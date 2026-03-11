@@ -16,18 +16,16 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
-use UAParser\Parser;
 
 class Manager
 {
-    private ?Parser $parser = null;
-
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AccessTokenRepository $accessTokenRepository,
         private readonly AppSessionRepository $appSessionRepository,
         private readonly RequestStack $requestStack,
         private readonly MessageBusInterface $bus,
+        private readonly DeviceInfoParser $deviceInfoParser,
     ) {
     }
 
@@ -72,7 +70,7 @@ class Manager
             $request->getHeaderLine('X-App-Version') ?: ($request->getQueryParams()['app-version'] ?? null),
             $appSystem,
             $session->ip ?? $this->requestStack->getMainRequest()?->getClientIp(),
-            $userAgent ? $this->parseDeviceInfo($userAgent) : null,
+            $userAgent ? $this->deviceInfoParser->parse($userAgent) : null,
         );
 
         $session->adherent->recordLastLoginTime();
@@ -87,8 +85,9 @@ class Manager
             && $previousSession->client === $session->client
             && $previousSession->appSystem === $appSystem
         ) {
-            $previousUa = $this->getParser()->parse($previousSession->userAgent ?? '');
-            $currentUa = $this->getParser()->parse($userAgent ?? '');
+            $parser = $this->deviceInfoParser->getParser();
+            $previousUa = $parser->parse($previousSession->userAgent ?? '');
+            $currentUa = $parser->parse($userAgent ?? '');
 
             if ($previousUa->device->brand === $currentUa->device->brand && $previousUa->ua->family === $currentUa->ua->family) {
                 return true;
@@ -96,25 +95,5 @@ class Manager
         }
 
         return false;
-    }
-
-    private function parseDeviceInfo(string $userAgent): string
-    {
-        $result = $this->getParser()->parse($userAgent);
-        $family = $result->device->family;
-        $model = $result->device->model;
-
-        // Use model if more specific than family (e.g., "iPhone16,2" vs "iPhone")
-        if ($model && $model !== $family && 'Other' !== $model) {
-            return $model;
-        }
-
-        // Fallback to family, or browser if device is unknown
-        return 'Other' !== $family ? $family : $result->ua->family;
-    }
-
-    private function getParser(): Parser
-    {
-        return $this->parser ??= Parser::create();
     }
 }
