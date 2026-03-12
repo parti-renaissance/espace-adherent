@@ -12,7 +12,6 @@ final class SubscriptionTypeEnum extends Enum
     public const LOCAL_HOST_EMAIL = 'subscribed_emails_local_host';
 
     public const MOVEMENT_INFORMATION_EMAIL = 'subscribed_emails_movement_information';
-    public const WEEKLY_LETTER_EMAIL = 'subscribed_emails_weekly_letter';
 
     public const JAM_EMAIL = 'jam_email';
     public const DEPUTY_EMAIL = 'deputy_email';
@@ -26,7 +25,6 @@ final class SubscriptionTypeEnum extends Enum
     public const DEFAULT_EMAIL_TYPES = [
         self::LOCAL_HOST_EMAIL,
         self::MOVEMENT_INFORMATION_EMAIL,
-        self::WEEKLY_LETTER_EMAIL,
         self::DEPUTY_EMAIL,
         self::SENATOR_EMAIL,
         self::REFERENT_EMAIL,

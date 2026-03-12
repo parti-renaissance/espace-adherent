@@ -66,7 +66,7 @@ Feature:
             | membership_request[address][cityName]   | Paris                 |
         When I press "Suivant"
         And I wait 3 seconds
-        Then User "renaissance-user-4@en-marche-dev.fr" should have 8 subscription types
+        Then User "renaissance-user-4@en-marche-dev.fr" should have 7 subscription types
         And I should see "Cotisation pour l’année 2026"
         When I press "Je cotise pour 60 €"
 

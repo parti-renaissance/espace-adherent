@@ -33,8 +33,8 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
     /**
      * @return SubscriptionType[]
      */
-    public function findAllOrderedByPosition(): array
+    public function findAllOrderedByPosition(array $codes): array
     {
-        return $this->findBy([], ['position' => 'ASC']);
+        return $this->findBy(['code' => $codes], ['position' => 'ASC']);
     }
 }

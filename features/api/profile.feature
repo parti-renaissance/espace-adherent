@@ -55,31 +55,27 @@ Feature:
                 "activity_area": null,
                 "subscription_types": [
                     {
-                        "label": "Recevoir les emails du national",
+                        "label": "National",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
-                        "label": "Recevoir la newsletter hebdomadaire nationale",
-                        "code": "subscribed_emails_weekly_letter"
-                    },
-                    {
-                        "label": "Recevoir les emails de mon Assemblée départementale",
+                        "label": "Mon assemblée départementale",
                         "code": "subscribed_emails_referents"
                     },
                     {
-                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
+                        "label": "Ma circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les emails de ma/mon sénateur/trice",
+                        "label": "Mon sénateur/trice",
                         "code": "senator_email"
                     },
                     {
-                        "label": "Recevoir les emails des candidats du parti",
+                        "label": "Les candidats du Parti",
                         "code": "candidate_email"
                     },
                     {
-                        "label": "Recevoir les emails d'événements",
+                        "label": "Notification nouvel événement proche de chez moi",
                         "code": "event_email"
                     }
                 ],
@@ -140,7 +136,7 @@ Feature:
                     "city_name": "Lyon 3ème",
                     "country": "FR"
                 },
-                "subscription_types": ["subscribed_emails_weekly_letter"],
+                "subscription_types": [],
                 "party_membership": "modem",
                 "other_party_membership": false
             }
@@ -159,12 +155,7 @@ Feature:
                     "city_name": "Lyon 3ème",
                     "country": "FR"
                 },
-                "subscription_types": [
-                    {
-                        "label": "Recevoir la newsletter hebdomadaire nationale",
-                        "code": "subscribed_emails_weekly_letter"
-                    }
-                ],
+                "subscription_types": [],
                 "party_membership": "modem",
                 "other_party_membership": false
             }
@@ -427,7 +418,7 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les emails du national",
+                        "label": "National",
                         "code": "subscribed_emails_movement_information"
                     }
                 ]
@@ -901,38 +892,34 @@ Feature:
                     },
                     {
                         "code": "subscribed_emails_movement_information",
-                        "label": "Recevoir les emails du national"
-                    },
-                    {
-                        "code": "subscribed_emails_weekly_letter",
-                        "label": "Recevoir la newsletter hebdomadaire nationale"
+                        "label": "National"
                     },
                     {
                         "code": "subscribed_emails_referents",
-                        "label": "Recevoir les emails de mon Assemblée départementale"
+                        "label": "Mon assemblée départementale"
                     },
                     {
                         "code": "deputy_email",
-                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription"
+                        "label": "Ma circonscription"
                     },
                     {
                         "code": "subscribed_emails_local_host",
-                        "label": "Recevoir les emails de mon Comité local"
+                        "label": "Mon comité local"
                     },
                     {
                         "code": "senator_email",
-                        "label": "Recevoir les emails de ma/mon sénateur/trice"
+                        "label": "Mon sénateur/trice"
                     },
                     {
                         "code": "candidate_email",
-                        "label": "Recevoir les emails des candidats du parti"
+                        "label": "Les candidats du Parti"
                     },
                     {
                         "code": "jam_email",
                         "label": "Recevoir les emails des Jeunes avec Macron"
                     },
                     {
-                        "label": "Recevoir les emails d'événements",
+                        "label": "Notification nouvel événement proche de chez moi",
                         "code": "event_email"
                     }
                 ],
@@ -1255,27 +1242,23 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les emails du national",
+                        "label": "National",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
-                        "label": "Recevoir la newsletter hebdomadaire nationale",
-                        "code": "subscribed_emails_weekly_letter"
-                    },
-                    {
-                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
+                        "label": "Ma circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les emails de mon Comité local",
+                        "label": "Mon comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les emails de ma/mon sénateur/trice",
+                        "label": "Mon sénateur/trice",
                         "code": "senator_email"
                     },
                     {
-                        "label": "Recevoir les emails d'événements",
+                        "label": "Notification nouvel événement proche de chez moi",
                         "code": "event_email"
                     }
                 ],
@@ -1392,27 +1375,23 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les emails du national",
+                        "label": "National",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
-                        "label": "Recevoir la newsletter hebdomadaire nationale",
-                        "code": "subscribed_emails_weekly_letter"
-                    },
-                    {
-                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
+                        "label": "Ma circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les emails de mon Comité local",
+                        "label": "Mon comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les emails de ma/mon sénateur/trice",
+                        "label": "Mon sénateur/trice",
                         "code": "senator_email"
                     },
                     {
-                        "label": "Recevoir les emails d'événements",
+                        "label": "Notification nouvel événement proche de chez moi",
                         "code": "event_email"
                     }
                 ],
@@ -1485,27 +1464,23 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les emails du national",
+                        "label": "National",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
-                        "label": "Recevoir la newsletter hebdomadaire nationale",
-                        "code": "subscribed_emails_weekly_letter"
-                    },
-                    {
-                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
+                        "label": "Ma circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les emails de mon Comité local",
+                        "label": "Mon comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les emails de ma/mon sénateur/trice",
+                        "label": "Mon sénateur/trice",
                         "code": "senator_email"
                     },
                     {
-                        "label": "Recevoir les emails d'événements",
+                        "label": "Notification nouvel événement proche de chez moi",
                         "code": "event_email"
                     }
                 ],
