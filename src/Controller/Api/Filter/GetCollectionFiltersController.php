@@ -18,23 +18,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
 class GetCollectionFiltersController extends AbstractController
 {
-    public function __construct(
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly FiltersGenerator $builder,
-    ) {
-    }
-
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, ScopeGeneratorResolver $scopeGeneratorResolver, FiltersGenerator $builder): Response
     {
         if (!$feature = $request->query->get('feature')) {
             throw new BadRequestHttpException('Parameter "feature" is missing or empty');
         }
 
-        return $this->json(
-            $this->builder->generate($this->scopeGeneratorResolver->generate()->getMainCode(), $feature),
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['filter:read']]
-        );
+        if (!$scopeCode = $scopeGeneratorResolver->generate()?->getMainCode()) {
+            throw new BadRequestHttpException('Parameter "scope" is missing or empty');
+        }
+
+        return $this->json($builder->generate($scopeCode, $feature), context: ['groups' => ['filter:read']]);
     }
 }

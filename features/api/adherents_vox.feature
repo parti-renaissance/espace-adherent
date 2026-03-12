@@ -64,16 +64,13 @@ Feature:
                     "web": null
                 },
                 "subscription_types": [
-                    {"code": "subscribed_emails_movement_information", "label": "Recevoir les emails du national", "subscribed": false},
-                    {"code": "subscribed_emails_weekly_letter", "label": "Recevoir la newsletter hebdomadaire nationale", "subscribed": false},
-                    {"code": "subscribed_emails_referents", "label": "Recevoir les emails de mon Assemblée départementale", "subscribed": false},
-                    {"code": "deputy_email", "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription", "subscribed": false},
-                    {"code": "subscribed_emails_local_host", "label": "Recevoir les emails de mon Comité local", "subscribed": false},
-                    {"code": "senator_email", "label": "Recevoir les emails de ma/mon sénateur/trice", "subscribed": false},
-                    {"code": "candidate_email", "label": "Recevoir les emails des candidats du parti", "subscribed": false},
-                    {"code": "jam_email", "label": "Recevoir les emails des Jeunes avec Macron", "subscribed": false},
-                    {"code": "event_email", "label": "Recevoir les emails d'événements", "subscribed": false},
-                    {"code": "militant_action_sms", "label": "Recevoir les informations sur les actions militantes du mouvement par téléphone", "subscribed": false}
+                    {"code": "subscribed_emails_movement_information", "label": "National", "subscribed": false},
+                    {"code": "subscribed_emails_referents", "label": "Mon assemblée départementale", "subscribed": false},
+                    {"code": "deputy_email", "label": "Ma circonscription", "subscribed": false},
+                    {"code": "subscribed_emails_local_host", "label": "Mon comité local", "subscribed": false},
+                    {"code": "senator_email", "label": "Mon sénateur/trice", "subscribed": false},
+                    {"code": "candidate_email", "label": "Les candidats du Parti", "subscribed": false},
+                    {"code": "event_email", "label": "Notification nouvel événement proche de chez moi", "subscribed": false}
                 ],
                 "roles": [
                     {"code": "president_departmental_assembly", "label": "Président d'assemblée départementale", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null}

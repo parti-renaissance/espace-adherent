@@ -43,67 +43,67 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             if ($isVoxDetail) {
                 $data['subscription_types'] = $this->formatSubscriptionTypes($object);
             }
-        } else {
-            $data['email_subscription'] = $object->isEmailSubscribed();
 
-            if ($scope = $this->scopeGeneratorResolver->generate()) {
-                if ($scope->getMainUser()->isModemMembership()) {
-                    $data['email'] = null;
-                }
+            return $data;
+        }
 
-                if (!empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null)) {
-                    $data['email_subscription'] = $data['email_subscription'] && \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
-                }
+        $data['email_subscription'] = $object->isEmailSubscribed();
+
+        if ($scope = $this->scopeGeneratorResolver->generate()) {
+            if ($scope->getMainUser()->isModemMembership()) {
+                $data['email'] = null;
             }
 
-            if (array_intersect(['managed_users_list', 'managed_user_read'], $groups)) {
-                $gender = $object->getGender();
-
-                if (isset($data['roles'])) {
-                    $delegatedSuffix = 'female' === $gender ? ' déléguée' : ' délégué';
-
-                    $data['tags'] = array_merge(
-                        $data['tags'] ?? [],
-                        array_map(
-                            function (array $role) use ($gender, $delegatedSuffix) {
-                                $code = $role['code'];
-
-                                return [
-                                    'type' => 'role',
-                                    'label' => $this->getTranslatedRoleLabel($code, $gender).(!empty($role['is_delegated']) ? $delegatedSuffix : ''),
-                                    'tooltip' => $role['function'] ?? null,
-                                ];
-                            },
-                            $data['roles']
-                        )
-                    );
-                    unset($data['roles']);
-                }
-
-                if (!empty($data['mandates'])) {
-                    $data['tags'] = array_merge(
-                        $data['tags'] ?? [],
-                        array_map(
-                            fn (string $mandate) => [
-                                'type' => 'mandate',
-                                'label' => $this->getTranslatedMandateLabel($mandate),
-                            ],
-                            $data['mandates']
-                        )
-                    );
-                } elseif (!empty($data['declared_mandates'])) {
-                    $data['tags'] = array_merge(
-                        $data['tags'] ?? [],
-                        array_map(
-                            fn (string $mandate) => [
-                                'type' => 'declared_mandate',
-                                'label' => $this->getTranslatedMandateLabel($mandate),
-                            ],
-                            $data['declared_mandates']
-                        )
-                    );
-                }
+            if (!empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null)) {
+                $data['email_subscription'] = $data['email_subscription'] && \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
             }
+        }
+
+        $gender = $object->getGender();
+
+        if (isset($data['roles'])) {
+            $delegatedSuffix = 'female' === $gender ? ' déléguée' : ' délégué';
+
+            $data['tags'] = array_merge(
+                $data['tags'] ?? [],
+                array_map(
+                    function (array $role) use ($gender, $delegatedSuffix) {
+                        $code = $role['code'];
+
+                        return [
+                            'type' => 'role',
+                            'label' => $this->getTranslatedRoleLabel($code, $gender).(!empty($role['is_delegated']) ? $delegatedSuffix : ''),
+                            'tooltip' => $role['function'] ?? null,
+                        ];
+                    },
+                    $data['roles']
+                )
+            );
+            unset($data['roles']);
+        }
+
+        if (!empty($data['mandates'])) {
+            $data['tags'] = array_merge(
+                $data['tags'] ?? [],
+                array_map(
+                    fn (string $mandate) => [
+                        'type' => 'mandate',
+                        'label' => $this->getTranslatedMandateLabel($mandate),
+                    ],
+                    $data['mandates']
+                )
+            );
+        } elseif (!empty($data['declared_mandates'])) {
+            $data['tags'] = array_merge(
+                $data['tags'] ?? [],
+                array_map(
+                    fn (string $mandate) => [
+                        'type' => 'declared_mandate',
+                        'label' => $this->getTranslatedMandateLabel($mandate),
+                    ],
+                    $data['declared_mandates']
+                )
+            );
         }
 
         return $data;
@@ -179,7 +179,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     {
         if (null === $this->subscriptionTypesCache) {
             $this->subscriptionTypesCache = [];
-            foreach ($this->subscriptionTypeRepository->findAllOrderedByPosition() as $type) {
+            foreach ($this->subscriptionTypeRepository->findAllOrderedByPosition(SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES) as $type) {
                 $this->subscriptionTypesCache[$type->getCode()] = $type->getLabel();
             }
         }

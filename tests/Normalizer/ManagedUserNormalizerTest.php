@@ -91,7 +91,7 @@ final class ManagedUserNormalizerTest extends TestCase
         // Mock subscription types from repository
         $subscriptionType1 = $this->createMock(SubscriptionType::class);
         $subscriptionType1->method('getCode')->willReturn('subscribed_emails_movement_information');
-        $subscriptionType1->method('getLabel')->willReturn('Recevoir les emails du national');
+        $subscriptionType1->method('getLabel')->willReturn('National');
 
         $subscriptionType2 = $this->createMock(SubscriptionType::class);
         $subscriptionType2->method('getCode')->willReturn('subscribed_emails_weekly_letter');
@@ -127,7 +127,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertSame([
             'code' => 'subscribed_emails_movement_information',
-            'label' => 'Recevoir les emails du national',
+            'label' => 'National',
             'subscribed' => true,
         ], $result['subscription_types'][0]);
 

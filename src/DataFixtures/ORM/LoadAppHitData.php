@@ -23,7 +23,6 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $faker->seed(1234);
 
         $adherentRepo = $manager->getRepository(Adherent::class);
         $eventRepo = $manager->getRepository(Event::class);
@@ -47,7 +46,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             }
             $pool = $sessionsByAdherent[$aid];
             /** @var AppSession $sess */
-            $sess = $faker->randomElement($pool);
+            $sess = $pool[array_rand($pool)];
 
             $created = $sess->getCreatedAt();
             $diff = $when->diff($created)->days ?: 999;
@@ -89,19 +88,33 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
 
             $sessionsCount = $random ? $faker->numberBetween(8, 18) : 10;
 
+            if (!$random) {
+                $copyAdherents = array_filter($copyAdherents, static function (Adherent $a): bool {
+                    return 'president-ad@renaissance-dev.fr' !== $a->getEmailAddress();
+                });
+                $copyAdherents = array_values($copyAdherents);
+                usort($copyAdherents, static function (Adherent $a, Adherent $b): int {
+                    return $a->getId() <=> $b->getId();
+                });
+            }
+
             for ($s = 0; $s < $sessionsCount; ++$s) {
-                $copyAdherents = $faker->shuffleArray($copyAdherents);
-                $adherent = array_shift($copyAdherents);
-                $maybeRef = $faker->randomElement($adherents);
+                if ($random) {
+                    shuffle($copyAdherents);
+                    $adherent = array_shift($copyAdherents);
+                } else {
+                    $adherent = $copyAdherents[$s];
+                }
+                $maybeRef = $adherents[array_rand($adherents)];
                 $referrer = $maybeRef !== $adherent ? $maybeRef : null;
 
-                $activityUuid = Uuid::fromString($faker->uuid());
+                $activityUuid = Uuid::uuid4();
                 $sessionStart = $now
                     ->sub(new \DateInterval('P'.$faker->numberBetween(0, 14).'D'))
                     ->setTime($faker->numberBetween(8, 22), $faker->numberBetween(0, 59))
                 ;
 
-                $appSystem = $faker->randomElement($systems);
+                $appSystem = $systems[array_rand($systems)];
                 $appVersion = 'v5.15.5#5';
 
                 $appSessionForSessionStart = $pickAppSession($adherent, $sessionStart);
