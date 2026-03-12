@@ -19,7 +19,7 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
         $mandate = new self(
             $command->getAdherent(),
             $command->getGender(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             null,
             $command->getQuality(),
             $command->isProvisional()
@@ -33,12 +33,12 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
     public static function createForCommittee(
         Committee $committee,
         Adherent $adherent,
-        ?\DateTime $beginDate = null,
-        ?\DateTime $finishDate = null,
+        ?\DateTimeInterface $beginDate = null,
+        ?\DateTimeInterface $finishDate = null,
         ?string $quality = null,
         bool $isProvisional = false,
     ): self {
-        $mandate = new self($adherent, $adherent->getGender(), $beginDate ?? new \DateTime(), $finishDate, $quality, $isProvisional);
+        $mandate = new self($adherent, $adherent->getGender(), $beginDate ?? new \DateTimeImmutable(), $finishDate, $quality, $isProvisional);
         $mandate->setCommittee($committee);
 
         return $mandate;
@@ -54,7 +54,7 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
         $this->provisional = $provisional;
     }
 
-    public function end(\DateTime $now, ?string $reason = null): void
+    public function end(\DateTimeInterface $now, ?string $reason = null): void
     {
         $this->finishAt = $now;
         $this->setReason($reason);

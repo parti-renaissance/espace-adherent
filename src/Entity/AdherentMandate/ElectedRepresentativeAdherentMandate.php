@@ -64,8 +64,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
         ?UuidInterface $uuid,
         Adherent $adherent,
         string $mandateType,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeInterface $beginAt = null,
+        ?\DateTimeInterface $finishAt = null,
         ?string $delegation = null,
         ?Zone $zone = null,
     ): self {

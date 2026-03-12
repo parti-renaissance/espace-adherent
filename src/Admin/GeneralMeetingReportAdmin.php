@@ -76,7 +76,7 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
                     'datepicker_options' => [
                         'useCurrent' => false,
                         'restrictions' => [
-                            'maxDate' => new \DateTime(),
+                            'maxDate' => new \DateTimeImmutable(),
                         ],
                     ],
                 ])

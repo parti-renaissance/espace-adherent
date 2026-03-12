@@ -61,7 +61,7 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
 
         $token->consume($adherent);
 
-        $this->assertInstanceOf(\DateTime::class, $token->getUsageDate());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $token->getUsageDate());
     }
 
     private function generateToken($adherent, string $lifetime = '+1 day')

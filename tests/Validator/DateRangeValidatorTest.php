@@ -54,7 +54,7 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $this->expectException(ConstraintDefinitionException::class);
         $object = new \stdClass();
 
-        $object->foo = new \DateTime();
+        $object->foo = new \DateTimeImmutable();
         $object->bar = 'hello world';
 
         $this->validator->validate($object, new DateRange(
@@ -78,8 +78,8 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
     public function testWithInvalidDateRange(): void
     {
         $object = new \stdClass();
-        $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
-        $object->endDate = new \DateTime('2018-05-20 15:00:00+02:00');
+        $object->startDate = new \DateTimeImmutable('2018-05-15 15:00:00+02:00');
+        $object->endDate = new \DateTimeImmutable('2018-05-20 15:00:00+02:00');
 
         $this->validator->validate($object, new DateRange(
             'startDate',
@@ -98,8 +98,8 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
     public function testWithInvalidInterval(): void
     {
         $object = new \stdClass();
-        $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
-        $object->endDate = new \DateTime('2018-05-16 15:00:00+02:00');
+        $object->startDate = new \DateTimeImmutable('2018-05-15 15:00:00+02:00');
+        $object->endDate = new \DateTimeImmutable('2018-05-16 15:00:00+02:00');
 
         $this->validator->validate($object, $constraint = new DateRange(
             'startDate',
@@ -116,7 +116,7 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised()
         ;
 
-        $object->endDate = new \DateTime('2018-05-22 15:00:00+02:00');
+        $object->endDate = new \DateTimeImmutable('2018-05-22 15:00:00+02:00');
 
         $this->validator->validate($object, $constraint);
 

@@ -56,8 +56,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             Genders::MALE,
             18,
             42,
-            new \DateTime('2017-07-01'),
-            new \DateTime('2021-07-01'),
+            new \DateTimeImmutable('2017-07-01'),
+            new \DateTimeImmutable('2021-07-01'),
             true,
             false,
             true,
@@ -73,7 +73,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             null,
             null,
             null,
-            new \DateTime('2019-12-31')
+            new \DateTimeImmutable('2019-12-31')
         );
         $audienceCandidate = $this->createAudience(
             self::AUDIENCE_9_UUID,
@@ -115,8 +115,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         ?string $gender = null,
         ?int $ageMin = null,
         ?int $ageMax = null,
-        ?\DateTime $registeredSince = null,
-        ?\DateTime $registeredUntil = null,
+        ?\DateTimeInterface $registeredSince = null,
+        ?\DateTimeInterface $registeredUntil = null,
         ?bool $isCommitteeMember = null,
         ?bool $isCertified = null,
         ?bool $hasEmailSubscription = null,

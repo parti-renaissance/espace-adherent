@@ -42,7 +42,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
             $zoneDepartment77,
             'Premier PV d\'AG du 77',
             true,
-            new \DateTime('2023-02-05 14:45:00')
+            new \DateTimeImmutable('2023-02-05 14:45:00')
         );
         $this->createFile($generalMeetingReport);
         $manager->persist($generalMeetingReport);
@@ -53,7 +53,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
             $zoneDepartment77,
             'Deuxième PV d\'AG du 77',
             true,
-            new \DateTime('2023-02-08 19:00:00')
+            new \DateTimeImmutable('2023-02-08 19:00:00')
         );
         $this->createFile($generalMeetingReport);
         $manager->persist($generalMeetingReport);
@@ -69,7 +69,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
             $zoneDepartment06,
             'Premier PV d\'AG du 06',
             true,
-            new \DateTime('2023-02-07 15:30:00')
+            new \DateTimeImmutable('2023-02-07 15:30:00')
         );
         $this->createFile($generalMeetingReport);
         $manager->persist($generalMeetingReport);

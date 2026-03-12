@@ -296,7 +296,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findAvailableMemberships(CommitteeCandidacy $candidacy, string $query): array
     {
         $membership = $candidacy->getCommitteeMembership();
-        $refDate = $candidacy->getElection()->getVoteEndDate() ?? new \DateTime();
+        $refDate = $candidacy->getElection()->getVoteEndDate() ?? new \DateTimeImmutable();
 
         return $this
             ->createQueryBuilder('membership')
@@ -317,8 +317,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 'membership_id' => $membership->getId(),
                 'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
                 'adherent_status' => Adherent::ENABLED,
-                'registration_limit_date' => (clone $refDate)->modify('-3 months'),
-                'limit_date' => (clone $refDate)->modify('-30 days'),
+                'registration_limit_date' => $refDate->modify('-3 months'),
+                'limit_date' => $refDate->modify('-30 days'),
             ])
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')

@@ -23,7 +23,7 @@ class ConfirmNewsletterController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
     ): Response {
         if (!$subscription->confirmedAt) {
-            $subscription->confirmedAt = new \DateTime();
+            $subscription->confirmedAt = new \DateTimeImmutable();
             $entityManager->flush();
 
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);

@@ -49,9 +49,9 @@ class ActionNotifyCommand extends Command
         ));
 
         if ($firstNotification) {
-            $action->notifiedAtFirstNotification = new \DateTime();
+            $action->notifiedAtFirstNotification = new \DateTimeImmutable();
         } else {
-            $action->notifiedAtSecondNotification = new \DateTime();
+            $action->notifiedAtSecondNotification = new \DateTimeImmutable();
         }
 
         $this->entityManager->flush();
@@ -64,14 +64,14 @@ class ActionNotifyCommand extends Command
             ->andWhere('a.date >= :from_date AND a.date <= :to_date')
             ->setParameters([
                 'status' => Action::STATUS_SCHEDULED,
-                'from_date' => new \DateTime('-15 min'),
-                'to_date' => new \DateTime(),
+                'from_date' => new \DateTimeImmutable('-15 min'),
+                'to_date' => new \DateTimeImmutable(),
             ])
         ;
 
         if ($firstNotification) {
             $queryBuilder
-                ->setParameter('to_date', new \DateTime('+1 hour'))
+                ->setParameter('to_date', new \DateTimeImmutable('+1 hour'))
                 ->andWhere('a.notifiedAtFirstNotification IS NULL')
             ;
         } else {

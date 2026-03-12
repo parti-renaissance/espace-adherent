@@ -28,14 +28,14 @@ class EventTagGenerator extends AbstractTagGenerator
                 fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event),
                 array_filter(
                     $inscriptions,
-                    static fn (EventInscription $inscription) => $inscription->event->endDate > new \DateTime()
+                    static fn (EventInscription $inscription) => $inscription->event->endDate > new \DateTimeImmutable()
                 )
             ),
             array_map(
                 fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event, true),
                 array_filter(
                     $inscriptions,
-                    static fn (EventInscription $inscription) => $inscription->firstTicketScannedAt && $inscription->event->startDate < new \DateTime()
+                    static fn (EventInscription $inscription) => $inscription->firstTicketScannedAt && $inscription->event->startDate < new \DateTimeImmutable()
                 )
             ),
         )));

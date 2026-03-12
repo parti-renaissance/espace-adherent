@@ -34,8 +34,8 @@ class ProcurationRequest implements \Stringable
     #[ORM\Column(length: 50, nullable: true)]
     public ?string $clientIp = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $remindedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $remindedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]

@@ -63,11 +63,8 @@ class Device
     #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastLoggedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $lastLoggedAt = null;
 
     public function __construct(UuidInterface $uuid, string $deviceUuid, ?string $postalCode = null)
     {
@@ -78,14 +75,14 @@ class Device
         $this->zones = new ZoneCollection();
     }
 
-    public function getLastLoggedAt(): ?\DateTimeInterface
+    public function getLastLoggedAt(): ?\DateTimeImmutable
     {
         return $this->lastLoggedAt;
     }
 
     public function login(): void
     {
-        $this->lastLoggedAt = new \DateTime('now');
+        $this->lastLoggedAt = new \DateTimeImmutable('now');
     }
 
     public function getDeviceUuid(): string

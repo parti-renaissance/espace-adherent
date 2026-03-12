@@ -74,7 +74,7 @@ class SyncReportCommandHandler
 
     private function calculateDelay(\DateTimeInterface $originTs): ?int
     {
-        $age = new \DateTime()->getTimestamp() - $originTs->getTimestamp();
+        $age = new \DateTimeImmutable()->getTimestamp() - $originTs->getTimestamp();
 
         $min = 60;
         $hour = 3600;

@@ -51,7 +51,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             null,
-            new \DateTime('-1 hour')
+            new \DateTimeImmutable('-1 hour')
         ));
 
         $manager->persist($object = $this->createNews(
@@ -64,7 +64,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             false,
             null,
-            new \DateTime('-2 hours')
+            new \DateTimeImmutable('-2 hours')
         ));
         $object->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::NATIONAL]);
 
@@ -78,7 +78,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             $this->getReference('adherent-8', Adherent::class),
-            new \DateTime('-3 hours')
+            new \DateTimeImmutable('-3 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -91,7 +91,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             false,
             $this->getReference('senator-59', Adherent::class),
-            new \DateTime('-4 hours')
+            new \DateTimeImmutable('-4 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -104,7 +104,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             null,
-            new \DateTime('-5 hours')
+            new \DateTimeImmutable('-5 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -117,7 +117,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             $this->getReference('adherent-19', Adherent::class),
-            new \DateTime('-6 hours')
+            new \DateTimeImmutable('-6 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -130,7 +130,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             $this->getReference('adherent-8', Adherent::class),
-            new \DateTime('-2 days')
+            new \DateTimeImmutable('-2 days')
         ));
 
         $manager->persist($this->createNews(
@@ -164,7 +164,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             true,
             $this->getReference('adherent-8', Adherent::class),
-            new \DateTime('-3 days')
+            new \DateTimeImmutable('-3 days')
         ));
 
         $manager->persist($object = $this->createNews(
@@ -177,7 +177,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             true,
             null,
-            new \DateTime('-1 day')
+            new \DateTimeImmutable('-1 day')
         ));
         $object->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::NATIONAL]);
 
@@ -191,7 +191,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             true,
             $this->getReference('correspondent-1', Adherent::class),
-            new \DateTime('-7 hours')
+            new \DateTimeImmutable('-7 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -204,7 +204,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             true,
             $this->getReference('adherent-9', Adherent::class),
-            new \DateTime('-8 hours')
+            new \DateTimeImmutable('-8 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -217,7 +217,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             true,
             $this->getReference('senatorial-candidate', Adherent::class),
-            new \DateTime('-10 hours')
+            new \DateTimeImmutable('-10 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -230,7 +230,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             true,
             $this->getReference('adherent-5', Adherent::class),
-            new \DateTime('-9 hours')
+            new \DateTimeImmutable('-9 hours')
         ));
 
         $manager->flush();
@@ -246,7 +246,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
         bool $notification = true,
         bool $published = true,
         ?Adherent $author = null,
-        ?\DateTime $createdAt = null,
+        ?\DateTimeInterface $createdAt = null,
     ): News {
         $news = new News(
             Uuid::fromString($uuid),
@@ -258,7 +258,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             $notification,
             $published,
         );
-        $news->setCreatedAt($createdAt ?? new \DateTime());
+        $news->setCreatedAt($createdAt ?? new \DateTimeImmutable());
         if ($author) {
             $news->setAuthor($author);
         }

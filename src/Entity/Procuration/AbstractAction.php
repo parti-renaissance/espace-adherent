@@ -20,8 +20,8 @@ abstract class AbstractAction
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $date;
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(type: 'json', nullable: true)]
@@ -42,7 +42,7 @@ abstract class AbstractAction
 
     public function __construct(
         UuidInterface $uuid,
-        \DateTimeInterface $date,
+        \DateTimeImmutable $date,
     ) {
         $this->uuid = $uuid;
         $this->date = $date;

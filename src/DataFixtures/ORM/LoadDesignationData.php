@@ -31,10 +31,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation avec les candidatures ouvertes');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('+1 week'));
-        $designation->setVoteStartDate(new \DateTime('+1 week'));
-        $designation->setVoteEndDate(new \DateTime('+4 week'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('+1 week'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('+1 week'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+4 week'));
 
         $this->setReference('designation-1', $designation);
         $manager->persist($designation);
@@ -44,10 +44,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV1Data::COMMITTEE_5_UUID));
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
-        $designation->setVoteStartDate(new \DateTime('-1 hour'));
-        $designation->setVoteEndDate(new \DateTime('+4 week'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-2 hours'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 hour'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+4 week'));
 
         $this->setReference('designation-2', $designation);
         $manager->persist($designation);
@@ -56,10 +56,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation avec les résultats disponibles');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('-1 week'));
-        $designation->setVoteStartDate(new \DateTime('-6 days'));
-        $designation->setVoteEndDate(new \DateTime('-1 hour'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-1 week'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-6 days'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('-1 hour'));
 
         $this->setReference('designation-3', $designation);
         $manager->persist($designation);
@@ -68,10 +68,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation archivée');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
-        $designation->setCandidacyStartDate(new \DateTime('-6 months'));
-        $designation->setCandidacyEndDate(new \DateTime('-5 months'));
-        $designation->setVoteStartDate(new \DateTime('-5 months'));
-        $designation->setVoteEndDate(new \DateTime('-4 months'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-6 months'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-5 months'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-5 months'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('-4 months'));
 
         $this->setReference('designation-4', $designation);
         $manager->persist($designation);
@@ -80,10 +80,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation "Comités-Animateurs" ouverte');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime('-1 day'));
-        $designation->setCandidacyEndDate(new \DateTime('+5 days'));
-        $designation->setVoteStartDate(new \DateTime('+7 days'));
-        $designation->setVoteEndDate(new \DateTime('+2 weeks'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('+5 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('+7 days'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+2 weeks'));
 
         $this->setReference('designation-5', $designation);
         $manager->persist($designation);
@@ -91,7 +91,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // COPOL designation with started CANDIDATURE period
         $designation = new Designation('Désignation COPOL avec les candidatures ouvertes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
 
         $this->setReference('designation-6', $designation);
         $manager->persist($designation);
@@ -99,10 +99,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // COPOL designation with started VOTE period
         $designation = new Designation('Désignation COPOL les votes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
-        $designation->setVoteStartDate(new \DateTime('-1 hour'));
-        $designation->setVoteEndDate(new \DateTime('+4 week'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-2 hours'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 hour'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+4 week'));
         $designation->markAsLimited();
 
         $this->setReference('designation-7', $designation);
@@ -112,10 +112,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Désignation "Comités-Animateurs" vote ouvert');
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime('-10 days'));
-        $designation->setCandidacyEndDate(new \DateTime('-2 days'));
-        $designation->setVoteStartDate(new \DateTime('-1 day'));
-        $designation->setVoteEndDate(new \DateTime('+2 weeks'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-10 days'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-2 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+2 weeks'));
         $designation->setDenomination(Designation::DENOMINATION_ELECTION);
 
         $this->setReference('designation-8', $designation);
@@ -128,10 +128,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         );
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime('-15 days'));
-        $designation->setCandidacyEndDate(new \DateTime('-10 days'));
-        $designation->setVoteStartDate(new \DateTime('-8 days'));
-        $designation->setVoteEndDate(new \DateTime('-1 day'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-15 days'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-10 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-8 days'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('-1 day'));
         $designation->setDenomination(Designation::DENOMINATION_ELECTION);
 
         $this->setReference('designation-9', $designation);
@@ -140,7 +140,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // NATIONAL_COUNCIL designation with started candidature period
         $designation = new Designation('Désignation Conseil national avec les candidatures');
         $designation->setType(DesignationTypeEnum::NATIONAL_COUNCIL);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
 
         $this->setReference('designation-10', $designation);
         $manager->persist($designation);
@@ -149,10 +149,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Élection Bureau Exécutif');
         $designation->setType(DesignationTypeEnum::EXECUTIVE_OFFICE);
         $designation->setDenomination(Designation::DENOMINATION_ELECTION);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('-10 minutes'));
-        $designation->setVoteStartDate(new \DateTime('+1 day'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-10 minutes'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('+1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->setNotifications(0);
         $designation->setResultScheduleDelay(2.5);
 
@@ -163,10 +163,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Vote des statuts');
         $designation->setType(DesignationTypeEnum::POLL);
         $designation->setDenomination(Designation::DENOMINATION_ELECTION);
-        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('-10 minutes'));
-        $designation->setVoteStartDate(new \DateTime('-5 minutes'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-10 minutes'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-5 minutes'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->setResultScheduleDelay(2.5);
 
         $this->setReference('designation-12', $designation);
@@ -175,8 +175,8 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // Local election in dpt 92
         $designation = new Designation('Élection départementale dans le département 92');
         $designation->setType(DesignationTypeEnum::LOCAL_ELECTION);
-        $designation->setVoteStartDate(new \DateTime('-5 minutes'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-5 minutes'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page', CmsBlock::class);
         $designation->seats = 7;
@@ -191,16 +191,16 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation('Sondage dans le département 92');
         $designation->customTitle = 'Mon super sondage';
         $designation->setType(DesignationTypeEnum::LOCAL_POLL);
-        $designation->electionCreationDate = new \DateTime('-2 hours');
-        $designation->setVoteStartDate($startDate = new \DateTime('-5 minutes'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->electionCreationDate = new \DateTimeImmutable('-2 hours');
+        $designation->setVoteStartDate($startDate = new \DateTimeImmutable('-5 minutes'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $designation->poll = $this->getReference('designation-poll-1', Poll::class);
         $designation->wordingWelcomePage = $this->getReference('cms-block-local-poll-welcome-page', CmsBlock::class);
         $designation->alertTitle = 'Élection en cours !!';
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Consulter';
-        $designation->alertBeginAt = (clone $startDate)->modify('-2 days');
+        $designation->alertBeginAt = $startDate->modify('-2 days');
 
         $this->setReference('designation-14', $designation);
         $manager->persist($designation);
@@ -209,8 +209,8 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         foreach (['06', '77', '93'] as $department) {
             $designation = new Designation("Élection départementale dans le département $department");
             $designation->setType(DesignationTypeEnum::LOCAL_ELECTION);
-            $designation->setVoteStartDate(new \DateTime('+1 day'));
-            $designation->setVoteEndDate(new \DateTime('+10 days'));
+            $designation->setVoteStartDate(new \DateTimeImmutable('+1 day'));
+            $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
             $designation->addZone(LoadGeoZoneData::getZoneReference($manager, "zone_department_$department"));
             $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page', CmsBlock::class);
 
@@ -221,11 +221,11 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_1_UUID));
         $designation->customTitle = 'Election AL - comité des 3 communes';
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime('-5 days'));
-        $designation->setCandidacyEndDate(new \DateTime('-2 days'));
-        $designation->setVoteStartDate(new \DateTime('-2 day'));
-        $designation->setVoteEndDate(new \DateTime('+1 day'));
-        $designation->electionCreationDate = new \DateTime('-3 days');
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-5 days'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-2 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-2 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+1 day'));
+        $designation->electionCreationDate = new \DateTimeImmutable('-3 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
         $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_1_UUID));
         $designation->markAsLimited();
@@ -236,11 +236,11 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_2_UUID));
         $designation->customTitle = 'Election AL - second comité des 3 communes';
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime());
-        $designation->setCandidacyEndDate(new \DateTime('+2 days'));
-        $designation->setVoteStartDate(new \DateTime('+2.5 days'));
-        $designation->setVoteEndDate(new \DateTime('+5 day'));
-        $designation->electionCreationDate = new \DateTime('+1 days');
+        $designation->setCandidacyStartDate(new \DateTimeImmutable());
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('+2 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('+2.5 days'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+5 day'));
+        $designation->electionCreationDate = new \DateTimeImmutable('+1 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
         $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_2_UUID));
         $designation->markAsLimited();
@@ -251,11 +251,11 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_3_UUID));
         $designation->customTitle = 'Election passée';
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
-        $designation->setCandidacyStartDate(new \DateTime('-2 months'));
-        $designation->setCandidacyEndDate(new \DateTime('-1 month'));
-        $designation->setVoteStartDate(new \DateTime('-1 month'));
-        $designation->setVoteEndDate(new \DateTime('-25 days'));
-        $designation->electionCreationDate = new \DateTime('-1 months');
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-2 months'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-1 month'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 month'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('-25 days'));
+        $designation->electionCreationDate = new \DateTimeImmutable('-1 months');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
         $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_2_UUID));
         $designation->markAsLimited();
@@ -266,10 +266,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $manager->persist($designation = new Designation('Consultation de test', Uuid::fromString(self::DESIGNATION_15_UUID)));
         $designation->customTitle = 'Consultation nationale';
         $designation->setType(DesignationTypeEnum::CONSULTATION);
-        $designation->setCandidacyStartDate(new \DateTime('-2 months'));
-        $designation->setCandidacyEndDate(new \DateTime('-1 month'));
-        $designation->setVoteStartDate(new \DateTime('-1 day'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-2 months'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-1 month'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->wordingWelcomePage = $this->getReference('cms-block-national-consultation-welcome-page', CmsBlock::class);
         $designation->poll = $this->getReference('designation-poll-2', Poll::class);
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
@@ -278,10 +278,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($designation = new Designation('Bureau de l\'ADT', Uuid::fromString(self::DESIGNATION_16_UUID)));
         $designation->setType(DesignationTypeEnum::TERRITORIAL_ASSEMBLY);
-        $designation->setCandidacyStartDate(new \DateTime('-2 months'));
-        $designation->setCandidacyEndDate(new \DateTime('-1 month'));
-        $designation->setVoteStartDate(new \DateTime('-1 day'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable('-2 months'));
+        $designation->setCandidacyEndDate(new \DateTimeImmutable('-1 month'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->alertTitle = 'Élection en cours !!';
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Consulter';
@@ -292,10 +292,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($designation = new Designation('Élection CN', Uuid::fromString(self::DESIGNATION_17_UUID)));
         $designation->setType(DesignationTypeEnum::CONGRESS_CN);
-        $designation->setVoteStartDate(new \DateTime('-1 day'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->alertTitle = 'Élection en cours !!';
-        $designation->alertBeginAt = new \DateTime('-3 day');
+        $designation->alertBeginAt = new \DateTimeImmutable('-3 day');
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Voir';
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
@@ -303,14 +303,14 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($designation = new Designation('Élection Animateur territorial', Uuid::fromString(self::DESIGNATION_18_UUID)));
         $designation->setType(DesignationTypeEnum::TERRITORIAL_ANIMATOR);
-        $designation->setVoteStartDate(new \DateTime('-1 day'));
-        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setVoteStartDate(new \DateTimeImmutable('-1 day'));
+        $designation->setVoteEndDate(new \DateTimeImmutable('+10 days'));
         $designation->targetYear = (int) date('Y');
         $designation->setIsBlankVoteEnabled(false);
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
-        $designation->membershipDeadline = new \DateTime('+1 day');
+        $designation->membershipDeadline = new \DateTimeImmutable('+1 day');
         $designation->alertTitle = 'Élection AT en cours !!';
-        $designation->alertBeginAt = new \DateTime('-3 day');
+        $designation->alertBeginAt = new \DateTimeImmutable('-3 day');
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Voir';
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');

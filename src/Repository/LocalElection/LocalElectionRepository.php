@@ -28,7 +28,7 @@ class LocalElectionRepository extends ServiceEntityRepository
                     designation.resultDisplayDelay > 0
                     AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
                 )')
-            ->setParameters(['types' => [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT], 'now' => new \DateTime()])
+            ->setParameters(['types' => [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT], 'now' => new \DateTimeImmutable()])
             ->addOrderBy('zone.code')
             ->getQuery()
             ->getResult()

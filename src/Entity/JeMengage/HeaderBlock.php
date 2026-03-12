@@ -54,15 +54,15 @@ class HeaderBlock implements \Stringable, ImageManageableInterface, ImageExposeI
     private ?string $content = null;
 
     #[Assert\GreaterThan('now')]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $deadlineDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $deadlineDate = null;
 
     public function __construct(
         ?string $name = null,
         ?string $prefix = null,
         ?string $slogan = null,
         ?string $content = null,
-        ?\DateTime $deadlineDate = null,
+        ?\DateTimeImmutable $deadlineDate = null,
     ) {
         $this->name = $name;
         $this->prefix = $prefix;
@@ -131,12 +131,12 @@ class HeaderBlock implements \Stringable, ImageManageableInterface, ImageExposeI
         $this->content = $content;
     }
 
-    public function getDeadlineDate(): ?\DateTime
+    public function getDeadlineDate(): ?\DateTimeImmutable
     {
         return $this->deadlineDate;
     }
 
-    public function setDeadlineDate(?\DateTime $deadlineDate): void
+    public function setDeadlineDate(?\DateTimeImmutable $deadlineDate): void
     {
         $this->deadlineDate = $deadlineDate;
     }

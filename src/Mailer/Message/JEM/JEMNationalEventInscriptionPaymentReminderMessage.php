@@ -27,7 +27,7 @@ class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractJEMMessa
                 'transport_title' => $eventInscription->getTransportConfig()['titre'] ?? null,
                 'package_city' => $eventInscription->packageCity,
                 'package_departure_time' => $eventInscription->packageDepartureTime,
-                'cancellation_date' => (clone $eventInscription->getCreatedAt())->modify(\sprintf('+%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN))->format('d/m/Y à H:i'),
+                'cancellation_date' => $eventInscription->getCreatedAt()->modify(\sprintf('+%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN))->format('d/m/Y à H:i'),
             ],
         );
 

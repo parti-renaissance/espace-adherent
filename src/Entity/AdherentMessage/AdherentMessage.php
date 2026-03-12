@@ -228,10 +228,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     private $filter;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTimeImmutable|null
      */
     #[Groups(['message_read_list', 'message_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $sentAt;
 
     /**
@@ -308,7 +308,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function markAsSent(): void
     {
-        $this->sentAt = new \DateTime();
+        $this->sentAt = new \DateTimeImmutable();
         $this->status = AdherentMessageStatusEnum::SENT;
     }
 
@@ -412,7 +412,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         return ' | Renaissance';
     }
 
-    public function getSentAt(): ?\DateTimeInterface
+    public function getSentAt(): ?\DateTimeImmutable
     {
         return $this->sentAt;
     }
@@ -514,7 +514,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->sentAt = null;
         $this->filter = null;
         $this->label .= ' - Copie';
-        $this->createdAt = $this->updatedAt = new \DateTime();
+        $this->createdAt = $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function isIndexable(): bool

@@ -32,7 +32,7 @@ class LoadHeaderBlockData extends Fixture
             self::PREFIX,
             'la majorité présidentielle',
             self::MARKDOWN_CONTENT,
-            new \DateTime('+2 weeks'),
+            new \DateTimeImmutable('+2 weeks'),
             true
         ));
 
@@ -53,7 +53,7 @@ class LoadHeaderBlockData extends Fixture
         string $prefix,
         ?string $slogan = null,
         ?string $content = null,
-        ?\DateTime $deadlineDate = null,
+        ?\DateTimeInterface $deadlineDate = null,
         bool $withImage = false,
     ): HeaderBlock {
         $headerBlock = new HeaderBlock($name, $prefix, $slogan, $content, $deadlineDate);

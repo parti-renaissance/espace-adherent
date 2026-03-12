@@ -39,7 +39,7 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         $object->animator = $this->getReference('adherent-55', Adherent::class);
 
         foreach (range(51, 60) as $index) {
-            $manager->persist($this->getReference('adherent-'.$index, Adherent::class)->followCommittee($object, new \DateTime('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
+            $manager->persist($this->getReference('adherent-'.$index, Adherent::class)->followCommittee($object, new \DateTimeImmutable('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
         }
 
         $this->setReference('committee-v2-1', $object);

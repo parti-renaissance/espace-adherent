@@ -28,7 +28,7 @@ class RequestSlotAction extends AbstractSlotAction
     {
         return new self(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $requestSlot
         );

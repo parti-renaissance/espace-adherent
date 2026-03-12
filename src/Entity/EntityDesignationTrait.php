@@ -31,22 +31,22 @@ trait EntityDesignationTrait
         $this->designation = $designation;
     }
 
-    public function getCandidacyPeriodStartDate(): ?\DateTime
+    public function getCandidacyPeriodStartDate(): ?\DateTimeImmutable
     {
         return $this->designation->getCandidacyStartDate();
     }
 
-    public function getCandidacyPeriodEndDate(): ?\DateTime
+    public function getCandidacyPeriodEndDate(): ?\DateTimeImmutable
     {
         return $this->designation->getCandidacyEndDate();
     }
 
-    public function getVoteStartDate(): ?\DateTime
+    public function getVoteStartDate(): ?\DateTimeImmutable
     {
         return $this->designation->getVoteStartDate();
     }
 
-    public function getVoteEndDate(): ?\DateTime
+    public function getVoteEndDate(): ?\DateTimeImmutable
     {
         return $this->designation->getVoteEndDate();
     }
@@ -58,7 +58,7 @@ trait EntityDesignationTrait
 
     public function isCandidacyPeriodActive(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->designation
             && $this->getCandidacyPeriodStartDate() <= $now
@@ -70,14 +70,14 @@ trait EntityDesignationTrait
 
     public function isCandidacyPeriodStarted(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->designation && $this->getCandidacyPeriodStartDate() && $this->getCandidacyPeriodStartDate() <= $now;
     }
 
     public function isVotePeriodActive(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->designation
             && $this->getVoteStartDate()
@@ -104,18 +104,18 @@ trait EntityDesignationTrait
             return false;
         }
 
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->designation
             && $this->getVoteEndDate() <= $now
-            && $now < (clone $voteEndDate)->modify(
+            && $now < $voteEndDate->modify(
                 \sprintf('+%d days', $this->designation->getResultDisplayDelay())
             );
     }
 
     public function isResultPeriodStarted(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->designation && $this->getVoteEndDate() && $this->getVoteEndDate() <= $now;
     }
@@ -131,14 +131,13 @@ trait EntityDesignationTrait
             return false;
         }
 
-        $now = new \DateTime();
-        $candidateEndDate = clone $candidateEndDate;
+        $now = new \DateTimeImmutable();
 
         return $candidateEndDate->modify(\sprintf('-%d days', $this->designation->getLockPeriodThreshold())) < $now
             && ($this->isCandidacyPeriodActive() || $now < $this->getRealVoteEndDate());
     }
 
-    public function getRealVoteEndDate(): \DateTime
+    public function getRealVoteEndDate(): \DateTimeImmutable
     {
         return $this->getVoteEndDate();
     }
@@ -158,7 +157,7 @@ trait EntityDesignationTrait
             return DesignationStatusEnum::NOT_STARTED;
         }
 
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
         if ($this->designation->getElectionCreationDate() && $this->designation->getElectionCreationDate() > $now) {
             return DesignationStatusEnum::NOT_STARTED;
         }

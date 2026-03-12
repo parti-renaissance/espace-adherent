@@ -88,8 +88,8 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $interests = [];
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $interestsUpdatedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $interestsUpdatedAt = null;
 
     #[Assert\Choice(choices: SourceEnum::ALL, message: 'contact.source.choice')]
     #[Assert\NotBlank]
@@ -110,8 +110,8 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $cguAccepted = false;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $processedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $processedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -185,10 +185,10 @@ class Contact implements RecaptchaChallengeInterface
     {
         $this->interests = $interests;
 
-        $this->interestsUpdatedAt = new \DateTime();
+        $this->interestsUpdatedAt = new \DateTimeImmutable();
     }
 
-    public function getInterestsUpdatedAt(): ?\DateTime
+    public function getInterestsUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->interestsUpdatedAt;
     }
@@ -240,10 +240,10 @@ class Contact implements RecaptchaChallengeInterface
 
     public function process(): void
     {
-        $this->processedAt = new \DateTime();
+        $this->processedAt = new \DateTimeImmutable();
     }
 
-    public function getProcessedAt(): ?\DateTimeInterface
+    public function getProcessedAt(): ?\DateTimeImmutable
     {
         return $this->processedAt;
     }

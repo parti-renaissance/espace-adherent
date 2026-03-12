@@ -141,7 +141,7 @@ class RemindProcurationMatchedSlotCommand extends Command
         $qb = $this->roundRepository
             ->createQueryBuilder('round')
             ->andWhere('round.date > :now')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
         ;
 
         if ($roundId) {

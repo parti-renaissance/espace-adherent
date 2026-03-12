@@ -320,7 +320,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             $firstName,
             $lastName,
             $gender,
-            new \DateTime($birthdate),
+            new \DateTimeImmutable($birthdate),
             $votePlace
         );
     }

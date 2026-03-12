@@ -39,9 +39,9 @@ class RemoveAdherentForAllFuturAgoraEventCommandHandler
             return;
         }
 
-        $this->eventRegistrationRepository->removeAllForFuturAgoraEvents($agora, $adherent, new \DateTime(), RegistrationStatusEnum::INVITED);
+        $this->eventRegistrationRepository->removeAllForFuturAgoraEvents($agora, $adherent, new \DateTimeImmutable(), RegistrationStatusEnum::INVITED);
 
-        if ($events = $this->eventRepository->findAllFuturAgoraEvents($agora, new \DateTime())) {
+        if ($events = $this->eventRepository->findAllFuturAgoraEvents($agora, new \DateTimeImmutable())) {
             $this->algoliaManager->batch($events);
         }
     }

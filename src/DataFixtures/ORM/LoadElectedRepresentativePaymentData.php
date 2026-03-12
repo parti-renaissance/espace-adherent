@@ -24,7 +24,7 @@ class LoadElectedRepresentativePaymentData extends Fixture implements DependentF
         $payment = new Payment(Uuid::fromString(self::PAYMENT_01_UUID));
         $payment->electedRepresentative = $erDepartment92;
         $payment->ohmeId = '12345789';
-        $payment->date = new \DateTime('2023-03-16');
+        $payment->date = new \DateTimeImmutable('2023-03-16');
         $payment->method = 'IBAN';
         $payment->status = 'confirmed';
         $payment->amount = 50;
@@ -36,7 +36,7 @@ class LoadElectedRepresentativePaymentData extends Fixture implements DependentF
         $payment = new Payment(Uuid::fromString(self::PAYMENT_02_UUID));
         $payment->electedRepresentative = $erDepartment92;
         $payment->ohmeId = '987654321';
-        $payment->date = new \DateTime('2023-04-16');
+        $payment->date = new \DateTimeImmutable('2023-04-16');
         $payment->method = 'IBAN';
         $payment->status = 'confirmed';
         $payment->amount = 50;

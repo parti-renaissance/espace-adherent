@@ -42,11 +42,11 @@ class PushToken
     #[ORM\Column(unique: true)]
     public ?string $identifier = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $lastActivityDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $lastActivityDate = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $unsubscribedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $unsubscribedAt = null;
 
     public function __construct(?UuidInterface $uuid = null, ?string $identifier = null)
     {

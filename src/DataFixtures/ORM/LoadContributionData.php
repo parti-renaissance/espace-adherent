@@ -23,7 +23,7 @@ class LoadContributionData extends Fixture implements DependentFixtureInterface
         $erDepartment92 = $this->getReference('renaissance-user-2', Adherent::class);
 
         $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
-        $contribution->startDate = $contributionDate = new \DateTime('2023-03-15');
+        $contribution->startDate = $contributionDate = new \DateTimeImmutable('2023-03-15');
         $contribution->adherent = $erDepartment92;
         $contribution->gocardlessCustomerId = 'CU_DPT92';
         $contribution->gocardlessBankAccountId = 'BA_DPT92';

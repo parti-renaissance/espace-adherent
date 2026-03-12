@@ -200,8 +200,8 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         $file->setType($type);
         $file->setCreatedBy($admin);
         $file->setUpdatedBy($admin);
-        $file->setCreatedAt(new \DateTime($createdAt));
-        $file->setUpdatedAt(new \DateTime($createdAt));
+        $file->setCreatedAt(new \DateTimeImmutable($createdAt));
+        $file->setUpdatedAt(new \DateTimeImmutable($createdAt));
         $file->setDisplayed($displayed);
 
         if ($parent) {

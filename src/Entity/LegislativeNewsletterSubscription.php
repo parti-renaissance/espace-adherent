@@ -73,8 +73,8 @@ class LegislativeNewsletterSubscription implements \Stringable, RecaptchaChallen
     #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $token;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $confirmedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $confirmedAt = null;
 
     public function __construct(
         ?UuidInterface $uuid = null,
@@ -170,12 +170,12 @@ class LegislativeNewsletterSubscription implements \Stringable, RecaptchaChallen
         $this->token = $token;
     }
 
-    public function getConfirmedAt(): ?\DateTimeInterface
+    public function getConfirmedAt(): ?\DateTimeImmutable
     {
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }

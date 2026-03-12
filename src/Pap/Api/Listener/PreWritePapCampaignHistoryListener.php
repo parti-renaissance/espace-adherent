@@ -39,7 +39,7 @@ class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
             && $campaignHistory->isFinishedStatus()
             && null === $campaignHistory->getFinishAt()
         ) {
-            $campaignHistory->setFinishAt(new \DateTime());
+            $campaignHistory->setFinishAt(new \DateTimeImmutable());
         }
 
         if (null !== $campaignHistory->getQuestioner()) {

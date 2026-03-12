@@ -35,16 +35,16 @@ class Vote
     private $electionRound;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $votedAt;
 
     public function __construct(Voter $voter, ElectionRound $electionRound)
     {
         $this->voter = $voter;
         $this->electionRound = $electionRound;
-        $this->votedAt = new \DateTime();
+        $this->votedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -52,7 +52,7 @@ class Vote
         return $this->id;
     }
 
-    public function getVotedAt(): \DateTime
+    public function getVotedAt(): \DateTimeImmutable
     {
         return $this->votedAt;
     }

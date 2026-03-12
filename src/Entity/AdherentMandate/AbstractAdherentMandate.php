@@ -49,20 +49,14 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
     #[ORM\Column(length: 6, nullable: true)]
     protected $gender;
 
-    /**
-     * @var \DateTime
-     */
     #[Assert\NotBlank]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
-    #[ORM\Column(type: 'datetime')]
-    protected $beginAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    protected ?\DateTimeImmutable $beginAt = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    protected $finishAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    protected ?\DateTimeImmutable $finishAt = null;
 
     /**
      * @var Committee
@@ -89,8 +83,8 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
     public function __construct(
         ?Adherent $adherent = null,
         ?string $gender = null,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeImmutable $beginAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         ?string $quality = null,
         bool $isProvisional = false,
     ) {
@@ -131,22 +125,22 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
         $this->gender = $gender;
     }
 
-    public function getBeginAt(): \DateTime
+    public function getBeginAt(): \DateTimeImmutable
     {
         return $this->beginAt;
     }
 
-    public function setBeginAt(?\DateTime $beginAt): void
+    public function setBeginAt(?\DateTimeImmutable $beginAt): void
     {
-        $this->beginAt = $beginAt ?? new \DateTime();
+        $this->beginAt = $beginAt ?? new \DateTimeImmutable();
     }
 
-    public function getFinishAt(): ?\DateTime
+    public function getFinishAt(): ?\DateTimeImmutable
     {
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt = null): void
+    public function setFinishAt(?\DateTimeImmutable $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }

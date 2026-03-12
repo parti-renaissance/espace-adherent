@@ -6,18 +6,17 @@ namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use App\AdherentMessage\MailchimpStatusEnum;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
-class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, Timestampable
+class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 {
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     /**
      * @var int|null

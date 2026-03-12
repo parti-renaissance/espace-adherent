@@ -25,7 +25,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             '75008',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             'John',
-            new \DateTime('-3 hours'),
+            new \DateTimeImmutable('-3 hours'),
             true
         );
 

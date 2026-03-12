@@ -25,9 +25,9 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
 
         $event = $this->createMock(Event::class);
         $event->expects(static::any())->method('getName')->willReturn($name);
-        $event->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
+        $event->expects(static::any())->method('getBeginAt')->willReturn(new \DateTimeImmutable($beginAt));
         $event->expects(static::any())->method('getTimeZone')->willReturn($timeZone);
-        $localeBeginAt = new \DateTime($beginAt);
+        $localeBeginAt = new \DateTimeImmutable($beginAt);
         $event->expects(static::any())->method('getLocalBeginAt')->willReturn($localeBeginAt->setTimezone(new \DateTimeZone($timeZone)));
         $event->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
         $event->expects(static::any())->method('getDescription')->willReturn($description);

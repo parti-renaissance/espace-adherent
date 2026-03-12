@@ -43,16 +43,16 @@ class EventInvite implements \Stringable
     private $guests = [];
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     public function __construct(Event $event)
     {
         $this->uuid = Uuid::uuid4();
         $this->event = $event;
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function __toString()
@@ -92,7 +92,7 @@ class EventInvite implements \Stringable
         return $this->guests;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

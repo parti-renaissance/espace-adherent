@@ -47,7 +47,7 @@ class ElectProfileController extends AbstractController
         );
 
         if (!$command->needContribution()) {
-            $adherent->setContributedAt(new \DateTime());
+            $adherent->setContributedAt(new \DateTimeImmutable());
         }
 
         $entityManager->flush();

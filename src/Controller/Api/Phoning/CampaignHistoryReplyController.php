@@ -46,6 +46,6 @@ class CampaignHistoryReplyController extends AbstractReplyController
             $this->campaignHistory->getDataSurvey()->setAuthorPostalCode($author->getPostalCode());
         }
         $this->campaignHistory->setStatus(CampaignHistoryStatusEnum::COMPLETED);
-        $this->campaignHistory->setFinishAt(new \DateTime());
+        $this->campaignHistory->setFinishAt(new \DateTimeImmutable());
     }
 }

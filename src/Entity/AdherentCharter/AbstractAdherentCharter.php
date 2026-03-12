@@ -13,30 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(columns: ['adherent_id', 'dtype'])]
 abstract class AbstractAdherentCharter implements AdherentCharterInterface
 {
-    /**
-     * @var int
-     */
     #[ORM\Column(type: 'smallint')]
     #[ORM\GeneratedValue]
     #[ORM\Id]
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime')]
-    private $acceptedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $acceptedAt;
 
-    /**
-     * @var Adherent
-     */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'charters')]
-    private $adherent;
+    private ?Adherent $adherent = null;
 
     public function __construct()
     {
-        $this->acceptedAt = new \DateTime();
+        $this->acceptedAt = new \DateTimeImmutable();
     }
 
     public function setAdherent(Adherent $adherent): void

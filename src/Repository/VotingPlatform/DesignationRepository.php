@@ -141,7 +141,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->where('DATE_ADD(designation.voteEndDate, 3, \'DAY\') > :now')
             ->andWhere('designation.alertBeginAt IS NOT NULL AND designation.alertBeginAt < :now')
             ->andWhere('designation.isCanceled = false')
-            ->setParameters(['now' => new \DateTime()])
+            ->setParameters(['now' => new \DateTimeImmutable()])
             ->setMaxResults($limit)
             ->orderBy('score', 'DESC')
             ->addOrderBy('designation.voteStartDate', 'ASC')

@@ -35,8 +35,8 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     #[ORM\Column(unique: true)]
     public string $email;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $confirmedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $confirmedAt = null;
 
     #[ORM\Column(type: 'uuid')]
     public UuidInterface $token;

@@ -38,7 +38,7 @@ class ElectionAuthorisationChecker
             return false;
         }
 
-        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+        $refDate = $election->getVoteEndDate() ?? new \DateTimeImmutable();
 
         if ($adherent->isMinor($refDate)) {
             return false;
@@ -68,7 +68,7 @@ class ElectionAuthorisationChecker
                 return false;
             }
 
-            if (!($registrationDate = $adherent->getRegisteredAt()) || (clone $registrationDate)->modify('+3 months') > $refDate) {
+            if (!($registrationDate = $adherent->getRegisteredAt()) || $registrationDate->modify('+3 months') > $refDate) {
                 return false;
             }
         }
@@ -98,7 +98,7 @@ class ElectionAuthorisationChecker
             return false;
         }
 
-        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+        $refDate = $election->getVoteEndDate() ?? new \DateTimeImmutable();
 
         if ($adherent->isMinor($refDate)) {
             return false;
@@ -131,7 +131,7 @@ class ElectionAuthorisationChecker
                 return false;
             }
 
-            if (!($registrationDate = $adherent->getRegisteredAt()) || (clone $registrationDate)->modify('+3 months') > $refDate) {
+            if (!($registrationDate = $adherent->getRegisteredAt()) || $registrationDate->modify('+3 months') > $refDate) {
                 return false;
             }
         }

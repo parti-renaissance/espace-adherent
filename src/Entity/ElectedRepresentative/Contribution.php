@@ -23,12 +23,12 @@ class Contribution
     use EntityTimestampableTrait;
 
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $startDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $startDate = null;
 
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $endDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $endDate = null;
 
     #[ORM\Column(length: 50)]
     public ?string $gocardlessCustomerId = null;

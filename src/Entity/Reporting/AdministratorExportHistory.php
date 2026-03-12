@@ -37,14 +37,14 @@ class AdministratorExportHistory
     #[ORM\Column(type: 'json')]
     private $parameters;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $exportedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $exportedAt;
 
     public function __construct(
         Administrator $administrator,
         string $routeName,
         array $parameters,
-        ?\DateTimeInterface $exportedAt = null,
+        ?\DateTimeImmutable $exportedAt = null,
     ) {
         $this->administrator = $administrator;
         $this->routeName = $routeName;
@@ -72,7 +72,7 @@ class AdministratorExportHistory
         return $this->parameters;
     }
 
-    public function getExportedAt(): ?\DateTimeInterface
+    public function getExportedAt(): ?\DateTimeImmutable
     {
         return $this->exportedAt;
     }

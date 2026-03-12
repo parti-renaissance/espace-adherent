@@ -36,12 +36,12 @@ class LoadProcurationElectionData extends Fixture
         $election2 = $this->createElection('Législatives 2024', 'legislatives-2024');
         $election2->addRound($round1 = $this->createRound(
             'Premier tour',
-            new \DateTime('+14 days')->format('Y-m-d'),
+            new \DateTimeImmutable('+14 days')->format('Y-m-d'),
             Uuid::fromString(self::UUID_LEGISLATIVES_ROUND_1)
         ));
         $election2->addRound($round2 = $this->createRound(
             'Deuxième tour',
-            new \DateTime('+21 days')->format('Y-m-d'),
+            new \DateTimeImmutable('+21 days')->format('Y-m-d'),
             Uuid::fromString(self::UUID_LEGISLATIVES_ROUND_2)
         ));
 

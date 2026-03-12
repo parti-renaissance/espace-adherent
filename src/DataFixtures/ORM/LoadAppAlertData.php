@@ -15,8 +15,8 @@ class LoadAppAlertData extends Fixture
     {
         $alert = new AppAlert();
         $alert->label = 'Nouvelle consultation';
-        $alert->beginAt = new \DateTime('-1 day');
-        $alert->endAt = new \DateTime('+1 month');
+        $alert->beginAt = new \DateTimeImmutable('-1 day');
+        $alert->endAt = new \DateTimeImmutable('+1 month');
         $alert->isActive = true;
         $alert->type = AlertTypeEnum::ALERT;
         $alert->title = 'Une nouvelle consultation est disponible !';
@@ -28,8 +28,8 @@ class LoadAppAlertData extends Fixture
 
         $alert = new AppAlert();
         $alert->label = 'Alerte désactivée';
-        $alert->beginAt = new \DateTime('-1 day');
-        $alert->endAt = new \DateTime('+1 month');
+        $alert->beginAt = new \DateTimeImmutable('-1 day');
+        $alert->endAt = new \DateTimeImmutable('+1 month');
         $alert->isActive = false;
         $alert->type = AlertTypeEnum::ALERT;
         $alert->title = 'Une nouvelle consultation est disponible !';

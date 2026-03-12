@@ -43,7 +43,7 @@ class CampaignRepository extends ServiceEntityRepository
             ->setParameters([
                 'adherent' => $adherent,
                 'send' => CampaignHistoryStatusEnum::SEND,
-                'now' => new \DateTime(),
+                'now' => new \DateTimeImmutable(),
                 'true' => true,
             ])
             ->orderBy('campaign.permanent', 'ASC')
@@ -70,8 +70,8 @@ class CampaignRepository extends ServiceEntityRepository
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
             ->setParameters([
-                'now' => new \DateTime(),
-                'last_30d' => new \DateTime('-30 days'),
+                'now' => new \DateTimeImmutable(),
+                'last_30d' => new \DateTimeImmutable('-30 days'),
                 'send' => CampaignHistoryStatusEnum::SEND,
             ])
         ;

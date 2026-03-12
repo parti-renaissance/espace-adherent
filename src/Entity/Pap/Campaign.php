@@ -156,21 +156,21 @@ class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisi
     private $goal;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\GreaterThanOrEqual(value: 'today', message: 'pap.campaign.invalid_start_date', groups: ['pap_campaign_creation'])]
     #[Assert\NotBlank(groups: ['regular_campaign'])]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $beginAt;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\Expression('value > this.getBeginAt()', message: 'pap.campaign.invalid_end_date')]
     #[Assert\NotBlank(groups: ['regular_campaign'])]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $finishAt;
 
     /**
@@ -231,8 +231,8 @@ class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisi
         ?string $brief = null,
         ?Survey $survey = null,
         ?int $goal = null,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeImmutable $beginAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         int $nbAddresses = 0,
         int $nbVoters = 0,
         array $zones = [],
@@ -302,7 +302,7 @@ class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisi
         return $this->beginAt;
     }
 
-    public function setBeginAt(?\DateTime $beginAt): void
+    public function setBeginAt(?\DateTimeImmutable $beginAt): void
     {
         $this->beginAt = $beginAt;
     }
@@ -312,7 +312,7 @@ class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisi
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt): void
+    public function setFinishAt(?\DateTimeImmutable $finishAt): void
     {
         $this->finishAt = $finishAt;
     }
@@ -329,7 +329,7 @@ class Campaign implements \Stringable, IndexableEntityInterface, EntityScopeVisi
 
     public function isFinished(): bool
     {
-        return null !== $this->finishAt && $this->finishAt <= new \DateTime();
+        return null !== $this->finishAt && $this->finishAt <= new \DateTimeImmutable();
     }
 
     public function getNbAddresses(): int

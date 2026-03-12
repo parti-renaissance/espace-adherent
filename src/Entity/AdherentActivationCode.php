@@ -24,25 +24,25 @@ class AdherentActivationCode
     #[ORM\Column]
     public string $value;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $expiredAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $expiredAt;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $usedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $usedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $revokedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $revokedAt = null;
 
     public static function create(Adherent $adherent, int $codeTtl): self
     {
         $code = new self();
         $code->adherent = $adherent;
         $code->value = static::generateValue();
-        $code->createdAt = new \DateTime();
-        $code->expiredAt = new \DateTime('+'.$codeTtl.' min');
+        $code->createdAt = new \DateTimeImmutable();
+        $code->expiredAt = new \DateTimeImmutable('+'.$codeTtl.' min');
 
         return $code;
     }
@@ -57,7 +57,7 @@ class AdherentActivationCode
 
     public function isExpired(): bool
     {
-        return $this->expiredAt < new \DateTime();
+        return $this->expiredAt < new \DateTimeImmutable();
     }
 
     public function isRevoked(): bool

@@ -37,7 +37,7 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
 
         $campaigns = $this->campaignRepository->findUnassociatedCampaigns($date);
 

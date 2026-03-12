@@ -40,7 +40,7 @@ class CampaignRequestBuilder
         $message = $campaign->getMessage();
 
         return implode(' - ', array_filter([
-            new \DateTime()->format('Y/m/d'),
+            new \DateTimeImmutable()->format('Y/m/d'),
             $message->senderInstance,
             ($message->senderName ?? $message->getSender()?->getFullName()).' : '.($message->getSubject() ?: '(Sans sujet)'),
         ]));

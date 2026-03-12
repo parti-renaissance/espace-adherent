@@ -152,8 +152,8 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     public ?array $qualities = null;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
-    #[ORM\Column(type: 'date', nullable: true)]
-    public ?\DateTime $birthdate = null;
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
+    public ?\DateTimeImmutable $birthdate = null;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
@@ -233,19 +233,19 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     public $emailCheck;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $confirmedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $confirmedAt = null;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $canceledAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $canceledAt = null;
 
     #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $ticketSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $ticketSentAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $confirmationSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $confirmationSentAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $firstTicketScannedAt = null;
@@ -254,8 +254,8 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     public ?\DateTimeInterface $lastTicketScannedAt = null;
 
     #[Groups(['national_event_inscription:webhook'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $pushSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $pushSentAt = null;
 
     #[ORM\Column(type: 'uuid', unique: true)]
     public UuidInterface $ticketUuid;
@@ -709,14 +709,14 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         }
 
         $this->status = InscriptionStatusEnum::IN_VALIDATION;
-        $this->validationStartedAt = new \DateTime();
+        $this->validationStartedAt = new \DateTimeImmutable();
     }
 
     #[Groups(['event_inscription_scan'])]
-    public function getAge(\DateTime $from = new \DateTime()): ?int
+    public function getAge(\DateTimeInterface $from = new \DateTimeImmutable()): ?int
     {
         if ($this->adherent && $this->adherent->getAge()) {
-            return $this->adherent->getAge($from);
+            return $this->adherent->getAge(\DateTime::createFromInterface($from));
         }
 
         return $this->birthdate?->diff($from)->y;

@@ -49,7 +49,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
          */
         $localSurvey1 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_1), 'Questionnaire numéro 1', true);
         $localSurvey1->setCreatedByAdherent($referent1);
-        $localSurvey1->setCreatedAt(new \DateTime());
+        $localSurvey1->setCreatedAt(new \DateTimeImmutable());
 
         $localSurvey2 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_2), 'Un deuxième questionnaire', true);
         $localSurvey2->setCreatedByAdherent($referent2);
@@ -121,7 +121,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         // #1
         $nationalSurvey1 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_1), 'Questionnaire national numéro 1', true);
         $nationalSurvey1->setCreatedByAdministrator($administrator1);
-        $nationalSurvey1->setCreatedAt(new \DateTime('-3 days'));
+        $nationalSurvey1->setCreatedAt(new \DateTimeImmutable('-3 days'));
 
         /** @var Question $nationalQuestion1 */
         $nationalQuestion1 = $this->getReference('national-question-1', Question::class);
@@ -145,7 +145,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         // #2
         $nationalSurvey2 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_2), 'Le deuxième questionnaire national', true);
         $nationalSurvey2->setCreatedByAdministrator($administrator2);
-        $nationalSurvey2->setCreatedAt(new \DateTime('-2 days'));
+        $nationalSurvey2->setCreatedAt(new \DateTimeImmutable('-2 days'));
 
         /** @var Question $nationalQuestion3 */
         $nationalQuestion3 = $this->getReference('national-question-3', Question::class);
@@ -163,7 +163,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         // #3
         $nationalSurvey3 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_3), 'Les enjeux des 10 prochaines années', true);
         $nationalSurvey3->setCreatedByAdministrator($administrator1);
-        $nationalSurvey3->setCreatedAt(new \DateTime('-1 day'));
+        $nationalSurvey3->setCreatedAt(new \DateTimeImmutable('-1 day'));
 
         /** @var Question $nationalQuestion4 */
         $nationalQuestion4 = $this->getReference('national-question-4', Question::class);

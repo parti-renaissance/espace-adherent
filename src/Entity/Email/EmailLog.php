@@ -43,9 +43,9 @@ class EmailLog implements \Stringable
     private $responsePayload;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $deliveredAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
@@ -97,7 +97,7 @@ class EmailLog implements \Stringable
     public function delivered(?string $responsePayload): void
     {
         $this->responsePayload = base64_encode($responsePayload);
-        $this->deliveredAt = new \DateTime();
+        $this->deliveredAt = new \DateTimeImmutable();
     }
 
     public function getMessageClass(): string
@@ -145,7 +145,7 @@ class EmailLog implements \Stringable
         return null !== $this->responsePayload;
     }
 
-    public function getDeliveredAt(): ?\DateTime
+    public function getDeliveredAt(): ?\DateTimeImmutable
     {
         return $this->deliveredAt;
     }

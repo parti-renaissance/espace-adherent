@@ -50,7 +50,7 @@ class ContributionRequestHandler
         $adherent->addContribution($contribution);
         $adherent->setLastContribution($contribution);
         $adherent->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
-        $adherent->setContributedAt(new \DateTime());
+        $adherent->setContributedAt(new \DateTimeImmutable());
 
         $this->entityManager->flush();
 

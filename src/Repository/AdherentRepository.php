@@ -1164,7 +1164,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             SQL;
         $connection->prepare($sql)->executeStatement([
             'status' => Adherent::ENABLED,
-            'since_date' => (clone $designation->getVoteStartDate())->modify('-3 months')->format(\DateTimeInterface::ATOM),
+            'since_date' => $designation->getVoteStartDate()->modify('-3 months')->format(\DateTimeInterface::ATOM),
         ]);
 
         // 2. Associate voters with voters list
@@ -1183,7 +1183,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $connection->prepare($sql)->executeStatement([
             'voter_list_id' => $list->getId(),
             'status' => Adherent::ENABLED,
-            'since_date' => (clone $designation->getVoteStartDate())->modify('-3 months')->format(\DateTimeInterface::ATOM),
+            'since_date' => $designation->getVoteStartDate()->modify('-3 months')->format(\DateTimeInterface::ATOM),
         ]);
     }
 
@@ -1866,7 +1866,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->where('a.mailchimpStatus = :status')
             ->andWhere('a.resubscribeEmailStartedAt IS NULL OR (a.resubscribeEmailStartedAt < :date AND a.resubscribeResponse IS NULL)')
             ->setParameter('status', ContactStatusEnum::CLEANED)
-            ->setParameter('date', new \DateTime()->modify('-1 day'))
+            ->setParameter('date', new \DateTimeImmutable()->modify('-1 day'))
             ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ->orderBy('score', 'ASC')
             ->getQuery()

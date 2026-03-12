@@ -49,8 +49,8 @@ class RequestSlot extends AbstractSlot
     #[ORM\OrderBy(['date' => 'DESC'])]
     public Collection $actions;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $matchRemindedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $matchRemindedAt = null;
 
     public function __construct(Round $round, Request $request, ?UuidInterface $uuid = null)
     {
@@ -83,7 +83,7 @@ class RequestSlot extends AbstractSlot
 
     public function remindMatch(): void
     {
-        $this->matchRemindedAt = new \DateTime();
+        $this->matchRemindedAt = new \DateTimeImmutable();
     }
 
     public function getMatcher(): ?Adherent

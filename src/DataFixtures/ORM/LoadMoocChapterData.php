@@ -18,7 +18,7 @@ class LoadMoocChapterData extends Fixture implements DependentFixtureInterface
         $chapter1 = new Chapter(
             'Semaine 1 : Le coup de fourchette pour détendre notre santé',
             true,
-            new \DateTime(date('Y-m-d', strtotime('+1 days')).' 09:30:00')
+            new \DateTimeImmutable(date('Y-m-d', strtotime('+1 days')).' 09:30:00')
         );
 
         $chapter1->addElement($this->getReference('mooc-video-1', MoocVideoElement::class));
@@ -31,7 +31,7 @@ class LoadMoocChapterData extends Fixture implements DependentFixtureInterface
         $chapter2 = new Chapter(
             'Semaine 2 : Le coup de fourchette pour défendre la nature',
             false,
-            new \DateTime(date('Y-m-d', strtotime('+5 days')).' 09:30:00')
+            new \DateTimeImmutable(date('Y-m-d', strtotime('+5 days')).' 09:30:00')
         );
         $chapter2->addElement($this->getReference('mooc-video-3', MoocVideoElement::class));
         $this->addReference('mooc-chapter-2', $chapter2);

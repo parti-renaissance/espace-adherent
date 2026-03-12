@@ -50,8 +50,8 @@ class BuildingEvent implements AuthorInterface
     private ?Campaign $campaign = null;
 
     #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $createdAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(nullable: true)]
@@ -126,12 +126,12 @@ class BuildingEvent implements AuthorInterface
         $this->campaign = $campaign;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

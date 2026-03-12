@@ -41,11 +41,11 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
             $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
-            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTimeImmutable() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
             $eventInscription->addZone($zone92);
-            $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');
+            $eventInscription->birthdate = \DateTimeImmutable::createFromMutable($this->faker->dateTimeBetween('-100 years', '-15 years'));
             $eventInscription->status = 0 === $i % 10 ? InscriptionStatusEnum::INCONCLUSIVE : InscriptionStatusEnum::ACCEPTED;
         }
 
@@ -58,10 +58,10 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
             $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
-            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTimeImmutable() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
-            $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');
+            $eventInscription->birthdate = \DateTimeImmutable::createFromMutable($this->faker->dateTimeBetween('-100 years', '-15 years'));
             $eventInscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
             $eventInscription->isJAM = 0 === $i % 2;
             $eventInscription->volunteer = 0 === $i % 2;
@@ -110,10 +110,10 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
             $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
-            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTimeImmutable() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
-            $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');
+            $eventInscription->birthdate = \DateTimeImmutable::createFromMutable($this->faker->dateTimeBetween('-100 years', '-15 years'));
             $eventInscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
             $eventInscription->isJAM = 0 === $i % 2;
             $eventInscription->volunteer = 0 === $i % 2;
@@ -127,7 +127,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->adherent = $this->getReference('adherent-'.($i + 30), Adherent::class);
 
             if (1 === $i % 2) {
-                $eventInscription->firstTicketScannedAt = new \DateTime('-1 day');
+                $eventInscription->firstTicketScannedAt = new \DateTimeImmutable('-1 day');
             }
         }
 
@@ -142,10 +142,10 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
             $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
-            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTimeImmutable() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
-            $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');
+            $eventInscription->birthdate = \DateTimeImmutable::createFromMutable($this->faker->dateTimeBetween('-100 years', '-15 years'));
             $eventInscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
             $eventInscription->isJAM = 0 === $i % 2;
             $eventInscription->volunteer = 0 === $i % 2;

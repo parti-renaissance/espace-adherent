@@ -265,7 +265,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         return $qb
             ->leftJoin($alias.'.mandates', 'mandate', Join::WITH, '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1')
             ->leftJoin('mandate.geoZone', 'zone')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
         ;
     }
 

@@ -109,6 +109,6 @@ class ElectionRound implements \Stringable
 
     public function isPassed(): bool
     {
-        return new \DateTime() >= $this->date;
+        return new \DateTimeImmutable() >= $this->date;
     }
 }

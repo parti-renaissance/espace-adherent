@@ -119,21 +119,21 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                         case DesignationStatusEnum::NOT_STARTED:
                             $qb
                                 ->andWhere('designation.candidacyStartDate > :now')
-                                ->setParameter('now', new \DateTime())
+                                ->setParameter('now', new \DateTimeImmutable())
                             ;
                             break;
 
                         case DesignationStatusEnum::SCHEDULED:
                             $qb
                                 ->andWhere('designation.candidacyStartDate <= :now AND designation.voteStartDate IS NOT NULL AND designation.voteStartDate > :now')
-                                ->setParameter('now', new \DateTime())
+                                ->setParameter('now', new \DateTimeImmutable())
                             ;
                             break;
 
                         case DesignationStatusEnum::OPENED:
                             $qb
                                 ->andWhere('designation.candidacyStartDate <= :now AND designation.voteStartDate IS NULL')
-                                ->setParameter('now', new \DateTime())
+                                ->setParameter('now', new \DateTimeImmutable())
                             ;
                             break;
 
@@ -141,7 +141,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                             $qb
                                 ->andWhere('designation.voteStartDate IS NOT NULL AND designation.voteEndDate IS NOT NULL')
                                 ->andWhere(\sprintf('(designation.voteStartDate < :now AND designation.voteEndDate > :now) OR (%1$s.secondRoundEndDate IS NOT NULL AND %1$s.secondRoundEndDate > :now)', $alias))
-                                ->setParameter('now', new \DateTime())
+                                ->setParameter('now', new \DateTimeImmutable())
                             ;
                             break;
 

@@ -162,7 +162,7 @@ class ProcurationActionHandler
     ): RequestAction {
         $action = new RequestAction(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $request
         );
@@ -183,7 +183,7 @@ class ProcurationActionHandler
     ): ProxyAction {
         $action = new ProxyAction(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $proxy
         );
@@ -204,7 +204,7 @@ class ProcurationActionHandler
     ): RequestSlotAction {
         $action = new RequestSlotAction(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $requestSlot
         );
@@ -225,7 +225,7 @@ class ProcurationActionHandler
     ): ProxySlotAction {
         $action = new ProxySlotAction(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $proxySlot
         );

@@ -23,7 +23,7 @@ class LoadElectedRepresentativeContributionData extends Fixture implements Depen
         $erDepartment92 = $this->getReference('elected-representative-dpt-92', ElectedRepresentative::class);
 
         $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
-        $contribution->startDate = $contributionDate = new \DateTime('2023-03-15');
+        $contribution->startDate = $contributionDate = new \DateTimeImmutable('2023-03-15');
         $contribution->electedRepresentative = $erDepartment92;
         $contribution->gocardlessCustomerId = 'CU_DPT92';
         $contribution->gocardlessBankAccountId = 'BA_DPT92';

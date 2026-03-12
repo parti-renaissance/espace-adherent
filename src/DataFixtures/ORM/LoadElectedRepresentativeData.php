@@ -55,7 +55,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erAdherent92 = $this->createElectedRepresentative(
             'Michelle',
             'DUFOUR',
-            new \DateTime('1972-11-23'),
+            new \DateTimeImmutable('1972-11-23'),
             'female',
             self::ELECTED_REPRESENTATIVE_1_UUID
         );
@@ -84,7 +84,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_community_200054781'),
             $erAdherent92,
             true,
-            new \DateTime('2019-07-23')
+            new \DateTimeImmutable('2019-07-23')
         );
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
@@ -92,7 +92,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $erAdherent92,
             $mandate,
             true,
-            new \DateTime('2019-07-23')
+            new \DateTimeImmutable('2019-07-23')
         );
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
@@ -100,7 +100,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $erAdherent92,
             $mandate,
             false,
-            new \DateTime('2015-03-24')
+            new \DateTimeImmutable('2015-03-24')
         );
         $erAdherent92->addLabel($label);
         $erAdherent92->addMandate($mandate);
@@ -113,7 +113,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erCityCouncilWithFinishedFunction = $this->createElectedRepresentative(
             'Delphine',
             'BOUILLOUX',
-            new \DateTime('1977-08-02'),
+            new \DateTimeImmutable('1977-08-02'),
             'female',
             self::ELECTED_REPRESENTATIVE_2_UUID
         );
@@ -133,7 +133,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             $erCityCouncilWithFinishedFunction,
             true,
-            new \DateTime('2014-03-23')
+            new \DateTimeImmutable('2014-03-23')
         );
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR,
@@ -141,7 +141,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $erCityCouncilWithFinishedFunction,
             $mandate,
             true,
-            new \DateTime('2019-07-23')
+            new \DateTimeImmutable('2019-07-23')
         );
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
@@ -149,8 +149,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $erCityCouncilWithFinishedFunction,
             $mandate,
             false,
-            new \DateTime('2016-06-02'),
-            new \DateTime('2019-01-06')
+            new \DateTimeImmutable('2016-06-02'),
+            new \DateTimeImmutable('2019-01-06')
         );
         $twitter = new SocialNetworkLink('https://twitter.com/DeBou', SocialLinkTypeEnum::TWITTER, $erCityCouncilWithFinishedFunction);
         $instagram = new SocialNetworkLink('https://instagram.com/deBou', SocialLinkTypeEnum::INSTAGRAM, $erCityCouncilWithFinishedFunction);
@@ -174,7 +174,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $er2Mandates = $this->createElectedRepresentative(
             'Daniel',
             'BOULON',
-            new \DateTime('1951-03-04'),
+            new \DateTimeImmutable('1951-03-04'),
             null,
             self::ELECTED_REPRESENTATIVE_3_UUID
         );
@@ -200,7 +200,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates,
             true,
-            new \DateTime('2014-03-23')
+            new \DateTimeImmutable('2014-03-23')
         );
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::DEPUTY_MAYOR,
@@ -208,7 +208,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2Mandates,
             $mandate1,
             true,
-            new \DateTime('2014-03-23')
+            new \DateTimeImmutable('2014-03-23')
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_4_UUID),
@@ -219,7 +219,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates,
             true,
-            new \DateTime('2017-01-11')
+            new \DateTimeImmutable('2017-01-11')
         );
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
@@ -227,7 +227,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2Mandates,
             $mandate2,
             false,
-            new \DateTime('2019-07-23')
+            new \DateTimeImmutable('2019-07-23')
         );
         $er2Mandates->addLabel($label1);
         $er2Mandates->addLabel($label2);
@@ -243,7 +243,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $er2MandatesOneFinished = $this->createElectedRepresentative(
             'Roger',
             'BUET',
-            new \DateTime('1952-04-21'),
+            new \DateTimeImmutable('1952-04-21'),
             'male',
             self::ELECTED_REPRESENTATIVE_4_UUID
         );
@@ -262,7 +262,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'),
             $er2MandatesOneFinished,
             true,
-            new \DateTime('2016-03-23')
+            new \DateTimeImmutable('2016-03-23')
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_6_UUID),
@@ -273,8 +273,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2MandatesOneFinished,
             false,
-            new \DateTime('2011-12-23'),
-            new \DateTime('2015-02-23')
+            new \DateTimeImmutable('2011-12-23'),
+            new \DateTimeImmutable('2015-02-23')
         );
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
@@ -282,7 +282,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2MandatesOneFinished,
             $mandate2,
             false,
-            new \DateTime('2019-07-23')
+            new \DateTimeImmutable('2019-07-23')
         );
         $er2MandatesOneFinished->addLabel($label);
         $er2MandatesOneFinished->addMandate($mandate1);
@@ -295,7 +295,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erEuroDeputy2Labels = $this->createElectedRepresentative(
             'Sans',
             'OFFICIELID',
-            new \DateTime('1951-11-03'),
+            new \DateTimeImmutable('1951-11-03'),
             'male',
             self::ELECTED_REPRESENTATIVE_5_UUID
         );
@@ -321,7 +321,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             null,
             $erEuroDeputy2Labels,
             true,
-            new \DateTime('2016-03-23')
+            new \DateTimeImmutable('2016-03-23')
         );
         $erEuroDeputy2Labels->addLabel($label1);
         $erEuroDeputy2Labels->addLabel($label2);
@@ -334,7 +334,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $er2Mandates2Functions = $this->createElectedRepresentative(
             'André',
             'LOBELL',
-            new \DateTime('1951-11-03'),
+            new \DateTimeImmutable('1951-11-03'),
             'male',
             self::ELECTED_REPRESENTATIVE_6_UUID
         );
@@ -347,7 +347,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'),
             $er2Mandates2Functions,
             true,
-            new \DateTime('2015-03-13')
+            new \DateTimeImmutable('2015-03-13')
         );
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
@@ -355,7 +355,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2Mandates2Functions,
             $mandate1,
             true,
-            new \DateTime('2014-03-23')
+            new \DateTimeImmutable('2014-03-23')
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_9_UUID),
@@ -366,7 +366,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates2Functions,
             true,
-            new \DateTime('2017-07-18')
+            new \DateTimeImmutable('2017-07-18')
         );
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR_ASSISTANT,
@@ -374,7 +374,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2Mandates2Functions,
             $mandate2,
             true,
-            new \DateTime('2019-05-10')
+            new \DateTimeImmutable('2019-05-10')
         );
         $politicalFunction3 = new PoliticalFunction(
             PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
@@ -382,8 +382,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             $er2Mandates2Functions,
             $mandate2,
             false,
-            new \DateTime('2016-05-10'),
-            new \DateTime('2019-05-09')
+            new \DateTimeImmutable('2016-05-10'),
+            new \DateTimeImmutable('2019-05-09')
         );
         $er2Mandates2Functions->addMandate($mandate1);
         $er2Mandates2Functions->addMandate($mandate2);
@@ -398,7 +398,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erWithNotElectedMandate = $this->createElectedRepresentative(
             'Jesuis',
             'PASELU',
-            new \DateTime('1981-01-03'),
+            new \DateTimeImmutable('1981-01-03'),
             'male',
             self::ELECTED_REPRESENTATIVE_7_UUID
         );
@@ -411,14 +411,14 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'),
             $erWithNotElectedMandate,
             false,
-            new \DateTime('2020-03-15')
+            new \DateTimeImmutable('2020-03-15')
         );
         $erWithNotElectedMandate->addMandate($mandate);
 
         $manager->persist($erWithNotElectedMandate);
 
         // with mandate CITY_COUNCIL 75007
-        $erParis = $this->createElectedRepresentative('Arrondissement', 'PARIS', new \DateTime('1972-02-02'), 'male');
+        $erParis = $this->createElectedRepresentative('Arrondissement', 'PARIS', new \DateTimeImmutable('1972-02-02'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_11_UUID),
             MandateTypeEnum::CONSEILLER_MUNICIPAL,
@@ -428,14 +428,14 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75107'),
             $erParis,
             true,
-            new \DateTime('2019-03-15')
+            new \DateTimeImmutable('2019-03-15')
         );
         $erParis->addMandate($mandate);
 
         $manager->persist($erParis);
 
         // with mandate DEPUTY CIRCO 75
-        $erParis2 = $this->createElectedRepresentative('Circonscription', 'PARISS', new \DateTime('1982-03-03'), 'female');
+        $erParis2 = $this->createElectedRepresentative('Circonscription', 'PARISS', new \DateTimeImmutable('1982-03-03'), 'female');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_12_UUID),
             MandateTypeEnum::DEPUTE,
@@ -445,14 +445,14 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             $erParis2,
             true,
-            new \DateTime('2019-01-11')
+            new \DateTimeImmutable('2019-01-11')
         );
         $erParis2->addMandate($mandate);
 
         $manager->persist($erParis2);
 
         // with mandate SENATOR 75
-        $erParis3 = $this->createElectedRepresentative('Département', 'PARIS', new \DateTime('1962-04-04'), 'male');
+        $erParis3 = $this->createElectedRepresentative('Département', 'PARIS', new \DateTimeImmutable('1962-04-04'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_13_UUID),
             MandateTypeEnum::SENATEUR,
@@ -462,13 +462,13 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
             $erParis3,
             true,
-            new \DateTime('2018-01-11')
+            new \DateTimeImmutable('2018-01-11')
         );
         $erParis3->addMandate($mandate);
 
         $manager->persist($erParis3);
 
-        $erDepartment59 = $this->createElectedRepresentative('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
+        $erDepartment59 = $this->createElectedRepresentative('Département', 'Nord', new \DateTimeImmutable('1962-04-04'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_14_UUID),
             MandateTypeEnum::SENATEUR,
@@ -478,14 +478,14 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
             $erDepartment59,
             true,
-            new \DateTime('2018-01-11')
+            new \DateTimeImmutable('2018-01-11')
         );
         $erDepartment59->addMandate($mandate);
 
         $manager->persist($erDepartment59);
 
         // with adherent and ongoing mandate
-        $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male', self::ELECTED_REPRESENTATIVE_8_UUID);
+        $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTimeImmutable('1982-03-03'), 'male', self::ELECTED_REPRESENTATIVE_8_UUID);
         $erDepartment92->setAdherent($this->getReference('renaissance-user-2', Adherent::class));
         $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8', Adherent::class));
         $mandate = new Mandate(
@@ -497,7 +497,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             $erDepartment92,
             true,
-            new \DateTime('2019-01-11')
+            new \DateTimeImmutable('2019-01-11')
         );
         $erDepartment92->addMandate($mandate);
         $this->addReference('elected-representative-dpt-92', $erDepartment92);
@@ -510,7 +510,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
     private function createElectedRepresentative(
         string $firstName,
         string $lastName,
-        \DateTime $birthDate,
+        \DateTimeInterface $birthDate,
         ?string $gender = null,
         ?string $uuid = null,
     ): ElectedRepresentative {

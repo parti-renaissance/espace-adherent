@@ -33,7 +33,7 @@ class EventLiveNotificationCommand extends Command
 
         foreach ($events as $event) {
             $this->bus->dispatch(new EventLiveBeginNotificationCommand($event->getUuid()));
-            $event->pushSentAt = new \DateTime();
+            $event->pushSentAt = new \DateTimeImmutable();
 
             $this->entityManager->flush();
         }

@@ -20,9 +20,9 @@ interface CampaignStatisticsInterface
 
     public function isCompleted(): bool;
 
-    public function getClosedAt(): ?\DateTimeInterface;
+    public function getClosedAt(): ?\DateTimeImmutable;
 
-    public function setClosedAt(?\DateTimeInterface $closedAt): void;
+    public function setClosedAt(?\DateTimeImmutable $closedAt): void;
 
     public function getClosedBy(): ?Adherent;
 

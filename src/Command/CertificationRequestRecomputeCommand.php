@@ -54,7 +54,7 @@ class CertificationRequestRecomputeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = \DateTime::createFromFormat('Y-m-d', $input->getOption('date'));
+        $date = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('date'));
 
         /** @var CertificationRequest[]|iterable $certificationRequests */
         $certificationRequests = $this->certificationRequestRepository->findAllForDate($date);

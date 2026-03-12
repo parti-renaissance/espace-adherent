@@ -30,7 +30,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
         if (array_intersect(['designation_write', 'designation_write_limited'], $context['groups'] ?? [])) {
             if ($designation->isCommitteeSupervisorType()) {
                 if (!$designation->getCandidacyStartDate()) {
-                    $designation->setCandidacyStartDate(new \DateTime());
+                    $designation->setCandidacyStartDate(new \DateTimeImmutable());
                 }
 
                 if ($designation->getCandidacyEndDate() !== $voteDate = $designation->getVoteStartDate()) {
@@ -40,7 +40,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
                 $designation->alertTitle = $designation->getTitle();
                 $designation->alertCtaLabel = $designation->alertCtaLabel ?: 'Voir';
                 $designation->alertDescription = new UnicodeString($designation->getDescription() ?? '')->truncate(200, '…', false)->toString();
-                $designation->alertBeginAt = $designation->getVoteStartDate() ? (clone $designation->getVoteStartDate())->modify('-2 days') : null;
+                $designation->alertBeginAt = $designation->getVoteStartDate()?->modify('-2 days');
             }
 
             $designation->initCreationDate();

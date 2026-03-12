@@ -133,7 +133,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ->set('m.reason', ':reason')
             ->setParameters([
                 'committee' => $committee,
-                'finish_at' => $finishAt ?? new \DateTime(),
+                'finish_at' => $finishAt ?? new \DateTimeImmutable(),
                 'reason' => $reason,
             ])
         ;

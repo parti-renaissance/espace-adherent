@@ -56,6 +56,6 @@ class Round implements \Stringable, EntityAdministratorBlameableInterface
 
     public function isUpcoming(): bool
     {
-        return $this->date && $this->date > new \DateTime();
+        return $this->date && $this->date > new \DateTimeImmutable();
     }
 }

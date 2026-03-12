@@ -85,9 +85,9 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private $adherentStatus;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $activatedAt;
 
     /**
@@ -114,8 +114,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(length: 7, nullable: true)]
     public ?string $publicId = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $lastLoggedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $lastLoggedAt = null;
 
     /**
      * @var string
@@ -127,8 +127,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(nullable: true)]
     public ?string $mailchimpStatus = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $resubscribeEmailSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $resubscribeEmailSentAt = null;
 
     /**
      * @var string|null
@@ -259,10 +259,10 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private $subscribedTags;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
@@ -282,21 +282,18 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private $voteCommitteeId;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $certifiedAt;
 
-    /**
-     * @var \DateTime|null
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $lastMembershipDonation = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $lastMembershipDonation = null;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $firstMembershipDonation = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $firstMembershipDonation = null;
 
     /**
      * name of committee v2
@@ -333,8 +330,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public ?array $cotisationDates = null;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $campusRegisteredAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $campusRegisteredAt;
 
     #[Groups(['managed_user_vox'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -408,7 +405,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?string $country = null,
         ?string $firstName = null,
         ?string $lastName = null,
-        ?\DateTime $birthdate = null,
+        ?\DateTimeImmutable $birthdate = null,
         ?int $age = null,
         ?PhoneNumber $phone = null,
         ?string $nationality = null,
@@ -421,14 +418,14 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?array $subscriptionTypes = [],
         array $zones = [],
         ?string $subscribedTags = null,
-        ?\DateTime $createdAt = null,
+        ?\DateTimeImmutable $createdAt = null,
         ?string $gender = null,
         array $supervisorTags = [],
         ?UuidInterface $uuid = null,
         ?int $voteCommitteeId = null,
-        ?\DateTime $certifiedAt = null,
-        ?\DateTime $lastMembershipDonation = null,
-        ?\DateTime $firstMembershipDonation = null,
+        ?\DateTimeImmutable $certifiedAt = null,
+        ?\DateTimeImmutable $lastMembershipDonation = null,
+        ?\DateTimeImmutable $firstMembershipDonation = null,
         ?string $committee = null,
         ?UuidInterface $committeeUuid = null,
         ?string $agora = null,
@@ -437,7 +434,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         array $mandates = [],
         array $declaredMandates = [],
         array $cotisationDates = [],
-        ?\DateTime $campusRegisteredAt = null,
+        ?\DateTimeImmutable $campusRegisteredAt = null,
         ?string $imageName = null,
     ) {
         $this->status = $status;
@@ -548,7 +545,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->lastName;
     }
 
-    public function getBirthdate(): ?\DateTime
+    public function getBirthdate(): ?\DateTimeImmutable
     {
         return $this->birthdate;
     }
@@ -598,7 +595,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->subscribedTags;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -636,7 +633,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox_detail'])]
     public function isAvailableForResubscribeEmail(): bool
     {
-        return !$this->isEmailSubscribed() && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTime())->y >= 1);
+        return !$this->isEmailSubscribed() && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTimeImmutable())->y >= 1);
     }
 
     public function getCommitteeUuids(): ?array
@@ -724,7 +721,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->declaredMandates;
     }
 
-    public function getCampusRegisteredAt(): ?\DateTime
+    public function getCampusRegisteredAt(): ?\DateTimeImmutable
     {
         return $this->campusRegisteredAt;
     }

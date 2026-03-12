@@ -65,19 +65,13 @@ class Media implements \Stringable
     #[ORM\Column(length: 50)]
     private $mimeType;
 
-    /**
-     * @var \DateTime
-     */
     #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var \DateTime
-     */
     #[Gedmo\Timestampable(on: 'update')]
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $compressedDisplay = true;
@@ -206,24 +200,24 @@ class Media implements \Stringable
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

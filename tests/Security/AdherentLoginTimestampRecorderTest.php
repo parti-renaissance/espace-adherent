@@ -35,7 +35,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
 
         $handler->onAuthenticationSuccess($request, $token);
 
-        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
     }
 
     private function createAdherent(): Adherent
@@ -48,7 +48,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
             'male',
             'John',
             'Smith',
-            new \DateTime('1990-12-12'),
+            new \DateTimeImmutable('1990-12-12'),
             ActivityPositionsEnum::RETIRED,
             PostAddress::createForeignAddress('CH', '8002', 'Zürich', 'Brandschenkestrasse')
         );

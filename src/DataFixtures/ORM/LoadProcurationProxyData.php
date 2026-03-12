@@ -93,7 +93,7 @@ class LoadProcurationProxyData extends Fixture implements DependentFixtureInterf
                 false,
                 $zone
             ));
-            $proxy->setCreatedAt($date = new \DateTime('-'.$i.' days'));
+            $proxy->setCreatedAt($date = new \DateTimeImmutable('-'.$i.' days'));
             $proxy->setUpdatedAt($date);
         }
 

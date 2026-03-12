@@ -52,8 +52,8 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         ?string $gender = null,
         ?int $ageMin = null,
         ?int $ageMax = null,
-        ?\DateTime $registeredSince = null,
-        ?\DateTime $registeredUntil = null,
+        ?\DateTimeInterface $registeredSince = null,
+        ?\DateTimeInterface $registeredUntil = null,
         ?bool $includeAdherentsInCommittee = null,
         ?bool $isCertified = null,
     ): AudienceSegment {

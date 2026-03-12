@@ -133,11 +133,9 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
 
     /**
      * Mailchimp unsubscribed date
-     *
-     * @var \DateTimeInterface|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $emailUnsubscribedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $emailUnsubscribedAt = null;
 
     /**
      * Mailchimp unsubscribed status
@@ -152,8 +150,8 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     private ?string $contributionStatus = null;
 
     #[Groups(['elected_representative_read', 'elected_representative_list'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $contributedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $contributedAt = null;
 
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -234,7 +232,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     public static function create(
         string $firstName,
         string $lastName,
-        \DateTime $birthDate,
+        \DateTimeInterface $birthDate,
         ?string $gender = null,
         ?UuidInterface $uuid = null,
     ): self {
@@ -379,7 +377,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     #[Groups(['elected_representative_list'])]
     public function getCurrentMandates(): array
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->mandates->filter(function (Mandate $mandate) use ($now) {
             return $mandate->isElected() && $mandate->isOnGoing() && (null === $mandate->getFinishAt() || $mandate->getFinishAt() > $now);
@@ -558,7 +556,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
 
     public function getAge(): ?int
     {
-        return $this->birthDate?->diff(new \DateTime())->y;
+        return $this->birthDate?->diff(new \DateTimeImmutable())->y;
     }
 
     #[Groups(['elected_representative_change_diff', 'elected_representative_read'])]
@@ -583,7 +581,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     public function unsubscribeEmails(): void
     {
         $this->emailUnsubscribed = true;
-        $this->emailUnsubscribedAt = new \DateTime();
+        $this->emailUnsubscribedAt = new \DateTimeImmutable();
     }
 
     public function isEmailUnsubscribed(): bool
@@ -646,12 +644,12 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
         $this->contributionStatus = $contributionStatus;
     }
 
-    public function getContributedAt(): ?\DateTime
+    public function getContributedAt(): ?\DateTimeImmutable
     {
         return $this->contributedAt;
     }
 
-    public function setContributedAt(?\DateTime $contributedAt): void
+    public function setContributedAt(?\DateTimeImmutable $contributedAt): void
     {
         $this->contributedAt = $contributedAt;
     }

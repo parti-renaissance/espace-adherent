@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-class LiveStream implements \Stringable, Timestampable, EntityAdministratorBlameableInterface
+class LiveStream implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
     #[Assert\NotBlank]

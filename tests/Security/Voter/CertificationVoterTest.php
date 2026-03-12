@@ -73,7 +73,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTestCase
         ;
         $adherent->expects($this->any())
             ->method('getBirthDate')
-            ->willReturn(new \DateTime())
+            ->willReturn(new \DateTimeImmutable())
         ;
 
         if (null !== $hasPendingCertificationRequest || null !== $hasBlockedCertificationRequest) {

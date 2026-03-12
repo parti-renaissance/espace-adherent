@@ -57,8 +57,8 @@ class Message
     public string $content;
 
     #[Groups(['chatbot:read', 'chatbot:message_read'])]
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $date;
 
     public function __construct(?UuidInterface $uuid = null)
     {

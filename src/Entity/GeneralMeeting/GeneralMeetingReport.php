@@ -99,8 +99,8 @@ class GeneralMeetingReport implements \Stringable, EntityScopeVisibilityWithZone
     #[Assert\LessThanOrEqual('now')]
     #[Assert\NotBlank]
     #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTime $date = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $date = null;
 
     #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
     private ?UploadedFile $file = null;
@@ -138,12 +138,12 @@ class GeneralMeetingReport implements \Stringable, EntityScopeVisibilityWithZone
         $this->description = $description;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTime $date): void
+    public function setDate(?\DateTimeImmutable $date): void
     {
         $this->date = $date;
     }

@@ -120,8 +120,8 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $audience->setHasSmsSubscription(false);
         $audience->setIsCertified(true);
         $audience->setIsCommitteeMember(true);
-        $audience->setRegisteredSince(new \DateTime('2017-01-01'));
-        $audience->setRegisteredUntil(new \DateTime('2018-01-01'));
+        $audience->setRegisteredSince(new \DateTimeImmutable('2017-01-01'));
+        $audience->setRegisteredUntil(new \DateTimeImmutable('2018-01-01'));
         $zone = LoadGeoZoneData::getZoneReference($manager, 'zone_city_13055');
         $audience->setZone($zone);
         $audience->setZones([$zone]);

@@ -19,8 +19,8 @@ trait StatusTrait
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $statusDetail = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $closedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $closedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -46,12 +46,12 @@ trait StatusTrait
         $this->statusDetail = $statusDetail;
     }
 
-    public function getClosedAt(): ?\DateTimeInterface
+    public function getClosedAt(): ?\DateTimeImmutable
     {
         return $this->closedAt;
     }
 
-    public function setClosedAt(?\DateTimeInterface $closedAt): void
+    public function setClosedAt(?\DateTimeImmutable $closedAt): void
     {
         $this->closedAt = $closedAt;
     }

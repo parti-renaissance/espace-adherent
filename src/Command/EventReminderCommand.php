@@ -53,7 +53,7 @@ class EventReminderCommand extends Command
 
         if (Event::MODE_MEETING === $mode) {
             $startAfter = new Chronos()->modify(\sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
-            $startBefore = (clone $startAfter)->modify('+1 day');
+            $startBefore = $startAfter->modify('+1 day');
         } elseif (Event::MODE_ONLINE === $mode) {
             $startAfter = new Chronos()->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
             $startBefore = new Chronos()->modify(\sprintf('+%d minutes', (int) $input->getOption('online-start-before')));

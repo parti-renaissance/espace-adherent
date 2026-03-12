@@ -77,8 +77,8 @@ class AdherentTest extends AbstractKernelTestCase
         $adherent->activate($activationToken);
 
         $this->assertTrue($adherent->isEnabled());
-        $this->assertInstanceOf(\DateTime::class, $adherent->getActivatedAt());
-        $this->assertInstanceOf(\DateTime::class, $activationToken->getUsageDate());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getActivatedAt());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $activationToken->getUsageDate());
     }
 
     public function testActivateAdherentAccountTwice(): void
@@ -98,8 +98,8 @@ class AdherentTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLastLoggedAt());
 
         $adherent->recordLastLoginTime('2016-01-01 13:30:00');
-        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
-        $this->assertEquals(new \DateTime('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $adherent->getLastLoggedAt());
+        $this->assertEquals(new \DateTimeImmutable('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
     public function testUserWithLegislativeCandidateRole(): void

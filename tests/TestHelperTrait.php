@@ -352,7 +352,7 @@ trait TestHelperTrait
             'male',
             'John',
             'Smith',
-            new \DateTime('1990-12-12'),
+            new \DateTimeImmutable('1990-12-12'),
             ActivityPositionsEnum::STUDENT,
             $this->createPostAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone

@@ -45,7 +45,7 @@ class RemindActivatedMembershipCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $from = new \DateTime()->modify(\sprintf('-%d minutes', (int) $input->getArgument('minutes')));
+        $from = new \DateTimeImmutable()->modify(\sprintf('-%d minutes', (int) $input->getArgument('minutes')));
 
         while ($adherents = $this->findActivated($from, 100)) {
             foreach ($adherents as $adherent) {
@@ -65,7 +65,7 @@ class RemindActivatedMembershipCommand extends Command
     /**
      * @return Adherent[]
      */
-    private function findActivated(\DateTime $from, int $limit): array
+    private function findActivated(\DateTimeInterface $from, int $limit): array
     {
         return $this->adherentRepository
             ->createQueryBuilder('adherent')

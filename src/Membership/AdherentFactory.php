@@ -165,15 +165,19 @@ class AdherentFactory
     }
 
     /**
-     * @param int|string|\DateTime $birthdate Valid date representation
+     * @param int|string|\DateTimeInterface $birthdate Valid date representation
      */
-    private function createBirthdate($birthdate): \DateTime
+    private function createBirthdate($birthdate): \DateTimeImmutable
     {
-        if ($birthdate instanceof \DateTime) {
+        if ($birthdate instanceof \DateTimeImmutable) {
             return $birthdate;
         }
 
-        return new \DateTime($birthdate);
+        if ($birthdate instanceof \DateTime) {
+            return \DateTimeImmutable::createFromMutable($birthdate);
+        }
+
+        return new \DateTimeImmutable($birthdate);
     }
 
     private function hashPassword(string $password): string

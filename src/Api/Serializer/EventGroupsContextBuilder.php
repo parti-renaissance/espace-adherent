@@ -35,7 +35,7 @@ class EventGroupsContextBuilder implements SerializerContextBuilderInterface
         /** @var Event $event */
         $event = $request->attributes->get('data');
 
-        if ($event->getBeginAt() < new \DateTime()) {
+        if ($event->getBeginAt() < new \DateTimeImmutable()) {
             array_splice($context['groups'], array_search('event_write', $context['groups'], true), 1);
             $context['groups'][] = 'event_write_limited';
         }

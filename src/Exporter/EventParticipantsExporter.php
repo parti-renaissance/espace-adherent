@@ -32,7 +32,7 @@ class EventParticipantsExporter
             \sprintf(
                 '%s_%s.%s',
                 new Slugify()->slugify($event->getName()),
-                new \DateTime()->format('Y-m-d'),
+                new \DateTimeImmutable()->format('Y-m-d'),
                 $format
             ),
             new IteratorCallbackSourceIterator(

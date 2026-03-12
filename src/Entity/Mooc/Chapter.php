@@ -37,8 +37,8 @@ class Chapter implements \Stringable
     private $published;
 
     #[Assert\NotBlank]
-    #[ORM\Column(type: 'datetime')]
-    private $publishedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $publishedAt = null;
 
     /**
      * @var Mooc
@@ -55,7 +55,7 @@ class Chapter implements \Stringable
     #[ORM\OrderBy(['position' => 'ASC'])]
     private $elements;
 
-    public function __construct(?string $title = null, bool $published = false, ?\DateTime $publishedAt = null)
+    public function __construct(?string $title = null, bool $published = false, ?\DateTimeImmutable $publishedAt = null)
     {
         $this->title = $title;
         $this->published = $published;
@@ -103,12 +103,12 @@ class Chapter implements \Stringable
         $this->published = $published;
     }
 
-    public function getPublishedAt(): ?\DateTime
+    public function getPublishedAt(): ?\DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt): void
+    public function setPublishedAt(\DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }

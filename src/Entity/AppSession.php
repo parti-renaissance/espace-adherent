@@ -32,8 +32,8 @@ class AppSession implements \Stringable
     #[ORM\Column(enumType: SessionStatusEnum::class)]
     public SessionStatusEnum $status = SessionStatusEnum::ACTIVE;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $lastActivityDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $lastActivityDate = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $userAgent = null;
@@ -56,22 +56,22 @@ class AppSession implements \Stringable
     #[ORM\OneToMany(mappedBy: 'appSession', targetEntity: AppSessionPushTokenLink::class, cascade: ['persist'])]
     private Collection $pushTokenLinks;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $unsubscribedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $unsubscribedAt = null;
 
     public function __construct(Adherent $adherent, Client $client)
     {
         $this->uuid = Uuid::uuid4();
         $this->adherent = $adherent;
         $this->client = $client;
-        $this->lastActivityDate = new \DateTime();
+        $this->lastActivityDate = new \DateTimeImmutable();
         $this->accessTokens = new ArrayCollection();
         $this->pushTokenLinks = new ArrayCollection();
     }
 
     public function refresh(?string $userAgent, ?string $appVersion, ?SystemEnum $system = null, ?string $ip = null, ?string $deviceInfo = null): void
     {
-        $this->lastActivityDate = new \DateTime();
+        $this->lastActivityDate = new \DateTimeImmutable();
         $this->userAgent = $userAgent ?: $this->userAgent;
         $this->appVersion = $appVersion ?: $this->appVersion;
         $this->appSystem = $system ?: $this->appSystem;
@@ -83,7 +83,7 @@ class AppSession implements \Stringable
     {
         if ($this->isActive()) {
             $this->status = SessionStatusEnum::TERMINATED;
-            $this->lastActivityDate = new \DateTime();
+            $this->lastActivityDate = new \DateTimeImmutable();
         }
     }
 
@@ -107,7 +107,7 @@ class AppSession implements \Stringable
 
     public function unsubscribe(): void
     {
-        $this->unsubscribedAt = new \DateTime();
+        $this->unsubscribedAt = new \DateTimeImmutable();
         array_map(fn (AppSessionPushTokenLink $link) => $link->unsubscribe($this->unsubscribedAt), $this->findSubscribedPushTokenLinks());
     }
 
@@ -128,7 +128,7 @@ class AppSession implements \Stringable
 
         $this->lastActivityDate =
         $token->lastActivityDate =
-        $existingSubscribedLink->lastActivityDate = new \DateTime();
+        $existingSubscribedLink->lastActivityDate = new \DateTimeImmutable();
 
         $this->unsubscribedAt = null;
     }

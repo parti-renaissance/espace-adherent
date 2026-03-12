@@ -40,8 +40,8 @@ class CampaignRepository extends ServiceEntityRepository
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
             ->setParameters([
-                'now' => new \DateTime(),
-                'last_30d' => new \DateTime('-30 days'),
+                'now' => new \DateTimeImmutable(),
+                'last_30d' => new \DateTimeImmutable('-30 days'),
             ])
         ;
 
@@ -85,7 +85,7 @@ class CampaignRepository extends ServiceEntityRepository
             ->select('campaign.id')
             ->where('campaign.beginAt < :now AND campaign.finishAt > :now')
             ->andWhere('campaign.enabled = :true')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
             ->setParameter('true', true)
             ->getQuery()
             ->getScalarResult(), 'id'));
@@ -94,7 +94,7 @@ class CampaignRepository extends ServiceEntityRepository
     /**
      * @return Campaign[]
      */
-    public function findUnassociatedCampaigns(\DateTime $startDate): array
+    public function findUnassociatedCampaigns(\DateTimeInterface $startDate): array
     {
         return $this->createQueryBuilder('campaign')
             ->where('campaign.associated = :false')

@@ -28,7 +28,7 @@ class NationalEventInscriptionPaymentReminderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->eventInscriptionRepository->cancelAllWithWaitingPayments($now = new \DateTime());
+        $this->eventInscriptionRepository->cancelAllWithWaitingPayments($now = new \DateTimeImmutable());
 
         foreach ($this->getInscriptions($now) as $inscription) {
             $this->bus->dispatch(new SendPaymentReminderCommand($inscription->getUuid()));
@@ -40,7 +40,7 @@ class NationalEventInscriptionPaymentReminderCommand extends Command
     /**
      * @return EventInscription[]
      */
-    private function getInscriptions(\DateTime $now): array
+    private function getInscriptions(\DateTimeInterface $now): array
     {
         return $this->eventInscriptionRepository->findAllWithPendingPayments($now);
     }

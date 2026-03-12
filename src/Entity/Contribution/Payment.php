@@ -25,8 +25,8 @@ class Payment
     public ?string $ohmeId = null;
 
     #[Groups(['adherent_elect_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $date = null;
 
     #[Groups(['adherent_elect_read'])]
     #[ORM\Column(length: 50)]
@@ -54,7 +54,7 @@ class Payment
 
         $payment->adherent = $adherent;
         $payment->ohmeId = $data['id'];
-        $payment->date = $data['date'] ? \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['date']) : null;
+        $payment->date = $data['date'] ? \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:sP', $data['date']) : null;
         $payment->method = $data['payment_method_name'];
         $payment->status = $data['payment_status'];
         $payment->amount = (int) round($data['amount']);

@@ -35,10 +35,10 @@ class DataSurvey implements AuthorInterface
     private $authorPostalCode;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $postedAt;
 
     /**
@@ -88,7 +88,7 @@ class DataSurvey implements AuthorInterface
         $this->authorPostalCode = $authorPostalCode;
     }
 
-    public function getPostedAt(): ?\DateTime
+    public function getPostedAt(): ?\DateTimeImmutable
     {
         return $this->postedAt;
     }

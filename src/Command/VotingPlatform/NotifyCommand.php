@@ -39,7 +39,7 @@ class NotifyCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
 
         $this->notifyForEndForCandidacy($date);
         $this->notifyBeforeVote($date);

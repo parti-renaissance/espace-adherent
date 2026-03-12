@@ -18,7 +18,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
 
     public function testCreateHostMembership()
     {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createNewAdherent(), new \DateTime());
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createNewAdherent(), new \DateTimeImmutable());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -32,7 +32,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
 
     public function testCreateFollowerMembership()
     {
-        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createNewAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
+        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createNewAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTimeImmutable());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -46,7 +46,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
 
     public function testChangePrivileges()
     {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createNewAdherent(), new \DateTime());
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createNewAdherent(), new \DateTimeImmutable());
 
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
@@ -69,7 +69,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
             'male',
             'Jean',
             'Dupont',
-            new \DateTime('1980-03-22'),
+            new \DateTimeImmutable('1980-03-22'),
             'position',
             $this->createPostAddress('50 Rue de la Villette', '69003-69383')
         );

@@ -28,7 +28,7 @@ class ProxyAction extends AbstractProcurationAction
     {
         return new self(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $proxy
         );

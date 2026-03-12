@@ -21,7 +21,7 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->leftJoin('e.rounds', 'r')
             ->where('r.date > :now')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
             ->orderBy('r.date', 'ASC')
         ;
     }
@@ -42,7 +42,7 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->addSelect('round')
             ->innerJoin('e.rounds', 'round')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
             ->orderBy('ABS(TIMESTAMPDIFF(SECOND, round.date, :now))', 'ASC')
             ->getQuery()
             ->setMaxResults(1)

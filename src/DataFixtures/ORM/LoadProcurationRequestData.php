@@ -93,7 +93,7 @@ class LoadProcurationRequestData extends Fixture implements DependentFixtureInte
                     $zone,
                 )
             );
-            $request->setCreatedAt($date = new \DateTime('-'.$i.' days'));
+            $request->setCreatedAt($date = new \DateTimeImmutable('-'.$i.' days'));
             $request->setUpdatedAt($date);
         }
 

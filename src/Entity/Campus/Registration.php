@@ -31,8 +31,8 @@ class Registration
     #[ORM\Column(enumType: RegistrationStatusEnum::class)]
     public ?RegistrationStatusEnum $status = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $registeredAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $registeredAt = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'campusRegistrations')]

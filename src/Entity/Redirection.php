@@ -48,10 +48,10 @@ class Redirection implements \Stringable
     private $type;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     #[Gedmo\Timestampable(on: 'update')]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $updatedAt;
 
     public function __toString()
@@ -94,12 +94,12 @@ class Redirection implements \Stringable
         $this->type = $type;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }

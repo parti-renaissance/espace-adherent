@@ -131,7 +131,7 @@ class LoadElectionData extends Fixture
         );
         // We need this election to always be in the future for tests to pass
         // less than 3 days to trigger a reminder
-        $nextTime = new \DateTime('+3 days');
+        $nextTime = new \DateTimeImmutable('+3 days');
         $this->createRound(
             $partialLegislativeElections,
             '1er tour des éléctions législatives partielles pour la 1ère circonscription du Val-d\'Oise 2018',
@@ -147,7 +147,7 @@ class LoadElectionData extends Fixture
             'round-2-legislatives',
         );
 
-        $nextTime = new \DateTime();
+        $nextTime = new \DateTimeImmutable();
         $municipalElections = $this->createElection(
             'Élections municipales',
             <<<INTRODUCTION

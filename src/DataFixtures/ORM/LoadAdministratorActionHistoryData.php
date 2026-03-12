@@ -21,15 +21,15 @@ class LoadAdministratorActionHistoryData extends Fixture implements DependentFix
         /** @var Adherent $adherent1 */
         $adherent1 = $this->getReference('adherent-1', Adherent::class);
 
-        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTime('-10 minutes')));
-        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-9 minutes')));
-        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_START, new \DateTime('-8 minutes'), [
+        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTimeImmutable('-10 minutes')));
+        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTimeImmutable('-9 minutes')));
+        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_START, new \DateTimeImmutable('-8 minutes'), [
             'adherent_uuid' => $adherent1->getUuid()->toString(),
         ]));
-        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-7 minutes'), [
+        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_END, new \DateTimeImmutable('-7 minutes'), [
             'adherent_uuid' => $adherent1->getUuid()->toString(),
         ]));
-        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::EXPORT, new \DateTime('-6 minutes'), [
+        $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::EXPORT, new \DateTimeImmutable('-6 minutes'), [
             'route' => 'admin_app_adherent_export',
             'parameters' => [
                 'filter1' => 'value1',
@@ -49,7 +49,7 @@ class LoadAdministratorActionHistoryData extends Fixture implements DependentFix
         return new AdministratorActionHistory(
             $administrator,
             $type,
-            $date ?? new \DateTime('now'),
+            $date ?? new \DateTimeImmutable('now'),
             $data
         );
     }

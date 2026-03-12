@@ -14,7 +14,7 @@ interface ElectionEntityInterface
 
     public function getDesignationType(): string;
 
-    public function getVoteStartDate(): ?\DateTime;
+    public function getVoteStartDate(): ?\DateTimeImmutable;
 
-    public function getVoteEndDate(): ?\DateTime;
+    public function getVoteEndDate(): ?\DateTimeImmutable;
 }

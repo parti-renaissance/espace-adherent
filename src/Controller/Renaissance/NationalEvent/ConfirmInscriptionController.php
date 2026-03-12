@@ -24,7 +24,7 @@ class ConfirmInscriptionController extends AbstractController
 
         if ($form->isSubmitted()) {
             if (!$inscription->confirmedAt) {
-                $inscription->confirmedAt = new \DateTime();
+                $inscription->confirmedAt = new \DateTimeImmutable();
                 $entityManager->flush();
             }
 

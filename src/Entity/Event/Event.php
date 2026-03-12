@@ -281,7 +281,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
      */
     #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     protected $beginAt;
 
     /**
@@ -290,7 +290,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[Assert\Expression('!value or value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     protected $finishAt;
 
     /**
@@ -319,8 +319,8 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $national = false;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $pushSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $pushSentAt = null;
 
     /**
      * @var string|null
@@ -494,7 +494,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[Groups(['event_read', 'event_list_read'])]
     public function getLocalBeginAt(): \DateTimeInterface
     {
-        return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
+        return $this->beginAt->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }
 
     public function getFinishAt(): ?\DateTimeInterface
@@ -510,7 +510,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[Groups(['event_read', 'event_list_read'])]
     public function getLocalFinishAt(): \DateTimeInterface
     {
-        return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
+        return $this->finishAt->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }
 
     #[Groups(['event_read', 'event_list_read'])]

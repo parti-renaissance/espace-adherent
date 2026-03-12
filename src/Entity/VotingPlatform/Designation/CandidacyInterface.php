@@ -45,9 +45,9 @@ interface CandidacyInterface extends ImageManageableInterface
 
     public function getQuality(): ?string;
 
-    public function getCreatedAt(): \DateTimeInterface;
+    public function getCreatedAt(): ?\DateTimeImmutable;
 
-    public function getUpdatedAt(): \DateTimeInterface;
+    public function getUpdatedAt(): ?\DateTimeImmutable;
 
     public function getElection(): ElectionEntityInterface;
 

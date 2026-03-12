@@ -35,7 +35,7 @@ class UploadableFile
         $this->uploadFile = $file;
 
         if (null !== $file) {
-            $this->updatedAt = new \DateTime();
+            $this->updatedAt = new \DateTimeImmutable();
         }
     }
 

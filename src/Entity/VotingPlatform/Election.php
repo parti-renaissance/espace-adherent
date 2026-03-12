@@ -42,15 +42,15 @@ class Election
     private $status = ElectionStatusEnum::OPEN;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $closedAt;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $canceledAt;
 
     #[ORM\Column(nullable: true, enumType: ElectionCancelReasonEnum::class)]
@@ -70,9 +70,9 @@ class Election
     private $electionPools;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $secondRoundEndDate;
 
     /**
@@ -143,7 +143,7 @@ class Election
         $this->electionEntity = $electionEntity;
     }
 
-    public function getRealVoteEndDate(): \DateTime
+    public function getRealVoteEndDate(): \DateTimeImmutable
     {
         return $this->secondRoundEndDate ?: $this->getDesignationRealVoteEndDate();
     }
@@ -166,7 +166,7 @@ class Election
     public function cancel(ElectionCancelReasonEnum $reason): void
     {
         $this->status = ElectionStatusEnum::CANCELED;
-        $this->canceledAt = new \DateTime();
+        $this->canceledAt = new \DateTimeImmutable();
         $this->cancelReason = $reason;
 
         $this->designation->cancel();
@@ -180,7 +180,7 @@ class Election
     public function close(): void
     {
         $this->status = ElectionStatusEnum::CLOSED;
-        $this->closedAt = new \DateTime();
+        $this->closedAt = new \DateTimeImmutable();
     }
 
     public function addElectionRound(ElectionRound $round): void
@@ -228,17 +228,17 @@ class Election
         $this->addElectionRound($secondRound = new ElectionRound());
         $secondRound->setElectionPools($pools);
 
-        $this->secondRoundEndDate = (clone $this->getVoteEndDate())->modify(
+        $this->secondRoundEndDate = $this->getVoteEndDate()->modify(
             \sprintf('+%d days', $this->getAdditionalRoundDuration())
         );
     }
 
     public function isSecondRoundVotePeriodActive(): bool
     {
-        return null !== $this->secondRoundEndDate && (new \DateTime()) <= $this->secondRoundEndDate;
+        return null !== $this->secondRoundEndDate && (new \DateTimeImmutable()) <= $this->secondRoundEndDate;
     }
 
-    public function getSecondRoundEndDate(): ?\DateTime
+    public function getSecondRoundEndDate(): ?\DateTimeImmutable
     {
         return $this->secondRoundEndDate;
     }
@@ -277,7 +277,7 @@ class Election
             return false;
         }
 
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         if ($secondDate = $this->getSecondRoundEndDate()) {
             return $secondDate < $now;
@@ -296,7 +296,7 @@ class Election
         return $roundResult && $roundResult->hasOnlyElectedPool();
     }
 
-    public function getClosedAt(): ?\DateTime
+    public function getClosedAt(): ?\DateTimeImmutable
     {
         return $this->closedAt;
     }
@@ -346,7 +346,7 @@ class Election
             return true;
         }
 
-        return $this->designation->getResultStartDate($date) <= new \DateTime();
+        return $this->designation->getResultStartDate($date) <= new \DateTimeImmutable();
     }
 
     public function markSentNotification(int $notification): void

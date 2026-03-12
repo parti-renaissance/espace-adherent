@@ -40,8 +40,8 @@ class BuildingStatistics implements CampaignStatisticsInterface
     private Campaign $campaign;
 
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $lastPassage = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $lastPassage = null;
 
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -82,12 +82,12 @@ class BuildingStatistics implements CampaignStatisticsInterface
         return $this->campaign;
     }
 
-    public function getLastPassage(): ?\DateTimeInterface
+    public function getLastPassage(): ?\DateTimeImmutable
     {
         return $this->lastPassage;
     }
 
-    public function setLastPassage(?\DateTimeInterface $lastPassage): void
+    public function setLastPassage(?\DateTimeImmutable $lastPassage): void
     {
         $this->lastPassage = $lastPassage;
     }

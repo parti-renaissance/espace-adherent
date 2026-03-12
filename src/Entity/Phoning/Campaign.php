@@ -132,11 +132,11 @@ class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityA
     private $goal;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\NotBlank(groups: ['regular_campaign'])]
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $finishAt;
 
     /**
@@ -185,7 +185,7 @@ class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityA
         ?AudienceSnapshot $audience = null,
         ?Survey $survey = null,
         ?int $goal = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         ?Zone $zone = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -363,7 +363,7 @@ class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityA
 
     public function isFinished(): bool
     {
-        return null !== $this->finishAt && $this->finishAt <= new \DateTime();
+        return null !== $this->finishAt && $this->finishAt <= new \DateTimeImmutable();
     }
 
     public function getGoalOverall(): int

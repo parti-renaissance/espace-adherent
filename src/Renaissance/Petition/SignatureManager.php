@@ -56,7 +56,7 @@ class SignatureManager
 
         $this->notifier->sendReminder($signature);
 
-        $signature->remindedAt = new \DateTime();
+        $signature->remindedAt = new \DateTimeImmutable();
         $this->entityManager->flush();
     }
 }

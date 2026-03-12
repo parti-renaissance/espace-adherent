@@ -106,8 +106,8 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
 
     #[Assert\NotBlank]
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTime $date = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $date = null;
 
     #[Groups(['action_read', 'action_write'])]
     #[ORM\Column(type: 'text', nullable: true)]
@@ -129,14 +129,14 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     #[ORM\Column(options: ['default' => 'scheduled'])]
     public string $status = self::STATUS_SCHEDULED;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $canceledAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $canceledAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $notifiedAtFirstNotification = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $notifiedAtFirstNotification = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $notifiedAtSecondNotification = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $notifiedAtSecondNotification = null;
 
     public function __construct()
     {
@@ -165,7 +165,7 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     public function cancel(): void
     {
         $this->status = self::STATUS_CANCELLED;
-        $this->canceledAt = new \DateTime();
+        $this->canceledAt = new \DateTimeImmutable();
     }
 
     public function isCancelled(): bool

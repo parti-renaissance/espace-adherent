@@ -50,7 +50,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
             $nationalSurvey1,
-            new \DateTime('-1 minutes')
+            new \DateTimeImmutable('-1 minutes')
         );
         $phoningDataSurvey2 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -58,7 +58,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
             $nationalSurvey1,
-            new \DateTime('-2 minutes')
+            new \DateTimeImmutable('-2 minutes')
         );
         $phoningDataSurvey3 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -66,7 +66,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNJOIN,
             $nationalSurvey1,
-            new \DateTime('-3 minutes')
+            new \DateTimeImmutable('-3 minutes')
         );
         $phoningDataSurvey4 = $this->createPhoningCampaignHistory(
             $deputy_75_1,
@@ -74,7 +74,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNJOIN,
             $nationalSurvey1,
-            new \DateTime('-4 minutes')
+            new \DateTimeImmutable('-4 minutes')
         );
         $phoningDataSurvey5 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -82,7 +82,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::FAILED,
             null,
-            new \DateTime('2021-07-14')
+            new \DateTimeImmutable('2021-07-14')
         );
         $phoningDataSurvey6 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -90,7 +90,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::FAILED,
             null,
-            new \DateTime('-6 minutes')
+            new \DateTimeImmutable('-6 minutes')
         );
         $phoningDataSurvey7 = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -98,7 +98,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
             $nationalSurvey1,
-            new \DateTime('-7 minutes')
+            new \DateTimeImmutable('-7 minutes')
         );
         // should be returned for campaign1
         $phoningDataSurvey8 = $this->createPhoningCampaignHistory(
@@ -107,7 +107,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
             $nationalSurvey1,
-            new \DateTime('-8 minutes')
+            new \DateTimeImmutable('-8 minutes')
         );
         $phoningDataSurvey9 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -115,7 +115,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
-            new \DateTime(),
+            new \DateTimeImmutable(),
             self::HISTORY_1_UUID
         );
         $phoningDataSurvey9a = $this->createPhoningCampaignHistory(
@@ -124,7 +124,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
-            new \DateTime('-5 days')
+            new \DateTimeImmutable('-5 days')
         );
         $phoningDataSurvey10 = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -132,7 +132,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND,
             null,
-            new \DateTime('-9 minutes')
+            new \DateTimeImmutable('-9 minutes')
         );
         $phoningDataSurvey10a = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -140,7 +140,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND,
             null,
-            new \DateTime('-10 days')
+            new \DateTimeImmutable('-10 days')
         );
         $phoningDataSurvey11 = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -155,7 +155,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
-            new \DateTime('-7 days')
+            new \DateTimeImmutable('-7 days')
         );
         $phoningDataSurvey12 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -163,7 +163,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED,
             $nationalSurvey1,
-            new \DateTime('-10 minutes')
+            new \DateTimeImmutable('-10 minutes')
         );
         $phoningDataSurvey13 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -171,7 +171,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
-            new \DateTime('-11 minutes')
+            new \DateTimeImmutable('-11 minutes')
         );
         $phoningDataSurvey14 = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -179,7 +179,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
-            new \DateTime('-12 minutes')
+            new \DateTimeImmutable('-12 minutes')
         );
         // should be returned for campaign1
         $phoningDataSurvey15 = $this->createPhoningCampaignHistory(
@@ -188,7 +188,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign2,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
-            new \DateTime('-2 days')
+            new \DateTimeImmutable('-2 days')
         );
 
         $phoningDataSurvey16 = $this->createPhoningCampaignHistory(
@@ -197,10 +197,10 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
-            new \DateTime('-30 minutes'),
+            new \DateTimeImmutable('-30 minutes'),
             self::HISTORY_3_UUID
         );
-        $phoningDataSurvey16->setFinishAt(new \DateTime('-25 minutes'));
+        $phoningDataSurvey16->setFinishAt(new \DateTimeImmutable('-25 minutes'));
         $this->addReference('phoning-data-survey-1', $phoningDataSurvey16->getDataSurvey());
 
         $phoningDataSurvey17 = $this->createPhoningCampaignHistory(
@@ -209,10 +209,10 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
-            new \DateTime('-20 minutes'),
+            new \DateTimeImmutable('-20 minutes'),
             self::HISTORY_4_UUID
         );
-        $phoningDataSurvey17->setFinishAt(new \DateTime('-10 minutes'));
+        $phoningDataSurvey17->setFinishAt(new \DateTimeImmutable('-10 minutes'));
         $this->addReference('phoning-data-survey-2', $phoningDataSurvey17->getDataSurvey());
 
         $phoningDataSurvey18 = $this->createPhoningCampaignHistory(
@@ -221,7 +221,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign3,
             CampaignHistoryStatusEnum::FAILED,
             null,
-            new \DateTime('-5 minutes')
+            new \DateTimeImmutable('-5 minutes')
         );
 
         $phoningDataSurvey19 = $this->createPhoningCampaignHistory(
@@ -230,10 +230,10 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
-            new \DateTime('-25 minutes'),
+            new \DateTimeImmutable('-25 minutes'),
             self::HISTORY_5_UUID
         );
-        $phoningDataSurvey19->setFinishAt(new \DateTime('-20 minutes'));
+        $phoningDataSurvey19->setFinishAt(new \DateTimeImmutable('-20 minutes'));
         $this->addReference('phoning-data-survey-3', $phoningDataSurvey19->getDataSurvey());
 
         $manager->persist($this->createPhoningCampaignHistory(
@@ -242,7 +242,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $this->getReference('campaign-permanent', Campaign::class),
             CampaignHistoryStatusEnum::SEND,
             null,
-            new \DateTime('-2 days'),
+            new \DateTimeImmutable('-2 days'),
             self::HISTORY_2_UUID
         ));
 
@@ -278,13 +278,13 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         Campaign $campaign,
         string $status,
         ?Survey $survey = null,
-        ?\DateTime $beganAt = null,
+        ?\DateTimeImmutable $beganAt = null,
         ?string $uuid = null,
     ): CampaignHistory {
         $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
 
         $campaignHistory->setStatus($status);
-        $campaignHistory->setBeginAt($beganAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setBeginAt($beganAt ?? new \DateTimeImmutable('-10 minutes'));
 
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);

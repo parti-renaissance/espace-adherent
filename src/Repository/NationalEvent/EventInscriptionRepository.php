@@ -53,9 +53,9 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->andWhere('((e.endDate <= :now AND ei.firstTicketScannedAt IS NOT NULL) OR e.endDate > :now)')
             ->setParameters([
-                'now' => new \DateTime(),
+                'now' => new \DateTimeImmutable(),
                 'adherent' => $adherent,
-                'start_date' => new \DateTime(EventTagGenerator::PERIOD),
+                'start_date' => new \DateTimeImmutable(EventTagGenerator::PERIOD),
                 'excluded_statuses' => [
                     InscriptionStatusEnum::CANCELED,
                     InscriptionStatusEnum::DUPLICATE,
@@ -395,7 +395,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('r.id IS NULL')
             ->andWhere('ei.createdAt < :since')
             ->setParameter('now', $now)
-            ->setParameter('since', (clone $now)->modify('-10 minutes'))
+            ->setParameter('since', $now->modify('-10 minutes'))
             ->setParameter('statuses', InscriptionStatusEnum::REJECTED_STATUSES)
             ->setParameter('payment_status', PaymentStatusEnum::CONFIRMED)
             ->getQuery()
@@ -405,7 +405,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
 
     public function cancelAllWithWaitingPayments(\DateTime $now): void
     {
-        $cutoffDate = (clone $now)->modify(\sprintf('-%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN));
+        $cutoffDate = $now->modify(\sprintf('-%d minutes', EventInscription::CANCELLATION_DELAY_IN_MIN));
 
         $this->createQueryBuilder('ei')
             ->update()
@@ -432,7 +432,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('ei.event = :event')
             ->setParameter('new_status', InscriptionStatusEnum::CANCELED)
             ->setParameter('status', InscriptionStatusEnum::WAITING_PAYMENT)
-            ->setParameter('canceled_at', new \DateTime())
+            ->setParameter('canceled_at', new \DateTimeImmutable())
             ->setParameter('email', $eventInscription->addressEmail)
             ->setParameter('event', $eventInscription->event)
             ->getQuery()
@@ -484,7 +484,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->where('e.type = :type')
             ->orderBy('score', 'ASC')
             ->setMaxResults(1)
-            ->setParameters(['type' => NationalEventTypeEnum::CAMPUS, 'now' => new \DateTime()])
+            ->setParameters(['type' => NationalEventTypeEnum::CAMPUS, 'now' => new \DateTimeImmutable()])
             ->getQuery()
             ->getSingleScalarResult()
         ;

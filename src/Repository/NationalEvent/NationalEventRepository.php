@@ -36,7 +36,7 @@ class NationalEventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('event')
             ->where('event.endDate > :now')
             ->andWhere('event.alertEnabled = 1')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
             ->orderBy('event.startDate', 'ASC')
             ->getQuery()
             ->getResult()
@@ -48,7 +48,7 @@ class NationalEventRepository extends ServiceEntityRepository
         return $this->findOneBy(['slug' => $part]);
     }
 
-    public function findAllSince(\DateTime $since, array $types = []): array
+    public function findAllSince(\DateTimeInterface $since, array $types = []): array
     {
         $qb = $this->createQueryBuilder('event')
             ->where('event.startDate >= :start_date')

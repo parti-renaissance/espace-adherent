@@ -63,11 +63,9 @@ class CommitteeMembership implements UuidEntityInterface
 
     /**
      * The date and time when the adherent joined the committee.
-     *
-     * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
-    private $joinedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $joinedAt;
 
     /**
      * Indicates if the adherent votes in this committee
@@ -98,7 +96,7 @@ class CommitteeMembership implements UuidEntityInterface
         $this->committee = $committee;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
-        $this->joinedAt = $subscriptionDate ?? new \DateTime();
+        $this->joinedAt = \DateTimeImmutable::createFromInterface($subscriptionDate ?? new \DateTimeImmutable());
         $this->trigger = $trigger;
         $this->committeeCandidacies = new ArrayCollection();
     }
@@ -122,7 +120,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $follower,
         CommitteeMembershipTriggerEnum $trigger,
     ): self {
-        return static::createForAdherent($committee, $follower, self::COMMITTEE_FOLLOWER, new \DateTime(), $trigger);
+        return static::createForAdherent($committee, $follower, self::COMMITTEE_FOLLOWER, new \DateTimeImmutable(), $trigger);
     }
 
     /**
@@ -275,10 +273,10 @@ class CommitteeMembership implements UuidEntityInterface
     #[Groups(['export', 'adherent_committees_modal', 'profile_read'])]
     public function getSubscriptionDate(): \DateTimeImmutable
     {
-        return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());
+        return $this->joinedAt;
     }
 
-    public function getJoinedAt(): \DateTimeInterface
+    public function getJoinedAt(): \DateTimeImmutable
     {
         return $this->joinedAt;
     }

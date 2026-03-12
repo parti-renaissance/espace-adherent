@@ -168,7 +168,7 @@ trait AudienceFieldsTrait
         return $this->registeredSince;
     }
 
-    public function setRegisteredSince(?\DateTime $registeredSince): void
+    public function setRegisteredSince(?\DateTimeInterface $registeredSince): void
     {
         $this->registeredSince = $registeredSince;
     }
@@ -178,7 +178,7 @@ trait AudienceFieldsTrait
         return $this->registeredUntil;
     }
 
-    public function setRegisteredUntil(?\DateTime $registeredUntil): void
+    public function setRegisteredUntil(?\DateTimeInterface $registeredUntil): void
     {
         $this->registeredUntil = $registeredUntil;
     }

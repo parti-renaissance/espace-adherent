@@ -19,12 +19,12 @@ class SendResubscribeEmailController extends AbstractController
             return $this->json(['message' => 'Militant est déjà abonné aux emails'], Response::HTTP_BAD_REQUEST);
         }
 
-        if ($adherent->resubscribeEmailSentAt && $adherent->resubscribeEmailSentAt->diff(new \DateTime())->y < 1) {
+        if ($adherent->resubscribeEmailSentAt && $adherent->resubscribeEmailSentAt->diff(new \DateTimeImmutable())->y < 1) {
             return $this->json(['message' => \sprintf('Un email de réabonnement a déjà été envoyé le %s. Vous ne pouvez en envoyer qu\'un par an.', $adherent->resubscribeEmailSentAt->format('d/m/Y'))], Response::HTTP_BAD_REQUEST);
         }
 
         $bus->dispatch(new SendResubscribeEmailCommand($adherent));
-        $adherent->resubscribeEmailSentAt = new \DateTime();
+        $adherent->resubscribeEmailSentAt = new \DateTimeImmutable();
 
         $entityManager->flush();
 

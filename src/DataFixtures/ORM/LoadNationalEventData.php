@@ -22,10 +22,10 @@ class LoadNationalEventData extends Fixture
         $event->setName('Event national 1');
         $event->alertEnabled = true;
         $event->alertTitle = 'Venez nombreux !';
-        $event->startDate = new \DateTime('+1 month');
-        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
-        $event->ticketStartDate = new \DateTime('-1 day');
-        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->startDate = new \DateTimeImmutable('+1 month');
+        $event->endDate = new \DateTimeImmutable()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTimeImmutable('-1 day');
+        $event->ticketEndDate = new \DateTimeImmutable('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -37,10 +37,10 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Event national 2');
-        $event->startDate = new \DateTime('+1.1 month');
-        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
-        $event->ticketStartDate = new \DateTime('-1 day');
-        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->startDate = new \DateTimeImmutable('+1.1 month');
+        $event->endDate = new \DateTimeImmutable()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTimeImmutable('-1 day');
+        $event->ticketEndDate = new \DateTimeImmutable('+1 month');
         $event->textIntro = '<p>Voici un nouvel event</p>';
         $event->textHelp = '<p>Il suffit de remplir le formulaire</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -56,11 +56,11 @@ class LoadNationalEventData extends Fixture
         $event->alertEnabled = true;
         $event->type = NationalEventTypeEnum::CAMPUS;
         $event->alertTitle = 'Venez nombreux !';
-        $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1 hour');
-        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
-        $event->ticketStartDate = new \DateTime('-1 day');
-        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->inscriptionEditDeadline = new \DateTimeImmutable('+1 month');
+        $event->startDate = new \DateTimeImmutable('-1 hour');
+        $event->endDate = new \DateTimeImmutable()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTimeImmutable('-1 day');
+        $event->ticketEndDate = new \DateTimeImmutable('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -183,10 +183,10 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Event passé');
-        $event->startDate = new \DateTime('-10 days');
-        $event->endDate = new \DateTime('-8 days');
-        $event->ticketStartDate = new \DateTime('-11 days');
-        $event->ticketEndDate = new \DateTime('-10 days');
+        $event->startDate = new \DateTimeImmutable('-10 days');
+        $event->endDate = new \DateTimeImmutable('-8 days');
+        $event->ticketStartDate = new \DateTimeImmutable('-11 days');
+        $event->ticketEndDate = new \DateTimeImmutable('-10 days');
         $event->textIntro = '<p>Voici un event passé</p>';
         $event->textHelp = '<p>Il suffit de remplir le formulaire</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -197,11 +197,11 @@ class LoadNationalEventData extends Fixture
 
         $event->setName('Event JEM');
         $event->type = NationalEventTypeEnum::JEM;
-        $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1.5 hour');
-        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
-        $event->ticketStartDate = new \DateTime('-1 day');
-        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->inscriptionEditDeadline = new \DateTimeImmutable('+1 month');
+        $event->startDate = new \DateTimeImmutable('-1.5 hour');
+        $event->endDate = new \DateTimeImmutable()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTimeImmutable('-1 day');
+        $event->ticketEndDate = new \DateTimeImmutable('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
@@ -386,11 +386,11 @@ class LoadNationalEventData extends Fixture
         $event->alertEnabled = true;
         $event->type = NationalEventTypeEnum::NRP;
         $event->alertTitle = 'Venez nombreux !';
-        $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1.6 hour');
-        $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
-        $event->ticketStartDate = new \DateTime('-1 day');
-        $event->ticketEndDate = new \DateTime('+1 month');
+        $event->inscriptionEditDeadline = new \DateTimeImmutable('+1 month');
+        $event->startDate = new \DateTimeImmutable('-1.6 hour');
+        $event->endDate = new \DateTimeImmutable()->add(new \DateInterval('P1M2D'));
+        $event->ticketStartDate = new \DateTimeImmutable('-1 day');
+        $event->ticketEndDate = new \DateTimeImmutable('+1 month');
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';

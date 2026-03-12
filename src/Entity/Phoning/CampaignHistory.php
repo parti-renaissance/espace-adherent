@@ -151,19 +151,19 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $note;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     #[Assert\NotBlank]
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $beginAt;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\Expression('value === null or value > this.getBeginAt()', message: 'phoning.campaign_history.finish_at.invalid')]
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $finishAt;
 
     #[Assert\Valid]
@@ -188,7 +188,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         $history->caller = $caller;
         $history->adherent = $adherent;
         $history->status = CampaignHistoryStatusEnum::SEND;
-        $history->beginAt = new \DateTime();
+        $history->beginAt = new \DateTimeImmutable();
 
         return $history;
     }

@@ -140,41 +140,41 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     private $globalZones;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $candidacyStartDate;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $candidacyEndDate;
 
     #[Groups(['designation_read', 'committee_election:read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $electionCreationDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $electionCreationDate = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $accountCreationDeadline = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $accountCreationDeadline = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $membershipDeadline = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $membershipDeadline = null;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\GreaterThan('now', message: 'La date de début doit être dans le futur.', groups: ['Admin_creation', 'api_designation_write'])]
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'committee_election:read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $voteStartDate;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     #[Assert\Expression('value > this.getVoteStartDate()', message: 'La date de clôture doit être postérieur à la date de début', groups: ['Default', 'api_designation_write'])]
     #[Groups(['designation_read', 'designation_write', 'committee_election:read', 'designation_list'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $voteEndDate;
 
     /**
@@ -299,8 +299,8 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $alertDescription = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $alertBeginAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $alertBeginAt = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $enableVoteQuestionsPreview = true;
@@ -352,47 +352,47 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
         $this->globalZones = $globalZones;
     }
 
-    public function getCandidacyStartDate(): ?\DateTime
+    public function getCandidacyStartDate(): ?\DateTimeImmutable
     {
         return $this->candidacyStartDate;
     }
 
-    public function setCandidacyStartDate(?\DateTime $candidacyStartDate): void
+    public function setCandidacyStartDate(?\DateTimeImmutable $candidacyStartDate): void
     {
         $this->candidacyStartDate = $candidacyStartDate;
     }
 
-    public function getCandidacyEndDate(): ?\DateTime
+    public function getCandidacyEndDate(): ?\DateTimeImmutable
     {
         return $this->candidacyEndDate;
     }
 
-    public function setCandidacyEndDate(?\DateTime $candidacyEndDate): void
+    public function setCandidacyEndDate(?\DateTimeImmutable $candidacyEndDate): void
     {
         $this->candidacyEndDate = $candidacyEndDate;
     }
 
-    public function getVoteStartDate(): ?\DateTime
+    public function getVoteStartDate(): ?\DateTimeImmutable
     {
         return $this->voteStartDate;
     }
 
-    public function setVoteStartDate(?\DateTime $voteStartDate): void
+    public function setVoteStartDate(?\DateTimeImmutable $voteStartDate): void
     {
         $this->voteStartDate = $voteStartDate;
     }
 
-    public function getVoteEndDate(): ?\DateTime
+    public function getVoteEndDate(): ?\DateTimeImmutable
     {
         return $this->voteEndDate;
     }
 
-    public function setVoteEndDate(?\DateTime $voteEndDate): void
+    public function setVoteEndDate(?\DateTimeImmutable $voteEndDate): void
     {
         $this->voteEndDate = $voteEndDate;
     }
 
-    public function getResultStartDate(?\DateTime $voteEndDate = null): \DateTime
+    public function getResultStartDate(?\DateTimeImmutable $voteEndDate = null): \DateTimeImmutable
     {
         $date = $voteEndDate ?? $this->voteEndDate;
 
@@ -400,7 +400,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
             return $date;
         }
 
-        return (clone $date)->modify(\sprintf('+%d minutes', \intval($this->resultScheduleDelay * 60)));
+        return $date->modify(\sprintf('+%d minutes', \intval($this->resultScheduleDelay * 60)));
     }
 
     public function getResultDisplayDelay(): int
@@ -536,7 +536,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
 
     public function isOngoing(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->getCandidacyStartDate() <= $now
             && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate());
@@ -544,7 +544,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
 
     public function isActive(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->getCandidacyStartDate() <= $now
             && (
@@ -554,27 +554,27 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
             );
     }
 
-    public function getElectionCreationDate(): ?\DateTime
+    public function getElectionCreationDate(): ?\DateTimeImmutable
     {
         return $this->electionCreationDate;
     }
 
     public function isResultPeriodActive(): bool
     {
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         return $this->getVoteEndDate()
             && $this->getVoteEndDate() <= $now
             && $now < $this->getResultEndDate();
     }
 
-    public function getResultEndDate(): ?\DateTime
+    public function getResultEndDate(): ?\DateTimeImmutable
     {
         if (!$this->getVoteEndDate()) {
             return null;
         }
 
-        return (clone $this->getVoteEndDate())->modify(\sprintf('+%d days', $this->getResultDisplayDelay()));
+        return $this->getVoteEndDate()->modify(\sprintf('+%d days', $this->getResultDisplayDelay()));
     }
 
     public function markAsLimited(): void
@@ -756,8 +756,8 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
             $designation->setPools([$command->getPool()]);
         }
 
-        $designation->setCandidacyStartDate(new \DateTime());
-        $designation->setCandidacyEndDate((clone $command->getVoteStartDate())->modify('-24 hours'));
+        $designation->setCandidacyStartDate(new \DateTimeImmutable());
+        $designation->setCandidacyEndDate($command->getVoteStartDate()->modify('-24 hours'));
 
         $designation->setVoteStartDate($command->getVoteStartDate());
         $designation->setVoteEndDate($command->getVoteEndDate());
@@ -801,7 +801,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
 
     public function isVotePeriodStarted(): bool
     {
-        return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTime());
+        return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTimeImmutable());
     }
 
     public function isCandidacyPeriodEnabled(): bool
@@ -856,7 +856,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     #[Groups(['designation_read'])]
     public function isFullyEditable(): bool
     {
-        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+2 days'));
+        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTimeImmutable('+2 days'));
     }
 
     #[Groups(['designation_read'])]
@@ -909,7 +909,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     public function initCreationDate(): void
     {
         if ($this->getVoteStartDate()) {
-            $electionCreationDate = (clone $this->getVoteStartDate())->modify(\sprintf('-%d days', $this->isCommitteeSupervisorType() ? 15 : 2));
+            $electionCreationDate = $this->getVoteStartDate()->modify(\sprintf('-%d days', $this->isCommitteeSupervisorType() ? 15 : 2));
 
             if ($this->electionCreationDate !== $electionCreationDate) {
                 $this->electionCreationDate = $electionCreationDate;

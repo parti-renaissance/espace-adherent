@@ -53,17 +53,11 @@ class Donation implements \Stringable, GeoPointInterface
     #[ORM\Column(type: 'integer')]
     private $amount;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime')]
-    private $donatedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $donatedAt = null;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastSuccessDate;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $lastSuccessDate = null;
 
     #[ORM\Column(type: 'smallint', options: ['default' => 0])]
     private $duration;
@@ -87,21 +81,15 @@ class Donation implements \Stringable, GeoPointInterface
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $subscriptionEndedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $subscriptionEndedAt = null;
 
     #[ORM\Column(length: 25)]
     private $status = self::STATUS_WAITING_CONFIRMATION;
 
-    /**
-     * @var \DateTimeInterface
-     */
     #[Gedmo\Timestampable(on: 'update')]
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(nullable: true)]
     private $payboxOrderRef;
@@ -284,12 +272,12 @@ class Donation implements \Stringable, GeoPointInterface
         $this->amount = $amountInEuros * 100;
     }
 
-    public function getDonatedAt(): ?\DateTimeInterface
+    public function getDonatedAt(): ?\DateTimeImmutable
     {
         return $this->donatedAt;
     }
 
-    public function setDonatedAt(\DateTimeInterface $donatedAt): void
+    public function setDonatedAt(\DateTimeImmutable $donatedAt): void
     {
         $this->donatedAt = $donatedAt;
 
@@ -334,25 +322,23 @@ class Donation implements \Stringable, GeoPointInterface
         return $payload;
     }
 
-    public function getSubscriptionEndedAt(): ?\DateTimeInterface
+    public function getSubscriptionEndedAt(): ?\DateTimeImmutable
     {
         return $this->subscriptionEndedAt;
     }
 
-    public function nextDonationAt(?\DateTime $fromDay = null): \DateTimeInterface
+    public function nextDonationAt(?\DateTimeInterface $fromDay = null): \DateTimeImmutable
     {
         if (!$this->hasSubscription()) {
             throw new \LogicException('Donation without subscription can\'t have next donation date.');
         }
 
         if (!$fromDay) {
-            $fromDay = new \DateTime();
+            $fromDay = new \DateTimeImmutable();
         }
 
-        $donationDate = clone $this->donatedAt;
-
-        return $donationDate->modify(
-            \sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
+        return $this->donatedAt->modify(
+            \sprintf('+%d months', $this->donatedAt->diff($fromDay)->m + 1)
         );
     }
 
@@ -431,7 +417,7 @@ class Donation implements \Stringable, GeoPointInterface
         return $this->payboxOrderRef.PayboxPaymentSubscription::getCommandSuffix($this->amount, $this->duration);
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -556,7 +542,7 @@ class Donation implements \Stringable, GeoPointInterface
         $this->comment = $comment;
     }
 
-    public function getLastSuccessDate(): ?\DateTimeInterface
+    public function getLastSuccessDate(): ?\DateTimeImmutable
     {
         return $this->lastSuccessDate;
     }

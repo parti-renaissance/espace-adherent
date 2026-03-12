@@ -67,7 +67,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $building->addStatistic(new BuildingStatistics($building, $this->getReference('pap-campaign-2', Campaign::class)));
         $building->addStatistic($stats = new BuildingStatistics($building, $campaign1, BuildingStatusEnum::ONGOING));
         $stats->setNbVisitedDoors(1);
-        $stats->setLastPassage(new \DateTime('- 10 days'));
+        $stats->setLastPassage(new \DateTimeImmutable('- 10 days'));
         $stats->setLastPassageDoneBy($this->getReference('adherent-33', Adherent::class));
         $this->createBuildingBlock(
             self::BUILDING_BLOCK_01_UUID,
@@ -79,7 +79,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             [self::FLOOR_01_UUID, self::FLOOR_02_UUID, self::FLOOR_03_UUID],
             BuildingStatusEnum::COMPLETED,
             $this->getReference('adherent-31', Adherent::class),
-            new \DateTime('-10 days')
+            new \DateTimeImmutable('-10 days')
         );
         $this->addReference('building-1', $building);
         $manager->persist($building);
@@ -99,7 +99,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             [self::FLOOR_04_UUID, self::FLOOR_05_UUID],
             BuildingStatusEnum::COMPLETED,
             $this->getReference('adherent-32', Adherent::class),
-            new \DateTime('-5 days')
+            new \DateTimeImmutable('-5 days')
         );
         $this->createBuildingBlock(
             self::BUILDING_BLOCK_03_UUID,
@@ -111,7 +111,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             [self::FLOOR_06_UUID, self::FLOOR_07_UUID],
             BuildingStatusEnum::ONGOING,
             $this->getReference('adherent-32', Adherent::class),
-            new \DateTime('-5 days')
+            new \DateTimeImmutable('-5 days')
         );
         $this->addReference('building-2', $building);
         $manager->persist($building);
@@ -131,7 +131,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             [],
             BuildingStatusEnum::ONGOING,
             $this->getReference('adherent-32', Adherent::class),
-            new \DateTime('-3 days')
+            new \DateTimeImmutable('-3 days')
         );
         $this->addReference('building-3', $building);
         $manager->persist($building);
@@ -217,9 +217,9 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         array $floorsUuids = [],
         string $status = BuildingStatusEnum::ONGOING,
         ?Adherent $createdBy = null,
-        ?\DateTime $createdAt = null,
+        ?\DateTimeInterface $createdAt = null,
     ): void {
-        $createdAt ??= new \DateTime();
+        $createdAt ??= new \DateTimeImmutable();
 
         $buildingBlock = new BuildingBlock($name, $building, Uuid::fromString($uuid));
         $buildingBlock->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20', Adherent::class));
@@ -235,7 +235,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
                     $building,
                     $campaign,
                     $createdBy,
-                    new \DateTime(),
+                    new \DateTimeImmutable(),
                     $stats
                 );
             }
@@ -256,7 +256,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
                         $building,
                         $campaign,
                         $createdBy,
-                        new \DateTime(),
+                        new \DateTimeImmutable(),
                         $stats
                     );
                 }
@@ -271,7 +271,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         Building $building,
         Campaign $campaign,
         Adherent $createdBy,
-        ?\DateTime $createdAt = null,
+        ?\DateTimeInterface $createdAt = null,
         ?CampaignStatisticsInterface $stats = null,
     ): BuildingEvent {
         $event = new BuildingEvent(
@@ -284,7 +284,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $event->setAuthor($createdBy);
         if (BuildingEventActionEnum::CLOSE) {
             $stats->setClosedBy($createdBy);
-            $stats->setClosedAt($createdAt ?? new \DateTime());
+            $stats->setClosedAt($createdAt ?? new \DateTimeImmutable());
         }
 
         return $event;

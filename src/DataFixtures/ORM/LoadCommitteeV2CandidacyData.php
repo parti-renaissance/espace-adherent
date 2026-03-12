@@ -50,10 +50,10 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
 
         $election1->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_1_UUID)));
         $list->addCandidacy($candidate = new CommitteeCandidacy($election1, Genders::FEMALE, Uuid::fromString(self::CANDIDACY_1_UUID)));
-        $list->setCreatedAt(new \DateTime('-4 hours'));
+        $list->setCreatedAt(new \DateTimeImmutable('-4 hours'));
         $candidate->setCommitteeMembership($adherent5->getMembershipFor($committee));
         $election1->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_2_UUID)));
-        $list->setCreatedAt(new \DateTime('-3 hours'));
+        $list->setCreatedAt(new \DateTimeImmutable('-3 hours'));
 
         $election2 = $this->getReference('committee-election-2', CommitteeElection::class);
         $election2->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_3_UUID)));

@@ -47,7 +47,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     #[ORM\Column(nullable: true)]
@@ -58,8 +58,8 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED;
 
     #[Groups(['event_registration_list'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $confirmedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $confirmedAt = null;
 
     #[Groups(['event_registration_list'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -90,7 +90,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
         $this->newsletterSubscriber = $newsletterSubscriber;
         $this->adherent = $adherent;
         $this->source = $source;
-        $this->createdAt = new \DateTime($createdAt);
+        $this->createdAt = new \DateTimeImmutable($createdAt);
         $this->postalCode = $postalCode;
         $this->status = $status;
 
@@ -129,7 +129,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     }
 
     #[Groups(['event_registration_list'])]
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -203,7 +203,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public function confirm(): void
     {
         $this->status = RegistrationStatusEnum::CONFIRMED;
-        $this->confirmedAt = new \DateTime();
+        $this->confirmedAt = new \DateTimeImmutable();
     }
 
     public function cancel(): void

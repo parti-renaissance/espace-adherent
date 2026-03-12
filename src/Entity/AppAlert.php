@@ -52,12 +52,12 @@ class AppAlert implements \Stringable, EntityAdministratorBlameableInterface
     public ?array $data = null;
 
     #[NotBlank]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $beginAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $beginAt = null;
 
     #[NotBlank]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $endAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $endAt = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $withMagicLink = false;

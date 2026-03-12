@@ -31,21 +31,21 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     #[Assert\NotBlank]
     #[Groups(['national_event_inscription:webhook'])]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTime $startDate = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $startDate = null;
 
     #[Assert\NotBlank]
     #[Groups(['national_event_inscription:webhook'])]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTime $endDate = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $endDate = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTime $ticketStartDate = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $ticketStartDate = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTime $ticketEndDate = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $ticketEndDate = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text', nullable: true)]
@@ -121,8 +121,8 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $intoImage = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $inscriptionEditDeadline = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $inscriptionEditDeadline = null;
 
     #[ORM\Column(enumType: NationalEventTypeEnum::class, options: ['default' => NationalEventTypeEnum::DEFAULT])]
     public NationalEventTypeEnum $type = NationalEventTypeEnum::DEFAULT;
@@ -162,7 +162,7 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
             return false;
         }
 
-        return $this->ticketEndDate < new \DateTime();
+        return $this->ticketEndDate < new \DateTimeImmutable();
     }
 
     public function __toString(): string
@@ -172,7 +172,7 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     public function allowEditInscription(): bool
     {
-        return $this->inscriptionEditDeadline && $this->inscriptionEditDeadline > new \DateTime();
+        return $this->inscriptionEditDeadline && $this->inscriptionEditDeadline > new \DateTimeImmutable();
     }
 
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool

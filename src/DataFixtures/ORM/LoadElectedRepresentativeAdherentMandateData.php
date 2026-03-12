@@ -29,8 +29,8 @@ class LoadElectedRepresentativeAdherentMandateData extends Fixture implements De
             Uuid::fromString(self::MANDATE_UUID_01),
             $gisele,
             MandateTypeEnum::CITY_COUNCIL,
-            new \DateTime('2019-07-23'),
-            new \DateTime('2023-06-11'),
+            new \DateTimeImmutable('2019-07-23'),
+            new \DateTimeImmutable('2023-06-11'),
             'Conseiller(e) municipal(e)',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_community_200054781')
         ));
@@ -39,7 +39,7 @@ class LoadElectedRepresentativeAdherentMandateData extends Fixture implements De
             Uuid::fromString(self::MANDATE_UUID_02),
             $gisele,
             MandateTypeEnum::CITY_COUNCIL,
-            new \DateTime('2019-06-12'),
+            new \DateTimeImmutable('2019-06-12'),
             null,
             'Conseiller(e) municipal(e)',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_community_200054781')
@@ -49,7 +49,7 @@ class LoadElectedRepresentativeAdherentMandateData extends Fixture implements De
             Uuid::fromString(self::MANDATE_UUID_03),
             $erDepartment92,
             MandateTypeEnum::SENATOR,
-            new \DateTime('2019-01-11'),
+            new \DateTimeImmutable('2019-01-11'),
             null,
             'Sénatrice',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')

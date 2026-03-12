@@ -70,13 +70,13 @@ class AdherentCreateCommand implements MembershipInterface
     public ?float $cotisationCustomAmount = null;
 
     #[Assert\LessThanOrEqual('today')]
-    public \DateTime $cotisationDate;
+    public \DateTimeImmutable $cotisationDate;
 
     private bool $isCertified = false;
 
     public function __construct(public ?string $source = null)
     {
-        $this->cotisationDate = new \DateTime();
+        $this->cotisationDate = new \DateTimeImmutable();
     }
 
     public function isCotisationTypeTPE(): bool

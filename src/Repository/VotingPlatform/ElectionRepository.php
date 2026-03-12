@@ -174,7 +174,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere(\sprintf('TIMESTAMPDIFF(%s, designation.voteStartDate, designation.voteEndDate) > 2', Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'HOUR' : 'DAY'))
             ->setParameters([
                 'start_date' => $date,
-                'end_date' => (clone $date)->modify('+1 '.(Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'hour' : 'day')),
+                'end_date' => $date->modify('+1 '.(Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'hour' : 'day')),
                 'open' => ElectionStatusEnum::OPEN,
                 'notification' => $notification,
             ])
@@ -222,7 +222,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
             ->setParameters([
                 'start_date' => $date,
-                'end_date' => (clone $date)->modify('+2 days'),
+                'end_date' => $date->modify('+2 days'),
                 'open' => ElectionStatusEnum::OPEN,
                 'notification' => Designation::NOTIFICATION_VOTE_ANNOUNCEMENT,
             ])

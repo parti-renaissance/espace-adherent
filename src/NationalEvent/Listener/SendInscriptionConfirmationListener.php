@@ -59,7 +59,7 @@ class SendInscriptionConfirmationListener implements EventSubscriberInterface
 
         $this->notifier->sendInscriptionConfirmation($eventInscription, $zone);
 
-        $eventInscription->confirmationSentAt = new \DateTime();
+        $eventInscription->confirmationSentAt = new \DateTimeImmutable();
 
         $this->entityManager->flush();
     }

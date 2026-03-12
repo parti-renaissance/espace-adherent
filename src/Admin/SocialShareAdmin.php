@@ -58,7 +58,7 @@ class SocialShareAdmin extends AbstractAdmin
         // Default URL
         if (!$object->getDefaultUrl()) {
             // Trick to generate the URL before persisting
-            $object->getMedia()->setUpdatedAt(new \DateTime());
+            $object->getMedia()->setUpdatedAt(new \DateTimeImmutable());
 
             $object->setDefaultUrl(
                 $this->assetRuntime->transformedMediaAsset($object->getMedia(), [], UrlGeneratorInterface::ABSOLUTE_URL)

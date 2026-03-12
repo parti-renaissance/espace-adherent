@@ -26,8 +26,8 @@ class TimelineItemPrivateMessage implements \Stringable, IndexableEntityInterfac
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $isNotificationActive = true;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $notificationSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $notificationSentAt = null;
 
     #[Assert\Count(min: 1)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

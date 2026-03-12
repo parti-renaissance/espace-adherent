@@ -41,8 +41,8 @@ class SendEventEmailReminderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $startAfter = new \DateTime()->setTime(7, 0);
-        $startBefore = (clone $startAfter)->modify('+1 day');
+        $startAfter = new \DateTimeImmutable()->setTime(7, 0);
+        $startBefore = $startAfter->modify('+1 day');
 
         $events = $this->eventRepository->findEventsToRemindByEmail($startAfter, $startBefore);
 

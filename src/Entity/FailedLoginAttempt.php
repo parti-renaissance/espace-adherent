@@ -22,9 +22,9 @@ class FailedLoginAttempt
     private $signature;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $at;
 
     /**
@@ -37,7 +37,7 @@ class FailedLoginAttempt
     {
         $this->uuid = Uuid::uuid4();
         $this->signature = $signature;
-        $this->at = \DateTime::createFromFormat('U', (string) time());
+        $this->at = \DateTimeImmutable::createFromFormat('U', (string) time());
         $this->extra = $extra;
     }
 

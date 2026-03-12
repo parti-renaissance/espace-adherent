@@ -108,7 +108,7 @@ class UserManager
             $year = (int) date('Y');
             if (!$adherent->hasActiveMembership()) {
                 $year = $adherent->getLastMembershipDonation()?->format('Y') ?? $adherent->getFirstMembershipDonation()?->format('Y') ?? 2022;
-                $endDate = new \DateTime()->setDate((int) $year, 12, 31)->setTime(23, 59, 59)->getTimestamp();
+                $endDate = new \DateTimeImmutable()->setDate((int) $year, 12, 31)->setTime(23, 59, 59)->getTimestamp();
             }
 
             $zones = [

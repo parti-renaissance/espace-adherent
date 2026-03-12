@@ -46,12 +46,9 @@ class CertificationRequest implements \Stringable
         self::MIME_TYPE_PNG,
     ];
 
-    /**
-     * @var \DateTime
-     */
     #[Groups(['certification_request_read'])]
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
     /**
      * @var string|null
@@ -93,12 +90,9 @@ class CertificationRequest implements \Stringable
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $processedBy;
 
-    /**
-     * @var \DateTime|null
-     */
     #[Groups(['certification_request_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $processedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $processedAt = null;
 
     /**
      * @var string|null
@@ -165,7 +159,7 @@ class CertificationRequest implements \Stringable
 
     public function __construct(Adherent $adherent)
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
         $this->adherent = $adherent;
         $this->uuid = Uuid::uuid4();
     }
@@ -175,7 +169,7 @@ class CertificationRequest implements \Stringable
         return (string) $this->adherent;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -219,7 +213,7 @@ class CertificationRequest implements \Stringable
         return $this->processedBy;
     }
 
-    public function getProcessedAt(): ?\DateTime
+    public function getProcessedAt(): ?\DateTimeImmutable
     {
         return $this->processedAt;
     }
@@ -227,7 +221,7 @@ class CertificationRequest implements \Stringable
     public function process(?Administrator $administrator = null): void
     {
         $this->processedBy = $administrator;
-        $this->processedAt = new \DateTime();
+        $this->processedAt = new \DateTimeImmutable();
     }
 
     public function isProcessed(): bool

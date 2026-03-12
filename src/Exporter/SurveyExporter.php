@@ -54,7 +54,7 @@ class SurveyExporter
                 '%s_%s_%s.%s',
                 new Slugify()->slugify($survey->getName()),
                 $survey->getId(),
-                new \DateTime()->format('YmdHis'),
+                new \DateTimeImmutable()->format('YmdHis'),
                 $format
             ),
             new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones, $departmentCodes), function (array $data) use ($fromAdmin, $questions) {

@@ -47,7 +47,7 @@ class NationalEventUpdatePaymentCommand extends Command
             sleep(1);
 
             if ($payment->isExpired()) {
-                $payment->expiredCheckedAt = new \DateTime();
+                $payment->expiredCheckedAt = new \DateTimeImmutable();
                 $this->entityManager->flush();
             }
 

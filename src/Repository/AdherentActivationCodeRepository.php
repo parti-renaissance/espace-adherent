@@ -39,7 +39,7 @@ class AdherentActivationCodeRepository extends ServiceEntityRepository
             ->set('code.revokedAt', ':now')
             ->setParameters([
                 'adherent' => $user,
-                'now' => new \DateTime(),
+                'now' => new \DateTimeImmutable(),
             ])
             ->getQuery()
             ->execute()

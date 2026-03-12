@@ -142,8 +142,8 @@ class Referral implements \Stringable, ZoneableEntityInterface
     #[ORM\Column(enumType: StatusEnum::class)]
     public ?StatusEnum $status = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $reportedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $reportedAt = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $forSympathizer = false;
@@ -222,7 +222,7 @@ class Referral implements \Stringable, ZoneableEntityInterface
         $this->birthdate = null;
 
         $this->status = StatusEnum::REPORTED;
-        $this->reportedAt = new \DateTime();
+        $this->reportedAt = new \DateTimeImmutable();
     }
 
     public function isInvitation(): bool

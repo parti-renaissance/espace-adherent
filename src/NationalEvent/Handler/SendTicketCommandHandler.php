@@ -32,7 +32,7 @@ class SendTicketCommandHandler
 
         $this->notifier->sendTicket($eventInscription);
 
-        $eventInscription->ticketSentAt = new \DateTime();
+        $eventInscription->ticketSentAt = new \DateTimeImmutable();
 
         $this->entityManager->flush();
     }

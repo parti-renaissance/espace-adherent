@@ -34,26 +34,26 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         /** @var Agora $agora1 */
         $agora1 = $this->getReference('agora-1', Agora::class);
 
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, new \DateTime('-25 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD, new \DateTimeImmutable('-25 minutes'), [
             'agora' => $agora1->getName(),
             'agora_id' => $agora1->getId(),
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, new \DateTime('-22 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE, new \DateTimeImmutable('-22 minutes'), [
             'agora' => $agora1->getName(),
             'agora_id' => $agora1->getId(),
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LIVE_VIEW, new \DateTime('-20 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LIVE_VIEW, new \DateTimeImmutable('-20 minutes'), [
             'event' => $liveEvent1->getName(),
             'event_id' => $liveEvent1->getId(),
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTime('-15 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTimeImmutable('-15 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS, FeatureEnum::ELECTED_REPRESENTATIVE],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, new \DateTime('-14 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, new \DateTimeImmutable('-14 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'author_uuid' => $adherent3->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
@@ -61,28 +61,28 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, new \DateTime('-13 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, new \DateTimeImmutable('-13 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTime('-10 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_REQUEST, new \DateTime('-9 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE, new \DateTime('-8 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-7 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-6 minutes'), ['first_name']));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_START, new \DateTime('-5 minutes'), null, $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-4 minutes'), ['birthdate'], $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-3 minutes'), null, $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTime('-2 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTime('-1 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_ADD, new \DateTime('-2 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTimeImmutable('-10 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_REQUEST, new \DateTimeImmutable('-9 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE, new \DateTimeImmutable('-8 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTimeImmutable('-7 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTimeImmutable('-6 minutes'), ['first_name']));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_START, new \DateTimeImmutable('-5 minutes'), null, $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTimeImmutable('-4 minutes'), ['birthdate'], $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_END, new \DateTimeImmutable('-3 minutes'), null, $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTimeImmutable('-2 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTimeImmutable('-1 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_ADD, new \DateTimeImmutable('-2 minutes'), [
             'role' => 'deputy',
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ], $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_REMOVE, new \DateTime('-1 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_REMOVE, new \DateTimeImmutable('-1 minutes'), [
             'role' => 'deputy',
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ], $administrator1));
@@ -100,7 +100,7 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         return new UserActionHistory(
             $adherent,
             $type,
-            $date ?? new \DateTime('now'),
+            $date ?? new \DateTimeImmutable('now'),
             $data,
             $impersonator
         );

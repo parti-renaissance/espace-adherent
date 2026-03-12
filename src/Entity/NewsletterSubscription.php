@@ -60,9 +60,9 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
     private $fromEvent;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $confirmedAt;
 
     /**
@@ -145,12 +145,12 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
         return $this->fromEvent = $fromEvent;
     }
 
-    public function getConfirmedAt(): ?\DateTimeInterface
+    public function getConfirmedAt(): ?\DateTimeImmutable
     {
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(?\DateTimeImmutable $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }

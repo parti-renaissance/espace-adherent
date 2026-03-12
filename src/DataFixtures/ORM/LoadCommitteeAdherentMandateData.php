@@ -45,31 +45,31 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $senatorialCandidate = $this->getReference('senatorial-candidate', Adherent::class);
 
         // Designed adherent mandates
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $gisele, new \DateTime('2020-06-06')));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $carl, new \DateTime('2020-08-08')));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $lucie, new \DateTime('2020-06-06')));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $jacques, new \DateTime('2020-08-08')));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $jacques, new \DateTime('2018-01-01'), new \DateTime('2019-12-31')));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $gisele, new \DateTimeImmutable('2020-06-06')));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $carl, new \DateTimeImmutable('2020-08-08')));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $lucie, new \DateTimeImmutable('2020-06-06')));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $jacques, new \DateTimeImmutable('2020-08-08')));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $jacques, new \DateTimeImmutable('2018-01-01'), new \DateTimeImmutable('2019-12-31')));
 
         // Committee supervisor mandates
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $jacques, new \DateTime('2017-01-12 13:25:54'), null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $gisele, new \DateTime('2017-05-05 11:11:11'), new \DateTime('2018-05-05 12:12:12'), CommitteeMandateQualityEnum::SUPERVISOR, true));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $gisele, new \DateTime('2017-01-27 17:09:25'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee5, $gisele, new \DateTime('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $francis, new \DateTime('2017-01-26 16:08:24'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $jacques, new \DateTimeImmutable('2017-01-12 13:25:54'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $gisele, new \DateTimeImmutable('2017-05-05 11:11:11'), new \DateTimeImmutable('2018-05-05 12:12:12'), CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $gisele, new \DateTimeImmutable('2017-01-27 17:09:25'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee5, $gisele, new \DateTimeImmutable('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $francis, new \DateTimeImmutable('2017-01-26 16:08:24'), null, CommitteeMandateQualityEnum::SUPERVISOR));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee4, $francis, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee5, $francis, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee10, $referent, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee6, $laura, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee7, $martine, new \DateTime('2020-10-11 11:11:11'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee7, $martine, new \DateTimeImmutable('2020-10-11 11:11:11'), null, CommitteeMandateQualityEnum::SUPERVISOR));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee8, $elodie, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee11, $elodie, new \DateTime('2021-01-01 01:01:01'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee11, $elodie, new \DateTimeImmutable('2021-01-01 01:01:01'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee9, $kiroule, null, null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee13, $adherent31, new \DateTime('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee15, $adherent32, new \DateTime('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $senatorialCandidate, new \DateTime('2017-01-27 17:09:25'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee7, $senatorialCandidate, new \DateTime('2020-10-10 10:10:10'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
-        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee12, $senatorialCandidate, new \DateTime('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee13, $adherent31, new \DateTimeImmutable('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee15, $adherent32, new \DateTimeImmutable('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee3, $senatorialCandidate, new \DateTimeImmutable('2017-01-27 17:09:25'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee7, $senatorialCandidate, new \DateTimeImmutable('2020-10-10 10:10:10'), null, CommitteeMandateQualityEnum::SUPERVISOR, true));
+        $manager->persist(CommitteeAdherentMandate::createForCommittee($committee12, $senatorialCandidate, new \DateTimeImmutable('-2 months'), null, CommitteeMandateQualityEnum::SUPERVISOR));
 
         $manager->flush();
     }

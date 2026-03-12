@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-class Image implements Timestampable
+class Image
 {
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     /**
      * @var int
@@ -51,11 +49,9 @@ class Image implements Timestampable
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
 
-        $now = new \DateTime();
-        $this
-            ->setCreatedAt($now)
-            ->setUpdatedAt(clone $now)
-        ;
+        $now = new \DateTimeImmutable();
+        $this->setCreatedAt($now);
+        $this->setUpdatedAt($now);
     }
 
     public function getId(): ?int

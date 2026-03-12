@@ -75,8 +75,8 @@ class GeneralConvention implements \Stringable, EntityAdministratorBlameableInte
 
     #[Assert\NotBlank]
     #[Groups(['general_convention_read', 'general_convention_write'])]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $reportedAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $reportedAt = null;
 
     #[Assert\NotBlank]
     #[Assert\Type(type: MeetingTypeEnum::class)]

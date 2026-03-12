@@ -92,7 +92,7 @@ class IdentityDocumentParser
             }
 
             foreach ($matches['birth_date'] as $birthDate) {
-                $birthDate = \DateTime::createFromFormat('d.m.Y', str_replace('..', '.', str_replace(' ', '.', $birthDate)));
+                $birthDate = \DateTimeImmutable::createFromFormat('d.m.Y', str_replace('..', '.', str_replace(' ', '.', $birthDate)));
 
                 if ($birthDate->format('Y-m-d') === $dateOfBirth->format('Y-m-d')) {
                     return true;

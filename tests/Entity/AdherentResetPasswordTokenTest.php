@@ -22,7 +22,7 @@ class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTestCase
         $adherent->resetPassword($token);
 
         $this->assertSame($newPassword, $adherent->getPassword());
-        $this->assertInstanceOf(\DateTime::class, $token->getUsageDate());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $token->getUsageDate());
     }
 
     public function testUseResetPasswordTokenFailWithoutPassword()

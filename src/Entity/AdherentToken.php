@@ -32,28 +32,19 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     #[ORM\Column(length: 40)]
     private $value;
 
-    /**
-     * @var \DateTime
-     */
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var \DateTime
-     */
     #[Groups(['profile_read'])]
-    #[ORM\Column(type: 'datetime')]
-    private $expiredAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $expiredAt;
 
-    /**
-     * @var \DateTime|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $usedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $usedAt = null;
 
-    public function __construct(UuidInterface $adherentUuid, \DateTime $createdAt, \DateTime $expiration, SHA1 $value)
+    public function __construct(UuidInterface $adherentUuid, \DateTimeImmutable $createdAt, \DateTimeImmutable $expiration, SHA1 $value)
     {
-        if ($expiration <= new \DateTime('now')) {
+        if ($expiration <= new \DateTimeImmutable('now')) {
             throw new \InvalidArgumentException('Expiration date must be in the future.');
         }
 
@@ -66,13 +57,13 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
 
     public static function generate(Adherent $adherent, string $lifetime = '+1 day'): static
     {
-        $timestamp = new \DateTime('now');
+        $timestamp = new \DateTimeImmutable('now');
         $adherentUuid = clone $adherent->getUuid();
 
         return new static(
             $adherentUuid,
             $timestamp,
-            new \DateTime($lifetime),
+            new \DateTimeImmutable($lifetime),
             SHA1::hash($adherentUuid->toString().$timestamp->format('U.u'))
         );
     }
@@ -82,12 +73,12 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         string $hash,
         string $lifetime = '+1 day',
     ): AdherentExpirableTokenInterface {
-        $timestamp = new \DateTime('now');
+        $timestamp = new \DateTimeImmutable('now');
 
         return new static(
             Uuid::fromString($adherentUuid),
             $timestamp,
-            new \DateTime($lifetime),
+            new \DateTimeImmutable($lifetime),
             SHA1::fromString($hash)
         );
     }
@@ -106,15 +97,8 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         return $this->adherentUuid;
     }
 
-    public function getUsageDate()
+    public function getUsageDate(): ?\DateTimeImmutable
     {
-        if ($this->usedAt instanceof \DateTime) {
-            $this->usedAt = new \DateTime(
-                $this->usedAt->format(\DATE_RFC2822),
-                $this->usedAt->getTimezone()
-            );
-        }
-
         return $this->usedAt;
     }
 
@@ -122,7 +106,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     {
         $this->validate($adherent);
 
-        $this->usedAt = new \DateTime('now');
+        $this->usedAt = new \DateTimeImmutable('now');
     }
 
     public function validate(Adherent $adherent): void
@@ -147,11 +131,11 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
 
     private function isExpired(): bool
     {
-        return new \DateTime('now') > $this->expiredAt;
+        return new \DateTimeImmutable('now') > $this->expiredAt;
     }
 
     public function invalidate(): void
     {
-        $this->expiredAt = new \DateTime();
+        $this->expiredAt = new \DateTimeImmutable('-1 second');
     }
 }

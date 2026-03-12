@@ -21,8 +21,8 @@ class MatchingHistory
     #[ORM\Column(enumType: MatchingHistoryActionEnum::class)]
     public MatchingHistoryActionEnum $status;
 
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     public bool $emailCopy;

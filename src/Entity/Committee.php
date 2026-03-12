@@ -107,14 +107,14 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     /**
      * The timestamp when an administrator approved this group.
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $approvedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $approvedAt = null;
 
     /**
      * The timestamp when an administrator refused this group.
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $refusedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $refusedAt = null;
 
     /**
      * The adherent UUID who created this group.
@@ -122,8 +122,8 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     #[ORM\Column(type: 'uuid', nullable: true)]
     private $createdBy;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $closedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $closedAt = null;
 
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
@@ -274,7 +274,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
             $address,
             $phone
         );
-        $committee->createdAt = new \DateTime($createdAt);
+        $committee->createdAt = new \DateTimeImmutable($createdAt);
 
         return $committee;
     }
@@ -315,7 +315,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     public function approved(string $timestamp = 'now'): void
     {
         $this->status = self::APPROVED;
-        $this->approvedAt = new \DateTime($timestamp);
+        $this->approvedAt = new \DateTimeImmutable($timestamp);
         $this->refusedAt = null;
     }
 
@@ -420,7 +420,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     public function close(): void
     {
         $this->status = self::CLOSED;
-        $this->closedAt = new \DateTime();
+        $this->closedAt = new \DateTimeImmutable();
     }
 
     public function isClosed(): bool
@@ -437,7 +437,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
             ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))
             ->andWhere(Criteria::expr()->orX(
                 Criteria::expr()->isNull('finishAt'),
-                Criteria::expr()->gt('finishAt', new \DateTime())
+                Criteria::expr()->gt('finishAt', new \DateTimeImmutable())
             ));
 
         if ($gender) {
@@ -589,7 +589,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     public function refused(string $timestamp = 'now'): void
     {
         $this->status = self::REFUSED;
-        $this->refusedAt = new \DateTime($timestamp);
+        $this->refusedAt = new \DateTimeImmutable($timestamp);
         $this->approvedAt = null;
     }
 
@@ -645,7 +645,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
         return !(
             $designation
             && $designation->getElectionCreationDate()
-            && $designation->getElectionCreationDate() < ($now = new \DateTime())
+            && $designation->getElectionCreationDate() < ($now = new \DateTimeImmutable())
             && $designation->getVoteEndDate() > $now
         );
     }

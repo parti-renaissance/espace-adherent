@@ -66,7 +66,7 @@ class FillRevenueController extends AbstractContributionController
 
                 $contributionRequestHandler->cancelLastContribution($adherent);
 
-                $adherent->setContributedAt(new \DateTime());
+                $adherent->setContributedAt(new \DateTimeImmutable());
 
                 $entityManager->flush();
 

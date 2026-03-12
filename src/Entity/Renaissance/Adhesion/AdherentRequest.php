@@ -32,8 +32,8 @@ class AdherentRequest
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $accountCreatedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $accountCreatedAt = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {

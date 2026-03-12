@@ -21,7 +21,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
     #[DataProvider('provideCNIMatch')]
     public function testMatchingCNI(string $text, string $firstName, string $lastName, string $birthDate): void
     {
-        $birthDate = \DateTime::createFromFormat('Y-m-d', $birthDate);
+        $birthDate = \DateTimeImmutable::createFromFormat('Y-m-d', $birthDate);
 
         $annotations = $this->createCNIAnnotations($text);
 
@@ -83,7 +83,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
     #[DataProvider('providePassportMatch')]
     public function testMatchingPassport(string $text, string $firstName, string $lastName, string $birthDate): void
     {
-        $birthDate = \DateTime::createFromFormat('Y-m-d', $birthDate);
+        $birthDate = \DateTimeImmutable::createFromFormat('Y-m-d', $birthDate);
 
         $annotations = $this->createPassportAnnotations($text);
 

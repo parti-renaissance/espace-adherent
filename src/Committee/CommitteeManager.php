@@ -94,7 +94,7 @@ class CommitteeManager
         /** @var CommitteeAdherentMandate $mandate */
         foreach ($committee->getAdherentMandates() as $mandate) {
             if (!$mandate->isEnded()) {
-                $mandate->setFinishAt(new \DateTime());
+                $mandate->setFinishAt(new \DateTimeImmutable());
             }
         }
 

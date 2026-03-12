@@ -94,7 +94,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         $riposte->setTitle($title);
         $riposte->setBody($body);
         $riposte->setSourceUrl($sourceUrl);
-        $riposte->setCreatedAt(new \DateTime($createdAt));
+        $riposte->setCreatedAt(new \DateTimeImmutable($createdAt));
         if ($author) {
             $riposte->setAuthor($author);
         }

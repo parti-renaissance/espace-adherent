@@ -96,7 +96,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $activeMandate = new CommitteeAdherentMandate(
             $this->createNewAdherent(),
             Genders::FEMALE,
-            new \DateTime()
+            new \DateTimeImmutable()
         );
         $activeMandate->setCommittee($this->createCommittee());
 
@@ -105,7 +105,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $mandate = new CommitteeAdherentMandate(
             new Adherent(),
             Genders::FEMALE,
-            new \DateTime('2020-07-07')
+            new \DateTimeImmutable('2020-07-07')
         );
         $mandate->setCommittee($this->createCommittee());
 
@@ -131,7 +131,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
-        $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, new \DateTime('2020-07-07'));
+        $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, new \DateTimeImmutable('2020-07-07'));
         $mandate->setCommittee($committee);
         $committee->addAdherentMandate($mandate);
 
@@ -185,7 +185,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
-        $mandate = new CommitteeAdherentMandate($adherent, $gender, new \DateTime('2020-08-26 10:10:10'));
+        $mandate = new CommitteeAdherentMandate($adherent, $gender, new \DateTimeImmutable('2020-08-26 10:10:10'));
         $mandate->setCommittee($committee);
 
         $this->assertNull($mandate->getFinishAt());
@@ -221,7 +221,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createNewAdherent(Genders::MALE, new \DateTime()->modify('-17 years')->format('Y-m-d'));
+        $adherent = $this->createNewAdherent(Genders::MALE, new \DateTimeImmutable()->modify('-17 years')->format('Y-m-d'));
 
         $this->translator
             ->expects($this->once())
@@ -320,7 +320,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertSame($gender, $mandate->getGender());
         $this->assertSame($quality, $mandate->getQuality());
         $this->assertSame($isProvisional, $mandate->isProvisional());
-        $this->assertSame(new \DateTime()->format('Y/m/d'), $mandate->getBeginAt()->format('Y/m/d'));
+        $this->assertSame(new \DateTimeImmutable()->format('Y/m/d'), $mandate->getBeginAt()->format('Y/m/d'));
         $this->assertNull($mandate->getFinishAt());
         $this->assertNull($mandate->getReason());
     }
@@ -335,7 +335,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
             $gender,
             'Damien',
             'DUPONT',
-            new \DateTime($birthday ?: '1979-03-25'),
+            new \DateTimeImmutable($birthday ?: '1979-03-25'),
             'position',
             $this->createPostAddress('2 Rue de la République', '69001-69381')
         );

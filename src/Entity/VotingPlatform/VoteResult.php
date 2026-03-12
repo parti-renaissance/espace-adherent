@@ -36,9 +36,9 @@ class VoteResult
     private $electionRound;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $votedAt;
 
     /**
@@ -55,7 +55,7 @@ class VoteResult
         $this->electionRound = $electionRound;
         $this->voterKey = $voterKey;
         $this->zoneCode = $zoneCode;
-        $this->votedAt = new \DateTime();
+        $this->votedAt = new \DateTimeImmutable();
 
         $this->voteChoices = new ArrayCollection();
     }

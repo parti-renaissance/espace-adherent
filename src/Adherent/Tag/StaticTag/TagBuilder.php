@@ -24,20 +24,20 @@ class TagBuilder
     public function buildAll(): array
     {
         $events = $this->nationalEventRepository->findAllSince(
-            new \DateTime(EventTagGenerator::PERIOD),
+            new \DateTimeImmutable(EventTagGenerator::PERIOD),
             [NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::NRP]
         );
 
         return array_values(array_unique(array_merge(
-            array_map([$this, 'buildForEvent'], array_filter($events, static fn (NationalEvent $event) => $event->endDate > new \DateTime())),
-            array_map(fn (NationalEvent $event) => $this->buildForEvent($event, true), array_filter($events, static fn (NationalEvent $event) => $event->startDate < new \DateTime())),
+            array_map([$this, 'buildForEvent'], array_filter($events, static fn (NationalEvent $event) => $event->endDate > new \DateTimeImmutable())),
+            array_map(fn (NationalEvent $event) => $this->buildForEvent($event, true), array_filter($events, static fn (NationalEvent $event) => $event->startDate < new \DateTimeImmutable())),
             array_map(static fn (AdherentStaticLabel $label) => $label->getIdentifier(), $this->staticLabelRepository->findAllLikeAdherentTags()),
         )));
     }
 
     public function buildForEvent(NationalEvent $event, bool $isPresent = false): string
     {
-        return TagEnum::getNationalEventTag($event->getSlug(), $event->startDate < new \DateTime() && $isPresent);
+        return TagEnum::getNationalEventTag($event->getSlug(), $event->startDate < new \DateTimeImmutable() && $isPresent);
     }
 
     public function buildLabelFromSlug(string $slug): string

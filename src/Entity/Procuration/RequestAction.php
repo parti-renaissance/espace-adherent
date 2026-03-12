@@ -28,7 +28,7 @@ class RequestAction extends AbstractProcurationAction
     {
         return new self(
             Uuid::uuid4(),
-            new \DateTime(),
+            new \DateTimeImmutable(),
             $status,
             $request
         );

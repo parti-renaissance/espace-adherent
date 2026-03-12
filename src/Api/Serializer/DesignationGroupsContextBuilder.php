@@ -29,9 +29,9 @@ class DesignationGroupsContextBuilder implements SerializerContextBuilderInterfa
         /** @var Designation $designation */
         $designation = $request->attributes->get('data');
 
-        if ($designation->getVoteEndDate() < new \DateTime()) {
+        if ($designation->getVoteEndDate() < new \DateTimeImmutable()) {
             $context['groups'] = [];
-        } elseif (!$designation->isFullyEditable() || ($designation->electionCreationDate && $designation->electionCreationDate < new \DateTime())) {
+        } elseif (!$designation->isFullyEditable() || ($designation->electionCreationDate && $designation->electionCreationDate < new \DateTimeImmutable())) {
             array_splice($context['groups'], array_search('designation_write', $context['groups'], true), 1);
             $context['groups'][] = 'designation_write_limited';
         }

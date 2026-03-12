@@ -157,8 +157,8 @@ class Mandate implements \Stringable
         ?GeoZone $geoZone = null,
         ?ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeInterface $beginAt = null,
+        ?\DateTimeInterface $finishAt = null,
         ?GeoZone $attachedZone = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();

@@ -82,10 +82,10 @@ class Unregistration
     #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $registeredAt;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $unregisteredAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -105,7 +105,7 @@ class Unregistration
         UuidInterface $emailHash,
         array $reasons,
         ?string $comment,
-        \DateTime $registeredAt,
+        \DateTimeImmutable $registeredAt,
         ?string $postalCode,
         ?TypeEnum $type,
         ?array $tags,
@@ -121,7 +121,7 @@ class Unregistration
         $this->reasons = $reasons;
         $this->comment = $comment;
         $this->registeredAt = $registeredAt;
-        $this->unregisteredAt = new \DateTime('now');
+        $this->unregisteredAt = new \DateTimeImmutable('now');
         $this->isAdherent = $isAdherent;
         $this->isRenaissance = $isRenaissance;
         $this->excludedBy = $admin;
@@ -172,12 +172,12 @@ class Unregistration
         $this->comment = $comment;
     }
 
-    public function getRegisteredAt(): ?\DateTime
+    public function getRegisteredAt(): ?\DateTimeImmutable
     {
         return $this->registeredAt;
     }
 
-    public function getUnregisteredAt(): ?\DateTime
+    public function getUnregisteredAt(): ?\DateTimeImmutable
     {
         return $this->unregisteredAt;
     }

@@ -59,8 +59,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent3,
             null,
-            new \DateTime('-2 days -15 minutes'),
-            new \DateTime('-2 days'),
+            new \DateTimeImmutable('-2 days -15 minutes'),
+            new \DateTimeImmutable('-2 days'),
             self::HISTORY_1_UUID
         ));
 
@@ -73,8 +73,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '02',
             $adherent3,
             null,
-            new \DateTime('-2 days -10 minutes'),
-            new \DateTime('-2 days -9 minutes')
+            new \DateTimeImmutable('-2 days -10 minutes'),
+            new \DateTimeImmutable('-2 days -9 minutes')
         ));
 
         $manager->persist($papCampaignHistory = $this->createPapCampaignHistory(
@@ -86,8 +86,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '11',
             $adherent16,
             $nationalSurvey3,
-            new \DateTime('-35 minutes'),
-            new \DateTime('-30 minutes')
+            new \DateTimeImmutable('-35 minutes'),
+            new \DateTimeImmutable('-30 minutes')
         ));
         $papCampaignHistory->setFirstName('Javier');
         $papCampaignHistory->setLastName('Latombe');
@@ -106,8 +106,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '12',
             $adherent16,
             $nationalSurvey3,
-            new \DateTime('-25 minutes'),
-            new \DateTime('-18 minutes')
+            new \DateTimeImmutable('-25 minutes'),
+            new \DateTimeImmutable('-18 minutes')
         ));
         $this->addReference('pap-data-survey-2', $papCampaignHistory->getDataSurvey());
 
@@ -120,7 +120,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '13',
             $adherent16,
             $nationalSurvey3,
-            new \DateTime('-5 minutes')
+            new \DateTimeImmutable('-5 minutes')
         ));
         $this->addReference('pap-data-survey-3', $papCampaignHistory->getDataSurvey());
         $statsFloor0 = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
@@ -149,8 +149,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent12,
             null,
-            new \DateTime('2021-11-10 10:10:10'),
-            new \DateTime('2021-11-10 10:12:30')
+            new \DateTimeImmutable('2021-11-10 10:10:10'),
+            new \DateTimeImmutable('2021-11-10 10:12:30')
         ));
         $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaignFinished);
         $stats->setVisitedDoors(['01']);
@@ -164,8 +164,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent12,
             null,
-            new \DateTime('-2 hours'),
-            new \DateTime('-2 hours')
+            new \DateTimeImmutable('-2 hours'),
+            new \DateTimeImmutable('-2 hours')
         ));
         $stats = $building92_1->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign92);
         $stats->setVisitedDoors(['01']);
@@ -179,8 +179,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent12,
             null,
-            new \DateTime('-1 hour'),
-            new \DateTime('-1 hour')
+            new \DateTimeImmutable('-1 hour'),
+            new \DateTimeImmutable('-1 hour')
         ));
         $stats = $building_75_08_1->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign75_08_r);
         $stats->setVisitedDoors(['01']);
@@ -197,8 +197,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         string $door,
         ?Adherent $questioner = null,
         ?Survey $survey = null,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeImmutable $beginAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         ?string $uuid = null,
     ): CampaignHistory {
         $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
@@ -208,9 +208,9 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaignHistory->setBuildingBlock($buildingBlock);
         $campaignHistory->setFloor($floor);
         $campaignHistory->setDoor($door);
-        $campaignHistory->setCreatedAt($beginAt ?? new \DateTime('-10 minutes'));
-        $campaignHistory->setBeginAt($beginAt ?? new \DateTime('-10 minutes'));
-        $campaignHistory->setFinishAt($finishAt ?? new \DateTime('-5 minutes'));
+        $campaignHistory->setCreatedAt($beginAt ?? new \DateTimeImmutable('-10 minutes'));
+        $campaignHistory->setBeginAt($beginAt ?? new \DateTimeImmutable('-10 minutes'));
+        $campaignHistory->setFinishAt($finishAt ?? new \DateTimeImmutable('-5 minutes'));
         $campaignHistory->setQuestioner($questioner);
 
         if ($survey) {

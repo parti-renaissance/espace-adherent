@@ -19,9 +19,9 @@ class CampaignHistoryDenormalizer implements DenormalizerInterface, Denormalizer
         /** @var CampaignHistory $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
         if (!$data->getBeginAt()) {
-            $data->setBeginAt(new \DateTime());
+            $data->setBeginAt(new \DateTimeImmutable());
         } elseif (AddressInterface::DEFAULT_TIME_ZONE !== $data->getBeginAt()->getTimezone()->getName()) {
-            $data->setBeginAt((clone $data->getBeginAt())->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
+            $data->setBeginAt($data->getBeginAt()->setTimezone(new \DateTimeZone(AddressInterface::DEFAULT_TIME_ZONE)));
         }
 
         return $data;

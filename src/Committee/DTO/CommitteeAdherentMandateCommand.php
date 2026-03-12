@@ -56,7 +56,7 @@ class CommitteeAdherentMandateCommand
         $dto->gender = $mandate->getGender();
         $dto->quality = $mandate->getQuality();
         $dto->provisional = $mandate->isSupervisor();
-        $dto->beginAt = new \DateTime();
+        $dto->beginAt = new \DateTimeImmutable();
 
         return $dto;
     }

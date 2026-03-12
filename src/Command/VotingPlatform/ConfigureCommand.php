@@ -74,7 +74,7 @@ class ConfigureCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
 
         $designations = $this->designationRepository->getIncomingDesignations(
             $date->modify(\sprintf('+%d minutes', (int) $input->getOption('interval')))

@@ -43,7 +43,7 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
 
         if (null === $campaignHistory->getFinishAt()
             && $campaignHistory->isInAfterCallStatus()) {
-            $campaignHistory->setFinishAt(new \DateTime());
+            $campaignHistory->setFinishAt(new \DateTimeImmutable());
         }
 
         $this->entityManager->flush();

@@ -15,8 +15,8 @@ class UserActionHistoryCommand implements AsynchronousMessageInterface
         public readonly UserActionHistoryTypeEnum $type,
         public readonly ?array $data = null,
         public readonly ?int $administratorId = null,
-        public ?\DateTimeInterface $date = null,
+        public ?\DateTimeImmutable $date = null,
     ) {
-        $this->date = $date ?? new \DateTime();
+        $this->date = $date ?? new \DateTimeImmutable();
     }
 }

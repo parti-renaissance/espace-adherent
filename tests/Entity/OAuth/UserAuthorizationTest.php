@@ -66,7 +66,7 @@ class UserAuthorizationTest extends AbstractKernelTestCase
             'male',
             'Fake',
             'Member',
-            new \DateTime('-30 years'),
+            new \DateTimeImmutable('-30 years'),
             '',
             $this->createPostAddress('92 bld Victor Hugo', '92110-92024')
         );

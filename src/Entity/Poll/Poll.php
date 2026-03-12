@@ -33,13 +33,10 @@ abstract class Poll implements \Stringable
     #[ORM\Column]
     private $question;
 
-    /**
-     * @var \DateTimeInterface
-     */
     #[Assert\NotNull(message: 'poll.finish_at.not_null')]
     #[Groups(['poll_read'])]
-    #[ORM\Column(type: 'datetime')]
-    private $finishAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $finishAt = null;
 
     /**
      * @var Choice[]|Collection
@@ -53,7 +50,7 @@ abstract class Poll implements \Stringable
     public function __construct(
         ?UuidInterface $uuid = null,
         ?string $question = null,
-        ?\DateTimeInterface $finishAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         bool $published = false,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -78,12 +75,12 @@ abstract class Poll implements \Stringable
         $this->question = $question;
     }
 
-    public function getFinishAt(): ?\DateTimeInterface
+    public function getFinishAt(): ?\DateTimeImmutable
     {
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTimeInterface $finishAt): void
+    public function setFinishAt(?\DateTimeImmutable $finishAt): void
     {
         $this->finishAt = $finishAt;
     }

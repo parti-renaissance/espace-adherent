@@ -29,10 +29,10 @@ class AdherentMessageReach
     #[ORM\Column]
     public string $source;
 
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $date;
 
-    public function __construct(AdherentMessage $message, Adherent $adherent, string $source, ?\DateTimeInterface $date = null)
+    public function __construct(AdherentMessage $message, Adherent $adherent, string $source, ?\DateTimeImmutable $date = null)
     {
         $this->message = $message;
         $this->adherent = $adherent;
@@ -40,12 +40,12 @@ class AdherentMessageReach
         $this->date = $date ?? new \DateTimeImmutable();
     }
 
-    public static function createPush(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeInterface $date, ?SystemEnum $system): self
+    public static function createPush(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeImmutable $date, ?SystemEnum $system): self
     {
         return new self($adherentMessage, $adherent, $system ? 'push:'.$system->value : 'push', $date);
     }
 
-    public static function createApp(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeInterface $date): self
+    public static function createApp(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeImmutable $date): self
     {
         return new self($adherentMessage, $adherent, 'app', $date);
     }

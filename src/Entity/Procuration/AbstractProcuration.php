@@ -157,7 +157,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public function getAge(): ?int
     {
-        return $this->birthdate?->diff(new \DateTime())->y;
+        return $this->birthdate?->diff(new \DateTimeImmutable())->y;
     }
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_list_request', 'procuration_request_list_proxy'])]

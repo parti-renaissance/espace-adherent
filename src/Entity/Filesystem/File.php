@@ -6,13 +6,12 @@ namespace App\Entity\Filesystem;
 
 use App\Entity\Administrator;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Repository\Filesystem\FileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,10 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['name'])]
 #[ORM\Table(name: 'filesystem_file')]
 #[UniqueEntity(fields: ['name'], message: 'file.validation.name.not_unique', repositoryMethod: 'findDirectoryByName')]
-class File implements \Stringable, Timestampable
+class File implements \Stringable
 {
     use EntityIdentityTrait;
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     /**
      * @var string|null

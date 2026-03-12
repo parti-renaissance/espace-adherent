@@ -74,7 +74,7 @@ class CommitteeAdherentMandateManager
             throw new CommitteeAdherentMandateException(\sprintf('Adherent with id "%s" (%s) has no active mandate in committee "%s"', $adherent->getId(), $adherent->getEmailAddress(), $committee->getName()));
         }
 
-        $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_MANUAL);
+        $mandate->end(new \DateTimeImmutable(), AdherentMandateInterface::REASON_MANUAL);
 
         $this->entityManager->flush();
     }
@@ -91,7 +91,7 @@ class CommitteeAdherentMandateManager
             $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
         }
 
-        $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_REPLACED);
+        $mandate->end(new \DateTimeImmutable(), AdherentMandateInterface::REASON_REPLACED);
 
         $this->entityManager->persist($newMandate);
         $this->entityManager->flush();

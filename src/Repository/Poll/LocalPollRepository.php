@@ -93,7 +93,7 @@ class LocalPollRepository extends ServiceEntityRepository
             ->setParameter('zone_region', Zone::REGION)
             ->setParameter('zone_department', Zone::DEPARTMENT)
             ->setParameter('true', true)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new \DateTimeImmutable())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

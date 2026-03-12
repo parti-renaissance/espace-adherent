@@ -13,21 +13,21 @@ class BannedAdherent
 {
     use EntityIdentityTrait;
 
-    #[ORM\Column(type: 'datetime')]
-    private $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $date;
 
     public function __construct(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
-        $this->date = new \DateTime();
+        $this->date = new \DateTimeImmutable();
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): \DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTime $date): void
+    public function setDate(\DateTimeImmutable $date): void
     {
         $this->date = $date;
     }

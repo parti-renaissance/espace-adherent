@@ -24,8 +24,8 @@ class EventTest extends TestCase
         $event->setCategory($this->createMock(EventCategory::class));
         $event->setCapacity(2);
         $event->setPostAddress($address);
-        $event->setBeginAt(new \DateTime($date));
-        $event->setFinishAt(new \DateTime('+1 hour'));
+        $event->setBeginAt(new \DateTimeImmutable($date));
+        $event->setFinishAt(new \DateTimeImmutable('+1 hour'));
         $event->setTimeZone($timeZone);
 
         $this->assertFalse($event->isFinished());
@@ -53,7 +53,7 @@ class EventTest extends TestCase
         $event->setCategory($this->createMock(EventCategory::class));
         $event->setCapacity(2);
         $event->setPostAddress($address);
-        $event->setFinishAt(new \DateTime($date));
+        $event->setFinishAt(new \DateTimeImmutable($date));
 
         $this->assertTrue($event->isFinished());
     }

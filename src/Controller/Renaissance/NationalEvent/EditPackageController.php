@@ -38,7 +38,7 @@ class EditPackageController extends AbstractController
             throw $this->createNotFoundException('Inscription not found for this event.');
         }
 
-        if (!$inscription->allowEditInscription() && ($event->startDate <= new \DateTime() || $inscription->amount)) {
+        if (!$inscription->allowEditInscription() && ($event->startDate <= new \DateTimeImmutable() || $inscription->amount)) {
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
 
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $request->attributes->get('app_domain')]);

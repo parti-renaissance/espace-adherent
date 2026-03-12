@@ -188,8 +188,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $phoneVerifiedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $phoneVerifiedAt = null;
 
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['additional_info', 'adhesion:further_information'])]
     #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['additional_info', 'adhesion:further_information'])]
@@ -206,24 +206,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private string $status = self::PENDING;
 
     #[Groups(['adherent_autocomplete', 'national_event_inscription:webhook'])]
-    #[ORM\Column(type: 'datetime')]
-    private $registeredAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $registeredAt = null;
 
-    /**
-     * @var \DateTime|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $activatedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $activatedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $membershipRemindedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $membershipRemindedAt = null;
 
     #[Gedmo\Timestampable(on: 'update')]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastLoggedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $lastLoggedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $lastLoginGroup = null;
@@ -231,8 +228,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $resubscribeEmailSentAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $resubscribeEmailSentAt = null;
 
     /**
      * @var SubscriptionType[]|Collection
@@ -405,16 +402,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $emailUnsubscribed = false;
 
-    /**
-     * Mailchimp unsubscribed date
-     *
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $emailUnsubscribedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $emailUnsubscribedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $unsubscribeRequestedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $unsubscribeRequestedAt = null;
 
     /**
      * @var CandidateManagedArea|null
@@ -432,12 +424,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentCharter\AbstractAdherentCharter::class, cascade: ['all'])]
     private $charters;
 
-    /**
-     * @var \DateTime|null
-     */
     #[Groups(['certification_request_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $certifiedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $certifiedAt = null;
 
     /**
      * @var string|null
@@ -543,8 +532,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public bool $exemptFromCotisation = false;
 
     #[Groups(['adherent_elect_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $contributedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $contributedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Contribution::class)]
@@ -639,7 +628,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->phone = $phone;
         $adherent->birthdate = $birthdate;
         $adherent->partyMembership = $partyMembership ?? MembershipTypeEnum::EXCLUSIVE;
-        $adherent->registeredAt = $registeredAt ?? new \DateTime('now');
+        $adherent->registeredAt = $registeredAt ?? new \DateTimeImmutable('now');
 
         $adherent->password = Uuid::uuid4();
 
@@ -683,7 +672,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->postAddress = $postAddress;
         $adherent->phone = $phone;
         $adherent->status = $status;
-        $adherent->registeredAt = new \DateTime($registeredAt);
+        $adherent->registeredAt = new \DateTimeImmutable($registeredAt);
         $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
@@ -949,14 +938,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     #[Groups(['export', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
-    public function getAge(\DateTime $from = new \DateTime()): ?int
+    public function getAge(\DateTimeInterface $from = new \DateTimeImmutable()): ?int
     {
         return $this->birthdate?->diff($from)->y;
     }
 
-    public function isMinor(?\DateTime $date = null): bool
+    public function isMinor(?\DateTimeInterface $date = null): bool
     {
-        return null === $this->birthdate || $this->birthdate->diff($date ?? new \DateTime())->y < 18;
+        return null === $this->birthdate || $this->birthdate->diff($date ?? new \DateTimeImmutable())->y < 18;
     }
 
     public function getPosition(): ?string
@@ -998,14 +987,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return self::ENABLED === $this->status;
     }
 
-    public function getActivatedAt(): ?\DateTime
+    public function getActivatedAt(): ?\DateTimeImmutable
     {
         return $this->activatedAt;
     }
 
     public function setMembershipReminded(): void
     {
-        $this->membershipRemindedAt = new \DateTime();
+        $this->membershipRemindedAt = new \DateTimeImmutable();
     }
 
     public function changePassword(string $newPassword): void
@@ -1090,7 +1079,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $this->status = self::ENABLED;
-        $this->activatedAt ??= new \DateTime($timestamp);
+        $this->activatedAt ??= new \DateTimeImmutable($timestamp);
         $this->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
     }
 
@@ -1131,7 +1120,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function recordLastLoginTime($timestamp = 'now'): void
     {
-        $this->lastLoggedAt = new \DateTime($timestamp);
+        $this->lastLoggedAt = new \DateTimeImmutable($timestamp);
 
         $this->setLastLoginGroup(LastLoginGroupEnum::LESS_THAN_1_MONTH);
     }
@@ -1139,7 +1128,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Returns the last login date and time of this adherent.
      */
-    public function getLastLoggedAt(): ?\DateTime
+    public function getLastLoggedAt(): ?\DateTimeImmutable
     {
         return $this->lastLoggedAt;
     }
@@ -1220,7 +1209,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         Committee $committee,
         ?\DateTimeInterface $subscriptionDate = null,
     ): CommitteeMembership {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTimeImmutable());
     }
 
     /**
@@ -1234,7 +1223,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->joinCommittee(
             $committee,
             CommitteeMembership::COMMITTEE_FOLLOWER,
-            $subscriptionDate ?? new \DateTime(),
+            $subscriptionDate ?? new \DateTimeImmutable(),
             $trigger
         );
     }
@@ -1267,7 +1256,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     #[Groups(['export'])]
-    public function getRegisteredAt(): ?\DateTime
+    public function getRegisteredAt(): ?\DateTimeImmutable
     {
         return $this->registeredAt;
     }
@@ -1291,7 +1280,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -1549,7 +1538,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setEmailUnsubscribed(bool $value): void
     {
         if ($value) {
-            $this->emailUnsubscribedAt = new \DateTime();
+            $this->emailUnsubscribedAt = new \DateTimeImmutable();
         }
 
         $this->emailUnsubscribed = $value;
@@ -1565,7 +1554,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function markAsUnsubscribe(): void
     {
         $this->setEmailUnsubscribed(true);
-        $this->unsubscribeRequestedAt = new \DateTime();
+        $this->unsubscribeRequestedAt = new \DateTimeImmutable();
     }
 
     private function isAdherentMessageRedactor(array $roles): bool
@@ -1646,7 +1635,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return self::TO_DELETE === $this->status;
     }
 
-    public function getCertifiedAt(): ?\DateTime
+    public function getCertifiedAt(): ?\DateTimeImmutable
     {
         return $this->certifiedAt;
     }
@@ -1663,7 +1652,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             return;
         }
 
-        $this->certifiedAt = new \DateTime();
+        $this->certifiedAt = new \DateTimeImmutable();
     }
 
     public function uncertify(): void
@@ -2316,7 +2305,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $donationYear = (int) $this->firstMembershipDonation->format('Y');
-        $yearToCheck = $year ?? (int) new \DateTime()->format('Y');
+        $yearToCheck = $year ?? (int) new \DateTimeImmutable()->format('Y');
 
         return $donationYear === $yearToCheck;
     }
@@ -2388,7 +2377,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->contributedAt;
     }
 
-    public function setContributedAt(?\DateTime $contributedAt): void
+    public function setContributedAt(?\DateTimeInterface $contributedAt): void
     {
         $this->contributedAt = $contributedAt;
     }

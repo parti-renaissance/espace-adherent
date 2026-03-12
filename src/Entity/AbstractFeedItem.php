@@ -26,9 +26,9 @@ abstract class AbstractFeedItem
     protected $content;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     protected $createdAt;
 
     /**
@@ -42,7 +42,7 @@ abstract class AbstractFeedItem
         $this->uuid = Uuid::uuid4();
         $this->author = $author;
         $this->content = $content;
-        $this->createdAt = new \DateTime($createdAt);
+        $this->createdAt = new \DateTimeImmutable($createdAt);
     }
 
     public function getContent(): string

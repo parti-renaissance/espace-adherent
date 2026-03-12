@@ -41,7 +41,7 @@ class CloseElectionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
 
         $this->io->progressStart();
 

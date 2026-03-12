@@ -42,17 +42,20 @@ class DateRangeValidator extends ConstraintValidator
             return;
         }
 
-        if (!$startDate instanceof \DateTime) {
-            throw new ConstraintDefinitionException('The start date field should be of type DateTime');
+        if (!$startDate instanceof \DateTimeInterface) {
+            throw new ConstraintDefinitionException('The start date field should be of type DateTimeInterface');
         }
 
         if (!$endDate instanceof \DateTimeInterface) {
-            throw new ConstraintDefinitionException('The start date field should be of type DateTime');
+            throw new ConstraintDefinitionException('The end date field should be of type DateTimeInterface');
         }
 
         $intervals = explode('|', $constraint->interval, 2);
 
-        $maxEndDate = (clone $startDate)->add(\DateInterval::createFromDateString($intervals[0]));
+        $startDateImmutable = $startDate instanceof \DateTimeImmutable
+            ? $startDate
+            : \DateTimeImmutable::createFromMutable($startDate);
+        $maxEndDate = $startDateImmutable->add(\DateInterval::createFromDateString($intervals[0]));
 
         if (1 === \count($intervals)) {
             if ($maxEndDate < $endDate) {
@@ -68,7 +71,7 @@ class DateRangeValidator extends ConstraintValidator
             return;
         }
 
-        $maxEndDateB = (clone $startDate)->add(\DateInterval::createFromDateString($intervals[1]));
+        $maxEndDateB = $startDateImmutable->add(\DateInterval::createFromDateString($intervals[1]));
 
         if ($endDate < $maxEndDate || $endDate > $maxEndDateB) {
             $this

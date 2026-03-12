@@ -44,7 +44,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             $adherent->isRenaissanceSympathizer()
             && (
                 self::PERMISSION === $attribute
-                || (self::POTENTIAL_PERMISSION === $attribute && $designation->membershipDeadline && $designation->membershipDeadline < new \DateTime())
+                || (self::POTENTIAL_PERMISSION === $attribute && $designation->membershipDeadline && $designation->membershipDeadline < new \DateTimeImmutable())
             )
         ) {
             return false;
@@ -68,7 +68,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             && (
                 $adherent->getLastMembershipDonation() > $designation->membershipDeadline
                 || (
-                    new \DateTime() > $designation->membershipDeadline
+                    new \DateTimeImmutable() > $designation->membershipDeadline
                     && (
                         !$adherent->getLastMembershipDonation()
                         || (int) $adherent->getLastMembershipDonation()->format('Y') < (int) $designation->membershipDeadline->format('Y')

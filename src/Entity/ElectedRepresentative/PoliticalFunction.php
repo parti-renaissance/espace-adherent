@@ -83,8 +83,8 @@ class PoliticalFunction implements \Stringable
         ?ElectedRepresentative $electedRepresentative = null,
         ?Mandate $mandate = null,
         bool $onGoing = true,
-        ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null,
+        ?\DateTimeInterface $beginAt = null,
+        ?\DateTimeInterface $finishAt = null,
     ) {
         $this->name = $name;
         $this->clarification = $clarification;

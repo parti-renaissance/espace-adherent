@@ -35,7 +35,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot1->proxy->actions->add($this->createProxyAction(
             ProcurationActionStatusEnum::STATUS_UPDATE,
             $proxySlot1->proxy,
-            new \DateTime('-10 minutes'),
+            new \DateTimeImmutable('-10 minutes'),
             $matcher1,
             'legislative_candidate',
             [
@@ -46,7 +46,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot1->proxy->actions->add($this->createProxyAction(
             ProcurationActionStatusEnum::STATUS_UPDATE,
             $proxySlot1->proxy,
-            new \DateTime('-9 minutes'),
+            new \DateTimeImmutable('-9 minutes'),
             $matcher2,
             'president_departmental_assembly',
             [
@@ -59,7 +59,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot1->actions->add($this->createProxySlotAction(
             SlotActionStatusEnum::STATUS_UPDATE,
             $proxySlot1,
-            new \DateTime('-8 minutes'),
+            new \DateTimeImmutable('-8 minutes'),
             $matcher1,
             'legislative_candidate',
             [
@@ -70,7 +70,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot1->actions->add($this->createProxySlotAction(
             SlotActionStatusEnum::STATUS_UPDATE,
             $proxySlot1,
-            new \DateTime('-7 minutes'),
+            new \DateTimeImmutable('-7 minutes'),
             $matcher2,
             'president_departmental_assembly',
             [
@@ -80,9 +80,9 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         ));
 
         // Create match history between $requestSlot1 and $proxySlot1
-        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTime('-5 minutes'));
-        $this->createUnmatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTime('-4 minutes'));
-        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher2, 'president_departmental_assembly', new \DateTime('-3 minutes'));
+        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTimeImmutable('-5 minutes'));
+        $this->createUnmatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTimeImmutable('-4 minutes'));
+        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher2, 'president_departmental_assembly', new \DateTimeImmutable('-3 minutes'));
 
         // Match $requestSlot1 and $proxySlot1
         $requestSlot1->proxySlot = $proxySlot1;
@@ -109,7 +109,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
     ): ProxyAction {
         $action = new ProxyAction(
             Uuid::uuid4(),
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $status,
             $proxy
         );
@@ -131,7 +131,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
     ): RequestSlotAction {
         $action = new RequestSlotAction(
             Uuid::uuid4(),
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $status,
             $requestSlot
         );
@@ -153,7 +153,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
     ): ProxySlotAction {
         $action = new ProxySlotAction(
             Uuid::uuid4(),
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $status,
             $proxySlot
         );
@@ -175,7 +175,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $requestSlot->actions->add($this->createRequestSlotAction(
             SlotActionStatusEnum::MATCH,
             $requestSlot,
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $author,
             $authorScope
         ));
@@ -183,7 +183,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot->actions->add($this->createProxySlotAction(
             SlotActionStatusEnum::MATCH,
             $proxySlot,
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $author,
             $authorScope
         ));
@@ -199,7 +199,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $requestSlot->actions->add($this->createRequestSlotAction(
             SlotActionStatusEnum::UNMATCH,
             $requestSlot,
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $author,
             $authorScope
         ));
@@ -207,7 +207,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         $proxySlot->actions->add($this->createProxySlotAction(
             SlotActionStatusEnum::UNMATCH,
             $proxySlot,
-            $date ?? new \DateTime(),
+            $date ?? new \DateTimeImmutable(),
             $author,
             $authorScope
         ));

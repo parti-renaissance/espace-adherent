@@ -6,17 +6,16 @@ namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\CommitteeMembership;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\MappedSuperclass]
-abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface, Timestampable
+abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
 {
     use EntityIdentityTrait;
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     /**
      * @var string
@@ -64,13 +63,13 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface, 
     public function accept(): void
     {
         $this->status = self::STATUS_ACCEPTED;
-        $this->acceptedAt = new \DateTime();
+        $this->acceptedAt = new \DateTimeImmutable();
     }
 
     public function decline(): void
     {
         $this->status = self::STATUS_DECLINED;
-        $this->declinedAt = new \DateTime();
+        $this->declinedAt = new \DateTimeImmutable();
     }
 
     public function isPending(): bool

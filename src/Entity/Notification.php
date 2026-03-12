@@ -34,11 +34,8 @@ class Notification
     #[ORM\Column(type: 'text')]
     private $body;
 
-    /**
-     * @var \DateTime
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $deliveredAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $deliveredAt = null;
 
     /**
      * @var string|null
@@ -138,14 +135,14 @@ class Notification
         return $this->tokens;
     }
 
-    public function getDelivered(): ?\DateTimeInterface
+    public function getDelivered(): ?\DateTimeImmutable
     {
         return $this->deliveredAt;
     }
 
     public function setDelivered(): void
     {
-        $this->deliveredAt = new \DateTime();
+        $this->deliveredAt = new \DateTimeImmutable();
     }
 
     public function withTokens(array $tokens): self

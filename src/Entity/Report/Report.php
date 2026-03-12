@@ -46,17 +46,11 @@ abstract class Report implements \Stringable
     #[ORM\Column(length: 16, options: ['default' => ReportStatusEnum::STATUS_UNRESOLVED])]
     private $status = ReportStatusEnum::STATUS_UNRESOLVED;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $resolvedAt;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $resolvedAt = null;
 
     /**
      * @throws \InvalidArgumentException
@@ -130,19 +124,11 @@ abstract class Report implements \Stringable
 
     final public function getCreatedAt(): \DateTimeImmutable
     {
-        if ($this->createdAt instanceof \DateTime) {
-            $this->createdAt = \DateTimeImmutable::createFromMutable($this->createdAt);
-        }
-
         return $this->createdAt;
     }
 
     final public function getResolvedAt(): ?\DateTimeImmutable
     {
-        if ($this->resolvedAt instanceof \DateTime) {
-            $this->resolvedAt = \DateTimeImmutable::createFromMutable($this->resolvedAt);
-        }
-
         return $this->resolvedAt;
     }
 

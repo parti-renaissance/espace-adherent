@@ -28,7 +28,7 @@ class DonationRequestTest extends AbstractKernelTestCase
             'male',
             'Damien',
             'DUPONT',
-            new \DateTime('1979-03-25'),
+            new \DateTimeImmutable('1979-03-25'),
             'position',
             $this->createPostAddress('2 Rue de la République', '69001-69381'),
             $phone

@@ -21,7 +21,7 @@ class LegislativeNewsletterSubscriptionHandler
 
     public function confirm(LegislativeNewsletterSubscription $subscription): void
     {
-        $subscription->setConfirmedAt(new \DateTime());
+        $subscription->setConfirmedAt(new \DateTimeImmutable());
 
         $this->manager->persist($subscription);
         $this->manager->flush();

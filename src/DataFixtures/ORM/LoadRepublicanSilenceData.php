@@ -18,8 +18,8 @@ class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInter
         $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_91'));
         $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_93'));
         $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_SG'));
-        $entity->setBeginAt(new \DateTime('-10 days'));
-        $entity->setFinishAt(new \DateTime('+10 days'));
+        $entity->setBeginAt(new \DateTimeImmutable('-10 days'));
+        $entity->setFinishAt(new \DateTimeImmutable('+10 days'));
 
         $manager->persist($entity);
         $manager->flush();

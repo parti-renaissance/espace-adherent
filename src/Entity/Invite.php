@@ -61,16 +61,13 @@ class Invite implements \Stringable, RecaptchaChallengeInterface
     #[ORM\Column(length: 50, nullable: true)]
     private $clientIp;
 
-    /**
-     * @var \DateTime
-     */
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function __toString()
@@ -195,7 +192,7 @@ class Invite implements \Stringable, RecaptchaChallengeInterface
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

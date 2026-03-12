@@ -12,8 +12,8 @@ abstract class AbstractAdministratorActionHistoryCommand implements Administrato
         public readonly ?int $administratorId,
         public readonly AdministratorActionHistoryTypeEnum $type,
         public readonly ?array $data = null,
-        public ?\DateTimeInterface $date = null,
+        public ?\DateTimeImmutable $date = null,
     ) {
-        $this->date = $date ?? new \DateTime();
+        $this->date = $date ?? new \DateTimeImmutable();
     }
 }

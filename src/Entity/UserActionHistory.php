@@ -23,8 +23,8 @@ class UserActionHistory
     #[ORM\Column(type: 'string', enumType: UserActionHistoryTypeEnum::class)]
     public UserActionHistoryTypeEnum $type;
 
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $date;
 
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $data = null;
@@ -39,7 +39,7 @@ class UserActionHistory
     public function __construct(
         Adherent $adherent,
         UserActionHistoryTypeEnum $type,
-        \DateTimeInterface $date,
+        \DateTimeImmutable $date,
         ?array $data = null,
         ?Administrator $impersonator = null,
     ) {

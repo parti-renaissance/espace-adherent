@@ -74,7 +74,7 @@ class AdherentRequestRepository extends ServiceEntityRepository implements Updat
             ->setParameters(new ArrayCollection([
                 new Parameter('adherent', $adherent),
                 new Parameter('email', $adherent->getEmailAddress()),
-                new Parameter('now', new \DateTime()),
+                new Parameter('now', new \DateTimeImmutable()),
             ]))
             ->getQuery()
             ->execute()

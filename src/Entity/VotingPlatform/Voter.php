@@ -31,9 +31,9 @@ class Voter
     private $adherent;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     /**
@@ -54,7 +54,7 @@ class Voter
     public function __construct(?Adherent $adherent = null)
     {
         $this->adherent = $adherent;
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
 
         $this->votersLists = new ArrayCollection();
     }

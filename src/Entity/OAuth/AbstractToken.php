@@ -26,15 +26,15 @@ abstract class AbstractToken implements TokenInterface
     private $expiresAt;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $revokedAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     public function __construct(UuidInterface $uuid, string $identifier, \DateTimeImmutable $expiryDateTime)
@@ -42,7 +42,7 @@ abstract class AbstractToken implements TokenInterface
         $this->uuid = $uuid;
         $this->identifier = $identifier;
         $this->expiresAt = $expiryDateTime;
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getIdentifier(): string
@@ -62,7 +62,7 @@ abstract class AbstractToken implements TokenInterface
 
     public function isExpired(): bool
     {
-        return $this->expiresAt < new \DateTime('now', $this->expiresAt->getTimezone());
+        return $this->expiresAt < new \DateTimeImmutable('now', $this->expiresAt->getTimezone());
     }
 
     public function isRevoked(): bool
@@ -76,6 +76,6 @@ abstract class AbstractToken implements TokenInterface
             throw new \LogicException(\sprintf('Token of type "%s" and identified by "%s" has already been revoked!', \get_class($this), $this->identifier));
         }
 
-        $this->revokedAt = new \DateTime($datetime);
+        $this->revokedAt = new \DateTimeImmutable($datetime);
     }
 }

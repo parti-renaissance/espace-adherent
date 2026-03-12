@@ -94,8 +94,8 @@ class AppHit
     public ?string $appVersion = null;
 
     #[Groups(['hit:write'])]
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $appDate;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $appDate;
 
     #[ORM\Column(unique: true, nullable: true)]
     public ?string $fingerprint = null;

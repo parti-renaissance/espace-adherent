@@ -45,11 +45,11 @@ class PetitionSignature implements \Stringable
     #[ORM\Column]
     public ?string $petitionSlug = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $validatedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $validatedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $remindedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $remindedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
@@ -85,7 +85,7 @@ class PetitionSignature implements \Stringable
 
     public function validate(): void
     {
-        $this->validatedAt = new \DateTime();
+        $this->validatedAt = new \DateTimeImmutable();
     }
 
     public function getAdherent(): ?Adherent

@@ -65,9 +65,9 @@ class SendAdherentRequestReminderCommand extends Command
 
         $type = AdherentRequestReminderTypeEnum::from($typeValue);
 
-        $createdBefore = new \DateTime()->modify(\sprintf('-%d minutes', (int) $input->getArgument('beforeMinutes')));
+        $createdBefore = new \DateTimeImmutable()->modify(\sprintf('-%d minutes', (int) $input->getArgument('beforeMinutes')));
         $createdAfter = null !== $input->getArgument('afterMinutes')
-            ? new \DateTime()->modify(\sprintf('-%d minutes', (int) $input->getArgument('afterMinutes')))
+            ? new \DateTimeImmutable()->modify(\sprintf('-%d minutes', (int) $input->getArgument('afterMinutes')))
             : null;
 
         $adherentRequests = $this->adherentRequestRepository->findToRemind($type, $createdBefore, $createdAfter);

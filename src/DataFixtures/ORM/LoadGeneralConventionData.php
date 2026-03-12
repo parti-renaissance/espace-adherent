@@ -41,7 +41,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
             MeetingTypeEnum::ON_SITE,
             ParticipantQuality::ADHERENT,
             $reporter = $this->getReference('adherent-3', Adherent::class),
-            new \DateTime('now'),
+            new \DateTimeImmutable('now'),
         ));
 
         $manager->persist($this->createGeneralConvention(
@@ -51,7 +51,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
             MeetingTypeEnum::REMOTE,
             ParticipantQuality::SYMPATHIZER,
             $reporter,
-            new \DateTime('now'),
+            new \DateTimeImmutable('now'),
             $committee = $this->getReference('committee-v2-1', Committee::class),
             null,
             20,
@@ -79,7 +79,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
             MeetingTypeEnum::REMOTE,
             ParticipantQuality::ADHERENT_BEFORE,
             $reporter,
-            new \DateTime('now'),
+            new \DateTimeImmutable('now'),
             null,
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'),
             10,
@@ -108,7 +108,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
                 0 === $i % 2 ? MeetingTypeEnum::REMOTE : MeetingTypeEnum::ON_SITE,
                 0 === $i % 2 ? ParticipantQuality::ADHERENT : ParticipantQuality::SYMPATHIZER,
                 $reporter,
-                new \DateTime('now'),
+                new \DateTimeImmutable('now'),
                 $committee,
                 null,
                 20,

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity\AdherentMessage;
 
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Timestampable;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
-class MailchimpCampaignReport implements Timestampable
+class MailchimpCampaignReport
 {
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]

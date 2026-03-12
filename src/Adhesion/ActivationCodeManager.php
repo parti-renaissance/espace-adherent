@@ -71,7 +71,7 @@ class ActivationCodeManager
 
         if ($adherent->isPending()) {
             $adherent->enable();
-            $code->usedAt = new \DateTime();
+            $code->usedAt = new \DateTimeImmutable();
         }
 
         $this->entityManager->flush();

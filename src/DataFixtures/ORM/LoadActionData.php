@@ -32,7 +32,7 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
             $action->setAuthor($author = (0 === $i % 2 ? $adherents[0] : $adherents[1]));
             $action->addNewParticipant($author);
             $action->setZones([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]);
-            $action->date = new \DateTime('+'.$i.' hours');
+            $action->date = new \DateTimeImmutable('+'.$i.' hours');
             $action->description = '<p>description</p>';
 
             $manager->persist($action);

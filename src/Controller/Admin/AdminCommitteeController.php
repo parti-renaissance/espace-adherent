@@ -242,7 +242,7 @@ class AdminCommitteeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
-                $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_MANUAL);
+                $mandate->end(new \DateTimeImmutable(), AdherentMandateInterface::REASON_MANUAL);
 
                 $entityManager->flush();
 

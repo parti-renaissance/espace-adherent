@@ -138,7 +138,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
             'male',
             'John',
             'Smith',
-            new \DateTime('1990-12-12'),
+            new \DateTimeImmutable('1990-12-12'),
             ActivityPositionsEnum::STUDENT,
             $this->createPostAddress($address, '92110-92024')
         );

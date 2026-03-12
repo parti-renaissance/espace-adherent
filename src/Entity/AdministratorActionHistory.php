@@ -22,8 +22,8 @@ class AdministratorActionHistory
     #[ORM\Column(type: 'string', enumType: AdministratorActionHistoryTypeEnum::class)]
     public AdministratorActionHistoryTypeEnum $type;
 
-    #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public \DateTimeImmutable $date;
 
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $data = null;
@@ -34,7 +34,7 @@ class AdministratorActionHistory
     public function __construct(
         Administrator $administrator,
         AdministratorActionHistoryTypeEnum $type,
-        \DateTimeInterface $date,
+        \DateTimeImmutable $date,
         ?array $data = null,
     ) {
         $this->administrator = $administrator;

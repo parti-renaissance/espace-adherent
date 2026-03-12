@@ -40,7 +40,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             $this->getReference('administrator-2', Administrator::class),
             self::NATIONAL_POLL_01_UUID,
             'Plutôt thé ou café ?',
-            new \DateTime('+1 day')
+            new \DateTimeImmutable('+1 day')
         );
 
         $nationalPoll1Choice1 = $this->createChoice('Thé', self::POLL_01_CHOICE_01_UUID);
@@ -63,7 +63,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_01_UUID,
             'Tu dis "oui" ?',
-            new \DateTime('+7 day'),
+            new \DateTimeImmutable('+7 day'),
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'),
             true
         );
@@ -75,7 +75,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_02_UUID,
             'Tu dis "non" ?',
-            new \DateTime('+5 day'),
+            new \DateTimeImmutable('+5 day'),
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11')
         );
         $this->addChoices($localPoll2, [
@@ -86,7 +86,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             $this->getReference('adherent-5', Adherent::class),
             self::LOCAL_POLL_03_UUID,
             'Tu dis quoi ?',
-            new \DateTime('+3 day'),
+            new \DateTimeImmutable('+3 day'),
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11')
         );
         $this->addChoices($localPoll3, [
@@ -97,7 +97,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_04_UUID,
             'Non publié ?',
-            new \DateTime('+1 day'),
+            new \DateTimeImmutable('+1 day'),
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11')
         );
         $this->addChoices($localPoll4, [

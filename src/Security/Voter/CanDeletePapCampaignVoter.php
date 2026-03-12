@@ -34,7 +34,7 @@ class CanDeletePapCampaignVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $subject->getBeginAt() > new \DateTime();
+        return $subject->getBeginAt() > new \DateTimeImmutable();
     }
 
     protected function supports(string $attribute, $subject): bool

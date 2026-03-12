@@ -155,12 +155,12 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     #[Assert\NotBlank]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $beginAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $beginAt = null;
 
     #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $finishAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $finishAt = null;
 
     #[Assert\Valid]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -353,22 +353,22 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->toJoin = $toJoin;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
+    public function getBeginAt(): ?\DateTimeImmutable
     {
         return $this->beginAt;
     }
 
-    public function setBeginAt(\DateTimeInterface $beginAt): void
+    public function setBeginAt(\DateTimeImmutable $beginAt): void
     {
         $this->beginAt = $beginAt;
     }
 
-    public function getFinishAt(): ?\DateTimeInterface
+    public function getFinishAt(): ?\DateTimeImmutable
     {
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTimeInterface $finishAt): void
+    public function setFinishAt(?\DateTimeImmutable $finishAt): void
     {
         $this->finishAt = $finishAt;
     }

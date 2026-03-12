@@ -6,7 +6,7 @@ namespace App\Entity;
 
 interface EntitySoftDeletedInterface
 {
-    public function getDeletedAt(): ?\DateTime;
+    public function getDeletedAt(): ?\DateTimeImmutable;
 
     public function isDeleted(): bool;
 

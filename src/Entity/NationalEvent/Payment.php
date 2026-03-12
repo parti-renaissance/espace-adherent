@@ -60,8 +60,8 @@ class Payment
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $replacement = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $expiredCheckedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $expiredCheckedAt = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $packageValues = null;
