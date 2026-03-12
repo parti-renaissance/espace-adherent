@@ -415,7 +415,7 @@ Feature:
         And I click the "membership_request_allowNotifications" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
-        And User "carl999@example.fr" should have 7 subscription types
+        And User "carl999@example.fr" should have 6 subscription types
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
