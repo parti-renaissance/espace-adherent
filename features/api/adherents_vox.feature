@@ -21,13 +21,13 @@ Feature:
                 "birthdate": "1962-01-07T00:00:00+01:00",
                 "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                 "adherent_tags": [
-                    {"code": "adherent:a_jour_2024", "label": "Adhérent à jour 2024"}
+                    {"code": "adherent:plus_a_jour:annee_2024", "label": "Adhérent 2024"}
                 ],
                 "static_tags": [
-                    {"code": "national_event:present:congres-2024", "label": "Présent au Congrès 2024"}
+                    {"code": "national_event:present:congres-2024", "label": "Présent Congres 2024"}
                 ],
                 "elect_tags": [
-                    {"code": "elu:conseiller_municipal", "label": "Conseiller municipal"}
+                    {"code": "elu:cotisation_ok:soumis", "label": "@string@"}
                 ],
                 "instances": [
                     {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
@@ -50,7 +50,7 @@ Feature:
                     "telegram": null,
                     "tiktok": null
                 },
-                "nationality": null,
+                "nationality": "FR",
                 "sessions": {
                     "mobile": [
                         {
@@ -132,13 +132,13 @@ Feature:
                         "first_contribution_at": null,
                         "last_activity_at": null,
                         "adherent_tags": [
-                            {"code": "adherent:a_jour_2024", "label": "Adhérent à jour 2024"}
+                            {"code": "adherent:plus_a_jour:annee_2024", "label": "Adhérent 2024"}
                         ],
                         "static_tags": [
-                            {"code": "national_event:present:congres-2024", "label": "Présent au Congrès 2024"}
+                            {"code": "national_event:present:congres-2024", "label": "Présent Congres 2024"}
                         ],
                         "elect_tags": [
-                            {"code": "elu:conseiller_municipal", "label": "Conseiller municipal"}
+                            {"code": "elu:cotisation_ok:soumis", "label": "@string@"}
                         ],
                         "instances": [
                             {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
@@ -155,6 +155,38 @@ Feature:
                         ]
                     },
                     {
+                        "uuid": "5f68e1cc-024e-4193-bd51-f2469f22dd07",
+                        "public_id": null,
+                        "civility": "Monsieur",
+                        "first_name": "Jules",
+                        "last_name": "Fullstack",
+                        "age": @integer@,
+                        "birthdate": "1942-01-10T00:00:00+02:00",
+                        "image_url": null,
+                        "account_created_at": "@string@.isDateTime()",
+                        "first_contribution_at": null,
+                        "last_activity_at": null,
+                        "adherent_tags": [
+                            {"code": "adherent:plus_a_jour:annee_2023", "label": "Adhérent 2023"}
+                        ],
+                        "static_tags": [
+                            {"code": "national_event:event-national-2", "label": "Event national 2"}
+                        ],
+                        "elect_tags": null,
+                        "instances": [
+                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
+                        ],
+                        "subscriptions": {
+                            "sms": {"available": false, "subscribed": false},
+                            "web": {"available": true, "subscribed": true},
+                            "email": {"available": true, "subscribed": true},
+                            "mobile": {"available": true, "subscribed": true}
+                        },
+                        "roles": [
+                            {"code": "correspondent", "label": "Responsable local", "is_delegated": false, "function": null, "zones": "Hauts-de-Seine", "zone_codes": "92"}
+                        ]
+                    },
+                    {
                         "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                         "public_id": null,
                         "civility": "Madame",
@@ -167,13 +199,13 @@ Feature:
                         "first_contribution_at": null,
                         "last_activity_at": null,
                         "adherent_tags": [
-                            {"code": "adherent:a_jour_2024", "label": "Adhérente à jour 2024"}
+                            {"code": "adherent:a_jour_2026:recotisation", "label": "@string@"}
                         ],
                         "static_tags": [
-                            {"code": "national_event:event-national-1:2022-12-12", "label": "Participant événement national"}
+                            {"code": "national_event:event-national-1", "label": "Event national 1"}
                         ],
                         "elect_tags": [
-                            {"code": "elu:conseiller_municipal", "label": "Conseillère municipale"}
+                            {"code": "elu:cotisation_ok:exempte", "label": "@string@"}
                         ],
                         "instances": [
                             {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
@@ -194,38 +226,6 @@ Feature:
                             {"code": "president_departmental_assembly", "label": "Présidente d'assemblée départementale", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null},
                             {"code": "correspondent", "label": "Responsable locale", "is_delegated": true, "function": "Responsable logistique", "zones": null, "zone_codes": null},
                             {"code": "legislative_candidate", "label": "Candidate aux législatives", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null}
-                        ]
-                    },
-                    {
-                        "uuid": "5f68e1cc-024e-4193-bd51-f2469f22dd07",
-                        "public_id": null,
-                        "civility": "Monsieur",
-                        "first_name": "Jules",
-                        "last_name": "Fullstack",
-                        "age": @integer@,
-                        "birthdate": "1942-01-10T00:00:00+02:00",
-                        "image_url": null,
-                        "account_created_at": "@string@.isDateTime()",
-                        "first_contribution_at": null,
-                        "last_activity_at": null,
-                        "adherent_tags": [
-                            {"code": "adherent:a_jour_2023", "label": "Adhérent à jour 2023"}
-                        ],
-                        "static_tags": [
-                            {"code": "national_event:event-national-2:2023-06-15", "label": "Participant événement national 2023"}
-                        ],
-                        "elect_tags": null,
-                        "instances": [
-                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
-                        ],
-                        "subscriptions": {
-                            "sms": {"available": false, "subscribed": false},
-                            "web": {"available": true, "subscribed": true},
-                            "email": {"available": true, "subscribed": true},
-                            "mobile": {"available": true, "subscribed": true}
-                        },
-                        "roles": [
-                            {"code": "correspondent", "label": "Responsable local", "is_delegated": false, "function": null, "zones": "Hauts-de-Seine", "zone_codes": "92"}
                         ]
                     }
                 ]
@@ -388,3 +388,19 @@ Feature:
                 }
             ]
             """
+
+    Scenario: As a JeMengage Mobile user (VOX export) I can export adherents with VOX-aligned columns
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/adherents.csv?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the header "Content-Type" should contain "text/csv"
+        And the header "Content-Disposition" should contain "adherents--"
+        And the header "Content-Disposition" should contain ".csv"
+        And the response should contain "UUID;PID;Civilité;Prénom;Nom;Âge;\"Date de naissance\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière activité\";\"Labels Adhérent\";\"Labels Statique\";\"Labels Élu\";Rôles;\"Abonné email\";\"Abonné SMS\""
+        And the response should contain "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4;;Monsieur;Francis;Brioul;"
+        And the response should contain ";07/01/1962;\"25/01/2017 19:31\""
+        And the response should contain ";\"Président d'assemblée départementale\";1;"
+        And the response should contain "b4219d47-3138-5efd-9762-2ef9f9495084;;Madame;Gisele;Berthoux;"
+        And the response should contain ";24/12/1983;\"08/01/2017 05:55\""
+        And the response should contain "Déléguée de circonscription, Sénatrice"
+        And the response should contain ";1;1"

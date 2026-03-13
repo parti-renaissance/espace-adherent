@@ -623,7 +623,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame([
             'dimanche_train' => 5,
-        ], $this->eventInscriptionRepository->countPackageValues(3)['transport']);
+        ], $this->eventInscriptionRepository->countPackageValues(4)['transport']);
 
         $this->client->submit($form, [
             'inscription_form' => [
@@ -654,7 +654,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
@@ -681,7 +681,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
@@ -703,7 +703,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'john.doe@example.com']);
 
@@ -753,7 +753,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertSame(InscriptionStatusEnum::DUPLICATE, $inscription->status);
         $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s?confirmation=1', $inscription->getUuid()), $this->client);
@@ -803,7 +803,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
@@ -833,7 +833,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
 
@@ -856,7 +856,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'renaissance-user-2@en-marche-dev.fr']);
 
@@ -906,7 +906,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
 
@@ -960,7 +960,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->em->clear();
 
@@ -1013,7 +1013,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1033,7 +1033,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $payment = $inscription->getPayments()[0];
 
@@ -1049,7 +1049,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -1090,7 +1090,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->em->clear();
 
@@ -1146,7 +1146,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1166,7 +1166,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $payment = $inscription->getPayments()[0];
 
@@ -1182,7 +1182,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -1222,7 +1222,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->em->clear();
 
@@ -1262,7 +1262,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 5,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->client->submit($form, [
             'inscription_form' => [
@@ -1292,7 +1292,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1312,7 +1312,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $payment = $inscription->getPayments()[0];
 
@@ -1328,7 +1328,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertTrue($inscription->isPaymentSuccess());
         self::assertCount(1, $inscription->getPayments());
@@ -1372,7 +1372,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
 
@@ -1395,7 +1395,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertCount(2, $payments = $inscription->getPayments());
         self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
@@ -1469,7 +1469,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         /** @var EventInscription $inscription */
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1518,7 +1518,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1543,7 +1543,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         self::assertCount(2, $payments = $inscription->getPayments());
         self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
@@ -1586,7 +1586,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
             'visitDay' => [
                 'dimanche' => 6,
             ],
-        ], $this->eventInscriptionRepository->countPackageValues(3));
+        ], $this->eventInscriptionRepository->countPackageValues(4));
 
         $this->assertClientIsRedirectedTo('/grand-rassemblement/campus/'.$inscription->getUuid(), $this->client);
 

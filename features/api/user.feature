@@ -61,7 +61,7 @@ Feature:
                         "name": "En Marche Paris 8",
                         "assembly_committees_count": 2,
                         "can_change_committee": true,
-                        "members_count": 0,
+                        "members_count": 1,
                         "message": null,
                         "uuid": "@uuid@",
                         "manager": null
@@ -155,7 +155,7 @@ Feature:
                         "name": "En Marche Paris 8",
                         "assembly_committees_count": 2,
                         "can_change_committee": true,
-                        "members_count": 0,
+                        "members_count": 1,
                         "message": null,
                         "uuid": "@uuid@",
                         "manager": null

@@ -146,16 +146,31 @@ Feature:
                         "age": @integer@,
                         "agora": null,
                         "agora_uuid": null,
-                        "phone": null,
-                        "nationality": null,
+                        "phone": "+33 6 73 65 43 49",
+                        "nationality": "FR",
                         "tags": [
+                            {
+                                "code": "adherent:plus_a_jour:annee_2024",
+                                "label": "@string@",
+                                "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:soumis",
+                                "label": "@string@",
+                                "type": "elu"
+                            },
+                            {
+                                "code": "national_event:present:congres-2024",
+                                "label": "@string@",
+                                "type": "national_event"
+                            },
                             {
                                 "type": "role",
                                 "label": "Président d'assemblée départementale délégué",
                                 "tooltip": "Responsable communication"
                             }
                         ],
-                        "created_at": "2017-08-12T16:12:13+02:00",
+                        "created_at": "2017-01-25T19:31:45+01:00",
                         "interests": [],
                         "first_membership_donation": null,
                         "last_membership_donation": null,
@@ -188,6 +203,79 @@ Feature:
                     {
                         "public_id": null,
                         "adherent_uuid": "@uuid@",
+                        "email": "je-mengage-user-1@en-marche-dev.fr",
+                        "address": "2 avenue Jean Jaurès",
+                        "postal_code": "77000",
+                        "city": "Melun",
+                        "country": "FR",
+                        "gender": "male",
+                        "first_name": "Jules",
+                        "last_name": "Fullstack",
+                        "image_url": null,
+                        "birthdate": "1942-01-10T00:00:00+02:00",
+                        "age": "@number@",
+                        "agora": null,
+                        "agora_uuid": null,
+                        "phone": "+33 6 99 00 88 00",
+                        "nationality": "FR",
+                        "tags": [
+                            {
+                                "code": "adherent:plus_a_jour:annee_2023",
+                                "label": "@string@",
+                                "type": "adherent"
+                            },
+                            {
+                                "code": "national_event:event-national-2",
+                                "label": "@string@",
+                                "type": "national_event"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable local",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "declared_mandate",
+                                "label": "Député européen"
+                            },
+                            {
+                                "type": "declared_mandate",
+                                "label": "Conseiller municipal"
+                            }
+                        ],
+                        "created_at": "2017-01-25T19:31:45+01:00",
+                        "interests": [],
+                        "first_membership_donation": null,
+                        "last_membership_donation": null,
+                        "committee": null,
+                        "committee_uuid": null,
+                        "mandates": [],
+                        "declared_mandates": ["depute_europeen", "conseiller_municipal"],
+                        "cotisation_dates": [],
+                        "campus_registered_at": null,
+                        "zones": [
+                            {
+                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                                "type": "department",
+                                "code": "92",
+                                "name": "Hauts-de-Seine"
+                            },
+                            {
+                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                                "type": "department",
+                                "code": "59",
+                                "name": "Nord"
+                            }
+                        ],
+                        "certified": false,
+                        "city_code": null,
+                        "sms_subscription": false,
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
+                    },
+                    {
+                        "public_id": null,
+                        "adherent_uuid": "@uuid@",
                         "email": "gisele-berthoux@caramail.com",
                         "address": "47 rue Martre",
                         "postal_code": "92110",
@@ -201,7 +289,7 @@ Feature:
                         "age": "@number@",
                         "agora": "Première Agora",
                         "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
-                        "phone": "+33 6 66 66 66 66",
+                        "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
                             {
@@ -254,7 +342,7 @@ Feature:
                                 "label": "Conseiller municipal"
                             }
                         ],
-                        "created_at": "2017-06-02T15:34:12+02:00",
+                        "created_at": "2017-01-08T05:55:43+01:00",
                         "interests": [],
                         "first_membership_donation": null,
                         "last_membership_donation": null,
@@ -282,69 +370,6 @@ Feature:
                         "city_code": "92024",
                         "sms_subscription": true,
                         "email_subscription": true,
-                        "available_for_resubscribe_email": false
-                    },
-                    {
-                        "public_id": null,
-                        "adherent_uuid": "@uuid@",
-                        "email": "je-mengage-user-1@en-marche-dev.fr",
-                        "address": "2 avenue Jean Jaurès",
-                        "postal_code": "77000",
-                        "city": "Melun",
-                        "country": "FR",
-                        "gender": "male",
-                        "first_name": "Jules",
-                        "last_name": "Fullstack",
-                        "image_url": null,
-                        "birthdate": "1942-01-10T00:00:00+02:00",
-                        "age": "@number@",
-                        "agora": null,
-                        "agora_uuid": null,
-                        "phone": null,
-                        "nationality": null,
-                        "tags": [
-                            {
-                                "type": "role",
-                                "label": "Responsable local",
-                                "tooltip": null
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Député européen"
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Conseiller municipal"
-                            }
-                        ],
-                        "created_at": "2017-06-02T15:34:12+02:00",
-                        "interests": [],
-                        "first_membership_donation": null,
-                        "last_membership_donation": null,
-                        "committee": null,
-                        "committee_uuid": null,
-                        "mandates": [],
-                        "declared_mandates": ["depute_europeen", "conseiller_municipal"],
-                        "cotisation_dates": [],
-                        "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "59",
-                                "name": "Nord"
-                            }
-                        ],
-                        "certified": false,
-                        "city_code": null,
-                        "sms_subscription": false,
-                        "email_subscription": false,
                         "available_for_resubscribe_email": false
                     }
                 ]
@@ -379,7 +404,7 @@ Feature:
                         "age": "@number@",
                         "agora": "Première Agora",
                         "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
-                        "phone": "+33 6 66 66 66 66",
+                        "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
                             {
@@ -432,7 +457,7 @@ Feature:
                                 "label": "Conseiller municipal"
                             }
                         ],
-                        "created_at": "2017-06-02T15:34:12+02:00",
+                        "created_at": "2017-01-08T05:55:43+01:00",
                         "interests": [],
                         "first_membership_donation": null,
                         "last_membership_donation": null,
@@ -485,16 +510,31 @@ Feature:
                 "age": @integer@,
                 "agora": null,
                 "agora_uuid": null,
-                "phone": null,
-                "nationality": null,
+                "phone": "+33 6 73 65 43 49",
+                "nationality": "FR",
                 "tags": [
+                    {
+                        "code": "adherent:plus_a_jour:annee_2024",
+                        "label": "@string@",
+                        "type": "adherent"
+                    },
+                    {
+                        "code": "elu:cotisation_ok:soumis",
+                        "label": "@string@",
+                        "type": "elu"
+                    },
+                    {
+                        "code": "national_event:present:congres-2024",
+                        "label": "@string@",
+                        "type": "national_event"
+                    },
                     {
                         "type": "role",
                         "label": "Président d'assemblée départementale délégué",
                         "tooltip": "Responsable communication"
                     }
                 ],
-                "created_at": "2017-08-12T16:12:13+02:00",
+                "created_at": "2017-01-25T19:31:45+01:00",
                 "interests": [],
                 "first_membership_donation": null,
                 "last_membership_donation": null,
@@ -547,6 +587,79 @@ Feature:
                 "items": [
                     {
                         "public_id": null,
+                        "adherent_uuid": "@uuid@",
+                        "email": "je-mengage-user-1@en-marche-dev.fr",
+                        "address": "2 avenue Jean Jaurès",
+                        "postal_code": "77000",
+                        "city": "Melun",
+                        "country": "FR",
+                        "gender": "male",
+                        "first_name": "Jules",
+                        "last_name": "Fullstack",
+                        "image_url": null,
+                        "birthdate": "1942-01-10T00:00:00+02:00",
+                        "age": "@number@",
+                        "agora": null,
+                        "agora_uuid": null,
+                        "phone": "+33 6 99 00 88 00",
+                        "nationality": "FR",
+                        "tags": [
+                            {
+                                "code": "adherent:plus_a_jour:annee_2023",
+                                "label": "@string@",
+                                "type": "adherent"
+                            },
+                            {
+                                "code": "national_event:event-national-2",
+                                "label": "@string@",
+                                "type": "national_event"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable local",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "declared_mandate",
+                                "label": "Député européen"
+                            },
+                            {
+                                "type": "declared_mandate",
+                                "label": "Conseiller municipal"
+                            }
+                        ],
+                        "created_at": "2017-01-25T19:31:45+01:00",
+                        "interests": [],
+                        "first_membership_donation": null,
+                        "last_membership_donation": null,
+                        "committee": null,
+                        "committee_uuid": null,
+                        "mandates": [],
+                        "declared_mandates": ["depute_europeen", "conseiller_municipal"],
+                        "cotisation_dates": [],
+                        "campus_registered_at": null,
+                        "zones": [
+                            {
+                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                                "type": "department",
+                                "code": "92",
+                                "name": "Hauts-de-Seine"
+                            },
+                            {
+                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                                "type": "department",
+                                "code": "59",
+                                "name": "Nord"
+                            }
+                        ],
+                        "certified": false,
+                        "city_code": null,
+                        "sms_subscription": false,
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
+                    },
+                    {
+                        "public_id": null,
                         "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                         "email": "gisele-berthoux@caramail.com",
                         "address": "47 rue Martre",
@@ -561,7 +674,7 @@ Feature:
                         "age": "@number@",
                         "agora": "Première Agora",
                         "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
-                        "phone": "+33 6 66 66 66 66",
+                        "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
                             {
@@ -620,7 +733,7 @@ Feature:
                                 "label": "Conseiller municipal"
                             }
                         ],
-                        "created_at": "2017-06-02T15:34:12+02:00",
+                        "created_at": "2017-01-08T05:55:43+01:00",
                         "interests": [],
                         "first_membership_donation": null,
                         "last_membership_donation": null,
@@ -648,69 +761,6 @@ Feature:
                         "city_code": "92024",
                         "sms_subscription": true,
                         "email_subscription": true,
-                        "available_for_resubscribe_email": false
-                    },
-                    {
-                        "public_id": null,
-                        "adherent_uuid": "@uuid@",
-                        "email": "je-mengage-user-1@en-marche-dev.fr",
-                        "address": "2 avenue Jean Jaurès",
-                        "postal_code": "77000",
-                        "city": "Melun",
-                        "country": "FR",
-                        "gender": "male",
-                        "first_name": "Jules",
-                        "last_name": "Fullstack",
-                        "image_url": null,
-                        "birthdate": "1942-01-10T00:00:00+02:00",
-                        "age": "@number@",
-                        "agora": null,
-                        "agora_uuid": null,
-                        "phone": null,
-                        "nationality": null,
-                        "tags": [
-                            {
-                                "type": "role",
-                                "label": "Responsable local",
-                                "tooltip": null
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Député européen"
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Conseiller municipal"
-                            }
-                        ],
-                        "created_at": "2017-06-02T15:34:12+02:00",
-                        "interests": [],
-                        "first_membership_donation": null,
-                        "last_membership_donation": null,
-                        "committee": null,
-                        "committee_uuid": null,
-                        "mandates": [],
-                        "declared_mandates": ["depute_europeen", "conseiller_municipal"],
-                        "cotisation_dates": [],
-                        "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "59",
-                                "name": "Nord"
-                            }
-                        ],
-                        "certified": false,
-                        "city_code": null,
-                        "sms_subscription": false,
-                        "email_subscription": false,
                         "available_for_resubscribe_email": false
                     }
                 ]
@@ -998,48 +1048,43 @@ Feature:
                 "items": [
                     {
                         "public_id": null,
-                        "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
-                        "email": "deputy@en-marche-dev.fr",
-                        "address": "3 Avenue du Général Eisenhower",
+                        "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                        "email": "jacques.picard@en-marche.fr",
+                        "address": "36 rue de la Paix",
                         "postal_code": "75008",
                         "city": "Paris 8ème",
                         "country": "FR",
                         "gender": "male",
-                        "first_name": "Député",
-                        "last_name": "PARIS I",
+                        "first_name": "Jacques",
+                        "last_name": "Picard",
                         "image_url": null,
-                        "birthdate": "1982-06-02T00:00:00+02:00",
+                        "birthdate": "1953-04-03T00:00:00+01:00",
                         "age": "@number@",
                         "agora": null,
                         "agora_uuid": null,
-                        "phone": null,
-                        "nationality": null,
+                        "phone": "+33 1 87 26 42 36",
+                        "nationality": "FR",
                         "tags": [
                             {
-                                "type": "role",
-                                "label": "National communication : Directeur général adjoint",
-                                "tooltip": null
-                            },
-                            {
-                                "type": "role",
-                                "label": "Délégué de circonscription",
-                                "tooltip": null
+                                "code": "adherent:a_jour_2026:recotisation",
+                                "label": "@string@",
+                                "type": "adherent"
                             },
                             {
                                 "type": "role",
                                 "label": "Président d'assemblée départementale délégué",
-                                "tooltip": "Responsable communication"
+                                "tooltip": "Responsable mobilisation"
                             }
                         ],
-                        "created_at": "2017-06-01T09:26:31+02:00",
-                        "interests": ["europe", "numerique"],
-                        "first_membership_donation": null,
-                        "last_membership_donation": null,
+                        "created_at": "2017-01-03T08:47:54+01:00",
+                        "interests": ["europe", "numerique", "sante"],
+                        "first_membership_donation": "2022-02-01T12:00:00+01:00",
+                        "last_membership_donation": "2023-03-01T12:00:00+01:00",
                         "committee": null,
                         "committee_uuid": null,
                         "mandates": [],
                         "declared_mandates": [],
-                        "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
+                        "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
                         "campus_registered_at": null,
                         "zones": [
                             {
@@ -1063,43 +1108,63 @@ Feature:
                     },
                     {
                         "public_id": null,
-                        "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                        "email": "jacques.picard@en-marche.fr",
-                        "address": "36 rue de la Paix",
+                        "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
+                        "email": "deputy@en-marche-dev.fr",
+                        "address": "3 Avenue du Général Eisenhower",
                         "postal_code": "75008",
                         "city": "Paris 8ème",
                         "country": "FR",
                         "gender": "male",
-                        "first_name": "Jacques",
-                        "last_name": "Picard",
+                        "first_name": "Député",
+                        "last_name": "PARIS I",
                         "image_url": null,
-                        "birthdate": "1953-04-03T00:00:00+01:00",
+                        "birthdate": "1982-06-02T00:00:00+02:00",
                         "age": "@number@",
                         "agora": null,
                         "agora_uuid": null,
-                        "phone": "+33 1 87 26 42 36",
-                        "nationality": "FR",
+                        "phone": null,
+                        "nationality": null,
                         "tags": [
                             {
-                                "code": "adherent:a_jour_2026:recotisation",
-                                "label": "Adhérent à jour 2026",
+                                "code": "adherent:plus_a_jour:annee_2024",
+                                "label": "@string@",
                                 "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:soumis",
+                                "label": "@string@",
+                                "type": "elu"
+                            },
+                            {
+                                "code": "national_event:present:congres-2024",
+                                "label": "@string@",
+                                "type": "national_event"
+                            },
+                            {
+                                "type": "role",
+                                "label": "National communication : Directeur général adjoint",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
+                                "label": "Délégué de circonscription",
+                                "tooltip": null
                             },
                             {
                                 "type": "role",
                                 "label": "Président d'assemblée départementale délégué",
-                                "tooltip": "Responsable mobilisation"
+                                "tooltip": "Responsable communication"
                             }
                         ],
-                        "created_at": "2017-01-03T08:47:54+01:00",
-                        "interests": ["europe", "numerique", "sante"],
-                        "first_membership_donation": null,
-                        "last_membership_donation": null,
+                        "created_at": "2017-06-01T09:26:31+02:00",
+                        "interests": ["europe", "numerique"],
+                        "first_membership_donation": "2022-01-01T12:00:00+01:00",
+                        "last_membership_donation": "2023-01-01T12:00:00+01:00",
                         "committee": null,
                         "committee_uuid": null,
                         "mandates": [],
                         "declared_mandates": [],
-                        "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
+                        "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
                         "campus_registered_at": null,
                         "zones": [
                             {
@@ -1169,8 +1234,8 @@ Feature:
                         ],
                         "created_at": "2017-01-03T08:47:54+01:00",
                         "interests": ["europe", "numerique", "sante"],
-                        "first_membership_donation": null,
-                        "last_membership_donation": null,
+                        "first_membership_donation": "2022-02-01T12:00:00+01:00",
+                        "last_membership_donation": "2023-03-01T12:00:00+01:00",
                         "committee": null,
                         "committee_uuid": null,
                         "mandates": [],
@@ -1221,7 +1286,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "adherent": 7,
+                "adherent": 9,
                 "sympathizer": 3
             }
             """
@@ -1230,8 +1295,8 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "adherent": 7,
-                "adherent_since": 6,
+                "adherent": 9,
+                "adherent_since": 8,
                 "sympathizer": 3
             }
             """
@@ -1247,3 +1312,16 @@ Feature:
                 "sympathizer": 1
             }
             """
+
+    Scenario: As a JeMengage Web user (standard export) I can export adherents
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents.csv?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the header "Content-Type" should contain "text/csv"
+        And the header "Content-Disposition" should contain "adherents--"
+        And the header "Content-Disposition" should contain ".csv"
+        And the response should contain "PID;Civilité;Prénom;Nom;\"Date de naissance\";Téléphone;Comité;Rôles;\"Labels Adhérent\";\"Labels Élu\";\"Déclaration de mandats\";Mandats;\"Labels Divers\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière cotisation\";\"Date de dernière connexion\";\"Adresse postale\";\"Code postal\";Ville;Pays;\"Abonné email\";\"Abonné SMS\""
+        And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'assemblée départementale\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
+        And the response should contain ";\"2 avenue Jean Jaurès\";77000;Melun;France;;"
+        And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription, Sénatrice, Déléguée de circonscription, Candidate, Présidente d'assemblée départementale, Présidente d'assemblée départementale, Responsable locale, Candidate aux législatives\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
+        And the response should contain ";\"47 rue Martre\";92110;Clichy;France;1;1"

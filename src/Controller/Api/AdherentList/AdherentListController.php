@@ -73,7 +73,9 @@ class AdherentListController extends AbstractController
                 throw $this->createAccessDeniedException();
             }
 
-            return $this->exporter->getResponse($format, $filter);
+            $isVox = $this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP));
+
+            return $this->exporter->getResponse($format, $filter, $isVox);
         }
 
         $adherents = $this->repository->searchByFilter(

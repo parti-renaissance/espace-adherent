@@ -92,14 +92,23 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'michelle.dufour@example.ch',
             'gender' => 'female',
+            'nationality' => AddressInterface::FRANCE,
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, null, 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
+            'phone' => '+33666666666',
+            'registered_at' => '2017-06-01 09:22:45',
         ]);
         $adherent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent1->setSubscriptionTypes($subscriptionTypes);
         $adherent1->setPapUserRole(true);
+        $adherent1->setInterests(['europe', 'numerique', 'sante']);
+        $adherent1->setMandates([MandateTypeEnum::CONSEILLER_MUNICIPAL, MandateTypeEnum::MAIRE]);
+        $adherent1->tags = [
+            TagEnum::getAdherentYearTag(2024),
+            TagEnum::ELU_COTISATION_OK_NON_SOUMIS,
+        ];
         $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $this->adherentFactory->createFromArray([
@@ -153,7 +162,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent3->addCharter(new PhoningCampaignCharter());
         $adherent3->addCharter(new PapCampaignCharter());
         $adherent3->setPapUserRole(true);
+        $adherent3->setInterests(['europe', 'numerique', 'sante']);
         $adherent3->certify();
+        $adherent3->tags = [
+            TagEnum::getAdherentYearTag(2024),
+        ];
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $this->adherentFactory->createFromArray([
@@ -203,7 +216,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33138764334',
             'registered_at' => '2017-01-08 05:55:43',
         ]);
-        $adherent5->tags = [TagEnum::getAdherentYearTag(), TagEnum::ELU_COTISATION_OK_EXEMPTE];
+        $adherent5->tags = [
+            TagEnum::getAdherentYearTag(null, TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN),
+            TagEnum::ELU_COTISATION_OK_EXEMPTE,
+            TagEnum::getNationalEventTag('event-national-1', false),
+        ];
         $adherent5->setSubscriptionTypes($subscriptionTypes);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
@@ -216,6 +233,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent5->setMandates([MandateTypeEnum::CONSEILLER_MUNICIPAL]);
         $adherent5->donatedForMembership(new \DateTime());
+        $adherent5->certify();
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([
@@ -264,6 +282,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $candidateManagedAreaCanton->setZone($zoneCanton7711);
         $adherent7->setCandidateManagedArea($candidateManagedAreaCanton);
         $adherent7->addCharter(new CommitteeHostCharter());
+        $adherent7->tags = [
+            TagEnum::getAdherentYearTag(2024),
+            TagEnum::ELU_COTISATION_OK_SOUMIS,
+            TagEnum::getNationalEventTag('congres-2024', true), // national_event:present:congres-2024
+        ];
         $this->addReference('adherent-7', $adherent7);
 
         $adherent9 = $this->adherentFactory->createFromArray([
@@ -346,15 +369,23 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'michel.vasseur@example.ch',
             'gender' => 'male',
+            'nationality' => AddressInterface::FRANCE,
             'first_name' => 'Michel',
             'last_name' => 'VASSEUR',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, null, 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
+            'phone' => '+33666666666',
+            'registered_at' => '2017-06-02 15:34:12',
         ]);
         $adherent13->setSubscriptionTypes($subscriptionTypes);
         $adherent13->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent13->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
+        $adherent13->setInterests(['numerique']);
         $adherent13->certify();
+        $adherent13->tags = [
+            TagEnum::getAdherentYearTag(2024),
+            TagEnum::ELU_COTISATION_OK_SOUMIS,
+        ];
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $this->adherentFactory->createFromArray([
@@ -585,6 +616,12 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $deputy_75_1->certify();
         $deputy_75_1->setPapUserRole(true);
+        $deputy_75_1->setInterests(['europe', 'numerique']);
+        $deputy_75_1->tags = [
+            TagEnum::getAdherentYearTag(2024),
+            TagEnum::ELU_COTISATION_OK_SOUMIS,
+            TagEnum::getNationalEventTag('congres-2024', true), // national_event:present:congres-2024
+        ];
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([
@@ -918,6 +955,10 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createCorrespondent(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
+        $adherent->tags = [
+            TagEnum::getAdherentYearTag(2023),
+            TagEnum::getNationalEventTag('event-national-2', false), // national_event:event-national-2
+        ];
         $this->addReference('correspondent-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
