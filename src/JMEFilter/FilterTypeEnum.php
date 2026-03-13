@@ -14,4 +14,6 @@ class FilterTypeEnum
 
     public const DATE_INTERVAL = 'date_interval';
     public const INTEGER_INTERVAL = 'integer_interval';
+
+    public const SCOPE_TARGET = 'scope_target';
 }
