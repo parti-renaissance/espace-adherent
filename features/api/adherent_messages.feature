@@ -958,6 +958,34 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario: As a user with national scope I can get filters list for message feature including Cadres & Equipes group
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/filters?scope=national_tech_division&feature=messages"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | [2].label                                   | Cadres & Équipes                   |
+            | [2].color                                   | #F8F0FF                            |
+            | [2].filters[0].code                         | scope_targets                      |
+            | [2].filters[0].label                        | Cadres & Équipes                   |
+            | [2].filters[0].type                         | scope_target                       |
+            | [2].filters[0].options.allow_custom_role    | true                               |
+            | [2].filters[0].options.scopes[0].code       | deputy                             |
+            | [2].filters[0].options.scopes[0].label      | Délégué                            |
+            | [2].filters[0].options.scopes[5].code       | national                           |
+            | [2].filters[0].options.scopes[5].label      | Rôle national                      |
+            | [2].filters[0].options.scopes[17].code      | president_departmental_assembly    |
+            | [2].filters[0].options.scopes[17].label     | Président                          |
+            | [2].filters[0].options.scopes[26].code      | meeting_scanner                    |
+            | [2].filters[0].options.scopes[26].label     | Meeting scanneur                   |
+            | [2].filters[0].options.team_roles[0].code   | general_secretary                  |
+            | [2].filters[0].options.team_roles[0].label  | Secrétaire général                 |
+            | [2].filters[0].options.team_roles[5].code   | compliance_and_finance_manager     |
+            | [2].filters[0].options.team_roles[5].label  | Responsables conformité et finance |
+            | [2].filters[0].options.team_roles[11].code  | manager                            |
+            | [2].filters[0].options.team_roles[11].label | Responsable                        |
+        And the JSON node "[2].filters[0].options.scopes" should have 27 elements
+        And the JSON node "[2].filters[0].options.team_roles" should have 12 elements
+
     Scenario Outline: As a user with (delegated) referent role I can get filters list for publications feature
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=publications"
