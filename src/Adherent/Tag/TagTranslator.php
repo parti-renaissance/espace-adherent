@@ -13,6 +13,7 @@ class TagTranslator
 {
     private array $staticLabelCategories = [];
     private array $staticLabels = [];
+    private array $translationCache = [];
 
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -23,6 +24,17 @@ class TagTranslator
     }
 
     public function trans(string $tag, bool $fullTag = true, string $domain = '_label_'): string
+    {
+        $cacheKey = $tag.'|'.($fullTag ? '1' : '0').'|'.$domain;
+
+        if (isset($this->translationCache[$cacheKey])) {
+            return $this->translationCache[$cacheKey];
+        }
+
+        return $this->translationCache[$cacheKey] = $this->doTrans($tag, $fullTag, $domain);
+    }
+
+    private function doTrans(string $tag, bool $fullTag, string $domain): string
     {
         if (substr_count($tag, ':')) {
             $this->loadStaticLabels();

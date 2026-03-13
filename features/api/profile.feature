@@ -1302,7 +1302,7 @@ Feature:
                     "uuid": "@uuid@",
                     "subscription_date": "@string@.isDateTime()"
                 },
-                "certified": false,
+                "certified": true,
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null
@@ -1435,7 +1435,7 @@ Feature:
                     "uuid": "@uuid@",
                     "subscription_date": "@string@.isDateTime()"
                 },
-                "certified": false,
+                "certified": true,
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null
@@ -1524,7 +1524,7 @@ Feature:
                     "uuid": "@uuid@",
                     "subscription_date": "@string@.isDateTime()"
                 },
-                "certified": false,
+                "certified": true,
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null

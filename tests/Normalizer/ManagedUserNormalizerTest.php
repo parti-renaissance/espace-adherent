@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Normalizer;
 
+use App\Adherent\Tag\TagTranslator;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\SubscriptionType;
@@ -18,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ManagedUserNormalizerTest extends TestCase
 {
     private TranslatorInterface&MockObject $translator;
+    private TagTranslator&MockObject $tagTranslator;
     private ScopeGeneratorResolver&MockObject $scopeGeneratorResolver;
     private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
     private NormalizerInterface&MockObject $innerNormalizer;
@@ -26,12 +28,14 @@ final class ManagedUserNormalizerTest extends TestCase
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->tagTranslator = $this->createMock(TagTranslator::class);
         $this->scopeGeneratorResolver = $this->createMock(ScopeGeneratorResolver::class);
         $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
         $this->innerNormalizer = $this->createMock(NormalizerInterface::class);
 
         $this->normalizer = new ManagedUserNormalizer(
             $this->translator,
+            $this->tagTranslator,
             $this->scopeGeneratorResolver,
             $this->subscriptionTypeRepository,
         );

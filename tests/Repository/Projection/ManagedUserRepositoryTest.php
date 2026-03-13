@@ -57,6 +57,39 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         yield [false, 2];
     }
 
+    public function testIterateForExportReturnsGenerator(): void
+    {
+        $filter = new ManagedUsersFilter(null, [
+            $this->zoneRepository->findOneBy(['code' => 'CH', 'type' => Zone::COUNTRY]),
+            $this->zoneRepository->findOneBy(['code' => '77', 'type' => Zone::DEPARTMENT]),
+        ]);
+
+        $generator = $this->managedUserRepository->iterateForExport($filter);
+
+        $this->assertInstanceOf(\Generator::class, $generator);
+
+        $results = iterator_to_array($generator);
+
+        $this->assertCount(3, $results);
+        $this->assertIsArray($results[0]);
+        $this->assertArrayHasKey('firstName', $results[0]);
+        $this->assertArrayHasKey('lastName', $results[0]);
+        $this->assertArrayHasKey('email', $results[0]);
+    }
+
+    public function testIterateForExportWithEmailSubscribersFilter(): void
+    {
+        $filter = new ManagedUsersFilter(SubscriptionTypeEnum::REFERENT_EMAIL, [
+            $this->zoneRepository->findOneBy(['code' => 'CH', 'type' => Zone::COUNTRY]),
+            $this->zoneRepository->findOneBy(['code' => '77', 'type' => Zone::DEPARTMENT]),
+        ]);
+        $filter->emailSubscription = true;
+
+        $results = iterator_to_array($this->managedUserRepository->iterateForExport($filter));
+
+        $this->assertCount(1, $results);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

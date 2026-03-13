@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Adherent\Tag\TagTranslator;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
 use App\Repository\SubscriptionTypeRepository;
@@ -23,6 +24,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly TagTranslator $tagTranslator,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
     ) {
@@ -38,6 +40,9 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if ($isVox) {
             $data['roles'] = $this->formatRolesVox($object);
+            $data['adherent_tags'] = $this->translateTags($object->adherentTags);
+            $data['static_tags'] = $this->translateTags($object->staticTags);
+            $data['elect_tags'] = $this->translateTags($object->electTags);
 
             $isVoxDetail = \in_array(ManagedUserContextBuilder::GROUP_VOX_DETAIL, $groups, true);
             if ($isVoxDetail) {
@@ -143,6 +148,25 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return $roles;
+    }
+
+    private function translateTags(?array $tags): ?array
+    {
+        if (!$tags) {
+            return null;
+        }
+
+        return array_map(
+            function (array $tag) {
+                $code = $tag['code'] ?? '';
+
+                return [
+                    'code' => $code,
+                    'label' => $code ? $this->tagTranslator->trans($code, false) : '',
+                ];
+            },
+            $tags
+        );
     }
 
     private function getTranslatedRoleLabel(string $code, ?string $gender): string

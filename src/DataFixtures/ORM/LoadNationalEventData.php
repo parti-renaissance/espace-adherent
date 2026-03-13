@@ -51,6 +51,21 @@ class LoadNationalEventData extends Fixture
         $this->setReference('event-national-2', $event);
 
         $manager->persist($event = new NationalEvent());
+        $event->setName('Congres 2024');
+        $event->startDate = new \DateTime('2024-11-15');
+        $event->endDate = new \DateTime('2024-11-17');
+        $event->ticketStartDate = new \DateTime('2024-09-01');
+        $event->ticketEndDate = new \DateTime('2024-11-14');
+        $event->textIntro = '<p>Congrès Renaissance 2024</p>';
+        $event->textHelp = '<p>Inscrivez-vous au congrès</p>';
+        $event->textConfirmation = '<p>Votre inscription est confirmée</p>';
+        $event->textTicketEmail = '<p>Voici votre billet</p>';
+        $event->imageTicketEmail = '/donation-bg.jpg';
+        $event->subjectTicketEmail = 'Votre billet pour le Congrès 2024';
+        $event->source = 'congres2024';
+        $this->setReference('event-congres-2024', $event);
+
+        $manager->persist($event = new NationalEvent());
 
         $event->setName('Campus');
         $event->alertEnabled = true;

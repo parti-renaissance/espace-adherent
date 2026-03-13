@@ -48,9 +48,12 @@ class ManagedUserRepository extends ServiceEntityRepository
         );
     }
 
-    public function getExportQueryBuilder(ManagedUsersFilter $filter): Query
+    public function iterateForExport(ManagedUsersFilter $filter): \Generator
     {
-        return $this->createFilterQueryBuilder($filter)->getQuery();
+        yield from $this->createExportQueryBuilder($filter)
+            ->getQuery()
+            ->toIterable([], Query::HYDRATE_ARRAY)
+        ;
     }
 
     private function createFilterQueryBuilder(ManagedUsersFilter $filter): QueryBuilder
@@ -65,6 +68,24 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('order_column', 'DESC')
         ;
 
+        return $this->applyFilters($qb, $filter);
+    }
+
+    private function createExportQueryBuilder(ManagedUsersFilter $filter): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('u')
+            ->addSelect('COALESCE(u.lastMembershipDonation, u.createdAt) as HIDDEN order_column')
+            ->where('u.status = :status')
+            ->setParameter('status', ManagedUser::STATUS_READY)
+            ->orderBy('order_column', 'DESC')
+        ;
+
+        return $this->applyFilters($qb, $filter);
+    }
+
+    private function applyFilters(QueryBuilder $qb, ManagedUsersFilter $filter): QueryBuilder
+    {
         if ($managedZones = $filter->managedZones) {
             $zoneCondition = $qb->expr()->orX();
 

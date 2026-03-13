@@ -2098,7 +2098,23 @@ Feature:
                         "email_address": "francis.brioul@yahoo.com",
                         "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                         "phone": "+33 6 73 65 43 49",
-                        "tags": [],
+                        "tags": [
+                            {
+                                "code": "adherent:plus_a_jour:annee_2024",
+                                "label": "@string@",
+                                "type": "adherent"
+                            },
+                            {
+                                "code": "elu:cotisation_ok:soumis",
+                                "label": "@string@",
+                                "type": "elu"
+                            },
+                            {
+                                "code": "national_event:present:congres-2024",
+                                "label": "@string@",
+                                "type": "national_event"
+                            }
+                        ],
                         "referrer": {
                             "uuid": "@uuid@",
                             "first_name": "Bob",
@@ -3099,7 +3115,7 @@ Feature:
                         "first_name": "Michelle",
                         "image_url": null,
                         "last_name": "Dufour",
-                        "phone": null,
+                        "phone": "+33 6 66 66 66 66",
                         "postal_code": "8057",
                         "referrer": null,
                         "status": "confirmed",
