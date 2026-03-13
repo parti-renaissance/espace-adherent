@@ -186,6 +186,10 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[ValidScope]
     private $scope;
 
+    #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $scopeTargets = null;
+
     /**
      * @var string|null
      */
@@ -551,6 +555,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->electTags = null;
         $this->staticTags = null;
         $this->zone = null;
+        $this->scopeTargets = null;
         $this->mandate = null;
         $this->politicalFunction = null;
         $this->label = null;
