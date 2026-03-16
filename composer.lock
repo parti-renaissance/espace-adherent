@@ -4408,16 +4408,16 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.42.0",
+            "version": "v1.42.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "7ad13e5b9ca201a5f60e7b3342842d1217bc23a6"
+                "reference": "ab334c4869f4f16b6112acc95972a97b81dbfdda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/7ad13e5b9ca201a5f60e7b3342842d1217bc23a6",
-                "reference": "7ad13e5b9ca201a5f60e7b3342842d1217bc23a6",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/ab334c4869f4f16b6112acc95972a97b81dbfdda",
+                "reference": "ab334c4869f4f16b6112acc95972a97b81dbfdda",
                 "shasum": ""
             },
             "require": {
@@ -4425,7 +4425,7 @@
                 "google/common-protos": "^4.4",
                 "google/grpc-gcp": "^0.4",
                 "google/longrunning": "~0.4",
-                "google/protobuf": "^4.31",
+                "google/protobuf": "^4.31||^5.0",
                 "grpc/grpc": "^1.13",
                 "guzzlehttp/promises": "^2.0",
                 "guzzlehttp/psr7": "^2.0",
@@ -4436,10 +4436,10 @@
                 "ext-protobuf": "<4.31.0"
             },
             "require-dev": {
+                "google/cloud-tools": "^0.16.1",
                 "phpspec/prophecy-phpunit": "^2.1",
                 "phpstan/phpstan": "^2.0",
-                "phpunit/phpunit": "^9.6",
-                "squizlabs/php_codesniffer": "4.*"
+                "phpunit/phpunit": "^9.6"
             },
             "type": "library",
             "autoload": {
@@ -4459,27 +4459,27 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.42.0"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.42.1"
             },
-            "time": "2026-01-22T20:31:50+00:00"
+            "time": "2026-03-12T21:22:20+00:00"
         },
         {
             "name": "google/grpc-gcp",
-            "version": "v0.4.1",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
-                "reference": "e585b7721bbe806ef45b5c52ae43dfc2bff89968"
+                "reference": "1049c0c15b6a1789fdeb52af688a94d540932469"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/e585b7721bbe806ef45b5c52ae43dfc2bff89968",
-                "reference": "e585b7721bbe806ef45b5c52ae43dfc2bff89968",
+                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/1049c0c15b6a1789fdeb52af688a94d540932469",
+                "reference": "1049c0c15b6a1789fdeb52af688a94d540932469",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.3",
-                "google/protobuf": "^v3.25.3||^4.26.1",
+                "google/protobuf": "^v3.25.3||^4.26.1||^5.0",
                 "grpc/grpc": "^v1.13.0",
                 "php": "^8.0",
                 "psr/cache": "^1.0.1||^2.0.0||^3.0.0"
@@ -4504,9 +4504,9 @@
             "description": "gRPC GCP library for channel management",
             "support": {
                 "issues": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/issues",
-                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.4.1"
+                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.4.2"
             },
-            "time": "2025-02-19T21:53:22+00:00"
+            "time": "2026-03-12T22:56:09+00:00"
         },
         {
             "name": "google/longrunning",
@@ -4851,16 +4851,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.8.0",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "21dc724a0583619cd1652f673303492272778051"
+                "reference": "7d0ed42f28e42d61352a7a79de682e5e67fec884"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/21dc724a0583619cd1652f673303492272778051",
-                "reference": "21dc724a0583619cd1652f673303492272778051",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/7d0ed42f28e42d61352a7a79de682e5e67fec884",
+                "reference": "7d0ed42f28e42d61352a7a79de682e5e67fec884",
                 "shasum": ""
             },
             "require": {
@@ -4876,6 +4876,7 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "http-interop/http-factory-tests": "0.9.0",
+                "jshttp/mime-db": "1.54.0.1",
                 "phpunit/phpunit": "^8.5.44 || ^9.6.25"
             },
             "suggest": {
@@ -4947,7 +4948,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.8.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.9.0"
             },
             "funding": [
                 {
@@ -4963,7 +4964,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-23T21:21:41+00:00"
+            "time": "2026-03-10T16:41:02+00:00"
         },
         {
             "name": "intervention/image",
@@ -5373,16 +5374,16 @@
         },
         {
             "name": "kreait/firebase-bundle",
-            "version": "6.0.0",
+            "version": "6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beste/firebase-bundle.git",
-                "reference": "2db0e8a355646947288b71a32e8a110a972ab1f7"
+                "reference": "99c7d0e3af52f15fccb2d8c7db3d7ba81f0d6339"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beste/firebase-bundle/zipball/2db0e8a355646947288b71a32e8a110a972ab1f7",
-                "reference": "2db0e8a355646947288b71a32e8a110a972ab1f7",
+                "url": "https://api.github.com/repos/beste/firebase-bundle/zipball/99c7d0e3af52f15fccb2d8c7db3d7ba81f0d6339",
+                "reference": "99c7d0e3af52f15fccb2d8c7db3d7ba81f0d6339",
                 "shasum": ""
             },
             "require": {
@@ -5427,7 +5428,7 @@
             ],
             "support": {
                 "issues": "https://github.com/beste/firebase-bundle/issues",
-                "source": "https://github.com/beste/firebase-bundle/tree/6.0.0"
+                "source": "https://github.com/beste/firebase-bundle/tree/6.1.0"
             },
             "funding": [
                 {
@@ -5435,20 +5436,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-17T00:23:49+00:00"
+            "time": "2026-03-14T00:13:08+00:00"
         },
         {
             "name": "kreait/firebase-php",
-            "version": "8.1.0",
+            "version": "8.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beste/firebase-php.git",
-                "reference": "b85ca178aea541a9a6a4f21ee3fc84c4345d0260"
+                "reference": "7a1007c8151e1bf7be9f6b0f9a1e37b1f734f59e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beste/firebase-php/zipball/b85ca178aea541a9a6a4f21ee3fc84c4345d0260",
-                "reference": "b85ca178aea541a9a6a4f21ee3fc84c4345d0260",
+                "url": "https://api.github.com/repos/beste/firebase-php/zipball/7a1007c8151e1bf7be9f6b0f9a1e37b1f734f59e",
+                "reference": "7a1007c8151e1bf7be9f6b0f9a1e37b1f734f59e",
                 "shasum": ""
             },
             "require": {
@@ -5478,20 +5479,10 @@
                 "psr/http-message": "^1.1 || ^2.0"
             },
             "require-dev": {
-                "google/cloud-firestore": "^1.54.3",
-                "php-cs-fixer/shim": "^3.91.2",
-                "phpstan/extension-installer": "^1.4.3",
-                "phpstan/phpstan": "^2.1.32",
-                "phpstan/phpstan-deprecation-rules": "^2.0.3",
-                "phpstan/phpstan-phpunit": "^2.0.8",
-                "phpstan/phpstan-strict-rules": "^2.0.7",
-                "phpunit/phpunit": "^12.4.5",
+                "google/cloud-firestore": "^1.55.0",
                 "psr/log": "^3.0.2",
-                "rector/rector": "^2.2.11",
-                "rector/type-perfect": "^2.1",
-                "shipmonk/composer-dependency-analyser": "^1.8.4",
-                "symfony/var-dumper": "^7.4.0",
-                "vlucas/phpdotenv": "^5.6.2"
+                "symfony/var-dumper": "^7.4.4 || ^8.0.4",
+                "vlucas/phpdotenv": "^5.6.3"
             },
             "suggest": {
                 "google/cloud-firestore": "^1.0 to use the Firestore component"
@@ -5519,7 +5510,7 @@
                 }
             ],
             "description": "Firebase Admin SDK",
-            "homepage": "https://github.com/kreait/firebase-php",
+            "homepage": "https://github.com/beste/firebase-php",
             "keywords": [
                 "api",
                 "database",
@@ -5529,8 +5520,8 @@
             ],
             "support": {
                 "docs": "https://firebase-php.readthedocs.io",
-                "issues": "https://github.com/kreait/firebase-php/issues",
-                "source": "https://github.com/kreait/firebase-php"
+                "issues": "https://github.com/beste/firebase-php/issues",
+                "source": "https://github.com/beste/firebase-php"
             },
             "funding": [
                 {
@@ -5538,7 +5529,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-23T00:44:28+00:00"
+            "time": "2026-03-04T12:06:19+00:00"
         },
         {
             "name": "kreait/firebase-tokens",
