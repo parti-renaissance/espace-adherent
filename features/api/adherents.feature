@@ -827,7 +827,7 @@ Feature:
                         },
                         {
                             "code": "email_subscription",
-                            "label": "Abonné email",
+                            "label": "Abonné aux emails",
                             "options": {
                                 "choices": { "false": "Non", "true": "Oui" }
                             },
@@ -847,7 +847,7 @@ Feature:
                         },
                         {
                             "code": "sms_subscription",
-                            "label": "Abonné SMS",
+                            "label": "Abonné aux SMS",
                             "options": {
                                 "choices": { "false": "Non", "true": "Oui" }
                             },

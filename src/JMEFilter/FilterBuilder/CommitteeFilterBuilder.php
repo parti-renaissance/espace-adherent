@@ -6,7 +6,6 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Entity\Committee;
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Repository\CommitteeRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
@@ -26,7 +25,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         return \in_array($scope, [ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::NATIONAL], true);
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $scopeObject = $this->scopeGeneratorResolver->generate();
 
@@ -49,10 +48,5 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
             },
             []
         );
-    }
-
-    public function getGroup(string $scope, ?string $feature = null): string
-    {
-        return MilitantFilterGroup::class;
     }
 }

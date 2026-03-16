@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Filter;
 
 use App\JMEFilter\FiltersGenerator;
+use App\OAuth\Model\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -28,6 +29,8 @@ class GetCollectionFiltersController extends AbstractController
             throw new BadRequestHttpException('Parameter "scope" is missing or empty');
         }
 
-        return $this->json($builder->generate($scopeCode, $feature), context: ['groups' => ['filter:read']]);
+        $isVox = $this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP));
+
+        return $this->json($builder->generate($scopeCode, $feature, $isVox), context: ['groups' => ['filter:read']]);
     }
 }

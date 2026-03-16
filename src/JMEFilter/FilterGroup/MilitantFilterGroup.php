@@ -11,15 +11,10 @@ class MilitantFilterGroup extends AbstractFilterGroup
     protected const LABEL = 'Militant';
     protected const COLOR = '#0F766E';
 
-    protected function initialize(string $scope, ?string $feature = null): void
+    protected function initialize(string $scope, ?string $feature = null, bool $isVox = false): void
     {
         if (FeatureEnum::PUBLICATIONS === $feature) {
             $this->label = 'Filtres militants';
         }
-    }
-
-    public function getPosition(): int
-    {
-        return 2;
     }
 }

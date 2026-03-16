@@ -18,22 +18,19 @@ class AbstractFilterGroup implements FilterGroupInterface
     public string $color;
 
     private array $filters = [];
+    protected bool $isVox = false;
 
-    final public function __construct(string $scope, ?string $feature = null)
+    final public function __construct(string $scope, ?string $feature = null, bool $isVox = false)
     {
         $this->label = static::LABEL;
         $this->color = static::COLOR;
+        $this->isVox = $isVox;
 
-        $this->initialize($scope, $feature);
+        $this->initialize($scope, $feature, $isVox);
     }
 
-    protected function initialize(string $scope, ?string $feature = null): void
+    protected function initialize(string $scope, ?string $feature = null, bool $isVox = false): void
     {
-    }
-
-    public function getPosition(): int
-    {
-        return 100;
     }
 
     public function addFilter(FilterInterface $filter): void

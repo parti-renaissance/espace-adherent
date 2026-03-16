@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\Scope\ScopeEnum;
 
 class CertifiedStatusFilterBuilder implements FilterBuilderInterface
@@ -15,16 +14,11 @@ class CertifiedStatusFilterBuilder implements FilterBuilderInterface
         return ScopeEnum::NATIONAL === $scope;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         return new FilterCollectionBuilder()
             ->createBooleanSelect('isCertified', 'Certifié')
             ->getFilters()
         ;
-    }
-
-    public function getGroup(string $scope, ?string $feature = null): string
-    {
-        return PersonalInformationsFilterGroup::class;
     }
 }

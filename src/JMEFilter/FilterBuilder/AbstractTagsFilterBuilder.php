@@ -26,13 +26,13 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         return true;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $isRequired = $this->isRequired($scope, $feature);
 
         $builder = new FilterCollectionBuilder()
             ->createSelect($this->fieldName, $this->fieldLabel)
-            ->setFavorite(true)
+            ->setFavorite($this->isFavorite($scope, $feature, $isVox))
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS], true))
             ->setChoices($this->getTranslatedChoices())
             ->setRequired($isRequired)
@@ -58,10 +58,19 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         return $choices;
     }
 
-    abstract protected function init(): void;
-
     protected function isRequired(string $scope, ?string $feature): bool
     {
         return false;
     }
+
+    protected function isFavorite(string $scope, ?string $feature, bool $isVox = false): bool
+    {
+        if (!$isVox) {
+            return true;
+        }
+
+        return FeatureEnum::CONTACTS !== $feature;
+    }
+
+    abstract protected function init(): void;
 }

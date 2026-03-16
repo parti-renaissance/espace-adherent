@@ -2287,8 +2287,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         default?: scalar|Param|null, // If set to true, this project will be used when type hinting the component classes of the Firebase SDK, e.g. Kreait\Firebase\Auth, Kreait\Firebase\Database, Kreait\Firebase\Messaging, etc. // Default: null
  *         database_uri?: scalar|Param|null, // Should only be used if the URL of your Realtime Database can not be generated with the project id of the given Service Account
  *         tenant_id?: scalar|Param|null, // Make the client tenant aware // Default: null
- *         verifier_cache?: scalar|Param|null, // Used to cache Google's public keys. // Default: null
+ *         verifier_cache?: scalar|Param|null, // Used to cache Google's public keys for ID Token verification. // Default: null
  *         auth_token_cache?: scalar|Param|null, // Used to cache the authentication tokens for connecting to the Firebase servers. // Default: null
+ *         key_set_cache?: scalar|Param|null, // Used to cache Google's public keys for AppCheck token verification. // Default: null
  *         http_client_options?: scalar|Param|null, // Service id of a Kreait\Firebase\Http\HttpClientOptions instance to configure the SDK HTTP client. // Default: null
  *     }>,
  * }

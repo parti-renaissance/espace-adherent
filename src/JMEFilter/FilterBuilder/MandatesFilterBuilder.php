@@ -14,7 +14,7 @@ class MandatesFilterBuilder extends AbstractAdherentMandateFilterBuilder
         return true;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $multiple = FeatureEnum::CONTACTS === $feature;
 

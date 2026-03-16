@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\ScopeTargetFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\ScopeTarget;
 use App\MyTeam\RoleEnum;
 use App\Scope\FeatureEnum;
@@ -23,7 +22,7 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
         return \in_array($scope, ScopeEnum::NATIONAL_SCOPES, true) && FeatureEnum::MESSAGES === $feature;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         return new FilterCollectionBuilder()
             ->createFrom(ScopeTarget::class)
@@ -32,11 +31,6 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
             ->setAllowCustomRole(true)
             ->getFilters()
         ;
-    }
-
-    public function getGroup(string $scope, ?string $feature = null): string
-    {
-        return ScopeTargetFilterGroup::class;
     }
 
     private function buildScopeChoices(): array

@@ -6,7 +6,6 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Donation\DonatorStatusEnum;
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
@@ -17,7 +16,7 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
         return ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY === $scope && FeatureEnum::MESSAGES === $feature;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         return new FilterCollectionBuilder()
             ->createSelect('donator_status', 'Donateur')
@@ -28,10 +27,5 @@ class DonatorStatusFilterBuilder implements FilterBuilderInterface
             ])
             ->getFilters()
         ;
-    }
-
-    public function getGroup(string $scope, ?string $feature = null): string
-    {
-        return MilitantFilterGroup::class;
     }
 }

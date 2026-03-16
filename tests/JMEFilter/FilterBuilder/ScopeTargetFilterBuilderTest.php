@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
-use App\JMEFilter\FilterGroup\ScopeTargetFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\ScopeTarget;
 use App\MyTeam\RoleEnum;
 use App\Scope\FeatureEnum;
@@ -105,13 +104,5 @@ class ScopeTargetFilterBuilderTest extends TestCase
 
         $this->assertArrayHasKey('allow_custom_role', $options);
         $this->assertTrue($options['allow_custom_role']);
-    }
-
-    public function testGetGroupReturnsScopeTargetFilterGroup(): void
-    {
-        $this->assertSame(
-            ScopeTargetFilterGroup::class,
-            $this->builder->getGroup(ScopeEnum::NATIONAL)
-        );
     }
 }
