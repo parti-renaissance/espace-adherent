@@ -14,7 +14,7 @@ class DeclaredMandateFilterBuilder extends AbstractAdherentMandateFilterBuilder
         return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS], true);
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $multiple = FeatureEnum::CONTACTS === $feature;
 

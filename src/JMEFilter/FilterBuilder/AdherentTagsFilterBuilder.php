@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Scope\FeatureEnum;
 
 class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
@@ -18,9 +17,17 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->placeholder = 'Tous mes militants';
     }
 
-    public function getGroup(string $scope, ?string $feature = null): string
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        return MilitantFilterGroup::class;
+        $filters = parent::build($scope, $feature, $isVox);
+
+        if ($isVox && FeatureEnum::CONTACTS === $feature) {
+            foreach ($filters as $filter) {
+                $filter->setPosition(1);
+            }
+        }
+
+        return $filters;
     }
 
     protected function isRequired(string $scope, ?string $feature): bool

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
-use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
+use App\JMEFilter\FilterCollectionBuilder;
+use App\Scope\FeatureEnum;
 
 class ElectTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
@@ -16,8 +17,23 @@ class ElectTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->fieldLabel = 'Labels élu';
     }
 
-    public function getGroup(string $scope, ?string $feature = null): string
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        return ElectedRepresentativeFilterGroup::class;
+        $builder = new FilterCollectionBuilder()
+            ->createSelect($this->fieldName, $this->fieldLabel)
+            ->setFavorite($this->isFavorite($scope, $feature, $isVox))
+            ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS], true))
+            ->setChoices($this->getTranslatedChoices())
+            ->setRequired($this->isRequired($scope, $feature))
+        ;
+
+        if ($this->placeholder) {
+            $builder
+                ->setPlaceholder($this->placeholder)
+                ->withEmptyChoice(FeatureEnum::PUBLICATIONS === $feature, $this->placeholder)
+            ;
+        }
+
+        return $builder->getFilters();
     }
 }

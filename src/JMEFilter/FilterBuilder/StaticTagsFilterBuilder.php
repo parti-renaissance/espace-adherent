@@ -6,7 +6,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\StaticTag\TagBuilder;
 use App\Adherent\Tag\TagTranslator;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
+use App\Scope\FeatureEnum;
 
 class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
@@ -24,8 +24,16 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->fullTag = false;
     }
 
-    public function getGroup(string $scope, ?string $feature = null): string
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        return MilitantFilterGroup::class;
+        $filters = parent::build($scope, $feature, $isVox);
+
+        if ($isVox && FeatureEnum::CONTACTS === $feature) {
+            foreach ($filters as $filter) {
+                $filter->setPosition(2);
+            }
+        }
+
+        return $filters;
     }
 }

@@ -6,8 +6,6 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\AdherentMessage\PublicationZone;
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
-use App\JMEFilter\FilterGroup\ZoneGeoFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\ZoneAutocomplete;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
@@ -24,7 +22,7 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
         return true;
     }
 
-    public function build(string $scope, ?string $feature = null): array
+    public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $availableZoneTypes = PublicationZone::availableZoneTypes($scope);
 
@@ -38,14 +36,5 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
             ->setHelp($availableZoneTypes ? ('<strong>Toutes les zones incluses dans votre zone de gestion sont filtrables.</strong> Exemple : '.implode(', ', array_map(fn (string $zoneType) => $this->translator->trans('geo_zone.'.$zoneType), $availableZoneTypes))) : null)
             ->getFilters()
         ;
-    }
-
-    public function getGroup(string $scope, ?string $feature = null): string
-    {
-        if (FeatureEnum::PUBLICATIONS === $feature) {
-            return ZoneGeoFilterGroup::class;
-        }
-
-        return PersonalInformationsFilterGroup::class;
     }
 }

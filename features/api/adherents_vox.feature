@@ -404,3 +404,304 @@ Feature:
         And the response should contain ";24/12/1983;\"08/01/2017 05:55\""
         And the response should contain "Déléguée de circonscription, Sénatrice"
         And the response should contain ";1;1"
+
+    Scenario: As a VOX user I can get filters for contacts with correct groups and order
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/filters?scope=president_departmental_assembly&feature=contacts"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "label": "",
+                    "color": "",
+                    "filters": [
+                        {
+                            "code": "search_term",
+                            "label": "Recherche",
+                            "options": {
+                                "favorite": true
+                            },
+                            "type": "text"
+                        }
+                    ]
+                },
+                {
+                    "label": "",
+                    "color": "",
+                    "filters": [
+                        {
+                            "code": "adherent_tags",
+                            "label": "Labels adhérent",
+                            "options": {
+                                "favorite": false,
+                                "advanced": false,
+                                "choices": {
+                                    "adherent": "Adhérent",
+                                    "adherent:a_jour_2026": "Adhérent - À jour 2026",
+                                    "adherent:a_jour_2026:primo": "Adhérent - À jour 2026 - Primo-adhérent",
+                                    "adherent:a_jour_2026:recotisation": "Adhérent - À jour 2026 - Recotisation",
+                                    "adherent:a_jour_2026:elu_a_jour": "Adhérent - À jour 2026 - Élu à jour",
+                                    "adherent:plus_a_jour": "Adhérent - Plus à jour",
+                                    "adherent:plus_a_jour:annee_2025": "Adhérent - Plus à jour - À jour 2025",
+                                    "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
+                                    "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
+                                    "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
+                                    "sympathisant": "Sympathisant",
+                                    "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
+                                    "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                                    "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
+                                    "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                                    "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                                    "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
+                                },
+                                "required": false,
+                                "placeholder": "Tous mes militants"
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "static_tags",
+                            "label": "Labels divers",
+                            "options": {
+                                "favorite": false,
+                                "advanced": false,
+                                "choices": {
+                                    "national_event:event-national-1": "Event national 1",
+                                    "national_event:event-national-2": "Event national 2",
+                                    "national_event:meeting-nrp": "Meeting NRP",
+                                    "national_event:campus": "Campus",
+                                    "national_event:present:campus": "Présent Campus",
+                                    "national_event:present:event-passe": "Présent Event passé"
+                                },
+                                "required": false
+                            },
+                            "type": "select"
+                        }
+                    ]
+                },
+                {
+                    "label": "Localisation",
+                    "color": "",
+                    "filters": [
+                        {
+                            "code": "zones",
+                            "label": "Zone géographique",
+                            "options": {
+                                "url": "/api/v3/zone/autocomplete",
+                                "query_param": "q",
+                                "value_param": "uuid",
+                                "label_param": "name",
+                                "multiple": true,
+                                "required": false,
+                                "help": "<strong>Toutes les zones incluses dans votre zone de gestion sont filtrables.</strong> Exemple : Arrondissement, Canton, Ville, Circonscription électorale"
+                            },
+                            "type": "zone_autocomplete"
+                        },
+                        {
+                            "code": "is_committee_member",
+                            "label": "Membre d'un comité",
+                            "options": {
+                                "choices": {
+                                    "false": "Non",
+                                    "true": "Oui"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "committee_uuids",
+                            "label": "Comités",
+                            "options": {
+                                "choices": {
+                                    "d648d486-fbb3-4394-b4b3-016fac3658af": "Antenne En Marche de Fontainebleau",
+                                    "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
+                                    "508d4ac0-27d6-4635-8953-4cc8600018f9": "En Marche - Comité de Rouen",
+                                    "b0cd0e52-a5a4-410b-bba3-37afdd326a0a": "En Marche Dammarie-les-Lys",
+                                    "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                                },
+                                "multiple": true
+                            },
+                            "type": "select"
+                        }
+                    ]
+                },
+                {
+                    "label": "Informations personnelles",
+                    "color": "#0E7490",
+                    "filters": [
+                        {
+                            "code": "gender",
+                            "label": "Civilité",
+                            "options": {
+                                "choices": {
+                                    "female": "Madame",
+                                    "male": "Monsieur"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "age",
+                            "label": "Âge",
+                            "options": {
+                                "suffix": "ans",
+                                "first": {
+                                    "min": 1,
+                                    "max": 200,
+                                    "label": "Âgé d'au moins"
+                                },
+                                "second": {
+                                    "min": 1,
+                                    "max": 200,
+                                    "label": "Âgé de maximum"
+                                }
+                            },
+                            "type": "integer_interval"
+                        },
+                        {
+                            "code": "nationality",
+                            "label": "Nationalité",
+                            "options": {
+                                "choices": "@*@"
+                            },
+                            "type": "select"
+                        }
+                    ]
+                },
+                {
+                    "label": "Communications",
+                    "color": "#0891B2",
+                    "filters": [
+                        {
+                            "code": "email_subscription",
+                            "label": "Abonné aux emails",
+                            "options": {
+                                "choices": {
+                                    "false": "Non",
+                                    "true": "Oui"
+                                }
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "sms_subscription",
+                            "label": "Abonné aux SMS",
+                            "options": {
+                                "choices": {
+                                    "false": "Non",
+                                    "true": "Oui"
+                                }
+                            },
+                            "type": "select"
+                        }
+                    ]
+                },
+                {
+                    "label": "Dates",
+                    "color": "#0E7490",
+                    "filters": [
+                        {
+                            "code": "first_membership",
+                            "label": "Première cotisation",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "last_membership",
+                            "label": "Dernière cotisation",
+                            "options": null,
+                            "type": "date_interval"
+                        },
+                        {
+                            "code": "registered",
+                            "label": "Création du compte",
+                            "options": null,
+                            "type": "date_interval"
+                        }
+                    ]
+                },
+                {
+                    "label": "Élus",
+                    "color": "#2563EB",
+                    "filters": [
+                        {
+                            "code": "elect_tags",
+                            "label": "Labels élu",
+                            "options": {
+                                "favorite": false,
+                                "advanced": false,
+                                "choices": {
+                                    "elu": "Élu",
+                                    "elu:attente_declaration": "Élu - En attente de déclaration",
+                                    "elu:cotisation_ok": "Élu - À jour de cotisation",
+                                    "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
+                                    "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
+                                    "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
+                                    "elu:cotisation_nok": "Élu - Non à jour de cotisation",
+                                    "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
+                                },
+                                "required": false
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "mandates",
+                            "label": "Type de mandat",
+                            "options": {
+                                "advanced": false,
+                                "choices": {
+                                    "conseiller_arrondissement": "Conseiller d'arrondissement",
+                                    "conseiller_communautaire": "Conseiller communautaire",
+                                    "conseiller_departemental": "Conseiller départemental",
+                                    "conseiller_fde": "Conseiller FDE",
+                                    "conseiller_municipal": "Conseiller municipal",
+                                    "conseiller_regional": "Conseiller régional",
+                                    "conseiller_territorial": "Conseiller territorial",
+                                    "delegue_consulaire": "Délégué consulaire",
+                                    "depute": "Député",
+                                    "depute_europeen": "Député européen",
+                                    "maire": "Maire",
+                                    "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                                    "ministre": "Ministre",
+                                    "president_conseil_communautaire": "Président du Conseil communautaire",
+                                    "president_conseil_departemental": "Président du Conseil départemental",
+                                    "president_conseil_regional": "Président du Conseil régional",
+                                    "senateur": "Sénateur"
+                                },
+                                "multiple": true
+                            },
+                            "type": "select"
+                        },
+                        {
+                            "code": "declared_mandates",
+                            "label": "Déclaration de mandat",
+                            "options": {
+                                "advanced": false,
+                                "choices": {
+                                    "conseiller_arrondissement": "Conseiller d'arrondissement",
+                                    "conseiller_communautaire": "Conseiller communautaire",
+                                    "conseiller_departemental": "Conseiller départemental",
+                                    "conseiller_fde": "Conseiller FDE",
+                                    "conseiller_municipal": "Conseiller municipal",
+                                    "conseiller_regional": "Conseiller régional",
+                                    "conseiller_territorial": "Conseiller territorial",
+                                    "delegue_consulaire": "Délégué consulaire",
+                                    "depute": "Député",
+                                    "depute_europeen": "Député européen",
+                                    "maire": "Maire",
+                                    "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                                    "ministre": "Ministre",
+                                    "president_conseil_communautaire": "Président du Conseil communautaire",
+                                    "president_conseil_departemental": "Président du Conseil départemental",
+                                    "president_conseil_regional": "Président du Conseil régional",
+                                    "senateur": "Sénateur"
+                                },
+                                "multiple": true
+                            },
+                            "type": "select"
+                        }
+                    ]
+                }
+            ]
+            """

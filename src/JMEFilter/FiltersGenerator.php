@@ -5,44 +5,58 @@ declare(strict_types=1);
 namespace App\JMEFilter;
 
 use App\JMEFilter\FilterBuilder\FilterBuilderInterface;
+use App\JMEFilter\FilterGroup\AbstractFilterGroup;
 use App\JMEFilter\FilterGroup\FilterGroupInterface;
+use App\JMEFilter\Layout\FilterLayoutResolver;
+use Psr\Container\ContainerInterface;
 
 class FiltersGenerator
 {
-    /** @var FilterBuilderInterface[]|iterable */
-    private iterable $builders;
-
-    public function __construct(iterable $builders)
-    {
-        $this->builders = $builders;
+    public function __construct(
+        private readonly FilterLayoutResolver $layoutResolver,
+        private readonly ContainerInterface $builderLocator,
+    ) {
     }
 
     /**
-     * @return FilterInterface[]
+     * @return FilterGroupInterface[]
      */
-    public function generate(string $scope, ?string $feature = null): array
+    public function generate(string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        $filters = [];
+        $layout = $this->layoutResolver->resolve($scope, $feature, $isVox);
+        /** @var FilterGroupInterface[] $groups */
+        $groups = [];
 
-        foreach ($this->builders as $builder) {
-            if ($builder->supports($scope, $feature)) {
-                $groupClass = $builder->getGroup($scope, $feature);
+        foreach ($layout->getGroupConfigs() as $groupConfig) {
+            /** @var AbstractFilterGroup $group */
+            $group = new ($groupConfig->groupClass)($scope, $feature, $isVox);
 
-                if (!\array_key_exists($groupClass, $filters)) {
-                    $filters[$groupClass] = new $groupClass($scope, $feature);
+            if (null !== $groupConfig->labelOverride) {
+                $group->label = $groupConfig->labelOverride;
+            }
+
+            foreach ($groupConfig->filters as $filterConfig) {
+                if (!$this->builderLocator->has($filterConfig->builderClass)) {
+                    continue;
                 }
 
-                /** @var FilterGroupInterface $filterGroup */
-                $filterGroup = $filters[$groupClass];
+                /** @var FilterBuilderInterface $builder */
+                $builder = $this->builderLocator->get($filterConfig->builderClass);
 
-                foreach ($builder->build($scope, $feature) as $filter) {
-                    $filterGroup->addFilter($filter);
+                if (!$builder->supports($scope, $feature, $isVox)) {
+                    continue;
                 }
+
+                foreach ($builder->build($scope, $feature, $isVox) as $filter) {
+                    $group->addFilter($filter);
+                }
+            }
+
+            if (\count($group->getFilters()) > 0) {
+                $groups[] = $group;
             }
         }
 
-        usort($filters, fn (FilterGroupInterface $a, FilterGroupInterface $b) => $a->getPosition() <=> $b->getPosition());
-
-        return array_values($filters);
+        return $groups;
     }
 }

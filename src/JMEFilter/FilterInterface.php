@@ -7,4 +7,6 @@ namespace App\JMEFilter;
 interface FilterInterface
 {
     public function getPosition(): int;
+
+    public function setPosition(int $position): void;
 }

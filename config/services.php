@@ -5,6 +5,7 @@ declare(strict_types=1);
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
@@ -142,6 +143,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->instanceof(App\JMEFilter\FilterBuilder\FilterBuilderInterface::class)
         ->tag('app.filter.builder');
+
+    $services->instanceof(App\JMEFilter\Layout\FilterLayoutInterface::class)
+        ->tag('app.filter.layout');
 
     $services->instanceof(App\OAuth\App\AuthAppUrlGeneratorInterface::class)
         ->tag('app.auth_app.url_generator');
@@ -373,9 +377,13 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             tagged_iterator(tag: 'app.voting_platform.result_calculator', defaultPriorityMethod: 'getPriority'),
         ]);
 
+    $services->set(App\JMEFilter\Layout\FilterLayoutResolver::class)
+        ->args([tagged_iterator('app.filter.layout')]);
+
     $services->set(App\JMEFilter\FiltersGenerator::class)
         ->args([
-            tagged_iterator('app.filter.builder'),
+            service(App\JMEFilter\Layout\FilterLayoutResolver::class),
+            tagged_locator('app.filter.builder'),
         ]);
 
     $services->set(App\Firebase\JeMarcheMessaging::class)

@@ -11,7 +11,7 @@ class ElectedRepresentativeFilterGroup extends AbstractFilterGroup
     protected const LABEL = 'Élu';
     protected const COLOR = '#2563EB';
 
-    protected function initialize(string $scope, ?string $feature = null): void
+    protected function initialize(string $scope, ?string $feature = null, bool $isVox = false): void
     {
         if (FeatureEnum::PUBLICATIONS === $feature) {
             $this->label = 'Filtres élus';
