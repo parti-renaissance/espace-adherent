@@ -519,7 +519,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
 
     public function isIndexable(): bool
     {
-        return $this->isSent() && self::SOURCE_VOX === $this->source;
+        return $this->isSent() && $this->isPublication();
     }
 
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
@@ -583,5 +583,10 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function getStatistics(): PublicationStatistics
     {
         return $this->statistics ?? $this->statistics = new PublicationStatistics($this);
+    }
+
+    public function isPublication(): bool
+    {
+        return self::SOURCE_VOX === $this->source;
     }
 }

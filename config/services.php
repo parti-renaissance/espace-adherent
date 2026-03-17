@@ -256,6 +256,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$accessTokenTtlInterval', '%env(ACCESS_TOKEN_TTL_INTERVAL)%')
         ->arg('$refreshTokenTtlInterval', '%env(REFRESH_TOKEN_TTL_INTERVAL)%');
 
+    $services->set(App\Normalizer\AdherentMessageFilterSanitizeDenormalizer::class)
+        ->tag('serializer.normalizer', [
+            'priority' => 1,
+        ]);
+
     $services->set(App\Normalizer\JecouteDeviceNormalizer::class)
         ->tag('serializer.normalizer', [
             'priority' => 1,

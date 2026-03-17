@@ -21,11 +21,6 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         $this->init();
     }
 
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return true;
-    }
-
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $isRequired = $this->isRequired($scope, $feature);

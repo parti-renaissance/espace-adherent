@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DelegatedAccessRepository::class)]
+#[ORM\Index(fields: ['type', 'roleCode'])]
 #[ORM\Table(name: 'my_team_delegated_access')]
 #[UniqueEntity(fields: ['delegator', 'delegated', 'type'], message: 'Vous avez déjà délégué des accès à cet adhérent.')]
 class DelegatedAccess

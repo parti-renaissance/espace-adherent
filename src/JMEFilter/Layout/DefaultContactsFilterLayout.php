@@ -30,7 +30,7 @@ class DefaultContactsFilterLayout extends AbstractFilterLayout
         return !$isVox && FeatureEnum::CONTACTS === $feature;
     }
 
-    public function getGroupConfigs(): array
+    public function getGroupConfigs(string $scope): array
     {
         return [
             $this->group(EmptyGroup::class, [

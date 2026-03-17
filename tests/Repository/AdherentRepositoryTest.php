@@ -66,13 +66,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)));
     }
 
-    public function testCountSupervisorMembersInCommittee()
-    {
-        $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
-        $this->assertSame(3, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
-        $this->assertSame(2, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_7_UUID)));
-    }
-
     public function testMemberIsCommitteeHost()
     {
         $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID)));

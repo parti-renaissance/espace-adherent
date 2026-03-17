@@ -15,18 +15,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class AdherentMessageChangeCommandHandler
 {
-    private $repository;
-    private $mailchimpManager;
-    private $entityManager;
-
     public function __construct(
-        AdherentMessageRepository $repository,
-        Manager $mailchimpManager,
-        EntityManagerInterface $entityManager,
+        private readonly AdherentMessageRepository $repository,
+        private readonly Manager $mailchimpManager,
+        private readonly EntityManagerInterface $entityManager,
     ) {
-        $this->repository = $repository;
-        $this->mailchimpManager = $mailchimpManager;
-        $this->entityManager = $entityManager;
     }
 
     public function __invoke(AdherentMessageChangeCommand $command): void
@@ -39,11 +32,11 @@ class AdherentMessageChangeCommandHandler
             return;
         }
 
+        $filter = $message->getFilter();
+
         foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
             if ($this->mailchimpManager->editCampaign($mailchimpCampaign)) {
-                if ($filter = $message->getFilter()) {
-                    $filter->setSynchronized(true);
-                }
+                $filter?->setSynchronized(true);
 
                 $this->entityManager->flush();
 

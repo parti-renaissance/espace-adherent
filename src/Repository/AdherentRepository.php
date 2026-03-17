@@ -416,15 +416,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createCommitteeSupervisorsQueryBuilder($committee)->getQuery()->getResult();
     }
 
-    public function countCommitteeSupervisors(Committee $committee): int
-    {
-        return (int) $this->createCommitteeSupervisorsQueryBuilder($committee)
-            ->select('COUNT(DISTINCT a.id)')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function findCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
     {
         return new AdherentCollection(
@@ -1773,6 +1764,22 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ++$idx;
         }
 
+        $scopeTargetJoin = '';
+        if (!empty($filter->scopeTargets)) {
+            $scopeQuery = $this->buildScopeTargetsQuery($filter->scopeTargets, 'a.id');
+            if (null === $scopeQuery) {
+                return 0;
+            }
+            foreach ($scopeQuery['params'] as $key => $value) {
+                $params[$key] = $value;
+            }
+            foreach ($scopeQuery['types'] as $key => $type) {
+                $types[$key] = $type;
+            }
+            $with .= ($with ? ",\n" : 'WITH ')."scope_target_adherents AS (\n".$scopeQuery['sql']."\n)";
+            $scopeTargetJoin = 'JOIN scope_target_adherents sta ON sta.id = a.id';
+        }
+
         $cnx = $this->getEntityManager()->getConnection();
 
         $stId = null;
@@ -1821,7 +1828,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $baseFrom = 'FROM adherents a'
-            .(!empty($with) ? "\n$joinPerimeter" : '')
+            .($joinPerimeter ? "\n$joinPerimeter" : '')
+            .($scopeTargetJoin ? "\n$scopeTargetJoin" : '')
             .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
 
         $baseWhere = $where;
@@ -1890,5 +1898,166 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         return array_column($result, 'id', 'emailAddress');
+    }
+
+    public function getEmailsForScopeTargets(array $scopeTargets): array
+    {
+        $query = $this->buildScopeTargetsQuery($scopeTargets, 'a.email_address');
+
+        if (null === $query) {
+            return [];
+        }
+
+        return $this->getEntityManager()->getConnection()->fetchFirstColumn(
+            $query['sql'],
+            $query['params'],
+            $query['types']
+        );
+    }
+
+    /**
+     * Builds the SQL query for scope targets resolution.
+     *
+     * Format scopeTargets:
+     * [
+     *   {
+     *     "role": "president_departemental",
+     *     "include_role": true,
+     *     "include_team": true,
+     *     "team_roles": null // or ["general_secretary", "treasurer", ...]
+     *   }
+     * ]
+     *
+     * Logic:
+     * - include_role = true: SELECT adherents from adherent_zone_based_role WHERE type = role
+     * - include_team = true: SELECT adherents from my_team_delegated_access WHERE delegator has the role
+     * - team_roles = null: all team members
+     * - team_roles = [...]: filter by role IN (...)
+     *
+     * @param array  $scopeTargets Array of scope target configurations
+     * @param string $selectField  The field to select (e.g., 'a.id' or 'a.email_address')
+     *
+     * @return array{sql: string, params: array<string, mixed>, types: array<string, int>}|null Query data or null if no valid targets
+     */
+    private function buildScopeTargetsQuery(array $scopeTargets, string $selectField): ?array
+    {
+        if (empty($scopeTargets)) {
+            return null;
+        }
+
+        $unions = [];
+        $params = [];
+        $types = [];
+        $paramIndex = 0;
+
+        foreach ($scopeTargets as $target) {
+            $role = $target['role'] ?? null;
+            $includeRole = $target['include_role'] ?? false;
+            $includeTeam = $target['include_team'] ?? false;
+            $teamRoles = $target['team_roles'] ?? null;
+
+            if (!$role) {
+                continue;
+            }
+
+            // include_role: adherents with this zone-based role
+            if ($includeRole && \in_array($role, ZoneBasedRoleTypeEnum::ALL, true)) {
+                $roleParam = "role_{$paramIndex}";
+                $unions[] = "
+                    SELECT DISTINCT {$selectField}
+                    FROM adherents a
+                    JOIN adherent_zone_based_role zbr ON zbr.adherent_id = a.id
+                    WHERE zbr.type = :{$roleParam} AND a.status = 'ENABLED'
+                ";
+                $params[$roleParam] = $role;
+                ++$paramIndex;
+            }
+
+            // include_team: adherents who are delegated by someone with this role
+            if ($includeTeam) {
+                $typeParam = "type_{$paramIndex}";
+
+                $teamRoleCondition = '';
+                if (\is_array($teamRoles) && !empty($teamRoles)) {
+                    $teamRoleCondition = $this->buildTeamRoleCondition($teamRoles, $paramIndex, $params);
+                }
+
+                $unions[] = "
+                    SELECT DISTINCT {$selectField}
+                    FROM adherents a
+                    JOIN my_team_delegated_access da ON da.delegated_id = a.id
+                    WHERE da.type = :{$typeParam}
+                      AND a.status = 'ENABLED'
+                      {$teamRoleCondition}
+                ";
+                $params[$typeParam] = $role;
+                ++$paramIndex;
+            }
+        }
+
+        if (empty($unions)) {
+            return null;
+        }
+
+        return [
+            'sql' => implode("\nUNION\n", $unions),
+            'params' => $params,
+            'types' => $types,
+        ];
+    }
+
+    /**
+     * Builds the SQL condition for team roles, handling both standard and custom roles.
+     *
+     * Standard roles: matched by role_code (e.g., 'mobilization_manager')
+     * Custom roles: matched by role column where role_code = 'custom'
+     *
+     * @param array<string, mixed> $params Reference to parameters array
+     */
+    private function buildTeamRoleCondition(array $teamRoles, int $paramIndex, array &$params): string
+    {
+        $standardRoles = [];
+        $customRoles = [];
+
+        foreach ($teamRoles as $teamRole) {
+            if (\in_array($teamRole, RoleEnum::ALL, true)) {
+                $standardRoles[] = $teamRole;
+            } else {
+                $customRoles[] = $teamRole;
+            }
+        }
+
+        $conditions = [];
+
+        // Standard roles: match by role_code
+        if (!empty($standardRoles)) {
+            $placeholders = [];
+            foreach ($standardRoles as $i => $role) {
+                $paramName = "std_role_{$paramIndex}_{$i}";
+                $placeholders[] = ":{$paramName}";
+                $params[$paramName] = $role;
+            }
+            $conditions[] = 'da.role_code IN ('.implode(', ', $placeholders).')';
+        }
+
+        // Custom roles: match by role column where role_code = 'custom'
+        if (!empty($customRoles)) {
+            $customCodeParam = "custom_code_{$paramIndex}";
+            $params[$customCodeParam] = RoleEnum::CUSTOM_ROLE;
+
+            $placeholders = [];
+            foreach ($customRoles as $i => $role) {
+                $paramName = "custom_role_{$paramIndex}_{$i}";
+                $placeholders[] = ":{$paramName}";
+                $params[$paramName] = $role;
+            }
+            $conditions[] = "(da.role_code = :{$customCodeParam} AND da.role IN (".implode(', ', $placeholders).'))';
+        }
+
+        if (empty($conditions)) {
+            return '';
+        }
+
+        return ' AND ('.implode(' OR ', $conditions).')';
     }
 }

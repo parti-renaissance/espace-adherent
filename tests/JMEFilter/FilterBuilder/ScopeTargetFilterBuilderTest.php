@@ -7,7 +7,6 @@ namespace Tests\App\JMEFilter\FilterBuilder;
 use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
 use App\JMEFilter\Types\DefinedTypes\ScopeTarget;
 use App\MyTeam\RoleEnum;
-use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,26 +31,6 @@ class ScopeTargetFilterBuilderTest extends TestCase
         ;
 
         $this->builder = new ScopeTargetFilterBuilder($translator);
-    }
-
-    public function testSupportsReturnsTrueForNationalScopeWithMessagesFeature(): void
-    {
-        $this->assertTrue($this->builder->supports(ScopeEnum::NATIONAL, FeatureEnum::MESSAGES));
-        $this->assertTrue($this->builder->supports(ScopeEnum::NATIONAL_COMMUNICATION, FeatureEnum::MESSAGES));
-        $this->assertTrue($this->builder->supports(ScopeEnum::NATIONAL_TERRITORIES_DIVISION, FeatureEnum::MESSAGES));
-    }
-
-    public function testSupportsReturnsFalseForNonNationalScope(): void
-    {
-        $this->assertFalse($this->builder->supports(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, FeatureEnum::MESSAGES));
-        $this->assertFalse($this->builder->supports(ScopeEnum::REGIONAL_COORDINATOR, FeatureEnum::MESSAGES));
-        $this->assertFalse($this->builder->supports(ScopeEnum::ANIMATOR, FeatureEnum::MESSAGES));
-    }
-
-    public function testSupportsReturnsFalseForWrongFeature(): void
-    {
-        $this->assertFalse($this->builder->supports(ScopeEnum::NATIONAL, FeatureEnum::PUBLICATIONS));
-        $this->assertFalse($this->builder->supports(ScopeEnum::NATIONAL, null));
     }
 
     public function testBuildReturnsArrayWithScopeTargetFilter(): void

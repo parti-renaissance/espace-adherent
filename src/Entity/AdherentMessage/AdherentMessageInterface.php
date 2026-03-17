@@ -80,4 +80,6 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
     public function setInstanceScope(?string $instanceScope): void;
 
     public function isStatutory(): bool;
+
+    public function isPublication(): bool;
 }

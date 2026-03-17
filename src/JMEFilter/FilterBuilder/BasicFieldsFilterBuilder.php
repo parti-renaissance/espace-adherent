@@ -12,11 +12,6 @@ use App\Scope\FeatureEnum;
 
 class BasicFieldsFilterBuilder implements FilterBuilderInterface
 {
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return true;
-    }
-
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $builder = new FilterCollectionBuilder()

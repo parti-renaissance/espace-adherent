@@ -18,6 +18,8 @@ class AdherentMessageFilterDenormalizer implements DenormalizerInterface, Denorm
 {
     use DenormalizerAwareTrait;
 
+    public const CONTEXT_FEATURE = 'filter_feature';
+
     public function __construct(
         private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly Security $security,
@@ -32,16 +34,18 @@ class AdherentMessageFilterDenormalizer implements DenormalizerInterface, Denorm
         $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
+            $scopeCode = $scope->getMainCode();
+
             if (!$scope->isNational() && $audienceFilter->getZones()->isEmpty() && $scope->getZones()) {
                 $audienceFilter->setZones($scope->getZones());
             }
 
-            if (!$audienceFilter->getCommittee() && $committeeUuids = $scope->getCommitteeUuids()) {
-                $audienceFilter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
+            if (!$audienceFilter->getCommittee() && ($committeeUuids = $scope->getCommitteeUuids()) && ($firstUuid = current($committeeUuids))) {
+                $audienceFilter->setCommittee($this->committeeRepository->findOneByUuid($firstUuid));
             }
 
-            if (!$audienceFilter->getScope()) {
-                $audienceFilter->setScope($scope->getMainCode());
+            if (!$audienceFilter->getScope() && $scopeCode) {
+                $audienceFilter->setScope($scopeCode);
             }
         } else {
             if (($user = $this->security->getUser()) && $audienceFilter->getScope() && AdherentSpaceEnum::SCOPES[$audienceFilter->getScope()]) {
