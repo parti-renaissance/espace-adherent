@@ -6,7 +6,6 @@ namespace App\Mailchimp\Campaign\Report\Handler;
 
 use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
 use App\Entity\AdherentMessage\AdherentMessage;
-use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpCampaignReport;
 use App\JeMengage\Hit\EventTypeEnum;
@@ -48,7 +47,7 @@ class SyncReportCommandHandler
         }
 
         if (3 === $command->step) {
-            if ($command->firstRun && AdherentMessageInterface::SOURCE_VOX === $adherentMessage->getSource()) {
+            if ($command->firstRun && $adherentMessage->isPublication()) {
                 $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
             }
 

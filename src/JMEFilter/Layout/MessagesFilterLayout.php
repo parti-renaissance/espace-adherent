@@ -6,6 +6,7 @@ namespace App\JMEFilter\Layout;
 
 use App\JMEFilter\FilterBuilder\AdherentTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\BasicFieldsFilterBuilder;
+use App\JMEFilter\FilterBuilder\CertifiedStatusFilterBuilder;
 use App\JMEFilter\FilterBuilder\CommitteeFilterBuilder;
 use App\JMEFilter\FilterBuilder\CommitteeMemberFilterBuilder;
 use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
@@ -15,11 +16,13 @@ use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\MilitantFilterBuilder;
 use App\JMEFilter\FilterBuilder\NameFilterBuilder;
+use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
 use App\JMEFilter\FilterBuilder\StaticTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\ZoneAutocompleteFilterBuilder;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
+use App\JMEFilter\FilterGroup\ScopeTargetFilterGroup;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
@@ -27,17 +30,25 @@ class MessagesFilterLayout extends AbstractFilterLayout
 {
     public function supports(string $scope, ?string $feature, bool $isVox): bool
     {
-        return FeatureEnum::MESSAGES === $feature && !ScopeEnum::isNational($scope);
+        return FeatureEnum::MESSAGES === $feature;
     }
 
-    public function getGroupConfigs(): array
+    public function getGroupConfigs(string $scope): array
     {
-        return [
-            $this->group(PersonalInformationsFilterGroup::class, [
-                $this->filter(BasicFieldsFilterBuilder::class),
-                $this->filter(NameFilterBuilder::class),
-                $this->filter(ZoneAutocompleteFilterBuilder::class),
-            ]),
+        $isNational = ScopeEnum::isNational($scope);
+
+        $personalFilters = [
+            $this->filter(BasicFieldsFilterBuilder::class),
+            $this->filter(NameFilterBuilder::class),
+            $this->filter(ZoneAutocompleteFilterBuilder::class),
+        ];
+
+        if ($isNational) {
+            $personalFilters[] = $this->filter(CertifiedStatusFilterBuilder::class);
+        }
+
+        $groups = [
+            $this->group(PersonalInformationsFilterGroup::class, $personalFilters),
             $this->group(MilitantFilterGroup::class, [
                 $this->filter(AdherentTagsFilterBuilder::class),
                 $this->filter(CommitteeFilterBuilder::class),
@@ -47,11 +58,20 @@ class MessagesFilterLayout extends AbstractFilterLayout
                 $this->filter(MilitantFilterBuilder::class),
                 $this->filter(ContributionDatesFilterBuilder::class),
             ]),
-            $this->group(ElectedRepresentativeFilterGroup::class, [
-                $this->filter(DeclaredMandateFilterBuilder::class),
-                $this->filter(ElectTagsFilterBuilder::class),
-                $this->filter(MandatesFilterBuilder::class),
-            ]),
         ];
+
+        if ($isNational) {
+            $groups[] = $this->group(ScopeTargetFilterGroup::class, [
+                $this->filter(ScopeTargetFilterBuilder::class),
+            ]);
+        }
+
+        $groups[] = $this->group(ElectedRepresentativeFilterGroup::class, [
+            $this->filter(DeclaredMandateFilterBuilder::class),
+            $this->filter(ElectTagsFilterBuilder::class),
+            $this->filter(MandatesFilterBuilder::class),
+        ]);
+
+        return $groups;
     }
 }

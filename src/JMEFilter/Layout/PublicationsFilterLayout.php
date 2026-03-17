@@ -12,13 +12,16 @@ use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\MilitantFilterBuilder;
+use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
 use App\JMEFilter\FilterBuilder\StaticTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\ZoneAutocompleteFilterBuilder;
 use App\JMEFilter\FilterGroup\DatesFilterGroup;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
+use App\JMEFilter\FilterGroup\ScopeTargetFilterGroup;
 use App\JMEFilter\FilterGroup\ZoneGeoFilterGroup;
 use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 
 class PublicationsFilterLayout extends AbstractFilterLayout
 {
@@ -27,9 +30,9 @@ class PublicationsFilterLayout extends AbstractFilterLayout
         return FeatureEnum::PUBLICATIONS === $feature;
     }
 
-    public function getGroupConfigs(): array
+    public function getGroupConfigs(string $scope): array
     {
-        return [
+        $groups = [
             $this->group(ZoneGeoFilterGroup::class, [
                 $this->filter(ZoneAutocompleteFilterBuilder::class),
             ]),
@@ -44,10 +47,19 @@ class PublicationsFilterLayout extends AbstractFilterLayout
                 $this->filter(MilitantFilterBuilder::class),
                 $this->filter(ContributionDatesFilterBuilder::class),
             ]),
-            $this->group(ElectedRepresentativeFilterGroup::class, [
-                $this->filter(ElectTagsFilterBuilder::class),
-                $this->filter(MandatesFilterBuilder::class),
-            ]),
         ];
+
+        if (ScopeEnum::isNational($scope)) {
+            $groups[] = $this->group(ScopeTargetFilterGroup::class, [
+                $this->filter(ScopeTargetFilterBuilder::class),
+            ]);
+        }
+
+        $groups[] = $this->group(ElectedRepresentativeFilterGroup::class, [
+            $this->filter(ElectTagsFilterBuilder::class),
+            $this->filter(MandatesFilterBuilder::class),
+        ]);
+
+        return $groups;
     }
 }

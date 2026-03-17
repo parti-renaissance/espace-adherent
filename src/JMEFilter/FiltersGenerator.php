@@ -9,12 +9,17 @@ use App\JMEFilter\FilterGroup\AbstractFilterGroup;
 use App\JMEFilter\FilterGroup\FilterGroupInterface;
 use App\JMEFilter\Layout\FilterLayoutResolver;
 use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class FiltersGenerator
 {
+    private const CACHE_TTL = 3600;
+
     public function __construct(
         private readonly FilterLayoutResolver $layoutResolver,
         private readonly ContainerInterface $builderLocator,
+        private readonly CacheInterface $cache,
     ) {
     }
 
@@ -23,11 +28,25 @@ class FiltersGenerator
      */
     public function generate(string $scope, ?string $feature = null, bool $isVox = false): array
     {
+        $cacheKey = \sprintf('filters.%s.%s.%d', $scope, $feature ?? 'null', (int) $isVox);
+
+        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($scope, $feature, $isVox): array {
+            $item->expiresAfter(self::CACHE_TTL);
+
+            return $this->doGenerate($scope, $feature, $isVox);
+        });
+    }
+
+    /**
+     * @return FilterGroupInterface[]
+     */
+    private function doGenerate(string $scope, ?string $feature, bool $isVox): array
+    {
         $layout = $this->layoutResolver->resolve($scope, $feature, $isVox);
         /** @var FilterGroupInterface[] $groups */
         $groups = [];
 
-        foreach ($layout->getGroupConfigs() as $groupConfig) {
+        foreach ($layout->getGroupConfigs($scope) as $groupConfig) {
             /** @var AbstractFilterGroup $group */
             $group = new ($groupConfig->groupClass)($scope, $feature, $isVox);
 
@@ -42,10 +61,6 @@ class FiltersGenerator
 
                 /** @var FilterBuilderInterface $builder */
                 $builder = $this->builderLocator->get($filterConfig->builderClass);
-
-                if (!$builder->supports($scope, $feature, $isVox)) {
-                    continue;
-                }
 
                 foreach ($builder->build($scope, $feature, $isVox) as $filter) {
                     $group->addFilter($filter);

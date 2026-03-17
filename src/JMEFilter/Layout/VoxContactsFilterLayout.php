@@ -37,7 +37,7 @@ class VoxContactsFilterLayout extends AbstractFilterLayout
         return 100;
     }
 
-    public function getGroupConfigs(): array
+    public function getGroupConfigs(string $scope): array
     {
         return [
             $this->group(EmptyGroup::class, [

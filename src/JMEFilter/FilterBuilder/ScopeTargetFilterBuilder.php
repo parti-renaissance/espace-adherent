@@ -7,7 +7,6 @@ namespace App\JMEFilter\FilterBuilder;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\Types\DefinedTypes\ScopeTarget;
 use App\MyTeam\RoleEnum;
-use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -15,11 +14,6 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
-    }
-
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return \in_array($scope, ScopeEnum::NATIONAL_SCOPES, true) && FeatureEnum::MESSAGES === $feature;
     }
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array

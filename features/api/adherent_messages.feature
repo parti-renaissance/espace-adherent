@@ -958,33 +958,33 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-    Scenario: As a user with national scope I can get filters list for message feature including Cadres & Equipes group
+    Scenario: As a user with national scope I can get filters list for publications feature including Cadres & Equipes group
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/filters?scope=national_tech_division&feature=messages"
+        When I send a "GET" request to "/api/v3/filters?scope=national_tech_division&feature=publications"
         Then the response status code should be 200
         And the JSON nodes should match:
-            | [2].label                                   | Cadres & Équipes                   |
-            | [2].color                                   | #F8F0FF                            |
-            | [2].filters[0].code                         | scope_targets                      |
-            | [2].filters[0].label                        | Cadres & Équipes                   |
-            | [2].filters[0].type                         | scope_target                       |
-            | [2].filters[0].options.allow_custom_role    | true                               |
-            | [2].filters[0].options.scopes[0].code       | deputy                             |
-            | [2].filters[0].options.scopes[0].label      | Délégué                            |
-            | [2].filters[0].options.scopes[5].code       | national                           |
-            | [2].filters[0].options.scopes[5].label      | Rôle national                      |
-            | [2].filters[0].options.scopes[17].code      | president_departmental_assembly    |
-            | [2].filters[0].options.scopes[17].label     | Président                          |
-            | [2].filters[0].options.scopes[26].code      | meeting_scanner                    |
-            | [2].filters[0].options.scopes[26].label     | Meeting scanneur                   |
-            | [2].filters[0].options.team_roles[0].code   | general_secretary                  |
-            | [2].filters[0].options.team_roles[0].label  | Secrétaire général                 |
-            | [2].filters[0].options.team_roles[5].code   | compliance_and_finance_manager     |
-            | [2].filters[0].options.team_roles[5].label  | Responsables conformité et finance |
-            | [2].filters[0].options.team_roles[11].code  | manager                            |
-            | [2].filters[0].options.team_roles[11].label | Responsable                        |
-        And the JSON node "[2].filters[0].options.scopes" should have 27 elements
-        And the JSON node "[2].filters[0].options.team_roles" should have 12 elements
+            | [3].label                                   | Cadres & Équipes                   |
+            | [3].color                                   | #F8F0FF                            |
+            | [3].filters[0].code                         | scope_targets                      |
+            | [3].filters[0].label                        | Cadres & Équipes                   |
+            | [3].filters[0].type                         | scope_target                       |
+            | [3].filters[0].options.allow_custom_role    | true                               |
+            | [3].filters[0].options.scopes[0].code       | deputy                             |
+            | [3].filters[0].options.scopes[0].label      | Délégué                            |
+            | [3].filters[0].options.scopes[5].code       | national                           |
+            | [3].filters[0].options.scopes[5].label      | Rôle national                      |
+            | [3].filters[0].options.scopes[17].code      | president_departmental_assembly    |
+            | [3].filters[0].options.scopes[17].label     | Président                          |
+            | [3].filters[0].options.scopes[26].code      | meeting_scanner                    |
+            | [3].filters[0].options.scopes[26].label     | Meeting scanneur                   |
+            | [3].filters[0].options.team_roles[0].code   | general_secretary                  |
+            | [3].filters[0].options.team_roles[0].label  | Secrétaire général                 |
+            | [3].filters[0].options.team_roles[5].code   | compliance_and_finance_manager     |
+            | [3].filters[0].options.team_roles[5].label  | Responsables conformité et finance |
+            | [3].filters[0].options.team_roles[11].code  | manager                            |
+            | [3].filters[0].options.team_roles[11].label | Responsable                        |
+        And the JSON node "[3].filters[0].options.scopes" should have 27 elements
+        And the JSON node "[3].filters[0].options.team_roles" should have 12 elements
 
     Scenario Outline: As a user with (delegated) referent role I can get filters list for publications feature
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -1807,3 +1807,90 @@ Feature:
             | user                      | scope                                          | image_url                                                         |
             | referent@en-marche-dev.fr | president_departmental_assembly                | null                                                              |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | "http://test.renaissance.code/assets/images/profile/@string@.jpg" |
+
+    Scenario: National message with scopeTargets — filter, count and send flow
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=national_tech_division" with body:
+            """
+            {
+                "label": "Message national avec ciblage cadres",
+                "subject": "Objet du message national",
+                "content": "<table>Contenu du message</table>",
+                "json_content": "{\"blocks\": []}"
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | uuid            | @uuid@ |
+            | status          | draft  |
+            | synchronized    | false  |
+            | recipient_count | 0      |
+        When I save this response
+        When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=national_tech_division" with body:
+            """
+            {
+                "scope_targets": [
+                    {
+                        "role": "president_departmental_assembly",
+                        "include_role": true,
+                        "include_team": false,
+                        "team_roles": null
+                    }
+                ]
+            }
+            """
+        Then the response status code should be 200
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=national_tech_division"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON node "scope_targets" should not be null
+        And the JSON nodes should match:
+            | scope_targets[0].role         | president_departmental_assembly |
+            | scope_targets[0].include_role | true                            |
+            | scope_targets[0].include_team | false                           |
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=national_tech_division"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | total    | 3 |
+            | contacts | 3 |
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:?scope=national_tech_division"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | synchronized | false |
+        When I send a "POST" request to "/api/v3/adherent_messages/:saved_response.uuid:/send?scope=national_tech_division"
+        Then the response status code should be 400
+        And the JSON node "detail" should be equal to "The message is not yet ready to send."
+
+    Scenario: Non-national scope ignores scopeTargets filter
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=president_departmental_assembly" with body:
+            """
+            {
+                "label": "Message local",
+                "subject": "Objet du message local",
+                "content": "<table>Contenu du message</table>",
+                "json_content": "{\"blocks\": []}"
+            }
+            """
+        Then the response status code should be 201
+        When I save this response
+        When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly" with body:
+            """
+            {
+                "scope_targets": [
+                    {
+                        "role": "president_departmental_assembly",
+                        "include_role": true,
+                        "include_team": false,
+                        "team_roles": null
+                    }
+                ]
+            }
+            """
+        Then the response status code should be 200
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON node "scope_targets" should be null

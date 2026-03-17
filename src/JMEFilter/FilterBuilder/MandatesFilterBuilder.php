@@ -9,11 +9,6 @@ use App\Scope\FeatureEnum;
 
 class MandatesFilterBuilder extends AbstractAdherentMandateFilterBuilder
 {
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return true;
-    }
-
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         $multiple = FeatureEnum::CONTACTS === $feature;

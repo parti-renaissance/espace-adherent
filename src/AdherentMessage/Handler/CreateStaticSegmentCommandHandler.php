@@ -6,25 +6,22 @@ namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
-use App\Mailchimp\Manager;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class CreateStaticSegmentCommandHandler
 {
-    private $entityManager;
-    private $mailchimpManager;
-
-    public function __construct(ObjectManager $entityManager, Manager $manager)
-    {
-        $this->entityManager = $entityManager;
-        $this->mailchimpManager = $manager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MailchimpStaticSegmentServiceInterface $staticSegmentService,
+    ) {
     }
 
     public function __invoke(CreateStaticSegmentCommand $command): void
     {
-        /** @var StaticSegmentInterface $object */
+        /** @var StaticSegmentInterface|null $object */
         $object = $this->entityManager
             ->getRepository($command->getEntityClass())
             ->findOneByUuid($command->getUuid())
@@ -40,7 +37,7 @@ class CreateStaticSegmentCommandHandler
             return;
         }
 
-        if ($id = $this->mailchimpManager->createStaticSegment($object->getUuid()->toString())) {
+        if ($id = $this->staticSegmentService->create($object->getUuid()->toString())) {
             $object->setMailchimpId($id);
             $this->entityManager->flush();
         }

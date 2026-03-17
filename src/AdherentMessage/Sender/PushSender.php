@@ -16,7 +16,7 @@ class PushSender implements SenderInterface
 
     public function supports(AdherentMessageInterface $message, bool $forTest): bool
     {
-        return AdherentMessageInterface::SOURCE_VOX === $message->getSource() && false === $forTest;
+        return $message->isPublication() && false === $forTest;
     }
 
     public function send(AdherentMessageInterface $message, array $recipients = []): void

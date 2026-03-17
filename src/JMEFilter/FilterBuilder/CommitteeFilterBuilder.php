@@ -9,7 +9,6 @@ use App\JMEFilter\FilterCollectionBuilder;
 use App\Repository\CommitteeRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 
 class CommitteeFilterBuilder implements FilterBuilderInterface
@@ -18,11 +17,6 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly CommitteeRepository $committeeRepository,
     ) {
-    }
-
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return \in_array($scope, [ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::NATIONAL], true);
     }
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array

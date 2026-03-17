@@ -13,5 +13,5 @@ interface FilterLayoutInterface
     /**
      * @return FilterGroupConfig[]
      */
-    public function getGroupConfigs(): array;
+    public function getGroupConfigs(string $scope): array;
 }

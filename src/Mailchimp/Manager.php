@@ -446,10 +446,10 @@ class Manager implements LoggerAwareInterface
         return $this->driver->sendTestCampaign($campaign->getExternalId(), $emails);
     }
 
-    public function createStaticSegment(string $name, ?string $listId = null): ?int
+    public function createStaticSegment(string $name, ?string $listId = null, array $emails = []): ?int
     {
         $listId ??= $this->mailchimpObjectIdMapping->getMainListId();
-        $response = $this->driver->createStaticSegment($name, $listId);
+        $response = $this->driver->createStaticSegment($name, $listId, $emails);
         $responseData = $response->toArray();
 
         if (200 === $response->getStatusCode()) {
@@ -462,6 +462,13 @@ class Manager implements LoggerAwareInterface
         }
 
         return null;
+    }
+
+    public function updateStaticSegment(int $segmentId, string $listId, array $emails): bool
+    {
+        $response = $this->driver->updateStaticSegment($segmentId, $listId, $emails);
+
+        return $this->driver->isSuccessfulResponse($response);
     }
 
     public function editDynamicSegment(

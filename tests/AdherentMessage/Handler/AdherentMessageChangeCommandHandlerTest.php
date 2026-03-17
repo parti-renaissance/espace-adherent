@@ -38,6 +38,7 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\DonatorStatusConditionBuilder
 use App\Mailchimp\Campaign\SegmentConditionBuilder\JMECommitteeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MandateTypeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MembershipDateConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\StaticSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
@@ -477,6 +478,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 new JMECommitteeConditionBuilder(),
                 new MandateTypeConditionBuilder(),
                 new MembershipDateConditionBuilder(),
+                new StaticSegmentConditionBuilder(),
                 new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
             ])
         );

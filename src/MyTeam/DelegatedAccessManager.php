@@ -34,7 +34,7 @@ class DelegatedAccessManager
             $delegatedAccess->setDelegated($member->getAdherent());
             $delegatedAccess->setType($member->getTeam()->getScope());
             $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()] ?? $member->getRole());
-            $delegatedAccess->roleCode = $member->getRole();
+            $delegatedAccess->roleCode = $this->resolveRoleCode($member->getRole());
 
             $this->entityManager->persist($delegatedAccess);
         }
@@ -63,7 +63,7 @@ class DelegatedAccessManager
             if ($member->getScopeFeatures()) {
                 $delegatedAccess->setScopeFeatures($this->calculateFeatures($member->getScopeFeatures()));
                 $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()] ?? $member->getRole());
-                $delegatedAccess->roleCode = $member->getRole();
+                $delegatedAccess->roleCode = $this->resolveRoleCode($member->getRole());
 
                 $this->entityManager->flush();
 
@@ -115,6 +115,11 @@ class DelegatedAccessManager
     public function getDelegatedScopes(Adherent $adherent): array
     {
         return $this->delegatedAccessRepository->findDelegatedScopes($adherent);
+    }
+
+    private function resolveRoleCode(string $role): string
+    {
+        return \in_array($role, RoleEnum::ALL, true) ? $role : RoleEnum::CUSTOM_ROLE;
     }
 
     private function shouldNotify(Member $member): bool

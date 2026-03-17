@@ -11,10 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Cache(maxage: 3600, public: false)]
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'messages', 'publications'])"))]
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
 class GetCollectionFiltersController extends AbstractController

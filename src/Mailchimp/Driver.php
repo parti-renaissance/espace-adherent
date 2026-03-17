@@ -206,6 +206,13 @@ class Driver implements LoggerAwareInterface
         ]);
     }
 
+    public function updateStaticSegment(int $segmentId, string $listId, array $emails): ResponseInterface
+    {
+        return $this->send('PATCH', \sprintf('/lists/%s/segments/%d', $listId, $segmentId), [
+            'static_segment' => $emails,
+        ]);
+    }
+
     public function deleteStaticSegment(int $id): bool
     {
         return $this->sendRequest('DELETE', \sprintf('/lists/%s/segments/%d', $this->listId, $id));

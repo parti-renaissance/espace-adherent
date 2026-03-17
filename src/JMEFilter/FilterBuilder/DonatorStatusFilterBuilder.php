@@ -6,16 +6,9 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Donation\DonatorStatusEnum;
 use App\JMEFilter\FilterCollectionBuilder;
-use App\Scope\FeatureEnum;
-use App\Scope\ScopeEnum;
 
 class DonatorStatusFilterBuilder implements FilterBuilderInterface
 {
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY === $scope && FeatureEnum::MESSAGES === $feature;
-    }
-
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
         return new FilterCollectionBuilder()

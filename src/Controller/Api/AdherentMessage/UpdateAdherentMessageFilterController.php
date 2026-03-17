@@ -7,6 +7,8 @@ namespace App\Controller\Api\AdherentMessage;
 use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
+use App\Normalizer\AdherentMessageFilterDenormalizer;
+use App\Scope\FeatureEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +44,7 @@ class UpdateAdherentMessageFilterController extends AbstractController
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
             AbstractNormalizer::GROUPS => ['adherent_message_update_filter'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
+            AdherentMessageFilterDenormalizer::CONTEXT_FEATURE => $data->isPublication() ? FeatureEnum::PUBLICATIONS : FeatureEnum::MESSAGES,
         ]);
 
         $errors = $this->validator->validate($filter);

@@ -21,6 +21,23 @@ class RoleEnum extends Enum
     public const TRAINING_MANAGER = 'training_manager';
     public const MANAGER = 'manager';
 
+    public const CUSTOM_ROLE = 'custom';
+
+    public const ALL = [
+        self::GENERAL_SECRETARY,
+        self::TREASURER,
+        self::MOBILIZATION_MANAGER,
+        self::LOGISTICS_MANAGER,
+        self::COMMUNICATION_MANAGER,
+        self::COMPLIANCE_AND_FINANCE_MANAGER,
+        self::HEAD_OF_EUROPEAN_AFFAIRS,
+        self::HEAD_OF_GENDER_EQUALITY,
+        self::HEAD_OF_RELATIONS_AND_TRAINING_OF_ELECTED_OFFICIALS,
+        self::NEW_MEMBERS_MANAGER,
+        self::TRAINING_MANAGER,
+        self::MANAGER,
+    ];
+
     public const LABELS = [
         self::GENERAL_SECRETARY => 'Secrétaire général',
         self::TREASURER => 'Trésorier',
