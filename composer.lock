@@ -8061,16 +8061,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.19.0",
+            "version": "v0.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "c52f871fba345c6cbd8a3945c4d167e2e21266fd"
+                "reference": "f2b1ce48b1c011ebc2abb255db5abf82ef4a6a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/c52f871fba345c6cbd8a3945c4d167e2e21266fd",
-                "reference": "c52f871fba345c6cbd8a3945c4d167e2e21266fd",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/f2b1ce48b1c011ebc2abb255db5abf82ef4a6a44",
+                "reference": "f2b1ce48b1c011ebc2abb255db5abf82ef4a6a44",
                 "shasum": ""
             },
             "require": {
@@ -8132,7 +8132,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.19.0"
+                "source": "https://github.com/openai-php/client/tree/v0.19.1"
             },
             "funding": [
                 {
@@ -8148,7 +8148,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-10T11:15:52+00:00"
+            "time": "2026-03-17T20:53:51+00:00"
         },
         {
             "name": "oskarstark/enum-helper",
