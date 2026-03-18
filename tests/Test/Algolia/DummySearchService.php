@@ -6,10 +6,15 @@ namespace Tests\App\Test\Algolia;
 
 use Algolia\AlgoliaSearch\Response\NullResponse;
 use Algolia\SearchBundle\SearchService;
+use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use Doctrine\Persistence\ObjectManager;
 
 class DummySearchService implements SearchService
 {
+    private const INDEX_FIXTURES = [
+        AlgoliaJeMengageTimelineFeed::class => 'jemengage_timeline_feed',
+    ];
+
     public $entitiesToIndex = [];
     public $entitiesToUnIndex = [];
 
@@ -82,6 +87,7 @@ class DummySearchService implements SearchService
 
     public function searchableAs($className)
     {
+        return $this->decorated->searchableAs($className);
     }
 
     public function clear($className, $requestOptions = [])
@@ -99,10 +105,20 @@ class DummySearchService implements SearchService
 
     public function rawSearch($className, $query = '', $requestOptions = []): array
     {
+        $indexName = self::INDEX_FIXTURES[$className] ?? null;
+
+        if ($indexName) {
+            $fixtureFile = __DIR__.'/../../Fixtures/algolia/'.$indexName.'.json';
+
+            if (file_exists($fixtureFile)) {
+                return json_decode(file_get_contents($fixtureFile), true);
+            }
+        }
+
         return [
             'hits' => [],
             'nbHits' => 0,
-            'page' => 1,
+            'page' => 0,
             'nbPages' => 0,
             'hitsPerPage' => 20,
         ];
