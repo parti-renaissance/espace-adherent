@@ -6,11 +6,9 @@ namespace App\Donation;
 
 use App\Entity\Adherent;
 use App\Entity\Donation;
-use App\Entity\Donator;
 use App\Entity\Transaction;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
-use Ramsey\Uuid\UuidInterface;
 
 class DonationManager
 {
@@ -20,68 +18,55 @@ class DonationManager
     ) {
     }
 
+    /**
+     * @return DonationHistoryItem[]
+     */
     public function getHistory(Adherent $adherent, bool $onlySuccess = true): array
     {
         $history = [];
 
-        $transactions = $this->transactionRepository->findAllTransactionByAdherentIdOrEmail($adherent, $onlySuccess);
+        $transactions = $this->transactionRepository->findAllTransactionByAdherent($adherent, $onlySuccess);
         foreach ($transactions as $transaction) {
             $donation = $transaction->getDonation();
+            $status = Transaction::PAYBOX_SUCCESS === $transaction->getPayboxResultCode()
+                ? Donation::STATUS_FINISHED
+                : $donation->getStatus();
 
-            $history[] = $this->createDonationValueObject(
+            $history[] = $this->createDonationHistoryItem(
                 $transaction->getPayboxDateTime() ?? $transaction->getCreatedAt(),
-                $donation->getAmount(),
-                $donation->getType(),
-                $donation->isSubscription(),
-                $donation->isMembership(),
-                Transaction::PAYBOX_SUCCESS === $transaction->getPayboxResultCode() ? Donation::STATUS_FINISHED : $donation->getStatus(),
-                $donation->getUuid(),
-                $donation->getDonator()
+                $donation,
+                $status
             );
         }
 
         $otherDonations = $this->donationRepository->findOfflineDonationsByAdherent($adherent);
         foreach ($otherDonations as $donation) {
-            $history[] = $this->createDonationValueObject(
+            $history[] = $this->createDonationHistoryItem(
                 $donation->getDonatedAt() ?? $donation->getCreatedAt(),
-                $donation->getAmount(),
-                $donation->getType(),
-                $donation->isSubscription(),
-                $donation->isMembership(),
-                $donation->getStatus(),
-                $donation->getUuid(),
-                $donation->getDonator()
+                $donation,
+                $donation->getStatus()
             );
         }
 
-        usort($history, function (DonationValueObject $donation1, DonationValueObject $donation2) {
+        usort($history, function (DonationHistoryItem $donation1, DonationHistoryItem $donation2) {
             return $donation2->getDate() <=> $donation1->getDate();
         });
 
         return $history;
     }
 
-    private function createDonationValueObject(
+    private function createDonationHistoryItem(
         \DateTimeInterface $date,
-        int $amount,
-        string $type,
-        bool $isSubscription,
-        bool $isMembership,
+        Donation $donation,
         string $status,
-        UuidInterface $uuid,
-        Donator $donator,
-    ): DonationValueObject {
-        return new DonationValueObject(
+    ): DonationHistoryItem {
+        return new DonationHistoryItem(
             $date,
-            $amount,
-            $type,
-            $isSubscription,
-            $isMembership,
-            $status,
-            $uuid,
-            $donator->getId(),
-            $donator->getIdentifier(),
-            $donator->getFullName()
+            $donation->getAmount() ?? 0,
+            $donation->getType() ?? '',
+            DonationSemanticType::fromDonation($donation),
+            DonationGlobalStatus::fromDonationStatus($status),
+            $donation->getUuid()
         );
     }
 }

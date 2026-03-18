@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
-use App\Donation\DonationValueObject;
+use App\Donation\DonationHistoryItem;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class DonationHistoryItemNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -18,18 +18,15 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
     {
     }
 
-    /**
-     * @param DonationValueObject $object
-     *
-     * @return array
-     */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $groups = $context['groups'] ?? [];
 
-        if (\in_array('donation_read', $groups)) {
-            $data['type_label'] = $this->translateDonationType($object->getType());
+        if (\is_array($groups) && \in_array('donation_read', $groups)) {
+            $data['type_label'] = $object->getTypeEnum()->trans($this->translator);
+            $data['transaction_type_label'] = $this->translator->trans('donation.transaction_type.'.$object->getTransactionType());
+            $data['status_label'] = $object->getStatusEnum()->trans($this->translator);
         }
 
         return $data;
@@ -38,21 +35,12 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
     public function getSupportedTypes(?string $format): array
     {
         return [
-            DonationValueObject::class => false,
+            DonationHistoryItem::class => false,
         ];
     }
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[__CLASS__]) && $data instanceof DonationValueObject;
-    }
-
-    private function translateDonationType(string $donationType): string
-    {
-        $key = 'donation.type.'.$donationType;
-
-        $translated = $this->translator->trans($key);
-
-        return $translated !== $key ? $translated : $donationType;
+        return !isset($context[__CLASS__]) && $data instanceof DonationHistoryItem;
     }
 }
