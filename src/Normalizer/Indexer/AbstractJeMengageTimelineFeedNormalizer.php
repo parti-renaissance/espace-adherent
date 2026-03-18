@@ -297,6 +297,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'age_min' => false,
             'age_max' => false,
             'committee_member' => 2,
+            'scope_targets' => false,
             'first_membership_since' => false,
             'first_membership_before' => false,
             'last_membership_since' => false,

@@ -172,6 +172,35 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
             $enabledFilters['committee_member'] = true;
         }
 
+        // Scope targets
+        if (!empty($filter->scopeTargets)) {
+            $enabledFilters['scope_targets'] = true;
+            foreach ($filter->scopeTargets as $scopeTarget) {
+                $role = $scopeTarget['role'] ?? null;
+                if (!$role) {
+                    continue;
+                }
+
+                // Include users with direct role
+                if (!empty($scopeTarget['include_role'])) {
+                    $audienceKeys[] = 'scope_targets:'.$role;
+                }
+
+                // Include team members
+                if (!empty($scopeTarget['include_team'])) {
+                    if (!empty($scopeTarget['team_roles'])) {
+                        // Specific team roles
+                        foreach ($scopeTarget['team_roles'] as $teamRole) {
+                            $audienceKeys[] = 'scope_targets:'.$role.':'.$teamRole;
+                        }
+                    } else {
+                        // All team members (wildcard)
+                        $audienceKeys[] = 'scope_targets:'.$role.':*';
+                    }
+                }
+            }
+        }
+
         // Dates
         $audience = [];
 

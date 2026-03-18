@@ -182,6 +182,7 @@ class GetTimelineFeedsController extends AbstractController
             $declaredMandateClause,
             ...$excludeDeclaredMandateClauses,
             ...$dateClauses,
+            $this->buildScopeTargetClause($user),
         ]);
 
         $tagFilters = [[
@@ -212,5 +213,54 @@ class GetTimelineFeedsController extends AbstractController
         }
 
         return $byType;
+    }
+
+    /**
+     * Builds the Algolia filter clause for scope_targets.
+     * Publications without scopeTargets are visible to all.
+     * Publications with scopeTargets are visible only to users having one of the targeted roles
+     * or being team members with matching scope and role.
+     */
+    private function buildScopeTargetClause(Adherent $user): string
+    {
+        $clause = '(NOT type:publication OR audience.scope_targets:false';
+
+        foreach ($this->getUserScopeTargetKeys($user) as $key) {
+            $clause .= ' OR audience.include:"scope_targets:'.$key.'"';
+        }
+
+        return $clause.')';
+    }
+
+    /**
+     * Returns all scope_targets keys for the user:
+     * - Direct roles: "{role}"
+     * - Team memberships: "{role}:{member_role}" + "{role}:*" (wildcard)
+     *
+     * @return string[]
+     */
+    private function getUserScopeTargetKeys(Adherent $user): array
+    {
+        $keys = [];
+
+        // Direct zone-based roles
+        foreach ($user->getZoneBasedRoles() as $zoneBasedRole) {
+            if ($type = $zoneBasedRole->getType()) {
+                $keys[] = $type;
+            }
+        }
+
+        // Team memberships via delegated accesses
+        foreach ($user->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            $type = $delegatedAccess->getType();
+            $roleCode = $delegatedAccess->roleCode;
+
+            if ($type && $roleCode) {
+                $keys[] = $type.':'.$roleCode;
+                $keys[] = $type.':*';
+            }
+        }
+
+        return array_values(array_unique($keys));
     }
 }
