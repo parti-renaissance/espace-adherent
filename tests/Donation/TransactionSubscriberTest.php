@@ -47,7 +47,7 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebTestCase
     #[Depends('testOnPayboxIpnResponse')]
     public function testAllTransactionCreated(): void
     {
-        $transactions = $this->transactionRepository->findAllTransactionByAdherentIdOrEmail($this->adherentRepository->findOneByEmail('jacques.picard@en-marche.fr'));
+        $transactions = $this->transactionRepository->findAllTransactionByAdherent($this->adherentRepository->findOneByEmail('jacques.picard@en-marche.fr'));
 
         // b/c there are initial transactions when donationFixtures are loaded then 5+4 = 9
         static::assertCount(9, $transactions);

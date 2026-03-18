@@ -1050,27 +1050,37 @@ Feature:
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "@string@.oneOf(
+                    "transaction_type": "@string@.oneOf(
                         contains('cb'),
                         contains('check'),
                         contains('transfer'),
                         contains('tpe')
                     )",
-                    "type_label": "@string@.oneOf(
+                    "transaction_type_label": "@string@.oneOf(
                         contains('Carte bleue'),
                         contains('Chèque'),
                         contains('Virement'),
                         contains('TPE')
                     )",
-                    "subscription": "@boolean@",
-                    "membership": "@boolean@",
+                    "type": "@string@.oneOf(
+                        contains('simple'),
+                        contains('recurring'),
+                        contains('membership')
+                    )",
+                    "type_label": "@string@.oneOf(
+                        contains('Don'),
+                        contains('Don récurrent'),
+                        contains('Cotisation')
+                    )",
                     "status": "@string@.oneOf(
-                        contains('waiting_confirmation'),
-                        contains('subscription_in_progress'),
-                        contains('refunded'),
-                        contains('canceled'),
-                        contains('finished'),
-                        contains('error')
+                        contains('paid'),
+                        contains('failed'),
+                        contains('refunded')
+                    )",
+                    "status_label": "@string@.oneOf(
+                        contains('Payé'),
+                        contains('Échoué'),
+                        contains('Remboursé')
                     )",
                     "amount": "@number@"
                 },
@@ -1083,51 +1093,56 @@ Feature:
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "cb",
-                    "type_label": "Carte bleue",
-                    "subscription": false,
-                    "membership": true,
-                    "status": "finished",
+                    "transaction_type": "cb",
+                    "transaction_type_label": "Carte bleue",
+                    "type": "membership",
+                    "type_label": "Cotisation",
+                    "status": "paid",
+                    "status_label": "Payé",
                     "amount": 30
                 },
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "cb",
-                    "type_label": "Carte bleue",
-                    "subscription": false,
-                    "membership": true,
-                    "status": "finished",
+                    "transaction_type": "cb",
+                    "transaction_type_label": "Carte bleue",
+                    "type": "membership",
+                    "type_label": "Cotisation",
+                    "status": "paid",
+                    "status_label": "Payé",
                     "amount": 30
                 },
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "cb",
-                    "type_label": "Carte bleue",
-                    "subscription": true,
-                    "membership": false,
-                    "status": "finished",
+                    "transaction_type": "cb",
+                    "transaction_type_label": "Carte bleue",
+                    "type": "recurring",
+                    "type_label": "Don récurrent",
+                    "status": "paid",
+                    "status_label": "Payé",
                     "amount": 42
                 },
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "cb",
-                    "type_label": "Carte bleue",
-                    "subscription": false,
-                    "membership": false,
-                    "status": "finished",
+                    "transaction_type": "cb",
+                    "transaction_type_label": "Carte bleue",
+                    "type": "simple",
+                    "type_label": "Don",
+                    "status": "paid",
+                    "status_label": "Payé",
                     "amount": 50
                 },
                 {
                     "uuid": "@uuid@",
                     "date": "@string@.isDateTime()",
-                    "type": "check",
-                    "type_label": "Chèque",
-                    "subscription": false,
-                    "membership": false,
-                    "status": "waiting_confirmation",
+                    "transaction_type": "check",
+                    "transaction_type_label": "Chèque",
+                    "type": "simple",
+                    "type_label": "Don",
+                    "status": "failed",
+                    "status_label": "Échoué",
                     "amount": 30
                 }
             ]
