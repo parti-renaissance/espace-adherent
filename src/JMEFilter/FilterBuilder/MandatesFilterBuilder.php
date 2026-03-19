@@ -14,10 +14,11 @@ class MandatesFilterBuilder extends AbstractAdherentMandateFilterBuilder
         $multiple = FeatureEnum::CONTACTS === $feature;
 
         return new FilterCollectionBuilder()
-            ->createSelect($multiple ? 'mandates' : 'mandate_type', 'Type de mandat')
+            ->createSelect($multiple ? 'mandates' : 'mandate_type', 'Mandats')
             ->setChoices($this->getTranslatedChoices())
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
             ->setMultiple($multiple)
+            ->setHelp('Les mandats sont ajoutés et mis à jour par le pôle élections et les Assemblées départementales ou FDE.')
             ->getFilters()
         ;
     }

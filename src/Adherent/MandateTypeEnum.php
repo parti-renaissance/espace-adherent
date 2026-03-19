@@ -30,6 +30,7 @@ class MandateTypeEnum
     public const MINISTER = 'ministre';
 
     public const ALL = [
+        self::MINISTER,
         self::DEPUTE_EUROPEEN,
         self::SENATEUR,
         self::DEPUTE,
@@ -46,7 +47,6 @@ class MandateTypeEnum
         self::MEMBRE_ASSEMBLEE_FDE,
         self::CONSEILLER_FDE,
         self::DELEGUE_CONSULAIRE,
-        self::MINISTER,
     ];
 
     public const ZONE_FILTER_BY_MANDATE = [

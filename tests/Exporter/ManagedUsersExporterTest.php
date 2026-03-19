@@ -164,7 +164,7 @@ class ManagedUsersExporterTest extends TestCase
         $this->assertSame('Comite Paris', $row['Comité']);
         $this->assertSame('President, Animateur', $row['Rôles']);
         $this->assertSame('Adherent a jour 2024', $row['Labels Adhérent']);
-        $this->assertSame('Elu cotisation OK', $row['Labels Élu']);
+        $this->assertSame('Elu cotisation OK', $row['Label Élu']);
         $this->assertSame('maire, conseiller', $row['Déclaration de mandats']);
         $this->assertSame('Conseiller municipal|Paris (75001)', $row['Mandats']);
         $this->assertSame('Present evenement 1', $row['Labels Divers']);
@@ -290,7 +290,7 @@ class ManagedUsersExporterTest extends TestCase
         $expectedColumns = [
             'UUID', 'PID', 'Civilité', 'Prénom', 'Nom', 'Âge', 'Date de naissance',
             'Date de création de compte', 'Date de première cotisation', 'Date de dernière activité',
-            'Labels Adhérent', 'Labels Statique', 'Labels Élu', 'Rôles',
+            'Labels Adhérent', 'Labels Statique', 'Label Élu', 'Rôles',
             'Abonné email', 'Abonné SMS',
         ];
         $this->assertSame($expectedColumns, array_keys($row));
@@ -308,7 +308,7 @@ class ManagedUsersExporterTest extends TestCase
         $this->assertSame('10/03/2024 16:45', $row['Date de dernière activité']);
         $this->assertSame('Adhérent 2024', $row['Labels Adhérent']);
         $this->assertSame('Présent Event1', $row['Labels Statique']);
-        $this->assertSame('Cotisation_ok', $row['Labels Élu']);
+        $this->assertSame('Cotisation_ok', $row['Label Élu']);
         $this->assertSame('Animateur', $row['Rôles']);
         $this->assertTrue($row['Abonné email']); // From subscriptions JSON
         $this->assertFalse($row['Abonné SMS']); // From subscriptions JSON
@@ -640,7 +640,7 @@ class ManagedUsersExporterTest extends TestCase
         $this->assertNull($row['Comité']);
         $this->assertSame('', $row['Rôles']);
         $this->assertSame('', $row['Labels Adhérent']);
-        $this->assertSame('', $row['Labels Élu']);
+        $this->assertSame('', $row['Label Élu']);
         $this->assertSame('', $row['Déclaration de mandats']); // implode on empty array returns ''
         $this->assertSame('', $row['Mandats']); // implode on empty array returns ''
         $this->assertSame('', $row['Labels Divers']);

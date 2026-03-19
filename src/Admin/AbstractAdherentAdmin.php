@@ -597,7 +597,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                 'tags' => TagEnum::getElectTags(),
             ])
             ->add('tags_static', StaticAdherentTagFilter::class, [
-                'label' => 'Labels divers',
+                'label' => 'Labels nationaux',
                 'show_filter' => true,
             ])
             ->add('staticLabels', null, [
@@ -1104,7 +1104,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
 
                         return $str;
                     }, $adherent->getElectedRepresentativeMandates())),
-                    'Labels divers' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                    'Labels nationaux' => implode(', ', array_filter(array_map(function (string $tag): ?string {
                         if (\in_array($tag, array_merge(TagEnum::getAdherentTags(), TagEnum::getElectTags()), true)) {
                             return null;
                         }

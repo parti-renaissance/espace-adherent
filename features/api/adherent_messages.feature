@@ -769,10 +769,10 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
-                                "placeholder": "Tous mes militants",
+                                "placeholder": "Tous mes contacts",
                                 "advanced": true,
                                 "favorite": true,
-                                "required": false,
+                                "required": true,
                                 "choices": {
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2026": "Adhérent - À jour 2026",
@@ -832,7 +832,7 @@ Feature:
                         },
                         {
                             "code": "static_tags",
-                            "label": "Labels divers",
+                            "label": "Labels nationaux",
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
@@ -844,7 +844,8 @@ Feature:
                                     "national_event:event-national-2": "Event national 2",
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
-                                }
+                                },
+                                "help": "Ces labels sont appliqués automatiquement ou manuellement au national"
                             },
                             "type": "select"
                         },
@@ -874,7 +875,7 @@ Feature:
                     "filters": [
                         {
                             "code": "declared_mandate",
-                            "label": "Déclaration de mandat",
+                            "label": "Déclarations de mandats",
                             "options": {
                                 "advanced": true,
                                 "choices": {
@@ -896,13 +897,14 @@ Feature:
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
-                                "multiple": false
+                                "multiple": false,
+                                "help": "@string@"
                             },
                             "type": "select"
                         },
                         {
                             "code": "elect_tags",
-                            "label": "Labels élu",
+                            "label": "Label élu",
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
@@ -922,7 +924,7 @@ Feature:
                         },
                         {
                             "code": "mandate_type",
-                            "label": "Type de mandat",
+                            "label": "Mandats",
                             "options": {
                                 "advanced": true,
                                 "choices": {
@@ -944,7 +946,8 @@ Feature:
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
-                                "multiple": false
+                                "multiple": false,
+                                "help": "@string@"
                             },
                             "type": "select"
                         }
@@ -1021,12 +1024,12 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
-                                "placeholder": "Tous mes militants",
+                                "placeholder": "Tous mes contacts",
                                 "advanced": true,
                                 "favorite": true,
                                 "required": true,
                                 "choices": {
-                                    "": "Tous mes militants",
+                                    "": "Tous mes contacts",
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2026": "Adhérent - À jour 2026",
                                     "adherent:a_jour_2026:primo": "Adhérent - À jour 2026 - Primo-adhérent",
@@ -1102,7 +1105,7 @@ Feature:
                         },
                         {
                             "code": "static_tags",
-                            "label": "Labels divers",
+                            "label": "Labels nationaux",
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
@@ -1114,7 +1117,8 @@ Feature:
                                     "national_event:event-national-2": "Event national 2",
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
-                                }
+                                },
+                                "help": "Ces labels sont appliqués automatiquement ou manuellement au national"
                             },
                             "type": "select"
                         }
@@ -1150,7 +1154,7 @@ Feature:
                     "filters": [
                         {
                             "code": "elect_tags",
-                            "label": "Labels élu",
+                            "label": "Label élu",
                             "options": {
                                 "advanced": true,
                                 "favorite": true,
@@ -1170,7 +1174,7 @@ Feature:
                         },
                         {
                             "code": "mandate_type",
-                            "label": "Type de mandat",
+                            "label": "Mandats",
                             "options": {
                                 "advanced": true,
                                 "choices": {
@@ -1192,7 +1196,8 @@ Feature:
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
-                                "multiple": false
+                                "multiple": false,
+                                "help": "@string@"
                             },
                             "type": "select"
                         }

@@ -14,7 +14,7 @@ class ElectTagsFilterBuilder extends AbstractTagsFilterBuilder
     {
         $this->tags = TagEnum::getElectTags();
         $this->fieldName = 'elect_tags';
-        $this->fieldLabel = 'Labels élu';
+        $this->fieldLabel = 'Label élu';
     }
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array

@@ -877,10 +877,10 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
-                                "placeholder": "Tous mes militants",
+                                "placeholder": "Tous mes contacts",
                                 "advanced": false,
                                 "favorite": true,
-                                "required": false,
+                                "required": true,
                                 "choices": {
                                     "adherent": "Adhérent",
                                     "adherent:a_jour_2026": "Adhérent - À jour 2026",
@@ -905,11 +905,12 @@ Feature:
                         },
                         {
                             "code": "static_tags",
-                            "label": "Labels divers",
+                            "label": "Labels nationaux",
                             "options": {
                                 "advanced": false,
                                 "favorite": true,
                                 "required": false,
+                                "help": "Ces labels sont appliqués automatiquement ou manuellement au national",
                                 "choices": {
                                     "national_event:campus": "Campus",
                                     "national_event:meeting-nrp": "Meeting NRP",
@@ -947,7 +948,7 @@ Feature:
                     "filters": [
                         {
                             "code": "declared_mandates",
-                            "label": "Déclaration de mandat",
+                            "label": "Déclarations de mandats",
                             "options": {
                                 "advanced": false,
                                 "choices": {
@@ -969,13 +970,14 @@ Feature:
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
-                                "multiple": true
+                                "multiple": true,
+                                "help": "@string@"
                             },
                             "type": "select"
                         },
                         {
                             "code": "elect_tags",
-                            "label": "Labels élu",
+                            "label": "Label élu",
                             "options": {
                                 "advanced": false,
                                 "favorite": true,
@@ -995,7 +997,7 @@ Feature:
                         },
                         {
                             "code": "mandates",
-                            "label": "Type de mandat",
+                            "label": "Mandats",
                             "options": {
                                 "advanced": false,
                                 "choices": {
@@ -1017,7 +1019,8 @@ Feature:
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
-                                "multiple": true
+                                "multiple": true,
+                                "help": "@string@"
                             },
                             "type": "select"
                         }
@@ -1320,7 +1323,7 @@ Feature:
         And the header "Content-Type" should contain "text/csv"
         And the header "Content-Disposition" should contain "adherents--"
         And the header "Content-Disposition" should contain ".csv"
-        And the response should contain "PID;Civilité;Prénom;Nom;\"Date de naissance\";Téléphone;Comité;Rôles;\"Labels Adhérent\";\"Labels Élu\";\"Déclaration de mandats\";Mandats;\"Labels Divers\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière cotisation\";\"Date de dernière connexion\";\"Adresse postale\";\"Code postal\";Ville;Pays;\"Abonné email\";\"Abonné SMS\""
+        And the response should contain "PID;Civilité;Prénom;Nom;\"Date de naissance\";Téléphone;Comité;Rôles;\"Labels Adhérent\";\"Label Élu\";\"Déclaration de mandats\";Mandats;\"Labels Divers\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière cotisation\";\"Date de dernière connexion\";\"Adresse postale\";\"Code postal\";Ville;Pays;\"Abonné email\";\"Abonné SMS\""
         And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'assemblée départementale\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
         And the response should contain ";\"2 avenue Jean Jaurès\";77000;Melun;France;;"
         And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription, Sénatrice, Déléguée de circonscription, Candidate, Présidente d'assemblée départementale, Présidente d'assemblée départementale, Responsable locale, Candidate aux législatives\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
