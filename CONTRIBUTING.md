@@ -122,12 +122,12 @@ Nous pouvons demander des modifications — ne le prenez pas personnellement, c'
 
 ## Environnement recommandé
 
-| Outil | Recommandation |
-|---|---|
-| IDE | PHPStorm + plugin Symfony |
-| Git | Version ≥ 2.40 |
-| PHP | 8.4 avec extensions `intl`, `gd`, `pdo_mysql` |
-| Docker | Docker Desktop ou OrbStack |
+| Outil  | Recommandation                                |
+|--------|-----------------------------------------------|
+| IDE    | PHPStorm + plugin Symfony                     |
+| Git    | Version ≥ 2.40                                |
+| PHP    | 8.5 avec extensions `intl`, `gd`, `pdo_mysql` |
+| Docker | Docker Desktop ou OrbStack                    |
 
 ---
 
