@@ -58,11 +58,8 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\ManyToOne(targetEntity: AdherentMessage::class, inversedBy: 'mailchimpCampaigns')]
     private $message;
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Column(nullable: true)]
-    private $staticSegmentId;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $staticSegmentId = null;
 
     /**
      * @var string|null

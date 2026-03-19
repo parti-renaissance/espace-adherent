@@ -91,11 +91,8 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[ORM\Column(nullable: true)]
     private $city;
 
-    /**
-     * @var array|null
-     */
     #[ORM\Column(type: 'json', nullable: true)]
-    private $interests = [];
+    private ?array $interests = null;
 
     /**
      * @var \DateTime|null
@@ -535,7 +532,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->firstName = null;
         $this->lastName = null;
         $this->city = null;
-        $this->interests = [];
+        $this->interests = null;
         $this->registeredSince = null;
         $this->registeredUntil = null;
         $this->firstMembershipSince = null;
