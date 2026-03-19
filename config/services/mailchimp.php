@@ -27,6 +27,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->set(App\Mailchimp\Driver::class)
         ->arg('$listId', '%env(MAILCHIMP_MEMBER_LIST_ID)%')
+        ->arg('$mailchimpDebug', '%env(bool:default::MAILCHIMP_DEBUG)%')
         ->tag('monolog.logger', [
             'channel' => 'mailchimp_sync',
         ])

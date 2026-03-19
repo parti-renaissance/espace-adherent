@@ -5,6 +5,13 @@ declare(strict_types=1);
 return static function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('monolog', [
         'handlers' => [
+            'mailchimp_debug' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'level' => Monolog\Level::Info->value,
+                'channels' => ['mailchimp_sync'],
+                'formatter' => 'monolog.formatter.json',
+            ],
             'main' => [
                 'type' => 'fingers_crossed',
                 'channels' => [

@@ -45,10 +45,6 @@ class ScopeTargetStaticSegmentSubscriber implements EventSubscriberInterface
 
         $emails = $this->adherentRepository->getEmailsForScopeTargets($scopeTargets);
 
-        if (0 === \count($emails)) {
-            return;
-        }
-
         $staticSegmentId = $campaign->getStaticSegmentId();
 
         $result = $this->staticSegmentService->createOrUpdate(
