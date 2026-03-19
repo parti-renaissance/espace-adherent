@@ -20,8 +20,9 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->tags = $this->eventTagBuilder->buildAll();
 
         $this->fieldName = 'static_tags';
-        $this->fieldLabel = 'Labels divers';
+        $this->fieldLabel = 'Labels nationaux';
         $this->fullTag = false;
+        $this->help = 'Ces labels sont appliqués automatiquement ou manuellement au national';
     }
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array

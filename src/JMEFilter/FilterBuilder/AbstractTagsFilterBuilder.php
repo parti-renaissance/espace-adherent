@@ -15,6 +15,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     protected string $fieldLabel;
     protected ?string $placeholder = null;
     protected bool $fullTag = true;
+    protected ?string $help = null;
 
     public function __construct(private readonly TagTranslator $translator)
     {
@@ -32,6 +33,10 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
             ->setChoices($this->getTranslatedChoices())
             ->setRequired($isRequired)
         ;
+
+        if ($this->help) {
+            $builder->setHelp($this->help);
+        }
 
         if ($this->placeholder) {
             $builder

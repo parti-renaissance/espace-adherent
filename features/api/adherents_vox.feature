@@ -412,7 +412,7 @@ Feature:
         And the header "Content-Type" should contain "text/csv"
         And the header "Content-Disposition" should contain "adherents--"
         And the header "Content-Disposition" should contain ".csv"
-        And the response should contain "UUID;PID;Civilité;Prénom;Nom;Âge;\"Date de naissance\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière activité\";\"Labels Adhérent\";\"Labels Statique\";\"Labels Élu\";Rôles;\"Abonné email\";\"Abonné SMS\""
+        And the response should contain "UUID;PID;Civilité;Prénom;Nom;Âge;\"Date de naissance\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière activité\";\"Labels Adhérent\";\"Labels Statique\";\"Label Élu\";Rôles;\"Abonné email\";\"Abonné SMS\""
         And the response should contain "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4;;Monsieur;Francis;Brioul;"
         And the response should contain ";07/01/1962;\"25/01/2017 19:31\""
         And the response should contain ";\"Président d'assemblée départementale\";1;"
@@ -471,14 +471,14 @@ Feature:
                                     "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
                                     "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
                                 },
-                                "required": false,
-                                "placeholder": "Tous mes militants"
+                                "required": true,
+                                "placeholder": "Tous mes contacts"
                             },
                             "type": "select"
                         },
                         {
                             "code": "static_tags",
-                            "label": "Labels divers",
+                            "label": "Labels nationaux",
                             "options": {
                                 "favorite": false,
                                 "advanced": false,
@@ -490,7 +490,8 @@ Feature:
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
                                 },
-                                "required": false
+                                "required": false,
+                                "help": "Ces labels sont appliqués automatiquement ou manuellement au national"
                             },
                             "type": "select"
                         }
@@ -643,7 +644,7 @@ Feature:
                     "filters": [
                         {
                             "code": "elect_tags",
-                            "label": "Labels élu",
+                            "label": "Label élu",
                             "options": {
                                 "favorite": false,
                                 "advanced": false,
@@ -663,7 +664,7 @@ Feature:
                         },
                         {
                             "code": "mandates",
-                            "label": "Type de mandat",
+                            "label": "Mandats",
                             "options": {
                                 "advanced": false,
                                 "choices": {
@@ -685,13 +686,14 @@ Feature:
                                     "president_conseil_regional": "Président du Conseil régional",
                                     "senateur": "Sénateur"
                                 },
-                                "multiple": true
+                                "multiple": true,
+                                "help": "Les mandats sont ajoutés et mis à jour par le pôle élections et les Assemblées départementales ou FDE."
                             },
                             "type": "select"
                         },
                         {
                             "code": "declared_mandates",
-                            "label": "Déclaration de mandat",
+                            "label": "Déclarations de mandats",
                             "options": {
                                 "advanced": false,
                                 "choices": {
@@ -713,7 +715,8 @@ Feature:
                                     "president_conseil_regional": "Président du Conseil régional",
                                     "senateur": "Sénateur"
                                 },
-                                "multiple": true
+                                "multiple": true,
+                                "help": "@string@"
                             },
                             "type": "select"
                         }

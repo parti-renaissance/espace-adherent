@@ -14,7 +14,7 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->tags = TagEnum::getAdherentTags();
         $this->fieldName = 'adherent_tags';
         $this->fieldLabel = 'Labels adhérent';
-        $this->placeholder = 'Tous mes militants';
+        $this->placeholder = 'Tous mes contacts';
     }
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
@@ -32,6 +32,6 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
 
     protected function isRequired(string $scope, ?string $feature): bool
     {
-        return FeatureEnum::PUBLICATIONS === $feature;
+        return true;
     }
 }

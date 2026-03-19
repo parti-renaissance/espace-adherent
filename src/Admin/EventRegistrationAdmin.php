@@ -135,7 +135,7 @@ class EventRegistrationAdmin extends AbstractAdmin
                 'tags' => TagEnum::getElectTags(),
             ])
             ->add('adherent.tags_static', StaticAdherentTagFilter::class, [
-                'label' => 'Labels divers',
+                'label' => 'Labels nationaux',
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date d\'inscription',
@@ -232,7 +232,7 @@ class EventRegistrationAdmin extends AbstractAdmin
 
                         return $this->tagTranslator->trans($tag);
                     }, $adherent?->tags ?? []))),
-                    'Labels divers' => implode(', ', array_filter(array_map(function (string $tag): ?string {
+                    'Labels nationaux' => implode(', ', array_filter(array_map(function (string $tag): ?string {
                         if (\in_array($tag, array_merge(TagEnum::getAdherentTags(), TagEnum::getElectTags()), true)) {
                             return null;
                         }

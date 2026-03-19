@@ -60,7 +60,7 @@ class DownloadInscriptionsController extends AbstractController
                     'Code postal' => (string) $eventInscription->postalCode,
                     'Labels militants' => implode(', ', array_map([$this->tagTranslator, 'trans'], $eventInscription->getMemberTags())),
                     'Labels élu' => implode(', ', array_map([$this->tagTranslator, 'trans'], $eventInscription->getElectTags() ?? [])),
-                    'Labels divers' => implode(', ', array_map([$this->tagTranslator, 'trans'], $eventInscription->getOtherTags() ?? [])),
+                    'Labels nationaux' => implode(', ', array_map([$this->tagTranslator, 'trans'], $eventInscription->getOtherTags() ?? [])),
                     'Jour de présence' => $eventInscription->getVisitDayConfig()['titre'] ?? null,
                     'Forfait transport' => $eventInscription->getTransportConfig()['titre'] ?? null,
                     'Forfait hébergement' => $eventInscription->getAccommodationConfig()['titre'] ?? null,
