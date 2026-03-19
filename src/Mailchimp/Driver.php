@@ -28,11 +28,16 @@ class Driver implements LoggerAwareInterface
     private HttpClientInterface $client;
     private string $listId;
     private ?ResponseInterface $lastResponse = null;
+    private bool $debug;
 
-    public function __construct(HttpClientInterface $mailchimpClient, string $listId)
-    {
+    public function __construct(
+        HttpClientInterface $mailchimpClient,
+        string $listId,
+        bool $mailchimpDebug = false,
+    ) {
         $this->client = $mailchimpClient;
         $this->listId = $listId;
+        $this->debug = $mailchimpDebug;
     }
 
     /**
@@ -373,12 +378,33 @@ class Driver implements LoggerAwareInterface
 
     private function send(string $method, string $uri, array $body = []): ?ResponseInterface
     {
+        $fullUri = '/3.0/'.ltrim($uri, '/');
+
+        if ($this->debug) {
+            $this->logger->info('[Mailchimp] Request : '.$fullUri, [
+                'method' => $method,
+                'uri' => $fullUri,
+                'body' => $body ?: null,
+            ]);
+        }
+
         try {
-            return $this->lastResponse = $this->client->request(
+            $this->lastResponse = $this->client->request(
                 $method,
-                '/3.0/'.ltrim($uri, '/'),
+                $fullUri,
                 $body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : []
             );
+
+            if ($this->debug) {
+                $this->logger->info('[Mailchimp] Response : '.$fullUri, [
+                    'method' => $method,
+                    'uri' => $fullUri,
+                    'status' => $this->lastResponse->getStatusCode(),
+                    'body' => $this->lastResponse->getContent(false),
+                ]);
+            }
+
+            return $this->lastResponse;
         } catch (TransportExceptionInterface $e) {
             $this->logger->error(\sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);
 
