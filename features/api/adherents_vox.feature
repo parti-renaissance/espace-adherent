@@ -33,6 +33,7 @@ Feature:
                     {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
                     {"type": "circonscription", "code": "77-1", "name": "1ère circonscription • Seine-et-Marne (77-1)"}
                 ],
+                "mandates": [],
                 "account_created_at": "@string@.isDateTime()",
                 "subscriptions": {
                     "mobile": {"available": true, "subscribed": true},
@@ -144,6 +145,7 @@ Feature:
                             {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
                             {"type": "circonscription", "code": "77-1", "name": "1ère circonscription • Seine-et-Marne (77-1)"}
                         ],
+                        "mandates": [],
                         "subscriptions": {
                             "sms": {"available": false, "subscribed": false},
                             "web": {"available": true, "subscribed": false},
@@ -176,6 +178,7 @@ Feature:
                         "instances": [
                             {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
                         ],
+                        "mandates": [],
                         "subscriptions": {
                             "sms": {"available": false, "subscribed": false},
                             "web": {"available": true, "subscribed": true},
@@ -211,6 +214,10 @@ Feature:
                             {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
                             {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
                         ],
+                        "mandates": [{
+                            "code": "conseiller_municipal",
+                            "label": "Conseiller municipal"
+                        }],
                         "subscriptions": {
                             "sms": {"available": true, "subscribed": true},
                             "web": {"available": true, "subscribed": true},

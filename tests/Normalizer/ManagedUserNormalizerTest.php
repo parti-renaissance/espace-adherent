@@ -80,6 +80,10 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
+            ->method('getMandates')
+            ->willReturn(null)
+        ;
+        $managedUser
             ->method('getSubscriptionTypes')
             ->willReturn(['subscribed_emails_movement_information', 'militant_action_sms'])
         ;
@@ -180,6 +184,10 @@ final class ManagedUserNormalizerTest extends TestCase
             ->method('getGender')
             ->willReturn('male')
         ;
+        $managedUser
+            ->method('getMandates')
+            ->willReturn(null)
+        ;
 
         $context = [
             'groups' => [ManagedUserContextBuilder::GROUP_VOX],
@@ -200,6 +208,8 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertArrayNotHasKey('subscription_types', $result);
         self::assertArrayHasKey('roles', $result);
+        self::assertArrayHasKey('mandates', $result);
+        self::assertSame([], $result['mandates']);
         self::assertCount(1, $result['roles']);
         self::assertSame('animator', $result['roles'][0]['code']);
     }
@@ -219,6 +229,10 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser
             ->method('getGender')
             ->willReturn('male')
+        ;
+        $managedUser
+            ->method('getMandates')
+            ->willReturn(null)
         ;
 
         $context = [
@@ -288,6 +302,55 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertCount(1, $result['tags']);
         self::assertSame('role', $result['tags'][0]['type']);
         self::assertSame('Animatrice', $result['tags'][0]['label']);
+    }
+
+    public function testNormalizeTransformsMandatesToCodeLabelForVoxGroup(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('getRoles')
+            ->willReturn([])
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('male')
+        ;
+        $managedUser
+            ->method('getMandates')
+            ->willReturn(['conseiller_municipal', 'depute'])
+        ;
+
+        $context = [
+            'groups' => [ManagedUserContextBuilder::GROUP_VOX],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn(['uuid' => '123e4567-e89b-12d3-a456-426614174000'])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->willReturnMap([
+                ['adherent.mandate.type.conseiller_municipal', [], null, null, 'Conseiller municipal'],
+                ['adherent.mandate.type.depute', [], null, null, 'Député'],
+            ])
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('mandates', $result);
+        self::assertCount(2, $result['mandates']);
+
+        self::assertSame([
+            'code' => 'conseiller_municipal',
+            'label' => 'Conseiller municipal',
+        ], $result['mandates'][0]);
+
+        self::assertSame([
+            'code' => 'depute',
+            'label' => 'Député',
+        ], $result['mandates'][1]);
     }
 
     public function testGetSupportedTypesReturnsManagedUserClass(): void
