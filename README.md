@@ -43,7 +43,7 @@ Les PRs sont reviewées par l'équipe tech de Renaissance, en général sous **2
 
 |                     |                      |
 |---------------------|----------------------|
-| **Langage**         | PHP 8.4              |
+| **Langage**         | PHP 8.5              |
 | **Framework**       | Symfony 7.4          |
 | **API**             | API Platform 4       |
 | **Base de données** | MySQL + Doctrine ORM |
