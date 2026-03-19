@@ -40,6 +40,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if ($isVox) {
             $data['roles'] = $this->formatRolesVox($object);
+            $data['mandates'] = $this->formatMandates($object->getMandates());
             $data['adherent_tags'] = $this->translateTags($object->adherentTags);
             $data['static_tags'] = $this->translateTags($object->staticTags);
             $data['elect_tags'] = $this->translateTags($object->electTags);
@@ -148,6 +149,23 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return $roles;
+    }
+
+    private function formatMandates(?array $mandates): array
+    {
+        if (!$mandates) {
+            return [];
+        }
+
+        return array_map(
+            function (string $code) {
+                return [
+                    'code' => $code,
+                    'label' => $this->getTranslatedMandateLabel($code),
+                ];
+            },
+            $mandates
+        );
     }
 
     private function translateTags(?array $tags): ?array

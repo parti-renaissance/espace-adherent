@@ -320,7 +320,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?UuidInterface $agoraUuid;
 
-    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $mandates;
 
