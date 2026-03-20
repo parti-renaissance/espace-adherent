@@ -35,8 +35,8 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\DeclaredMandateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\DonatorStatusConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\ElectMandateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\JMECommitteeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\MandateTypeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MembershipDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\StaticSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
@@ -476,7 +476,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 new DeclaredMandateConditionBuilder(),
                 new DonatorStatusConditionBuilder(),
                 new JMECommitteeConditionBuilder(),
-                new MandateTypeConditionBuilder(),
+                new ElectMandateConditionBuilder(),
                 new MembershipDateConditionBuilder(),
                 new StaticSegmentConditionBuilder(),
                 new SubscriptionTypeConditionBuilder($this->mailchimpMapping),

@@ -80,7 +80,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
-            ->method('getMandates')
+            ->method('getElectMandates')
             ->willReturn(null)
         ;
         $managedUser
@@ -185,7 +185,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
-            ->method('getMandates')
+            ->method('getElectMandates')
             ->willReturn(null)
         ;
 
@@ -208,8 +208,8 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertArrayNotHasKey('subscription_types', $result);
         self::assertArrayHasKey('roles', $result);
-        self::assertArrayHasKey('declared_mandates', $result);
-        self::assertSame([], $result['declared_mandates']);
+        self::assertArrayHasKey('elect_mandates', $result);
+        self::assertSame([], $result['elect_mandates']);
         self::assertCount(1, $result['roles']);
         self::assertSame('animator', $result['roles'][0]['code']);
     }
@@ -231,7 +231,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
-            ->method('getMandates')
+            ->method('getElectMandates')
             ->willReturn(null)
         ;
 
@@ -304,7 +304,7 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertSame('Animatrice', $result['tags'][0]['label']);
     }
 
-    public function testNormalizeTransformsMandatesToCodeLabelForVoxGroup(): void
+    public function testNormalizeTransformsElectMandatesToCodeLabelForVoxGroup(): void
     {
         $managedUser = $this->createMock(ManagedUser::class);
         $managedUser
@@ -316,7 +316,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
-            ->method('getDeclaredMandates')
+            ->method('getElectMandates')
             ->willReturn(['conseiller_municipal', 'depute'])
         ;
 
@@ -339,18 +339,18 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
 
-        self::assertArrayHasKey('declared_mandates', $result);
-        self::assertCount(2, $result['declared_mandates']);
+        self::assertArrayHasKey('elect_mandates', $result);
+        self::assertCount(2, $result['elect_mandates']);
 
         self::assertSame([
             'code' => 'conseiller_municipal',
             'label' => 'Conseiller municipal',
-        ], $result['declared_mandates'][0]);
+        ], $result['elect_mandates'][0]);
 
         self::assertSame([
             'code' => 'depute',
             'label' => 'Député',
-        ], $result['declared_mandates'][1]);
+        ], $result['elect_mandates'][1]);
     }
 
     public function testGetSupportedTypesReturnsManagedUserClass(): void

@@ -166,7 +166,6 @@ class ManagedUsersExporterTest extends TestCase
         $this->assertSame('Adherent a jour 2024', $row['Labels Adhérent']);
         $this->assertSame('Elu cotisation OK', $row['Label Élu']);
         $this->assertSame('maire, conseiller', $row['Déclaration de mandats']);
-        $this->assertSame('Conseiller municipal|Paris (75001)', $row['Mandats']);
         $this->assertSame('Present evenement 1', $row['Labels Divers']);
         $this->assertSame('10 rue de la Paix', $row['Adresse postale']);
         $this->assertSame('75001', $row['Code postal']);

@@ -9,8 +9,8 @@ use App\JMEFilter\FilterBuilder\BasicFieldsFilterBuilder;
 use App\JMEFilter\FilterBuilder\CommitteeFilterBuilder;
 use App\JMEFilter\FilterBuilder\CommitteeMemberFilterBuilder;
 use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
+use App\JMEFilter\FilterBuilder\ElectMandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
-use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\MilitantFilterBuilder;
 use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
 use App\JMEFilter\FilterBuilder\StaticTagsFilterBuilder;
@@ -57,7 +57,7 @@ class PublicationsFilterLayout extends AbstractFilterLayout
 
         $groups[] = $this->group(ElectedRepresentativeFilterGroup::class, [
             $this->filter(ElectTagsFilterBuilder::class),
-            $this->filter(MandatesFilterBuilder::class),
+            $this->filter(ElectMandatesFilterBuilder::class),
         ]);
 
         return $groups;

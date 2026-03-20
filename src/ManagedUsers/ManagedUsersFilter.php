@@ -67,11 +67,11 @@ class ManagedUsersFilter
 
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
     #[Groups(['filter_write'])]
-    public array $mandates = [];
+    public array $declaredMandates = [];
 
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
     #[Groups(['filter_write'])]
-    public array $declaredMandates = [];
+    public array $electMandates = [];
 
     /**
      * @var Zone[]

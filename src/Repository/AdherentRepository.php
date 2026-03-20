@@ -1695,11 +1695,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             }
         }
 
-        if ($filter->getMandateType()) {
+        if ($filter->getElectMandate()) {
             $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
 
             $params['mandate_join_type'] = 'elected_representative';
-            $params['mandate_type'] = $filter->getMandateType();
+            $params['mandate_type'] = $filter->getElectMandate();
         }
 
         $where[] = 'a.status = :status_enabled';

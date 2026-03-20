@@ -293,7 +293,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $roles = [];
 
-    #[Groups(['adherent_elect_read', 'profile_update'])]
+    #[Groups(['profile_update'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $mandates = [];
 
@@ -1501,6 +1501,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     public function getMandates(): ?array
+    {
+        return $this->mandates;
+    }
+
+    #[Groups(['adherent_elect_read'])]
+    public function getDeclaredMandates(): ?array
     {
         return $this->mandates;
     }

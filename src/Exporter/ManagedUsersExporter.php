@@ -99,7 +99,7 @@ class ManagedUsersExporter
             'Labels Adhérent' => $this->formatAdherentTags($row['tags'] ?? null),
             'Label Élu' => $this->formatElectTags($row['tags'] ?? null),
             'Déclaration de mandats' => implode(', ', $row['declaredMandates'] ?? []),
-            'Mandats' => implode(', ', $row['mandates'] ?? []),
+            'Mandats' => implode(', ', $row['electMandates'] ?? []),
             'Labels Divers' => $this->formatStaticTags($row['tags'] ?? null),
             'Date de création de compte' => isset($row['createdAt']) && $row['createdAt'] instanceof \DateTimeInterface
                 ? $row['createdAt']->format('d/m/Y H:i')

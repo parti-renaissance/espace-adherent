@@ -405,26 +405,26 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandateTypes = $filter->mandates) {
-            $mandateTypesConditions = $qb->expr()->orX();
-
-            foreach ($mandateTypes as $key => $mandateType) {
-                $mandateTypesConditions->add("u.mandates LIKE :mandate_type_$key");
-                $qb->setParameter("mandate_type_$key", '%'.$mandateType.'|%');
-            }
-
-            $qb->andWhere($mandateTypesConditions);
-        }
-
         if ($declaredMandates = $filter->declaredMandates) {
-            $declaredMandatesConditions = $qb->expr()->orX();
+            $declaredMandateTypesConditions = $qb->expr()->orX();
 
             foreach ($declaredMandates as $key => $declaredMandate) {
-                $declaredMandatesConditions->add("FIND_IN_SET(:declared_mandate_$key, u.declaredMandates) > 0");
+                $declaredMandateTypesConditions->add("FIND_IN_SET(:declared_mandate_$key, u.declaredMandates) > 0");
                 $qb->setParameter("declared_mandate_$key", $declaredMandate);
             }
 
-            $qb->andWhere($declaredMandatesConditions);
+            $qb->andWhere($declaredMandateTypesConditions);
+        }
+
+        if ($electMandates = $filter->electMandates) {
+            $electMandatesConditions = $qb->expr()->orX();
+
+            foreach ($electMandates as $key => $electMandate) {
+                $electMandatesConditions->add("FIND_IN_SET(:elect_mandate_$key, u.electMandates) > 0");
+                $qb->setParameter("elect_mandate_$key", $electMandate);
+            }
+
+            $qb->andWhere($electMandatesConditions);
         }
 
         return $qb;
@@ -434,7 +434,7 @@ class ManagedUserRepository extends ServiceEntityRepository
     {
         $subQuery = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select("GROUP_CONCAT(CONCAT(mandate.mandateType, '|', zone.name, ' (', zone.code, ')'))")
+            ->select('GROUP_CONCAT(mandate.mandateType)')
             ->from(Adherent::class, 'adherent')
             ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent AND mandate.finishAt IS NULL')
             ->innerJoin('mandate.zone', 'zone')
@@ -444,11 +444,9 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $this->createQueryBuilder('managed_user')
             ->update()
-            ->set('managed_user.mandates', \sprintf('(%s)', $subQuery))
+            ->set('managed_user.electMandates', \sprintf('(%s)', $subQuery))
             ->where('managed_user.originalId = :adherent_id')
-            ->setParameters([
-                'adherent_id' => $adherent->getId(),
-            ])
+            ->setParameter('adherent_id', $adherent->getId())
             ->getQuery()
             ->execute()
         ;

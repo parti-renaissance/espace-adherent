@@ -266,15 +266,26 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         $this->assertCount(2, $this->managedUserRepository->searchByFilter($filter));
     }
 
-    public function testSearchByMandates(): void
+    public function testSearchByElectMandates(): void
     {
+        // In default zones (CH + 77), no one has elect mandates
         $filter = $this->createDefaultFilter();
-        $filter->mandates = [MandateTypeEnum::CONSEILLER_MUNICIPAL];
-
-        // adherent-5 (ManagedUser 3) has CONSEILLER_MUNICIPAL mandate from ElectedRepresentativeAdherentMandate
-        // But adherent-5 is in zone 92, not in CH or 77
-        // In our test zones (CH + 77), no one has mandates field populated
+        $filter->electMandates = [MandateTypeEnum::CONSEILLER_MUNICIPAL];
         $this->assertCount(0, $this->managedUserRepository->searchByFilter($filter));
+
+        // Gisele Berthoux (adherent-5, ManagedUser 3) has CONSEILLER_MUNICIPAL elect mandate
+        // and is in zones 92, 92024
+        $filter = $this->createHautsDeSeine92Filter();
+        $filter->electMandates = [MandateTypeEnum::CONSEILLER_MUNICIPAL];
+        $this->assertCount(1, $this->managedUserRepository->searchByFilter($filter));
+
+        // Non-matching mandate type in zone 92
+        $filter->electMandates = [MandateTypeEnum::DEPUTE_EUROPEEN];
+        $this->assertCount(0, $this->managedUserRepository->searchByFilter($filter));
+
+        // Multiple mandates (OR condition): one matches, one doesn't
+        $filter->electMandates = [MandateTypeEnum::CONSEILLER_MUNICIPAL, MandateTypeEnum::SENATEUR];
+        $this->assertCount(1, $this->managedUserRepository->searchByFilter($filter));
     }
 
     public function testSearchByRegisteredSince(): void
@@ -399,6 +410,17 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         return new ManagedUsersFilter(null, [
             $this->zoneRepository->findOneBy(['code' => '75108', 'type' => Zone::BOROUGH]),
             $this->zoneRepository->findOneBy(['code' => '75-1', 'type' => Zone::DISTRICT]),
+        ]);
+    }
+
+    /**
+     * Creates a filter with Hauts-de-Seine zone (92 department).
+     * ManagedUser in this zone: Gisele Berthoux (adherent-5, has elect mandate CONSEILLER_MUNICIPAL).
+     */
+    private function createHautsDeSeine92Filter(): ManagedUsersFilter
+    {
+        return new ManagedUsersFilter(null, [
+            $this->zoneRepository->findOneBy(['code' => '92', 'type' => Zone::DEPARTMENT]),
         ]);
     }
 
