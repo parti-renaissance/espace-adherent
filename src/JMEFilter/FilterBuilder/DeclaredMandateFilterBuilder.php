@@ -11,13 +11,11 @@ class DeclaredMandateFilterBuilder extends AbstractAdherentMandateFilterBuilder
 {
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        $multiple = FeatureEnum::CONTACTS === $feature;
-
         return new FilterCollectionBuilder()
-            ->createSelect($multiple ? 'declaredMandates' : 'declaredMandate', 'Déclarations de mandats')
+            ->createSelect(FeatureEnum::CONTACTS === $feature ? 'declaredMandates' : 'declaredMandate', 'Déclarations de mandats')
             ->setChoices($this->getTranslatedChoices())
             ->setAdvanced(\in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS]))
-            ->setMultiple($multiple)
+            ->setMultiple(FeatureEnum::CONTACTS === $feature)
             ->setHelp('Les déclarations de mandats sont saisie par l’utilisateur à son inscription. Elles ne sont pas fiables et ne servent qu’à détecter d’éventuelles création de compte par des élus.')
             ->getFilters()
         ;

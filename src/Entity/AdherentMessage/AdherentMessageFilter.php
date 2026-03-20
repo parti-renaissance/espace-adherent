@@ -200,7 +200,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
 
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
-    private ?string $mandateType = null;
+    private ?string $electMandate = null;
 
     #[Groups(['adherent_message_update_filter', 'adherent_message_read_filter'])]
     #[ORM\Column(nullable: true)]
@@ -364,14 +364,14 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->audienceType = $audienceType;
     }
 
-    public function getMandateType(): ?string
+    public function getElectMandate(): ?string
     {
-        return $this->mandateType;
+        return $this->electMandate;
     }
 
-    public function setMandateType(?string $mandateType): void
+    public function setElectMandate(?string $electMandate): void
     {
-        $this->mandateType = $mandateType;
+        $this->electMandate = $electMandate;
     }
 
     public function getDeclaredMandate(): ?string
@@ -544,7 +544,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->audienceType = null;
         $this->committee = null;
         $this->isCommitteeMember = null;
-        $this->mandateType = null;
+        $this->electMandate = null;
         $this->declaredMandate = null;
         $this->isCampusRegistered = null;
         $this->donatorStatus = null;

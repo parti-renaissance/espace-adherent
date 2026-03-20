@@ -90,7 +90,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?string $utmSource = null;
     private ?string $utmCampaign = null;
 
-    private ?array $mandateTypes = null;
+    private ?array $electMandates = null;
     private ?array $declaredMandates = null;
 
     /** @var Zone[] */
@@ -155,7 +155,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setZones($adherent->getZones())
             ->setDonationYears($this->findDonationYears($adherent))
             ->setCommitteeUuid($adherent->getCommitteeMembership()?->getCommitteeUuid())
-            ->setMandateTypes($this->mandateRepository->getAdherentMandateTypes($adherent))
+            ->setElectMandates($this->mandateRepository->getAdherentMandateTypes($adherent))
             ->setDeclaredMandates($adherent->getMandates() ?? [])
             ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
             ->setTeamCode($adherent)
@@ -523,9 +523,9 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setMandateTypes(array $mandateTypes): self
+    public function setElectMandates(array $electMandates): self
     {
-        $this->mandateTypes = $mandateTypes;
+        $this->electMandates = $electMandates;
 
         return $this;
     }
@@ -715,10 +715,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_LAST_LOGIN_GROUP] = $this->loginGroup;
         }
 
-        if (null !== $this->mandateTypes) {
+        if (null !== $this->electMandates) {
             $mandateTypes = array_map(function (string $mandateType): string {
                 return '"'.$mandateType.'"';
-            }, $this->mandateTypes);
+            }, $this->electMandates);
 
             $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPES] = implode(',', $mandateTypes);
         }

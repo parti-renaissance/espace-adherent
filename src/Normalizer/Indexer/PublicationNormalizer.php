@@ -123,8 +123,8 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
             $zoneTypeFilter[$zone->getType()] = $zone->getCode();
         }
 
-        foreach ($zoneTypeFilter as $type => $code) {
-            $audienceKeys[] = \sprintf('zone:%s:%s', $type, false === $code ? 'none' : $code);
+        foreach ($zoneTypeFilter as $electMandate => $code) {
+            $audienceKeys[] = \sprintf('zone:%s:%s', $electMandate, false === $code ? 'none' : $code);
             $enabledFilters['zone'] = $enabledFilters['zone'] || false !== $code;
         }
 
@@ -135,21 +135,21 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
         }
 
         // Mandate type
-        if ($type = $filter->getMandateType()) {
-            if (str_starts_with($type, '!')) {
-                $audienceExcludeKeys[] = 'mandate_type:'.substr($type, 1);
+        if ($electMandate = $filter->getElectMandate()) {
+            if (str_starts_with($electMandate, '!')) {
+                $audienceExcludeKeys[] = 'mandate_type:'.substr($electMandate, 1);
             } else {
-                $audienceKeys[] = 'mandate_type:'.$type;
+                $audienceKeys[] = 'mandate_type:'.$electMandate;
             }
             $enabledFilters['mandate_type'] = true;
         }
 
         // Declared mandate
-        if ($declared = $filter->getDeclaredMandate()) {
-            if (str_starts_with($declared, '!')) {
-                $audienceExcludeKeys[] = 'declared_mandate:'.substr($declared, 1);
+        if ($declaredMandate = $filter->getDeclaredMandate()) {
+            if (str_starts_with($declaredMandate, '!')) {
+                $audienceExcludeKeys[] = 'declared_mandate:'.substr($declaredMandate, 1);
             } else {
-                $audienceKeys[] = 'declared_mandate:'.$declared;
+                $audienceKeys[] = 'declared_mandate:'.$declaredMandate;
             }
             $enabledFilters['declared_mandate'] = true;
         }

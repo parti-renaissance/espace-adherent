@@ -8,9 +8,9 @@ use App\JMEFilter\FilterBuilder\AdherentTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\BasicFieldsFilterBuilder;
 use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\DeclaredMandateFilterBuilder;
+use App\JMEFilter\FilterBuilder\ElectMandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\EmailSubscriptionStatusFilterBuilder;
-use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\MilitantFilterBuilder;
 use App\JMEFilter\FilterBuilder\NameFilterBuilder;
 use App\JMEFilter\FilterBuilder\SearchTermFilterBuilder;
@@ -52,7 +52,7 @@ class DefaultContactsFilterLayout extends AbstractFilterLayout
             $this->group(ElectedRepresentativeFilterGroup::class, [
                 $this->filter(DeclaredMandateFilterBuilder::class),
                 $this->filter(ElectTagsFilterBuilder::class),
-                $this->filter(MandatesFilterBuilder::class),
+                $this->filter(ElectMandatesFilterBuilder::class),
             ]),
         ];
     }

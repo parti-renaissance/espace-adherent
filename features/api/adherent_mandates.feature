@@ -12,7 +12,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["depute_europeen"],
+                "declared_mandates": ["depute_europeen"],
                 "contribution_status": "eligible",
                 "contributed_at": "@string@.isDateTime()",
                 "contribution_amount": 200,
@@ -154,7 +154,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
                 "contribution_status": null,
                 "contributed_at": null,
                 "contribution_amount": null,
@@ -205,7 +205,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
                 "contribution_status": null,
                 "contributed_at": null,
                 "contribution_amount": null,
@@ -260,7 +260,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
                 "contribution_status": null,
                 "exempt_from_cotisation": false,
                 "contributed_at": null,
@@ -314,7 +314,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
                 "contribution_status": "eligible",
                 "exempt_from_cotisation": false,
                 "contributed_at": null,
@@ -374,7 +374,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
                 "contribution_status": "eligible",
                 "exempt_from_cotisation": false,
                 "contributed_at": "@string@.isDateTime()",

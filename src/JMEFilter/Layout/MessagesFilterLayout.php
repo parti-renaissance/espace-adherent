@@ -12,8 +12,8 @@ use App\JMEFilter\FilterBuilder\CommitteeMemberFilterBuilder;
 use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\DeclaredMandateFilterBuilder;
 use App\JMEFilter\FilterBuilder\DonatorStatusFilterBuilder;
+use App\JMEFilter\FilterBuilder\ElectMandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
-use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\MilitantFilterBuilder;
 use App\JMEFilter\FilterBuilder\NameFilterBuilder;
 use App\JMEFilter\FilterBuilder\ScopeTargetFilterBuilder;
@@ -69,7 +69,7 @@ class MessagesFilterLayout extends AbstractFilterLayout
         $groups[] = $this->group(ElectedRepresentativeFilterGroup::class, [
             $this->filter(DeclaredMandateFilterBuilder::class),
             $this->filter(ElectTagsFilterBuilder::class),
-            $this->filter(MandatesFilterBuilder::class),
+            $this->filter(ElectMandatesFilterBuilder::class),
         ]);
 
         return $groups;

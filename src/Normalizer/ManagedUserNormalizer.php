@@ -40,7 +40,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if ($isVox) {
             $data['roles'] = $this->formatRolesVox($object);
-            $data['declared_mandates'] = $this->formatMandates($object->getDeclaredMandates());
+            $data['elect_mandates'] = $this->formatMandates($object->getElectMandates());
             $data['adherent_tags'] = $this->translateTags($object->adherentTags);
             $data['static_tags'] = $this->translateTags($object->staticTags);
             $data['elect_tags'] = $this->translateTags($object->electTags);
@@ -88,7 +88,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             unset($data['roles']);
         }
 
-        if (!empty($data['mandates'])) {
+        if (!empty($data['elect_mandates'])) {
             $data['tags'] = array_merge(
                 $data['tags'] ?? [],
                 array_map(
@@ -96,7 +96,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                         'type' => 'mandate',
                         'label' => $this->getTranslatedMandateLabel($mandate),
                     ],
-                    $data['mandates']
+                    $data['elect_mandates']
                 )
             );
         } elseif (!empty($data['declared_mandates'])) {

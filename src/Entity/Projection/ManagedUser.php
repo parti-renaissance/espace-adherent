@@ -322,11 +322,11 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    private ?array $mandates;
+    private ?array $declaredMandates;
 
     #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    private ?array $declaredMandates;
+    private ?array $electMandates;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
@@ -434,8 +434,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?string $agora = null,
         ?UuidInterface $agoraUuid = null,
         array $interests = [],
-        array $mandates = [],
-        array $declaredMandates = [],
+        ?array $declaredMandates = null,
+        ?array $electMandates = null,
         array $cotisationDates = [],
         ?\DateTime $campusRegisteredAt = null,
         ?string $imageName = null,
@@ -481,8 +481,8 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         $this->committeeUuid = $committeeUuid;
         $this->agora = $agora;
         $this->agoraUuid = $agoraUuid;
-        $this->mandates = $mandates;
         $this->declaredMandates = $declaredMandates;
+        $this->electMandates = $electMandates;
         $this->cotisationDates = $cotisationDates;
         $this->campusRegisteredAt = $campusRegisteredAt;
         $this->imageName = $imageName;
@@ -714,14 +714,14 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->agoraUuid;
     }
 
-    public function getMandates(): ?array
-    {
-        return $this->mandates;
-    }
-
     public function getDeclaredMandates(): ?array
     {
         return $this->declaredMandates;
+    }
+
+    public function getElectMandates(): ?array
+    {
+        return $this->electMandates;
     }
 
     public function getCampusRegisteredAt(): ?\DateTime

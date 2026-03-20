@@ -68,7 +68,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'committee_uuid' => $committee11->getUuid(),
             'agora' => $agora1->getName(),
             'agora_uuid' => $agora1->getUuid(),
-            'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
+            'elect_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'civility' => 'Madame',
             'instances' => [
                 ['type' => 'assembly', 'code' => '92', 'name' => 'Hauts-de-Seine (92)'],
@@ -231,8 +231,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             agora: $options['agora'] ?? null,
             agoraUuid: $options['agora_uuid'] ?? null,
             interests: $adherent->getInterests(),
-            mandates: $options['mandates'] ?? [],
-            declaredMandates: $adherent->getMandates() ?? [],
+            declaredMandates: $adherent->getMandates(),
+            electMandates: $options['elect_mandates'] ?? null,
             cotisationDates: $this->formatCotisationDates($options['cotisation_dates'] ?? []),
             imageName: $adherent->getImageName(),
         );

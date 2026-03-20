@@ -10,9 +10,9 @@ use App\JMEFilter\FilterBuilder\CommitteeFilterBuilder;
 use App\JMEFilter\FilterBuilder\CommitteeMemberFilterBuilder;
 use App\JMEFilter\FilterBuilder\ContributionDatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\DeclaredMandateFilterBuilder;
+use App\JMEFilter\FilterBuilder\ElectMandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\ElectTagsFilterBuilder;
 use App\JMEFilter\FilterBuilder\EmailSubscriptionStatusFilterBuilder;
-use App\JMEFilter\FilterBuilder\MandatesFilterBuilder;
 use App\JMEFilter\FilterBuilder\SearchTermFilterBuilder;
 use App\JMEFilter\FilterBuilder\SmsSubscriptionStatusFilterBuilder;
 use App\JMEFilter\FilterBuilder\StaticTagsFilterBuilder;
@@ -64,7 +64,7 @@ class VoxContactsFilterLayout extends AbstractFilterLayout
             ], 'Dates'),
             $this->group(ElectedRepresentativeFilterGroup::class, [
                 $this->filter(ElectTagsFilterBuilder::class),
-                $this->filter(MandatesFilterBuilder::class),
+                $this->filter(ElectMandatesFilterBuilder::class),
                 $this->filter(DeclaredMandateFilterBuilder::class),
             ], 'Élus'),
         ];

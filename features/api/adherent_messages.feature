@@ -923,7 +923,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "mandate_type",
+                            "code": "elect_mandate",
                             "label": "Mandats",
                             "options": {
                                 "advanced": true,
@@ -1173,7 +1173,7 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "mandate_type",
+                            "code": "elect_mandate",
                             "label": "Mandats",
                             "options": {
                                 "advanced": true,
@@ -1399,7 +1399,7 @@ Feature:
                 },
                 "committee": null,
                 "is_committee_member": null,
-                "mandate_type": null,
+                "elect_mandate": null,
                 "declared_mandate": null,
                 "is_campus_registered": null,
                 "donator_status": null,
@@ -1513,7 +1513,7 @@ Feature:
                 },
                 "committee": null,
                 "is_committee_member": true,
-                "mandate_type": null,
+                "elect_mandate": null,
                 "declared_mandate": null,
                 "is_campus_registered": null,
                 "donator_status": null,
@@ -1634,7 +1634,7 @@ Feature:
                 },
                 "committee": null,
                 "is_committee_member": null,
-                "mandate_type": null,
+                "elect_mandate": null,
                 "declared_mandate": null,
                 "is_campus_registered": null,
                 "donator_status": null,
@@ -1746,7 +1746,7 @@ Feature:
                     "slug": "comite-des-3-communes"
                 },
                 "is_committee_member": null,
-                "mandate_type": null,
+                "elect_mandate": null,
                 "declared_mandate": null,
                 "is_campus_registered": null,
                 "donator_status": null,
