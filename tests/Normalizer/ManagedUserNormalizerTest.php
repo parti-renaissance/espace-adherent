@@ -208,8 +208,8 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertArrayNotHasKey('subscription_types', $result);
         self::assertArrayHasKey('roles', $result);
-        self::assertArrayHasKey('mandates', $result);
-        self::assertSame([], $result['mandates']);
+        self::assertArrayHasKey('declared_mandates', $result);
+        self::assertSame([], $result['declared_mandates']);
         self::assertCount(1, $result['roles']);
         self::assertSame('animator', $result['roles'][0]['code']);
     }
@@ -316,7 +316,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->willReturn('male')
         ;
         $managedUser
-            ->method('getMandates')
+            ->method('getDeclaredMandates')
             ->willReturn(['conseiller_municipal', 'depute'])
         ;
 
@@ -339,18 +339,18 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
 
-        self::assertArrayHasKey('mandates', $result);
-        self::assertCount(2, $result['mandates']);
+        self::assertArrayHasKey('declared_mandates', $result);
+        self::assertCount(2, $result['declared_mandates']);
 
         self::assertSame([
             'code' => 'conseiller_municipal',
             'label' => 'Conseiller municipal',
-        ], $result['mandates'][0]);
+        ], $result['declared_mandates'][0]);
 
         self::assertSame([
             'code' => 'depute',
             'label' => 'Député',
-        ], $result['mandates'][1]);
+        ], $result['declared_mandates'][1]);
     }
 
     public function testGetSupportedTypesReturnsManagedUserClass(): void

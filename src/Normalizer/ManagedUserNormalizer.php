@@ -40,7 +40,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if ($isVox) {
             $data['roles'] = $this->formatRolesVox($object);
-            $data['mandates'] = $this->formatMandates($object->getMandates());
+            $data['declared_mandates'] = $this->formatMandates($object->getDeclaredMandates());
             $data['adherent_tags'] = $this->translateTags($object->adherentTags);
             $data['static_tags'] = $this->translateTags($object->staticTags);
             $data['elect_tags'] = $this->translateTags($object->electTags);
