@@ -22,6 +22,9 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?string $gender = null;
 
+    #[Groups(['filter_write'])]
+    public ?string $nationality = null;
+
     public ?int $ageMin = null;
 
     public ?int $ageMax = null;

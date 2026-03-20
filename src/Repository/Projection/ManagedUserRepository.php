@@ -146,6 +146,13 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($nationality = $filter->nationality) {
+            $qb
+                ->andWhere('u.nationality = :nationality')
+                ->setParameter('nationality', $nationality)
+            ;
+        }
+
         if ($lastName = $filter->lastName) {
             $qb
                 ->andWhere('u.lastName LIKE :last_name')
