@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ],
     routePrefix: '/v3/ai',
     normalizationContext: ['groups' => ['chatbot:thread_read']],
-    security: "is_granted('ROLE_CANARY_TESTER')"
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'chatbot')"
 )]
 #[ORM\Entity(repositoryClass: ThreadRepository::class)]
 #[ORM\Table(name: 'chatbot_thread')]

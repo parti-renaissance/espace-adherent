@@ -6,6 +6,8 @@ namespace App\Controller\Api\Chatbot;
 
 use App\Chatbot\ChatbotManager;
 use App\Entity\Adherent;
+use App\Scope\AuthorizationChecker;
+use App\Scope\FeatureEnum;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,20 +16,23 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_CANARY_TESTER')]
 #[Route('/v3/ai/chat', methods: ['POST'])]
 class PostMessageController extends AbstractController
 {
     public function __construct(
         private readonly AgentInterface $geminiAgent,
+        private readonly AuthorizationChecker $authorizationChecker,
         private readonly LoggerInterface $logger,
     ) {
     }
 
     public function __invoke(Request $request, ChatbotManager $chatbotManager, #[CurrentUser] Adherent $user): StreamedResponse
     {
+        if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CHATBOT])) {
+            throw $this->createAccessDeniedException();
+        }
+
         try {
             $data = $request->toArray();
             $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';

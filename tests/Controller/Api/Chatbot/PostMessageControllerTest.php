@@ -51,7 +51,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
     }
 
-    public function testUserWithoutCanaryRoleIsRejected(): void
+    public function testUserWithoutChatbotFeatureIsRejected(): void
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
@@ -74,7 +74,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testInvalidJsonReturns400(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -86,7 +86,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testMissingMessageReturns400(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -98,7 +98,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testEmptyMessageReturns400(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -112,7 +112,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testNewChatPersistsUserMessageAndBotResponse(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         DummyAgent::willReturn(new TextResult('Bonjour, comment puis-je vous aider ?'));
 
@@ -147,7 +147,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testLargeThreadContextIsTruncated(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
         $thread = new Thread($adherent);
@@ -185,7 +185,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testContinueExistingThread(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         DummyAgent::willReturn(new TextResult('Réponse 1'));
 
@@ -243,7 +243,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     public function testBotErrorDoesNotPreventResponse(): void
     {
-        $accessToken = $this->authenticateAsCanaryTester();
+        $accessToken = $this->authenticateWithChatbotAccess();
 
         DummyAgent::willThrow(new \RuntimeException('API Error'));
 
@@ -277,10 +277,10 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertCount(0, $botMessages);
     }
 
-    private function authenticateAsCanaryTester(): string
+    private function authenticateWithChatbotAccess(): string
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        $adherent->canaryTester = true;
+        $adherent->setNationalRole(true);
         $this->manager->flush();
 
         return $this->getAccessToken(

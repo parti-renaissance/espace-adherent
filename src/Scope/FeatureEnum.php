@@ -11,6 +11,7 @@ class FeatureEnum extends Enum
     public const DASHBOARD = 'dashboard';
     public const CONTACTS = 'contacts';
     public const CONTACTS_EXPORT = 'contacts_export';
+    public const CHATBOT = 'chatbot';
     public const MESSAGES = 'messages';
     public const PUBLICATIONS = 'publications';
     public const EVENTS = 'events';
@@ -46,6 +47,7 @@ class FeatureEnum extends Enum
         self::DASHBOARD,
         self::CONTACTS,
         self::CONTACTS_EXPORT,
+        self::CHATBOT,
         self::MESSAGES,
         self::PUBLICATIONS,
         self::EVENTS,
@@ -87,6 +89,7 @@ class FeatureEnum extends Enum
         return array_diff(self::ALL, [
             self::FEATUREBASE,
             self::CONTACTS_EXPORT,
+            self::CHATBOT,
         ]);
     }
 }

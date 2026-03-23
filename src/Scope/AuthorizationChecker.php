@@ -83,6 +83,7 @@ class AuthorizationChecker
             FeatureEnum::MESSAGES,
             FeatureEnum::PUBLICATIONS,
             FeatureEnum::EAGGLE,
+            FeatureEnum::CHATBOT,
         ]));
     }
 }
