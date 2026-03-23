@@ -1203,6 +1203,7 @@ scope.feature.contacts_export: Export contacts
 scope.feature.messages: Messagerie
 scope.feature.publications: Publications (beta)
 scope.feature.events: Événements
+scope.feature.chatbot: ChatBot
 scope.feature.my_team: Mon équipe
 scope.feature.my_team_custom_role: 'Mon équipe : rôle personnalisé'
 scope.feature.mobile_app: Application Mobile
