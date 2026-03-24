@@ -4,31 +4,18 @@ declare(strict_types=1);
 
 namespace App\Donation\Handler;
 
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
-use App\Adhesion\Events\NewCotisationEvent;
 use App\Donation\Command\ReceivePayboxIpnResponseCommand;
-use App\Entity\Donation;
-use App\Mailer\MailerService;
-use App\Mailer\Message\DonationThanksMessage;
-use App\Repository\DonationRepository;
-use App\Repository\TransactionRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AsMessageHandler]
-class ReceivePayboxIpnResponseCommandHandler
+class ReceivePayboxIpnResponseCommandHandler implements PaymentIpnHandlerInterface
 {
+    private const HIGH_VALUE_THRESHOLD = 1000_00; // 1000€ en centimes
+
     public function __construct(
-        private readonly MailerService $transactionalMailer,
-        private readonly EntityManagerInterface $manager,
-        private readonly TransactionRepository $transactionRepository,
-        private readonly DonationRepository $donationRepository,
-        private readonly MessageBusInterface $bus,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PaymentTransactionService $transactionService,
+        private readonly DonationNotificationService $notificationService,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -37,74 +24,28 @@ class ReceivePayboxIpnResponseCommandHandler
     {
         $payload = $command->payload;
 
-        if (!$donation = $this->getDonation($payload)) {
+        if (!$donation = $this->transactionService->findDonationFromPayload($payload)) {
             $this->logger->error('[IPN] Donation not found', ['payload' => $payload]);
 
             return;
         }
 
-        if ($this->transactionRepository->findByPayboxTransactionId($payload['transaction'])) {
+        if ($this->transactionService->transactionExists($payload['transaction'])) {
             $this->logger->error('[IPN] Transaction already exists', ['payload' => $payload]);
 
             return;
         }
 
-        $connection = $this->manager->getConnection();
-        $connection->beginTransaction();
+        $transaction = $this->transactionService->processPayment($donation, $payload);
 
-        try {
-            $adherent = $donation->getDonator()?->getAdherent();
-
-            $transaction = $donation->processPayload($payload);
-
-            if ($transaction->isSuccessful()) {
-                $donation->markAsLastSuccessfulDonation();
-            }
-
-            $this->manager->persist($transaction);
-            $this->manager->flush();
-
-            if ($transaction->isSuccessful()) {
-                if ($adherent) {
-                    $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
-                }
-
-                if ($donation->isMembership()) {
-                    if (!$adherent) {
-                        $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
-
-                        return;
-                    }
-
-                    $this->eventDispatcher->dispatch(new NewCotisationEvent($adherent, $donation));
-                } else {
-                    if (
-                        !$donation->hasSubscription()
-                        || $donation->isFirstSuccessfulTransaction($transaction)
-                    ) {
-                        $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
-                    }
-                }
-            }
-
-            $connection->commit();
-        } catch (\Throwable $e) {
-            if ($connection->isTransactionActive()) {
-                $connection->rollBack();
-            }
-
-            throw $e;
+        // Notification admin pour les gros montants
+        if ($transaction->isSuccessful() && ($payload['amount'] ?? 0) >= self::HIGH_VALUE_THRESHOLD) {
+            $this->notificationService->notifyAdminForHighValueDonation($donation);
         }
     }
 
-    private function getDonation(array $payload): ?Donation
+    public function handle(ReceivePayboxIpnResponseCommand $command): void
     {
-        $donationUuid = isset($payload['id']) ? explode('_', $payload['id'], 2)[0] : null;
-
-        if (!$donationUuid || !Uuid::isValid($donationUuid)) {
-            return null;
-        }
-
-        return $this->donationRepository->findOneByUuid($donationUuid);
+        $this->__invoke($command);
     }
 }
