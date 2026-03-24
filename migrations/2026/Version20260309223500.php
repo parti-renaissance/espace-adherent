@@ -14,13 +14,12 @@ final class Version20260309223500 extends AbstractMigration
     {
         $parser = new DeviceInfoParser();
         $batchSize = 1000;
-        $offset = 0;
 
         do {
             $sessions = $this->connection->fetchAllAssociative(
-                'SELECT id, user_agent FROM app_session WHERE user_agent IS NOT NULL AND device_info IS NULL LIMIT ? OFFSET ?',
-                [$batchSize, $offset],
-                ['integer', 'integer']
+                'SELECT id, user_agent FROM app_session WHERE user_agent IS NOT NULL AND device_info IS NULL LIMIT ?',
+                [$batchSize],
+                ['integer']
             );
 
             foreach ($sessions as $session) {
@@ -31,8 +30,6 @@ final class Version20260309223500 extends AbstractMigration
                     [$deviceInfo, $session['id']]
                 );
             }
-
-            $offset += $batchSize;
         } while (\count($sessions) === $batchSize);
     }
 
