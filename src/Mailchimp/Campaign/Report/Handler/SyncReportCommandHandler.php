@@ -214,7 +214,7 @@ class SyncReportCommandHandler
         // Mark as suspicious if >=2 clicks in the same group
         foreach ($rows as $i => $row) {
             $key = $row['adherent_id'].'|'.$row['app_date'];
-            $rows[$i]['suspicious'] = \count($grouped[$key]) >= 2;
+            $rows[$i]['suspicious'] = \count($grouped[$key]) >= 2 ? 1 : 0;
         }
 
         return $rows;
