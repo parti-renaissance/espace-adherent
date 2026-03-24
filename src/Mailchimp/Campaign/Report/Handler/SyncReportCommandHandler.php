@@ -229,7 +229,7 @@ class SyncReportCommandHandler
         // Sort by fingerprint to avoid deadlocks
         usort($rows, static fn (array $a, array $b) => strcmp($a['fingerprint'] ?? '', $b['fingerprint'] ?? ''));
 
-        $autoCols = ['uuid', 'activity_session_uuid', 'created_at', 'updated_at'];
+        $autoCols = ['uuid', 'activity_session_uuid', 'created_at', 'updated_at', 'source_group'];
         $dynamicCols = array_keys(reset($rows));
         $cols = array_values(array_unique(array_merge($autoCols, $dynamicCols)));
 
