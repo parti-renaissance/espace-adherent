@@ -28,6 +28,10 @@ class SendAdherentRequestReminderCommandHandler
             return;
         }
 
+        if (!$adherentRequest->email) {
+            return;
+        }
+
         $reminderType = $command->reminderType;
 
         if ($this->adherentRequestReminderRepository->hasBeenReminded($adherentRequest, $reminderType)) {
