@@ -38,7 +38,7 @@ final class SyncReportCommandHandlerTest extends TestCase
             'rows' => [
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
             ],
-            'expectedSuspicious' => [false],
+            'expectedSuspicious' => [0],
         ];
 
         // Case 2: Two clicks same adherent same second - both suspicious
@@ -47,7 +47,7 @@ final class SyncReportCommandHandlerTest extends TestCase
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link2.com'],
             ],
-            'expectedSuspicious' => [true, true],
+            'expectedSuspicious' => [1, 1],
         ];
 
         // Case 3: Two clicks same adherent different seconds - not suspicious
@@ -56,7 +56,7 @@ final class SyncReportCommandHandlerTest extends TestCase
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:01', 'target_url' => 'https://link2.com'],
             ],
-            'expectedSuspicious' => [false, false],
+            'expectedSuspicious' => [0, 0],
         ];
 
         // Case 4: Three clicks different adherents same second - not suspicious
@@ -66,7 +66,7 @@ final class SyncReportCommandHandlerTest extends TestCase
                 ['adherent_id' => 2, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
                 ['adherent_id' => 3, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
             ],
-            'expectedSuspicious' => [false, false, false],
+            'expectedSuspicious' => [0, 0, 0],
         ];
 
         // Case 5: Mixed - some suspicious, some not
@@ -77,7 +77,7 @@ final class SyncReportCommandHandlerTest extends TestCase
                 ['adherent_id' => 2, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link1.com'],
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:31:00', 'target_url' => 'https://link3.com'],
             ],
-            'expectedSuspicious' => [true, true, false, false],
+            'expectedSuspicious' => [1, 1, 0, 0],
         ];
 
         // Case 6: Three clicks same adherent same second - all suspicious
@@ -87,7 +87,7 @@ final class SyncReportCommandHandlerTest extends TestCase
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link2.com'],
                 ['adherent_id' => 1, 'app_date' => '2024-01-15 10:30:00', 'target_url' => 'https://link3.com'],
             ],
-            'expectedSuspicious' => [true, true, true],
+            'expectedSuspicious' => [1, 1, 1],
         ];
 
         // Case 7: Empty array

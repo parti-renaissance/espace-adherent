@@ -8,9 +8,11 @@ use App\AdherentMessage\Command\CreatePublicationReachFromAppCommand;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageReach;
 use App\Repository\AdherentMessageRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
 class CreatePublicationReachFromAppCommandHandler
@@ -35,7 +37,8 @@ class CreatePublicationReachFromAppCommandHandler
 
         try {
             $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException|ForeignKeyConstraintViolationException $e) {
+            throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
         }
     }
 }

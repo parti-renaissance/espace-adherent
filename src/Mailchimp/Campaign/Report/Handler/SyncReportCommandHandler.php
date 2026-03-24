@@ -226,6 +226,24 @@ class SyncReportCommandHandler
             return;
         }
 
+        // Filter out rows whose fingerprint already exists in the database
+        $fingerprints = array_column($rows, 'fingerprint');
+        $existing = [];
+
+        foreach (array_chunk($fingerprints, 1000) as $chunk) {
+            $placeholders = implode(',', array_fill(0, \count($chunk), '?'));
+            $result = $conn->fetchFirstColumn("SELECT fingerprint FROM app_hit WHERE fingerprint IN ($placeholders)", $chunk);
+            foreach ($result as $fp) {
+                $existing[$fp] = true;
+            }
+        }
+
+        $rows = array_filter($rows, static fn (array $r) => !isset($existing[$r['fingerprint']]));
+
+        if (!$rows) {
+            return;
+        }
+
         // Sort by fingerprint to avoid deadlocks
         usort($rows, static fn (array $a, array $b) => strcmp($a['fingerprint'] ?? '', $b['fingerprint'] ?? ''));
 
