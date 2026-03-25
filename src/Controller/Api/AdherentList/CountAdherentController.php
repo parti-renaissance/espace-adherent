@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\AdherentList;
 
 use App\Entity\Geo\Zone;
-use App\Geo\ManagedZoneProvider;
 use App\Repository\AdherentRepository;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -31,7 +30,6 @@ class CountAdherentController extends AbstractController
         private readonly ZoneRepository $zoneRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly ScopeGeneratorResolver $resolver,
-        private readonly ManagedZoneProvider $managedZoneProvider,
     ) {
     }
 
@@ -54,11 +52,9 @@ class CountAdherentController extends AbstractController
                 $zoneUuids = [];
             }
 
-            $scopeZonesIds = array_map(fn (Zone $zone) => $zone->getId(), $scopeZones);
-
             $zonesFromRequest = array_filter(
                 $this->zoneRepository->findBy(['uuid' => $zoneUuids]),
-                fn (Zone $zone) => $this->managedZoneProvider->zoneBelongsToSome($zone, $scopeZonesIds)
+                fn (Zone $zone) => $this->zoneRepository->isInZones([$zone], $scopeZones)
             );
         }
 

@@ -8,7 +8,6 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Geo\ManagedZoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -22,7 +21,6 @@ class SaveCommitteeUpdateController extends AbstractController
 {
     public function __invoke(
         Committee $committee,
-        ManagedZoneProvider $zoneProvider,
         CommitteeMembershipManager $committeeMembershipManager,
         EntityManagerInterface $entityManager,
     ): Response {

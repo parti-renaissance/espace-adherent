@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
-use App\Geo\ManagedZoneProvider;
 use App\Repository\CommitteeRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,8 +18,6 @@ class AdherentMessageFilterDenormalizer implements DenormalizerInterface, Denorm
     public const CONTEXT_FEATURE = 'filter_feature';
 
     public function __construct(
-        private readonly ManagedZoneProvider $managedZoneProvider,
-        private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly CommitteeRepository $committeeRepository,
     ) {
@@ -46,13 +41,6 @@ class AdherentMessageFilterDenormalizer implements DenormalizerInterface, Denorm
 
             if (!$audienceFilter->getScope() && $scopeCode) {
                 $audienceFilter->setScope($scopeCode);
-            }
-        } else {
-            if (($user = $this->security->getUser()) && $audienceFilter->getScope() && AdherentSpaceEnum::SCOPES[$audienceFilter->getScope()]) {
-                $audienceFilter->setZones($this->managedZoneProvider->getManagedZones(
-                    $user,
-                    AdherentSpaceEnum::SCOPES[$audienceFilter->getScope()]
-                ));
             }
         }
 

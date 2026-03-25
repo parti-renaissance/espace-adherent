@@ -66,8 +66,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
-            'agora' => $agora1->getName(),
-            'agora_uuid' => $agora1->getUuid(),
             'elect_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'civility' => 'Madame',
             'instances' => [
@@ -186,6 +184,68 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         ]);
         $manager->persist($managedUser7);
 
+        // ManagedUser 8 - adherent-55 (Animator of committee-v2-1)
+        // Note: No zones assigned - these users are filtered by committee UUID only (for animator scope)
+        $committeeV2_1 = $this->getReference('committee-v2-1', Committee::class);
+        $committeeV2_1Instances = [
+            ['type' => 'committee', 'name' => $committeeV2_1->getName(), 'uuid' => $committeeV2_1->getUuid()->toString()],
+        ];
+        $adherent55 = $this->getReference('adherent-55', Adherent::class);
+        $managedUser8 = $this->createManagedUser($adherent55, [
+            'source' => MembershipSourceEnum::RENAISSANCE,
+            'committee' => $committeeV2_1->getName(),
+            'committee_uuid' => $committeeV2_1->getUuid(),
+            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'is_committee_member' => true,
+            'instances' => $committeeV2_1Instances,
+            'public_id' => '555-001',
+        ]);
+        $manager->persist($managedUser8);
+
+        // ManagedUser 9 - adherent-53 (Member of committee-v2-1)
+        $adherent53 = $this->getReference('adherent-53', Adherent::class);
+        $managedUser9 = $this->createManagedUser($adherent53, [
+            'source' => MembershipSourceEnum::RENAISSANCE,
+            'committee' => $committeeV2_1->getName(),
+            'committee_uuid' => $committeeV2_1->getUuid(),
+            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'is_committee_member' => true,
+            'instances' => $committeeV2_1Instances,
+            'public_id' => '553-001',
+        ]);
+        $manager->persist($managedUser9);
+
+        // ManagedUser 10 - adherent-57 (Member of committee-v2-1)
+        $adherent57 = $this->getReference('adherent-57', Adherent::class);
+        $managedUser10 = $this->createManagedUser($adherent57, [
+            'source' => MembershipSourceEnum::RENAISSANCE,
+            'committee' => $committeeV2_1->getName(),
+            'committee_uuid' => $committeeV2_1->getUuid(),
+            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'is_committee_member' => true,
+            'instances' => $committeeV2_1Instances,
+            'public_id' => '557-001',
+        ]);
+        $manager->persist($managedUser10);
+
+        // ManagedUser 11 - adherent-2 (Carl Mirabeau - Member of agora-1)
+        $adherent2 = $this->getReference('adherent-2', Adherent::class);
+        $managedUser11 = $this->createManagedUser($adherent2, [
+            'source' => MembershipSourceEnum::RENAISSANCE,
+            'agora' => $agora1->getName(),
+            'agora_uuid' => $agora1->getUuid(),
+        ]);
+        $manager->persist($managedUser11);
+
+        // ManagedUser 12 - adherent-4 (Lucie Olivera - Member of agora-1)
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
+        $managedUser12 = $this->createManagedUser($adherent4, [
+            'source' => MembershipSourceEnum::RENAISSANCE,
+            'agora' => $agora1->getName(),
+            'agora_uuid' => $agora1->getUuid(),
+        ]);
+        $manager->persist($managedUser12);
+
         $manager->flush();
     }
 
@@ -260,6 +320,9 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         }
         if (isset($options['subscriptions'])) {
             $managedUser->subscriptions = $options['subscriptions'];
+        }
+        if (isset($options['public_id'])) {
+            $managedUser->publicId = $options['public_id'];
         }
 
         $managedUser->setRoles($this->getRoles($adherent));
@@ -364,8 +427,10 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
     {
         return [
             LoadCommitteeV1Data::class,
+            LoadCommitteeData::class,
             LoadDelegatedAccessData::class,
             LoadGeoZoneData::class,
+            LoadAgoraData::class,
         ];
     }
 }

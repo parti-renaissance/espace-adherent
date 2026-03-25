@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace App\Security\Voter\Admin;
 
 use App\Entity\Administrator;
-use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
-use App\Geo\ManagedZoneProvider;
+use App\Repository\Geo\ZoneRepository;
 
 class ZoneableEntityVoter extends AbstractAdminVoter
 {
     // Hack: using int instead of string to avoid renaming by using prefix ROLE_ by Sonata RoleSecurityHandler
     public const int ROLE_ADMIN_OBJECT_IN_USER_ZONES = 1024;
 
-    public function __construct(private readonly ManagedZoneProvider $managedZoneProvider)
+    public function __construct(private readonly ZoneRepository $zoneRepository)
     {
     }
 
@@ -33,10 +32,10 @@ class ZoneableEntityVoter extends AbstractAdminVoter
             return false;
         }
 
-        $managedZonesId = $administrator->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
+        $managedZones = $administrator->getZones()->toArray();
 
         foreach ($subject->getZones() as $zone) {
-            if ($this->managedZoneProvider->zoneBelongsToSome($zone, $managedZonesId)) {
+            if ($this->zoneRepository->isInZones([$zone], $managedZones)) {
                 return true;
             }
         }

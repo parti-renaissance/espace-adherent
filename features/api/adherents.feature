@@ -269,8 +269,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": "@number@",
-                        "agora": "Première Agora",
-                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
@@ -373,8 +373,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": "@number@",
-                        "agora": "Première Agora",
-                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
@@ -614,8 +614,8 @@ Feature:
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
                         "age": "@number@",
-                        "agora": "Première Agora",
-                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                        "agora": null,
+                        "agora_uuid": null,
                         "phone": "+33 1 38 76 43 34",
                         "nationality": "FR",
                         "tags": [
@@ -1217,3 +1217,151 @@ Feature:
         And the response should contain ";\"2 avenue Jean Jaurès\";77000;Melun;France;;"
         And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription, Sénatrice, Déléguée de circonscription, Candidate, Présidente d'assemblée départementale, Présidente d'assemblée départementale, Responsable locale, Candidate aux législatives\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
         And the response should contain ";\"47 rue Martre\";92110;Clichy;France;1;1"
+
+    Scenario: As an Animator I can see adherents automatically filtered by my committee
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents?scope=animator"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 3,
+                    "items_per_page": 50,
+                    "count": 3,
+                    "current_page": 1,
+                    "last_page": 1
+                },
+                "items": [
+                    {
+                        "public_id": "555-001",
+                        "adherent_uuid": "@uuid@",
+                        "email": "adherent-male-55@en-marche-dev.fr",
+                        "address": "2 avenue Jean Jaurès",
+                        "postal_code": "77000",
+                        "city": "Melun",
+                        "country": "FR",
+                        "gender": "male",
+                        "first_name": "Adherent 55",
+                        "last_name": "Fa55ke",
+                        "image_url": null,
+                        "birthdate": "1962-03-04T00:00:00+01:00",
+                        "age": @integer@,
+                        "agora": null,
+                        "agora_uuid": null,
+                        "phone": "+33 6 99 88 77 55",
+                        "nationality": "FR",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2026",
+                                "label": "@string@",
+                                "type": "adherent"
+                            }
+                        ],
+                        "created_at": "2017-01-25T19:31:45+01:00",
+                        "interests": [],
+                        "first_membership_donation": null,
+                        "last_membership_donation": null,
+                        "committee": "Comité des 3 communes",
+                        "committee_uuid": "@uuid@",
+                        "elect_mandates": [],
+                        "declared_mandates": [],
+                        "cotisation_dates": [],
+                        "campus_registered_at": null,
+                        "instances": [
+                            {"type": "committee", "name": "Comité des 3 communes", "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3"}
+                        ],
+                        "certified": true,
+                        "sms_subscription": false,
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
+                    },
+                    {
+                        "public_id": "553-001",
+                        "adherent_uuid": "@uuid@",
+                        "email": "adherent-male-53@en-marche-dev.fr",
+                        "address": "2 avenue Jean Jaurès",
+                        "postal_code": "77000",
+                        "city": "Melun",
+                        "country": "FR",
+                        "gender": "male",
+                        "first_name": "Adherent 53",
+                        "last_name": "Fa53ke",
+                        "image_url": null,
+                        "birthdate": "1962-03-04T00:00:00+01:00",
+                        "age": @integer@,
+                        "agora": null,
+                        "agora_uuid": null,
+                        "phone": "+33 6 99 88 77 53",
+                        "nationality": "FR",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2026",
+                                "label": "@string@",
+                                "type": "adherent"
+                            }
+                        ],
+                        "created_at": "2017-01-25T19:31:45+01:00",
+                        "interests": [],
+                        "first_membership_donation": null,
+                        "last_membership_donation": null,
+                        "committee": "Comité des 3 communes",
+                        "committee_uuid": "@uuid@",
+                        "elect_mandates": [],
+                        "declared_mandates": [],
+                        "cotisation_dates": [],
+                        "campus_registered_at": null,
+                        "instances": [
+                            {"type": "committee", "name": "Comité des 3 communes", "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3"}
+                        ],
+                        "certified": true,
+                        "sms_subscription": false,
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
+                    },
+                    {
+                        "public_id": "557-001",
+                        "adherent_uuid": "@uuid@",
+                        "email": "adherent-male-57@en-marche-dev.fr",
+                        "address": "2 avenue Jean Jaurès",
+                        "postal_code": "77000",
+                        "city": "Melun",
+                        "country": "FR",
+                        "gender": "male",
+                        "first_name": "Adherent 57",
+                        "last_name": "Fa57ke",
+                        "image_url": null,
+                        "birthdate": "1962-03-04T00:00:00+01:00",
+                        "age": @integer@,
+                        "agora": null,
+                        "agora_uuid": null,
+                        "phone": "+33 6 99 88 77 57",
+                        "nationality": "FR",
+                        "tags": [
+                            {
+                                "code": "adherent:a_jour_2026",
+                                "label": "@string@",
+                                "type": "adherent"
+                            }
+                        ],
+                        "created_at": "2017-01-25T19:31:45+01:00",
+                        "interests": [],
+                        "first_membership_donation": null,
+                        "last_membership_donation": null,
+                        "committee": "Comité des 3 communes",
+                        "committee_uuid": "@uuid@",
+                        "elect_mandates": [],
+                        "declared_mandates": [],
+                        "cotisation_dates": [],
+                        "campus_registered_at": null,
+                        "instances": [
+                            {"type": "committee", "name": "Comité des 3 communes", "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3"}
+                        ],
+                        "certified": true,
+                        "sms_subscription": false,
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
+                    }
+                ]
+            }
+            """

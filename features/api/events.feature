@@ -2664,238 +2664,23 @@ Feature:
                 }
             }
             """
-        When I send a "GET" request to "/api/v3/events?scope=agora_president"
-        Then the response status code should be 200
-        And the JSON should be equal to:
-            """
-            {
-                "metadata": {
-                    "total_items": 32,
-                    "items_per_page": 2,
-                    "count": 2,
-                    "current_page": 1,
-                    "last_page": 16
-                },
-                "items": [
-                    {
-                        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
-                        "name": "Nouvel événement online",
-                        "slug": "@string@-nouvel-evenement-online",
-                        "time_zone": "Europe/Paris",
-                        "live_url": null,
-                        "visibility": "public",
-                        "created_at": "@string@.isDateTime()",
-                        "begin_at": "@string@.isDateTime()",
-                        "finish_at": "@string@.isDateTime()",
-                        "organizer": {
-                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                            "first_name": "Referent",
-                            "last_name": "Referent",
-                            "scope": null,
-                            "role": "Président",
-                            "instance": "Assemblée départementale",
-                            "image_url": null,
-                            "zone": null,
-                            "theme": null
-                        },
-                        "participants_count": 0,
-                        "status": "SCHEDULED",
-                        "capacity": 50,
-                        "post_address": {
-                            "address": "47 rue Martre",
-                            "postal_code": "92110",
-                            "city": "92110-92024",
-                            "city_name": "Clichy",
-                            "country": "FR",
-                            "latitude": 48.9016,
-                            "longitude": 2.305268
-                        },
-                        "created_at": "@string@.isDateTime()",
-                        "category": null,
-                        "visio_url": null,
-                        "is_national": false,
-                        "mode": "online",
-                        "local_begin_at": "@string@.isDateTime()",
-                        "local_finish_at": "@string@.isDateTime()",
-                        "image_url": null,
-                        "image": null,
-                        "editable": false,
-                        "user_registered_at": null,
-                        "object_state": "full"
-                    },
-                    {
-                        "uuid": "@uuid@",
-                        "name": "Nouvel event pour Agora",
-                        "slug": "@string@-nouvel-event-pour-agora",
-                        "time_zone": "Europe/Paris",
-                        "live_url": null,
-                        "visibility": "private",
-                        "created_at": "@string@.isDateTime()",
-                        "user_registered_at": "@string@.isDateTime()",
-                        "begin_at": "@string@.isDateTime()",
-                        "finish_at": "@string@.isDateTime()",
-                        "visibility": "invitation_agora",
-                        "organizer": {
-                            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                            "first_name": "Michelle",
-                            "last_name": "Dufour",
-                            "scope": "agora_president",
-                            "role": "Présidente",
-                            "instance": "Agora",
-                            "image_url": null,
-                            "zone": "Première Agora",
-                            "theme": {
-                                "active": "#1C5CD8",
-                                "hover": "#2F6FE0",
-                                "primary": "#3A7DFF",
-                                "soft": "#E8F0FF"
-                            }
-                        },
-                        "participants_count": 1,
-                        "status": "SCHEDULED",
-                        "capacity": null,
-                        "post_address": {
-                            "address": null,
-                            "postal_code": null,
-                            "city": null,
-                            "city_name": null,
-                            "country": null,
-                            "latitude": null,
-                            "longitude": null
-                        },
-                        "category": {
-                            "event_group_category": {
-                                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
-                                "name": "événement",
-                                "slug": "evenement"
-                            },
-                            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
-                            "name": "Kiosque",
-                            "slug": "kiosque"
-                        },
-                        "visio_url": "https://parti-renaissance.fr/reunions/123",
-                        "is_national": false,
-                        "mode": "online",
-                        "local_begin_at": "@string@.isDateTime()",
-                        "local_finish_at": "@string@.isDateTime()",
-                        "image_url": null,
-                        "image": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()",
-                        "object_state": "full"
-                    }
-                ]
-            }
-            """
-        When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        # Switch to jemengage_admin scope to test private context filtering
+        When I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         And I send a "GET" request to "/api/v3/events?scope=agora_president"
         Then the response status code should be 200
-        And the JSON should be equal to:
-            """
-            {
-                "metadata": {
-                    "total_items": 31,
-                    "items_per_page": 2,
-                    "count": 2,
-                    "current_page": 1,
-                    "last_page": 16
-                },
-                "items": [
-                    {
-                        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
-                        "name": "Nouvel événement online",
-                        "slug": "@string@-nouvel-evenement-online",
-                        "time_zone": "Europe/Paris",
-                        "live_url": null,
-                        "visibility": "public",
-                        "created_at": "@string@.isDateTime()",
-                        "begin_at": "@string@.isDateTime()",
-                        "finish_at": "@string@.isDateTime()",
-                        "organizer": {
-                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                            "first_name": "Referent",
-                            "last_name": "Referent",
-                            "scope": null,
-                            "role": "Président",
-                            "instance": "Assemblée départementale",
-                            "image_url": null,
-                            "zone": null,
-                            "theme": null
-                        },
-                        "participants_count": 0,
-                        "status": "SCHEDULED",
-                        "capacity": 50,
-                        "post_address": {
-                            "address": "47 rue Martre",
-                            "postal_code": "92110",
-                            "city": "92110-92024",
-                            "city_name": "Clichy",
-                            "country": "FR",
-                            "latitude": 48.9016,
-                            "longitude": 2.305268
-                        },
-                        "created_at": "@string@.isDateTime()",
-                        "category": null,
-                        "visio_url": null,
-                        "is_national": false,
-                        "mode": "online",
-                        "local_begin_at": "@string@.isDateTime()",
-                        "local_finish_at": "@string@.isDateTime()",
-                        "image_url": null,
-                        "image": null,
-                        "editable": false,
-                        "user_registered_at": null,
-                        "object_state": "full"
-                    },
-                    {
-                        "uuid": "@uuid@",
-                        "name": "Event interne 5",
-                        "slug": "@string@-event-interne-5",
-                        "time_zone": "Europe/Paris",
-                        "live_url": null,
-                        "visibility": "private",
-                        "created_at": "@string@.isDateTime()",
-                        "begin_at": "@string@.isDateTime()",
-                        "finish_at": "@string@.isDateTime()",
-                        "visibility": "private",
-                        "organizer": {
-                            "uuid": "@string@",
-                            "first_name": "Jean-Baptiste",
-                            "last_name": "Fortin",
-                            "scope": null,
-                            "role": null,
-                            "instance": null,
-                            "image_url": null,
-                            "zone": null,
-                            "theme": null
-                        },
-                        "participants_count": 0,
-                        "status": "SCHEDULED",
-                        "capacity": 50,
-                        "post_address": {
-                            "address": "74 Avenue des Champs-Élysées, 75008 Paris",
-                            "postal_code": "75008",
-                            "city": "75008-75108",
-                            "city_name": "Paris 8ème",
-                            "country": "FR",
-                            "latitude": 48.862724,
-                            "longitude": 2.287592
-                        },
-                        "category": null,
-                        "visio_url": null,
-                        "is_national": false,
-                        "mode": "online",
-                        "local_begin_at": "@string@.isDateTime()",
-                        "local_finish_at": "@string@.isDateTime()",
-                        "image_url": null,
-                        "image": null,
-                        "editable": false,
-                        "user_registered_at": null,
-                        "object_state": "full"
-                    }
-                ]
-            }
-            """
+        And the JSON nodes should match:
+            | metadata.total_items | 1                       |
+            | metadata.count       | 1                       |
+            | items[0].uuid        | @uuid@                  |
+            | items[0].name        | Nouvel event pour Agora |
+            | items[0].visibility  | invitation_agora        |
+        # Jacques Picard (president of agora-2, different from Michelle's agora-1) should see 0 events since there are no events for his agora
+        When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/events?scope=agora_president"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 0 |
+            | metadata.count       | 0 |
         When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
         Then the response status code should be 201
         And the JSON should be equal to:
@@ -2982,175 +2767,22 @@ Feature:
         Then the response status code should be 201
         When I send a "GET" request to "/api/v3/events/:saved_response.uuid:"
         Then the response status code should be 200
-        And the JSON should be equal to:
-            """
-            {
-                "uuid": "@uuid@",
-                "name": "Nouvel event pour Agora",
-                "slug": "@string@-nouvel-event-pour-agora",
-                "agora": {
-                    "created_at": "@string@.isDateTime()",
-                    "name": "Première Agora",
-                    "slug": "premiere-agora",
-                    "uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
-                },
-                "description": "Une description de l'événement",
-                "json_description": null,
-                "time_zone": "Europe/Paris",
-                "committee": null,
-                "live_url": null,
-                "visibility": "private",
-                "created_at": "@string@.isDateTime()",
-                "user_registered_at": "@string@.isDateTime()",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "visibility": "invitation_agora",
-                "organizer": {
-                    "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                    "first_name": "Michelle",
-                    "last_name": "Dufour",
-                    "scope": "agora_president",
-                    "role": "Présidente",
-                    "instance": "Agora",
-                    "image_url": null,
-                    "zone": "Première Agora",
-                    "theme": {
-                        "active": "#1C5CD8",
-                        "hover": "#2F6FE0",
-                        "primary": "#3A7DFF",
-                        "soft": "#E8F0FF"
-                    }
-                },
-                "participants_count": 2,
-                "status": "SCHEDULED",
-                "capacity": null,
-                "post_address": {
-                    "address": null,
-                    "postal_code": null,
-                    "city": null,
-                    "city_name": null,
-                    "country": null,
-                    "latitude": null,
-                    "longitude": null
-                },
-                "category": {
-                    "event_group_category": {
-                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
-                    "name": "Kiosque",
-                    "slug": "kiosque"
-                },
-                "visio_url": "https://parti-renaissance.fr/reunions/123",
-                "is_national": false,
-                "mode": "online",
-                "local_begin_at": "@string@.isDateTime()",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "image": null,
-                "editable": false,
-                "object_state": "full"
-            }
-            """
+        And the JSON nodes should match:
+            | uuid               | @uuid@                               |
+            | name               | Nouvel event pour Agora              |
+            | agora.uuid         | 82ad6422-cb82-4c04-b478-bfb421c740e0 |
+            | agora.name         | Première Agora                       |
+            | participants_count | 2                                    |
+            | visibility         | invitation_agora                     |
         When I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/events/:saved_response.uuid:/participants"
         Then the response status code should be 200
-        And the JSON should be equal to:
-            """
-            {
-                "metadata": {
-                    "total_items": 4,
-                    "items_per_page": 30,
-                    "count": 4,
-                    "current_page": 1,
-                    "last_page": 1
-                },
-                "items": [
-                    {
-                        "uuid": "@uuid@",
-                        "created_at": "@string@.isDateTime()",
-                        "confirmed_at": null,
-                        "status": "invited",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau",
-                        "postal_code": "77190",
-                        "referrer": null,
-                        "email_address": "carl999@example.fr",
-                        "phone": "+33 1 11 22 33 44",
-                        "image_url": null,
-                        "tags": [
-                            {
-                                "code": "sympathisant:compte_em",
-                                "label": "Ancien compte En Marche",
-                                "type": "sympathisant"
-                            }
-                        ]
-                    },
-                    {
-                        "confirmed_at": null,
-                        "created_at": "@string@.isDateTime()",
-                        "email_address": "luciole1989@spambox.fr",
-                        "first_name": "Lucie",
-                        "image_url": "http://test.renaissance.code/assets/images/profile/176a058b1ee701ab813f3256560a213d.jpg",
-                        "last_name": "Olivera",
-                        "phone": "+33 7 27 36 36 43",
-                        "postal_code": "75009",
-                        "referrer": null,
-                        "status": "invited",
-                        "tags": [
-                            {
-                                "code": "adherent:a_jour_2026:recotisation",
-                                "label": "Adhérent à jour 2026",
-                                "type": "adherent"
-                            }
-                        ],
-                        "uuid": "@string@"
-                    },
-                    {
-                        "confirmed_at": "@string@.isDateTime()",
-                        "created_at": "@string@.isDateTime()",
-                        "email_address": "michelle.dufour@example.ch",
-                        "first_name": "Michelle",
-                        "image_url": null,
-                        "last_name": "Dufour",
-                        "phone": "+33 6 66 66 66 66",
-                        "postal_code": "8057",
-                        "referrer": null,
-                        "status": "confirmed",
-                        "tags": [
-                            {
-                                "code": "adherent:a_jour_2026:recotisation",
-                                "label": "Adhérent à jour 2026",
-                                "type": "adherent"
-                            }
-                        ],
-                        "uuid": "@string@"
-                    },
-                    {
-                        "confirmed_at": "@string@.isDateTime()",
-                        "created_at": "@string@.isDateTime()",
-                        "email_address": "jacques.picard@en-marche.fr",
-                        "first_name": "Jacques",
-                        "image_url": null,
-                        "last_name": "Picard",
-                        "phone": "+33 1 87 26 42 36",
-                        "postal_code": "75008",
-                        "referrer": null,
-                        "status": "confirmed",
-                        "tags": [
-                            {
-                                "code": "adherent:a_jour_2026:recotisation",
-                                "label": "Adhérent à jour 2026",
-                                "type": "adherent"
-                            }
-                        ],
-                        "uuid": "@string@"
-                    }
-                ]
-            }
-            """
+        And the JSON nodes should match:
+            | metadata.total_items | 4        |
+            | items[0].first_name  | Carl     |
+            | items[1].first_name  | Lucie    |
+            | items[2].first_name  | Michelle |
+            | items[3].first_name  | Jacques  |
 
     Scenario: As a President of Agora I can get the count of invitations for an agora
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"

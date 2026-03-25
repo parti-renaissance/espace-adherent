@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\EnMarche\Poll;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +15,7 @@ class PollCandidateController extends AbstractPollController
 {
     protected function getSpaceName(): string
     {
-        return AdherentSpaceEnum::CANDIDATE;
+        return 'candidate';
     }
 
     protected function getZones(Adherent $adherent): array

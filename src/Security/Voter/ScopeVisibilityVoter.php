@@ -11,7 +11,6 @@ use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\Jecoute\News;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
-use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
@@ -22,7 +21,6 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly ZoneRepository $zoneRepository,
     ) {
     }
@@ -62,7 +60,7 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
                 return false;
             }
 
-            return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones());
+            return $this->zoneRepository->isInZones([$subject->getZone()], $scope->getZones());
         }
 
         if ($subject instanceof EntityScopeVisibilityWithZonesInterface) {

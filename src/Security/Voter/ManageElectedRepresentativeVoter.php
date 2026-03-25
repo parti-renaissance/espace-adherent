@@ -6,8 +6,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\Geo\Zone;
-use App\Geo\ManagedZoneProvider;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 
 class ManageElectedRepresentativeVoter extends AbstractAdherentVoter
@@ -16,15 +15,20 @@ class ManageElectedRepresentativeVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         $scope = $this->scopeGeneratorResolver->generate();
+
+        if (!$scope) {
+            return false;
+        }
+
         $adherent = $scope->getDelegator() ?? $adherent;
-        $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
+        $scopeZones = $scope->getZones();
 
         /** @var ElectedRepresentative $subject */
         if (
@@ -36,7 +40,7 @@ class ManageElectedRepresentativeVoter extends AbstractAdherentVoter
 
         $zones = array_merge($subject->getZones()->toArray(), $subject->getAdherent() ? $subject->getAdherent()->getZones()->toArray() : []);
         foreach ($zones as $zone) {
-            if ($this->managedZoneProvider->zoneBelongsToSome($zone, $zoneIds)) {
+            if ($this->zoneRepository->isInZones([$zone], $scopeZones)) {
                 return true;
             }
         }

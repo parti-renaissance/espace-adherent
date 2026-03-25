@@ -33,7 +33,7 @@ class AdherentAutocompleteController extends AbstractController
             $zones = $scope->getZones();
         }
 
-        $filter = new AdherentAutocompleteFilter($zones, $scope ? $scope->getCommitteeUuids() : []);
+        $filter = new AdherentAutocompleteFilter($zones, $scope ? $scope->getCommitteeUuids() : [], $scope ? $scope->getAgoraUuids() : []);
 
         $denormalizer->denormalize($request->query->all(), AdherentAutocompleteFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

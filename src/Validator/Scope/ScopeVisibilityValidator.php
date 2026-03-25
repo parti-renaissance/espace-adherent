@@ -7,7 +7,6 @@ namespace App\Validator\Scope;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
-use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Validator\Constraint;
@@ -18,7 +17,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 class ScopeVisibilityValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly ZoneRepository $zoneRepository,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
@@ -78,7 +76,7 @@ class ScopeVisibilityValidator extends ConstraintValidator
 
         if (
             $value instanceof EntityScopeVisibilityWithZoneInterface
-            && !$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())
+            && !$this->zoneRepository->isInZones([$value->getZone()], $scope->getZones())
         ) {
             $this
                 ->context

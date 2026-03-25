@@ -912,3 +912,29 @@ Feature:
                 }
             ]
             """
+
+    Scenario: As an Animator I can search only my committee members with autocomplete
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "GET" request to "/api/v3/adherents/autocomplete?q=adherent%2056&scope=animator"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "registered_at": "@string@.isDateTime()",
+                    "uuid": "@uuid@",
+                    "id": "@string@-@string@",
+                    "first_name": "Adherent 56",
+                    "last_name": "Fa56ke",
+                    "postal_code": "77000",
+                    "email_address": "adherent-female-56@en-marche-dev.fr"
+                }
+            ]
+            """
+        # Searching for an adherent who is NOT a member of the animator's committee should return empty
+        When I send a "GET" request to "/api/v3/adherents/autocomplete?q=referent@en-marche-dev.fr&scope=animator"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            []
+            """
