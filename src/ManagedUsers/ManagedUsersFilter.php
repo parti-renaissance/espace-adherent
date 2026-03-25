@@ -150,10 +150,6 @@ class ManagedUsersFilter
         array $cities = [],
         array $zones = [],
     ) {
-        if (empty($managedZones) && empty($zones) && empty($committeeUuids) && empty($agoraUuids)) {
-            throw new \InvalidArgumentException('ManagedUser filter should have managed zones or selected zones or committee or agora');
-        }
-
         $this->subscriptionType = $subscriptionType;
         $this->managedZones = $managedZones;
         $this->zones = $zones;
@@ -260,5 +256,10 @@ class ManagedUsersFilter
     public function setIsCertified(mixed $value): void
     {
         $this->isCertified = null === $value ? $value : filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
+    }
+
+    public function hasActivePerimeter(): bool
+    {
+        return !empty($this->managedZones) || !empty($this->committeeUuids) || !empty($this->agoraUuids);
     }
 }

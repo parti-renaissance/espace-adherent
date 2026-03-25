@@ -41,7 +41,9 @@ class AdherentListController extends AbstractController
         /** @var Adherent $user */
         $user = $this->getUser();
         try {
-            $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS]);
+            if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS])) {
+                throw $this->createAccessDeniedException();
+            }
         } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {
             throw new BadRequestHttpException();
         } catch (ScopeExceptionInterface $e) {
@@ -58,6 +60,10 @@ class AdherentListController extends AbstractController
             $scope->getAgoraUuids(),
         );
 
+        if (!$scope->isNational() && !$filter->hasActivePerimeter()) {
+            throw new BadRequestHttpException('The provided scope does not have any perimeter, unable to search adherents.');
+        }
+
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
             AbstractNormalizer::GROUPS => ['filter_write'],
@@ -66,7 +72,9 @@ class AdherentListController extends AbstractController
 
         if ('json' !== $format) {
             try {
-                $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS_EXPORT]);
+                if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS_EXPORT])) {
+                    throw $this->createAccessDeniedException();
+                }
             } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {
                 throw new BadRequestHttpException();
             } catch (ScopeExceptionInterface $e) {
