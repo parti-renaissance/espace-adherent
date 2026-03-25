@@ -119,6 +119,7 @@ class ManagedUsersExporter
             'Pays' => isset($row['country']) ? Countries::getName($row['country']) : null,
             'Abonné email' => $this->isEmailSubscribed($row, $emailSubscriptionType),
             'Abonné SMS' => $this->hasSmsSubscription($row),
+            'Instances' => $this->extractInstancesFromJson($row['instances'] ?? null),
         ];
     }
 
@@ -267,5 +268,14 @@ class ManagedUsersExporter
         }
 
         return (bool) ($subscriptions[$type]['subscribed'] ?? false);
+    }
+
+    private function extractInstancesFromJson(?array $instances): string
+    {
+        if (!$instances) {
+            return '';
+        }
+
+        return implode(', ', array_filter(array_column($instances, 'name')));
     }
 }

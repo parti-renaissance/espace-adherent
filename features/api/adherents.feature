@@ -185,22 +185,11 @@ Feature:
                         "declared_mandates": [],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
-                                "type": "district",
-                                "code": "77-1",
-                                "name": "Seine-et-Marne (1)"
-                            },
-                            {
-                                "uuid": "e3f2a958-906e-11eb-a875-0242ac150002",
-                                "type": "city",
-                                "code": "77288",
-                                "name": "Melun"
-                            }
+                        "instances": [
+                            {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
+                            {"type": "circonscription", "code": "77-1", "name": "1ère circonscription • Seine-et-Marne (77-1)"}
                         ],
                         "certified": false,
-                        "city_code": "77288",
                         "sms_subscription": false,
                         "email_subscription": false,
                         "available_for_resubscribe_email": false
@@ -258,22 +247,10 @@ Feature:
                         "declared_mandates": ["depute_europeen", "conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "59",
-                                "name": "Nord"
-                            }
+                        "instances": [
+                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
                         ],
                         "certified": false,
-                        "city_code": null,
                         "sms_subscription": false,
                         "email_subscription": false,
                         "available_for_resubscribe_email": false
@@ -357,22 +334,11 @@ Feature:
                         "declared_mandates": ["conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                                "type": "city",
-                                "code": "92024",
-                                "name": "Clichy"
-                            }
+                        "instances": [
+                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
+                            {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
                         ],
                         "certified": true,
-                        "city_code": "92024",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false
@@ -472,22 +438,11 @@ Feature:
                         "declared_mandates": ["conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                                "type": "city",
-                                "code": "92024",
-                                "name": "Clichy"
-                            }
+                        "instances": [
+                            { "type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)" },
+                            { "type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818" }
                         ],
                         "certified": true,
-                        "city_code": "92024",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false
@@ -512,6 +467,10 @@ Feature:
                 "last_name": "Brioul",
                 "image_url": "http://test.renaissance.code/assets/images/profile/8dd6da70dcf774d0b6d5789289e8a421.jpg",
                 "birthdate": "1962-01-07T00:00:00+01:00",
+                "instances": [
+                    {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
+                    {"type": "circonscription", "code": "77-1", "name": "1ère circonscription • Seine-et-Marne (77-1)"}
+                ],
                 "age": @integer@,
                 "agora": null,
                 "agora_uuid": null,
@@ -549,19 +508,9 @@ Feature:
                 "declared_mandates": [],
                 "cotisation_dates": [],
                 "campus_registered_at": null,
-                "zones": [
-                    {
-                        "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
-                        "type": "district",
-                        "code": "77-1",
-                        "name": "Seine-et-Marne (1)"
-                    },
-                    {
-                        "uuid": "e3f2a958-906e-11eb-a875-0242ac150002",
-                        "type": "city",
-                        "code": "77288",
-                        "name": "Melun"
-                    }
+                "instances": [
+                    {"type": "assembly", "code": "77", "name": "Seine-et-Marne (77)"},
+                    {"type": "circonscription", "code": "77-1", "name": "1ère circonscription • Seine-et-Marne (77-1)"}
                 ],
                 "certified": false,
                 "sms_subscription": false,
@@ -643,22 +592,10 @@ Feature:
                         "declared_mandates": ["depute_europeen", "conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "59",
-                                "name": "Nord"
-                            }
+                        "instances": [
+                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
                         ],
                         "certified": false,
-                        "city_code": null,
                         "sms_subscription": false,
                         "email_subscription": false,
                         "available_for_resubscribe_email": false
@@ -748,22 +685,11 @@ Feature:
                         "declared_mandates": ["conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                                "type": "department",
-                                "code": "92",
-                                "name": "Hauts-de-Seine"
-                            },
-                            {
-                                "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                                "type": "city",
-                                "code": "92024",
-                                "name": "Clichy"
-                            }
+                        "instances": [
+                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
+                            {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
                         ],
                         "certified": true,
-                        "city_code": "92024",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false
@@ -1094,22 +1020,8 @@ Feature:
                         "declared_mandates": [],
                         "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
-                                "type": "district",
-                                "code": "75-1",
-                                "name": "Paris (1)"
-                            },
-                            {
-                                "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
-                                "type": "borough",
-                                "code": "75108",
-                                "name": "Paris 8ème"
-                            }
-                        ],
+                        "instances": null,
                         "certified": true,
-                        "city_code": "75056",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false
@@ -1174,22 +1086,8 @@ Feature:
                         "declared_mandates": [],
                         "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
-                                "type": "district",
-                                "code": "75-1",
-                                "name": "Paris (1)"
-                            },
-                            {
-                                "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
-                                "type": "borough",
-                                "code": "75108",
-                                "name": "Paris 8ème"
-                            }
-                        ],
+                        "instances": null,
                         "certified": true,
-                        "city_code": "75056",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false
@@ -1250,22 +1148,8 @@ Feature:
                         "declared_mandates": [],
                         "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
                         "campus_registered_at": null,
-                        "zones": [
-                            {
-                                "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
-                                "type": "district",
-                                "code": "75-1",
-                                "name": "Paris (1)"
-                            },
-                            {
-                                "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
-                                "type": "borough",
-                                "code": "75108",
-                                "name": "Paris 8ème"
-                            }
-                        ],
+                        "instances": null,
                         "certified": true,
-                        "city_code": "75056",
                         "sms_subscription": true,
                         "email_subscription": true,
                         "available_for_resubscribe_email": false

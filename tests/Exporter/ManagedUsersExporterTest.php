@@ -97,6 +97,10 @@ class ManagedUsersExporterTest extends TestCase
             'country' => 'FR',
             'mailchimpStatus' => ContactStatusEnum::SUBSCRIBED,
             'subscriptionTypes' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
+            'instances' => [
+                ['type' => 'assembly', 'code' => '92', 'name' => 'Hauts-de-Seine (92)'],
+                ['type' => 'committee', 'name' => 'En Marche Paris 8', 'uuid' => '515a56c0-bde8-56ef-b90c-4745b1c93818'],
+            ],
         ];
 
         $this->repository
@@ -171,11 +175,12 @@ class ManagedUsersExporterTest extends TestCase
         $this->assertSame('75001', $row['Code postal']);
         $this->assertSame('Paris', $row['Ville']);
         $this->assertSame('France', $row['Pays']);
+        $this->assertSame('Hauts-de-Seine (92), En Marche Paris 8', $row['Instances']);
         $this->assertTrue($row['Abonné email']);
         $this->assertTrue($row['Abonné SMS']);
 
         // Count columns for standard export (excludes Circonscription and Code INSEE which require zones)
-        $this->assertCount(23, $row);
+        $this->assertCount(24, $row);
     }
 
     public function testGetResponseWithVoxExport(): void

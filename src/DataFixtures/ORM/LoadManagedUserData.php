@@ -107,6 +107,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'zones' => [
                 LoadGeoZoneData::getZone($manager, 'zone_district_77-1'),
                 LoadGeoZoneData::getZone($manager, 'zone_city_77288'),
+                LoadGeoZoneData::getZone($manager, 'zone_department_77'),
             ],
             'supervisor_tags' => ['77'],
             'civility' => 'Monsieur',
