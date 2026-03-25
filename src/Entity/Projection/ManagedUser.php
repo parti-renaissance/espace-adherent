@@ -52,9 +52,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ]
 )]
 #[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
-#[ORM\Index(columns: ['status'])]
-#[ORM\Index(columns: ['original_id'])]
-#[ORM\Index(columns: ['zones_ids'])]
+#[ORM\Index(fields: ['adherentUuid'])]
+#[ORM\Index(fields: ['status'])]
+#[ORM\Index(fields: ['originalId'])]
 #[ORM\Table(name: 'projection_managed_users')]
 class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface
 {
@@ -377,7 +377,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $electTags = null;
 
-    #[Groups(['managed_user_vox'])]
+    #[Groups(['managed_user_vox', 'managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $instances = null;
 
@@ -391,7 +391,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     /**
      * @var ZoneCollection|Zone[]
      */
-    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'managed_users_list', 'managed_user_read'])]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\JoinTable(name: 'projection_managed_users_zone')]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
@@ -678,14 +678,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
-    }
-
-    #[Groups(['managed_users_list'])]
-    public function getCityCode(): ?string
-    {
-        $zones = $this->getZonesOfType(Zone::CITY, true);
-
-        return $zones ? current($zones)->getCode() : null;
     }
 
     #[Groups(['managed_users_list', 'managed_user_read'])]

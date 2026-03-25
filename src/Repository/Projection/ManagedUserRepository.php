@@ -44,7 +44,8 @@ class ManagedUserRepository extends ServiceEntityRepository
         return $this->configurePaginator(
             $this->createFilterQueryBuilder($filter),
             $page,
-            $limit
+            $limit,
+            useOutputWalkers: false
         );
     }
 
@@ -60,9 +61,7 @@ class ManagedUserRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('u')
-            ->addSelect('zone')
             ->addSelect('COALESCE(u.lastMembershipDonation, u.createdAt) as HIDDEN order_column')
-            ->leftJoin('u.zones', 'zone')
             ->where('u.status = :status')
             ->setParameter('status', ManagedUser::STATUS_READY)
             ->orderBy('order_column', 'DESC')
@@ -87,25 +86,25 @@ class ManagedUserRepository extends ServiceEntityRepository
     private function applyFilters(QueryBuilder $qb, ManagedUsersFilter $filter): QueryBuilder
     {
         if ($managedZones = $filter->managedZones) {
-            $zoneCondition = $qb->expr()->orX();
+            $managedZonesExpression = $qb->expr()->orX();
 
             foreach ($managedZones as $key => $zone) {
-                $zoneCondition->add(\sprintf('FIND_IN_SET(:managed_zone_%s, u.zonesIds) > 0', $key));
-                $qb->setParameter(\sprintf(':managed_zone_%s', $key), $zone->getId());
+                $managedZonesExpression->add(":managed_zone_$key MEMBER OF u.zones");
+                $qb->setParameter("managed_zone_$key", $zone->getId());
             }
 
-            $qb->andWhere($zoneCondition);
+            $qb->andWhere($managedZonesExpression);
         }
 
         if ($selectedZones = $filter->zones) {
-            $zoneCondition = $qb->expr()->orX();
+            $selectedZonesExpression = $qb->expr()->orX();
 
             foreach ($selectedZones as $key => $zone) {
-                $zoneCondition->add(\sprintf('FIND_IN_SET(:selected_zone_%s, u.zonesIds) > 0', $key));
-                $qb->setParameter(\sprintf(':selected_zone_%s', $key), $zone->getId());
+                $selectedZonesExpression->add(":selected_zone_$key MEMBER OF u.zones");
+                $qb->setParameter("selected_zone_$key", $zone->getId());
             }
 
-            $qb->andWhere($zoneCondition);
+            $qb->andWhere($selectedZonesExpression);
         }
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
