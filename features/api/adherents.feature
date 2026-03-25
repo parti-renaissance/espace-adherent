@@ -115,6 +115,11 @@ Feature:
         Then the response status code should be 200
         And the response should be in JSON
 
+    Scenario: As a user with a scope without contacts feature I cannot get adherents list
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents?scope=phoning_national_manager"
+        Then the response status code should be 403
+
     Scenario Outline: As a user with (delegated) referent role I can get adherents of my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
