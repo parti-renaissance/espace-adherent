@@ -20,18 +20,20 @@ class ManagedZoneValidator extends AbstractInManagedZoneValidator
             return;
         }
 
-        if ($value instanceof ZoneableEntityInterface) {
-            $managedZones = $value->getZones()->toArray();
+        if (!$value instanceof ZoneableEntityInterface) {
+            throw new UnexpectedTypeException($value, ZoneableEntityInterface::class);
+        }
 
-            if (null === $value = $value->{$constraint->zoneGetMethodName}()) {
-                return;
-            }
+        $managedZones = $value->getZones()->toArray();
+
+        if (null === $value = $value->{$constraint->zoneGetMethodName}()) {
+            return;
         }
 
         $this->validateZones(
             $this->valueAsZones($value),
             $constraint,
-            $managedZones ?? null
+            $managedZones
         );
     }
 }

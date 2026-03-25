@@ -23,12 +23,15 @@ class AdherentAutocompleteFilter
 
     public array $managedCommitteeUuids;
 
+    public array $managedAgoraUuids;
+
     #[Groups(['filter_write'])]
     public ?string $tag = null;
 
-    public function __construct(array $managedZones = [], array $managedCommitteeUuids = [])
+    public function __construct(array $managedZones = [], array $managedCommitteeUuids = [], array $managedAgoraUuids = [])
     {
         $this->managedZones = $managedZones;
         $this->managedCommitteeUuids = $managedCommitteeUuids;
+        $this->managedAgoraUuids = $managedAgoraUuids;
     }
 }

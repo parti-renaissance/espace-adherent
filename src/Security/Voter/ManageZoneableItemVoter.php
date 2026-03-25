@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
+use App\Entity\Committee;
 use App\Entity\Event\Event;
-use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
-use App\Entity\ZoneableWithScopeEntityInterface;
-use App\Geo\ManagedZoneProvider;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ManageZoneableItemVoter extends AbstractAdherentVoter
 {
@@ -21,16 +18,19 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly ManagedZoneProvider $managedZoneProvider,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
+        $scopeZones = [];
+        $committeeUuids = [];
+        $agoraUuids = [];
+
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             $adherent = $scope->getDelegator() ?? $adherent;
-            $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
+            $scopeZones = $scope->getZones();
             $committeeUuids = $scope->getCommitteeUuids();
             $agoraUuids = $scope->getAgoraUuids();
 
@@ -39,18 +39,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             }
         }
 
-        if ($subject instanceof ZoneableWithScopeEntityInterface && $scopeCode = $subject->getScope()) {
-            if (!$this->authorizationChecker->isGranted(ScopeFeatureVoter::SCOPE_AND_FEATURE_GRANTED, $scopeCode)) {
-                return false;
-            }
-
-            $spaceType = AdherentSpaceEnum::SCOPES[$scopeCode];
-        } elseif ($scope) {
-            $spaceType = $scope->getMainCode();
-        } else {
-            $spaceType = $this->getSpaceType($attribute);
-        }
-
+        // Committee/Agora-based access for Events
         if (!empty($committeeUuids) && $subject instanceof Event && $subject->getCommittee()) {
             return \in_array($subject->getCommitteeUuid(), $committeeUuids);
         }
@@ -59,12 +48,32 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             return \in_array($subject->agora->getUuid()->toString(), $agoraUuids);
         }
 
-        if (empty($zoneIds) && !$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
+        // Committee-based access for Committee entities
+        if (!empty($committeeUuids) && $subject instanceof Committee) {
+            return \in_array($subject->getUuid()->toString(), $committeeUuids);
+        }
+
+        // Committee/Agora-based access for managed Adherents (via membership)
+        if ($subject instanceof Adherent && $subject !== $adherent) {
+            if (!empty($committeeUuids) && ($membership = $subject->getCommitteeMembership())) {
+                return \in_array($membership->getCommittee()->getUuid()->toString(), $committeeUuids);
+            }
+
+            if (!empty($agoraUuids)) {
+                foreach ($subject->agoraMemberships as $agoraMembership) {
+                    if (\in_array($agoraMembership->agora->getUuid()->toString(), $agoraUuids)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (empty($scopeZones)) {
             return false;
         }
 
         foreach ($subject->getZones() as $zone) {
-            if ($this->managedZoneProvider->zoneBelongsToSome($zone, $zoneIds)) {
+            if ($this->zoneRepository->isInZones([$zone], $scopeZones)) {
                 return true;
             }
         }
@@ -75,10 +84,5 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
     protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntityInterface;
-    }
-
-    private function getSpaceType(string $attribute): string
-    {
-        return mb_strtolower(substr($attribute, \strlen(self::PERMISSION)));
     }
 }

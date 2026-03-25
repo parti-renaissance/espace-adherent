@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\EnMarche\Filesystem;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -15,6 +14,6 @@ class CandidateFilesController extends AbstractFilesController
 {
     protected function getSpaceType(): string
     {
-        return AdherentSpaceEnum::CANDIDATE;
+        return 'candidate';
     }
 }

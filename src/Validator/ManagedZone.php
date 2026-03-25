@@ -11,22 +11,16 @@ class ManagedZone extends Constraint
 {
     public $message = "Oups, vous n'avez pas accès à cette zone !";
 
-    /**
-     * @var string
-     */
-    public $spaceType;
     public $zoneGetMethodName = 'getZone';
     public $path;
 
     public function __construct(?string $path = null, ?string $message = null, $options = null)
     {
-        if (null !== $options && !\is_array($options)) {
-            $options = [
-                'spaceType' => $options,
-            ];
-        }
         $this->path = $path;
-        $this->message = $message;
+
+        if (null !== $message) {
+            $this->message = $message;
+        }
 
         parent::__construct($options);
     }

@@ -220,3 +220,26 @@ Feature:
                 ]
             }
             """
+
+    Scenario: As an Agora President I can see adherents automatically filtered by my agora scope
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents?scope=agora_president"
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+            """
+            {
+                "metadata": {
+                    "total_items": 2
+                },
+                "items": [
+                    {
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+                    },
+                    {
+                        "agora": "Première Agora",
+                        "agora_uuid": "82ad6422-cb82-4c04-b478-bfb421c740e0"
+                    }
+                ]
+            }
+            """

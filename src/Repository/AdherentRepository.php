@@ -888,6 +888,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             }
         }
 
+        if ($filter->managedAgoraUuids) {
+            $qb
+                ->innerJoin('a.agoraMemberships', 'agoraMembership')
+                ->innerJoin('agoraMembership.agora', 'agora')
+                ->andWhere('agora.uuid IN (:agoras)')
+                ->setParameter('agoras', $filter->managedAgoraUuids)
+            ;
+        }
+
         if ($filter->tag) {
             $qb
                 ->andWhere('a.tags LIKE :adherent_tag')

@@ -59,7 +59,13 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         if (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             $scope = $this->scopeResolver->generate();
 
-            if ($scope && $committeeUuids = $scope->getCommitteeUuids()) {
+            if (!$scope) {
+                $queryBuilder->andWhere('1 = 0');
+
+                return;
+            }
+
+            if ($committeeUuids = $scope->getCommitteeUuids()) {
                 $queryBuilder->andWhere(\sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
                     ->select('ce.id')
                     ->from(Event::class, 'ce')
@@ -67,7 +73,28 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
                     ->getDQL()
                 ));
                 $queryBuilder->setParameter('committee_uuids', $committeeUuids);
+
+                return;
             }
+
+            if ($agoraUuids = $scope->getAgoraUuids()) {
+                $queryBuilder->andWhere(\sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
+                    ->select('ae.id')
+                    ->from(Event::class, 'ae')
+                    ->innerJoin('ae.agora', 'agora', Join::WITH, 'agora.uuid IN (:agora_uuids)')
+                    ->getDQL()
+                ));
+                $queryBuilder->setParameter('agora_uuids', $agoraUuids);
+
+                return;
+            }
+
+            if ($scope->isNational() || $scope->getZones()) {
+                // Zone filtering is handled by InZoneOfScopeFilter for ZoneableEntityInterface
+                return;
+            }
+
+            $queryBuilder->andWhere('1 = 0');
 
             return;
         }

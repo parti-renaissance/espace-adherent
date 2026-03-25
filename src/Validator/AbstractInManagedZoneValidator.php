@@ -6,7 +6,7 @@ namespace App\Validator;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Geo\ManagedZoneProvider;
+use App\Repository\Geo\ZoneRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -14,32 +14,28 @@ use Symfony\Component\Validator\ConstraintValidator;
 abstract class AbstractInManagedZoneValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly ZoneRepository $zoneRepository,
         private readonly Security $security,
     ) {
     }
 
     /**
+     * @param Zone[]      $zones
+     * @param Zone[]      $managedZones
      * @param ManagedZone $constraint
      */
-    protected function validateZones(array $zones, Constraint $constraint, ?array $managedZones = null): void
+    protected function validateZones(array $zones, Constraint $constraint, array $managedZones): void
     {
-        if (!$user = $this->getAuthenticatedUser()) {
+        if (!$this->getAuthenticatedUser()) {
             throw new \InvalidArgumentException('No user provided');
         }
 
-        if (null !== $managedZones) {
-            $managedZonesIds = array_map(function (Zone $zone) {return $zone->getId(); }, $managedZones);
-        } else {
-            $managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType);
-        }
-
-        if (!$managedZonesIds) {
+        if (!$managedZones) {
             return;
         }
 
         foreach ($zones as $zone) {
-            if (!$this->managedZoneProvider->zoneBelongsToSome($zone, $managedZonesIds)) {
+            if (!$this->zoneRepository->isInZones([$zone], $managedZones)) {
                 $this->context
                     ->buildViolation($constraint->message)
                     ->atPath($constraint->path ?? '')
