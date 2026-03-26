@@ -6,18 +6,21 @@ namespace App\Controller\Api\AdherentList;
 
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\OAuth\Model\Scope;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\InvalidScopeException;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\Exception\ScopeQueryParamMissingException;
 use App\Scope\FeatureEnum;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +36,7 @@ class AdherentListController extends AbstractController
         private readonly ManagedUserRepository $repository,
         private readonly DenormalizerInterface $denormalizer,
         private readonly ManagedUsersExporter $exporter,
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
@@ -70,6 +74,10 @@ class AdherentListController extends AbstractController
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
         ]);
 
+        if ($zonesData = $request->query->all('zones')) {
+            $filter->zones = $this->resolveZones($zonesData);
+        }
+
         if ('json' !== $format) {
             try {
                 if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS_EXPORT])) {
@@ -105,5 +113,27 @@ class AdherentListController extends AbstractController
         }
 
         return $this->json($adherents, Response::HTTP_OK, [], $context);
+    }
+
+    /**
+     * @return Zone[]
+     */
+    private function resolveZones(array $zonesData): array
+    {
+        $uuids = $this->extractZoneUuids($zonesData);
+
+        return $uuids ? $this->zoneRepository->findByUuid($uuids) : [];
+    }
+
+    private function extractZoneUuids(array $zonesData): array
+    {
+        return array_values(array_filter(array_map(
+            static fn (mixed $zone) => match (true) {
+                \is_string($zone) => $zone,
+                \is_array($zone) => $zone['uuid'] ?? null,
+                default => null,
+            },
+            $zonesData,
+        ), static fn (mixed $uuid) => \is_string($uuid) && Uuid::isValid($uuid)));
     }
 }
