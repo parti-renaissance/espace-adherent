@@ -10,7 +10,9 @@ use App\Entity\Projection\ManagedUser;
 use App\Entity\SubscriptionType;
 use App\Normalizer\ManagedUserNormalizer;
 use App\Repository\SubscriptionTypeRepository;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -72,7 +74,7 @@ final class ManagedUserNormalizerTest extends TestCase
             ->method('getRoles')
             ->willReturn([
                 ['code' => 'president_departmental_assembly', 'zones' => 'Paris', 'zone_codes' => '75'],
-                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication'],
+                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication', 'zone_codes' => '92'],
             ])
         ;
         $managedUser
@@ -86,6 +88,14 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser
             ->method('getSubscriptionTypes')
             ->willReturn(['subscribed_emails_movement_information', 'militant_action_sms'])
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn(null)
         ;
 
         $this->translator
@@ -154,22 +164,24 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('roles', $result);
         self::assertCount(2, $result['roles']);
 
+        // Role with zone_codes: label should include zone
         self::assertSame([
             'code' => 'president_departmental_assembly',
-            'label' => "Président d'Assemblée Départementale",
+            'label' => "Président d'Assemblée Départementale (75)",
             'is_delegated' => false,
             'function' => null,
             'zones' => 'Paris',
             'zone_codes' => '75',
         ], $result['roles'][0]);
 
+        // Delegated role: label should be "{function} ({zone_codes})"
         self::assertSame([
             'code' => 'animator',
-            'label' => 'Animateur',
+            'label' => 'Communication (92)',
             'is_delegated' => true,
             'function' => 'Communication',
             'zones' => null,
-            'zone_codes' => null,
+            'zone_codes' => '92',
         ], $result['roles'][1]);
     }
 
@@ -186,6 +198,14 @@ final class ManagedUserNormalizerTest extends TestCase
         ;
         $managedUser
             ->method('getElectMandates')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn('Comité Levallois')
+        ;
+        $managedUser
+            ->method('getAgora')
             ->willReturn(null)
         ;
 
@@ -212,6 +232,8 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertSame([], $result['elect_mandates']);
         self::assertCount(1, $result['roles']);
         self::assertSame('animator', $result['roles'][0]['code']);
+        // Animator with committee: label should include committee name
+        self::assertSame('Animateur (Comité Levallois)', $result['roles'][0]['label']);
     }
 
     public function testNormalizeSkipsEmptyRoleCodes(): void
@@ -232,6 +254,14 @@ final class ManagedUserNormalizerTest extends TestCase
         ;
         $managedUser
             ->method('getElectMandates')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getAgora')
             ->willReturn(null)
         ;
 
@@ -268,6 +298,14 @@ final class ManagedUserNormalizerTest extends TestCase
             ->method('getGender')
             ->willReturn('female')
         ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn('Comité Paris')
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn(null)
+        ;
 
         $this->scopeGeneratorResolver
             ->method('generate')
@@ -301,7 +339,8 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('tags', $result);
         self::assertCount(1, $result['tags']);
         self::assertSame('role', $result['tags'][0]['type']);
-        self::assertSame('Animatrice', $result['tags'][0]['label']);
+        // Animator with committee: label should include committee name
+        self::assertSame('Animatrice (Comité Paris)', $result['tags'][0]['label']);
     }
 
     public function testNormalizeTransformsElectMandatesToCodeLabelForVoxGroup(): void
@@ -359,5 +398,352 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertArrayHasKey(ManagedUser::class, $types);
         self::assertFalse($types[ManagedUser::class]);
+    }
+
+    #[DataProvider('provideFormatRoleLabelCases')]
+    public function testFormatRoleLabelVox(
+        array $role,
+        ?string $committee,
+        ?string $agora,
+        string $expectedLabel,
+    ): void {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('getRoles')
+            ->willReturn([$role])
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('male')
+        ;
+        $managedUser
+            ->method('getElectMandates')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn($committee)
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn($agora)
+        ;
+
+        $context = [
+            'groups' => [ManagedUserContextBuilder::GROUP_VOX],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn(['uuid' => '123e4567-e89b-12d3-a456-426614174000'])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->willReturnCallback(function (string $key, array $params) {
+                return match ($key) {
+                    'role.national' => 'Secrétaire Général de Renaissance',
+                    'role.animator' => 'Animateur',
+                    'role.agora_president' => 'Président d\'Agora',
+                    'role.agora_general_secretary' => 'Secrétaire Général d\'Agora',
+                    'role.president_departmental_assembly' => 'Président d\'Assemblée Départementale',
+                    'role.regional_delegate' => 'Délégué Régional',
+                    default => $key,
+                };
+            })
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('roles', $result);
+        self::assertCount(1, $result['roles']);
+        self::assertSame($expectedLabel, $result['roles'][0]['label']);
+    }
+
+    public static function provideFormatRoleLabelCases(): iterable
+    {
+        // Priority 1: Delegated role with zone
+        yield 'delegated_with_zone' => [
+            'role' => [
+                'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                'is_delegated' => true,
+                'function' => 'Secrétaire Général',
+                'zone_codes' => '92',
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Secrétaire Général (92)',
+        ];
+
+        // Priority 1: Delegated role without zone
+        yield 'delegated_without_zone' => [
+            'role' => [
+                'code' => ScopeEnum::ANIMATOR,
+                'is_delegated' => true,
+                'function' => 'Communication',
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Communication',
+        ];
+
+        // Priority 2: National role (no zone displayed)
+        yield 'national_scope' => [
+            'role' => [
+                'code' => ScopeEnum::NATIONAL,
+                'zone_codes' => 'FR',  // Should be ignored for national
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Secrétaire Général de Renaissance',
+        ];
+
+        // Priority 3: Animator with committee
+        yield 'animator_with_committee' => [
+            'role' => [
+                'code' => ScopeEnum::ANIMATOR,
+            ],
+            'committee' => 'Comité Levallois',
+            'agora' => null,
+            'expectedLabel' => 'Animateur (Comité Levallois)',
+        ];
+
+        // Priority 3: Animator without committee = fallback
+        yield 'animator_without_committee' => [
+            'role' => [
+                'code' => ScopeEnum::ANIMATOR,
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Animateur',
+        ];
+
+        // Priority 4: Agora president
+        yield 'agora_president' => [
+            'role' => [
+                'code' => ScopeEnum::AGORA_PRESIDENT,
+            ],
+            'committee' => null,
+            'agora' => 'Laïcité',
+            'expectedLabel' => 'Président d\'Agora (Laïcité)',
+        ];
+
+        // Priority 4: Agora general secretary
+        yield 'agora_general_secretary' => [
+            'role' => [
+                'code' => ScopeEnum::AGORA_GENERAL_SECRETARY,
+            ],
+            'committee' => null,
+            'agora' => 'Europe',
+            'expectedLabel' => 'Secrétaire Général d\'Agora (Europe)',
+        ];
+
+        // Priority 4: Agora without name = fallback
+        yield 'agora_without_name' => [
+            'role' => [
+                'code' => ScopeEnum::AGORA_PRESIDENT,
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Président d\'Agora',
+        ];
+
+        // Priority 5: Role with zone
+        yield 'role_with_zone' => [
+            'role' => [
+                'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                'zone_codes' => '75',
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Président d\'Assemblée Départementale (75)',
+        ];
+
+        // Priority 6: Fallback (no zone or context)
+        yield 'fallback_no_context' => [
+            'role' => [
+                'code' => ScopeEnum::REGIONAL_DELEGATE,
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Délégué Régional',
+        ];
+    }
+
+    public function testNormalizeTagsForDelegatedRoleWithZone(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('isEmailSubscribed')
+            ->willReturn(true)
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('male')
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn(null)
+        ;
+
+        $this->scopeGeneratorResolver
+            ->method('generate')
+            ->willReturn(null)
+        ;
+
+        $context = [
+            'groups' => ['managed_users_list'],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn([
+                'uuid' => '123e4567-e89b-12d3-a456-426614174000',
+                'tags' => [],
+                'roles' => [
+                    [
+                        'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                        'is_delegated' => true,
+                        'function' => 'Secrétaire Général',
+                        'zone_codes' => '92',
+                    ],
+                ],
+            ])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->willReturn("Président d'Assemblée Départementale")
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayNotHasKey('roles', $result);
+        self::assertArrayHasKey('tags', $result);
+        self::assertCount(1, $result['tags']);
+        self::assertSame('role', $result['tags'][0]['type']);
+        // Delegated role with zone: "{function} ({zone_codes})" - no suffix needed
+        self::assertSame('Secrétaire Général (92)', $result['tags'][0]['label']);
+        self::assertSame('Secrétaire Général', $result['tags'][0]['tooltip']);
+    }
+
+    public function testNormalizeTagsForDelegatedRoleWithZoneFemale(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('isEmailSubscribed')
+            ->willReturn(true)
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('female')
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn(null)
+        ;
+
+        $this->scopeGeneratorResolver
+            ->method('generate')
+            ->willReturn(null)
+        ;
+
+        $context = [
+            'groups' => ['managed_users_list'],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn([
+                'uuid' => '123e4567-e89b-12d3-a456-426614174000',
+                'tags' => [],
+                'roles' => [
+                    [
+                        'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                        'is_delegated' => true,
+                        'function' => 'Secrétaire Générale',
+                        'zone_codes' => '75',
+                    ],
+                ],
+            ])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->willReturn("Présidente d'Assemblée Départementale")
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('tags', $result);
+        self::assertCount(1, $result['tags']);
+        // Delegated female: no suffix needed (function name is self-explanatory)
+        self::assertSame('Secrétaire Générale (75)', $result['tags'][0]['label']);
+    }
+
+    public function testNormalizeTagsForRoleWithZone(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('isEmailSubscribed')
+            ->willReturn(true)
+        ;
+        $managedUser
+            ->method('getGender')
+            ->willReturn('male')
+        ;
+        $managedUser
+            ->method('getCommittee')
+            ->willReturn(null)
+        ;
+        $managedUser
+            ->method('getAgora')
+            ->willReturn(null)
+        ;
+
+        $this->scopeGeneratorResolver
+            ->method('generate')
+            ->willReturn(null)
+        ;
+
+        $context = [
+            'groups' => ['managed_users_list'],
+        ];
+
+        $this->innerNormalizer
+            ->method('normalize')
+            ->willReturn([
+                'uuid' => '123e4567-e89b-12d3-a456-426614174000',
+                'tags' => [],
+                'roles' => [
+                    [
+                        'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                        'zone_codes' => '92, 93',
+                    ],
+                ],
+            ])
+        ;
+
+        $this->translator
+            ->method('trans')
+            ->with('role.president_departmental_assembly', ['gender' => 'male'])
+            ->willReturn("Président d'Assemblée Départementale")
+        ;
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('tags', $result);
+        self::assertCount(1, $result['tags']);
+        self::assertSame('role', $result['tags'][0]['type']);
+        // Role with zone: "{translated_role} ({zone_codes})"
+        self::assertSame("Président d'Assemblée Départementale (92, 93)", $result['tags'][0]['label']);
     }
 }

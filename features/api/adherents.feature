@@ -171,7 +171,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Responsable communication (75, 77)",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -225,7 +225,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable local",
+                                "label": "Responsable local (92)",
                                 "tooltip": null
                             },
                             {
@@ -281,42 +281,42 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénatrice déléguée",
+                                "label": "Responsable mobilisation (92)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (75-2)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate déléguée",
+                                "label": "Candidat délégué",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable élus délégué #1 (92)",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable communication (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable locale déléguée",
+                                "label": "Responsable logistique (92)",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate aux législatives déléguée",
+                                "label": "Responsable communication (75-1)",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -385,42 +385,42 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Sénatrice déléguée",
+                                "label": "Responsable mobilisation (92)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (75-2)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate déléguée",
+                                "label": "Candidat délégué",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable élus délégué #1 (92)",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable communication (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable locale déléguée",
+                                "label": "Responsable logistique (92)",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate aux législatives déléguée",
+                                "label": "Responsable communication (75-1)",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -494,7 +494,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Président d'assemblée départementale délégué",
+                        "label": "Responsable communication (75, 77)",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -570,7 +570,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable local",
+                                "label": "Responsable local (92)",
                                 "tooltip": null
                             },
                             {
@@ -592,9 +592,7 @@ Feature:
                         "declared_mandates": ["depute_europeen", "conseiller_municipal"],
                         "cotisation_dates": [],
                         "campus_registered_at": null,
-                        "instances": [
-                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"}
-                        ],
+                        "instances": [{ "type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)" }],
                         "certified": false,
                         "sms_subscription": false,
                         "email_subscription": false,
@@ -626,48 +624,42 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "@string@.oneOf(
-                                    contains('Sénateur délégué'),
-                                    contains('Sénatrice déléguée')
-                                )",
+                                "label": "Responsable mobilisation (92)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Déléguée de circonscription déléguée",
+                                "label": "Responsable mobilisation (75-2)",
                                 "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "@string@.oneOf(
-                                    contains('Candidat délégué'),
-                                    contains('Candidate déléguée')
-                                )",
+                                "label": "Candidat délégué",
                                 "tooltip": "Candidat délégué"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable élus délégué #1 (92)",
                                 "tooltip": "Responsable élus délégué #1"
                             },
                             {
                                 "type": "role",
-                                "label": "Présidente d'assemblée départementale déléguée",
+                                "label": "Responsable communication (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable locale déléguée",
+                                "label": "Responsable logistique (92)",
                                 "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "role",
-                                "label": "Candidate aux législatives déléguée",
+                                "label": "Responsable communication (75-1)",
                                 "tooltip": "Responsable communication"
                             },
                             {
@@ -686,8 +678,8 @@ Feature:
                         "cotisation_dates": [],
                         "campus_registered_at": null,
                         "instances": [
-                            {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
-                            {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
+                            { "type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)" },
+                            { "type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818" }
                         ],
                         "certified": true,
                         "sms_subscription": true,
@@ -1006,7 +998,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Responsable mobilisation (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
@@ -1067,12 +1059,12 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription",
+                                "label": "Délégué de circonscription (75-1)",
                                 "tooltip": null
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Responsable communication (92)",
                                 "tooltip": "Responsable communication"
                             }
                         ],
@@ -1134,7 +1126,7 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Président d'assemblée départementale délégué",
+                                "label": "Responsable mobilisation (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable mobilisation"
                             }
                         ],
@@ -1213,9 +1205,9 @@ Feature:
         And the header "Content-Disposition" should contain "adherents--"
         And the header "Content-Disposition" should contain ".csv"
         And the response should contain "PID;Civilité;Prénom;Nom;\"Date de naissance\";Téléphone;Comité;Rôles;\"Labels Adhérent\";\"Label Élu\";\"Déclaration de mandats\";Mandats;\"Labels Divers\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière cotisation\";\"Date de dernière connexion\";\"Adresse postale\";\"Code postal\";Ville;Pays;\"Abonné email\";\"Abonné SMS\""
-        And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'assemblée départementale\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
+        And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'assemblée départementale (75, 77)\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
         And the response should contain ";\"2 avenue Jean Jaurès\";77000;Melun;France;;"
-        And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription, Sénatrice, Déléguée de circonscription, Candidate, Présidente d'assemblée départementale, Présidente d'assemblée départementale, Responsable locale, Candidate aux législatives\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
+        And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription (CIRCO_FDE-06), Sénatrice (92), Déléguée de circonscription (75-2), Candidate, Présidente d'assemblée départementale (92), Présidente d'assemblée départementale (13, 59, 76, 77, 92), Responsable locale (92), Candidate aux législatives (75-1)\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
         And the response should contain ";\"47 rue Martre\";92110;Clichy;France;1;1"
 
     Scenario: As an Animator I can see adherents automatically filtered by my committee
