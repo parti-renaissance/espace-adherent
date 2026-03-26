@@ -1,5 +1,35 @@
 {% extends '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
+{# DatalistTextType widget - dropdown avec saisie libre #}
+{% block datalist_text_widget %}
+    {%- set type = type|default('text') -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    <div style="position: relative; display: inline-block; width: 100%;">
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}"{% endif %} list="{{ id }}-datalist" />
+        <i class="fa fa-caret-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #999;"></i>
+    </div>
+    <datalist id="{{ id }}-datalist">
+        {% for option in form.vars.datalist_options %}
+            <option value="{{ option }}">
+        {% endfor %}
+    </datalist>
+    <script>
+        (function() {
+            var input = document.getElementById('{{ id }}');
+            if (input && !input.dataset.datalistInit) {
+                input.dataset.datalistInit = '1';
+                input.style.paddingRight = '30px';
+                input.addEventListener('focus', function() {
+                    var listId = this.getAttribute('list');
+                    this.removeAttribute('list');
+                    var self = this;
+                    setTimeout(function() { self.setAttribute('list', listId); }, 0);
+                });
+            }
+        })();
+    </script>
+{% endblock %}
+
 {% macro display_tags(tags) %}
     <label>Labels</label><br/>
 
