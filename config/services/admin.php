@@ -171,10 +171,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Consultation::class, 'label' => 'Consultations', 'group' => 'Territoires'])
     ;
     $services
-        ->set('app.admin.tally_form', App\Admin\TallyFormAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TallyForm::class, 'label' => 'Formulaires Tally', 'group' => 'Territoires'])
-    ;
-    $services
         ->set('app.admin.file', App\Admin\Filesystem\FileAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Filesystem\File::class, 'label' => 'Documents', 'group' => 'Territoires'])
     ;
@@ -210,6 +206,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services
         ->set('app.admin.general_convention', App\Admin\GeneralConventionAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\GeneralConvention\GeneralConvention::class, 'label' => 'États généraux', 'group' => 'Idées'])
+    ;
+    $services
+        ->set('app.admin.tally_form', App\Admin\TallyFormAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TallyForm::class, 'label' => 'Formulaires Tally', 'group' => 'Idées'])
     ;
     $services
         ->set('app.admin.adherent_formation', App\Admin\FormationAdmin::class)
