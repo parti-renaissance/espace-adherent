@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\CreatePublicationReachFromAppCommand;
-use App\Entity\Adherent;
-use App\Entity\AdherentMessage\AdherentMessageReach;
 use App\Repository\AdherentMessageRepository;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
 class CreatePublicationReachFromAppCommandHandler
@@ -29,16 +24,14 @@ class CreatePublicationReachFromAppCommandHandler
             return;
         }
 
-        $this->entityManager->persist(AdherentMessageReach::createApp(
-            $adherentMessage,
-            $this->entityManager->getReference(Adherent::class, $command->adherentId),
-            $command->createdAt,
-        ));
-
-        try {
-            $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException|ForeignKeyConstraintViolationException $e) {
-            throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        }
+        $this->entityManager->getConnection()->executeStatement(
+            'INSERT IGNORE INTO adherent_message_reach (message_id, adherent_id, source, date) VALUES (?, ?, ?, ?)',
+            [
+                $adherentMessage->getId(),
+                $command->adherentId,
+                'app',
+                $command->createdAt->format('Y-m-d H:i:s'),
+            ]
+        );
     }
 }

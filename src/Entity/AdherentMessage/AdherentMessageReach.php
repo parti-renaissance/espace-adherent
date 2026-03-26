@@ -44,9 +44,4 @@ class AdherentMessageReach
     {
         return new self($adherentMessage, $adherent, $system ? 'push:'.$system->value : 'push', $date);
     }
-
-    public static function createApp(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeInterface $date): self
-    {
-        return new self($adherentMessage, $adherent, 'app', $date);
-    }
 }
