@@ -430,7 +430,7 @@ Feature:
                 },
                 {
                     "code": "delegated_1d29b80c-a308-441c-9d7d-a333c366fdb1",
-                    "name": "Présidente d'assemblée départementale déléguée",
+                    "name": "Présidente d'Assemblée déléguée",
                     "role_name": "Responsable élus délégué #1",
                     "zones": [
                         {
@@ -452,7 +452,7 @@ Feature:
                 },
                 {
                     "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
-                    "name": "Présidente d'assemblée départementale déléguée",
+                    "name": "Présidente d'Assemblée déléguée",
                     "role_name": "Responsable communication",
                     "zones": [
                         {
@@ -591,7 +591,7 @@ Feature:
             """
             {
                 "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
-                "name": "Président d'assemblée départementale délégué",
+                "name": "Président d'Assemblée délégué",
                 "role_name": "Responsable mobilisation",
                 "zones": [
                     {

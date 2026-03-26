@@ -524,6 +524,111 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario Outline: As a user with role I can get adherent detail with multiple delegated roles
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084?scope=<scope>"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "public_id": null,
+                "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                "email": "gisele-berthoux@caramail.com",
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "Clichy",
+                "country": "FR",
+                "gender": "female",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "image_url": null,
+                "birthdate": "1983-12-24T00:00:00+01:00",
+                "instances": [
+                    {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
+                    {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
+                ],
+                "age": @integer@,
+                "agora": null,
+                "agora_uuid": null,
+                "phone": "+33 1 38 76 43 34",
+                "nationality": "FR",
+                "tags": [
+                    {
+                        "code": "adherent:a_jour_2026:recotisation",
+                        "label": "@string@",
+                        "type": "adherent"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable mobilisation (CIRCO_FDE-06)",
+                        "tooltip": "Responsable mobilisation"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable mobilisation (92)",
+                        "tooltip": "Responsable mobilisation"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable mobilisation (75-2)",
+                        "tooltip": "Responsable mobilisation"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat délégué",
+                        "tooltip": "Candidat délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable élus délégué #1 (92)",
+                        "tooltip": "Responsable élus délégué #1"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable communication (13, 59, 76, 77, 92)",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable logistique (92)",
+                        "tooltip": "Responsable logistique"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable communication (75-1)",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "mandate",
+                        "label": "Conseiller municipal"
+                    }
+                ],
+                "created_at": "2017-01-08T05:55:43+01:00",
+                "interests": [],
+                "first_membership_donation": null,
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "elect_mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
+                "instances": [
+                    {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
+                    {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
+                ],
+                "certified": true,
+                "sms_subscription": true,
+                "email_subscription": true,
+                "available_for_resubscribe_email": false
+            }
+            """
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
     Scenario: As a user with correspondent role I can get adherents of my zones
         Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/adherents?scope=correspondent"
@@ -1205,9 +1310,9 @@ Feature:
         And the header "Content-Disposition" should contain "adherents--"
         And the header "Content-Disposition" should contain ".csv"
         And the response should contain "PID;Civilité;Prénom;Nom;\"Date de naissance\";Téléphone;Comité;Rôles;\"Labels Adhérent\";\"Label Élu\";\"Déclaration de mandats\";Mandats;\"Labels Divers\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière cotisation\";\"Date de dernière connexion\";\"Adresse postale\";\"Code postal\";Ville;Pays;\"Abonné email\";\"Abonné SMS\""
-        And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'assemblée départementale (75, 77)\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
+        And the response should contain ";M;Francis;Brioul;07/01/1962;\"+33 6 73 65 43 49\";;\"Président d'Assemblée (75, 77)\";\"Adhérent - Plus à jour - Adhérent 2024\";\"Élu - À jour de cotisation - Soumis à cotisation\";;;\"Événement national - Présent Congres 2024\""
         And the response should contain ";\"2 avenue Jean Jaurès\";77000;Melun;France;;"
-        And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription (CIRCO_FDE-06), Sénatrice (92), Déléguée de circonscription (75-2), Candidate, Présidente d'assemblée départementale (92), Présidente d'assemblée départementale (13, 59, 76, 77, 92), Responsable locale (92), Candidate aux législatives (75-1)\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
+        And the response should contain ";Mme;Gisele;Berthoux;24/12/1983;\"+33 1 38 76 43 34\";\"Second Comité des 3 communes\";\"Déléguée de circonscription (CIRCO_FDE-06), Sénatrice (92), Déléguée de circonscription (75-2), Candidate, Présidente d'Assemblée (92), Présidente d'Assemblée (13, 59, 76, 77, 92), Responsable locale (92), Candidate aux législatives (75-1)\";\"Adhérent - Adhérent 2026 - Adhérent à jour 2026\";;conseiller_municipal;conseiller_municipal;;"
         And the response should contain ";\"47 rue Martre\";92110;Clichy;France;1;1"
 
     Scenario: As an Animator I can see adherents automatically filtered by my committee
