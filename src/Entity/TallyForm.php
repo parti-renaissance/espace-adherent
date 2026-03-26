@@ -14,8 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TallyFormRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['slug'], message: 'Ce slug est déjà utilisé.')]
-class TallyForm implements \Stringable
+class TallyForm implements \Stringable, EntityAdministratorBlameableInterface
 {
+    use EntityAdministratorBlameableTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
