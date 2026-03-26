@@ -358,11 +358,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::TERRITOIRES
         );
         yield $this->createRole(
-            'ROLE_ADMIN_TERRITOIRES_TALLY_FORMS',
-            'Administrateur des formulaires Tally',
-            AdministratorRoleGroupEnum::TERRITOIRES
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_JME_DOCUMENTS',
             'Administrateur des documents JME',
             AdministratorRoleGroupEnum::TERRITOIRES
@@ -395,6 +390,11 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_IDEES_GENERAL_CONVENTIONS',
             'Administrateur des états généraux',
+            AdministratorRoleGroupEnum::IDEES
+        );
+        yield $this->createRole(
+            'ROLE_ADMIN_IDEES_TALLY_FORMS',
+            'Administrateur des formulaires Tally',
             AdministratorRoleGroupEnum::IDEES
         );
         yield $this->createRole(

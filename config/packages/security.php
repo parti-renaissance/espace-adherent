@@ -223,7 +223,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'ROLE_ADMIN_TERRITOIRES_CONSULTATIONS' => [
                 'ROLE_APP_ADMIN_CONSULTATION_ALL',
             ],
-            'ROLE_ADMIN_TERRITOIRES_TALLY_FORMS' => [
+            'ROLE_ADMIN_IDEES_TALLY_FORMS' => [
                 'ROLE_APP_ADMIN_TALLY_FORM_ALL',
             ],
             'ROLE_ADMIN_TERRITOIRES_JME_DOCUMENTS' => [
@@ -433,7 +433,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ROLE_ADMIN_TERRITOIRES_TEAMS',
                 'ROLE_ADMIN_TERRITOIRES_TEAM_MEMBER_HISTORIES',
                 'ROLE_ADMIN_TERRITOIRES_CONSULTATIONS',
-                'ROLE_ADMIN_TERRITOIRES_TALLY_FORMS',
                 'ROLE_ADMIN_TERRITOIRES_JME_DOCUMENTS',
                 'ROLE_ADMIN_TERRITOIRES_JME_GENERAL_MEETING_REPORTS',
                 'ROLE_ADMIN_TERRITOIRES_JME_EMAIL_TEMPLATES',
@@ -477,6 +476,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ROLE_ADMIN_COMMUNAUTES_THEMATIQUES_ALL',
                 'ROLE_ADMIN_ELECTIONS_DEPARTEMENTALES_ALL',
                 'ROLE_ADMIN_STATS_ALL',
+                'ROLE_ADMIN_IDEES_TALLY_FORMS',
             ],
             'ROLE_ADMIN_PETITION' => [
                 'ROLE_APP_ADMIN_PETITION_SIGNATURE_ALL',
