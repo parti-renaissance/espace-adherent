@@ -7,7 +7,7 @@ namespace App\Vision;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient as GoogleImageAnnotatorClient;
 use Google\Cloud\Vision\V1\TextAnnotation;
 use Google\Cloud\Vision\V1\WebDetection;
-use Google\Protobuf\Internal\RepeatedField;
+use Google\Protobuf\RepeatedField;
 
 class ImageAnnotatorClient
 {
