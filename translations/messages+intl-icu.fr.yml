@@ -252,8 +252,8 @@ role.regional_delegate: >-
 
 role.president_departmental_assembly: >-
     {gender, select,
-      female {Présidente d'assemblée départementale}
-      other {Président d'assemblée départementale}
+      female {Présidente d'Assemblée}
+      other {Président d'Assemblée}
     }
 
 role.municipal_candidate: >-

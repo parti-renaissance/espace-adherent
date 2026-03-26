@@ -1725,7 +1725,7 @@ Feature:
                         "first_name": "Referent",
                         "last_name": "Referent",
                         "image_url": null,
-                        "role": "Président d'assemblée départementale"
+                        "role": "Président d'Assemblée"
                     }
                 },
                 {

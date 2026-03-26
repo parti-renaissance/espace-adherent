@@ -34,6 +34,10 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $committeeUuids = $scope->getCommitteeUuids();
             $agoraUuids = $scope->getAgoraUuids();
 
+            if ($scope->isNational()) {
+                return true;
+            }
+
             if ($subject instanceof AuthorInstanceInterface && $subject->getInstanceKey() === $scope->getInstanceKey()) {
                 return true;
             }
@@ -53,10 +57,12 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             return \in_array($subject->getUuid()->toString(), $committeeUuids);
         }
 
-        // Committee/Agora-based access for managed Adherents (via membership)
+        // Committee/Agora-based access for Adherents (via membership)
         if ($subject instanceof Adherent && $subject !== $adherent) {
             if (!empty($committeeUuids) && ($membership = $subject->getCommitteeMembership())) {
-                return \in_array($membership->getCommittee()->getUuid()->toString(), $committeeUuids);
+                if (\in_array($membership->getCommittee()->getUuid()->toString(), $committeeUuids)) {
+                    return true;
+                }
             }
 
             if (!empty($agoraUuids)) {

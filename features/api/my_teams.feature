@@ -206,7 +206,7 @@ Feature:
             [
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Président d'Assemblée délégué",
                     "role_name": "Responsable communication",
                     "attributes": {
                         "theme": {
@@ -233,7 +233,7 @@ Feature:
                 },
                 {
                     "code": "delegated_@uuid@",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Président d'Assemblée délégué",
                     "role_name": "Responsable logistique",
                     "attributes": {
                         "theme": {
@@ -308,7 +308,7 @@ Feature:
             [
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Président d'Assemblée délégué",
                     "role_name": "Responsable communication",
                     "attributes": {
                         "theme": {
@@ -335,7 +335,7 @@ Feature:
                 },
                 {
                     "code": "delegated_@uuid@",
-                    "name": "Président d'assemblée départementale délégué",
+                    "name": "Président d'Assemblée délégué",
                     "role_name": "Test role pérsonnalisé",
                     "attributes": {
                         "theme": {

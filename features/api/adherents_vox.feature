@@ -84,6 +84,87 @@ Feature:
             | user                      | scope                           |
             | referent@en-marche-dev.fr | president_departmental_assembly |
 
+    Scenario Outline: As a user with role on Vox app I can get adherent detail with multiple delegated roles
+        Given I am logged with "<user>" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084?scope=<scope>"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                "public_id": null,
+                "civility": "Madame",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "age": @integer@,
+                "birthdate": "1983-12-24T00:00:00+01:00",
+                "image_url": null,
+                "adherent_tags": [
+                    {"code": "adherent:a_jour_2026:recotisation", "label": "@string@"}
+                ],
+                "static_tags": [
+                    {"code": "national_event:event-national-1", "label": "Event national 1"}
+                ],
+                "elect_tags": [
+                    {"code": "elu:cotisation_ok:exempte", "label": "@string@"}
+                ],
+                "instances": [
+                    {"type": "assembly", "code": "92", "name": "Hauts-de-Seine (92)"},
+                    {"type": "committee", "name": "En Marche Paris 8", "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818"}
+                ],
+                "elect_mandates": [{
+                    "code": "conseiller_municipal",
+                    "label": "Conseiller municipal"
+                }],
+                "account_created_at": "@string@.isDateTime()",
+                "subscriptions": {
+                    "sms": {"available": true, "subscribed": true},
+                    "web": {"available": true, "subscribed": true},
+                    "email": {"available": true, "subscribed": true},
+                    "mobile": {"available": true, "subscribed": false}
+                },
+                "first_contribution_at": null,
+                "last_activity_at": null,
+                "social_links": {
+                    "facebook": null,
+                    "twitter": null,
+                    "instagram": null,
+                    "linkedin": null,
+                    "telegram": null,
+                    "tiktok": null
+                },
+                "nationality": "FR",
+                "sessions": {
+                    "mobile": null,
+                    "web": null
+                },
+                "subscription_types": [
+                    {"code": "subscribed_emails_movement_information", "label": "National", "subscribed": false},
+                    {"code": "subscribed_emails_referents", "label": "Mon assemblée départementale", "subscribed": true},
+                    {"code": "deputy_email", "label": "Ma circonscription", "subscribed": false},
+                    {"code": "subscribed_emails_local_host", "label": "Mon comité local", "subscribed": false},
+                    {"code": "senator_email", "label": "Mon sénateur/trice", "subscribed": false},
+                    {"code": "candidate_email", "label": "Les candidats du Parti", "subscribed": false},
+                    {"code": "event_email", "label": "Notification nouvel événement proche de chez moi", "subscribed": false}
+                ],
+                "roles": [
+                    {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
+                    {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                    {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
+                    {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                    {"code": "president_departmental_assembly", "label": "Responsable élus délégué #1 (92)", "is_delegated": true, "function": "Responsable élus délégué #1", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                    {"code": "president_departmental_assembly", "label": "Responsable communication (13, 59, 76, 77, 92)", "is_delegated": true, "function": "Responsable communication", "zones": "Bouches-du-Rhône. Hauts-de-Seine. Nord. Seine-Maritime. Seine-et-Marne", "zone_codes": "13, 59, 76, 77, 92"},
+                    {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                    {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"}
+                ],
+                "available_for_resubscribe_email": false
+            }
+            """
+
+        Examples:
+            | user                      | scope                           |
+            | referent@en-marche-dev.fr | president_departmental_assembly |
+
     Scenario Outline: As a user with role on Vox app I can get adherents list with split tags
         Given I am logged with "<user>" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
@@ -405,6 +486,41 @@ Feature:
             ]
             """
 
+    Scenario Outline: As a user with scope I can access donations of an adherent in my zone
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/donations?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario: As a user with scope I cannot access donations of an adherent outside my zone
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/donations?scope=correspondent"
+        Then the response status code should be 403
+
+    Scenario Outline: As a user with scope I can access sensitive data of an adherent in my zone
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/sensitive-data?scope=<scope>&type=email"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            { "email": "francis.brioul@yahoo.com" }
+            """
+
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario: As a user with scope I cannot access sensitive data of an adherent outside my zone
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/sensitive-data?scope=correspondent&type=phone"
+        Then the response status code should be 403
+
     Scenario: As a JeMengage Mobile user (VOX export) I can export adherents with VOX-aligned columns
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/adherents.csv?scope=president_departmental_assembly"
@@ -415,7 +531,7 @@ Feature:
         And the response should contain "UUID;PID;Civilité;Prénom;Nom;Âge;\"Date de naissance\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière activité\";\"Labels Adhérent\";\"Labels Statique\";\"Label Élu\";Rôles;\"Abonné email\";\"Abonné SMS\""
         And the response should contain "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4;;Monsieur;Francis;Brioul;"
         And the response should contain ";07/01/1962;\"25/01/2017 19:31\""
-        And the response should contain ";\"Président d'assemblée départementale (75, 77)\";1;"
+        And the response should contain ";\"Président d'Assemblée (75, 77)\";1;"
         And the response should contain "b4219d47-3138-5efd-9762-2ef9f9495084;;Madame;Gisele;Berthoux;"
         And the response should contain ";24/12/1983;\"08/01/2017 05:55\""
         And the response should contain "Déléguée de circonscription (CIRCO_FDE-06), Sénatrice (92)"

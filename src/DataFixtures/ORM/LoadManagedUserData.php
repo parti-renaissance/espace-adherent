@@ -72,6 +72,10 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                 ['type' => 'assembly', 'code' => '92', 'name' => 'Hauts-de-Seine (92)'],
                 ['type' => 'committee', 'name' => 'En Marche Paris 8', 'uuid' => '515a56c0-bde8-56ef-b90c-4745b1c93818'],
             ],
+            'sessions' => [
+                'mobile' => null,
+                'web' => null,
+            ],
             'subscriptions' => [
                 'mobile' => ['available' => true, 'subscribed' => false],
                 'web' => ['available' => true, 'subscribed' => true],
