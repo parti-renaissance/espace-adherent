@@ -134,19 +134,7 @@ class ManagedUsersExporter
 
     private function formatRoles(?array $roles, ?string $gender): string
     {
-        if (!$roles) {
-            return '';
-        }
-
-        $formattedRoles = [];
-        foreach ($roles as $role) {
-            $roleKey = $role['code'] ?? '';
-            if ($roleKey) {
-                $formattedRoles[] = $this->translator->trans('role.'.$roleKey, ['gender' => $gender]);
-            }
-        }
-
-        return implode(', ', $formattedRoles);
+        return $this->formatRolesWithZones($roles, $gender);
     }
 
     private function formatAdherentTags(?array $tags): string
@@ -245,6 +233,11 @@ class ManagedUsersExporter
 
     private function formatRolesFromJson(?array $roles, ?string $gender): string
     {
+        return $this->formatRolesWithZones($roles, $gender);
+    }
+
+    private function formatRolesWithZones(?array $roles, ?string $gender): string
+    {
         if (!$roles) {
             return '';
         }
@@ -253,7 +246,18 @@ class ManagedUsersExporter
             function (array $role) use ($gender) {
                 $roleKey = $role['code'] ?? '';
 
-                return $roleKey ? $this->translator->trans('role.'.$roleKey, ['gender' => $gender]) : '';
+                if (!$roleKey) {
+                    return '';
+                }
+
+                $label = $this->translator->trans('role.'.$roleKey, ['gender' => $gender]);
+                $zoneCodes = $role['zone_codes'] ?? '';
+
+                if ($zoneCodes) {
+                    return \sprintf('%s (%s)', $label, $zoneCodes);
+                }
+
+                return $label;
             },
             $roles
         );

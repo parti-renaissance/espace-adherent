@@ -8,6 +8,7 @@ use App\Adherent\Tag\TagTranslator;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
 use App\Repository\SubscriptionTypeRepository;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use App\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -66,19 +67,17 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         $gender = $object->getGender();
+        $committee = $object->getCommittee();
+        $agora = $object->getAgora();
 
         if (isset($data['roles'])) {
-            $delegatedSuffix = 'female' === $gender ? ' déléguée' : ' délégué';
-
             $data['tags'] = array_merge(
                 $data['tags'] ?? [],
                 array_map(
-                    function (array $role) use ($gender, $delegatedSuffix) {
-                        $code = $role['code'];
-
+                    function (array $role) use ($gender, $committee, $agora) {
                         return [
                             'type' => 'role',
-                            'label' => $this->getTranslatedRoleLabel($code, $gender).(!empty($role['is_delegated']) ? $delegatedSuffix : ''),
+                            'label' => $this->formatRoleLabel($role, $gender, $committee, $agora),
                             'tooltip' => $role['function'] ?? null,
                         ];
                     },
@@ -131,6 +130,8 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     {
         $roles = [];
         $gender = $managedUser->getGender();
+        $committee = $managedUser->getCommittee();
+        $agora = $managedUser->getAgora();
 
         foreach ($managedUser->getRoles() as $role) {
             $code = $role['code'] ?? '';
@@ -140,7 +141,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
             $roles[] = [
                 'code' => $code,
-                'label' => $this->getTranslatedRoleLabel($code, $gender),
+                'label' => $this->formatRoleLabel($role, $gender, $committee, $agora),
                 'is_delegated' => $role['is_delegated'] ?? false,
                 'function' => $role['function'] ?? null,
                 'zones' => $role['zones'] ?? null,
@@ -149,6 +150,61 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return $roles;
+    }
+
+    /**
+     * Formats the role label according to priority rules:
+     * 1. Delegated: "{function} ({zone_codes})" or "{function}" if no zone
+     * 2. National: "{translated_role}" (no zone)
+     * 3. Animator: "{translated_role} ({committee})"
+     * 4. Agora (president/secretary): "{translated_role} ({agora})"
+     * 5. With zone: "{translated_role} ({zone_codes})"
+     * 6. Fallback: "{translated_role}"
+     */
+    private function formatRoleLabel(
+        array $role,
+        ?string $gender,
+        ?string $committee,
+        ?string $agora,
+    ): string {
+        $code = $role['code'] ?? '';
+        $isDelegated = !empty($role['is_delegated']);
+        $function = $role['function'] ?? null;
+        $zoneCodes = $role['zone_codes'] ?? null;
+
+        // Priority 1: Delegated role
+        if ($isDelegated && $function) {
+            if (!empty($zoneCodes)) {
+                return \sprintf('%s (%s)', $function, $zoneCodes);
+            }
+
+            return $function;
+        }
+
+        $translatedLabel = $this->getTranslatedRoleLabel($code, $gender);
+
+        // Priority 2: National role (no zone)
+        if (ScopeEnum::isNational($code)) {
+            return $translatedLabel;
+        }
+
+        // Priority 3: Animator with committee
+        if (ScopeEnum::ANIMATOR === $code && !empty($committee)) {
+            return \sprintf('%s (%s)', $translatedLabel, $committee);
+        }
+
+        // Priority 4: Agora roles
+        if (\in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora)) {
+            return \sprintf('%s (%s)', $translatedLabel, $agora);
+        }
+
+        // Priority 5: Role with zone
+        if (!empty($zoneCodes)) {
+            return \sprintf('%s (%s)', $translatedLabel, $zoneCodes);
+        }
+
+        // Priority 6: Fallback (label only)
+        return $translatedLabel;
     }
 
     private function formatMandates(?array $mandates): array

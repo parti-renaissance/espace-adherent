@@ -411,12 +411,26 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         }
 
         foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            $delegator = $delegatedAccess->getDelegator();
+            $delegatorRole = $delegator->findZoneBasedRole($delegatedAccess->getType());
+
+            $zoneNames = null;
+            $zoneCodes = null;
+
+            if ($delegatorRole) {
+                $zones = $delegatorRole->getZones()->toArray();
+                $zoneNames = array_map(fn ($zone) => $zone->getName(), $zones);
+                $zoneCodes = array_map(fn ($zone) => $zone->getCode(), $zones);
+                sort($zoneNames);
+                sort($zoneCodes);
+            }
+
             $roles[] = [
                 'code' => $delegatedAccess->getType(),
                 'is_delegated' => true,
                 'function' => $delegatedAccess->getRole(),
-                'zones' => null,
-                'zone_codes' => null,
+                'zones' => $zoneNames ? implode('. ', $zoneNames) : null,
+                'zone_codes' => $zoneCodes ? implode(', ', $zoneCodes) : null,
             ];
         }
 

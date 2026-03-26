@@ -74,7 +74,7 @@ Feature:
                     {"code": "event_email", "label": "Notification nouvel événement proche de chez moi", "subscribed": false}
                 ],
                 "roles": [
-                    {"code": "president_departmental_assembly", "label": "Président d'assemblée départementale", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null}
+                    {"code": "president_departmental_assembly", "label": "Responsable communication (75, 77)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris. Seine-et-Marne", "zone_codes": "75, 77"}
                 ],
                 "available_for_resubscribe_email": false
             }
@@ -153,7 +153,7 @@ Feature:
                             "mobile": {"available": true, "subscribed": true}
                         },
                         "roles": [
-                            {"code": "president_departmental_assembly", "label": "Président d'assemblée départementale", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null}
+                            {"code": "president_departmental_assembly", "label": "Responsable communication (75, 77)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris. Seine-et-Marne", "zone_codes": "75, 77"}
                         ]
                     },
                     {
@@ -186,7 +186,7 @@ Feature:
                             "mobile": {"available": true, "subscribed": true}
                         },
                         "roles": [
-                            {"code": "correspondent", "label": "Responsable local", "is_delegated": false, "function": null, "zones": "Hauts-de-Seine", "zone_codes": "92"}
+                            {"code": "correspondent", "label": "Responsable local (92)", "is_delegated": false, "function": null, "zones": "Hauts-de-Seine", "zone_codes": "92"}
                         ]
                     },
                     {
@@ -225,14 +225,14 @@ Feature:
                             "mobile": {"available": true, "subscribed": false}
                         },
                         "roles": [
-                            {"code": "deputy", "label": "Déléguée de circonscription", "is_delegated": true, "function": "Responsable mobilisation", "zones": null, "zone_codes": null},
-                            {"code": "senator", "label": "Sénatrice", "is_delegated": true, "function": "Responsable mobilisation", "zones": null, "zone_codes": null},
-                            {"code": "deputy", "label": "Déléguée de circonscription", "is_delegated": true, "function": "Responsable mobilisation", "zones": null, "zone_codes": null},
-                            {"code": "candidate", "label": "Candidate", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
-                            {"code": "president_departmental_assembly", "label": "Présidente d'assemblée départementale", "is_delegated": true, "function": "Responsable élus délégué #1", "zones": null, "zone_codes": null},
-                            {"code": "president_departmental_assembly", "label": "Présidente d'assemblée départementale", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null},
-                            {"code": "correspondent", "label": "Responsable locale", "is_delegated": true, "function": "Responsable logistique", "zones": null, "zone_codes": null},
-                            {"code": "legislative_candidate", "label": "Candidate aux législatives", "is_delegated": true, "function": "Responsable communication", "zones": null, "zone_codes": null}
+                            {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
+                            {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                            {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
+                            {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                            {"code": "president_departmental_assembly", "label": "Responsable élus délégué #1 (92)", "is_delegated": true, "function": "Responsable élus délégué #1", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                            {"code": "president_departmental_assembly", "label": "Responsable communication (13, 59, 76, 77, 92)", "is_delegated": true, "function": "Responsable communication", "zones": "Bouches-du-Rhône. Hauts-de-Seine. Nord. Seine-Maritime. Seine-et-Marne", "zone_codes": "13, 59, 76, 77, 92"},
+                            {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                            {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"}
                         ]
                     }
                 ]
@@ -415,10 +415,10 @@ Feature:
         And the response should contain "UUID;PID;Civilité;Prénom;Nom;Âge;\"Date de naissance\";\"Date de création de compte\";\"Date de première cotisation\";\"Date de dernière activité\";\"Labels Adhérent\";\"Labels Statique\";\"Label Élu\";Rôles;\"Abonné email\";\"Abonné SMS\""
         And the response should contain "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4;;Monsieur;Francis;Brioul;"
         And the response should contain ";07/01/1962;\"25/01/2017 19:31\""
-        And the response should contain ";\"Président d'assemblée départementale\";1;"
+        And the response should contain ";\"Président d'assemblée départementale (75, 77)\";1;"
         And the response should contain "b4219d47-3138-5efd-9762-2ef9f9495084;;Madame;Gisele;Berthoux;"
         And the response should contain ";24/12/1983;\"08/01/2017 05:55\""
-        And the response should contain "Déléguée de circonscription, Sénatrice"
+        And the response should contain "Déléguée de circonscription (CIRCO_FDE-06), Sénatrice (92)"
         And the response should contain ";1;1"
 
     Scenario: As a VOX user I can get filters for contacts with correct groups and order
