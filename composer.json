@@ -58,7 +58,7 @@
         "gocardless/gocardless-pro": "^6.0",
         "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
-        "jwage/phpamqplib-messenger": "^0.9.0",
+        "jwage/phpamqplib-messenger": "^0.10.0",
         "kreait/firebase-bundle": "^6.0",
         "league/commonmark": "^2.5",
         "league/csv": "^9.2",

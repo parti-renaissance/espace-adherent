@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebc0a8964360d6fbc193ba95fe89d00b",
+    "content-hash": "2137a1e9aeb1bd7d4eab75d21daa3e2a",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -5176,31 +5176,31 @@
         },
         {
             "name": "jwage/phpamqplib-messenger",
-            "version": "0.9.0",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jwage/phpamqplib-messenger.git",
-                "reference": "dde25c12130dc09f46adbff23eacb31c018c33f7"
+                "reference": "3cd7e7af5647dda755e0b9e6c264cec9810e8e44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jwage/phpamqplib-messenger/zipball/dde25c12130dc09f46adbff23eacb31c018c33f7",
-                "reference": "dde25c12130dc09f46adbff23eacb31c018c33f7",
+                "url": "https://api.github.com/repos/jwage/phpamqplib-messenger/zipball/3cd7e7af5647dda755e0b9e6c264cec9810e8e44",
+                "reference": "3cd7e7af5647dda755e0b9e6c264cec9810e8e44",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.3",
                 "php-amqplib/php-amqplib": "^3.7",
-                "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.0",
-                "symfony/messenger": "^5.4 ||^6.3 || ^7.0"
+                "symfony/messenger": "^5.4 ||^6.3 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^13.0",
                 "phpunit/phpunit": "^12.1",
                 "psalm/plugin-phpunit": "^0.19.5",
                 "psalm/plugin-symfony": "^5.2",
-                "symfony/phpunit-bridge": "^7.2",
-                "symfony/uid": "^7.2",
+                "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/phpunit-bridge": "^7.2 || ^8.0",
+                "symfony/uid": "^7.2 || ^8.0",
                 "vimeo/psalm": "^6"
             },
             "type": "symfony-bundle",
@@ -5227,9 +5227,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jwage/phpamqplib-messenger/issues",
-                "source": "https://github.com/jwage/phpamqplib-messenger/tree/0.9.0"
+                "source": "https://github.com/jwage/phpamqplib-messenger/tree/0.10.0"
             },
-            "time": "2025-11-05T17:53:01+00:00"
+            "time": "2026-03-25T12:36:03+00:00"
         },
         {
             "name": "knplabs/knp-menu",
