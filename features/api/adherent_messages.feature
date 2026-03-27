@@ -1899,3 +1899,33 @@ Feature:
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON node "scope_targets" should be null
+
+    Scenario Outline: I can not update a message filter with invalid dates
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=president_departmental_assembly" with body:
+            """
+            {
+                "label": "Message test dates invalides",
+                "subject": "Objet du message",
+                "content": "<table>Contenu</table>",
+                "json_content": "{\"blocks\": []}"
+            }
+            """
+        Then the response status code should be 201
+        When I save this response
+        And I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly" with body:
+            """
+            <body>
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | title  | An error occurred |
+            | detail | @string@          |
+
+        Examples:
+            | body                                                                                        |
+            | {"registered": {"start": "+020220-04-06T08:02:00.000Z", "end": "2016-04-06T07:59:00.000Z"}} |
+            | {"registered": {"start": "invalid-date", "end": "2024-04-06T00:00:00.000Z"}}                |
+            | {"first_membership": {"start": "invalid-date", "end": "2024-04-06T00:00:00.000Z"}}          |
+            | {"last_membership": {"start": "2024-01-01", "end": "invalid-date"}}                         |

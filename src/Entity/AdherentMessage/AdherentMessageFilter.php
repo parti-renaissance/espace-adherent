@@ -16,6 +16,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
+use App\Utils\DateUtils;
 use App\Validator\ManagedZone;
 use App\Validator\ValidMessageFilterSegment;
 use App\Validator\ValidScope;
@@ -318,8 +319,8 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setRegistered(?array $startEnd): void
     {
-        $this->setRegisteredSince(empty($startEnd['start']) ? null : new \DateTime($startEnd['start']));
-        $this->setRegisteredUntil(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
+        $this->setRegisteredSince(empty($startEnd['start']) ? null : DateUtils::createValidDate($startEnd['start']));
+        $this->setRegisteredUntil(empty($startEnd['end']) ? null : DateUtils::createValidDate($startEnd['end']));
     }
 
     #[Groups(['adherent_message_read_filter'])]
@@ -331,8 +332,8 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setFirstMembership(?array $startEnd): void
     {
-        $this->firstMembershipSince = empty($startEnd['start']) ? null : new \DateTime($startEnd['start']);
-        $this->firstMembershipBefore = empty($startEnd['end']) ? null : new \DateTime($startEnd['end']);
+        $this->firstMembershipSince = empty($startEnd['start']) ? null : DateUtils::createValidDate($startEnd['start']);
+        $this->firstMembershipBefore = empty($startEnd['end']) ? null : DateUtils::createValidDate($startEnd['end']);
     }
 
     #[Groups(['adherent_message_read_filter'])]
@@ -344,8 +345,8 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setLastMembership(?array $startEnd): void
     {
-        $this->setLastMembershipSince(empty($startEnd['start']) ? null : new \DateTime($startEnd['start']));
-        $this->setLastMembershipBefore(empty($startEnd['end']) ? null : new \DateTime($startEnd['end']));
+        $this->setLastMembershipSince(empty($startEnd['start']) ? null : DateUtils::createValidDate($startEnd['start']));
+        $this->setLastMembershipBefore(empty($startEnd['end']) ? null : DateUtils::createValidDate($startEnd['end']));
     }
 
     #[Groups(['adherent_message_read_filter'])]

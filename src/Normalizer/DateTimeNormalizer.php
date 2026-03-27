@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Utils\DateUtils;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer as BaseDateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -38,10 +40,14 @@ class DateTimeNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
+        if (\is_string($data)) {
+            return DateUtils::createValidDate($data);
+        }
+
         try {
             return $this->decorated->denormalize($data, $class, $format, $context);
         } catch (NotNormalizableValueException $e) {
-            return null;
+            throw new BadRequestHttpException(\sprintf('Invalid date value: "%s".', $data));
         }
     }
 

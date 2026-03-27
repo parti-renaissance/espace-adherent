@@ -165,6 +165,20 @@ Feature:
             | user                      | scope                           |
             | referent@en-marche-dev.fr | president_departmental_assembly |
 
+    Scenario Outline: As a user with role on Vox app I can not filter adherents with invalid dates
+        Given I am logged with "<user>" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/adherents?scope=<scope>&registered[start]=<start>&registered[end]=<end>"
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | title  | An error occurred |
+            | detail | @string@          |
+
+        Examples:
+            | user                      | scope                           | start                       | end                      |
+            | referent@en-marche-dev.fr | president_departmental_assembly | +020220-04-06T08:02:00.000Z | 2016-04-06T07:59:00.000Z |
+            | referent@en-marche-dev.fr | president_departmental_assembly | invalid-date                | 2024-04-06T00:00:00.000Z |
+
     Scenario Outline: As a user with role on Vox app I can get adherents list with split tags
         Given I am logged with "<user>" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
