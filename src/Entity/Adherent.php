@@ -1126,7 +1126,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function recordLastLoginTime(?\DateTimeInterface $dateTime = null): void
     {
-        $this->lastLoggedAt = \DateTime::createFromInterface($dateTime ?? new \DateTimeImmutable());
+        $this->lastLoggedAt = \DateTime::createFromInterface($dateTime ?? new \DateTime());
 
         $this->setLastLoginGroup(LastLoginGroupEnum::LESS_THAN_1_MONTH);
     }
