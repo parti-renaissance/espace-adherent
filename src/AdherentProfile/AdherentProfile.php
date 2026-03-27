@@ -18,6 +18,7 @@ use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueMembership(groups: ['Default', 'api_email_change'])]
@@ -104,6 +105,7 @@ class AdherentProfile implements MembershipInterface
 
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true, multipleMessage: 'adherent_profile.mandates.invalid_choice')]
     #[Groups(['profile_write'])]
+    #[SerializedName('declared_mandates')]
     private array $mandates = [];
 
     #[AdherentInterests]

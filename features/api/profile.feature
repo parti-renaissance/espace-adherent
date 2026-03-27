@@ -79,6 +79,7 @@ Feature:
                         "code": "event_email"
                     }
                 ],
+                "declared_mandates": [],
                 "interests": [],
                 "first_membership_donation": null,
                 "last_membership_donation": null,
@@ -478,6 +479,44 @@ Feature:
             }
             """
 
+        # Update declared mandates with invalid value
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "declared_mandates": ["invalid_mandate"]
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "mandates",
+                        "message": "Une ou plusieurs des valeurs des mandats sont invalides. Merci de contacter le support."
+                    }
+                ]
+            }
+            """
+        # Update declared mandates with valid values
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "declared_mandates": ["conseiller_municipal", "maire"]
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "declared_mandates": ["conseiller_municipal", "maire"]
+            }
+            """
+
         # Update nationality
         When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
             """
@@ -772,6 +811,7 @@ Feature:
                     "country": "CH",
                     "region": null
                 },
+                "declared_mandates": [],
                 "interests": [],
                 "first_membership_donation": null,
                 "last_membership_donation": null,
@@ -1318,6 +1358,7 @@ Feature:
                     "subscription_date": "@string@.isDateTime()"
                 },
                 "certified": true,
+                "declared_mandates": ["conseiller_municipal"],
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null
@@ -1451,6 +1492,7 @@ Feature:
                     "subscription_date": "@string@.isDateTime()"
                 },
                 "certified": true,
+                "declared_mandates": ["conseiller_municipal"],
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null
@@ -1540,6 +1582,7 @@ Feature:
                     "subscription_date": "@string@.isDateTime()"
                 },
                 "certified": true,
+                "declared_mandates": ["conseiller_municipal"],
                 "interests": [],
                 "image_url": null,
                 "change_email_token": null
