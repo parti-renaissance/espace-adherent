@@ -36,13 +36,28 @@ class ScopeEnum extends Enum
     public const AGORA_PRESIDENT = 'agora_president';
     public const AGORA_GENERAL_SECRETARY = 'agora_general_secretary';
 
+    // Ordered by display priority (used for sorting roles in UI)
     public const ALL = [
+        // Priority roles (main cadre positions)
+        self::LEGISLATIVE_CANDIDATE,
+        self::MUNICIPAL_CANDIDATE,
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+        self::REGIONAL_DELEGATE,
+        self::ANIMATOR,
+
+        // Other cadre roles
         self::DEPUTY,
         self::SENATOR,
         self::CANDIDATE,
-        self::MUNICIPAL_CANDIDATE,
         self::MUNICIPAL_PILOT,
+        self::REGIONAL_COORDINATOR,
+        self::FDE_COORDINATOR,
+        self::AGORA_PRESIDENT,
+        self::AGORA_GENERAL_SECRETARY,
+        self::CORRESPONDENT,
+        self::PROCURATIONS_MANAGER,
 
+        // National roles
         self::NATIONAL,
         self::NATIONAL_COMMUNICATION,
         self::NATIONAL_TERRITORIES_DIVISION,
@@ -50,20 +65,10 @@ class ScopeEnum extends Enum
         self::NATIONAL_FORMATION_DIVISION,
         self::NATIONAL_IDEAS_DIVISION,
         self::NATIONAL_TECH_DIVISION,
-
         self::PHONING_NATIONAL_MANAGER,
         self::PAP_NATIONAL_MANAGER,
-        self::CORRESPONDENT,
-        self::LEGISLATIVE_CANDIDATE,
-        self::REGIONAL_COORDINATOR,
-        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
-        self::ANIMATOR,
-        self::REGIONAL_DELEGATE,
-        self::PROCURATIONS_MANAGER,
-        self::FDE_COORDINATOR,
-        self::AGORA_PRESIDENT,
-        self::AGORA_GENERAL_SECRETARY,
 
+        // Operational roles
         self::PHONING,
         self::PAP,
         self::MEETING_SCANNER,
