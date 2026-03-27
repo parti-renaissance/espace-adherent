@@ -11,7 +11,7 @@ class UpdateAdherentLastLoginCommand implements AsynchronousMessageInterface
 {
     public function __construct(
         public readonly UuidInterface $adherentUuid,
-        public readonly \DateTimeImmutable $loginAt = new \DateTimeImmutable(),
+        public readonly \DateTimeInterface $loginAt = new \DateTime(),
     ) {
     }
 }
