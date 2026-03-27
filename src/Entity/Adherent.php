@@ -1500,7 +1500,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->mandates;
     }
 
-    #[Groups(['adherent_elect_read'])]
+    #[Groups(['adherent_elect_read', 'profile_read'])]
     public function getDeclaredMandates(): ?array
     {
         return $this->mandates;
