@@ -1124,14 +1124,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->emailAddress = $token->getEmail();
     }
 
-    /**
-     * Records the adherent last login date and time.
-     *
-     * @param string|int $timestamp a valid date representation as a string or integer
-     */
-    public function recordLastLoginTime($timestamp = 'now'): void
+    public function recordLastLoginTime(?\DateTimeInterface $dateTime = null): void
     {
-        $this->lastLoggedAt = new \DateTime($timestamp);
+        $this->lastLoggedAt = \DateTime::createFromInterface($dateTime ?? new \DateTimeImmutable());
 
         $this->setLastLoginGroup(LastLoginGroupEnum::LESS_THAN_1_MONTH);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\AppSession;
 
 use App\AppSession\Command\TerminateStaleAppSessionCommand;
+use App\AppSession\Command\UpdateAdherentLastLoginCommand;
 use App\Entity\AppSession;
 use App\Entity\OAuth\AccessToken as AccessTokenEntity;
 use App\OAuth\Model\AccessToken as AccessTokenModel;
@@ -39,11 +40,19 @@ class Manager
             return;
         }
 
-        $tokenEntity->appSession = $session = $this->getAppSession($tokenEntity, $token, $request);
+        $session = $this->getAppSession($tokenEntity, $token, $request);
 
+        // Flush 1: table app_session (INSERT ou UPDATE)
+        $this->entityManager->persist($session);
         $this->entityManager->flush();
+
+        // Flush 2: table oauth_access_tokens (UPDATE app_session_id)
+        $tokenEntity->appSession = $session;
+        $this->entityManager->flush();
+
         $token->currentSessionUuid = $session->getUuid();
 
+        $this->bus->dispatch(new UpdateAdherentLastLoginCommand($session->adherent->getUuid()));
         $this->bus->dispatch(new TerminateStaleAppSessionCommand());
     }
 
@@ -72,8 +81,6 @@ class Manager
             $session->ip ?? $this->requestStack->getMainRequest()?->getClientIp(),
             $userAgent ? $this->deviceInfoParser->parse($userAgent) : null,
         );
-
-        $session->adherent->recordLastLoginTime();
 
         return $session;
     }

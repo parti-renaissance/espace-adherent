@@ -97,7 +97,7 @@ class AdherentTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent();
         $this->assertNull($adherent->getLastLoggedAt());
 
-        $adherent->recordLastLoginTime('2016-01-01 13:30:00');
+        $adherent->recordLastLoginTime(new \DateTimeImmutable('2016-01-01 13:30:00'));
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
         $this->assertEquals(new \DateTime('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }

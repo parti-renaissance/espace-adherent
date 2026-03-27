@@ -7,12 +7,15 @@ namespace App\AppSession\Listener;
 use App\AppSession\Manager;
 use League\OAuth2\Server\RequestAccessTokenEvent;
 use League\OAuth2\Server\RequestEvent;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RefreshAppSessionListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly Manager $manager)
-    {
+    public function __construct(
+        private readonly Manager $manager,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -24,6 +27,12 @@ class RefreshAppSessionListener implements EventSubscriberInterface
 
     public function onRequestAccessToken(RequestAccessTokenEvent $event): void
     {
-        $this->manager->refreshSession($event->getAccessToken(), $event->getRequest());
+        try {
+            $this->manager->refreshSession($event->getAccessToken(), $event->getRequest());
+        } catch (\Throwable $e) {
+            $this->logger->error('Failed to refresh app session.', [
+                'exception' => $e,
+            ]);
+        }
     }
 }
