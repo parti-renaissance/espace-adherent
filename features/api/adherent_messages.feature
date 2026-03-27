@@ -972,12 +972,12 @@ Feature:
             | [3].filters[0].label                        | Cadres & Équipes                   |
             | [3].filters[0].type                         | scope_target                       |
             | [3].filters[0].options.allow_custom_role    | true                               |
-            | [3].filters[0].options.scopes[0].code       | deputy                             |
-            | [3].filters[0].options.scopes[0].label      | Délégué                            |
-            | [3].filters[0].options.scopes[5].code       | national                           |
-            | [3].filters[0].options.scopes[5].label      | Rôle national                      |
-            | [3].filters[0].options.scopes[17].code      | president_departmental_assembly    |
-            | [3].filters[0].options.scopes[17].label     | Président                          |
+            | [3].filters[0].options.scopes[0].code       | legislative_candidate              |
+            | [3].filters[0].options.scopes[0].label      | Candidat                           |
+            | [3].filters[0].options.scopes[5].code       | deputy                             |
+            | [3].filters[0].options.scopes[5].label      | Délégué                            |
+            | [3].filters[0].options.scopes[17].code      | national_territories_division      |
+            | [3].filters[0].options.scopes[17].label     | Chef de pôle                       |
             | [3].filters[0].options.scopes[26].code      | meeting_scanner                    |
             | [3].filters[0].options.scopes[26].label     | Meeting scanneur                   |
             | [3].filters[0].options.team_roles[0].code   | general_secretary                  |

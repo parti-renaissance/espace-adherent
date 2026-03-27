@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Normalizer;
 
+use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
@@ -381,14 +382,16 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('elect_mandates', $result);
         self::assertCount(2, $result['elect_mandates']);
 
-        self::assertSame([
-            'code' => 'conseiller_municipal',
-            'label' => 'Conseiller municipal',
-        ], $result['elect_mandates'][0]);
-
+        // Mandates are sorted by MandateTypeEnum::ALL order (national to local)
+        // depute comes before conseiller_municipal
         self::assertSame([
             'code' => 'depute',
             'label' => 'Député',
+        ], $result['elect_mandates'][0]);
+
+        self::assertSame([
+            'code' => 'conseiller_municipal',
+            'label' => 'Conseiller municipal',
         ], $result['elect_mandates'][1]);
     }
 
@@ -745,5 +748,177 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertSame('role', $result['tags'][0]['type']);
         // Role with zone: "{translated_role} ({zone_codes})"
         self::assertSame("Président d'Assemblée Départementale (92, 93)", $result['tags'][0]['label']);
+    }
+
+    public function testSortRolesByPriorityPriorityDirectThenOtherDirectThenDelegated(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('getRoles')
+            ->willReturn([
+                ['code' => ScopeEnum::DEPUTY, 'is_delegated' => false],                      // non-priority direct
+                ['code' => ScopeEnum::ANIMATOR, 'is_delegated' => true, 'function' => 'F1'], // priority delegated
+                ['code' => ScopeEnum::LEGISLATIVE_CANDIDATE, 'is_delegated' => false],       // priority direct (index 0)
+                ['code' => ScopeEnum::SENATOR, 'is_delegated' => true, 'function' => 'F2'],  // non-priority delegated
+                ['code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, 'is_delegated' => false], // priority direct (index 2)
+            ])
+        ;
+        $managedUser->method('getGender')->willReturn('male');
+        $managedUser->method('getElectMandates')->willReturn(null);
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+        $this->translator->method('trans')->willReturnCallback(function (string $key) {
+            return $key;
+        });
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('roles', $result);
+        self::assertCount(5, $result['roles']);
+
+        // Expected order (ScopeEnum::ALL defines priority):
+        // 1. Direct roles by ScopeEnum::ALL: legislative_candidate, president_departmental_assembly, deputy
+        // 2. Delegated roles by ScopeEnum::ALL: animator, senator
+        self::assertSame(ScopeEnum::LEGISLATIVE_CANDIDATE, $result['roles'][0]['code']);
+        self::assertSame(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $result['roles'][1]['code']);
+        self::assertSame(ScopeEnum::DEPUTY, $result['roles'][2]['code']);
+        self::assertSame(ScopeEnum::ANIMATOR, $result['roles'][3]['code']);
+        self::assertSame(ScopeEnum::SENATOR, $result['roles'][4]['code']);
+    }
+
+    public function testSortRolesByPriorityUnknownRoleGoesAtEndOfCategory(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser
+            ->method('getRoles')
+            ->willReturn([
+                ['code' => 'unknown_role', 'is_delegated' => false],           // unknown direct
+                ['code' => ScopeEnum::DEPUTY, 'is_delegated' => false],        // known direct
+                ['code' => 'another_unknown', 'is_delegated' => true, 'function' => 'F'], // unknown delegated
+            ])
+        ;
+        $managedUser->method('getGender')->willReturn('male');
+        $managedUser->method('getElectMandates')->willReturn(null);
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+        $this->translator->method('trans')->willReturnCallback(function (string $key) {
+            return $key;
+        });
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('roles', $result);
+        self::assertCount(3, $result['roles']);
+
+        // Direct roles first (deputy known, then unknown), then delegated
+        self::assertSame(ScopeEnum::DEPUTY, $result['roles'][0]['code']);
+        self::assertSame('unknown_role', $result['roles'][1]['code']);
+        self::assertSame('another_unknown', $result['roles'][2]['code']);
+    }
+
+    public function testSortRolesByPriorityEmptyArrayReturnsEmpty(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser->method('getRoles')->willReturn([]);
+        $managedUser->method('getGender')->willReturn('male');
+        $managedUser->method('getElectMandates')->willReturn(null);
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('roles', $result);
+        self::assertSame([], $result['roles']);
+    }
+
+    public function testSortMandatesByPriorityNationalToLocalOrder(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser->method('getRoles')->willReturn([]);
+        $managedUser->method('getGender')->willReturn('male');
+        // Out of order: local then national
+        $managedUser
+            ->method('getElectMandates')
+            ->willReturn([
+                MandateTypeEnum::CONSEILLER_MUNICIPAL,    // local
+                MandateTypeEnum::DEPUTE,                  // national
+                MandateTypeEnum::MAIRE,                   // local
+                MandateTypeEnum::SENATEUR,                // national
+            ])
+        ;
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+        $this->translator->method('trans')->willReturnCallback(function (string $key) {
+            return $key;
+        });
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('elect_mandates', $result);
+        self::assertCount(4, $result['elect_mandates']);
+
+        // Expected order per MandateTypeEnum::ALL: senateur, depute, maire, conseiller_municipal
+        self::assertSame(MandateTypeEnum::SENATEUR, $result['elect_mandates'][0]['code']);
+        self::assertSame(MandateTypeEnum::DEPUTE, $result['elect_mandates'][1]['code']);
+        self::assertSame(MandateTypeEnum::MAIRE, $result['elect_mandates'][2]['code']);
+        self::assertSame(MandateTypeEnum::CONSEILLER_MUNICIPAL, $result['elect_mandates'][3]['code']);
+    }
+
+    public function testSortMandatesByPriorityEmptyArrayReturnsEmpty(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser->method('getRoles')->willReturn([]);
+        $managedUser->method('getGender')->willReturn('male');
+        $managedUser->method('getElectMandates')->willReturn([]);
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('elect_mandates', $result);
+        self::assertSame([], $result['elect_mandates']);
+    }
+
+    public function testSortMandatesByPrioritySingleElementReturnsSame(): void
+    {
+        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser->method('getRoles')->willReturn([]);
+        $managedUser->method('getGender')->willReturn('male');
+        $managedUser->method('getElectMandates')->willReturn([MandateTypeEnum::MAIRE]);
+        $managedUser->method('getCommittee')->willReturn(null);
+        $managedUser->method('getAgora')->willReturn(null);
+
+        $context = ['groups' => [ManagedUserContextBuilder::GROUP_VOX]];
+
+        $this->innerNormalizer->method('normalize')->willReturn(['uuid' => 'test']);
+        $this->translator->method('trans')->willReturnCallback(function (string $key) {
+            return $key;
+        });
+
+        $result = $this->normalizer->normalize($managedUser, null, $context);
+
+        self::assertArrayHasKey('elect_mandates', $result);
+        self::assertCount(1, $result['elect_mandates']);
+        self::assertSame(MandateTypeEnum::MAIRE, $result['elect_mandates'][0]['code']);
     }
 }

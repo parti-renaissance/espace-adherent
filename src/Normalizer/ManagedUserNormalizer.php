@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Projection\ManagedUser;
@@ -35,83 +36,13 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
-
         $groups = $context['groups'] ?? [];
-        $isVox = \is_array($groups) && \in_array(ManagedUserContextBuilder::GROUP_VOX, $groups, true);
 
-        if ($isVox) {
-            $data['roles'] = $this->formatRolesVox($object);
-            $data['elect_mandates'] = $this->formatMandates($object->getElectMandates());
-            $data['adherent_tags'] = $this->translateTags($object->adherentTags);
-            $data['static_tags'] = $this->translateTags($object->staticTags);
-            $data['elect_tags'] = $this->translateTags($object->electTags);
-
-            $isVoxDetail = \in_array(ManagedUserContextBuilder::GROUP_VOX_DETAIL, $groups, true);
-            if ($isVoxDetail) {
-                $data['subscription_types'] = $this->formatSubscriptionTypes($object);
-            }
-
-            return $data;
+        if ($this->isVoxContext($groups)) {
+            return $this->applyVoxContext($data, $object, $groups);
         }
 
-        $data['email_subscription'] = $object->isEmailSubscribed();
-
-        if ($scope = $this->scopeGeneratorResolver->generate()) {
-            if ($scope->getMainUser()->isModemMembership()) {
-                $data['email'] = null;
-            }
-
-            if (!empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null)) {
-                $data['email_subscription'] = $data['email_subscription'] && \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
-            }
-        }
-
-        $gender = $object->getGender();
-        $committee = $object->getCommittee();
-        $agora = $object->getAgora();
-
-        if (isset($data['roles'])) {
-            $data['tags'] = array_merge(
-                $data['tags'] ?? [],
-                array_map(
-                    function (array $role) use ($gender, $committee, $agora) {
-                        return [
-                            'type' => 'role',
-                            'label' => $this->formatRoleLabel($role, $gender, $committee, $agora),
-                            'tooltip' => $role['function'] ?? null,
-                        ];
-                    },
-                    $data['roles']
-                )
-            );
-            unset($data['roles']);
-        }
-
-        if (!empty($data['elect_mandates'])) {
-            $data['tags'] = array_merge(
-                $data['tags'] ?? [],
-                array_map(
-                    fn (string $mandate) => [
-                        'type' => 'mandate',
-                        'label' => $this->getTranslatedMandateLabel($mandate),
-                    ],
-                    $data['elect_mandates']
-                )
-            );
-        } elseif (!empty($data['declared_mandates'])) {
-            $data['tags'] = array_merge(
-                $data['tags'] ?? [],
-                array_map(
-                    fn (string $mandate) => [
-                        'type' => 'declared_mandate',
-                        'label' => $this->getTranslatedMandateLabel($mandate),
-                    ],
-                    $data['declared_mandates']
-                )
-            );
-        }
-
-        return $data;
+        return $this->applyDefaultContext($data, $object);
     }
 
     public function getSupportedTypes(?string $format): array
@@ -126,14 +57,105 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $data instanceof ManagedUser && !isset($context[__CLASS__]);
     }
 
+    private function isVoxContext(mixed $groups): bool
+    {
+        return \is_array($groups) && \in_array(ManagedUserContextBuilder::GROUP_VOX, $groups, true);
+    }
+
+    private function applyVoxContext(array $data, ManagedUser $object, array $groups): array
+    {
+        $data['roles'] = $this->formatRolesVox($object);
+        $data['elect_mandates'] = $this->formatMandates($object->getElectMandates());
+        $data['adherent_tags'] = $this->translateTags($object->adherentTags);
+        $data['static_tags'] = $this->translateTags($object->staticTags);
+        $data['elect_tags'] = $this->translateTags($object->electTags);
+
+        if (\in_array(ManagedUserContextBuilder::GROUP_VOX_DETAIL, $groups, true)) {
+            $data['subscription_types'] = $this->formatSubscriptionTypes($object);
+        }
+
+        return $data;
+    }
+
+    private function applyDefaultContext(array $data, ManagedUser $object): array
+    {
+        $data['email_subscription'] = $object->isEmailSubscribed();
+        $data = $this->applyScopeBusinessRules($data, $object);
+
+        $data['tags'] ??= [];
+        $data = $this->appendRoleTags($data, $object);
+        $data = $this->appendMandateTags($data);
+
+        return $data;
+    }
+
+    private function applyScopeBusinessRules(array $data, ManagedUser $object): array
+    {
+        $scope = $this->scopeGeneratorResolver->generate();
+        if (!$scope) {
+            return $data;
+        }
+
+        if ($scope->getMainUser()->isModemMembership()) {
+            $data['email'] = null;
+        }
+
+        $subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null;
+        if (!empty($subscriptionType)) {
+            $data['email_subscription'] = $data['email_subscription'] && \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
+        }
+
+        return $data;
+    }
+
+    private function appendRoleTags(array $data, ManagedUser $object): array
+    {
+        if (!isset($data['roles'])) {
+            return $data;
+        }
+
+        $sortedRoles = $this->sortRolesByPriority($data['roles']);
+        foreach ($sortedRoles as $role) {
+            $data['tags'][] = [
+                'type' => 'role',
+                'label' => $this->formatRoleLabel($role, $object->getGender(), $object->getCommittee(), $object->getAgora()),
+                'tooltip' => $role['function'] ?? null,
+            ];
+        }
+
+        unset($data['roles']);
+
+        return $data;
+    }
+
+    private function appendMandateTags(array $data): array
+    {
+        if (!empty($data['elect_mandates'])) {
+            $mandates = $this->sortMandatesByPriority($data['elect_mandates']);
+            $type = 'mandate';
+        } elseif (!empty($data['declared_mandates'])) {
+            $mandates = $this->sortMandatesByPriority($data['declared_mandates']);
+            $type = 'declared_mandate';
+        } else {
+            return $data;
+        }
+
+        foreach ($mandates as $mandate) {
+            $data['tags'][] = [
+                'type' => $type,
+                'label' => $this->getTranslatedMandateLabel($mandate),
+            ];
+        }
+
+        return $data;
+    }
+
     private function formatRolesVox(ManagedUser $managedUser): array
     {
         $roles = [];
-        $gender = $managedUser->getGender();
-        $committee = $managedUser->getCommittee();
-        $agora = $managedUser->getAgora();
+        $sortedRoles = $this->sortRolesByPriority($managedUser->getRoles());
 
-        foreach ($managedUser->getRoles() as $role) {
+        foreach ($sortedRoles as $role) {
             $code = $role['code'] ?? '';
             if ('' === $code) {
                 continue;
@@ -141,7 +163,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
             $roles[] = [
                 'code' => $code,
-                'label' => $this->formatRoleLabel($role, $gender, $committee, $agora),
+                'label' => $this->formatRoleLabel($role, $managedUser->getGender(), $managedUser->getCommittee(), $managedUser->getAgora()),
                 'is_delegated' => $role['is_delegated'] ?? false,
                 'function' => $role['function'] ?? null,
                 'zones' => $role['zones'] ?? null,
@@ -152,21 +174,8 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $roles;
     }
 
-    /**
-     * Formats the role label according to priority rules:
-     * 1. Delegated: "{function} ({zone_codes})" or "{function}" if no zone
-     * 2. National: "{translated_role}" (no zone)
-     * 3. Animator: "{translated_role} ({committee})"
-     * 4. Agora (president/secretary): "{translated_role} ({agora})"
-     * 5. With zone: "{translated_role} ({zone_codes})"
-     * 6. Fallback: "{translated_role}"
-     */
-    private function formatRoleLabel(
-        array $role,
-        ?string $gender,
-        ?string $committee,
-        ?string $agora,
-    ): string {
+    private function formatRoleLabel(array $role, ?string $gender, ?string $committee, ?string $agora): string
+    {
         $code = $role['code'] ?? '';
         $isDelegated = !empty($role['is_delegated']);
         $function = $role['function'] ?? null;
@@ -174,37 +183,18 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         // Priority 1: Delegated role
         if ($isDelegated && $function) {
-            if (!empty($zoneCodes)) {
-                return \sprintf('%s (%s)', $function, $zoneCodes);
-            }
-
-            return $function;
+            return $zoneCodes ? \sprintf('%s (%s)', $function, $zoneCodes) : $function;
         }
 
         $translatedLabel = $this->getTranslatedRoleLabel($code, $gender);
 
-        // Priority 2: National role (no zone)
-        if (ScopeEnum::isNational($code)) {
-            return $translatedLabel;
-        }
-
-        // Priority 3: Animator with committee
-        if (ScopeEnum::ANIMATOR === $code && !empty($committee)) {
-            return \sprintf('%s (%s)', $translatedLabel, $committee);
-        }
-
-        // Priority 4: Agora roles
-        if (\in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora)) {
-            return \sprintf('%s (%s)', $translatedLabel, $agora);
-        }
-
-        // Priority 5: Role with zone
-        if (!empty($zoneCodes)) {
-            return \sprintf('%s (%s)', $translatedLabel, $zoneCodes);
-        }
-
-        // Priority 6: Fallback (label only)
-        return $translatedLabel;
+        return match (true) {
+            ScopeEnum::isNational($code) => $translatedLabel,
+            ScopeEnum::ANIMATOR === $code && !empty($committee) => \sprintf('%s (%s)', $translatedLabel, $committee),
+            \in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora) => \sprintf('%s (%s)', $translatedLabel, $agora),
+            !empty($zoneCodes) => \sprintf('%s (%s)', $translatedLabel, $zoneCodes),
+            default => $translatedLabel,
+        };
     }
 
     private function formatMandates(?array $mandates): array
@@ -214,14 +204,28 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         return array_map(
-            function (string $code) {
-                return [
-                    'code' => $code,
-                    'label' => $this->getTranslatedMandateLabel($code),
-                ];
-            },
-            $mandates
+            fn (string $code) => [
+                'code' => $code,
+                'label' => $this->getTranslatedMandateLabel($code),
+            ],
+            $this->sortMandatesByPriority($mandates)
         );
+    }
+
+    private function formatSubscriptionTypes(ManagedUser $managedUser): array
+    {
+        $userCodes = $managedUser->getSubscriptionTypes();
+
+        $result = [];
+        foreach ($this->getAllSubscriptionTypes() as $code => $label) {
+            $result[] = [
+                'code' => $code,
+                'label' => $label,
+                'subscribed' => \in_array($code, $userCodes, true),
+            ];
+        }
+
+        return $result;
     }
 
     private function translateTags(?array $tags): ?array
@@ -256,21 +260,17 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $this->roleTranslationCache[$cacheKey];
     }
 
-    private function formatSubscriptionTypes(ManagedUser $managedUser): array
+    private function getTranslatedMandateLabel(string $mandate): string
     {
-        $allTypes = $this->getAllSubscriptionTypes();
-        $userCodes = $managedUser->getSubscriptionTypes();
+        $cacheKey = 'mandate_'.$mandate;
 
-        $result = [];
-        foreach ($allTypes as $code => $label) {
-            $result[] = [
-                'code' => $code,
-                'label' => $label,
-                'subscribed' => \in_array($code, $userCodes, true),
-            ];
+        if (!isset($this->roleTranslationCache[$cacheKey])) {
+            $key = 'adherent.mandate.type.'.$mandate;
+            $label = $this->translator->trans($key);
+            $this->roleTranslationCache[$cacheKey] = $label === $key ? $mandate : $label;
         }
 
-        return $result;
+        return $this->roleTranslationCache[$cacheKey];
     }
 
     private function getAllSubscriptionTypes(): array
@@ -285,16 +285,42 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $this->subscriptionTypesCache;
     }
 
-    private function getTranslatedMandateLabel(string $mandate): string
+    private function sortRolesByPriority(array $roles): array
     {
-        $cacheKey = 'mandate_'.$mandate;
-
-        if (!isset($this->roleTranslationCache[$cacheKey])) {
-            $key = 'adherent.mandate.type.'.$mandate;
-            $label = $this->translator->trans($key);
-            $this->roleTranslationCache[$cacheKey] = $label === $key ? $mandate : $label;
+        if (empty($roles)) {
+            return [];
         }
 
-        return $this->roleTranslationCache[$cacheKey];
+        usort($roles, function (array $a, array $b): int {
+            $aDelegated = !empty($a['is_delegated']);
+            $bDelegated = !empty($b['is_delegated']);
+
+            if ($aDelegated !== $bDelegated) {
+                return $aDelegated ? 1 : -1;
+            }
+
+            $aIndex = ($idx = array_search($a['code'] ?? '', ScopeEnum::ALL, true)) === false ? \PHP_INT_MAX : $idx;
+            $bIndex = ($idx = array_search($b['code'] ?? '', ScopeEnum::ALL, true)) === false ? \PHP_INT_MAX : $idx;
+
+            return $aIndex <=> $bIndex;
+        });
+
+        return $roles;
+    }
+
+    private function sortMandatesByPriority(array $mandates): array
+    {
+        if (empty($mandates)) {
+            return [];
+        }
+
+        usort($mandates, function (string $a, string $b): int {
+            $aIndex = ($idx = array_search($a, MandateTypeEnum::ALL, true)) === false ? \PHP_INT_MAX : $idx;
+            $bIndex = ($idx = array_search($b, MandateTypeEnum::ALL, true)) === false ? \PHP_INT_MAX : $idx;
+
+            return $aIndex <=> $bIndex;
+        });
+
+        return $mandates;
     }
 }

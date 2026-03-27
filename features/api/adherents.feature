@@ -281,23 +281,8 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (92)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (75-2)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Candidat délégué",
-                                "tooltip": "Candidat délégué"
+                                "label": "Responsable communication (75-1)",
+                                "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
@@ -311,13 +296,28 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable logistique (92)",
-                                "tooltip": "Responsable logistique"
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable communication (75-1)",
-                                "tooltip": "Responsable communication"
+                                "label": "Responsable mobilisation (75-2)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable mobilisation (92)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Candidat délégué",
+                                "tooltip": "Candidat délégué"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable logistique (92)",
+                                "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "mandate",
@@ -385,23 +385,8 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (92)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (75-2)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Candidat délégué",
-                                "tooltip": "Candidat délégué"
+                                "label": "Responsable communication (75-1)",
+                                "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
@@ -415,13 +400,28 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable logistique (92)",
-                                "tooltip": "Responsable logistique"
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable communication (75-1)",
-                                "tooltip": "Responsable communication"
+                                "label": "Responsable mobilisation (75-2)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable mobilisation (92)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Candidat délégué",
+                                "tooltip": "Candidat délégué"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable logistique (92)",
+                                "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "mandate",
@@ -560,23 +560,8 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Responsable mobilisation (CIRCO_FDE-06)",
-                        "tooltip": "Responsable mobilisation"
-                    },
-                    {
-                        "type": "role",
-                        "label": "Responsable mobilisation (92)",
-                        "tooltip": "Responsable mobilisation"
-                    },
-                    {
-                        "type": "role",
-                        "label": "Responsable mobilisation (75-2)",
-                        "tooltip": "Responsable mobilisation"
-                    },
-                    {
-                        "type": "role",
-                        "label": "Candidat délégué",
-                        "tooltip": "Candidat délégué"
+                        "label": "Responsable communication (75-1)",
+                        "tooltip": "Responsable communication"
                     },
                     {
                         "type": "role",
@@ -590,13 +575,28 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Responsable logistique (92)",
-                        "tooltip": "Responsable logistique"
+                        "label": "Responsable mobilisation (CIRCO_FDE-06)",
+                        "tooltip": "Responsable mobilisation"
                     },
                     {
                         "type": "role",
-                        "label": "Responsable communication (75-1)",
-                        "tooltip": "Responsable communication"
+                        "label": "Responsable mobilisation (75-2)",
+                        "tooltip": "Responsable mobilisation"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable mobilisation (92)",
+                        "tooltip": "Responsable mobilisation"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat délégué",
+                        "tooltip": "Candidat délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable logistique (92)",
+                        "tooltip": "Responsable logistique"
                     },
                     {
                         "type": "mandate",
@@ -729,23 +729,8 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (92)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Responsable mobilisation (75-2)",
-                                "tooltip": "Responsable mobilisation"
-                            },
-                            {
-                                "type": "role",
-                                "label": "Candidat délégué",
-                                "tooltip": "Candidat délégué"
+                                "label": "Responsable communication (75-1)",
+                                "tooltip": "Responsable communication"
                             },
                             {
                                 "type": "role",
@@ -759,13 +744,28 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable logistique (92)",
-                                "tooltip": "Responsable logistique"
+                                "label": "Responsable mobilisation (CIRCO_FDE-06)",
+                                "tooltip": "Responsable mobilisation"
                             },
                             {
                                 "type": "role",
-                                "label": "Responsable communication (75-1)",
-                                "tooltip": "Responsable communication"
+                                "label": "Responsable mobilisation (75-2)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable mobilisation (92)",
+                                "tooltip": "Responsable mobilisation"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Candidat délégué",
+                                "tooltip": "Candidat délégué"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable logistique (92)",
+                                "tooltip": "Responsable logistique"
                             },
                             {
                                 "type": "mandate",
@@ -1159,12 +1159,12 @@ Feature:
                             },
                             {
                                 "type": "role",
-                                "label": "National communication : Directeur général adjoint",
+                                "label": "Délégué de circonscription (75-1)",
                                 "tooltip": null
                             },
                             {
                                 "type": "role",
-                                "label": "Délégué de circonscription (75-1)",
+                                "label": "National communication : Directeur général adjoint",
                                 "tooltip": null
                             },
                             {

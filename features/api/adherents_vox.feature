@@ -148,14 +148,14 @@ Feature:
                     {"code": "event_email", "label": "Notification nouvel événement proche de chez moi", "subscribed": false}
                 ],
                 "roles": [
-                    {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
-                    {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
-                    {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
-                    {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                    {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"},
                     {"code": "president_departmental_assembly", "label": "Responsable élus délégué #1 (92)", "is_delegated": true, "function": "Responsable élus délégué #1", "zones": "Hauts-de-Seine", "zone_codes": "92"},
                     {"code": "president_departmental_assembly", "label": "Responsable communication (13, 59, 76, 77, 92)", "is_delegated": true, "function": "Responsable communication", "zones": "Bouches-du-Rhône. Hauts-de-Seine. Nord. Seine-Maritime. Seine-et-Marne", "zone_codes": "13, 59, 76, 77, 92"},
-                    {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"},
-                    {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"}
+                    {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
+                    {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
+                    {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                    {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                    {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"}
                 ],
                 "available_for_resubscribe_email": false
             }
@@ -320,14 +320,14 @@ Feature:
                             "mobile": {"available": true, "subscribed": false}
                         },
                         "roles": [
-                            {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
-                            {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
-                            {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
-                            {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                            {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"},
                             {"code": "president_departmental_assembly", "label": "Responsable élus délégué #1 (92)", "is_delegated": true, "function": "Responsable élus délégué #1", "zones": "Hauts-de-Seine", "zone_codes": "92"},
                             {"code": "president_departmental_assembly", "label": "Responsable communication (13, 59, 76, 77, 92)", "is_delegated": true, "function": "Responsable communication", "zones": "Bouches-du-Rhône. Hauts-de-Seine. Nord. Seine-Maritime. Seine-et-Marne", "zone_codes": "13, 59, 76, 77, 92"},
-                            {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"},
-                            {"code": "legislative_candidate", "label": "Responsable communication (75-1)", "is_delegated": true, "function": "Responsable communication", "zones": "Paris (1)", "zone_codes": "75-1"}
+                            {"code": "deputy", "label": "Responsable mobilisation (CIRCO_FDE-06)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Suisse", "zone_codes": "CIRCO_FDE-06"},
+                            {"code": "deputy", "label": "Responsable mobilisation (75-2)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Paris (2)", "zone_codes": "75-2"},
+                            {"code": "senator", "label": "Responsable mobilisation (92)", "is_delegated": true, "function": "Responsable mobilisation", "zones": "Hauts-de-Seine", "zone_codes": "92"},
+                            {"code": "candidate", "label": "Candidat délégué", "is_delegated": true, "function": "Candidat délégué", "zones": null, "zone_codes": null},
+                            {"code": "correspondent", "label": "Responsable logistique (92)", "is_delegated": true, "function": "Responsable logistique", "zones": "Hauts-de-Seine", "zone_codes": "92"}
                         ]
                     }
                 ]

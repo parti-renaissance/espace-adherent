@@ -22,7 +22,7 @@ class ScopeTargetFilterBuilderTest extends TestCase
             ->method('trans')
             ->willReturnCallback(function (string $key, array $params) {
                 $translations = [
-                    'scope.role.deputy' => 'Député',
+                    'scope.role.legislative_candidate' => 'Candidat',
                     'scope.role.national' => 'Rôle national',
                 ];
 
@@ -54,8 +54,8 @@ class ScopeTargetFilterBuilderTest extends TestCase
         $firstScope = $options['scopes'][0];
         $this->assertArrayHasKey('code', $firstScope);
         $this->assertArrayHasKey('label', $firstScope);
-        $this->assertSame(ScopeEnum::DEPUTY, $firstScope['code']);
-        $this->assertSame('Député', $firstScope['label']);
+        $this->assertSame(ScopeEnum::LEGISLATIVE_CANDIDATE, $firstScope['code']);
+        $this->assertSame('Candidat', $firstScope['label']);
     }
 
     public function testBuildContainsTeamRolesOption(): void
