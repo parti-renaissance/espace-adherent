@@ -8,6 +8,7 @@ use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use App\Utils\DateUtils;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -178,11 +179,11 @@ class ManagedUsersFilter
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
-            $this->registeredSince = new \DateTime($startEnd['start']);
+            $this->registeredSince = DateUtils::createValidDate($startEnd['start']);
         }
 
         if (!empty($startEnd['end'])) {
-            $this->registeredUntil = new \DateTime($startEnd['end']);
+            $this->registeredUntil = DateUtils::createValidDate($startEnd['end']);
         }
     }
 
@@ -222,11 +223,11 @@ class ManagedUsersFilter
     public function setLastMembership(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
-            $this->lastMembershipSince = new \DateTime($startEnd['start']);
+            $this->lastMembershipSince = DateUtils::createValidDate($startEnd['start']);
         }
 
         if (!empty($startEnd['end'])) {
-            $this->lastMembershipBefore = new \DateTime($startEnd['end']);
+            $this->lastMembershipBefore = DateUtils::createValidDate($startEnd['end']);
         }
     }
 
@@ -234,11 +235,11 @@ class ManagedUsersFilter
     public function setFirstMembership(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
-            $this->firstMembershipSince = new \DateTime($startEnd['start']);
+            $this->firstMembershipSince = DateUtils::createValidDate($startEnd['start']);
         }
 
         if (!empty($startEnd['end'])) {
-            $this->firstMembershipBefore = new \DateTime($startEnd['end']);
+            $this->firstMembershipBefore = DateUtils::createValidDate($startEnd['end']);
         }
     }
 
