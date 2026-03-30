@@ -20,25 +20,27 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
     {
         return new FilterCollectionBuilder()
             ->createFrom(ScopeTarget::class)
-            ->setScopes($this->buildScopeChoices())
-            ->setTeamRoles($this->buildTeamRoleChoices())
+            ->setInstances($this->buildInstances())
             ->setAllowCustomRole(true)
             ->getFilters()
         ;
     }
 
-    private function buildScopeChoices(): array
+    private function buildInstances(): array
     {
-        $choices = [];
+        $instances = [];
+        $teamRoles = $this->buildTeamRoleChoices();
 
-        foreach (ScopeEnum::ALL as $code) {
-            $choices[] = [
+        foreach (ScopeEnum::SCOPE_TARGET_CHOICES as $code) {
+            $instances[] = [
+                'name' => ScopeEnum::SCOPE_INSTANCES[$code] ?? null,
                 'code' => $code,
-                'label' => $this->getScopeLabel($code),
+                'main_role' => $this->getScopeLabel($code),
+                'team_roles' => $teamRoles,
             ];
         }
 
-        return $choices;
+        return $instances;
     }
 
     private function getScopeLabel(string $code): string
@@ -63,6 +65,11 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
                 'label' => $label,
             ];
         }
+
+        $choices[] = [
+            'code' => RoleEnum::CUSTOM_ROLE,
+            'label' => 'Rôle personnalisé',
+        ];
 
         return $choices;
     }

@@ -41,38 +41,38 @@ class ScopeTargetFilterBuilderTest extends TestCase
         $this->assertInstanceOf(ScopeTarget::class, $filters[0]);
     }
 
-    public function testBuildContainsScopesOption(): void
+    public function testBuildContainsInstancesOption(): void
     {
         $filters = $this->builder->build(ScopeEnum::NATIONAL);
         $filter = $filters[0];
         $options = $filter->getOptions();
 
-        $this->assertArrayHasKey('scopes', $options);
-        $this->assertIsArray($options['scopes']);
-        $this->assertCount(\count(ScopeEnum::ALL), $options['scopes']);
+        $this->assertArrayHasKey('instances', $options);
+        $this->assertIsArray($options['instances']);
+        $this->assertCount(\count(ScopeEnum::SCOPE_TARGET_CHOICES), $options['instances']);
 
-        $firstScope = $options['scopes'][0];
-        $this->assertArrayHasKey('code', $firstScope);
-        $this->assertArrayHasKey('label', $firstScope);
-        $this->assertSame(ScopeEnum::LEGISLATIVE_CANDIDATE, $firstScope['code']);
-        $this->assertSame('Candidat', $firstScope['label']);
-    }
+        $firstInstance = $options['instances'][0];
+        $this->assertArrayHasKey('name', $firstInstance);
+        $this->assertArrayHasKey('code', $firstInstance);
+        $this->assertArrayHasKey('main_role', $firstInstance);
+        $this->assertArrayHasKey('team_roles', $firstInstance);
 
-    public function testBuildContainsTeamRolesOption(): void
-    {
-        $filters = $this->builder->build(ScopeEnum::NATIONAL);
-        $filter = $filters[0];
-        $options = $filter->getOptions();
+        $this->assertSame(ScopeEnum::LEGISLATIVE_CANDIDATE, $firstInstance['code']);
+        $this->assertSame('Candidat', $firstInstance['main_role']);
+        $this->assertSame('Circonscription', $firstInstance['name']);
 
-        $this->assertArrayHasKey('team_roles', $options);
-        $this->assertIsArray($options['team_roles']);
-        $this->assertCount(\count(RoleEnum::LABELS), $options['team_roles']);
+        // Each instance has all team roles + custom role
+        $this->assertCount(\count(RoleEnum::LABELS) + 1, $firstInstance['team_roles']);
 
-        $firstRole = $options['team_roles'][0];
+        $firstRole = $firstInstance['team_roles'][0];
         $this->assertArrayHasKey('code', $firstRole);
         $this->assertArrayHasKey('label', $firstRole);
         $this->assertSame(RoleEnum::GENERAL_SECRETARY, $firstRole['code']);
         $this->assertSame('Secrétaire général', $firstRole['label']);
+
+        $lastRole = end($firstInstance['team_roles']);
+        $this->assertSame(RoleEnum::CUSTOM_ROLE, $lastRole['code']);
+        $this->assertSame('Rôle personnalisé', $lastRole['label']);
     }
 
     public function testBuildContainsAllowCustomRoleOption(): void

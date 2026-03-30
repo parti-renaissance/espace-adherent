@@ -17,14 +17,9 @@ class ScopeTarget extends AbstractFilter
         );
     }
 
-    public function setScopes(array $scopes): void
+    public function setInstances(array $instances): void
     {
-        $this->addOption('scopes', $scopes);
-    }
-
-    public function setTeamRoles(array $roles): void
-    {
-        $this->addOption('team_roles', $roles);
+        $this->addOption('instances', $instances);
     }
 
     public function setAllowCustomRole(bool $value): void

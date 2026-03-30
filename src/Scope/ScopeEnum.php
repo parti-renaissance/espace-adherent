@@ -74,6 +74,38 @@ class ScopeEnum extends Enum
         self::MEETING_SCANNER,
     ];
 
+    public const SCOPE_TARGET_CHOICES = [
+        // Priority roles (main cadre positions)
+        self::LEGISLATIVE_CANDIDATE,
+        self::MUNICIPAL_CANDIDATE,
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+        self::REGIONAL_DELEGATE,
+        self::ANIMATOR,
+
+        // Other cadre roles
+        self::DEPUTY,
+        self::SENATOR,
+        self::REGIONAL_COORDINATOR,
+        self::FDE_COORDINATOR,
+        self::AGORA_PRESIDENT,
+        self::AGORA_GENERAL_SECRETARY,
+        self::CORRESPONDENT,
+        self::PROCURATIONS_MANAGER,
+
+        // National roles
+        self::NATIONAL,
+        self::NATIONAL_COMMUNICATION,
+        self::NATIONAL_TERRITORIES_DIVISION,
+        self::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
+        self::NATIONAL_FORMATION_DIVISION,
+        self::NATIONAL_IDEAS_DIVISION,
+        self::NATIONAL_TECH_DIVISION,
+
+        // Operational roles
+        self::PAP,
+        self::MEETING_SCANNER,
+    ];
+
     public const NATIONAL_SCOPES = [
         self::NATIONAL,
         self::NATIONAL_COMMUNICATION,
