@@ -3047,11 +3047,11 @@ __metadata:
   linkType: hard
 
 "alpinejs@npm:^3.13.10":
-  version: 3.15.8
-  resolution: "alpinejs@npm:3.15.8"
+  version: 3.15.9
+  resolution: "alpinejs@npm:3.15.9"
   dependencies:
     "@vue/reactivity": "npm:~3.1.1"
-  checksum: 10c0/2746227bf7389e3c0737225448247f7bf5d44ef27e0e4e37588f452d0fac2c760d39640f1c9b0189f440dac9e724f540a94e8730e326d514929309731c932b25
+  checksum: 10c0/80d31021ca3a38e32bd9f6d447b2ff5661d3a0d798ec758f13a59a59045f353b2cc815837e290d7d1a82c6eae25f3b167bc82915d93caa5ad1d3e7c8f9022286
   languageName: node
   linkType: hard
 
