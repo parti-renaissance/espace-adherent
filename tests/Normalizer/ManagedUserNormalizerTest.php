@@ -74,8 +74,8 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser
             ->method('getRoles')
             ->willReturn([
-                ['code' => 'president_departmental_assembly', 'zones' => 'Paris', 'zone_codes' => '75'],
-                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication', 'zone_codes' => '92'],
+                ['code' => 'president_departmental_assembly', 'zones' => '75', 'zone_codes' => '75'],
+                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication', 'zones' => '92', 'zone_codes' => '92'],
             ])
         ;
         $managedUser
@@ -165,23 +165,23 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('roles', $result);
         self::assertCount(2, $result['roles']);
 
-        // Role with zone_codes: label should include zone
+        // Role with zones: label should include zone display (code for non-region)
         self::assertSame([
             'code' => 'president_departmental_assembly',
             'label' => "Président d'Assemblée Départementale (75)",
             'is_delegated' => false,
             'function' => null,
-            'zones' => 'Paris',
+            'zones' => '75',
             'zone_codes' => '75',
         ], $result['roles'][0]);
 
-        // Delegated role: label should be "{function} ({zone_codes})"
+        // Delegated role: label should be "{function} ({zone_display})"
         self::assertSame([
             'code' => 'animator',
             'label' => 'Communication (92)',
             'is_delegated' => true,
             'function' => 'Communication',
-            'zones' => null,
+            'zones' => '92',
             'zone_codes' => '92',
         ], $result['roles'][1]);
     }
@@ -465,12 +465,13 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public static function provideFormatRoleLabelCases(): iterable
     {
-        // Priority 1: Delegated role with zone
+        // Priority 1: Delegated role with zone (department = code)
         yield 'delegated_with_zone' => [
             'role' => [
                 'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                 'is_delegated' => true,
                 'function' => 'Secrétaire Général',
+                'zones' => '92',
                 'zone_codes' => '92',
             ],
             'committee' => null,
@@ -551,15 +552,28 @@ final class ManagedUserNormalizerTest extends TestCase
             'expectedLabel' => 'Président d\'Agora',
         ];
 
-        // Priority 5: Role with zone
+        // Priority 5: Role with zone (department = code)
         yield 'role_with_zone' => [
             'role' => [
                 'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                'zones' => '75',
                 'zone_codes' => '75',
             ],
             'committee' => null,
             'agora' => null,
             'expectedLabel' => 'Président d\'Assemblée Départementale (75)',
+        ];
+
+        // Priority 5: Role with region zone (region = name from worker)
+        yield 'role_with_region_zone' => [
+            'role' => [
+                'code' => ScopeEnum::REGIONAL_DELEGATE,
+                'zones' => 'Île-de-France',
+                'zone_codes' => 'IDF',
+            ],
+            'committee' => null,
+            'agora' => null,
+            'expectedLabel' => 'Délégué Régional (Île-de-France)',
         ];
 
         // Priority 6: Fallback (no zone or context)
@@ -612,6 +626,7 @@ final class ManagedUserNormalizerTest extends TestCase
                         'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                         'is_delegated' => true,
                         'function' => 'Secrétaire Général',
+                        'zones' => '92',
                         'zone_codes' => '92',
                     ],
                 ],
@@ -629,7 +644,7 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('tags', $result);
         self::assertCount(1, $result['tags']);
         self::assertSame('role', $result['tags'][0]['type']);
-        // Delegated role with zone: "{function} ({zone_codes})" - no suffix needed
+        // Delegated role with zone: "{function} ({zone_display})"
         self::assertSame('Secrétaire Général (92)', $result['tags'][0]['label']);
         self::assertSame('Secrétaire Général', $result['tags'][0]['tooltip']);
     }
@@ -673,6 +688,7 @@ final class ManagedUserNormalizerTest extends TestCase
                         'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                         'is_delegated' => true,
                         'function' => 'Secrétaire Générale',
+                        'zones' => '75',
                         'zone_codes' => '75',
                     ],
                 ],
@@ -688,7 +704,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
         self::assertArrayHasKey('tags', $result);
         self::assertCount(1, $result['tags']);
-        // Delegated female: no suffix needed (function name is self-explanatory)
+        // Delegated female: department zone = code
         self::assertSame('Secrétaire Générale (75)', $result['tags'][0]['label']);
     }
 
@@ -729,6 +745,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'roles' => [
                     [
                         'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                        'zones' => '92, 93',
                         'zone_codes' => '92, 93',
                     ],
                 ],
@@ -746,7 +763,7 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('tags', $result);
         self::assertCount(1, $result['tags']);
         self::assertSame('role', $result['tags'][0]['type']);
-        // Role with zone: "{translated_role} ({zone_codes})"
+        // Role with department zones: codes
         self::assertSame("Président d'Assemblée Départementale (92, 93)", $result['tags'][0]['label']);
     }
 
