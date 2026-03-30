@@ -179,11 +179,18 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         $code = $role['code'] ?? '';
         $isDelegated = !empty($role['is_delegated']);
         $function = $role['function'] ?? null;
-        $zoneCodes = $role['zone_codes'] ?? null;
+        $zoneNames = $this->formatZoneNames($role['zones'] ?? null);
 
         // Priority 1: Delegated role
         if ($isDelegated && $function) {
-            return $zoneCodes ? \sprintf('%s (%s)', $function, $zoneCodes) : $function;
+            if (ScopeEnum::ANIMATOR === $code && !empty($committee)) {
+                return \sprintf('%s (%s)', $function, $committee);
+            }
+            if (\in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora)) {
+                return \sprintf('%s (%s)', $function, $agora);
+            }
+
+            return $zoneNames ? \sprintf('%s (%s)', $function, $zoneNames) : $function;
         }
 
         $translatedLabel = $this->getTranslatedRoleLabel($code, $gender);
@@ -192,9 +199,14 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             ScopeEnum::isNational($code) => $translatedLabel,
             ScopeEnum::ANIMATOR === $code && !empty($committee) => \sprintf('%s (%s)', $translatedLabel, $committee),
             \in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora) => \sprintf('%s (%s)', $translatedLabel, $agora),
-            !empty($zoneCodes) => \sprintf('%s (%s)', $translatedLabel, $zoneCodes),
+            !empty($zoneNames) => \sprintf('%s (%s)', $translatedLabel, $zoneNames),
             default => $translatedLabel,
         };
+    }
+
+    private function formatZoneNames(?string $zoneNames): ?string
+    {
+        return $zoneNames ?: null;
     }
 
     private function formatMandates(?array $mandates): array
