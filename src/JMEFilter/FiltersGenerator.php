@@ -9,17 +9,18 @@ use App\JMEFilter\FilterGroup\AbstractFilterGroup;
 use App\JMEFilter\FilterGroup\FilterGroupInterface;
 use App\JMEFilter\Layout\FilterLayoutResolver;
 use Psr\Container\ContainerInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class FiltersGenerator
 {
+    public const CACHE_TAG = 'filters';
     private const CACHE_TTL = 3600;
 
     public function __construct(
         private readonly FilterLayoutResolver $layoutResolver,
         private readonly ContainerInterface $builderLocator,
-        private readonly CacheInterface $cache,
+        private readonly TagAwareCacheInterface $cache,
     ) {
     }
 
@@ -32,6 +33,7 @@ class FiltersGenerator
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($scope, $feature, $isVox): array {
             $item->expiresAfter(self::CACHE_TTL);
+            $item->tag(self::CACHE_TAG);
 
             return $this->doGenerate($scope, $feature, $isVox);
         });
