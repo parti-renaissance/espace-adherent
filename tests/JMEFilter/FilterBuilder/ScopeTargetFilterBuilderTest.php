@@ -71,7 +71,7 @@ class ScopeTargetFilterBuilderTest extends TestCase
         $filter = $filters[0];
         $options = $filter->getOptions();
 
-        $this->assertArrayHasKey('instances', $options);
+        $this->assertSame(['instances'], array_keys($options));
         $this->assertIsArray($options['instances']);
         $this->assertCount(\count(ScopeEnum::SCOPE_TARGET_CHOICES), $options['instances']);
 
@@ -142,15 +142,5 @@ class ScopeTargetFilterBuilderTest extends TestCase
             $this->assertNotNull($instances[ScopeEnum::SENATOR]['name']);
             $this->assertSame('Senator', $instances[ScopeEnum::SENATOR]['name']);
         }
-    }
-
-    public function testBuildContainsAllowCustomRoleOption(): void
-    {
-        $filters = $this->builder->build(ScopeEnum::NATIONAL);
-        $filter = $filters[0];
-        $options = $filter->getOptions();
-
-        $this->assertArrayHasKey('allow_custom_role', $options);
-        $this->assertTrue($options['allow_custom_role']);
     }
 }

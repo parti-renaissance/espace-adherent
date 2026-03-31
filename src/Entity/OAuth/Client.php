@@ -200,7 +200,7 @@ class Client implements \Stringable, EntitySoftDeletedInterface
         return array_diff($this->getSupportedScopes($skipIntern), [Scope::IMPERSONATOR]);
     }
 
-    public function verifySecret(string $secret): bool
+    public function verifySecret(?string $secret): bool
     {
         return $this->secret === $secret;
     }

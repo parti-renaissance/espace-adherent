@@ -26,7 +26,6 @@ class ScopeTargetFilterBuilder implements FilterBuilderInterface
         return new FilterCollectionBuilder()
             ->createFrom(ScopeTarget::class)
             ->setInstances($this->buildInstances())
-            ->setAllowCustomRole(true)
             ->getFilters()
         ;
     }

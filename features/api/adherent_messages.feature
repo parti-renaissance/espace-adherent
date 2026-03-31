@@ -1124,7 +1124,6 @@ Feature:
                             "code": "scope_targets",
                             "label": "Cadres & Équipes",
                             "options": {
-                                "allow_custom_role": true,
                                 "instances": [
                                     {
                                         "code": "legislative_candidate",
