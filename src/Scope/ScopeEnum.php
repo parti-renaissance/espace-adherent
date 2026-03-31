@@ -100,10 +100,6 @@ class ScopeEnum extends Enum
         self::NATIONAL_FORMATION_DIVISION,
         self::NATIONAL_IDEAS_DIVISION,
         self::NATIONAL_TECH_DIVISION,
-
-        // Operational roles
-        self::PAP,
-        self::MEETING_SCANNER,
     ];
 
     public const NATIONAL_SCOPES = [

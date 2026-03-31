@@ -23,6 +23,10 @@ class GeneralMeetingReportDownloadFileController extends AbstractController
     {
         $filePath = $generalMeetingReport->getFilePath();
 
+        if (!$filePath) {
+            throw $this->createNotFoundException('No file associated with this report.');
+        }
+
         return HttpUtils::createResponse(
             $this->defaultStorage,
             $filePath,

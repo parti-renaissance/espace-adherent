@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Form\ColorType;
+use App\JMEFilter\FiltersGenerator;
 use App\Scope\AppEnum;
 use App\Scope\FeatureEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -14,9 +15,20 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ScopeAdmin extends AbstractAdmin
 {
+    public function __construct(private readonly TagAwareCacheInterface $cache)
+    {
+        parent::__construct();
+    }
+
+    protected function postUpdate(object $object): void
+    {
+        $this->cache->invalidateTags([FiltersGenerator::CACHE_TAG]);
+    }
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'edit']);
