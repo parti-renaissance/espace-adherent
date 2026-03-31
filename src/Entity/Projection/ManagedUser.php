@@ -716,6 +716,11 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->electMandates;
     }
 
+    public function setElectMandates(?array $electMandates): void
+    {
+        $this->electMandates = $electMandates;
+    }
+
     public function getCampusRegisteredAt(): ?\DateTime
     {
         return $this->campusRegisteredAt;

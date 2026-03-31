@@ -6,16 +6,20 @@ namespace App\MyTeam\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\MyTeam\Member;
+use App\ManagedUsers\Command\RefreshManagedUserProjectionCommand;
 use App\MyTeam\DelegatedAccessManager;
 use App\Scope\FeatureEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class MyTeamMemberListener implements EventSubscriberInterface
+final class MyTeamMemberListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly DelegatedAccessManager $delegatedAccessManager)
-    {
+    public function __construct(
+        private readonly DelegatedAccessManager $delegatedAccessManager,
+        private readonly MessageBusInterface $messageBus,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -74,6 +78,8 @@ class MyTeamMemberListener implements EventSubscriberInterface
                 $this->delegatedAccessManager->removeDelegatedAccess($delegatedAccess);
             }
 
+            $this->dispatchRefreshProjection($member);
+
             return;
         }
 
@@ -87,10 +93,21 @@ class MyTeamMemberListener implements EventSubscriberInterface
         if ('_api_/v3/my_team_members_post' === $request->attributes->get('_api_operation_name') && $member->getScopeFeatures()) {
             $this->delegatedAccessManager->createDelegatedAccessForMember($member);
 
+            $this->dispatchRefreshProjection($member);
+
             return;
         }
 
         // modification
         $this->delegatedAccessManager->updateDelegatedAccessForMember($member, $request->attributes->get('previous_data'));
+
+        $this->dispatchRefreshProjection($member);
+    }
+
+    private function dispatchRefreshProjection(Member $member): void
+    {
+        if ($adherent = $member->getAdherent()) {
+            $this->messageBus->dispatch(new RefreshManagedUserProjectionCommand($adherent->getUuid()));
+        }
     }
 }

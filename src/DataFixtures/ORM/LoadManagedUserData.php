@@ -9,9 +9,9 @@ use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Agora;
 use App\Entity\Committee;
-use App\Entity\Geo\Zone;
 use App\Entity\Projection\ManagedUser;
 use App\Mailchimp\Contact\ContactStatusEnum;
+use App\ManagedUsers\RoleDataBuilder;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,6 +20,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 {
+    public function __construct(private readonly RoleDataBuilder $roleDataBuilder)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $committee1 = $this->getReference('committee-1', Committee::class);
@@ -330,7 +334,10 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             $managedUser->publicId = $options['public_id'];
         }
 
-        $managedUser->setRoles($this->getRoles($adherent));
+        $managedUser->setRoles($this->roleDataBuilder->buildRolesFromEntities(
+            $adherent,
+            $adherent->getReceivedDelegatedAccesses()
+        ));
 
         return $managedUser;
     }
@@ -393,60 +400,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             fn ($date) => $date instanceof \DateTimeInterface ? $date->format('Y-m-d H:i:s') : $date,
             $dates
         );
-    }
-
-    private function getRoles(Adherent $adherent): array
-    {
-        $roles = [];
-
-        foreach ($adherent->getZoneBasedRoles() as $role) {
-            $zones = $role->getZones()->toArray();
-            [$zoneLabels, $zoneCodes] = $this->buildZoneLabelsAndCodes($zones);
-
-            $roles[] = [
-                'code' => $role->getType(),
-                'is_delegated' => false,
-                'function' => null,
-                'zones' => $zoneLabels ? implode(', ', $zoneLabels) : null,
-                'zone_codes' => $zoneCodes ? implode(', ', $zoneCodes) : null,
-            ];
-        }
-
-        foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            $delegator = $delegatedAccess->getDelegator();
-            $delegatorRole = $delegator->findZoneBasedRole($delegatedAccess->getType());
-
-            $zoneLabels = null;
-            $zoneCodes = null;
-
-            if ($delegatorRole) {
-                $zones = $delegatorRole->getZones()->toArray();
-                [$zoneLabels, $zoneCodes] = $this->buildZoneLabelsAndCodes($zones);
-            }
-
-            $roles[] = [
-                'code' => $delegatedAccess->getType(),
-                'is_delegated' => true,
-                'function' => $delegatedAccess->getRole(),
-                'zones' => $zoneLabels ? implode(', ', $zoneLabels) : null,
-                'zone_codes' => $zoneCodes ? implode(', ', $zoneCodes) : null,
-            ];
-        }
-
-        return $roles;
-    }
-
-    private function buildZoneLabelsAndCodes(array $zones): array
-    {
-        $labels = array_map(
-            fn ($zone) => Zone::REGION === $zone->getType() ? $zone->getName() : $zone->getCode(),
-            $zones
-        );
-        $codes = array_map(fn ($zone) => $zone->getCode(), $zones);
-        sort($labels);
-        sort($codes);
-
-        return [$labels, $codes];
     }
 
     public function getDependencies(): array

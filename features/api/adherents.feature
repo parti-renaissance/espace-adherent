@@ -227,14 +227,6 @@ Feature:
                                 "type": "role",
                                 "label": "Responsable local (92)",
                                 "tooltip": null
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Député européen"
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Conseiller municipal"
                             }
                         ],
                         "created_at": "2017-01-25T19:31:45+01:00",
@@ -677,14 +669,6 @@ Feature:
                                 "type": "role",
                                 "label": "Responsable local (92)",
                                 "tooltip": null
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Député européen"
-                            },
-                            {
-                                "type": "declared_mandate",
-                                "label": "Conseiller municipal"
                             }
                         ],
                         "created_at": "2017-01-25T19:31:45+01:00",
