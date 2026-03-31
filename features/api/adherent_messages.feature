@@ -3429,3 +3429,41 @@ Feature:
             | {"registered": {"start": "invalid-date", "end": "2024-04-06T00:00:00.000Z"}}                |
             | {"first_membership": {"start": "invalid-date", "end": "2024-04-06T00:00:00.000Z"}}          |
             | {"last_membership": {"start": "2024-01-01", "end": "invalid-date"}}                         |
+
+    Scenario: As an authorized user I can duplicate a draft message
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/duplicate?scope=president_departmental_assembly"
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | uuid            | @uuid@ |
+            | status          | draft  |
+            | synchronized    | false  |
+            | editable        | true   |
+            | recipient_count | 0      |
+            | sent_at         |        |
+        When I save this response
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | uuid          | @uuid@ |
+            | zones[0].code | 92     |
+
+    Scenario: As an authorized user I can duplicate a sent message
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages/65f6cdbf-0707-4940-86d8-cc1755aab17e/duplicate?scope=president_departmental_assembly"
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | uuid            | @uuid@ |
+            | status          | draft  |
+            | synchronized    | false  |
+            | editable        | true   |
+            | recipient_count | 0      |
+            | sent_at         |        |
+
+    Scenario: As an unauthorized user I cannot duplicate a message from another user
+        Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages/75f6cdbf-0707-4940-86d8-cc1755aab17e/duplicate?scope=senator"
+        Then the response status code should be 403
