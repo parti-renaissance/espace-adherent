@@ -512,8 +512,13 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->status = AdherentMessageStatusEnum::DRAFT;
         $this->recipientCount = 0;
         $this->sentAt = null;
-        $this->filter = null;
-        $this->label .= ' - Copie';
+        $this->statistics = null;
+
+        if ($this->filter) {
+            $this->filter = clone $this->filter;
+            $this->filter->setMessage($this);
+        }
+
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 

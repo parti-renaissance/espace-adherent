@@ -577,7 +577,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
 
     public function getExternalId(): ?string
     {
-        return $this->message->getExternalId();
+        return $this->message?->getExternalId();
     }
 
     public function getMessage(): ?AdherentMessageInterface
@@ -608,5 +608,15 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     public function setCommittee(?Committee $committee): void
     {
         $this->committee = $committee;
+    }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+        $this->synchronized = false;
+        $this->message = null;
+        $this->createdAt = $this->updatedAt = new \DateTime();
+        $this->zones = new ZoneCollection($this->zones->toArray());
     }
 }
