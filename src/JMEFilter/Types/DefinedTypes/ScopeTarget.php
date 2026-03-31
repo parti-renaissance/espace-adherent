@@ -22,11 +22,6 @@ class ScopeTarget extends AbstractFilter
         $this->addOption('instances', $instances);
     }
 
-    public function setAllowCustomRole(bool $value): void
-    {
-        $this->addOption('allow_custom_role', $value);
-    }
-
     protected function _getType(): string
     {
         return FilterTypeEnum::SCOPE_TARGET;
