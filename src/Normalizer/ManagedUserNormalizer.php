@@ -118,7 +118,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         foreach ($sortedRoles as $role) {
             $data['tags'][] = [
                 'type' => 'role',
-                'label' => $this->formatRoleLabel($role, $object->getGender(), $object->getCommittee(), $object->getAgora()),
+                'label' => $this->formatRoleLabel($role, $object->getGender()),
                 'tooltip' => $role['function'] ?? null,
             ];
         }
@@ -130,19 +130,13 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     private function appendMandateTags(array $data): array
     {
-        if (!empty($data['elect_mandates'])) {
-            $mandates = $this->sortMandatesByPriority($data['elect_mandates']);
-            $type = 'mandate';
-        } elseif (!empty($data['declared_mandates'])) {
-            $mandates = $this->sortMandatesByPriority($data['declared_mandates']);
-            $type = 'declared_mandate';
-        } else {
+        if (empty($data['elect_mandates'])) {
             return $data;
         }
 
-        foreach ($mandates as $mandate) {
+        foreach ($this->sortMandatesByPriority($data['elect_mandates']) as $mandate) {
             $data['tags'][] = [
-                'type' => $type,
+                'type' => 'mandate',
                 'label' => $this->getTranslatedMandateLabel($mandate),
             ];
         }
@@ -163,7 +157,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
             $roles[] = [
                 'code' => $code,
-                'label' => $this->formatRoleLabel($role, $managedUser->getGender(), $managedUser->getCommittee(), $managedUser->getAgora()),
+                'label' => $this->formatRoleLabel($role, $managedUser->getGender()),
                 'is_delegated' => $role['is_delegated'] ?? false,
                 'function' => $role['function'] ?? null,
                 'zones' => $role['zones'] ?? null,
@@ -174,39 +168,24 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $roles;
     }
 
-    private function formatRoleLabel(array $role, ?string $gender, ?string $committee, ?string $agora): string
+    private function formatRoleLabel(array $role, ?string $gender): string
     {
         $code = $role['code'] ?? '';
         $isDelegated = !empty($role['is_delegated']);
         $function = $role['function'] ?? null;
-        $zoneNames = $this->formatZoneNames($role['zones'] ?? null);
+        $zoneNames = $role['zones'] ?? null;
 
-        // Priority 1: Delegated role
         if ($isDelegated && $function) {
-            if (ScopeEnum::ANIMATOR === $code && !empty($committee)) {
-                return \sprintf('%s (%s)', $function, $committee);
-            }
-            if (\in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora)) {
-                return \sprintf('%s (%s)', $function, $agora);
-            }
-
             return $zoneNames ? \sprintf('%s (%s)', $function, $zoneNames) : $function;
         }
 
         $translatedLabel = $this->getTranslatedRoleLabel($code, $gender);
 
-        return match (true) {
-            ScopeEnum::isNational($code) => $translatedLabel,
-            ScopeEnum::ANIMATOR === $code && !empty($committee) => \sprintf('%s (%s)', $translatedLabel, $committee),
-            \in_array($code, [ScopeEnum::AGORA_PRESIDENT, ScopeEnum::AGORA_GENERAL_SECRETARY], true) && !empty($agora) => \sprintf('%s (%s)', $translatedLabel, $agora),
-            !empty($zoneNames) => \sprintf('%s (%s)', $translatedLabel, $zoneNames),
-            default => $translatedLabel,
-        };
-    }
+        if (!empty($zoneNames)) {
+            return \sprintf('%s (%s)', $translatedLabel, $zoneNames);
+        }
 
-    private function formatZoneNames(?string $zoneNames): ?string
-    {
-        return $zoneNames ?: null;
+        return $translatedLabel;
     }
 
     private function formatMandates(?array $mandates): array

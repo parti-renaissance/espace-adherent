@@ -6,15 +6,16 @@ namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Repository\Projection\ManagedUserRepository;
+use App\ManagedUsers\Command\RefreshManagedUserProjectionCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PostElectedRepresentativeAdherentMandateWriteListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly ManagedUserRepository $managedUserRepository)
+    public function __construct(private readonly MessageBusInterface $messageBus)
     {
     }
 
@@ -25,7 +26,7 @@ class PostElectedRepresentativeAdherentMandateWriteListener implements EventSubs
         ];
     }
 
-    public function onPostWrite(RequestEvent $event): void
+    public function onPostWrite(ViewEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -44,6 +45,6 @@ class PostElectedRepresentativeAdherentMandateWriteListener implements EventSubs
             return;
         }
 
-        $this->managedUserRepository->refreshAdherentMandates($adherent);
+        $this->messageBus->dispatch(new RefreshManagedUserProjectionCommand($adherent->getUuid()));
     }
 }

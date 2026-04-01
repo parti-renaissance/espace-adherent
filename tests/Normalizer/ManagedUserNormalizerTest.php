@@ -191,7 +191,7 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser = $this->createMock(ManagedUser::class);
         $managedUser
             ->method('getRoles')
-            ->willReturn([['code' => 'animator']])
+            ->willReturn([['code' => 'animator', 'zones' => 'Comité Levallois']])
         ;
         $managedUser
             ->method('getGender')
@@ -199,14 +199,6 @@ final class ManagedUserNormalizerTest extends TestCase
         ;
         $managedUser
             ->method('getElectMandates')
-            ->willReturn(null)
-        ;
-        $managedUser
-            ->method('getCommittee')
-            ->willReturn('Comité Levallois')
-        ;
-        $managedUser
-            ->method('getAgora')
             ->willReturn(null)
         ;
 
@@ -299,14 +291,6 @@ final class ManagedUserNormalizerTest extends TestCase
             ->method('getGender')
             ->willReturn('female')
         ;
-        $managedUser
-            ->method('getCommittee')
-            ->willReturn('Comité Paris')
-        ;
-        $managedUser
-            ->method('getAgora')
-            ->willReturn(null)
-        ;
 
         $this->scopeGeneratorResolver
             ->method('generate')
@@ -323,7 +307,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'uuid' => '123e4567-e89b-12d3-a456-426614174000',
                 'tags' => [],
                 'roles' => [
-                    ['code' => 'animator'],
+                    ['code' => 'animator', 'zones' => 'Comité Paris'],
                 ],
             ])
         ;
@@ -340,7 +324,7 @@ final class ManagedUserNormalizerTest extends TestCase
         self::assertArrayHasKey('tags', $result);
         self::assertCount(1, $result['tags']);
         self::assertSame('role', $result['tags'][0]['type']);
-        // Animator with committee: label should include committee name
+        // Animator with committee: label should include committee name from zones
         self::assertSame('Animatrice (Comité Paris)', $result['tags'][0]['label']);
     }
 
@@ -423,14 +407,6 @@ final class ManagedUserNormalizerTest extends TestCase
             ->method('getElectMandates')
             ->willReturn(null)
         ;
-        $managedUser
-            ->method('getCommittee')
-            ->willReturn($committee)
-        ;
-        $managedUser
-            ->method('getAgora')
-            ->willReturn($agora)
-        ;
 
         $context = [
             'groups' => [ManagedUserContextBuilder::GROUP_VOX],
@@ -502,12 +478,13 @@ final class ManagedUserNormalizerTest extends TestCase
             'expectedLabel' => 'Secrétaire Général de Renaissance',
         ];
 
-        // Priority 3: Animator with committee
+        // Priority 3: Animator with committee (name from zones)
         yield 'animator_with_committee' => [
             'role' => [
                 'code' => ScopeEnum::ANIMATOR,
+                'zones' => 'Comité Levallois',
             ],
-            'committee' => 'Comité Levallois',
+            'committee' => null,
             'agora' => null,
             'expectedLabel' => 'Animateur (Comité Levallois)',
         ];
@@ -522,23 +499,25 @@ final class ManagedUserNormalizerTest extends TestCase
             'expectedLabel' => 'Animateur',
         ];
 
-        // Priority 4: Agora president
+        // Priority 4: Agora president (name from zones)
         yield 'agora_president' => [
             'role' => [
                 'code' => ScopeEnum::AGORA_PRESIDENT,
+                'zones' => 'Laïcité',
             ],
             'committee' => null,
-            'agora' => 'Laïcité',
+            'agora' => null,
             'expectedLabel' => 'Président d\'Agora (Laïcité)',
         ];
 
-        // Priority 4: Agora general secretary
+        // Priority 4: Agora general secretary (name from zones)
         yield 'agora_general_secretary' => [
             'role' => [
                 'code' => ScopeEnum::AGORA_GENERAL_SECRETARY,
+                'zones' => 'Europe',
             ],
             'committee' => null,
-            'agora' => 'Europe',
+            'agora' => null,
             'expectedLabel' => 'Secrétaire Général d\'Agora (Europe)',
         ];
 

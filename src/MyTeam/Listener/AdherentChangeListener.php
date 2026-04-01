@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MyTeam\Listener;
 
+use App\ManagedUsers\Command\RefreshManagedUserProjectionCommand;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\MyTeam\DelegatedAccessManager;
@@ -12,24 +13,17 @@ use App\Repository\MyTeam\MyTeamRepository;
 use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\GeneralScopeGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class AdherentChangeListener implements EventSubscriberInterface
+final class AdherentChangeListener implements EventSubscriberInterface
 {
-    private MyTeamRepository $myTeamRepository;
-    private DelegatedAccessRepository $delegatedAccessRepository;
-    private DelegatedAccessManager $delegatedAccessManager;
-    private GeneralScopeGenerator $scopeGenerator;
-
     public function __construct(
-        MyTeamRepository $myTeamRepository,
-        DelegatedAccessRepository $delegatedAccessRepository,
-        DelegatedAccessManager $delegatedAccessManager,
-        GeneralScopeGenerator $scopeGenerator,
+        private readonly MyTeamRepository $myTeamRepository,
+        private readonly DelegatedAccessRepository $delegatedAccessRepository,
+        private readonly DelegatedAccessManager $delegatedAccessManager,
+        private readonly GeneralScopeGenerator $scopeGenerator,
+        private readonly MessageBusInterface $messageBus,
     ) {
-        $this->myTeamRepository = $myTeamRepository;
-        $this->delegatedAccessRepository = $delegatedAccessRepository;
-        $this->delegatedAccessManager = $delegatedAccessManager;
-        $this->scopeGenerator = $scopeGenerator;
     }
 
     public static function getSubscribedEvents(): array
@@ -65,5 +59,7 @@ class AdherentChangeListener implements EventSubscriberInterface
         foreach ($delegatedScopes as $scope) {
             $this->delegatedAccessRepository->removeFromDelegator($adherent, $scope);
         }
+
+        $this->messageBus->dispatch(new RefreshManagedUserProjectionCommand($adherent->getUuid()));
     }
 }

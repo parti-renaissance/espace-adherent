@@ -38,12 +38,13 @@
     {% set textColor = '#714991' %}
 
     {% for zone_based_role in object.getZoneBasedRoles() %}
+        {% set role_type = zone_based_role.getType() %}
         {% set label %}
-            {% set role_label = ('role.' ~ zone_based_role.getType())|trans({gender: object.gender}) %}
+            {% set role_label = ('role.' ~ role_type)|trans({gender: object.gender}) %}
             {% set instance = '' %}
 
-            {% if zone_based_role.getType() starts with ('national_') %}
-                {% set instance = constant('App\\Scope\\ScopeEnum::SCOPE_INSTANCES')[zone_based_role.getType()] ?? '' %}
+            {% if role_type starts with ('national_') %}
+                {% set instance = constant('App\\Scope\\ScopeEnum::SCOPE_INSTANCES')[role_type] ?? '' %}
             {% endif %}
 
             {{ instance ? instance ~ ' :' }} {{ role_label }}
@@ -63,7 +64,6 @@
                 {% for zone in zone_based_role.zones %}
                     {% set zones = zones|merge([zone.name ~ ' (' ~ zone.code ~ ')']) %}
                 {% endfor %}
-
                 {{ zones|join(', ') }}
             {% endif %}
         {% endset %}
@@ -71,24 +71,91 @@
         {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
     {% endfor %}
 
+    {# 3b. Animator role (from Committee relationship, not ZoneBasedRole) #}
+    {% if object.isAnimator %}
+        {% set committees = object.animatorCommittees %}
+        {% set names = [] %}
+        {% for committee in committees %}
+            {% set names = names|merge([committee.name]) %}
+        {% endfor %}
+        {% set label = ('role.animator')|trans({gender: object.gender}) ~ (names is not empty ? ' (' ~ names|sort|join(', ') ~ ')' : '') %}
+        {% set tooltip %}
+            {% for committee in committees %}
+                {{ committee.name }}{% if not loop.last %}<br />{% endif %}
+            {% endfor %}
+        {% endset %}
+        {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
+    {% endif %}
+
+    {# 3c. Agora president role (from Agora relationship, not ZoneBasedRole) #}
+    {% if object.isPresidentOfAgora %}
+        {% set agoras = object.presidentOfAgoras %}
+        {% set names = [] %}
+        {% for agora in agoras %}
+            {% set names = names|merge([agora.name]) %}
+        {% endfor %}
+        {% set label = ('role.agora_president')|trans({gender: object.gender}) ~ (names is not empty ? ' (' ~ names|sort|join(', ') ~ ')' : '') %}
+        {% set tooltip %}
+            {% for agora in agoras %}
+                {{ agora.name }}{% if not loop.last %}<br />{% endif %}
+            {% endfor %}
+        {% endset %}
+        {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
+    {% endif %}
+
+    {# 3d. Agora general secretary role (from Agora relationship, not ZoneBasedRole) #}
+    {% if object.isGeneralSecretaryOfAgora %}
+        {% set agoras = object.generalSecretaryOfAgoras %}
+        {% set names = [] %}
+        {% for agora in agoras %}
+            {% set names = names|merge([agora.name]) %}
+        {% endfor %}
+        {% set label = ('role.agora_general_secretary')|trans({gender: object.gender}) ~ (names is not empty ? ' (' ~ names|sort|join(', ') ~ ')' : '') %}
+        {% set tooltip %}
+            {% for agora in agoras %}
+                {{ agora.name }}{% if not loop.last %}<br />{% endif %}
+            {% endfor %}
+        {% endset %}
+        {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
+    {% endif %}
+
     {# 4. Délégués #}
     {% for delegated_role in object.getReceivedDelegatedAccesses() %}
         {% set role_type = delegated_role.getType() %}
+        {% set delegator = delegated_role.delegator %}
 
         {% set label = delegated_role.role %}
         {% set tooltip = ('role.' ~ role_type)|trans({gender: object.gender}) ~ ' délégué' ~ (object.gender is same as('female') ? 'e') %}
 
-        {% if role_type is same as('animator') %}
+        {% if role_type is same as(constant('App\\Scope\\ScopeEnum::ANIMATOR')) %}
             {% set committees = [] %}
-            {% for committee in delegated_role.delegator.getAnimatorCommittees() %}
+            {% for committee in delegator.getAnimatorCommittees() %}
                 {% set committees = committees|merge([committee.name]) %}
             {% endfor %}
 
             {% if committees is not empty %}
-                {% set label = label ~ ' (' ~ committees|join(', ') ~ ')' %}
+                {% set label = label ~ ' (' ~ committees|sort|join(', ') ~ ')' %}
             {% endif %}
-        {% elseif role_type in constant('App\\Adherent\\Authorization\\ZoneBasedRoleTypeEnum::ALL') %}
-            {% set zone_based_role = delegated_role.delegator.findZoneBasedRole(role_type) %}
+        {% elseif role_type is same as(constant('App\\Scope\\ScopeEnum::AGORA_PRESIDENT')) %}
+            {% set agoras = [] %}
+            {% for agora in delegator.presidentOfAgoras %}
+                {% set agoras = agoras|merge([agora.name]) %}
+            {% endfor %}
+
+            {% if agoras is not empty %}
+                {% set label = label ~ ' (' ~ agoras|sort|join(', ') ~ ')' %}
+            {% endif %}
+        {% elseif role_type is same as(constant('App\\Scope\\ScopeEnum::AGORA_GENERAL_SECRETARY')) %}
+            {% set agoras = [] %}
+            {% for agora in delegator.generalSecretaryOfAgoras %}
+                {% set agoras = agoras|merge([agora.name]) %}
+            {% endfor %}
+
+            {% if agoras is not empty %}
+                {% set label = label ~ ' (' ~ agoras|sort|join(', ') ~ ')' %}
+            {% endif %}
+        {% else %}
+            {% set zone_based_role = delegator.findZoneBasedRole(role_type) %}
 
             {% if zone_based_role and zone_based_role.zones is not empty %}
                 {% set zones = [] %}
@@ -111,9 +178,8 @@
         {{ ui.label(label, bgColor, textColor, tooltip, 'left') }}
     {% endfor %}
 
-    {# 5. Rôles / responsabilités divers #}
+    {# 5. Rôles / responsabilités divers (hors ZoneBasedRoles déjà affichés en section 3) #}
     {% set customRoleLabels = [
-        object.isAnimator ? 'animator',
         object.isJecouteManager ? 'jecoute_manager',
         object.isHost ? 'committee_host',
         object.isSupervisor(false) ? 'committee_supervisor',
@@ -126,45 +192,13 @@
         object.hasNationalRole ? 'national',
         object.hasPhoningManagerRole ? 'phoning_national_manager',
         object.hasPapNationalManagerRole ? 'pap_national_manager',
-        object.isPresidentOfAgora ? 'agora_president',
-        object.isGeneralSecretaryOfAgora ? 'agora_general_secretary',
         object.isTerritoireProgresMembership ? 'membership.tdp',
         object.isAgirMembership ? 'membership.agir',
         object.meetingScanner ? 'meeting_scanner',
     ]|filter(v => v) %}
 
     {% for label in customRoleLabels %}
-        {% set tooltip = null %}
-        {% if label is same as ('animator') %}
-            {% set tooltip %}
-                {% for committee in object.animatorCommittees %}
-                    {{ committee.name }}
-                    {% if not loop.last %}
-                        <br />
-                    {% endif %}
-                {% endfor %}
-            {% endset %}
-        {% elseif label is same as ('agora_president') %}
-            {% set tooltip %}
-                {% for agora in object.presidentOfAgoras %}
-                    {{ agora.name }}
-                    {% if not loop.last %}
-                        <br />
-                    {% endif %}
-                {% endfor %}
-            {% endset %}
-        {% elseif label is same as ('agora_general_secretary') %}
-            {% set tooltip %}
-                {% for agora in object.generalSecretaryOfAgoras %}
-                    {{ agora.name }}
-                    {% if not loop.last %}
-                        <br />
-                    {% endif %}
-                {% endfor %}
-            {% endset %}
-        {% endif %}
-
-        {{ ui.label(('role.' ~ label)|trans({gender: object.gender}), bgColor, textColor, tooltip, 'left') }}
+        {{ ui.label(('role.' ~ label)|trans({gender: object.gender}), bgColor, textColor, null, 'left') }}
     {% endfor %}
 
     {# 6. Static labels & tags non encore affichés #}
