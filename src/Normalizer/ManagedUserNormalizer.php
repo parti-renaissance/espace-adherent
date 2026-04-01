@@ -162,10 +162,34 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
                 'function' => $role['function'] ?? null,
                 'zones' => $role['zones'] ?? null,
                 'zone_codes' => $role['zone_codes'] ?? null,
+                'delegator' => $this->formatDelegator($role),
             ];
         }
 
         return $roles;
+    }
+
+    private function formatDelegator(array $role): ?array
+    {
+        $delegator = $role['delegator'] ?? null;
+        if (!$delegator) {
+            return null;
+        }
+
+        $gender = $delegator['gender'] ?? null;
+        $code = $role['code'] ?? '';
+        $zoneLabels = $role['zone_labels'] ?? null;
+
+        $roleLabel = $this->getTranslatedRoleLabel($code, $gender);
+        if ($zoneLabels) {
+            $roleLabel = \sprintf('%s (%s)', $roleLabel, $zoneLabels);
+        }
+
+        return [
+            'first_name' => $delegator['first_name'] ?? null,
+            'last_name' => $delegator['last_name'] ?? null,
+            'role' => $roleLabel,
+        ];
     }
 
     private function formatRoleLabel(array $role, ?string $gender): string
@@ -173,16 +197,16 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         $code = $role['code'] ?? '';
         $isDelegated = !empty($role['is_delegated']);
         $function = $role['function'] ?? null;
-        $zoneNames = $role['zones'] ?? null;
+        $zoneLabels = $role['zone_labels'] ?? null;
 
         if ($isDelegated && $function) {
-            return $zoneNames ? \sprintf('%s (%s)', $function, $zoneNames) : $function;
+            return $zoneLabels ? \sprintf('%s (%s)', $function, $zoneLabels) : $function;
         }
 
         $translatedLabel = $this->getTranslatedRoleLabel($code, $gender);
 
-        if (!empty($zoneNames)) {
-            return \sprintf('%s (%s)', $translatedLabel, $zoneNames);
+        if (!empty($zoneLabels)) {
+            return \sprintf('%s (%s)', $translatedLabel, $zoneLabels);
         }
 
         return $translatedLabel;

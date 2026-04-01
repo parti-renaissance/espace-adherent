@@ -24,6 +24,7 @@ class ElectedRepresentativeAdherentMandateRepository extends ServiceEntityReposi
             ->andWhere('mandate.adherent = :adherent')
             ->setParameter('adherent', $adherent)
             ->andWhere('mandate.finishAt IS NULL')
+            ->andWhere('mandate.zone IS NOT NULL')
             ->getQuery()
             ->getArrayResult()
         ;

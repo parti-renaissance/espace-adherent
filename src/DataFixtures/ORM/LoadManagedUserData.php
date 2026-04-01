@@ -334,10 +334,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             $managedUser->publicId = $options['public_id'];
         }
 
-        $managedUser->setRoles($this->roleDataBuilder->buildRolesFromEntities(
-            $adherent,
-            $adherent->getReceivedDelegatedAccesses()
-        ));
+        $managedUser->setRoles($this->roleDataBuilder->buildRoles($adherent));
 
         return $managedUser;
     }
