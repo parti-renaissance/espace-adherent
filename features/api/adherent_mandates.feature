@@ -146,6 +146,29 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario: As a user granted with local scope, I can create an adherent mandate and the projection is updated
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON node "elect_mandates" should have 1 element
+        And the JSON node "elect_mandates[0]" should be equal to "conseiller_municipal"
+
+        When I send a "POST" request to "/api/v3/elected_adherent_mandates?scope=president_departmental_assembly" with body:
+            """
+            {
+                "adherent": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "mandate_type": "senateur",
+                "delegation": "Sénatrice",
+                "begin_at": "2024-01-01"
+            }
+            """
+        Then the response status code should be 201
+
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON node "elect_mandates" should have 2 elements
+
     Scenario Outline: As a user granted with local scope, I can update exemptFromCotisation property
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         And I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084/elect?scope=<scope>"

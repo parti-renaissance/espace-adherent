@@ -51,7 +51,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         ),
     ]
 )]
-#[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
+#[ORM\Entity(repositoryClass: ManagedUserRepository::class)]
 #[ORM\Index(fields: ['adherentUuid'])]
 #[ORM\Index(fields: ['status'])]
 #[ORM\Index(fields: ['originalId'])]
