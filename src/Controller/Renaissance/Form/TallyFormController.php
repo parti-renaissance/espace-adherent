@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Form;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Repository\TallyFormRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -34,7 +35,7 @@ class TallyFormController extends AbstractController
         }
 
         return $this->render('renaissance/tally_form/form.html.twig', [
-            'adherent_access_granted' => $user instanceof Adherent && $user->hasActiveMembership(),
+            'adherent_access_granted' => $user instanceof Adherent && ($user->hasActiveMembership() || $user->hasTag(TagEnum::getAdherentYearTag(date('Y') - 1))),
             'form' => $form,
             'slug' => $slug,
         ]);
