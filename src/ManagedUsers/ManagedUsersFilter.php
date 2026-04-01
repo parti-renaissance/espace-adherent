@@ -83,6 +83,7 @@ class ManagedUsersFilter
     /**
      * @var Zone[]
      */
+    #[Groups(['filter_write'])]
     public array $zones;
 
     #[Groups(['filter_write'])]
