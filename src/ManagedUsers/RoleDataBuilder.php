@@ -20,68 +20,88 @@ class RoleDataBuilder
 
     public function buildRoles(Adherent $adherent): array
     {
-        $roles = [];
-
-        foreach ($adherent->getZoneBasedRoles() as $role) {
-            $type = $role->getType();
-            [$names, $codes] = $this->getZoneInfo($type, $adherent, $role->getZones()->toArray());
-            $roles[] = $this->formatRole($type, false, null, $names, $codes);
-        }
+        $roles = $this->buildDirectRoles($adherent);
 
         foreach ($this->delegatedAccessRepository->findBy(['delegated' => $adherent]) as $access) {
-            $type = $access->getType();
-            $delegator = $access->getDelegator();
-            $zones = $delegator ? $this->getZonesFromDelegator($access) : [];
-            [$names, $codes] = $this->getZoneInfo($type, $delegator, $zones);
-            $roles[] = $this->formatRole($type, true, $access->getRole(), $names, $codes);
+            $roles[] = $this->buildDelegatedRole($access);
         }
 
         return $roles;
     }
 
-    public function buildRolesFromEntities(Adherent $adherent, iterable $delegatedAccesses = []): array
+    private function buildDirectRoles(Adherent $adherent): array
     {
         $roles = [];
 
+        // Geo-based roles from ZoneBasedRoles
         foreach ($adherent->getZoneBasedRoles() as $role) {
-            $type = $role->getType();
-            [$names, $codes] = $this->getZoneInfo($type, $adherent, $role->getZones()->toArray());
-            $roles[] = $this->formatRole($type, false, null, $names, $codes);
+            [$names, $codes, $labels] = $this->buildGeoZoneInfo($role->getZones()->toArray());
+            $roles[] = $this->formatRole($role->getType(), false, null, $names, $codes, $labels);
         }
 
-        foreach ($delegatedAccesses as $access) {
-            $type = $access->getType();
-            $delegator = $access->getDelegator();
-            $zones = $delegator ? $this->getZonesFromDelegator($access) : [];
-            [$names, $codes] = $this->getZoneInfo($type, $delegator, $zones);
-            $roles[] = $this->formatRole($type, true, $access->getRole(), $names, $codes);
+        // ANIMATOR role (from committees relationship, not ZoneBasedRole)
+        [$names, $codes, $labels] = $this->getCommitteeZoneInfo($adherent);
+        if ($names) {
+            $roles[] = $this->formatRole(ScopeEnum::ANIMATOR, false, null, $names, $codes, $labels);
+        }
+
+        // AGORA_PRESIDENT role (from agora relationship, not ZoneBasedRole)
+        [$names, $codes, $labels] = $this->getAgoraZoneInfo($adherent->presidentOfAgoras->toArray());
+        if ($names) {
+            $roles[] = $this->formatRole(ScopeEnum::AGORA_PRESIDENT, false, null, $names, $codes, $labels);
+        }
+
+        // AGORA_GENERAL_SECRETARY role (from agora relationship, not ZoneBasedRole)
+        [$names, $codes, $labels] = $this->getAgoraZoneInfo($adherent->generalSecretaryOfAgoras->toArray());
+        if ($names) {
+            $roles[] = $this->formatRole(ScopeEnum::AGORA_GENERAL_SECRETARY, false, null, $names, $codes, $labels);
         }
 
         return $roles;
     }
 
-    /**
-     * @param Zone[] $geoZones
-     */
-    private function getZoneInfo(string $type, ?Adherent $adherent, array $geoZones): array
+    private function buildDelegatedRole(DelegatedAccess $access): array
     {
-        if (!$adherent) {
-            return ['', ''];
+        $type = $access->getType();
+        $delegator = $access->getDelegator();
+
+        [$names, $codes, $labels] = $this->getDelegatedZoneInfo($type, $delegator);
+
+        $delegatorData = null;
+        if ($delegator) {
+            $delegatorData = [
+                'first_name' => $delegator->getFirstName(),
+                'last_name' => $delegator->getLastName(),
+                'gender' => $delegator->getGender(),
+            ];
+        }
+
+        return $this->formatRole($type, true, $access->getRole(), $names, $codes, $labels, $delegatorData);
+    }
+
+    private function getDelegatedZoneInfo(string $type, ?Adherent $delegator): array
+    {
+        if (!$delegator) {
+            return ['', '', ''];
         }
 
         return match ($type) {
-            ScopeEnum::ANIMATOR => $this->getCommitteeZoneInfo($adherent),
-            ScopeEnum::AGORA_PRESIDENT => $this->getAgoraZoneInfo($adherent->presidentOfAgoras->toArray()),
-            ScopeEnum::AGORA_GENERAL_SECRETARY => $this->getAgoraZoneInfo($adherent->generalSecretaryOfAgoras->toArray()),
-            default => $this->buildGeoZoneInfo($geoZones),
+            ScopeEnum::ANIMATOR => $this->getCommitteeZoneInfo($delegator),
+            ScopeEnum::AGORA_PRESIDENT => $this->getAgoraZoneInfo($delegator->presidentOfAgoras->toArray()),
+            ScopeEnum::AGORA_GENERAL_SECRETARY => $this->getAgoraZoneInfo($delegator->generalSecretaryOfAgoras->toArray()),
+            default => $this->buildGeoZoneInfo($this->getZonesFromDelegator($type, $delegator)),
         };
     }
 
     private function getCommitteeZoneInfo(Adherent $adherent): array
     {
-        $committees = $adherent->getAnimatorCommittees();
+        $committees = array_filter(
+            $adherent->getAnimatorCommittees(),
+            fn (Committee $c) => $c->isApproved()
+        );
+
         if (empty($committees)) {
-            return ['', ''];
+            return ['', '', ''];
         }
 
         $names = array_map(fn (Committee $c) => $c->getName(), $committees);
@@ -89,7 +109,10 @@ class RoleDataBuilder
         sort($names);
         sort($codes);
 
-        return [implode(', ', $names), implode(', ', $codes)];
+        $namesStr = implode(', ', $names);
+
+        // Labels = names for committees
+        return [$namesStr, implode(', ', $codes), $namesStr];
     }
 
     /**
@@ -97,8 +120,10 @@ class RoleDataBuilder
      */
     private function getAgoraZoneInfo(array $agoras): array
     {
+        $agoras = array_filter($agoras, fn (Agora $a) => $a->published);
+
         if (empty($agoras)) {
-            return ['', ''];
+            return ['', '', ''];
         }
 
         $names = array_map(fn (Agora $a) => $a->getName(), $agoras);
@@ -106,7 +131,10 @@ class RoleDataBuilder
         sort($names);
         sort($codes);
 
-        return [implode(', ', $names), implode(', ', $codes)];
+        $namesStr = implode(', ', $names);
+
+        // Labels = names for agoras
+        return [$namesStr, implode(', ', $codes), $namesStr];
     }
 
     /**
@@ -115,21 +143,29 @@ class RoleDataBuilder
     private function buildGeoZoneInfo(array $zones): array
     {
         if (empty($zones)) {
-            return ['', ''];
+            return ['', '', ''];
         }
 
-        $names = array_map(
+        $names = array_map(fn (Zone $zone) => $zone->getName(), $zones);
+        $codes = array_map(fn (Zone $zone) => $zone->getCode(), $zones);
+        // Labels: region names, other zone codes
+        $labels = array_map(
             fn (Zone $zone) => Zone::REGION === $zone->getType() ? $zone->getName() : $zone->getCode(),
             $zones
         );
-        $codes = array_map(fn (Zone $zone) => $zone->getCode(), $zones);
+
         sort($names);
         sort($codes);
+        sort($labels);
 
-        return [implode(', ', array_unique($names)), implode(', ', array_unique($codes))];
+        return [
+            implode(', ', array_unique($names)),
+            implode(', ', array_unique($codes)),
+            implode(', ', array_unique($labels)),
+        ];
     }
 
-    private function formatRole(string $type, bool $isDelegated, ?string $function, string $names, string $codes): array
+    private function formatRole(string $type, bool $isDelegated, ?string $function, string $names, string $codes, string $labels, ?array $delegator = null): array
     {
         return [
             'code' => $type,
@@ -137,22 +173,18 @@ class RoleDataBuilder
             'function' => $function,
             'zones' => $names ?: null,
             'zone_codes' => $codes ?: null,
+            'zone_labels' => $labels ?: null,
+            'delegator' => $delegator,
         ];
     }
 
     /**
      * @return Zone[]
      */
-    private function getZonesFromDelegator(DelegatedAccess $access): array
+    private function getZonesFromDelegator(string $type, Adherent $delegator): array
     {
-        $delegator = $access->getDelegator();
-
-        if (!$delegator) {
-            return [];
-        }
-
         foreach ($delegator->getZoneBasedRoles() as $role) {
-            if ($role->getType() === $access->getType()) {
+            if ($role->getType() === $type) {
                 return $role->getZones()->toArray();
             }
         }

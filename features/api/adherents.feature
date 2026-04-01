@@ -1087,6 +1087,16 @@ Feature:
                             },
                             {
                                 "type": "role",
+                                "label": "Président d'Agora (Deuxième Agora)",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
+                                "label": "Secrétaire Général d'Agora (Première Agora)",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
                                 "label": "Responsable mobilisation (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable mobilisation"
                             }
@@ -1215,6 +1225,16 @@ Feature:
                             },
                             {
                                 "type": "role",
+                                "label": "Président d'Agora (Deuxième Agora)",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
+                                "label": "Secrétaire Général d'Agora (Première Agora)",
+                                "tooltip": null
+                            },
+                            {
+                                "type": "role",
                                 "label": "Responsable mobilisation (13, 59, 76, 77, 92)",
                                 "tooltip": "Responsable mobilisation"
                             }
@@ -1337,6 +1357,11 @@ Feature:
                                 "code": "adherent:a_jour_2026",
                                 "label": "@string@",
                                 "type": "adherent"
+                            },
+                            {
+                                "type": "role",
+                                "label": "Responsable comité local (Comité des 3 communes)",
+                                "tooltip": null
                             }
                         ],
                         "created_at": "2017-01-25T19:31:45+01:00",

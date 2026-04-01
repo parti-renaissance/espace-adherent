@@ -74,8 +74,8 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser
             ->method('getRoles')
             ->willReturn([
-                ['code' => 'president_departmental_assembly', 'zones' => '75', 'zone_codes' => '75'],
-                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication', 'zones' => '92', 'zone_codes' => '92'],
+                ['code' => 'president_departmental_assembly', 'zones' => '75', 'zone_codes' => '75', 'zone_labels' => '75'],
+                ['code' => 'animator', 'is_delegated' => true, 'function' => 'Communication', 'zones' => '92', 'zone_codes' => '92', 'zone_labels' => '92'],
             ])
         ;
         $managedUser
@@ -173,6 +173,7 @@ final class ManagedUserNormalizerTest extends TestCase
             'function' => null,
             'zones' => '75',
             'zone_codes' => '75',
+            'delegator' => null,
         ], $result['roles'][0]);
 
         // Delegated role: label should be "{function} ({zone_display})"
@@ -183,6 +184,7 @@ final class ManagedUserNormalizerTest extends TestCase
             'function' => 'Communication',
             'zones' => '92',
             'zone_codes' => '92',
+            'delegator' => null,
         ], $result['roles'][1]);
     }
 
@@ -191,7 +193,7 @@ final class ManagedUserNormalizerTest extends TestCase
         $managedUser = $this->createMock(ManagedUser::class);
         $managedUser
             ->method('getRoles')
-            ->willReturn([['code' => 'animator', 'zones' => 'Comité Levallois']])
+            ->willReturn([['code' => 'animator', 'zones' => 'Comité Levallois', 'zone_labels' => 'Comité Levallois']])
         ;
         $managedUser
             ->method('getGender')
@@ -307,7 +309,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'uuid' => '123e4567-e89b-12d3-a456-426614174000',
                 'tags' => [],
                 'roles' => [
-                    ['code' => 'animator', 'zones' => 'Comité Paris'],
+                    ['code' => 'animator', 'zones' => 'Comité Paris', 'zone_labels' => 'Comité Paris'],
                 ],
             ])
         ;
@@ -449,6 +451,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'function' => 'Secrétaire Général',
                 'zones' => '92',
                 'zone_codes' => '92',
+                'zone_labels' => '92',
             ],
             'committee' => null,
             'agora' => null,
@@ -483,6 +486,7 @@ final class ManagedUserNormalizerTest extends TestCase
             'role' => [
                 'code' => ScopeEnum::ANIMATOR,
                 'zones' => 'Comité Levallois',
+                'zone_labels' => 'Comité Levallois',
             ],
             'committee' => null,
             'agora' => null,
@@ -504,6 +508,7 @@ final class ManagedUserNormalizerTest extends TestCase
             'role' => [
                 'code' => ScopeEnum::AGORA_PRESIDENT,
                 'zones' => 'Laïcité',
+                'zone_labels' => 'Laïcité',
             ],
             'committee' => null,
             'agora' => null,
@@ -515,6 +520,7 @@ final class ManagedUserNormalizerTest extends TestCase
             'role' => [
                 'code' => ScopeEnum::AGORA_GENERAL_SECRETARY,
                 'zones' => 'Europe',
+                'zone_labels' => 'Europe',
             ],
             'committee' => null,
             'agora' => null,
@@ -537,6 +543,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                 'zones' => '75',
                 'zone_codes' => '75',
+                'zone_labels' => '75',
             ],
             'committee' => null,
             'agora' => null,
@@ -549,6 +556,7 @@ final class ManagedUserNormalizerTest extends TestCase
                 'code' => ScopeEnum::REGIONAL_DELEGATE,
                 'zones' => 'Île-de-France',
                 'zone_codes' => 'IDF',
+                'zone_labels' => 'Île-de-France',
             ],
             'committee' => null,
             'agora' => null,
@@ -607,6 +615,7 @@ final class ManagedUserNormalizerTest extends TestCase
                         'function' => 'Secrétaire Général',
                         'zones' => '92',
                         'zone_codes' => '92',
+                        'zone_labels' => '92',
                     ],
                 ],
             ])
@@ -669,6 +678,7 @@ final class ManagedUserNormalizerTest extends TestCase
                         'function' => 'Secrétaire Générale',
                         'zones' => '75',
                         'zone_codes' => '75',
+                        'zone_labels' => '75',
                     ],
                 ],
             ])
@@ -726,6 +736,7 @@ final class ManagedUserNormalizerTest extends TestCase
                         'code' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                         'zones' => '92, 93',
                         'zone_codes' => '92, 93',
+                        'zone_labels' => '92, 93',
                     ],
                 ],
             ])
