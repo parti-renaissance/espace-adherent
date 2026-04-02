@@ -14,4 +14,5 @@ enum MailchimpStatusEnum: string
     case Canceled = 'canceled';
     case Canceling = 'canceling';
     case Archived = 'archived';
+    case Error = 'error';
 }

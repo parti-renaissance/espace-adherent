@@ -16,6 +16,7 @@ use App\Entity\MailchimpSegment;
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
+use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Contact\ContactStatusEnum;
@@ -428,7 +429,15 @@ class Manager implements LoggerAwareInterface
 
             $globalStatus |= $success;
 
-            $success ? $campaign->markAsSending() : $campaign->markAsError($this->driver->getLastError());
+            if ($success) {
+                $campaign->markAsSending();
+            } else {
+                $campaign->markAsError($this->driver->getLastError());
+                $this->bus->dispatch(
+                    new RetrySendMailchimpCampaignCommand($campaign->getId()),
+                    [new DelayStamp(30_000)]
+                );
+            }
         }
 
         $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
@@ -629,5 +638,22 @@ class Manager implements LoggerAwareInterface
             : $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
 
         return $this->createStaticSegment($mailchimpSegment->getLabel(), $listId);
+    }
+
+    public function retrySendCampaign(MailchimpCampaign $campaign): bool
+    {
+        if ($status = $this->getCampaignStatus($campaign)) {
+            if (MailchimpStatusEnum::Sent === $status || MailchimpStatusEnum::Sending === $status) {
+                $campaign->status = $status;
+
+                return true;
+            }
+        }
+
+        $success = $this->driver->sendCampaign($campaign->getExternalId());
+
+        $success ? $campaign->markAsSending() : $campaign->markAsError($this->driver->getLastError());
+
+        return $success;
     }
 }

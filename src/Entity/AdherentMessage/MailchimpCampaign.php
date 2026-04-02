@@ -70,6 +70,12 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\Column(enumType: MailchimpStatusEnum::class)]
     public MailchimpStatusEnum $status = MailchimpStatusEnum::Save;
 
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    private int $retryCount = 0;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $retryHistory = null;
+
     /**
      * @var string|null
      */
@@ -182,7 +188,37 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     public function markAsError(?string $errorMessage = null): void
     {
+        $this->status = MailchimpStatusEnum::Error;
         $this->detail = $errorMessage;
+    }
+
+    public function getDetail(): ?string
+    {
+        return $this->detail;
+    }
+
+    public function getRetryCount(): int
+    {
+        return $this->retryCount;
+    }
+
+    public function incrementRetryCount(): void
+    {
+        ++$this->retryCount;
+    }
+
+    public function addRetryAttempt(bool $success, ?string $detail = null): void
+    {
+        $this->retryHistory[] = [
+            'at' => new \DateTimeImmutable()->format('c'),
+            'success' => $success,
+            'detail' => $detail,
+        ];
+    }
+
+    public function getRetryHistory(): array
+    {
+        return $this->retryHistory ?? [];
     }
 
     public function reset(): void
