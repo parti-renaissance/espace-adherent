@@ -3357,11 +3357,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.9.0, baseline-browser-mapping@npm:^2.9.5":
-  version: 2.10.12
-  resolution: "baseline-browser-mapping@npm:2.10.12"
+  version: 2.10.13
+  resolution: "baseline-browser-mapping@npm:2.10.13"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/391d354240160546c8248317698b61f21f287cc6444766414c2d299a8880045e605ed97e8d8cd198a0b9dfaa4e73c2fa765bbef089474533a904733b1dc9a363
+  checksum: 10c0/3296604492f600927a9f519c81164522ac26456e63eb7b6816e39bfbb184494b48c58490639f2c0e35be97969d3a03613fddddbfdd3074710592369ed36957d5
   languageName: node
   linkType: hard
 
