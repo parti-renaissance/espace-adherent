@@ -27,6 +27,11 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\Id]
     protected $id;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     /**
      * @var MailchimpCampaignReport|null
      */
