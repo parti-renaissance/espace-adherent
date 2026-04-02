@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,10 +35,9 @@ class CreateAccountController extends AbstractController
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, #[CurrentUser] ?Adherent $currentUser = null): Response
     {
-        /** @var Adherent|null $currentUser */
-        if ($currentUser = $this->getUser()) {
+        if ($currentUser) {
             $emailIdentifier = $currentUser->getEmailAddress();
         } elseif (!$emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
             return $this->json([

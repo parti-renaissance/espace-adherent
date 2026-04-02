@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/comites/{slug}')]
@@ -49,7 +50,7 @@ class CommitteeController extends AbstractController
     }
 
     #[IsGranted('FOLLOW_COMMITTEE', subject: 'committee')]
-    #[Route(path: '/rejoindre', name: 'app_committee_follow', condition: "request.request.has('token')", methods: ['POST'])]
+    #[Route(path: '/rejoindre', name: 'app_committee_follow', methods: ['POST'], condition: "request.request.has('token')")]
     public function followAction(
         Request $request,
         Committee $committee,
@@ -72,17 +73,18 @@ class CommitteeController extends AbstractController
     }
 
     #[IsGranted('UNFOLLOW_COMMITTEE', subject: 'committee')]
-    #[Route(path: '/quitter', name: 'app_committee_unfollow', condition: "request.request.has('token')", methods: ['POST'])]
+    #[Route(path: '/quitter', name: 'app_committee_unfollow', methods: ['POST'], condition: "request.request.has('token')")]
     public function unfollowAction(
         Request $request,
         Committee $committee,
         CsrfTokenManagerInterface $csrfTokenManager,
+        #[CurrentUser] Adherent $adherent,
     ): Response {
         if (!$this->isCsrfTokenValid('committee.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->committeeMembershipManager->unfollowCommittee($this->getUser()->getMembershipFor($committee));
+        $this->committeeMembershipManager->unfollowCommittee($adherent->getMembershipFor($committee));
 
         return new JsonResponse([
             'button' => [
@@ -94,8 +96,8 @@ class CommitteeController extends AbstractController
     }
 
     #[IsGranted(ChangeCommitteeVoter::PERMISSION)]
-    #[Route(path: '/voter', defaults: ['enable' => true], name: 'app_committee_vote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
-    #[Route(path: '/ne-plus-voter', defaults: ['enable' => false], name: 'app_committee_unvote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
+    #[Route(path: '/voter', name: 'app_committee_vote', defaults: ['enable' => true], methods: ['POST'], condition: 'request.isXmlHttpRequest()')]
+    #[Route(path: '/ne-plus-voter', name: 'app_committee_unvote', defaults: ['enable' => false], methods: ['POST'], condition: 'request.isXmlHttpRequest()')]
     public function toggleCommitteeVoteAction(
         bool $enable,
         Request $request,

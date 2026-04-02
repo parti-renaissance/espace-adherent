@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -184,12 +185,13 @@ class EventController extends AbstractController
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
         Event $event,
         EventRegistrationManager $eventRegistrationManager,
+        #[CurrentUser] Adherent $adherent,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {
             throw new BadRequestHttpException('Invalid CSRF protection token.');
         }
 
-        if (!($adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $this->getUser()->getEmailAddress(), null))) {
+        if (!($adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $adherent->getEmailAddress(), null))) {
             throw $this->createNotFoundException('Impossible d\'exécuter la désinscription de l\'évènement, votre inscription n\'est pas trouvée.');
         }
 

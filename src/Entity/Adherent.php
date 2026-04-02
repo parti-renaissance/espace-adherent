@@ -1634,7 +1634,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        return $this->id === $user->getId() && $this->roles === $user->getRoles();
+        return $user instanceof self && $this->id === $user->getId() && $this->roles === $user->getRoles();
     }
 
     public function markAsToDelete(): void
