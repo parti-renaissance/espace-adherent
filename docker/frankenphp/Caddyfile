@@ -29,6 +29,7 @@ test.*.code:80 {
 	@frontController path index.php
 	php @frontController {
 		env APP_ENV test
+		resolve_root_symlink false
 	}
 
 	file_server {
@@ -56,12 +57,14 @@ test.*.code:80 {
 
 	log {
 		output stderr
-		level INFO
+		level {$CADDY_LOG_LEVEL:INFO}
 		format filter {
 			wrap json {
 				time_format iso8601
 			}
 			fields {
+				level rename severity
+				msg rename message
 				request.headers delete
 				resp_headers delete
 				request.cookies delete
@@ -102,7 +105,9 @@ test.*.code:80 {
 		rewrite @phpRoute index.php
 
 		@frontController path index.php
-		php @frontController
+		php @frontController {
+			resolve_root_symlink false
+		}
 
 		file_server {
 			hide *.php
