@@ -146,6 +146,101 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario: As a user granted with local scope, I cannot create an adherent mandate with invalid zone type
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # depute requires zone of type district or foreign_district, but we provide a department zone
+        And I send a "POST" request to "/api/v3/elected_adherent_mandates?scope=president_departmental_assembly" with body:
+            """
+            {
+                "adherent": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
+                "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "mandate_type": "depute",
+                "delegation": "Test",
+                "begin_at": "2023-07-18"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "zone",
+                        "message": "La zone sélectionnée n'est pas valide pour ce type de mandat."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a user granted with local scope, I cannot create a maire mandate with a department zone
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # maire requires zone of type borough or city, but we provide a department zone
+        And I send a "POST" request to "/api/v3/elected_adherent_mandates?scope=president_departmental_assembly" with body:
+            """
+            {
+                "adherent": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
+                "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "mandate_type": "maire",
+                "delegation": "Test maire",
+                "begin_at": "2023-07-18"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "zone",
+                        "message": "La zone sélectionnée n'est pas valide pour ce type de mandat."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a user granted with local scope, I can create a depute mandate with valid district zone
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # depute requires zone of type district - this should work
+        And I send a "POST" request to "/api/v3/elected_adherent_mandates?scope=president_departmental_assembly" with body:
+            """
+            {
+                "adherent": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
+                "zone": "e3f0ee1a-906e-11eb-a875-0242ac150002",
+                "mandate_type": "depute",
+                "delegation": "Depute test",
+                "begin_at": "2023-07-18"
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON node "mandate_type" should be equal to "depute"
+
+    Scenario: As a user granted with local scope, I cannot update an adherent mandate with invalid zone type
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # The existing mandate is senateur with department zone (valid)
+        # Try to change zone to a city zone which is invalid for senateur
+        And I send a "PUT" request to "/api/v3/elected_adherent_mandates/d91df367-14df-474d-ac9a-8e2176657f71?scope=president_departmental_assembly" with body:
+            """
+            {
+                "zone": "e3f28b24-906e-11eb-a875-0242ac150002"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "zone",
+                        "message": "La zone sélectionnée n'est pas valide pour ce type de mandat."
+                    }
+                ]
+            }
+            """
+
     Scenario: As a user granted with local scope, I can create an adherent mandate and the projection is updated
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084?scope=president_departmental_assembly"

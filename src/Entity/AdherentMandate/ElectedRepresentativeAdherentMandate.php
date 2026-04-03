@@ -14,6 +14,7 @@ use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
+use App\Validator\MandateZoneType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -40,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['elected_mandate_write']],
     security: "is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative')"
 )]
+#[MandateZoneType]
 #[ORM\Entity(repositoryClass: ElectedRepresentativeAdherentMandateRepository::class)]
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 {
