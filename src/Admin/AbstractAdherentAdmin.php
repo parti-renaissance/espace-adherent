@@ -6,6 +6,7 @@ namespace App\Admin;
 
 use App\Address\AddressInterface;
 use App\Adherent\MandateTypeEnum;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\AdherentProfile\AdherentProfileHandler;
@@ -80,6 +81,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAdminInterface
@@ -109,6 +111,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
         private readonly TagTranslator $tagTranslator,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
         private readonly Security $security,
+        private readonly MessageBusInterface $messageBus,
     ) {
         parent::__construct();
 
@@ -970,6 +973,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
             new AdministratorActionEvent($this->getAdministrator(), $object),
             AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE
         );
+
+        $this->messageBus->dispatch(new AsyncRefreshAdherentTagCommand($object->getUuid()));
     }
 
     protected function configureListFields(ListMapper $list): void

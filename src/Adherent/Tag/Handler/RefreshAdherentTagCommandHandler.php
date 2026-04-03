@@ -7,6 +7,7 @@ namespace App\Adherent\Tag\Handler;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Adherent\Tag\TagAggregator;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\ManagedUsers\Command\RefreshManagedUserProjectionCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -35,6 +36,7 @@ class RefreshAdherentTagCommandHandler
 
         $this->entityManager->flush();
 
+        $this->bus->dispatch(new RefreshManagedUserProjectionCommand($command->getUuid()));
         $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
     }
 }
