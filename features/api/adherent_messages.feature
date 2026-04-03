@@ -2995,7 +2995,18 @@ Feature:
             { "uuid": "@uuid@" }
             """
         When I save this response
-        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly"
+        # Verify that the cloned message has sender set to the duplicant (current user)
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | uuid              | @uuid@                               |
+            | author.uuid       | 29461c49-2646-4d89-9c82-50b3f9b586f4 |
+            | author.scope      | president_departmental_assembly      |
+            | sender.uuid       | 29461c49-2646-4d89-9c82-50b3f9b586f4 |
+            | sender.first_name | Referent                             |
+            | sender.last_name  | Referent                             |
+        # Also verify filter zones are preserved
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON nodes should match:
@@ -3011,6 +3022,24 @@ Feature:
             """
             { "uuid": "@uuid@" }
             """
+
+    Scenario: As a delegated user when I duplicate a message the sender becomes the team owner
+        Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/duplicate?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
+        Then the response status code should be 201
+        And the JSON should be equal to:
+            """
+            { "uuid": "@uuid@" }
+            """
+        When I save this response
+        # The sender should be the team owner (referent), not the current delegated user (senateur)
+        And I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | uuid              | @uuid@                               |
+            | sender.uuid       | 29461c49-2646-4d89-9c82-50b3f9b586f4 |
+            | sender.first_name | Referent                             |
+            | sender.last_name  | Referent                             |
 
     Scenario: As an unauthorized user I cannot duplicate a message from another user
         Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"

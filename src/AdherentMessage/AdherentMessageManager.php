@@ -19,6 +19,7 @@ class AdherentMessageManager
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly iterable $senders,
+        private readonly AdherentMessageScopeInitializer $scopeInitializer,
     ) {
     }
 
@@ -37,7 +38,11 @@ class AdherentMessageManager
 
     public function duplicate(AdherentMessageInterface $message): AdherentMessageInterface
     {
-        $this->em->persist($cloneMessage = clone $message);
+        $cloneMessage = clone $message;
+
+        $this->scopeInitializer->initializeFromScope($cloneMessage, forceReset: true);
+
+        $this->em->persist($cloneMessage);
 
         $this->eventDispatcher->dispatch(new MessageEvent($cloneMessage), Events::MESSAGE_PRE_CREATE);
 
