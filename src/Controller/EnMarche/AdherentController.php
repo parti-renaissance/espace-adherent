@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route(path: '/espace-adherent')]
@@ -34,8 +34,8 @@ class AdherentController extends AbstractController
         AdherentRepository $adherentRepository,
         SearchResultsProvidersManager $searchResultsProvidersManager,
         SearchParametersFilter $searchParametersFilter,
+        #[CurrentUser] Adherent $user,
     ): Response {
-        $user = $this->getUser();
         $searchParametersFilter->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         $searchParametersFilter->setMaxResults(3);
         $searchParametersFilter->setRadius(SearchParametersFilter::RADIUS_150);
@@ -100,9 +100,8 @@ class AdherentController extends AbstractController
     }
 
     #[Route(path: '/mes-comites', name: 'app_adherent_committees', methods: ['GET'])]
-    public function committeesAction(UserInterface $adherent): Response
+    public function committeesAction(#[CurrentUser] Adherent $adherent): Response
     {
-        /** @var Adherent $adherent */
         $committeeMembership = $adherent->getCommitteeMembership();
 
         return $this->render('adherent/my_activity_committees.html.twig', [

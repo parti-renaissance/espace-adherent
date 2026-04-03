@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -175,8 +176,9 @@ class EventController extends AbstractController
     public function unregistrationAction(
         #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
         Event $event,
+        #[CurrentUser] Adherent $adherent,
     ): Response {
-        if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
+        if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $adherent->getEmailAddress(), null)) {
             throw $this->createNotFoundException('Impossible de se désinscrire à cet évévenement. Inscription non trouvée.');
         }
 

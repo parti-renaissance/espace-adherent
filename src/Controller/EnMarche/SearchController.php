@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
-use App\Entity\EntityPostAddressTrait;
 use App\Geocoder\Exception\GeocodingException;
 use App\Repository\CommitteeRepository;
 use App\Repository\Event\EventRepository;
@@ -17,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SearchController extends AbstractController
@@ -41,6 +41,7 @@ class SearchController extends AbstractController
         Request $request,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
         EventCategoryRepository $eventCategoryRepository,
+        #[CurrentUser] ?Adherent $user = null,
         ?string $slug = null,
     ): Response {
         if ($slug) {
@@ -55,12 +56,8 @@ class SearchController extends AbstractController
         }
 
         $search = $this->searchParametersFilter->handleRequest($request);
-        $user = $this->getUser();
-        if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
+        if ($user) {
             $search->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
-        }
-
-        if ($user instanceof Adherent) {
             $search->setWithPrivate(true);
         }
 
@@ -79,13 +76,12 @@ class SearchController extends AbstractController
     }
 
     #[Route(path: '/comites', name: 'app_search_committees', methods: ['GET'])]
-    public function searchCommitteesAction(Request $request): Response
+    public function searchCommitteesAction(Request $request, #[CurrentUser] ?Adherent $user = null): Response
     {
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_COMMITTEES);
 
         $search = $this->searchParametersFilter->handleRequest($request);
-        $user = $this->getUser();
-        if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
+        if ($user) {
             $search->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
@@ -103,11 +99,11 @@ class SearchController extends AbstractController
     }
 
     #[Route(path: '/recherche', name: 'app_search', methods: ['GET'])]
-    public function resultsAction(Request $request): Response
+    public function resultsAction(Request $request, #[CurrentUser] ?Adherent $user = null): Response
     {
         $search = $this->searchParametersFilter->handleRequest($request);
 
-        if ($this->getUser() instanceof Adherent) {
+        if ($user) {
             $search->setWithPrivate(true);
         }
 

@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 #[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
@@ -38,13 +39,13 @@ class AdhesionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, ?string $pid = null, ?Referral $referral = null): Response
+    public function __invoke(Request $request, #[CurrentUser] ?Adherent $currentUser = null, ?string $pid = null, ?Referral $referral = null): Response
     {
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
         }
 
-        if (($currentUser = $this->getUser()) instanceof Adherent && $currentUser->hasActiveMembership()) {
+        if ($currentUser?->hasActiveMembership()) {
             return $this->redirectToRoute('vox_app_profile');
         }
 
@@ -56,7 +57,7 @@ class AdhesionController extends AbstractController
 
         $form = $this
             ->createForm(MembershipRequestType::class, $membershipRequest, [
-                'from_certified_adherent' => $currentUser && $currentUser->isCertified(),
+                'from_certified_adherent' => (bool) $currentUser?->isCertified(),
                 'validation_groups' => ['adhesion:amount'],
                 'csrf_protection' => false,
             ])
@@ -67,7 +68,7 @@ class AdhesionController extends AbstractController
             $donationRequest = DonationRequest::create($request, $membershipRequest->amount, PayboxPaymentSubscription::NONE, $currentUser);
             $donationRequest->forMembership();
 
-            if ($currentUser instanceof Adherent) {
+            if ($currentUser) {
                 $currentUser->setV2(true);
                 $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
             }

@@ -7,6 +7,7 @@ namespace App\Normalizer;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Adherent\Tag\TranslatedTagInterface;
+use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\Procuration\AbstractProcuration;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -37,7 +38,8 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
             if ($object instanceof TranslatedTagInterface) {
-                $appVersion = $this->security->getUser()?->getAuthAppVersion();
+                $user = $this->security->getUser();
+                $appVersion = $user instanceof Adherent ? $user->getAuthAppVersion() : null;
 
                 $callback = function (string $tag) use ($appVersion, $context) {
                     if (

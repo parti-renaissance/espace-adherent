@@ -210,7 +210,7 @@ class Administrator implements \Stringable, UserInterface, TwoFactorInterface, P
 
     public function isEqualTo(UserInterface $user): bool
     {
-        return $this->id === $user->getId() && $this->sessionRoles === $user->getRoles();
+        return $user instanceof self && $this->id === $user->getId() && $this->sessionRoles === $user->getRoles();
     }
 
     private function _init(): void

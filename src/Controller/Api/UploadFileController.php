@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Entity\Adherent;
 use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,14 +13,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"))]
 #[Route('/v3/upload-file', methods: ['POST'])]
 class UploadFileController extends AbstractController
 {
-    public function __invoke(UserInterface $user, Request $request, FilesystemOperator $publicUserFileStorage, string $secret): Response
+    public function __invoke(#[CurrentUser] Adherent $user, Request $request, FilesystemOperator $publicUserFileStorage, string $secret): Response
     {
         $file = $request->files->get('file');
 
