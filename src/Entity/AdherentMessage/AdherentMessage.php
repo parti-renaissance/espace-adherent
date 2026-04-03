@@ -514,6 +514,9 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         $this->sentAt = null;
         $this->statistics = null;
         $this->sender = null;
+        $this->senderEmail = null;
+        $this->senderName = null;
+        $this->senderRole = null;
 
         if ($this->filter) {
             $this->filter = clone $this->filter;
