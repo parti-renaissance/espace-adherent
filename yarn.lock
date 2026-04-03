@@ -4526,23 +4526,23 @@ __metadata:
   linkType: hard
 
 "eslint-import-resolver-webpack@npm:^0.13.10":
-  version: 0.13.10
-  resolution: "eslint-import-resolver-webpack@npm:0.13.10"
+  version: 0.13.11
+  resolution: "eslint-import-resolver-webpack@npm:0.13.11"
   dependencies:
     debug: "npm:^3.2.7"
     enhanced-resolve: "npm:^0.9.1"
     find-root: "npm:^1.1.0"
     hasown: "npm:^2.0.2"
     interpret: "npm:^1.4.0"
-    is-core-module: "npm:^2.15.1"
-    is-regex: "npm:^1.2.0"
-    lodash: "npm:^4.17.21"
-    resolve: "npm:^2.0.0-next.5"
+    is-core-module: "npm:^2.16.1"
+    is-regex: "npm:^1.2.1"
+    lodash: "npm:^4.18.1"
+    resolve: "npm:^2.0.0-next.6"
     semver: "npm:^5.7.2"
   peerDependencies:
     eslint-plugin-import: ">=1.4.0"
     webpack: ">=1.11.0"
-  checksum: 10c0/781cc6934771e6ba73e8ed29098d07b52d26e1de3aabfe13b44f658360e951bd451b6bd40f8c9a1567b471d6f80ae944948411b4358de975eb60611dc31babf4
+  checksum: 10c0/4950cfef265555ea700ce23ffda0f5908b2e70d920bdcdcb3ef0542c706a02f37dc83b1289ec18d60117d97971a39ce7fe3ec679ebe1a6c36bafd9f7f06a9490
   languageName: node
   linkType: hard
 
@@ -5558,7 +5558,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.15.1, is-core-module@npm:^2.16.1":
+"is-core-module@npm:^2.16.1":
   version: 2.16.1
   resolution: "is-core-module@npm:2.16.1"
   dependencies:
@@ -5673,7 +5673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-regex@npm:^1.2.0, is-regex@npm:^1.2.1":
+"is-regex@npm:^1.2.1":
   version: 1.2.1
   resolution: "is-regex@npm:1.2.1"
   dependencies:
@@ -6153,7 +6153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21":
+"lodash@npm:^4.17.21, lodash@npm:^4.18.1":
   version: 4.18.1
   resolution: "lodash@npm:4.18.1"
   checksum: 10c0/757228fc68805c59789e82185135cf85f05d0b2d3d54631d680ca79ec21944ec8314d4533639a14b8bcfbd97a517e78960933041a5af17ecb693ec6eecb99a27
@@ -6499,6 +6499,18 @@ __metadata:
   dependencies:
     node-gyp: "npm:latest"
   checksum: 10c0/fb32a206276d608037fa1bcd7e9921e177fe992fc610d098aa3128baca3c0050fc1e014fa007e9b3874cf865ddb4f5bd9f43ccb7cbbbe4efaff6a83e920b17e9
+  languageName: node
+  linkType: hard
+
+"node-exports-info@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "node-exports-info@npm:1.6.0"
+  dependencies:
+    array.prototype.flatmap: "npm:^1.3.3"
+    es-errors: "npm:^1.3.0"
+    object.entries: "npm:^1.1.9"
+    semver: "npm:^6.3.1"
+  checksum: 10c0/3613f21c60b047e66f168d3499a6be0060d89fb01ddceaa7032c2fb318aff12e4b9b111449c1a9aeb3b848bfdc1d4b6bc8fab327af692319597d21a1e7063692
   languageName: node
   linkType: hard
 
@@ -8065,6 +8077,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:^2.0.0-next.6":
+  version: 2.0.0-next.6
+  resolution: "resolve@npm:2.0.0-next.6"
+  dependencies:
+    es-errors: "npm:^1.3.0"
+    is-core-module: "npm:^2.16.1"
+    node-exports-info: "npm:^1.6.0"
+    object-keys: "npm:^1.1.1"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: 10c0/4e44cb84aa9a3c7c82d4a98e8111879671150496160a53ca6cdbed6101bf239f19105f8b8b84e40c0b76d46b0d9626813510b19a80e01f4ae18692e9d0b47749
+  languageName: node
+  linkType: hard
+
 "resolve@patch:resolve@npm%3A^1.1.7#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.8#optional!builtin<compat/resolve>":
   version: 1.22.8
   resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
@@ -8101,6 +8129,22 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: 10c0/78ad6edb8309a2bfb720c2c1898f7907a37f858866ce11a5974643af1203a6a6e05b2fa9c53d8064a673a447b83d42569260c306d43628bff5bb101969708355
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@npm%3A^2.0.0-next.6#optional!builtin<compat/resolve>":
+  version: 2.0.0-next.6
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.6#optional!builtin<compat/resolve>::version=2.0.0-next.6&hash=c3c19d"
+  dependencies:
+    es-errors: "npm:^1.3.0"
+    is-core-module: "npm:^2.16.1"
+    node-exports-info: "npm:^1.6.0"
+    object-keys: "npm:^1.1.1"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: 10c0/dca533e38820b0d8d636f269824cef3b7435802ab7401211c6f10af03be0e2f7e216047234e1623046c0a6791577079767e0c04f0d36e42c7f567b1bff7b0742
   languageName: node
   linkType: hard
 
