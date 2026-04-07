@@ -8,6 +8,7 @@ use App\Entity\Notification as NotificationEntity;
 use App\Firebase\Event\PushNotificationSentEvent;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
+use App\Firebase\Notification\PushChunkNotification;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreait\Firebase\Contract\Messaging as BaseMessaging;
@@ -24,12 +25,16 @@ class JeMarcheMessaging
         private readonly EntityManagerInterface $entityManager,
         private readonly NotificationRepository $notificationRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PushTokenStatusManager $pushTokenStatusManager,
     ) {
     }
 
     public function send(NotificationInterface $notification): void
     {
-        $notificationEntityTemplate = NotificationEntity::create($notification);
+        $className = $notification instanceof PushChunkNotification
+            ? $notification->getOriginalClassName()
+            : null;
+        $notificationEntityTemplate = NotificationEntity::create($notification, $className);
 
         if ($notification instanceof MulticastNotificationInterface) {
             $message = $this
@@ -50,7 +55,8 @@ class JeMarcheMessaging
                 $this->entityManager->flush();
 
                 try {
-                    $this->messaging->sendMulticast($message, $chunk);
+                    $report = $this->messaging->sendMulticast($message, $chunk);
+                    $this->pushTokenStatusManager->processReport($report);
                 } catch (\Exception $e) {
                     $this->entityManager->remove($notificationEntity);
                     $this->entityManager->flush();

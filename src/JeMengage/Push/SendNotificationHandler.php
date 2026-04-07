@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\JeMengage\Push;
 
 use App\Entity\NotificationObjectInterface;
-use App\Entity\PushToken;
 use App\Firebase\JeMarcheMessaging;
 use App\Firebase\Notification\NotificationInterface;
 use App\JeMengage\Push\TokenProvider\TokenProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class SendNotificationHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly JeMarcheMessaging $messaging,
         private readonly NotificationFactory $notificationFactory,
         private readonly iterable $tokenProviders,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -36,11 +36,27 @@ class SendNotificationHandler
         $notification = $this->notificationFactory->create($object, $command);
 
         $tokens = $this->findTokensForNotification($notification, $object, $command);
+
+        if (empty($tokens)) {
+            return;
+        }
+
         sort($tokens);
 
-        $notification->setTokens($tokens);
+        $parts = explode('\\', $notification::class);
+        $notificationClassName = end($parts);
 
-        $this->messaging->send($notification);
+        foreach (array_chunk($tokens, JeMarcheMessaging::MULTICAST_MAX_TOKENS) as $index => $chunk) {
+            $this->bus->dispatch(new Command\SendPushChunkCommand(
+                $notificationClassName,
+                $notification->getTitle(),
+                $notification->getBody(),
+                $notification->getScope(),
+                $notification->getData(),
+                $chunk,
+                \sprintf('%s:%s:%s:push:%d', $command->getClass(), $command->getUuid()->toString(), $notificationClassName, $index),
+            ));
+        }
 
         $object->handleNotificationSent($command);
 
@@ -64,7 +80,7 @@ class SendNotificationHandler
     }
 
     /**
-     * @return PushToken[]
+     * @return string[]
      */
     private function findTokensForNotification(NotificationInterface $notification, NotificationObjectInterface $object, Command\SendNotificationCommandInterface $command): array
     {

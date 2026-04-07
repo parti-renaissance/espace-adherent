@@ -21,6 +21,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\PushToken;
 use App\Entity\TimelineItemPrivateMessage;
+use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -169,9 +170,49 @@ class PushTokenRepository extends ServiceEntityRepository
             ->innerJoin('link.appSession', 's', Join::WITH, 's.status = :session_status AND s.unsubscribedAt IS NULL')
             ->innerJoin('s.adherent', $adherentAlias)
             ->andWhere($adherentAlias.'.status = :enabled')
+            ->andWhere($alias.'.unsubscribedAt IS NULL')
             ->orderBy($alias.'.identifier')
             ->setParameter('enabled', Adherent::ENABLED)
             ->setParameter('session_status', SessionStatusEnum::ACTIVE)
+        ;
+    }
+
+    public function markAsUnsubscribed(array $identifiers, PushTokenUnsubscribeReasonEnum $reason): void
+    {
+        if (empty($identifiers)) {
+            return;
+        }
+
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(PushToken::class, 't')
+            ->set('t.unsubscribedAt', ':now')
+            ->set('t.unsubscribedReason', ':reason')
+            ->where('t.identifier IN (:identifiers)')
+            ->andWhere('t.unsubscribedAt IS NULL')
+            ->setParameter('now', new \DateTime())
+            ->setParameter('reason', $reason)
+            ->setParameter('identifiers', $identifiers)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    public function updateLastNotificationAt(array $identifiers): void
+    {
+        if (empty($identifiers)) {
+            return;
+        }
+
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(PushToken::class, 't')
+            ->set('t.lastNotificationAt', ':now')
+            ->set('t.lastNotificationSuccess', ':success')
+            ->where('t.identifier IN (:identifiers)')
+            ->setParameter('now', new \DateTime())
+            ->setParameter('success', true, 'boolean')
+            ->setParameter('identifiers', $identifiers)
+            ->getQuery()
+            ->execute()
         ;
     }
 

@@ -7,6 +7,6 @@ namespace App\Event\Command;
 use App\Messenger\Message\CronjobMessageInterface;
 use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class EventLiveBeginNotificationCommand extends UuidDefaultAsyncMessage implements CronjobMessageInterface
+class EventLiveBeginEmailNotificationCommand extends UuidDefaultAsyncMessage implements CronjobMessageInterface
 {
 }

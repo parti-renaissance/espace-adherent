@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Api\PushToken\CreateController;
 use App\Controller\Api\PushToken\UnsubscribeController;
+use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -47,6 +48,15 @@ class PushToken
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $unsubscribedAt = null;
+
+    #[ORM\Column(nullable: true, enumType: PushTokenUnsubscribeReasonEnum::class)]
+    public ?PushTokenUnsubscribeReasonEnum $unsubscribedReason = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $lastNotificationAt = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    public ?bool $lastNotificationSuccess = null;
 
     public function __construct(?UuidInterface $uuid = null, ?string $identifier = null)
     {

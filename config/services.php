@@ -487,7 +487,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(App\Event\Handler\EventLiveBeginEmailChunkNotificationCommandHandler::class)
         ->arg('$cache', service('app.simple_cache.event_notifications'));
 
-    $services->set(App\Event\Handler\EventLiveBeginPushChunkNotificationCommandHandler::class)
+    $services->set(App\JeMengage\Push\SendPushChunkHandler::class)
         ->arg('$cache', service('app.simple_cache.event_notifications'));
 
     $services->alias('logger', 'monolog.logger')
