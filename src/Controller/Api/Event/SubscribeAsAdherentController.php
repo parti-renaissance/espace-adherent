@@ -15,6 +15,7 @@ use App\Event\EventRegistrationFactory;
 use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Repository\EventRegistrationRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,7 +112,11 @@ class SubscribeAsAdherentController extends AbstractController
         $registration->confirm();
         $registration->setSource(AppCodeEnum::VOX);
 
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException) {
+            return $this->json('OK', Response::HTTP_OK);
+        }
 
         if ($newRegistration) {
             $this->dispatcher->dispatch(new EventRegistrationEvent($registration, true), Events::EVENT_REGISTRATION_CREATED);
