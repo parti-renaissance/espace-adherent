@@ -79,12 +79,15 @@ class Notification
         $this->notificationKey = $this->generateNotificationKey();
     }
 
-    public static function create(NotificationInterface $notification): self
+    public static function create(NotificationInterface $notification, ?string $className = null): self
     {
-        $parts = explode('\\', $notification::class);
+        if (!$className) {
+            $parts = explode('\\', $notification::class);
+            $className = end($parts);
+        }
 
         return new self(
-            end($parts),
+            $className,
             $notification->getTitle(),
             $notification->getBody(),
             $notification->getData(),

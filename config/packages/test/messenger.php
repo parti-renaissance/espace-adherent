@@ -18,6 +18,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'routing' => [
                 App\Donation\Command\ReceivePayboxIpnResponseCommand::class => 'sync',
                 App\Messenger\Message\UuidDefaultAsyncMessage::class => 'sync',
+                App\JeMengage\Push\Command\SendPushChunkCommand::class => 'sync',
                 App\Mailer\Command\AsyncSendMessageCommand::class => 'sync',
                 App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand::class => 'sync',
                 App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand::class => 'sync',

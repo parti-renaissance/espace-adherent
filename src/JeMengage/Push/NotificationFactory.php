@@ -38,6 +38,10 @@ class NotificationFactory
             }
         }
 
+        if ($command instanceof Command\EventLiveBeginNotificationCommand) {
+            return Notification\EventLiveBeginNotification::create($object);
+        }
+
         if ($command instanceof Command\EventCreationNotificationCommand) {
             return Notification\EventCreatedNotification::create($object);
         }

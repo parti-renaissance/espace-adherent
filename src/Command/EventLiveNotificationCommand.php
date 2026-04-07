@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Event\Command\EventLiveBeginNotificationCommand;
+use App\Event\Command\EventLiveBeginEmailNotificationCommand;
+use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
 use App\Repository\Event\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -33,6 +34,7 @@ class EventLiveNotificationCommand extends Command
 
         foreach ($events as $event) {
             $this->bus->dispatch(new EventLiveBeginNotificationCommand($event->getUuid()));
+            $this->bus->dispatch(new EventLiveBeginEmailNotificationCommand($event->getUuid()));
             $event->pushSentAt = new \DateTime();
 
             $this->entityManager->flush();
