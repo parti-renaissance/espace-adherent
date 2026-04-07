@@ -58,6 +58,19 @@ class Notification
     #[ORM\Column(unique: true, nullable: true)]
     public ?string $notificationKey = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: PushNotification::class, inversedBy: 'chunks')]
+    public ?PushNotification $pushNotification = null;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $tokensSent = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $tokensSuccess = 0;
+
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    public int $tokensFailed = 0;
+
     public function __construct(
         string $notificationClass,
         string $title,

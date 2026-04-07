@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Firebase;
 
 use App\Entity\Notification as NotificationEntity;
+use App\Entity\PushNotification;
 use App\Firebase\Event\PushNotificationSentEvent;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
@@ -32,7 +33,7 @@ class JeMarcheMessaging
     public function send(NotificationInterface $notification): void
     {
         $className = $notification instanceof PushChunkNotification
-            ? $notification->getOriginalClassName()
+            ? $notification->originalClassName
             : null;
         $notificationEntityTemplate = NotificationEntity::create($notification, $className);
 
@@ -62,6 +63,23 @@ class JeMarcheMessaging
                     $this->entityManager->flush();
 
                     throw $e;
+                }
+
+                $notificationEntity->tokensSent = \count($chunk);
+                $notificationEntity->tokensSuccess = $report->successes()->count();
+                $notificationEntity->tokensFailed = $report->failures()->count();
+
+                if ($notification instanceof PushChunkNotification && $notification->pushNotificationUuid) {
+                    $pushNotification = $this->entityManager->getRepository(PushNotification::class)->findOneBy(['uuid' => $notification->pushNotificationUuid]);
+
+                    if ($pushNotification) {
+                        $notificationEntity->pushNotification = $pushNotification;
+                        $pushNotification->recordChunkResult(
+                            $notificationEntity->tokensSent,
+                            $notificationEntity->tokensSuccess,
+                            $notificationEntity->tokensFailed,
+                        );
+                    }
                 }
 
                 $notificationEntity->setDelivered();

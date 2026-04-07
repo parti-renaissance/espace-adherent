@@ -63,6 +63,10 @@ canceled: Annulé
 duplicate: Doublon
 blocked: Bloqué
 closed: Fermé
+active: Active
+terminated: Terminée
+delivered: Livré
+partial: Partiel
 pre_approved: Pré-approuvé
 pre_refused: Pré-refusé
 group: un groupe
@@ -1457,9 +1461,6 @@ referral.status.reported: Signalé
 #
 unregistration.type.sympathizer: Sympathisant
 unregistration.type.adherent: Adhérent
-
-active: Active
-terminated: Terminée
 
 AppSession_list: Liste des sessions
 

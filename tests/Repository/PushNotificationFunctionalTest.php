@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\App\Repository;
 
 use App\Entity\Event\Event;
+use App\Entity\PushNotification;
 use App\Entity\PushToken;
+use App\Firebase\PushNotificationStatusEnum;
 use App\Firebase\PushTokenStatusManager;
 use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
@@ -173,6 +175,63 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
         $provider->getTokens($notification, $object, $command);
 
         self::assertSame('national', $notification->getScope());
+    }
+
+    // --- PushNotification entity tests ---
+
+    public function testPushNotificationCreatedWithCorrectChunksTotal(): void
+    {
+        $pushNotification = new PushNotification(
+            'TestNotification',
+            'Title',
+            'Body',
+            'test_scope',
+            ['key' => 'value'],
+            5,
+        );
+
+        $this->manager->persist($pushNotification);
+        $this->manager->flush();
+        $this->manager->clear();
+
+        $loaded = $this->manager->getRepository(PushNotification::class)->findOneBy(['uuid' => $pushNotification->getUuid()]);
+
+        self::assertNotNull($loaded);
+        self::assertSame(5, $loaded->chunksTotal);
+        self::assertSame(0, $loaded->chunksDelivered);
+        self::assertSame(PushNotificationStatusEnum::PENDING, $loaded->status);
+    }
+
+    public function testPushNotificationStatusTransitions(): void
+    {
+        $pushNotification = new PushNotification(
+            'TestNotification',
+            'Title',
+            'Body',
+            null,
+            null,
+            3,
+        );
+
+        self::assertSame(PushNotificationStatusEnum::PENDING, $pushNotification->status);
+
+        $pushNotification->recordChunkResult(300, 280, 20);
+        self::assertSame(PushNotificationStatusEnum::PARTIAL, $pushNotification->status);
+        self::assertSame(300, $pushNotification->totalTokens);
+        self::assertSame(280, $pushNotification->totalSuccess);
+        self::assertSame(20, $pushNotification->totalFailed);
+        self::assertSame(1, $pushNotification->chunksDelivered);
+
+        $pushNotification->recordChunkResult(300, 300, 0);
+        self::assertSame(PushNotificationStatusEnum::PARTIAL, $pushNotification->status);
+        self::assertSame(2, $pushNotification->chunksDelivered);
+
+        $pushNotification->recordChunkResult(150, 150, 0);
+        self::assertSame(PushNotificationStatusEnum::DELIVERED, $pushNotification->status);
+        self::assertSame(3, $pushNotification->chunksDelivered);
+        self::assertSame(750, $pushNotification->totalTokens);
+        self::assertSame(730, $pushNotification->totalSuccess);
+        self::assertSame(20, $pushNotification->totalFailed);
     }
 
     // --- helpers ---

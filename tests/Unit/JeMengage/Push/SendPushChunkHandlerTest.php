@@ -51,8 +51,9 @@ final class SendPushChunkHandlerTest extends TestCase
                 return 'Test Title' === $notification->getTitle()
                     && 'Test Body' === $notification->getBody()
                     && 'test_scope' === $notification->getScope()
-                    && 'EventCreationNotification' === $notification->getOriginalClassName()
-                    && ['token-1', 'token-2'] === $notification->getTokens();
+                    && 'EventCreationNotification' === $notification->originalClassName
+                    && ['token-1', 'token-2'] === $notification->getTokens()
+                    && null === $notification->pushNotificationUuid;
             }))
         ;
 
@@ -135,6 +136,35 @@ final class SendPushChunkHandlerTest extends TestCase
             ->method('set')
             ->with('ttl:test:push:0', true, 900)
         ;
+
+        ($this->handler)($command);
+    }
+
+    public function testInvokeWithPushNotificationUuidPropagatesIt(): void
+    {
+        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+        $command = new SendPushChunkCommand(
+            'TestNotification',
+            'Title',
+            'Body',
+            null,
+            [],
+            ['token-1'],
+            'uuid:test:push:0',
+            $uuid,
+        );
+
+        $this->cache->method('has')->with('uuid:test:push:0')->willReturn(false);
+
+        $this->messaging
+            ->expects(self::once())
+            ->method('send')
+            ->with(self::callback(function (PushChunkNotification $notification) use ($uuid): bool {
+                return $uuid === $notification->pushNotificationUuid;
+            }))
+        ;
+
+        $this->cache->method('set');
 
         ($this->handler)($command);
     }

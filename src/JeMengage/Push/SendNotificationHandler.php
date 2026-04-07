@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\JeMengage\Push;
 
 use App\Entity\NotificationObjectInterface;
+use App\Entity\PushNotification;
 use App\Firebase\JeMarcheMessaging;
 use App\Firebase\Notification\NotificationInterface;
 use App\JeMengage\Push\TokenProvider\TokenProviderInterface;
@@ -46,7 +47,20 @@ class SendNotificationHandler
         $parts = explode('\\', $notification::class);
         $notificationClassName = end($parts);
 
-        foreach (array_chunk($tokens, JeMarcheMessaging::MULTICAST_MAX_TOKENS) as $index => $chunk) {
+        $chunks = array_chunk($tokens, JeMarcheMessaging::MULTICAST_MAX_TOKENS);
+
+        $pushNotification = new PushNotification(
+            $notificationClassName,
+            $notification->getTitle(),
+            $notification->getBody(),
+            $notification->getScope(),
+            $notification->getData(),
+            \count($chunks),
+        );
+        $this->entityManager->persist($pushNotification);
+        $this->entityManager->flush();
+
+        foreach ($chunks as $index => $chunk) {
             $this->bus->dispatch(new Command\SendPushChunkCommand(
                 $notificationClassName,
                 $notification->getTitle(),
@@ -55,6 +69,7 @@ class SendNotificationHandler
                 $notification->getData(),
                 $chunk,
                 \sprintf('%s:%s:%s:push:%d', $command->getClass(), $command->getUuid()->toString(), $notificationClassName, $index),
+                $pushNotification->getUuid(),
             ));
         }
 
