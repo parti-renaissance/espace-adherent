@@ -22,7 +22,7 @@ final class Version20260407114735 extends AbstractMigration
                 n.scope,
                 MIN(n.data),
                 CASE WHEN SUM(CASE WHEN n.delivered_at IS NOT NULL THEN 1 ELSE 0 END) = COUNT(*) THEN 'delivered' ELSE 'partial' END,
-                SUM(LENGTH(n.tokens) - LENGTH(REPLACE(n.tokens, ',', '')) + 1),
+                COALESCE(SUM(CASE WHEN n.tokens IS NOT NULL AND n.tokens != '' THEN LENGTH(n.tokens) - LENGTH(REPLACE(n.tokens, ',', '')) + 1 ELSE 0 END), 0),
                 0,
                 0,
                 COUNT(*),
@@ -43,7 +43,7 @@ final class Version20260407114735 extends AbstractMigration
                 AND pn.title = n.title
                 AND (pn.scope = n.scope OR (pn.scope IS NULL AND n.scope IS NULL))
             SET n.push_notification_id = pn.id,
-                n.tokens_sent = LENGTH(n.tokens) - LENGTH(REPLACE(n.tokens, ',', '')) + 1
+                n.tokens_sent = CASE WHEN n.tokens IS NOT NULL AND n.tokens != '' THEN LENGTH(n.tokens) - LENGTH(REPLACE(n.tokens, ',', '')) + 1 ELSE 0 END
             WHERE n.push_notification_id IS NULL
             SQL
         );
