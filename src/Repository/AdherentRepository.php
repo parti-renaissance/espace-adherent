@@ -1831,6 +1831,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 SELECT 1
                 FROM app_session s
                 JOIN app_session_push_token_link p ON p.app_session_id = s.id AND p.unsubscribed_at IS NULL
+                JOIN push_token pt ON pt.id = p.push_token_id AND pt.unsubscribed_at IS NULL
                 WHERE s.adherent_id = a.id AND s.status = :session_status
             )';
             $params['session_status'] = SessionStatusEnum::ACTIVE->value;

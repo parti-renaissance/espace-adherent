@@ -234,6 +234,19 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
         self::assertSame(20, $pushNotification->totalFailed);
     }
 
+    // --- AudienceFilter scope targets test ---
+
+    public function testFindAllForAdherentMessageRunsWithoutError(): void
+    {
+        $message = $this->createMock(\App\Entity\AdherentMessage\AdherentMessage::class);
+        $filter = new \App\Entity\AdherentMessage\AdherentMessageFilter();
+        $message->method('getFilter')->willReturn($filter);
+
+        $result = $this->pushTokenRepository->findAllForAdherentMessage($message);
+
+        self::assertIsArray($result);
+    }
+
     // --- helpers ---
 
     private function createAndPersistToken(string $identifier): PushToken
