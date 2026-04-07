@@ -32,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['push_token_write']]
 )]
 #[ORM\Entity(repositoryClass: PushTokenRepository::class)]
+#[ORM\Index(fields: ['unsubscribedAt'])]
 class PushToken
 {
     use EntityIdentityTrait;

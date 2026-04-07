@@ -35,6 +35,7 @@ class SendPushChunkHandler
             $command->data,
             $command->scope,
             $command->notificationClassName,
+            $command->pushNotificationUuid,
         );
         $notification->setTokens($command->tokens);
 

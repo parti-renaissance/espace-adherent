@@ -95,6 +95,29 @@ final class SendNotificationHandlerTest extends TestCase
         self::assertSame('test_scope', $dispatched->scope);
         self::assertSame(['key' => 'value'], $dispatched->data);
         self::assertSame(['token-a', 'token-b'], $dispatched->tokens);
+        self::assertNotNull($dispatched->pushNotificationUuid, 'Chunk command should carry pushNotificationUuid');
+    }
+
+    public function testInvokeWithTokensPersistsPushNotification(): void
+    {
+        $command = $this->createCommand();
+        $object = $this->mockObjectFound($command);
+        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+
+        $notification = $this->mockNotification($object, $command);
+        $this->mockTokenProvider($notification, $object, $command, ['token-1']);
+
+        $this->bus->method('dispatch')->willReturnCallback(function (SendPushChunkCommand $cmd): Envelope {
+            return new Envelope($cmd);
+        });
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('persist')
+            ->with(self::isInstanceOf(\App\Entity\PushNotification::class))
+        ;
+
+        ($this->handler)($command);
     }
 
     public function testInvokeWithNoTokensDoesNotDispatch(): void
@@ -157,7 +180,7 @@ final class SendNotificationHandlerTest extends TestCase
             ->with($command)
         ;
 
-        $this->entityManager->expects(self::once())->method('flush');
+        $this->entityManager->expects(self::exactly(2))->method('flush');
 
         ($this->handler)($command);
     }
