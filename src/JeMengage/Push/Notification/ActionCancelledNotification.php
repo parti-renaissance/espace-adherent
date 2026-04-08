@@ -7,6 +7,7 @@ namespace App\JeMengage\Push\Notification;
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;
 use App\Firebase\Notification\AbstractMulticastNotification;
+use App\JeMengage\Push\NotificationScope;
 
 class ActionCancelledNotification extends AbstractMulticastNotification
 {
@@ -15,6 +16,7 @@ class ActionCancelledNotification extends AbstractMulticastNotification
         return new self(
             static::createTitle($action),
             static::createBody($action),
+            NotificationScope::action($action->getId()),
         );
     }
 

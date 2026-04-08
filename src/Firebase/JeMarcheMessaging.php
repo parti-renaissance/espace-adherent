@@ -8,7 +8,6 @@ use App\Entity\Notification as NotificationEntity;
 use App\Entity\PushNotification;
 use App\Firebase\Event\PushNotificationSentEvent;
 use App\Firebase\Notification\MulticastNotificationInterface;
-use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\PushChunkNotification;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,65 +29,61 @@ class JeMarcheMessaging
     ) {
     }
 
-    public function send(NotificationInterface $notification): void
+    public function send(MulticastNotificationInterface $notification): void
     {
         $className = $notification instanceof PushChunkNotification
             ? $notification->originalClassName
             : null;
         $notificationEntityTemplate = NotificationEntity::create($notification, $className);
 
-        if ($notification instanceof MulticastNotificationInterface) {
-            $message = $this
-                ->createMessage()
-                ->withNotification($this->createNotification($notification))
-                ->withWebPushConfig($this->getPushConfig($notification))
-                ->withData($this->getData($notification))
-            ;
+        $message = $this
+            ->createMessage()
+            ->withNotification($this->createNotification($notification))
+            ->withWebPushConfig($this->getPushConfig($notification))
+            ->withData($this->getData($notification))
+        ;
 
-            foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {
-                $notificationEntity = $notificationEntityTemplate->withTokens($chunk);
+        foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {
+            $notificationEntity = $notificationEntityTemplate->withTokens($chunk);
 
-                if ($this->notificationRepository->keyExists($notificationEntity->notificationKey)) {
-                    continue;
-                }
-
-                $this->entityManager->persist($notificationEntity);
-                $this->entityManager->flush();
-
-                try {
-                    $report = $this->messaging->sendMulticast($message, $chunk);
-                    $this->pushTokenStatusManager->processReport($report);
-                } catch (\Exception $e) {
-                    $this->entityManager->remove($notificationEntity);
-                    $this->entityManager->flush();
-
-                    throw $e;
-                }
-
-                $notificationEntity->tokensSent = \count($chunk);
-                $notificationEntity->tokensSuccess = $report->successes()->count();
-                $notificationEntity->tokensFailed = $report->failures()->count();
-
-                if ($notification instanceof PushChunkNotification && $notification->pushNotificationUuid) {
-                    $pushNotification = $this->entityManager->getRepository(PushNotification::class)->findOneBy(['uuid' => $notification->pushNotificationUuid]);
-
-                    if ($pushNotification) {
-                        $notificationEntity->pushNotification = $pushNotification;
-                        $pushNotification->recordChunkResult(
-                            $notificationEntity->tokensSent,
-                            $notificationEntity->tokensSuccess,
-                            $notificationEntity->tokensFailed,
-                        );
-                    }
-                }
-
-                $notificationEntity->setDelivered();
-                $this->entityManager->flush();
-
-                $this->eventDispatcher->dispatch(new PushNotificationSentEvent($notificationEntity));
+            if ($this->notificationRepository->keyExists($notificationEntity->notificationKey)) {
+                continue;
             }
-        } else {
-            throw new \InvalidArgumentException(\sprintf('%s" is neither a topic nor a multicast notification.', $notification::class));
+
+            $this->entityManager->persist($notificationEntity);
+            $this->entityManager->flush();
+
+            try {
+                $report = $this->messaging->sendMulticast($message, $chunk);
+                $this->pushTokenStatusManager->processReport($report);
+            } catch (\Exception $e) {
+                $this->entityManager->remove($notificationEntity);
+                $this->entityManager->flush();
+
+                throw $e;
+            }
+
+            $notificationEntity->tokensSent = \count($chunk);
+            $notificationEntity->tokensSuccess = $report->successes()->count();
+            $notificationEntity->tokensFailed = $report->failures()->count();
+
+            if ($notification instanceof PushChunkNotification && $notification->pushNotificationUuid) {
+                $pushNotification = $this->entityManager->getRepository(PushNotification::class)->findOneBy(['uuid' => $notification->pushNotificationUuid]);
+
+                if ($pushNotification) {
+                    $notificationEntity->pushNotification = $pushNotification;
+                    $pushNotification->recordChunkResult(
+                        $notificationEntity->tokensSent,
+                        $notificationEntity->tokensSuccess,
+                        $notificationEntity->tokensFailed,
+                    );
+                }
+            }
+
+            $notificationEntity->setDelivered();
+            $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatch(new PushNotificationSentEvent($notificationEntity));
         }
     }
 
@@ -97,12 +92,12 @@ class JeMarcheMessaging
         return CloudMessage::new();
     }
 
-    private function createNotification(NotificationInterface $notification): Notification
+    private function createNotification(MulticastNotificationInterface $notification): Notification
     {
         return Notification::create($notification->getTitle(), $notification->getBody());
     }
 
-    private function getPushConfig(NotificationInterface $notification): array
+    private function getPushConfig(MulticastNotificationInterface $notification): array
     {
         return [
             'notification' => [

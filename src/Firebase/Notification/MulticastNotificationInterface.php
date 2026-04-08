@@ -7,4 +7,6 @@ namespace App\Firebase\Notification;
 interface MulticastNotificationInterface extends NotificationInterface
 {
     public function getTokens(): array;
+
+    public function getScope(): string;
 }

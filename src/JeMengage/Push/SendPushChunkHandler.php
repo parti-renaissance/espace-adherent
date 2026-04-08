@@ -32,8 +32,8 @@ class SendPushChunkHandler
         $notification = new PushChunkNotification(
             $command->title,
             $command->body,
-            $command->data,
             $command->scope,
+            $command->data,
             $command->notificationClassName,
             $command->pushNotificationUuid,
         );

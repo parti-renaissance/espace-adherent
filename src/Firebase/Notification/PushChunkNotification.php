@@ -11,12 +11,11 @@ class PushChunkNotification extends AbstractMulticastNotification
     public function __construct(
         string $title,
         string $body,
+        string $scope,
         array $data,
-        ?string $scope,
         public readonly string $originalClassName,
         public readonly ?UuidInterface $pushNotificationUuid = null,
     ) {
-        parent::__construct($title, $body, $data);
-        $this->setScope($scope);
+        parent::__construct($title, $body, $scope, $data);
     }
 }
