@@ -409,6 +409,10 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $sendInvitationEmail = true;
 
+    #[Groups(['event_read', 'event_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $hidden = false;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -771,7 +775,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
 
     public function isIndexable(): bool
     {
-        return $this->isPublished() && !$this->isCancelled();
+        return $this->isPublished() && !$this->isCancelled() && !$this->hidden;
     }
 
     public function isPublic(): bool

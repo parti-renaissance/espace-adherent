@@ -84,6 +84,7 @@ Feature:
                 "local_begin_at": null,
                 "local_finish_at": null,
                 "editable": false,
+                "hidden": false,
                 "image_url": null,
                 "image": null
             }
@@ -970,7 +971,8 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "editable": false
+                "editable": false,
+                "hidden": false
             }
             """
 
@@ -1028,7 +1030,8 @@ Feature:
                 "user_registered_at": null,
                 "is_national": false,
                 "object_state": "full",
-                "editable": false
+                "editable": false,
+                "hidden": false
             }
             """
         When I send a "GET" request to "/api/v3/events/:last_response.slug:"
@@ -1083,7 +1086,8 @@ Feature:
                 "user_registered_at": null,
                 "is_national": false,
                 "object_state": "full",
-                "editable": false
+                "editable": false,
+                "hidden": false
             }
             """
 
@@ -1152,7 +1156,8 @@ Feature:
                 "mode": null,
                 "image_url": null,
                 "image": null,
-                "editable": false
+                "editable": false,
+                "hidden": false
             }
             """
 
@@ -1326,7 +1331,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "edit_link": "@string@.isUrl()",
+                "hidden": false
             }
             """
         And I should have 1 email "RenaissanceEventNotificationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
@@ -1528,7 +1534,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "edit_link": "@string@.isUrl()",
+                "hidden": false
             }
             """
         And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
@@ -1841,7 +1848,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "edit_link": "@string@.isUrl()",
+                "hidden": false
             }
             """
         And I should have 1 email
@@ -2248,7 +2256,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "edit_link": "@string@.isUrl()",
+                "hidden": false
             }
             """
         And I should have 1 notification "EventCreatedNotification" with data:
@@ -2342,7 +2351,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "edit_link": "@string@.isUrl()",
+                "hidden": false
             }
             """
 
@@ -2576,6 +2586,7 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
+                "hidden": false,
                 "object_state": "full"
             }
             """
@@ -2812,3 +2823,32 @@ Feature:
                 "count": 1
             }
             """
+
+    Scenario: As a deputy I can create a hidden event that is accessible directly
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/events?scope=president_departmental_assembly" with body:
+            """
+            {
+                "name": "Événement masqué test",
+                "category": "kiosque",
+                "description": "Un événement qui ne doit pas apparaître dans les listes",
+                "begin_at": "2023-01-29 16:30:30",
+                "finish_at": "2023-01-30 16:30:30",
+                "capacity": 50,
+                "mode": "online",
+                "time_zone": "Europe/Paris",
+                "visibility": "public",
+                "hidden": true
+            }
+            """
+        Then the response status code should be 201
+        And the JSON node "hidden" should be true
+        And the JSON node "uuid" should exist
+        When I save this response
+        When I send a "GET" request to "/api/v3/events/:saved_response.uuid:?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON node "hidden" should be true
+        And the JSON node "name" should be equal to "Événement masqué test"
+        When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON node "items" should not contain an element with "name" equal to "Événement masqué test"

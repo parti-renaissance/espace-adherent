@@ -117,6 +117,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 ->add('published', null, [
                     'label' => 'Publié',
                 ])
+                ->add('hidden', null, [
+                    'label' => 'Masqué',
+                ])
                 ->add('electoral', null, [
                     'label' => 'Électoral',
                 ])
@@ -206,6 +209,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
+                ])
+                ->add('hidden', null, [
+                    'label' => 'Masqué',
                 ])
                 ->add('visibility', EnumType::class, [
                     'label' => 'Visibilité',
@@ -430,6 +436,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
             ->add('sendInvitationEmail', null, [
                 'label' => 'Invitation auto',
                 'template' => 'admin/event/list_sendInvitationEmail.html.twig',
+            ])
+            ->add('hidden', null, [
+                'label' => 'Masqué',
             ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',

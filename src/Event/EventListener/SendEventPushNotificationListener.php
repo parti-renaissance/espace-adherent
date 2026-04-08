@@ -20,6 +20,10 @@ class SendEventPushNotificationListener implements EventSubscriberInterface
     {
         $event = $eventEvent->getEvent();
 
+        if ($event->hidden) {
+            return;
+        }
+
         $this->bus->dispatch(new EventCreationNotificationCommand($event->getUuid()));
     }
 

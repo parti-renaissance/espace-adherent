@@ -120,12 +120,14 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')
             ->andWhere('event.emailReminded = :email_reminded')
+            ->andWhere('event.hidden = :hidden')
             ->setParameters([
                 'published' => true,
                 'event_status' => Event::STATUS_SCHEDULED,
                 'start_after' => $startAfter,
                 'start_before' => $startBefore,
                 'email_reminded' => false,
+                'hidden' => false,
             ])
             ->getQuery()
             ->getResult()
@@ -140,12 +142,14 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('event.category', 'category')
             ->where('event.published = :published')
             ->andWhere('event.status = :event_status')
+            ->andWhere('event.hidden = :hidden')
             ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
             ->andWhere('category IS NULL OR category.status = :category_status')
             ->orderBy('event.beginAt', 'ASC')
             ->addOrderBy('event.name', 'ASC')
             ->setParameter('published', true)
             ->setParameter('event_status', Event::STATUS_SCHEDULED)
+            ->setParameter('hidden', false)
             ->setParameter('now', new \DateTime('now'))
             ->setParameter('category_status', BaseEventCategory::ENABLED)
             ->setMaxResults($limit)
@@ -202,10 +206,12 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.postAddress.latitude IS NOT NULL AND e.postAddress.longitude IS NOT NULL')
             ->andWhere('e.status = :status')
             ->andWhere('e.mode = :mode')
+            ->andWhere('e.hidden = :hidden')
             ->setParameters([
                 'mode' => Event::MODE_MEETING,
                 'status' => Event::STATUS_SCHEDULED,
                 'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
+                'hidden' => false,
             ])
         ;
 
@@ -301,6 +307,7 @@ class EventRepository extends ServiceEntityRepository
                 AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max
                 AND events.begin_at > :today
                 AND events.published = :published
+                AND events.hidden = 0
                 AND events.status = :scheduled
                 AND event_category.id IS NOT NULL
                 )
@@ -390,10 +397,12 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('n.beginAt > :date')
             ->andWhere('n.status = :status')
             ->andwhere('n.published = :published')
+            ->andWhere('n.hidden = :hidden')
             ->setParameter('distance_max', $radius)
             ->setParameter('date', $event->getBeginAt())
             ->setParameter('status', Event::STATUS_SCHEDULED)
             ->setParameter('published', true)
+            ->setParameter('hidden', false)
             ->addOrderBy('n.beginAt', 'ASC')
             ->setMaxResults($max)
             ->getQuery()
@@ -459,6 +468,7 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.beginAt >= :from')
             ->andWhere('e.published = :published')
             ->andWhere('e.status = :status')
+            ->andWhere('e.hidden = :hidden')
             ->andWhere('er IS NULL')
             ->setParameters([
                 'agora' => $agora,
@@ -466,6 +476,7 @@ class EventRepository extends ServiceEntityRepository
                 'published' => true,
                 'status' => Event::STATUS_SCHEDULED,
                 'adherent' => $adherent,
+                'hidden' => false,
             ])
             ->getQuery()
             ->getResult()
@@ -483,11 +494,13 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.beginAt >= :from')
             ->andWhere('e.published = :published')
             ->andWhere('e.status = :status')
+            ->andWhere('e.hidden = :hidden')
             ->setParameters([
                 'agora' => $agora,
                 'from' => $from,
                 'published' => true,
                 'status' => Event::STATUS_SCHEDULED,
+                'hidden' => false,
             ])
             ->getQuery()
             ->getResult()
