@@ -52,6 +52,7 @@ class EventCleaner
         'is_national',
         'mode',
         'editable',
+        'hidden',
         'user_registered_at',
     ];
 
