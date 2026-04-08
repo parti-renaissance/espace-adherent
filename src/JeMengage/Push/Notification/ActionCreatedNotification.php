@@ -7,14 +7,22 @@ namespace App\JeMengage\Push\Notification;
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;
 use App\Firebase\Notification\AbstractMulticastNotification;
+use App\JeMengage\Push\NotificationScope;
 
 class ActionCreatedNotification extends AbstractMulticastNotification
 {
     public static function create(Action $action): self
     {
+        $assemblyZone = $action->getAssemblyZone();
+
+        if (!$assemblyZone) {
+            throw new \RuntimeException(\sprintf('Action #%d has no assembly zone — cannot resolve notification scope.', $action->getId()));
+        }
+
         return new self(
             static::createTitle($action),
             static::createBody($action),
+            NotificationScope::zone($assemblyZone->getCode()),
         );
     }
 

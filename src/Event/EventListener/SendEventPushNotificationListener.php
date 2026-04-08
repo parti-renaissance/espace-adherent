@@ -20,7 +20,7 @@ class SendEventPushNotificationListener implements EventSubscriberInterface
     {
         $event = $eventEvent->getEvent();
 
-        if ($event->hidden) {
+        if ($event->hidden || $event->agora) {
             return;
         }
 

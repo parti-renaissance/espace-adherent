@@ -13,7 +13,6 @@ use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
 use App\JeMengage\Push\NotificationFactory;
-use App\JeMengage\Push\TokenProvider\LiveBeginTokenProvider;
 use App\Repository\PushTokenRepository;
 use Kreait\Firebase\Exception\Messaging\NotFound;
 use Kreait\Firebase\Messaging\MessageTarget;
@@ -141,40 +140,6 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
         self::assertInstanceOf(EventLiveBeginNotification::class, $notification);
         self::assertSame('🔴 On est en direct !', $notification->getTitle());
         self::assertSame('Test Live Event', $notification->getBody());
-    }
-
-    // --- LiveBeginTokenProvider tests ---
-
-    public function testLiveBeginTokenProviderSupportsEventLiveBeginNotification(): void
-    {
-        $provider = $this->get(LiveBeginTokenProvider::class);
-        $notification = new EventLiveBeginNotification('title', 'body');
-        $object = $this->createMock(\App\Entity\NotificationObjectInterface::class);
-
-        self::assertTrue($provider->supports($notification, $object));
-    }
-
-    public function testLiveBeginTokenProviderDoesNotSupportOtherNotifications(): void
-    {
-        $provider = $this->get(LiveBeginTokenProvider::class);
-        $notification = $this->createMock(\App\Firebase\Notification\NotificationInterface::class);
-        $object = $this->createMock(\App\Entity\NotificationObjectInterface::class);
-
-        self::assertFalse($provider->supports($notification, $object));
-    }
-
-    // --- LiveBeginTokenProvider returns tokens ---
-
-    public function testLiveBeginTokenProviderReturnsScopeNational(): void
-    {
-        $provider = $this->get(LiveBeginTokenProvider::class);
-        $notification = new EventLiveBeginNotification('title', 'body');
-        $object = $this->createMock(\App\Entity\NotificationObjectInterface::class);
-        $command = new EventLiveBeginNotificationCommand(Uuid::uuid4());
-
-        $provider->getTokens($notification, $object, $command);
-
-        self::assertSame('national', $notification->getScope());
     }
 
     // --- PushNotification entity tests ---

@@ -13,7 +13,7 @@ class SendPushChunkCommand implements AsynchronousMessageInterface
         public string $notificationClassName,
         public string $title,
         public string $body,
-        public ?string $scope,
+        public string $scope,
         public array $data,
         public array $tokens,
         public string $chunkKey,

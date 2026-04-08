@@ -205,8 +205,8 @@ final class JeMarcheMessagingTest extends TestCase
         $notification = new PushChunkNotification(
             'Test Title',
             'Test Body',
-            ['link' => '/test'],
             'test_scope',
+            ['link' => '/test'],
             'TestNotification',
         );
         $notification->setTokens($tokens);

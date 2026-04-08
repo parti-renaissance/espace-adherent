@@ -6,6 +6,7 @@ namespace App\JeMengage\Push\Notification;
 
 use App\Entity\TimelineItemPrivateMessage;
 use App\Firebase\Notification\AbstractMulticastNotification;
+use App\JeMengage\Push\NotificationScope;
 
 class PrivateMessageNotification extends AbstractMulticastNotification
 {
@@ -15,6 +16,10 @@ class PrivateMessageNotification extends AbstractMulticastNotification
             throw new \InvalidArgumentException(\sprintf('Private message #%d must have title and description to create a notification.', $privateMessage->getId()));
         }
 
-        return new self($privateMessage->notificationTitle, $privateMessage->notificationDescription);
+        return new self(
+            $privateMessage->notificationTitle,
+            $privateMessage->notificationDescription,
+            NotificationScope::privateMessage($privateMessage->getId()),
+        );
     }
 }

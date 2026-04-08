@@ -162,9 +162,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->instanceof(App\JeMengage\Alert\Provider\AlertProviderInterface::class)
         ->tag('app.alert_provider');
 
-    $services->instanceof(App\JeMengage\Push\TokenProvider\TokenProviderInterface::class)
-        ->tag('app.token_provider');
-
     $services->instanceof(App\JeMengage\Hit\Stats\Provider\ProviderInterface::class)
         ->tag('app.hit.stats_provider');
 
@@ -222,9 +219,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->set(App\JeMengage\Alert\AlertProvider::class)
         ->arg('$providers', tagged_iterator('app.alert_provider'));
-
-    $services->set(App\JeMengage\Push\SendNotificationHandler::class)
-        ->arg('$tokenProviders', tagged_iterator('app.token_provider'));
 
     $services->set(App\JeMengage\Hit\Stats\Aggregator::class)
         ->arg('$providers', tagged_iterator('app.hit.stats_provider'));

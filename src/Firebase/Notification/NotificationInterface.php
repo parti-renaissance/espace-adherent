@@ -15,8 +15,4 @@ interface NotificationInterface
     public function addData(string $key, string $value): void;
 
     public function setTokens(array $tokens): void;
-
-    public function setScope(?string $scope);
-
-    public function getScope(): ?string;
 }

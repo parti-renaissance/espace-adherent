@@ -9,7 +9,6 @@ abstract class AbstractNotification implements NotificationInterface
     private string $title;
     private string $body;
     protected array $data;
-    private ?string $scope = null;
 
     public function __construct(string $title, string $body, array $data = [])
     {
@@ -48,15 +47,5 @@ abstract class AbstractNotification implements NotificationInterface
             \IntlDateFormatter::GREGORIAN,
             $format
         )->format($date);
-    }
-
-    public function setScope(?string $scope): void
-    {
-        $this->scope = $scope;
-    }
-
-    public function getScope(): ?string
-    {
-        return $this->scope;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Firebase\Notification\NotificationInterface;
+use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -92,7 +92,7 @@ class Notification
         $this->notificationKey = $this->generateNotificationKey();
     }
 
-    public static function create(NotificationInterface $notification, ?string $className = null): self
+    public static function create(MulticastNotificationInterface $notification, ?string $className = null): self
     {
         if (!$className) {
             $parts = explode('\\', $notification::class);
