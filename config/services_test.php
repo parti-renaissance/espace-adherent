@@ -24,6 +24,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->exclude([
             __DIR__.'/../tests/Behat/Context/JsonContext.php',
             __DIR__.'/../tests/Behat/Context/RestContext.php',
+            __DIR__.'/../tests/Behat/HttpCall/',
+            __DIR__.'/../tests/Behat/Extension/',
         ]);
 
     $services->alias(Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader::class, 'doctrine.fixtures.loader');

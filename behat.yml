@@ -19,6 +19,7 @@ default:
                                     args:
                                         - '--start-maximized'
         Behatch\Extension: ~
+        Tests\App\Behat\Extension\AppExtension: ~
     suites:
         default:
             filters:
@@ -28,7 +29,6 @@ default:
                       timeout: 3
                 - Behatch\Context\DebugContext:
                       screenshotDir: 'var/behat'
-                - Behatch\Context\XmlContext
                 - Behat\MinkExtension\Context\MinkContext
                 - Tests\App\Behat\Context\AppContext
                 - Tests\App\Behat\Context\DIContext
@@ -41,7 +41,6 @@ default:
                 - Tests\App\Behat\Context\EmailContext
                 - Tests\App\Behat\Context\NotificationContext
                 - Tests\App\Behat\Context\FeatureContext
-                - Tests\App\Behat\Context\DonationContext
         javascript:
             filters:
                 tags: '@javascript'
@@ -54,11 +53,9 @@ default:
                 - Tests\App\Behat\Context\AppContext
                 - Tests\App\Behat\Context\DIContext
                 - Tests\App\Behat\Context\FixtureContext
-                - Tests\App\Behat\Context\RestContext
                 - Tests\App\Behat\Context\SecurityContext
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\EmailContext
-                - Tests\App\Behat\Context\NotificationContext
                 - Tests\App\Behat\Context\AdherentContext
                 - Tests\App\Behat\Context\FeatureContext
                 - Tests\App\Behat\Context\DonationContext

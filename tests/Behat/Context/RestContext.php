@@ -53,6 +53,16 @@ class RestContext extends BehatchRestContext
         $this->entityManager = $diContext->get('doctrine')->getManager();
         $this->privateCryptKey = new CryptKey($diContext->getParameter('ssl_private_key'), null, false);
         $this->accessToken = null;
+
+        // Prevent auth leaks between scenarios.
+        // BrowserContext::closeBrowser() calls stop() which only sets started=false
+        // without clearing client cookies. We clear the CookieJar directly to remove
+        // session cookies set by loginUser(), without rebooting the kernel (which
+        // would interfere with TransactionalDatabaseContext).
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof BrowserKitDriver) {
+            $driver->getClient()->getCookieJar()->clear();
+        }
     }
 
     /**
@@ -201,7 +211,28 @@ class RestContext extends BehatchRestContext
         $this->addAccessTokenToTheAuthorizationHeader();
         $this->setAcceptApplicationJsonHeader($url);
 
-        return parent::iSendARequestToWithParameters($method, $url, $data);
+        $files = [];
+        $parameters = [];
+        foreach ($data->getHash() as $row) {
+            if (!isset($row['key']) || !isset($row['value'])) {
+                throw new \Exception("You must provide a 'key' and 'value' column in your table node.");
+            }
+
+            if (\is_string($row['value']) && str_starts_with($row['value'], '@')) {
+                $files[$row['key']] = rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR).\DIRECTORY_SEPARATOR.substr($row['value'], 1);
+            } else {
+                $parameters[] = \sprintf('%s=%s', $row['key'], $row['value']);
+            }
+        }
+
+        parse_str(implode('&', $parameters), $parameters);
+
+        return $this->request->send(
+            $method,
+            $this->locatePath($url),
+            $parameters,
+            $files
+        );
     }
 
     public function iSendARequestToWithBody($method, $url, PyStringNode $body)
