@@ -15,6 +15,7 @@ use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\AdherentTagFilter;
 use App\Admin\Filter\PostalCodeFilter;
+use App\Admin\Filter\PushNotificationFilter;
 use App\Admin\Filter\StaticAdherentTagFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\CommitteeMembershipManager;
@@ -882,6 +883,11 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
             ])
             ->add('canaryTester', null, [
                 'label' => 'Testeur Canary',
+            ])
+            ->add('pushNotification', PushNotificationFilter::class, [
+                'label' => 'Notification push',
+                'field_options' => ['model_manager' => $this->getModelManager()],
+                'join_path' => ['appSessions', 'pushTokenLinks', 'pushToken'],
             ])
             ->add('adherent_mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) internes',

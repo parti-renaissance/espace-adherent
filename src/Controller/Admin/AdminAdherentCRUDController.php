@@ -521,6 +521,10 @@ class AdminAdherentCRUDController extends CRUDController
 
         $datagrid = $this->admin->getDatagrid();
 
+        if ($datagrid->hasFilter('pushNotification')) {
+            $datagrid->setValue('pushNotification', null, null);
+        }
+
         if ($datagrid->hasFilter('search')) {
             $datagrid->setValue('search', null, $searchText);
         } else {

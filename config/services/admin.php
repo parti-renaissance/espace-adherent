@@ -409,7 +409,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     ;
     $services
         ->set('app.admin.push_notification', App\Admin\PushNotificationAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\PushNotification::class, 'label' => 'Logs Push', 'group' => 'Tech'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\PushNotification::class, 'controller' => App\Controller\Admin\AdminPushNotificationController::class, 'label' => 'Logs Push', 'group' => 'Tech'])
     ;
     $services
         ->set('app.admin.transactional_email_template', App\Admin\Email\TransactionalEmailTemplateAdmin::class)

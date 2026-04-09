@@ -221,7 +221,7 @@ Feature:
         When I click the ".re-button" selector
         Then I should be on "/app" wait otherwise
 
-    @javascript2
+    @javascript1
     Scenario: I can become sympathizer
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |

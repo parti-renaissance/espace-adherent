@@ -70,6 +70,11 @@ class PushNotification
         $this->chunks = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return \sprintf('[%s] %s', $this->createdAt?->format('d/m/Y') ?? '', $this->title);
+    }
+
     public function recordChunkResult(int $tokensSent, int $tokensSuccess, int $tokensFailed): void
     {
         $this->totalTokens += $tokensSent;

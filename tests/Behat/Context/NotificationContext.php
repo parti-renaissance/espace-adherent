@@ -31,7 +31,7 @@ class NotificationContext extends RawMinkContext
      */
     public function iShouldHaveNotifications(int $expectedCount, array $criteria = [])
     {
-        $actualCount = $this->notificationRepository->count($criteria);
+        $actualCount = $this->countNonFixtureNotifications($criteria);
 
         if ($actualCount !== $expectedCount) {
             $this->raiseException(\sprintf('I found %d notification(s) instead of %d', $actualCount, $expectedCount));
@@ -133,6 +133,23 @@ class NotificationContext extends RawMinkContext
         $actualValue = $this->propertyAccessor->getValue($notification, $property);
 
         $this->assertMatchesPattern($expectedValue, \is_array($actualValue) ? json_encode($actualValue) : $actualValue);
+    }
+
+    private function countNonFixtureNotifications(array $criteria): int
+    {
+        $qb = $this->notificationRepository->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->andWhere('n.notificationClass NOT LIKE :fixture')
+            ->setParameter('fixture', '%Fixture')
+        ;
+
+        foreach ($criteria as $field => $value) {
+            $qb->andWhere(\sprintf('n.%s = :%s', $field, $field))
+                ->setParameter($field, $value)
+            ;
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     private function raiseException(string $message): void
