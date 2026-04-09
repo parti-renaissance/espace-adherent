@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\NationalEventInscriptionFields;
 use App\Validator\NationalEventPackage;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\RoommateIdentifier;
@@ -18,6 +19,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['inscription:creation'])]
+#[NationalEventInscriptionFields(groups: ['inscription:user_data'])]
 #[NationalEventPackage(groups: ['inscription:package'])]
 class InscriptionRequest implements RecaptchaChallengeInterface
 {
@@ -48,14 +50,10 @@ class InscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\Range(maxMessage: 'Vous devez être âgé d\'au moins 15 ans', max: '-15 years', groups: ['inscription:user_data'])]
     public ?\DateTime $birthdate = null;
 
-    #[Assert\Sequentially([
-        new Assert\NotBlank(),
-        new Assert\Length(max: 255),
-    ], groups: ['inscription:user_data:default', 'inscription:user_data:campus'])]
+    #[Assert\Length(max: 255)]
     public ?string $birthPlace = null;
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
-    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Sequentially([
@@ -70,10 +68,8 @@ class InscriptionRequest implements RecaptchaChallengeInterface
 
     public ?string $packagePlan = null;
 
-    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
     public ?string $emergencyContactName = null;
 
-    #[Assert\NotBlank(groups: ['inscription:user_data:jem'])]
     public ?PhoneNumber $emergencyContactPhone = null;
 
     #[Assert\Expression('this.transport != "avec_transport" or this.packageCity', message: 'Veillez sélectionner la ville de départ.', groups: ['inscription:package:jem'])]

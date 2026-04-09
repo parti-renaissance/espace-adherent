@@ -22,6 +22,12 @@ class LoadNationalEventData extends Fixture
         $event->setName('Event national 1');
         $event->alertEnabled = true;
         $event->alertTitle = 'Venez nombreux !';
+        $event->showBirthPlace = true;
+        $event->showTransportNeeds = true;
+        $event->showWithChildren = true;
+        $event->showVolunteer = true;
+        $event->showIsJAM = true;
+        $event->showAllowNotifications = true;
         $event->startDate = new \DateTime('+1 month');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
@@ -37,6 +43,12 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Event national 2');
+        $event->showBirthPlace = true;
+        $event->showTransportNeeds = true;
+        $event->showWithChildren = true;
+        $event->showVolunteer = true;
+        $event->showIsJAM = true;
+        $event->showAllowNotifications = true;
         $event->startDate = new \DateTime('+1.1 month');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
@@ -52,6 +64,12 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Congres 2024');
+        $event->showBirthPlace = true;
+        $event->showTransportNeeds = true;
+        $event->showWithChildren = true;
+        $event->showVolunteer = true;
+        $event->showIsJAM = true;
+        $event->showAllowNotifications = true;
         $event->startDate = new \DateTime('2024-11-15');
         $event->endDate = new \DateTime('2024-11-17');
         $event->ticketStartDate = new \DateTime('2024-09-01');
@@ -70,6 +88,11 @@ class LoadNationalEventData extends Fixture
         $event->setName('Campus');
         $event->alertEnabled = true;
         $event->type = NationalEventTypeEnum::CAMPUS;
+        $event->showBirthPlace = true;
+        $event->showVolunteer = true;
+        $event->showIsJAM = true;
+        $event->showAllowNotifications = true;
+        $event->showRoommateIdentifier = true;
         $event->alertTitle = 'Venez nombreux !';
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
         $event->startDate = new \DateTime('-1 hour');
@@ -198,6 +221,12 @@ class LoadNationalEventData extends Fixture
 
         $manager->persist($event = new NationalEvent());
         $event->setName('Event passé');
+        $event->showBirthPlace = true;
+        $event->showTransportNeeds = true;
+        $event->showWithChildren = true;
+        $event->showVolunteer = true;
+        $event->showIsJAM = true;
+        $event->showAllowNotifications = true;
         $event->startDate = new \DateTime('-10 days');
         $event->endDate = new \DateTime('-8 days');
         $event->ticketStartDate = new \DateTime('-11 days');
@@ -212,6 +241,8 @@ class LoadNationalEventData extends Fixture
 
         $event->setName('Event JEM');
         $event->type = NationalEventTypeEnum::JEM;
+        $event->showEmergencyContact = true;
+        $event->phoneRequired = true;
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
         $event->startDate = new \DateTime('-1.5 hour');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
@@ -400,6 +431,8 @@ class LoadNationalEventData extends Fixture
         $event->setName('Meeting NRP');
         $event->alertEnabled = true;
         $event->type = NationalEventTypeEnum::NRP;
+        $event->showBirthPlace = true;
+        $event->showAllowNotifications = true;
         $event->alertTitle = 'Venez nombreux !';
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
         $event->startDate = new \DateTime('-1.6 hour');

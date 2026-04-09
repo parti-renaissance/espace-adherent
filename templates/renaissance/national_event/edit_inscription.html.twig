@@ -95,7 +95,7 @@
 
                     {% if form.birthPlace is defined %}
                         {{ form_row(form.birthPlace, {
-                            label: 'Lieu de naissance',
+                            label: event.labelBirthPlace|default('Lieu de naissance'),
                             attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
                         }) }}
                     {% endif %}
@@ -106,7 +106,7 @@
 
                     {% if form.emergencyContactName is defined %}
                         <div class="flex flex-col bg-ui_gray-1 rounded-lg gap-4 p-6">
-                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">Contact en cas d’urgence (obligatoire)</label>
+                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">{{ event.labelEmergencyContact|default('Contact en cas d’urgence (obligatoire)') }}</label>
 
                             <div class="text-ui_gray-50">En cas de problème nous contacterons cette personne.</div>
 
@@ -120,23 +120,25 @@
 
                     {% if form.isJAM is defined %}
                         <div class="bg-ui_gray-1 rounded-lg p-6">
-                            {{ form_row(form.isJAM, {attr: {widget_side: 'right'}}) }}
+                            {{ form_row(form.isJAM, {label: event.labelIsJAM|default('Je suis membre des Jeunes en marche'), attr: {widget_side: 'right'}}) }}
                         </div>
                     {% endif %}
 
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
                         {% if form.volunteer is defined %}
-                            {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
+                            {{ form_row(form.volunteer, {label: event.labelVolunteer|default('Je souhaite être bénévole pour aider à l’organisation'), attr: {widget_side: 'right'}}) }}
                         {% endif %}
 
-                        <div>
-                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
-                                <label for="accessibility-checkbox">J’ai un handicap visible ou invisible nécessitant des aménagements spécifiques</label>
-                            </twig:Molecules:ReCheckboxField>
-                        </div>
-                        <div x-show="accessibility" x-transition>
-                            {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
-                        </div>
+                        {% if form.accessibility is defined %}
+                            <div>
+                                <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
+                                    <label for="accessibility-checkbox">{{ event.labelAccessibility|default('J’ai un handicap visible ou invisible nécessitant des aménagements spécifiques') }}</label>
+                                </twig:Molecules:ReCheckboxField>
+                            </div>
+                            <div x-show="accessibility" x-transition>
+                                {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <twig:ReButton class="w-full" color="blue">Enregistrer les modifications</twig:ReButton>

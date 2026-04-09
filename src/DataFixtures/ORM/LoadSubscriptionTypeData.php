@@ -62,7 +62,7 @@ class LoadSubscriptionTypeData extends Fixture
                 'position' => 7,
             ],
             [
-                'label' => 'Recevoir les emails des Jeunes avec Macron',
+                'label' => 'Recevoir les emails des Jeunes en marche',
                 'code' => SubscriptionTypeEnum::JAM_EMAIL,
                 'position' => 8,
             ],

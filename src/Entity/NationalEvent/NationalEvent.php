@@ -151,6 +151,73 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $discountHelp = null;
 
+    // Configuration des champs du formulaire d'inscription
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showBirthPlace = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelBirthPlace = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showTransportNeeds = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelTransportNeeds = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showWithChildren = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelWithChildren = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showVolunteer = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelVolunteer = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showIsJAM = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelIsJAM = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showAllowNotifications = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelAllowNotifications = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showEmergencyContact = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelEmergencyContact = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $showRoommateIdentifier = false;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelRoommateIdentifier = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $showAccessibility = true;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $labelAccessibility = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $phoneRequired = false;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $requiredBirthPlace = true;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $requiredEmergencyContact = true;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $requiredAccessibility = false;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

@@ -88,41 +88,54 @@
                             {{ form_errors(form.birthdate) }}
                         </fieldset>
 
-                        {{ form_row(form.birthPlace, {
-                            label: 'Lieu de naissance',
-                            attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
-                        }) }}
+                        {% if form.birthPlace is defined %}
+                            {{ form_row(form.birthPlace, {
+                                label: event.labelBirthPlace|default('Lieu de naissance'),
+                                attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
+                            }) }}
+                        {% endif %}
 
                         <fieldset class="mb-4">
                             {{ form_row(form.phone, {label: 'Numéro de téléphone', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                         </fieldset>
 
-                        <div class="bg-ui_gray-10 rounded-lg p-6">
-                            {{ form_row(form.isJAM, {attr: {widget_side: 'right'}}) }}
-                        </div>
+                        {% if form.isJAM is defined %}
+                            <div class="bg-ui_gray-10 rounded-lg p-6">
+                                {{ form_row(form.isJAM, {label: event.labelIsJAM|default('Je suis membre des Jeunes en marche'), attr: {widget_side: 'right'}}) }}
+                            </div>
+                        {% endif %}
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-black !border-[1px]">
-                        {{ form_row(form.transportNeeds, {label: "J'ai besoin d'un transport organisé"}) }}
-                        {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation"}) }}
+                        {% if form.transportNeeds is defined %}
+                            {{ form_row(form.transportNeeds, {label: event.labelTransportNeeds|default('J’ai besoin d’un transport organisé')}) }}
+                        {% endif %}
+
+                        {% if form.volunteer is defined %}
+                            {{ form_row(form.volunteer, {label: event.labelVolunteer|default('Je souhaite être bénévole pour aider à l’organisation')}) }}
+                        {% endif %}
+
+                        {% if form.withChildren is defined %}
+                            <hr class="my-6" />
+
+                            <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
+                                {{ form_row(form.withChildren, {label: event.labelWithChildren|default('Je viens avec mes enfants'), attr: {'x-model': 'with_children'}}) }}
+
+                                <fieldset class="bg-gray-100 ml-6 mt-2 flex flex-col gap-4 rounded-lg p-4" x-show="with_children" x-transition>
+                                    <span class="text-sm font-medium text-gray-900">Veillez indiquer le nom prénom âge de chaque enfant.</span>
+
+                                    {{ form_row(form.children, {label: false}) }}
+
+                                    {{ form_row(form.isResponsibilityWaived, {label: 'Déclare, en qualité de responsable légal, décharger de toute responsabilité le Parti Renaissance concernant les blessures et dommages matériels ou corporels occasionnés ou subis par mon enfant, en cas de vol ou de perte de biens ainsi que toute dégradation des sites pouvant lui être imputées.'}) }}
+                                </fieldset>
+                            </div>
+                        {% endif %}
 
                         <hr class="my-6" />
 
-                        <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
-                            {{ form_row(form.withChildren, {label: 'Je viens avec mes enfants', attr: {'x-model': 'with_children'}}) }}
-
-                            <fieldset class="bg-gray-100 ml-6 mt-2 flex flex-col gap-4 rounded-lg p-4" x-show="with_children" x-transition>
-                                <span class="text-sm font-medium text-gray-900">Veillez indiquer le nom prénom âge de chaque enfant.</span>
-
-                                {{ form_row(form.children, {label: false}) }}
-
-                                {{ form_row(form.isResponsibilityWaived, {label: 'Déclare, en qualité de responsable légal, décharger de toute responsabilité le Parti Renaissance concernant les blessures et dommages matériels ou corporels occasionnés ou subis par mon enfant, en cas de vol ou de perte de biens ainsi que toute dégradation des sites pouvant lui être imputées.'}) }}
-                            </fieldset>
-                        </div>
-
-                        <hr class="my-6" />
-
-                        {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
+                        {% if form.allowNotifications is defined %}
+                            {{ form_row(form.allowNotifications, {label: event.labelAllowNotifications|default('Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)')}) }}
+                        {% endif %}
 
                         {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
@@ -130,7 +143,9 @@
 
                         <hr class="my-6" />
 
-                        {{ form_row(form.accessibility, {label: 'Avez-vous un handicap visible ou invisible nécessitant des aménagements spécifiques ?'}) }}
+                        {% if form.accessibility is defined %}
+                            {{ form_row(form.accessibility, {label: event.labelAccessibility|default('Avez-vous un handicap visible ou invisible nécessitant des aménagements spécifiques ?')}) }}
+                        {% endif %}
 
                         <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
                             {{ include('renaissance/partials/friendly-captcha.html.twig', {friendly_captcha_site_key: friendly_captcha_europe_site_key}) }}
