@@ -23,6 +23,7 @@ class MandateTypeEnum
     public const CONSEILLER_COMMUNAUTAIRE = 'conseiller_communautaire';
     public const MAIRE = 'maire';
     public const CONSEILLER_MUNICIPAL = 'conseiller_municipal';
+    public const CONSEILLER_MUNICIPAL_OPPOSITION = 'conseiller_municipal_opposition';
     public const CONSEILLER_ARRONDISSEMENT = 'conseiller_arrondissement';
     public const MEMBRE_ASSEMBLEE_FDE = 'membre_assemblee_fde';
     public const CONSEILLER_FDE = 'conseiller_fde';
@@ -43,6 +44,7 @@ class MandateTypeEnum
         self::CONSEILLER_COMMUNAUTAIRE,
         self::MAIRE,
         self::CONSEILLER_MUNICIPAL,
+        self::CONSEILLER_MUNICIPAL_OPPOSITION,
         self::CONSEILLER_ARRONDISSEMENT,
         self::MEMBRE_ASSEMBLEE_FDE,
         self::CONSEILLER_FDE,
@@ -101,6 +103,12 @@ class MandateTypeEnum
                 Zone::CITY,
             ],
         ],
+        self::CONSEILLER_MUNICIPAL_OPPOSITION => [
+            'types' => [
+                Zone::BOROUGH,
+                Zone::CITY,
+            ],
+        ],
         self::CONSEILLER_ARRONDISSEMENT => [
             'types' => [Zone::BOROUGH],
         ],
@@ -129,6 +137,7 @@ class MandateTypeEnum
         self::CONSEILLER_COMMUNAUTAIRE,
         self::MAIRE,
         self::CONSEILLER_MUNICIPAL,
+        self::CONSEILLER_MUNICIPAL_OPPOSITION,
         self::CONSEILLER_ARRONDISSEMENT,
         self::MEMBRE_ASSEMBLEE_FDE,
         self::CONSEILLER_FDE,
