@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Adherent;
+use App\Entity\AppSession;
+use App\Entity\Notification;
 use App\Firebase\PushNotificationStatusEnum;
+use App\Form\Admin\AdherentAutocompleteType;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
@@ -23,9 +30,14 @@ class PushNotificationAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
+    public const AUTOCOMPLETE_ROUTE = 'admin_app_pushnotification_autocomplete';
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept(['list', 'show']);
+        $collection
+            ->clearExcept(['list', 'show'])
+            ->add('autocomplete', 'autocomplete')
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -45,6 +57,36 @@ class PushNotificationAdmin extends AbstractAdmin
                 'label' => 'Date d\'envoi',
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
+            ])
+            ->add('adherent', CallbackFilter::class, [
+                'label' => 'Militant',
+                'show_filter' => true,
+                'field_type' => AdherentAutocompleteType::class,
+                'field_options' => [
+                    'class' => Adherent::class,
+                    'model_manager' => $this->getModelManager(),
+                ],
+                'callback' => function (ProxyQueryInterface $qb, string $alias, string $field, FilterData $value): bool {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere(\sprintf('EXISTS (
+                        SELECT 1 FROM %s adh_n
+                        WHERE adh_n.pushNotification = %s
+                        AND EXISTS (
+                            SELECT 1 FROM %s adh_s
+                            JOIN adh_s.pushTokenLinks adh_link
+                            JOIN adh_link.pushToken adh_pt
+                            WHERE adh_s.adherent = :adherent
+                            AND FIND_IN_SET(adh_pt.identifier, adh_n.tokens) > 0
+                        )
+                    )', Notification::class, $alias, AppSession::class))
+                        ->setParameter('adherent', $value->getValue())
+                    ;
+
+                    return true;
+                },
             ])
         ;
     }
@@ -66,7 +108,10 @@ class PushNotificationAdmin extends AbstractAdmin
             ->add('chunksDelivered', null, ['label' => 'Chunks livrés'])
             ->add('chunksTotal', null, ['label' => 'Chunks total'])
             ->add('createdAt', null, ['label' => 'Date'])
-            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['show' => []]])
+            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
+                'show' => [],
+                'adherents' => ['template' => 'admin/push_notification/list_action_adherents.html.twig'],
+            ]])
         ;
     }
 
@@ -92,12 +137,6 @@ class PushNotificationAdmin extends AbstractAdmin
                 ->add('chunksDelivered', null, ['label' => 'Chunks livrés'])
                 ->add('chunksTotal', null, ['label' => 'Chunks total'])
                 ->add('createdAt', null, ['label' => 'Date d\'envoi'])
-            ->end()
-            ->with('Chunks')
-                ->add('chunks', null, [
-                    'label' => false,
-                    'associated_property' => 'title',
-                ])
             ->end()
         ;
     }

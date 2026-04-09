@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Admin\Filter\PushNotificationFilter;
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
 use App\Entity\Adherent;
@@ -98,6 +99,12 @@ class AppSessionAdmin extends AbstractAdmin
             ->add('pushTokenLinks.pushToken.identifier', null, [
                 'label' => 'Push token',
                 'show_filter' => true,
+            ])
+            ->add('pushNotification', PushNotificationFilter::class, [
+                'label' => 'Notification push',
+                'show_filter' => true,
+                'field_options' => ['model_manager' => $this->getModelManager()],
+                'join_path' => ['pushTokenLinks', 'pushToken'],
             ])
             ->add('lastActivityDate', DateTimeRangeFilter::class, [
                 'label' => 'Dernière activité',
