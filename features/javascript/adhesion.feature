@@ -311,6 +311,7 @@ Feature:
 
         # Step 3 : password creation
         And I should see "Nouveau mot de passe"
+        And I wait 1 second
         When I fill in the following:
             | adherent_reset_password[password][first]  | test1234 |
             | adherent_reset_password[password][second] | test1234 |

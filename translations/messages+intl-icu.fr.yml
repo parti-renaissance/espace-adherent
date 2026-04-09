@@ -358,6 +358,7 @@ adherent.mandate.type.president_conseil_communautaire: Président du Conseil com
 adherent.mandate.type.conseiller_communautaire: Conseiller communautaire
 adherent.mandate.type.maire: Maire
 adherent.mandate.type.conseiller_municipal: Conseiller municipal
+adherent.mandate.type.conseiller_municipal_opposition: Conseiller municipal d'opposition
 adherent.mandate.type.conseiller_arrondissement: Conseiller d'arrondissement
 adherent.mandate.type.membre_assemblee_fde: Membre de l'Assemblée des Français de l'étranger
 adherent.mandate.type.conseiller_fde: Conseiller FDE
@@ -889,6 +890,7 @@ elected_representative:
         conseiller_communautaire: '[M] Conseiller communautaire'
         maire: '[M] Maire'
         conseiller_municipal: '[M] Conseiller municipal'
+        conseiller_municipal_opposition: "[M] Conseiller municipal d'opposition"
         conseiller_arrondissement: "[M] Conseiller d'arrondissement"
         membre_assemblee_fde: "[M] Membre de l'Assemblée des Français de l'étranger"
         conseiller_fde: '[M] Conseiller FDE'
@@ -1146,6 +1148,7 @@ adherent_mandate.committee.inappropriate_gender: La civilité de l'adhérent ne 
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({email}) est déjà un adhérent désigné dans un comité "{committee}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{committee}" a déjà un adhérent désigné ({gender}).
 adherent_mandate.conseiller_municipal: 'Conseiller(e) municipal(e)'
+adherent_mandate.conseiller_municipal_opposition: "Conseiller(e) municipal(e) d'opposition"
 adherent_mandate.membre_EPCI: "Membre d'EPCI"
 adherent_mandate.conseiller_departemental: 'Conseiller(e) départemental(e)'
 adherent_mandate.conseiller_regional: 'Conseiller(e) régional(e)'
