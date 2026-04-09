@@ -66,7 +66,7 @@ class MembershipController extends AbstractController
     ): Response {
         $data = json_decode($request->getContent(), true);
 
-        if (!\is_array($data) || empty($data['email_address'])) {
+        if (!\is_array($data) || !isset($data['email_address']) || !\is_string($data['email_address'])) {
             return $this->json('The field "email_address" is not provided.', Response::HTTP_BAD_REQUEST);
         }
 
