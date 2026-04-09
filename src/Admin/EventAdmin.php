@@ -120,6 +120,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 ->add('hidden', null, [
                     'label' => 'Masqué',
                 ])
+                ->add('pinned', null, [
+                    'label' => 'Épinglé',
+                ])
                 ->add('electoral', null, [
                     'label' => 'Électoral',
                 ])
@@ -212,6 +215,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 ])
                 ->add('hidden', null, [
                     'label' => 'Masqué',
+                ])
+                ->add('pinned', null, [
+                    'label' => 'Épinglé',
                 ])
                 ->add('visibility', EnumType::class, [
                     'label' => 'Visibilité',
@@ -382,6 +388,12 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 'label' => 'Date de dernière modification',
                 'field_type' => DateRangePickerType::class,
             ])
+            ->add('hidden', null, [
+                'label' => 'Masqué',
+            ])
+            ->add('pinned', null, [
+                'label' => 'Épinglé',
+            ])
         ;
     }
 
@@ -439,6 +451,9 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
             ])
             ->add('hidden', null, [
                 'label' => 'Masqué',
+            ])
+            ->add('pinned', null, [
+                'label' => 'Épinglé',
             ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',

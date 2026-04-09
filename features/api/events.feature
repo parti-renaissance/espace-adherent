@@ -85,6 +85,7 @@ Feature:
                 "local_finish_at": null,
                 "editable": false,
                 "hidden": false,
+                "pinned": false,
                 "image_url": null,
                 "image": null
             }
@@ -163,6 +164,7 @@ Feature:
                             "slug": "atelier-du-programme"
                         },
                         "visio_url": null,
+                        "pinned": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -216,6 +218,7 @@ Feature:
                             "slug": "atelier-du-programme"
                         },
                         "visio_url": null,
+                        "pinned": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -299,6 +302,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -352,6 +356,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -405,6 +410,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     }
                 ]
@@ -474,6 +480,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": true,
                         "editable": false
                     },
                     {
@@ -518,6 +525,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -562,6 +570,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": true,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     }
@@ -632,6 +641,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -685,6 +695,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -738,6 +749,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     }
                 ]
@@ -806,6 +818,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     },
                     {
@@ -850,6 +863,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": true,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     },
@@ -895,6 +909,7 @@ Feature:
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
                         "image": null,
+                        "pinned": false,
                         "editable": false
                     }
                 ]
@@ -972,7 +987,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": false,
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
 
@@ -1031,7 +1047,8 @@ Feature:
                 "is_national": false,
                 "object_state": "full",
                 "editable": false,
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
         When I send a "GET" request to "/api/v3/events/:last_response.slug:"
@@ -1087,7 +1104,8 @@ Feature:
                 "is_national": false,
                 "object_state": "full",
                 "editable": false,
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
 
@@ -1157,7 +1175,8 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": false,
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
 
@@ -1332,7 +1351,8 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
         And I should have 1 email "RenaissanceEventNotificationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
@@ -1535,7 +1555,8 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
         And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
@@ -1849,7 +1870,8 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
-                "hidden": false
+                "hidden": false,
+                "pinned": true
             }
             """
         And I should have 1 email
@@ -2257,7 +2279,8 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
         And I should have 1 notification "EventCreatedNotification" with data:
@@ -2352,7 +2375,8 @@ Feature:
                 "image": null,
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
-                "hidden": false
+                "hidden": false,
+                "pinned": false
             }
             """
 
@@ -2587,6 +2611,7 @@ Feature:
                 "editable": true,
                 "edit_link": "@string@.isUrl()",
                 "hidden": false,
+                "pinned": false,
                 "object_state": "full"
             }
             """
@@ -2838,7 +2863,8 @@ Feature:
                 "mode": "online",
                 "time_zone": "Europe/Paris",
                 "visibility": "public",
-                "hidden": true
+                "hidden": true,
+                "pinned": false
             }
             """
         Then the response status code should be 201
@@ -2852,3 +2878,35 @@ Feature:
         When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the JSON node "items" should not contain an element with "name" equal to "Événement masqué test"
+
+    Scenario: As a deputy I can create a pinned event and filter by pinned
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/events?scope=president_departmental_assembly" with body:
+            """
+            {
+                "name": "Événement épinglé test",
+                "category": "kiosque",
+                "description": "Un événement épinglé qui doit apparaître dans les listes",
+                "begin_at": "2023-01-29 16:30:30",
+                "finish_at": "2023-01-30 16:30:30",
+                "capacity": 50,
+                "mode": "online",
+                "time_zone": "Europe/Paris",
+                "visibility": "public",
+                "pinned": true
+            }
+            """
+        Then the response status code should be 201
+        And the JSON node "pinned" should be true
+        And the JSON node "uuid" should exist
+        When I save this response
+        When I send a "GET" request to "/api/v3/events/:saved_response.uuid:?scope=president_departmental_assembly"
+        Then the response status code should be 200
+        And the JSON node "pinned" should be true
+        And the JSON node "name" should be equal to "Événement épinglé test"
+        When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=true"
+        Then the response status code should be 200
+        And the JSON node "items[0].pinned" should be true
+        When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=false"
+        Then the response status code should be 200
+        And the JSON node "items" should not contain an element with "name" equal to "Événement épinglé test"
