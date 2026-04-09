@@ -24,7 +24,7 @@ class PackageFormType extends AbstractType
             ->add('packageValues', PackageValuesFormType::class)
         ;
 
-        if ($event->isCampus()) {
+        if ($event->showRoommateIdentifier) {
             $builder->add('roommateIdentifier', TextType::class, ['required' => false]);
         }
 

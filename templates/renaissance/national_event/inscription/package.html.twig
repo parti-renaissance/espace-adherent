@@ -171,7 +171,7 @@
 
                     {% if form.birthPlace is defined %}
                         {{ form_row(form.birthPlace, {
-                            label: 'Lieu de naissance',
+                            label: event.labelBirthPlace|default('Lieu de naissance'),
                             attr: {placeholder: 'Ma ville de naissance', onCheck: "setFieldValid('birthPlace')", validate: "['required']"},
                         }) }}
                     {% endif %}
@@ -182,7 +182,7 @@
 
                     {% if form.emergencyContactName is defined %}
                         <div class="flex flex-col bg-ui_gray-1 rounded-lg gap-4 p-6">
-                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">Contact en cas d’urgence (obligatoire)</label>
+                            <label class="font-bold" for="{{ form.emergencyContactName.vars.id }}">{{ event.labelEmergencyContact|default("Contact en cas d'urgence" ~ (event.requiredEmergencyContact ? ' (obligatoire)' : '')) }}</label>
 
                             <div class="text-ui_gray-50">En cas de problème nous contacterons cette personne.</div>
 
@@ -196,7 +196,7 @@
 
                     {% if form.isJAM is defined %}
                         <div class="bg-ui_gray-1 rounded-lg p-6 mt-4">
-                            {{ form_row(form.isJAM, {attr: {widget_side: 'right'}}) }}
+                            {{ form_row(form.isJAM, {label: event.labelIsJAM|default('Je suis membre des Jeunes en marche'), attr: {widget_side: 'right'}}) }}
                         </div>
                     {% endif %}
                 </twig:Atoms:ReCard>
@@ -209,7 +209,8 @@
 
                 <twig:Atoms:ReCard class="!rounded-2xl !gap-6">
                     <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4" x-show="getSummaryItems().length > 0">
-                        {{ form_row(form.withDiscount, {label: event.discountLabel ?? 'Étudiant, demandeur d’emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%', attr: {
+                        {% set default_discount_label %}Étudiant, demandeur d'emploi ou bénéficiaire des minimas sociaux ? Vous bénéficiez de -50%{% endset %}
+                        {{ form_row(form.withDiscount, {label: event.discountLabel|default(default_discount_label), attr: {
                             widget_side: 'right',
                             'x-model': 'withDiscount',
                         }}) }}
@@ -221,31 +222,53 @@
                         {% endif %}
                     </div>
 
-                    <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
-                        {% if form.volunteer is defined %}
-                            {{ form_row(form.volunteer, {label: "Je souhaite être bénévole pour aider à l'organisation", attr: {widget_side: 'right'}}) }}
-                        {% endif %}
+                    {% if form.transportNeeds is defined or form.volunteer is defined or form.withChildren is defined or form.accessibility is defined %}
+                        <div class="bg-ui_gray-1 rounded-lg p-6 flex flex-col gap-4">
+                            {% if form.transportNeeds is defined %}
+                                {{ form_row(form.transportNeeds, {label: event.labelTransportNeeds|default("J'ai besoin d'un transport organisé"), attr: {widget_side: 'right'}}) }}
+                            {% endif %}
 
-                        <div>
-                            <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
-                                <label for="accessibility-checkbox">J’ai une allergie, un régime spécial, un handicap ou autre question</label>
-                            </twig:Molecules:ReCheckboxField>
+                            {% if form.volunteer is defined %}
+                                {{ form_row(form.volunteer, {label: event.labelVolunteer|default("Je souhaite être bénévole pour aider à l'organisation"), attr: {widget_side: 'right'}}) }}
+                            {% endif %}
+
+                            {% if form.withChildren is defined %}
+                                <div x-data="{with_children: {{ form.withChildren.vars.data == true ? 'true' : 'false' }}}">
+                                    {{ form_row(form.withChildren, {label: event.labelWithChildren|default('Je viens avec mes enfants'), attr: {widget_side: 'right', 'x-model': 'with_children'}}) }}
+
+                                    <fieldset class="bg-gray-100 mt-2 flex flex-col gap-4 rounded-lg p-4" x-show="with_children" x-transition>
+                                        <span class="text-sm font-medium text-gray-900">Veuillez indiquer le nom, prénom et âge de chaque enfant.</span>
+
+                                        {{ form_row(form.children, {label: false}) }}
+
+                                        {{ form_row(form.isResponsibilityWaived, {label: 'Déclare, en qualité de responsable légal, décharger de toute responsabilité le Parti Renaissance concernant les blessures et dommages matériels ou corporels occasionnés ou subis par mon enfant, en cas de vol ou de perte de biens ainsi que toute dégradation des sites pouvant lui être imputées.', attr: {widget_side: 'right'}}) }}
+                                    </fieldset>
+                                </div>
+                            {% endif %}
+
+                            {% if form.accessibility is defined %}
+                                <div>
+                                    <twig:Molecules:ReCheckboxField widgetSide="right" id="accessibility-checkbox" x-model="accessibility">
+                                        <label for="accessibility-checkbox">{{ event.labelAccessibility|default("J'ai une allergie, un régime spécial, un handicap ou autre question") }}</label>
+                                    </twig:Molecules:ReCheckboxField>
+                                </div>
+                                <div x-show="accessibility" x-transition x-cloak>
+                                    {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
+                                </div>
+                            {% endif %}
                         </div>
-                        <div x-show="accessibility" x-transition x-cloak>
-                            {{ form_row(form.accessibility, {label: false, attr: {rows: 6, placeholder: 'Décrivez les aménagements que nous pourrions anticiper'}}) }}
-                        </div>
-                    </div>
+                    {% endif %}
 
                     {% if form.allowNotifications is defined %}
-                        {{ form_row(form.allowNotifications, {label: 'Je m’abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)'}) }}
+                        {{ form_row(form.allowNotifications, {label: event.labelAllowNotifications|default("Je m'abonne à la newsletter pour ne rien rater des actualités de Renaissance (optionnel)")}) }}
                     {% endif %}
 
                     {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
                     {% if event.isJEM() %}
-                        {% set accept_media_label = 'En participant à cet événement, je suis informé(e) qu’il sera filmé  et autorise les JEM ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et  la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)' %}
+                        {% set accept_media_label %}En participant à cet événement, je suis informé(e) qu'il sera filmé et autorise les JEM ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d'un mineur dont je suis le représentant légal, à l'exploiter et à la diffuser en intégralité ou par extrait (1){% endset %}
                     {% else %}
-                        {% set accept_media_label = 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)' %}
+                        {% set accept_media_label %}En participant à cet événement, je suis informé(e) qu'il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d'un mineur dont je suis le représentant légal, à l'exploiter et à la diffuser en intégralité ou par extrait (1){% endset %}
                     {% endif %}
 
                     {{ form_row(form.acceptMedia, {label: accept_media_label, attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}

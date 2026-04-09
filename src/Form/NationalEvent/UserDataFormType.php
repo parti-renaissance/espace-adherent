@@ -11,7 +11,6 @@ use App\Form\BirthdateType;
 use App\Form\GenderCivilityType;
 use App\Form\TelNumberType;
 use App\NationalEvent\DTO\InscriptionRequest;
-use App\NationalEvent\NationalEventTypeEnum;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -41,46 +40,52 @@ class UserDataFormType extends AbstractType
                 'min_age' => 16,
                 'reference_date' => $event->startDate,
                 'disabled' => $isAdherent && $adherent->getBirthDate(),
-                'help' => 'Vous devez avoir minimum 16 ans le jour de l’événement.',
+                'help' => "Vous devez avoir minimum 16 ans le jour de l'événement.",
             ])
             ->add('phone', TelNumberType::class, [
-                'required' => $event->isJEM(),
+                'required' => $event->phoneRequired,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('postalCode', TextType::class, ['disabled' => $isAdherent && $adherent->getPostalCode()])
-            ->add('accessibility', TextareaType::class, ['required' => false])
         ;
 
-        if (NationalEventTypeEnum::DEFAULT === $event->type) {
+        if ($event->showAccessibility) {
+            $builder->add('accessibility', TextareaType::class, ['required' => $event->requiredAccessibility]);
+        }
+
+        if ($event->showTransportNeeds) {
+            $builder->add('transportNeeds', CheckboxType::class, ['required' => false]);
+        }
+
+        if ($event->showWithChildren) {
             $builder
-                ->add('transportNeeds', CheckboxType::class, ['required' => false])
                 ->add('withChildren', CheckboxType::class, ['required' => false])
                 ->add('children', TextareaType::class, ['required' => false])
                 ->add('isResponsibilityWaived', CheckboxType::class, ['required' => false])
             ;
         }
 
-        if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT], true)) {
-            $builder
-                ->add('volunteer', CheckboxType::class, ['required' => false])
-                ->add('isJAM', CheckboxType::class, ['required' => false, 'label' => 'Je suis membre des Jeunes en marche'])
-            ;
+        if ($event->showVolunteer) {
+            $builder->add('volunteer', CheckboxType::class, ['required' => false]);
         }
 
-        if (\in_array($event->type, [NationalEventTypeEnum::CAMPUS, NationalEventTypeEnum::DEFAULT, NationalEventTypeEnum::NRP], true)) {
-            $builder
-                ->add('birthPlace', TextType::class)
-            ;
-
-            if (false === $options['is_edit']) {
-                $builder->add('allowNotifications', CheckboxType::class, ['required' => false]);
-            }
+        if ($event->showIsJAM) {
+            $builder->add('isJAM', CheckboxType::class, ['required' => false]);
         }
 
-        if ($event->isJEM()) {
+        if ($event->showBirthPlace) {
+            $builder->add('birthPlace', TextType::class, ['required' => $event->requiredBirthPlace]);
+        }
+
+        if ($event->showAllowNotifications && false === $options['is_edit']) {
+            $builder->add('allowNotifications', CheckboxType::class, ['required' => false]);
+        }
+
+        if ($event->showEmergencyContact) {
+            $required = $event->requiredEmergencyContact;
             $builder
-                ->add('emergencyContactName', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Prénom Nom']])
-                ->add('emergencyContactPhone', TelNumberType::class, ['label' => false, 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT])
+                ->add('emergencyContactName', TextType::class, ['label' => false, 'required' => $required, 'attr' => ['placeholder' => 'Prénom Nom']])
+                ->add('emergencyContactPhone', TelNumberType::class, ['label' => false, 'required' => $required, 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT])
             ;
         }
 

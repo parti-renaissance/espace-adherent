@@ -165,6 +165,12 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
 
+        if (500 === $this->client->getResponse()->getStatusCode()) {
+            $text = $crawler->filter('.exception-message')->count() > 0
+                ? $crawler->filter('.exception-message')->text()
+                : substr($this->client->getResponse()->getContent(), 0, 2000);
+            self::fail('500: '.$text);
+        }
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
@@ -1793,6 +1799,181 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     public static function provideReferrerCodes(): iterable
     {
         yield ['123-456', 'michelle.dufour@example.ch'];
+    }
+
+    public function testFormFieldsAreHiddenWhenToggleIsOff(): void
+    {
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'event-national-1']);
+
+        // Disable all optional fields
+        $event->showBirthPlace = false;
+        $event->showTransportNeeds = false;
+        $event->showWithChildren = false;
+        $event->showVolunteer = false;
+        $event->showIsJAM = false;
+        $event->showAllowNotifications = false;
+        $event->showAccessibility = false;
+        $em->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $formHtml = $crawler->filter('form')->html();
+
+        self::assertStringNotContainsString('inscription_form[birthPlace]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[transportNeeds]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[withChildren]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[volunteer]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[isJAM]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[allowNotifications]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[accessibility]', $formHtml);
+    }
+
+    public function testFormFieldsAreShownWhenToggleIsOn(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $formHtml = $crawler->filter('form')->html();
+
+        // event-national-1 has showBirthPlace, showTransportNeeds, showWithChildren, showVolunteer, showIsJAM, showAllowNotifications = true
+        self::assertStringContainsString('inscription_form[birthPlace]', $formHtml);
+        self::assertStringContainsString('inscription_form[transportNeeds]', $formHtml);
+        self::assertStringContainsString('inscription_form[withChildren]', $formHtml);
+        self::assertStringContainsString('inscription_form[volunteer]', $formHtml);
+        self::assertStringContainsString('inscription_form[isJAM]', $formHtml);
+        self::assertStringContainsString('inscription_form[allowNotifications]', $formHtml);
+        self::assertStringContainsString('inscription_form[accessibility]', $formHtml);
+    }
+
+    public function testCustomLabelOverridesDefault(): void
+    {
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'event-national-1']);
+
+        $event->labelBirthPlace = 'Ville de naissance personnalisée';
+        $event->labelVolunteer = 'Devenir bénévole pour cet événement';
+        $em->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $body = $crawler->filter('body')->text();
+
+        self::assertStringContainsString('Ville de naissance personnalisée', $body);
+        self::assertStringContainsString('Devenir bénévole pour cet événement', $body);
+    }
+
+    public function testEmergencyContactShownWhenEnabled(): void
+    {
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'event-national-1']);
+
+        $event->showEmergencyContact = true;
+        $em->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $formHtml = $crawler->filter('form')->html();
+
+        self::assertStringContainsString('inscription_form[emergencyContactName]', $formHtml);
+        self::assertStringContainsString('inscription_form[emergencyContactPhone]', $formHtml);
+    }
+
+    public function testPhoneRequiredSetsHtmlAttribute(): void
+    {
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'event-national-1']);
+
+        $event->phoneRequired = true;
+        $em->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        // The phone field should have the required attribute
+        $phoneField = $crawler->filter('[name="inscription_form[phone][number]"]');
+        self::assertGreaterThan(0, $phoneField->count());
+        self::assertNotNull($phoneField->attr('required'), 'Phone field should have the required HTML attribute');
+    }
+
+    public function testInscriptionWorksWithAllOptionalFieldsDisabled(): void
+    {
+        $em = $this->getEntityManager();
+        $event = $em->getRepository(NationalEvent::class)->findOneBy(['slug' => 'event-national-1']);
+
+        // Disable ALL optional fields including birthPlace
+        $event->showBirthPlace = false;
+        $event->showTransportNeeds = false;
+        $event->showWithChildren = false;
+        $event->showVolunteer = false;
+        $event->showIsJAM = false;
+        $event->showAllowNotifications = false;
+        $em->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $formHtml = $crawler->filter('form')->html();
+        self::assertStringNotContainsString('inscription_form[birthPlace]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[transportNeeds]', $formHtml);
+        self::assertStringNotContainsString('inscription_form[volunteer]', $formHtml);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+        $form = $buttonCrawlerNode->form();
+
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        // Submit without birthPlace — validation should pass since showBirthPlace is false
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => 'test-minimal-fields@example.com',
+                'civility' => 'female',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
+                'birthdate' => ['year' => '2000', 'month' => '5', 'day' => '15'],
+                'postalCode' => '75001',
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/grand-rassemblement/event-national-1/confirmation', $this->client);
+
+        $eventInscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => 'test-minimal-fields@example.com']);
+        $this->assertInstanceOf(EventInscription::class, $eventInscription);
+        self::assertNull($eventInscription->birthPlace);
+        self::assertFalse($eventInscription->volunteer);
+    }
+
+    public function testBirthPlaceRequiredWhenToggleIsOn(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/event-national-1');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $buttonCrawlerNode = $crawler->selectButton('Je réserve ma place');
+        $form = $buttonCrawlerNode->form();
+
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        // Submit with empty birthPlace — should fail validation since showBirthPlace is true
+        $crawler = $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => 'test-birthplace-required@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => '',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+
+        // Should stay on the form page with validation error
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        self::assertNull($this->eventInscriptionRepository->findOneBy(['addressEmail' => 'test-birthplace-required@example.com']));
     }
 
     protected function setUp(): void

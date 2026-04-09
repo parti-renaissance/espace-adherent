@@ -52,6 +52,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('e.type IN (:types)')
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->andWhere('((e.endDate <= :now AND ei.firstTicketScannedAt IS NOT NULL) OR e.endDate > :now)')
+            ->orderBy('e.startDate', 'DESC')
             ->setParameters([
                 'now' => new \DateTime(),
                 'adherent' => $adherent,

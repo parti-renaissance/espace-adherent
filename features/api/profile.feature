@@ -956,7 +956,7 @@ Feature:
                     },
                     {
                         "code": "jam_email",
-                        "label": "Recevoir les emails des Jeunes avec Macron"
+                        "label": "Recevoir les emails des Jeunes en marche"
                     },
                     {
                         "label": "Notification nouvel événement proche de chez moi",
