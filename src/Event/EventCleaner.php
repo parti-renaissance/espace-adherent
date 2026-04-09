@@ -53,6 +53,7 @@ class EventCleaner
         'mode',
         'editable',
         'hidden',
+        'pinned',
         'user_registered_at',
     ];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Event;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
@@ -80,6 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: EventsDepartmentFilter::class)]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['finishAt' => 'strictly_after'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'mode' => 'exact', 'beginAt' => 'start', 'status' => 'exact'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['pinned'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt', 'beginAt', 'finishAt'])]
 #[ApiResource(
     operations: [
@@ -412,6 +414,10 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[Groups(['event_read', 'event_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $hidden = false;
+
+    #[Groups(['event_read', 'event_list_read', 'event_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $pinned = false;
 
     public function __construct(?UuidInterface $uuid = null)
     {

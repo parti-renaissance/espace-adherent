@@ -64,6 +64,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event1->setAuthor($referent);
         $event1->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
         $event1->setAuthorRole($this->translator->trans('scope.role.'.ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ['gender' => $referent->getGender()]));
+        $event1->pinned = true;
 
         $event2 = new Event(Uuid::fromString(self::EVENT_2_UUID));
         $event2->setName('Nouvel événement online privé et électoral');
@@ -148,6 +149,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
         $event6->incrementParticipantsCount(2);
+        $event6->pinned = true;
 
         $event7 = new Event(Uuid::fromString(self::EVENT_7_UUID));
         $event7->setName('Un événement de l\'assemblée départementale passé');
