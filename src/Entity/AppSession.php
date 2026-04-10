@@ -17,6 +17,7 @@ use Ramsey\Uuid\Uuid;
 #[ORM\Entity(repositoryClass: AppSessionRepository::class)]
 #[ORM\Index(fields: ['status'])]
 #[ORM\Index(fields: ['appSystem'])]
+#[ORM\Index(fields: ['unsubscribedAt'])]
 class AppSession implements \Stringable
 {
     use EntityIdentityTrait;

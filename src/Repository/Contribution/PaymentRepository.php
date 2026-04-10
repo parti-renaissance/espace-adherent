@@ -44,11 +44,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->andWhere('payment.status IN (:status)')
             ->setParameters([
                 'adherent' => $adherent,
-                'status' => [
-                    PaymentStatusEnum::PAID_OUT,
-                    PaymentStatusEnum::CONFIRMED,
-                    PaymentStatusEnum::CHEQUE_CASHED,
-                ],
+                'status' => PaymentStatusEnum::CONFIRMED_PAYMENT_STATUSES,
             ])
             ->groupBy('year')
             ->orderBy('year', 'DESC')

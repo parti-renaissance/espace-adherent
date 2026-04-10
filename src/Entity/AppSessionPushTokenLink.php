@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity]
+#[ORM\Index(fields: ['unsubscribedAt'])]
 class AppSessionPushTokenLink
 {
     use EntityIdentityTrait;
@@ -38,8 +38,7 @@ class AppSessionPushTokenLink
 
     public function unsubscribe(\DateTime $dateTime): void
     {
-        $this->pushToken->unsubscribedAt = $this->unsubscribedAt = $dateTime;
-        $this->pushToken->unsubscribedReason = PushTokenUnsubscribeReasonEnum::USER;
+        $this->unsubscribedAt = $dateTime;
     }
 
     public function isSubscribed(): bool

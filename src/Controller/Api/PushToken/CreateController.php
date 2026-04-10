@@ -28,6 +28,9 @@ class CreateController extends AbstractController
             $this->entityManager->persist($token = $data);
         }
 
+        $token->unsubscribedAt = null;
+        $token->unsubscribedReason = null;
+
         $user->currentAppSession?->addPushToken($token);
 
         try {

@@ -45,6 +45,28 @@ class PushTokenRepository extends ServiceEntityRepository
         return $this->findOneBy(['identifier' => $identifier]);
     }
 
+    public function findIdMapByIdentifiers(array $identifiers): array
+    {
+        if (empty($identifiers)) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('t')
+            ->select('t.id, t.identifier')
+            ->where('t.identifier IN (:identifiers)')
+            ->setParameter('identifiers', $identifiers)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        $map = [];
+        foreach ($rows as $row) {
+            $map[$row['identifier']] = $row['id'];
+        }
+
+        return $map;
+    }
+
     public function findAllForZone(Zone $zone): array
     {
         $queryBuilder = $this->createIdentifierQueryBuilder('t');
@@ -166,7 +188,7 @@ class PushTokenRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder($alias)
             ->select(\sprintf('DISTINCT %s.identifier', $alias))
-            ->innerJoin(AppSessionPushTokenLink::class, 'link', Join::WITH, 'link.pushToken = '.$alias)
+            ->innerJoin(AppSessionPushTokenLink::class, 'link', Join::WITH, 'link.pushToken = '.$alias.' AND link.unsubscribedAt IS NULL')
             ->innerJoin('link.appSession', 's', Join::WITH, 's.status = :session_status AND s.unsubscribedAt IS NULL')
             ->innerJoin('s.adherent', $adherentAlias)
             ->andWhere($adherentAlias.'.status = :enabled')
