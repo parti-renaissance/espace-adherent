@@ -21,11 +21,10 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
     {
         $clientVox = $this->getReference('client-vox', Client::class);
         $clientCadre = $this->getReference('client-cadre', Client::class);
+        $deadToken = $this->getReference('push-token-dead', PushToken::class);
 
         $faker = Factory::create('fr_FR');
         $faker->seed(5678);
-        $pushTokenRepository = $manager->getRepository(PushToken::class);
-        $pushTokens = $pushTokenRepository->findAll();
 
         foreach ([
             'adherent-1',
@@ -57,9 +56,9 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
             $session->userAgent = $faker->userAgent();
             $session->ip = $faker->ipv4();
 
-            foreach ($pushTokens as $token) {
-                $session->addPushToken($token);
-            }
+            // Each adherent gets their own unique token + the dead token (for exclusion tests)
+            $session->addPushToken($this->getReference('push-token-'.$ref, PushToken::class));
+            $session->addPushToken($deadToken);
 
             $nbPast = $faker->numberBetween(0, 3);
             for ($j = 0; $j < $nbPast; ++$j) {
@@ -69,9 +68,7 @@ class LoadAppSessionData extends Fixture implements DependentFixtureInterface
                 $pastSession->appVersion = 'v5.15.0#10';
                 $pastSession->userAgent = $faker->userAgent();
                 $pastSession->ip = $faker->ipv6();
-                if ($pushTokens) {
-                    $pastSession->addPushToken($pushTokens[0]);
-                }
+                $pastSession->addPushToken($this->getReference('push-token-'.$ref, PushToken::class));
                 if (0 === $j % 2) {
                     $pastSession->unsubscribe();
                 }

@@ -40,8 +40,9 @@ class PushNotificationFilter extends Filter
         $query
             ->andWhere(\sprintf('EXISTS (
                 SELECT 1 FROM %s pnf_n
+                JOIN pnf_n.pushTokens pnf_pt
                 WHERE pnf_n.pushNotification = :pushNotification
-                AND FIND_IN_SET(%s.identifier, pnf_n.tokens) > 0
+                AND pnf_pt = %s
             )', Notification::class, $current))
             ->setParameter('pushNotification', $data->getValue())
         ;

@@ -73,13 +73,13 @@ class PushNotificationAdmin extends AbstractAdmin
 
                     $qb->andWhere(\sprintf('EXISTS (
                         SELECT 1 FROM %s adh_n
+                        JOIN adh_n.pushTokens adh_pt
                         WHERE adh_n.pushNotification = %s
                         AND EXISTS (
                             SELECT 1 FROM %s adh_s
                             JOIN adh_s.pushTokenLinks adh_link
-                            JOIN adh_link.pushToken adh_pt
                             WHERE adh_s.adherent = :adherent
-                            AND FIND_IN_SET(adh_pt.identifier, adh_n.tokens) > 0
+                            AND adh_link.pushToken = adh_pt
                         )
                     )', Notification::class, $alias, AppSession::class))
                         ->setParameter('adherent', $value->getValue())

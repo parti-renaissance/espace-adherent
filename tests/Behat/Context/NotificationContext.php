@@ -61,16 +61,7 @@ class NotificationContext extends RawMinkContext
      */
     public function theNotificationShouldTargetAtLeastTokens(string $notificationClass, int $minCount): void
     {
-        $notifications = $this->notificationRepository->findByNotificationClass($notificationClass);
-
-        if (empty($notifications)) {
-            $this->raiseException(\sprintf('No notification "%s" found', $notificationClass));
-        }
-
-        $totalTokens = 0;
-        foreach ($notifications as $notification) {
-            $totalTokens += $notification->getTokensCount();
-        }
+        $totalTokens = $this->countTotalTokens($notificationClass);
 
         if ($totalTokens < $minCount) {
             $this->raiseException(\sprintf(
@@ -87,16 +78,7 @@ class NotificationContext extends RawMinkContext
      */
     public function theNotificationShouldTargetLessThanTokens(string $notificationClass, int $maxCount): void
     {
-        $notifications = $this->notificationRepository->findByNotificationClass($notificationClass);
-
-        if (empty($notifications)) {
-            $this->raiseException(\sprintf('No notification "%s" found', $notificationClass));
-        }
-
-        $totalTokens = 0;
-        foreach ($notifications as $notification) {
-            $totalTokens += $notification->getTokensCount();
-        }
+        $totalTokens = $this->countTotalTokens($notificationClass);
 
         if ($totalTokens >= $maxCount) {
             $this->raiseException(\sprintf(
@@ -104,6 +86,25 @@ class NotificationContext extends RawMinkContext
                 $notificationClass,
                 $totalTokens,
                 $maxCount
+            ));
+        }
+    }
+
+    /**
+     * @Then the notification :notificationClass should target strictly less tokens than :otherClass
+     */
+    public function theNotificationShouldTargetStrictlyLessTokensThan(string $notificationClass, string $otherClass): void
+    {
+        $count = $this->countTotalTokens($notificationClass);
+        $otherCount = $this->countTotalTokens($otherClass);
+
+        if ($count >= $otherCount) {
+            $this->raiseException(\sprintf(
+                'Notification "%s" targets %d token(s), expected strictly less than "%s" which targets %d',
+                $notificationClass,
+                $count,
+                $otherClass,
+                $otherCount
             ));
         }
     }
@@ -123,6 +124,22 @@ class NotificationContext extends RawMinkContext
                 ));
             }
         }
+    }
+
+    private function countTotalTokens(string $notificationClass): int
+    {
+        $notifications = $this->notificationRepository->findByNotificationClass($notificationClass);
+
+        if (empty($notifications)) {
+            $this->raiseException(\sprintf('No notification "%s" found', $notificationClass));
+        }
+
+        $totalTokens = 0;
+        foreach ($notifications as $notification) {
+            $totalTokens += $notification->getTokensCount();
+        }
+
+        return $totalTokens;
     }
 
     private function checkNotificationProperty(

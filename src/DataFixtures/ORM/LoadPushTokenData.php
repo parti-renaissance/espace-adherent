@@ -33,8 +33,23 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         $manager->persist($pushToken5);
         $manager->persist($pushToken6);
 
+        $this->addReference('push-token-1', $pushToken1);
+        $this->addReference('push-token-2', $pushToken2);
+        $this->addReference('push-token-3', $pushToken3);
+        $this->addReference('push-token-4', $pushToken4);
         $this->addReference('push-token-dead', $pushToken5);
         $this->addReference('push-token-with-history', $pushToken6);
+
+        // One unique token per adherent for realistic targeting tests
+        foreach ([
+            'adherent-1', 'adherent-2', 'adherent-3', 'adherent-4', 'adherent-5',
+            'adherent-6', 'adherent-7', 'adherent-8', 'adherent-9', 'adherent-10',
+            'adherent-55', 'president-ad-1',
+        ] as $ref) {
+            $token = $this->createPushToken('token-'.$ref);
+            $manager->persist($token);
+            $this->addReference('push-token-'.$ref, $token);
+        }
 
         $manager->flush();
     }

@@ -7,6 +7,8 @@ namespace App\Entity;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
 use App\Repository\NotificationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -71,6 +73,10 @@ class Notification
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     public int $tokensFailed = 0;
 
+    #[ORM\JoinTable(name: 'notification_push_token')]
+    #[ORM\ManyToMany(targetEntity: PushToken::class, fetch: 'EXTRA_LAZY')]
+    private Collection $pushTokens;
+
     public function __construct(
         string $notificationClass,
         string $title,
@@ -88,6 +94,7 @@ class Notification
         $this->scope = $scope;
         $this->topic = $topic;
         $this->tokens = $tokens;
+        $this->pushTokens = new ArrayCollection();
 
         $this->notificationKey = $this->generateNotificationKey();
     }
@@ -191,9 +198,17 @@ class Notification
         return hash('sha256', json_encode($data, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES));
     }
 
+    public function addPushToken(PushToken $pushToken): void
+    {
+        if (!$this->pushTokens->contains($pushToken)) {
+            $this->pushTokens->add($pushToken);
+        }
+    }
+
     public function __clone()
     {
         $this->id = null;
         $this->uuid = Uuid::uuid4();
+        $this->pushTokens = new ArrayCollection();
     }
 }

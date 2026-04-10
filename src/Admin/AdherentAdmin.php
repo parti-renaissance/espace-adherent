@@ -194,15 +194,18 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     if ($value->getValue()) {
                         $qb
                             ->innerJoin('session_push_subscription.pushTokenLinks', 'push_token_link', Join::WITH, 'push_token_link.unsubscribedAt IS NULL')
+                            ->innerJoin('push_token_link.pushToken', 'push_token_subscription', Join::WITH, 'push_token_subscription.unsubscribedAt IS NULL')
                             ->andWhere('session_push_subscription.unsubscribedAt IS NULL')
                         ;
                     } else {
                         $qb->andWhere(\sprintf("NOT EXISTS (
                             SELECT 1 FROM %s s
                             JOIN s.pushTokenLinks p
+                            JOIN p.pushToken pt
                             WHERE s.adherent = $alias
                             AND s.status = :subscription_push_filter_status
                             AND p.unsubscribedAt IS NULL
+                            AND pt.unsubscribedAt IS NULL
                         )", AppSession::class));
                     }
 

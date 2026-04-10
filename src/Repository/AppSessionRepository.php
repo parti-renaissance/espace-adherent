@@ -40,7 +40,7 @@ class AppSessionRepository extends ServiceEntityRepository
         return (int) $this->createQueryBuilder('s')
             ->select('COUNT(DISTINCT s.id)')
             ->innerJoin('s.pushTokenLinks', 'link', Join::WITH, 'link.unsubscribedAt IS NULL')
-            ->innerJoin('link.pushToken', 'token')
+            ->innerJoin('link.pushToken', 'token', Join::WITH, 'token.unsubscribedAt IS NULL')
             ->where('s.status = :status AND s.unsubscribedAt IS NULL')
             ->andWhere('s.adherent IS NOT NULL')
             ->setParameter('status', SessionStatusEnum::ACTIVE)

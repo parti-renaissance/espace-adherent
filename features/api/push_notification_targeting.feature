@@ -48,7 +48,7 @@ Feature:
             | key   | value              |
             | scope | committee:@number@ |
         And the notification "NewsCreatedNotification" should target at least 1 push tokens
-        And the notification "NewsCreatedNotification" should target less than 5 push tokens
+        And the notification "NewsCreatedNotification" should target less than 10 push tokens
         And the notification "NewsCreatedNotification" should not include dead tokens
 
     Scenario: Zone-scoped action targets zone tokens only, not all national
@@ -75,9 +75,22 @@ Feature:
         And the notification "ActionCreatedNotification" should target at least 1 push tokens
         And the notification "ActionCreatedNotification" should not include dead tokens
 
-    Scenario: Committee event targets committee members only
+    Scenario: Committee event targets strictly less tokens than national news
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+            """
+            {
+                "title": "Actualité nationale référence",
+                "content": "Notification nationale servant de référence pour la comparaison.",
+                "external_link": "http://test.en-marche.fr",
+                "link_label": "Voir",
+                "global": true,
+                "notification": true,
+                "published": true
+            }
+            """
+        Then the response status code should be 201
         Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        Then I should have 0 notification
         When I send a "POST" request to "/api/v3/events?scope=animator" with body:
             """
             {
@@ -97,9 +110,6 @@ Feature:
             }
             """
         Then the response status code should be 201
-        And I should have 1 notification "EventCreatedNotification" with data:
-            | key   | value              |
-            | scope | committee:@number@ |
         And the notification "EventCreatedNotification" should target at least 1 push tokens
-        And the notification "EventCreatedNotification" should target less than 5 push tokens
+        And the notification "EventCreatedNotification" should target strictly less tokens than "NewsCreatedNotification"
         And the notification "EventCreatedNotification" should not include dead tokens
