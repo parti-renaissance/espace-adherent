@@ -37,8 +37,8 @@ class UpdateCampaignAddressInfoCommandHandler
 
         $stats = $this->addressRepository->countByPapCampaign($campaign);
 
-        $campaign->setNbAddresses($stats['total_addresses'] ?? 0);
-        $campaign->setNbVoters($stats['total_voters'] ?? 0);
+        $campaign->setNbAddresses((int) ($stats['total_addresses'] ?? 0));
+        $campaign->setNbVoters((int) ($stats['total_voters'] ?? 0));
 
         $this->entityManager->flush();
     }
