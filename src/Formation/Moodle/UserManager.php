@@ -104,6 +104,7 @@ class UserManager
         }
 
         if ($adherent->isRenaissanceAdherent()) {
+            $adherentStartDate = $adherent->getFirstMembershipDonation()?->getTimestamp() ?? $startData;
             $endDate = null;
             $year = (int) date('Y');
             if (!$adherent->hasActiveMembership()) {
@@ -125,14 +126,38 @@ class UserManager
                     $zone['code'],
                     $position = 'adherent',
                     $year,
+                    $adherentStartDate,
+                    $endDate,
                 ];
 
                 $jobs[implode('-', $key)] = [
                     'request' => [
                         'jobdepartment' => $zone['code'],
                         'jobposition' => $position,
-                        'startdate' => $startData,
+                        'startdate' => $adherentStartDate,
                         'enddate' => $endDate,
+                    ],
+                    'zone' => $zone,
+                ];
+            }
+
+            foreach ($adherent->findElectedRepresentativeMandates(true) as $mandate) {
+                if (!$mandateAssembly = $mandate->zone?->getAssemblyZone()) {
+                    continue;
+                }
+
+                $zone = ['code' => 'departement:'.$mandateAssembly->getCode()];
+                $key = [
+                    $zone['code'],
+                    $position = 'elu',
+                    $adherentStartDate,
+                ];
+
+                $jobs[implode('-', $key)] = [
+                    'request' => [
+                        'jobdepartment' => $zone['code'],
+                        'jobposition' => $position,
+                        'startdate' => $adherentStartDate,
                     ],
                     'zone' => $zone,
                 ];
