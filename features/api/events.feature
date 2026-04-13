@@ -2907,6 +2907,94 @@ Feature:
         When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=true"
         Then the response status code should be 200
         And the JSON node "items[0].pinned" should be true
+        When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=1"
+        Then the response status code should be 200
+        And the JSON node "items[0].pinned" should be true
         When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=false"
         Then the response status code should be 200
         And the JSON node "items" should not contain an element with "name" equal to "Événement épinglé test"
+        When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=0"
+        Then the response status code should be 200
+        And the JSON node "items" should not contain an element with "name" equal to "Événement épinglé test"
+
+    Scenario: As a user I can create a national event and it is pinned by default
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/events?scope=national" with body:
+            """
+            {
+                "name": "Événement national test",
+                "category": "kiosque",
+                "description": "Un événement national",
+                "begin_at": "2030-01-29 16:30:30",
+                "finish_at": "2030-01-30 16:30:30",
+                "capacity": 50,
+                "mode": "online",
+                "time_zone": "Europe/Paris",
+                "visibility": "public"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON node "pinned" should be true
+        And the JSON node "is_national" should be true
+        And the JSON node "uuid" should exist
+        When I save this response
+        When I send a "GET" request to "/api/v3/events?scope=national&pinned=true&name=Événement national test"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Événement national test"
+        When I send a "GET" request to "/api/v3/events?scope=national&pinned=false&name=Événement national test"
+        Then the response status code should be 200
+        And the JSON node "items" should not contain an element with "name" equal to "Événement national test"
+
+        When I send a "PUT" request to "/api/v3/events/:saved_response.uuid:?scope=national" with body:
+            """
+            {
+                "pinned": false
+            }
+            """
+        Then the response status code should be 200
+        And the JSON node "pinned" should be false
+
+        When I send a "GET" request to "/api/v3/events?scope=national&pinned=false&name=Événement national test"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Événement national test"
+
+        When I send a "PUT" request to "/api/v3/events/:saved_response.uuid:?scope=national" with body:
+            """
+            {
+                "pinned": true
+            }
+            """
+        Then the response status code should be 200
+        And the JSON node "pinned" should be true
+
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "PUT" request to "/api/v3/events/:saved_response.uuid:?scope=animator" with body:
+            """
+            {
+                "description": "Je veux pirater cet event"
+            }
+            """
+        Then the response status code should be 403
+
+    Scenario: As a user I can filter events by subscription status
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/events?page_size=100"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
+        And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"
+        When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=true"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
+        And the JSON node "items" should not contain an element with "name" equal to "Nouvel événement online"
+        When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=1"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
+        And the JSON node "items" should not contain an element with "name" equal to "Nouvel événement online"
+        When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=false"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
+        And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"
+        When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=0"
+        Then the response status code should be 200
+        And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
+        And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"

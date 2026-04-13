@@ -474,6 +474,10 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     public function setNational(bool $national): void
     {
         $this->national = $national;
+
+        if ($national && null === $this->id) {
+            $this->pinned = true;
+        }
     }
 
     public function getSlug(): ?string
