@@ -170,7 +170,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['adhesion_complete_profile'])]
     #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['adhesion_complete_profile'])]
-    #[Groups(['api_candidacy_read', 'profile_read', 'phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list', 'committee_candidacy:read', 'committee_election:read', 'national_event_inscription:webhook', 'profile_update', 'referral_read'])]
+    #[Groups(['api_candidacy_read', 'profile_read', 'phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list', 'committee_candidacy:read', 'committee_election:read', 'profile_update', 'referral_read'])]
     #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
@@ -184,7 +184,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid', groups: ['additional_info', 'adhesion:further_information'])]
     #[Assert\Expression('not this.hasSmsSubscriptionType() or this.getPhone()', message: "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups: ['adhesion:further_information'])]
-    #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'national_event_inscription:webhook', 'profile_update'])]
+    #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'profile_update'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
@@ -193,7 +193,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['additional_info', 'adhesion:further_information'])]
     #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['additional_info', 'adhesion:further_information'])]
-    #[Groups(['profile_read', 'national_event_inscription:webhook', 'profile_update'])]
+    #[Groups(['profile_read', 'profile_update'])]
     #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
@@ -205,7 +205,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(length: 10, options: ['default' => self::PENDING])]
     private string $status = self::PENDING;
 
-    #[Groups(['adherent_autocomplete', 'national_event_inscription:webhook'])]
+    #[Groups(['adherent_autocomplete'])]
     #[ORM\Column(type: 'datetime')]
     private $registeredAt;
 
@@ -562,7 +562,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $revenueDeclarations;
 
-    #[Groups(['national_event_inscription:webhook', 'jemarche_user_profile'])]
+    #[Groups(['jemarche_user_profile'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     public array $tags = [];
 

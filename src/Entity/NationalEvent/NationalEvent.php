@@ -18,7 +18,6 @@ use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
@@ -30,12 +29,10 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     use EntityAdministratorBlameableTrait;
 
     #[Assert\NotBlank]
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $startDate = null;
 
     #[Assert\NotBlank]
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $endDate = null;
 

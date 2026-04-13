@@ -90,12 +90,12 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
 
     public const int CANCELLATION_DELAY_IN_MIN = 30;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
     public NationalEvent $event;
 
     #[Assert\Choice(InscriptionStatusEnum::STATUSES)]
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_update', 'event_inscription_read'])]
+    #[Groups(['event_inscription_update', 'event_inscription_read'])]
     #[ORM\Column(options: ['default' => InscriptionStatusEnum::PENDING])]
     public string $status = InscriptionStatusEnum::PENDING;
 
@@ -106,74 +106,71 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true, enumType: PaymentStatusEnum::class)]
     public ?PaymentStatusEnum $paymentStatus = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(length: 6)]
     public ?string $gender = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $firstName = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $lastName = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column]
     public ?string $addressEmail = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $postalCode = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(nullable: true)]
     public ?string $birthPlace = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(nullable: true)]
     public ?string $accessibility = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $transportNeeds = false;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $volunteer = false;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read', 'event_inscription_read_for_validation'])]
+    #[Groups(['event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $birthdate = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $joinNewsletter = false;
 
     public bool $needSendNewsletterConfirmation = false;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $children = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isResponsibilityWaived = false;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isJAM = false;
 
@@ -193,7 +190,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true)]
     public ?string $packagePlan = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $packageValues = null;
 
@@ -224,23 +221,21 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $sessionId = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'json', nullable: true)]
     public $emailCheck;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $confirmedAt = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $canceledAt = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
@@ -253,7 +248,6 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $lastTicketScannedAt = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $pushSentAt = null;
 
@@ -281,19 +275,17 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $customDetail = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $emergencyContactName = null;
 
-    #[Groups(['national_event_inscription:webhook', 'event_inscription_read'])]
+    #[Groups(['event_inscription_read'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $emergencyContactPhone = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(nullable: true)]
     public ?string $ticketQRCodeFile = null;
 
-    #[Groups(['national_event_inscription:webhook'])]
     #[ORM\Column(length: 7, nullable: true)]
     public ?string $referrerCode = null;
 

@@ -9,11 +9,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 trait EntityUTMTrait
 {
-    #[Groups(['national_event_inscription:webhook', 'hit:write'])]
+    #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
     public ?string $utmSource = null;
 
-    #[Groups(['national_event_inscription:webhook', 'hit:write'])]
+    #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
     public ?string $utmCampaign = null;
 }
