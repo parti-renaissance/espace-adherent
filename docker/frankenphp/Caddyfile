@@ -99,6 +99,10 @@ test.*.code:80 {
 			}
 		}
 
+		# Assets : 404 if not found
+		@builtAssets path /built/*
+		file_server @builtAssets
+
 		@phpRoute {
 			not file {path}
 		}

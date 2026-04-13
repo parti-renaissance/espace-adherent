@@ -151,7 +151,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
 	$(CONSOLE) doctrine:database:create --env=test --no-debug
-	$(DOCKER_COMPOSE) exec -T db mysql -uroot -proot --quick enmarche_test < ./dump/dump-2025.sql
+	$(DOCKER_COMPOSE) exec -T -e MYSQL_PWD=root db mysql -uroot --quick enmarche_test < ./dump/dump-2025.sql
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 

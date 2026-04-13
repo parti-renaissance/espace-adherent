@@ -11,15 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UpdateImageController extends AbstractController
 {
     public function __construct(
         private readonly ImageUploadHelper $imageUploadHelper,
-        private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
     ) {
     }
@@ -33,8 +30,10 @@ class UpdateImageController extends AbstractController
             return $this->json('OK');
         }
 
-        /** @var ImageContent $image */
-        $image = $this->serializer->deserialize($request->getContent(), ImageContent::class, JsonEncoder::FORMAT);
+        $data = $request->toArray();
+
+        $image = new ImageContent();
+        $image->setContent($data['content'] ?? null);
 
         $errors = $this->validator->validate($image);
 
