@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\NationalEvent;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -18,8 +20,20 @@ use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            paginationEnabled: false,
+            order: ['startDate' => 'DESC'],
+        ),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['national_event_list']],
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'national_event')",
+)]
 #[ORM\Entity(repositoryClass: NationalEventRepository::class)]
 class NationalEvent implements \Stringable, NotificationObjectInterface, EntityAdministratorBlameableInterface, AlertOwnerInterface
 {
@@ -29,6 +43,7 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     use EntityAdministratorBlameableTrait;
 
     #[Assert\NotBlank]
+    #[Groups(['national_event_list'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTime $startDate = null;
 

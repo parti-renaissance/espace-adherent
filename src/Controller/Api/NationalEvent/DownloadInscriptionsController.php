@@ -9,16 +9,18 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Scope\ScopeGeneratorResolver;
 use App\Utils\PhoneNumberUtils;
+use Ramsey\Uuid\Uuid;
 use Sonata\Exporter\ExporterInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'rentree')"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'national_event')"))]
 #[Route(path: '/v3/national_event_inscriptions.xlsx', name: 'api_national_event_inscriptions_get_inscriptions', methods: ['GET'])]
 class DownloadInscriptionsController extends AbstractController
 {
@@ -36,9 +38,16 @@ class DownloadInscriptionsController extends AbstractController
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
+        $eventUuid = $request->query->get('event_uuid');
+
+        if (empty($eventUuid) || !Uuid::isValid($eventUuid)) {
+            throw new BadRequestException('The event uuid cannot be empty.');
+        }
+
         $inscriptionTypeFilter = $request->query->all('exists')['adherent'] ?? null;
 
-        $data = $this->repository->findAllForCurrentCampus(
+        $data = $this->repository->findAllForExport(
+            Uuid::fromString($eventUuid),
             $scope->getZones(),
             $scope->getCommitteeUuids(),
             null !== $inscriptionTypeFilter ? 'true' === $inscriptionTypeFilter : null,
@@ -68,7 +77,7 @@ class DownloadInscriptionsController extends AbstractController
                     'Est JEM' => $eventInscription->isJAM ? 'Oui' : 'Non',
                     'Handicap' => $eventInscription->accessibility,
                     'Montant' => (string) $eventInscription->getAmountInEuro(),
-                    'Statut du paiement' => $eventInscription->paymentStatus->value,
+                    'Statut du paiement' => $eventInscription->paymentStatus?->value,
                     'Date d\'inscription' => $eventInscription->getCreatedAt()->format('d/m/Y H:i:s'),
                     'Date de dernière modification' => $eventInscription->getUpdatedAt()->format('d/m/Y H:i:s'),
                     'Date de confirmation' => $eventInscription->confirmedAt?->format('d/m/Y H:i:s'),
