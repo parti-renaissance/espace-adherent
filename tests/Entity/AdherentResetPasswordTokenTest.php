@@ -10,7 +10,7 @@ class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTestCase
 {
     protected $tokenClass = AdherentResetPasswordToken::class;
 
-    public function testUseResetPasswordTokenIsSuccessful()
+    public function testUseResetPasswordTokenIsSuccessful(): void
     {
         $adherent = $this->createAdherent();
         $token = AdherentResetPasswordToken::generate($adherent);
@@ -25,7 +25,7 @@ class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTestCase
         $this->assertInstanceOf(\DateTime::class, $token->getUsageDate());
     }
 
-    public function testUseResetPasswordTokenFailWithoutPassword()
+    public function testUseResetPasswordTokenFailWithoutPassword(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Token must have a new password.');
@@ -36,7 +36,7 @@ class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTestCase
         $adherent->resetPassword($token);
     }
 
-    public function testSetNewPasswordWorksOnlyOnce()
+    public function testSetNewPasswordWorksOnlyOnce(): void
     {
         $adherent = $this->createAdherent();
         $token = AdherentResetPasswordToken::generate($adherent);

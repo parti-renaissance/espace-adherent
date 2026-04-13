@@ -13,7 +13,7 @@ use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
 {
-    public function testCreateEmailTemplateWithoutRecipients()
+    public function testCreateEmailTemplateWithoutRecipients(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The email requires at least one recipient.');
@@ -22,7 +22,7 @@ class EmailTemplateTest extends TestCase
         $email->getBody();
     }
 
-    public function testCreateEmailTemplate()
+    public function testCreateEmailTemplate(): void
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -74,7 +74,7 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateEmailTemplateWithReplyTo()
+    public function testCreateEmailTemplateWithReplyTo(): void
     {
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
@@ -114,7 +114,7 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateEmailTemplateFromDummyMessage()
+    public function testCreateEmailTemplateFromDummyMessage(): void
     {
         $emailTemplateFactory = new EmailTemplateFactory(
             'sender@test.com',
@@ -153,7 +153,7 @@ class EmailTemplateTest extends TestCase
         $this->assertSame($body, $email->getBody());
     }
 
-    public function testCreateEmailTemplateWithCc()
+    public function testCreateEmailTemplateWithCc(): void
     {
         $email = new EmailTemplate(
             Uuid::uuid4(),

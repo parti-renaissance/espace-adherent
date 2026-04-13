@@ -95,7 +95,7 @@ class AdminMenuListener implements EventSubscriberInterface
         if ($prepend) {
             $keys = array_map(fn (ItemInterface $item) => $item->getName(), $menu->getChildren());
 
-            usort($keys, fn ($a, $b) => $b === $subMenu->getName());
+            usort($keys, fn ($a, $b) => ($b === $subMenu->getName()) <=> ($a === $subMenu->getName()));
 
             $menu->reorderChildren($keys);
         }

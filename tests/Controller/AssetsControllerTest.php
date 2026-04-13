@@ -20,7 +20,7 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
     /** @var Signature */
     private $signature;
 
-    public function testAssetWithSignatureIsFound()
+    public function testAssetWithSignatureIsFound(): void
     {
         $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg', [
             's' => $this->signature->generateSignature('/assets/10decembre.jpg', []),
@@ -29,14 +29,14 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testAssetWithoutSignatureIsNotFound()
+    public function testAssetWithoutSignatureIsNotFound(): void
     {
         $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testInvalidAssetWithSignatureIsNotFound()
+    public function testInvalidAssetWithSignatureIsNotFound(): void
     {
         $this->client->request(Request::METHOD_GET, '/assets/invalid.jpg', [
             's' => $this->signature->generateSignature('/assets/invalid.jpg', []),
@@ -45,7 +45,7 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testStaticMapsWithWrongQuery()
+    public function testStaticMapsWithWrongQuery(): void
     {
         $this->client->request(Request::METHOD_GET, '/maps/47.3950813');
 

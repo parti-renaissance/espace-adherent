@@ -22,14 +22,14 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     #[DataProvider('provideQuery')]
-    public function testIndex($query)
+    public function testIndex($query): void
     {
         $this->client->request(Request::METHOD_GET, '/recherche', $query);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testSearchEvents()
+    public function testSearchEvents(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -58,7 +58,7 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
     }
 
     #[DataProvider('providerPathSearchPage')]
-    public function testAccessSearchPage(string $path)
+    public function testAccessSearchPage(string $path): void
     {
         $this->client->request(Request::METHOD_GET, $path);
 
@@ -81,7 +81,7 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
         yield 'Search events' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_EVENTS]];
     }
 
-    public function testListAllEvents()
+    public function testListAllEvents(): void
     {
         /** @var Paginator $evenets */
         $events = $this->getRepository(Event::class)->paginate();
@@ -99,7 +99,7 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame('1', trim($crawler->filter('.listing__paginator li a')->text()));
     }
 
-    public function testListEventsAsAdherent()
+    public function testListEventsAsAdherent(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -122,7 +122,7 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testListEventsByCategory()
+    public function testListEventsByCategory(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -143,7 +143,7 @@ class SearchControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testListAllCommittee()
+    public function testListAllCommittee(): void
     {
         $this->client->request(Request::METHOD_GET, '/tous-les-comites/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());

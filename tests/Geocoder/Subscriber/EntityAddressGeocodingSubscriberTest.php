@@ -25,7 +25,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
     /* @var EntityAddressGeocodingSubscriber */
     private $subscriber;
 
-    public function testOnAdherentAccountRegistrationCompletedSucceeds()
+    public function testOnAdherentAccountRegistrationCompletedSucceeds(): void
     {
         $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
@@ -40,7 +40,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertSame(2.318325, $adherent->getLongitude());
     }
 
-    public function testOnAdherentAccountRegistrationCompletedFails()
+    public function testOnAdherentAccountRegistrationCompletedFails(): void
     {
         $adherent = $this->createNewAdherent('58 rue de Picsou');
 
@@ -54,7 +54,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLongitude());
     }
 
-    public function testOnAdherentProfileUpdatedWithSameAddressDoNothing()
+    public function testOnAdherentProfileUpdatedWithSameAddressDoNothing(): void
     {
         $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
@@ -71,7 +71,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertSame(2.318325, $adherent->getLongitude());
     }
 
-    public function testOnAdherentProfileUpdatedWithNewAddressSucceeds()
+    public function testOnAdherentProfileUpdatedWithNewAddressSucceeds(): void
     {
         $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
@@ -86,7 +86,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertSame(2.318325, $adherent->getLongitude());
     }
 
-    public function testOnCommitteeCreatedSucceeds()
+    public function testOnCommitteeCreatedSucceeds(): void
     {
         $committee = $this->createCommittee('6 rue Neyret');
 
@@ -101,7 +101,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertSame(4.8288758, $committee->getLongitude());
     }
 
-    public function testOnCommitteeCreatedFailed()
+    public function testOnCommitteeCreatedFailed(): void
     {
         $committee = $this->createCommittee('12 rue Jean Paul II');
 
@@ -148,7 +148,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
     {
         parent::setUp();
 
-        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $this->manager = $this->createMock(ObjectManager::class);
         $this->subscriber = new EntityAddressGeocodingSubscriber(new Geocoder(new DummyGeocoder()), $this->manager);
     }
 

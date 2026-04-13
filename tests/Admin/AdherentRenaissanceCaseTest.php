@@ -129,7 +129,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         yield ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true, true];
     }
 
-    public function testAnAdminCantBanAnAdherent()
+    public function testAnAdminCantBanAnAdherent(): void
     {
         $this->authenticateAsAdmin($this->client);
 
@@ -143,7 +143,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         $this->assertResponseStatusCode(403, $this->client->getResponse());
     }
 
-    public function testASuperAdminCanBanAnAdherent()
+    public function testASuperAdminCanBanAnAdherent(): void
     {
         $this->markTestSkipped('Enable this test when the check will be ready on adhesion form');
 
@@ -249,7 +249,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         self::assertSame(6, $countError);
     }
 
-    public function testCorrespondentDelegatedAccessChangedWhenAdherentLostAndRegainHisAccess()
+    public function testCorrespondentDelegatedAccessChangedWhenAdherentLostAndRegainHisAccess(): void
     {
         /** @var Adherent $adherent */
         $adherent = $this->manager->getRepository(Adherent::class)->findOneByEmail('je-mengage-user-1@en-marche-dev.fr');

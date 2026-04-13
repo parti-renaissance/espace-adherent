@@ -52,7 +52,7 @@ class CallbackManagerTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->clientRepository = $this->createMock(ClientRepository::class);
-        $this->clientRepository->expects($this->any())
+        $this->clientRepository
             ->method('findOneByUuid')
             ->willReturnCallback(function (UuidInterface $uuid) {
                 return self::KNOWN_CLIENT_UUID === $uuid->toString() ? $this->createClient() : null;
@@ -63,7 +63,7 @@ class CallbackManagerTest extends TestCase
 
         $this->request = new Request();
         $requestStack = $this->createMock(RequestStack::class);
-        $requestStack->expects($this->any())
+        $requestStack
             ->method('getMainRequest')
             ->willReturnCallback(function () {
                 return $this->request;

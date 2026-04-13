@@ -11,7 +11,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTestCase
 {
     private const SHOW_EVENT_URL = 'https://enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon';
 
-    public function testCreateEventNotificationMessage()
+    public function testCreateEventNotificationMessage(): void
     {
         $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
         $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');

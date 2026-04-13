@@ -18,7 +18,7 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
 {
     use ControllerTestTrait;
 
-    public function testLogoutInactiveAdmin()
+    public function testLogoutInactiveAdmin(): void
     {
         $this->markTestSkipped();
 
@@ -41,7 +41,7 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
         $this->assertClientIsRedirectedTo('http://admin.renaissance.code/dashboard', $this->client);
     }
 
-    public function testNoLogoutInactiveAdherent()
+    public function testNoLogoutInactiveAdherent(): void
     {
         $this->makeEMClient();
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');

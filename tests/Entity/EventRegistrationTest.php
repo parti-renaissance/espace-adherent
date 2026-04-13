@@ -20,7 +20,7 @@ class EventRegistrationTest extends TestCase
     public const ADHERENT_1_UUID = '0936205b-35fb-4250-a97e-bfc3a2bcba12';
     public const ADHERENT_2_UUID = '59e4203a-cf4a-4a39-a5f1-768d46c3575e';
 
-    public function testCreateEventRegistrationForGuest()
+    public function testCreateEventRegistrationForGuest(): void
     {
         $registration = new EventRegistration(
             Uuid::fromString(self::REGISTRATION_UUID),
@@ -47,13 +47,10 @@ class EventRegistrationTest extends TestCase
 
     private function createAdherentMock(string $uuid)
     {
-        $adherent = $this
-            ->getMockBuilder(Adherent::class)
-            ->disableOriginalConstructor()
-            ->getMock()
+        $adherent = $this->createMock(Adherent::class)
         ;
 
-        $adherent->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
+        $adherent->method('getUuid')->willReturn(Uuid::fromString($uuid));
 
         return $adherent;
     }
@@ -67,11 +64,9 @@ class EventRegistrationTest extends TestCase
         // Hack to ensure the $uuid protected property contains
         // a valid UuidInterface instance.
         $rp = new \ReflectionProperty($event, 'uuid');
-        $rp->setAccessible(true);
         $rp->setValue($event, $uuid);
-        $rp->setAccessible(false);
 
-        $event->expects($this->any())->method('getUuid')->willReturn($uuid);
+        $event->method('getUuid')->willReturn($uuid);
 
         return $event;
     }

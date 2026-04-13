@@ -9,7 +9,7 @@ use Tests\App\AbstractKernelTestCase;
 
 class PostAddressTest extends AbstractKernelTestCase
 {
-    public function testCreateFullFrenchAddress()
+    public function testCreateFullFrenchAddress(): void
     {
         $address = $this->createPostAddress('92 bld Victor Hugo', '92110-92024', null, 48.123456, 5.987654);
 
@@ -24,7 +24,7 @@ class PostAddressTest extends AbstractKernelTestCase
         $this->assertSame('92 bld Victor Hugo, 92110 Clichy, France', $address->getGeocodableAddress());
     }
 
-    public function testCreateFullForeignAddress()
+    public function testCreateFullForeignAddress(): void
     {
         $address = PostAddress::createForeignAddress(
             'US',
@@ -48,7 +48,7 @@ class PostAddressTest extends AbstractKernelTestCase
         $this->assertSame('1600 Pennsylvania Ave NW, 20500 Washington, DC, États-Unis', $address->getGeocodableAddress());
     }
 
-    public function testEquals()
+    public function testEquals(): void
     {
         $address1 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
         $address2 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
@@ -57,7 +57,7 @@ class PostAddressTest extends AbstractKernelTestCase
         $this->assertTrue($address2->equals($address1));
     }
 
-    public function testNotEquals()
+    public function testNotEquals(): void
     {
         $address1 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
         $address2 = $this->createPostAddress('94 bld Victor Hugo', '92110-92024');

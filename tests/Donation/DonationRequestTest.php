@@ -12,7 +12,7 @@ use Tests\App\AbstractKernelTestCase;
 
 class DonationRequestTest extends AbstractKernelTestCase
 {
-    public function testCreateDonationRequestFromAdherent()
+    public function testCreateDonationRequestFromAdherent(): void
     {
         $email = 'm.dupont@example.com';
         $uuid = Adherent::createUuid($email);

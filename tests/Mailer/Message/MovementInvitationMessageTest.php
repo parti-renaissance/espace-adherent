@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class MovementInvitationMessageTest extends TestCase
 {
-    public function testCreateInvitationMessageFromInvite()
+    public function testCreateInvitationMessageFromInvite(): void
     {
         $message = MovementInvitationMessage::createFromInvite(Invite::create(
             'Paul',

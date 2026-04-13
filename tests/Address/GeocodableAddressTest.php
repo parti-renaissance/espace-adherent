@@ -12,7 +12,7 @@ use Tests\App\AbstractKernelTestCase;
 #[Group('address')]
 class GeocodableAddressTest extends AbstractKernelTestCase
 {
-    public function testCreateGeocodableAddressFromAddress()
+    public function testCreateGeocodableAddressFromAddress(): void
     {
         $addressStr = '23 rue Ernest Renan';
         $postalCode = '94110';

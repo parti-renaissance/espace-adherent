@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class SHA1Test extends TestCase
 {
     #[DataProvider('provideInvalidHash')]
-    public function testCreateSHA1FailsWithInvalidSHA1Hash(string $hash)
+    public function testCreateSHA1FailsWithInvalidSHA1Hash(string $hash): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/The given hash ".+" does not have a valid SHA-1 format\./');
@@ -27,7 +27,7 @@ class SHA1Test extends TestCase
         ];
     }
 
-    public function testHashesAreEqual()
+    public function testHashesAreEqual(): void
     {
         $hash1 = SHA1::fromString('0e59dcce13aff851a7462f18c491faba653dcb1a');
         $hash2 = SHA1::fromString('0e59dcce13aff851a7462f18c491faba653dcb1a', true);
@@ -53,7 +53,7 @@ class SHA1Test extends TestCase
     }
 
     #[DataProvider('provideHash')]
-    public function testCreateFromString(string $expectedHash, string $initialHash, bool $preserveCase)
+    public function testCreateFromString(string $expectedHash, string $initialHash, bool $preserveCase): void
     {
         $sha1 = SHA1::fromString($initialHash, $preserveCase);
 

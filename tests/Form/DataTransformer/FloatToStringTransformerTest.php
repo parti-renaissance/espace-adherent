@@ -12,13 +12,13 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class FloatToStringTransformerTest extends TestCase
 {
     #[DataProvider('floatToString')]
-    public function testTransform($float, $string)
+    public function testTransform($float, $string): void
     {
         $this->assertSame($string, new FloatToStringTransformer()->transform($float));
     }
 
     #[DataProvider('floatToString')]
-    public function testReverseTransform($float, $string)
+    public function testReverseTransform($float, $string): void
     {
         $this->assertSame($float, new FloatToStringTransformer()->reverseTransform($string));
     }
@@ -32,24 +32,24 @@ class FloatToStringTransformerTest extends TestCase
         ];
     }
 
-    public function testTransformWithNothing()
+    public function testTransformWithNothing(): void
     {
         $this->assertSame('', new FloatToStringTransformer()->transform(null));
     }
 
-    public function testReverseTransformWithNothing()
+    public function testReverseTransformWithNothing(): void
     {
         $this->assertSame(0.0, new FloatToStringTransformer()->reverseTransform(null));
     }
 
-    public function testTransformWithNoFloatValue()
+    public function testTransformWithNoFloatValue(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected a float.');
         new FloatToStringTransformer()->transform('42');
     }
 
-    public function testReverseTransformWithNoStringValue()
+    public function testReverseTransformWithNoStringValue(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected a string.');

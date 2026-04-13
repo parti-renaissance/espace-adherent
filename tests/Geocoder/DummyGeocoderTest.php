@@ -13,7 +13,7 @@ use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class DummyGeocoderTest extends TestCase
 {
-    public function testGeocodeAddressFails()
+    public function testGeocodeAddressFails(): void
     {
         $this->expectException(GeocodingException::class);
         $geocoder = new Geocoder(new DummyGeocoder());
@@ -21,7 +21,7 @@ class DummyGeocoderTest extends TestCase
     }
 
     #[DataProvider('provideAddress')]
-    public function testGeocodeAddress(string $address, float $latitude, float $longitude)
+    public function testGeocodeAddress(string $address, float $latitude, float $longitude): void
     {
         $geocoder = new Geocoder(new DummyGeocoder());
         $coordinates = $geocoder->geocode($address);

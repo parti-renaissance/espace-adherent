@@ -11,7 +11,7 @@ class EventCancellationMessageTest extends AbstractEventMessageTestCase
 {
     public const SEARCH_EVENTS_URL = 'https://enmarche.code/evenements';
 
-    public function testCreateEventCancellationMessage()
+    public function testCreateEventCancellationMessage(): void
     {
         $recipients[] = $this->createRegistrationMock('jb@example.com', 'Jean', 'Berenger');
         $recipients[] = $this->createRegistrationMock('ml@example.com', 'Marie', 'Lambert');

@@ -20,7 +20,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
     use MessengerTestTrait;
 
-    public function testAnonymousUserIsNotAllowedToFollowCommittee()
+    public function testAnonymousUserIsNotAllowedToFollowCommittee(): void
     {
         $committeeUrl = '/comites/en-marche-dammarie-les-lys';
 
@@ -31,7 +31,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertFalse($this->seeUnfollowLink($crawler));
     }
 
-    public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee()
+    public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee(): void
     {
         // Login as supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
@@ -43,7 +43,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         self::assertStringNotContainsString('Quitter ce comité', $response->getContent());
     }
 
-    public function testAuthenticatedAdherentCanFollowCommittee()
+    public function testAuthenticatedAdherentCanFollowCommittee(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
@@ -89,7 +89,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
     }
 
-    public function testApprovedCommitteePageIsViewableByAnyone()
+    public function testApprovedCommitteePageIsViewableByAnyone(): void
     {
         $committeeUrl = '/comites/en-marche-dammarie-les-lys';
 
@@ -116,7 +116,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testAnyoneCanSeeSupervisorProvisionalOnCommitteePage()
+    public function testAnyoneCanSeeSupervisorProvisionalOnCommitteePage(): void
     {
         $committeeUrl = '/comites/en-marche-comite-de-evry';
 
@@ -131,7 +131,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         ], false);
     }
 
-    public function testUnapprovedCommitteeIsViewableByItsCreator()
+    public function testUnapprovedCommitteeIsViewableByItsCreator(): void
     {
         $committeeUrl = '/comites/en-marche-marseille-3';
 
@@ -145,7 +145,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->logout($this->client);
     }
 
-    public function testAnonymousGuestCanShowCommitteePage()
+    public function testAnonymousGuestCanShowCommitteePage(): void
     {
         $committeeUrl = '/comites/en-marche-paris-8';
 
@@ -161,7 +161,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->seeMessageForContactHosts($crawler);
     }
 
-    public function testAuthenticatedAdherentCanShowCommitteePage()
+    public function testAuthenticatedAdherentCanShowCommitteePage(): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
@@ -184,7 +184,7 @@ class CommitteeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertFalse($this->seeMessageForm($crawler));
     }
 
-    public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
+    public function testAuthenticatedCommitteeFollowerCanShowCommitteePage(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');

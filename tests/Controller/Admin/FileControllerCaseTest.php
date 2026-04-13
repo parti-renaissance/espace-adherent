@@ -17,7 +17,7 @@ class FileControllerCaseTest extends AbstractAdminWebTestCase
     use ControllerTestTrait;
 
     #[DataProvider('provideAdherentsWithNoAccess')]
-    public function testAdherentCannotDownloadFileIfNoPermission(string $adherentEmail)
+    public function testAdherentCannotDownloadFileIfNoPermission(string $adherentEmail): void
     {
         $image = $this->getFileRepository()->findOneBy(['name' => 'Image for all']);
 
@@ -28,7 +28,7 @@ class FileControllerCaseTest extends AbstractAdminWebTestCase
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testAdminCannotDownloadFileIfNoPermission()
+    public function testAdminCannotDownloadFileIfNoPermission(): void
     {
         $image = $this->getFileRepository()->findOneBy(['name' => 'Image for all']);
 
@@ -39,7 +39,7 @@ class FileControllerCaseTest extends AbstractAdminWebTestCase
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testCannotDownloadDirectory()
+    public function testCannotDownloadDirectory(): void
     {
         $directory = $this->getFileRepository()->findOneBy(['name' => 'images']);
 
@@ -50,7 +50,7 @@ class FileControllerCaseTest extends AbstractAdminWebTestCase
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testDownloadExternalLink()
+    public function testDownloadExternalLink(): void
     {
         $directory = $this->getFileRepository()->findOneBy(['name' => 'dpt link for all']);
 
@@ -62,7 +62,7 @@ class FileControllerCaseTest extends AbstractAdminWebTestCase
         self::assertClientIsRedirectedTo('https://dpt.en-marche.fr', $this->client);
     }
 
-    public function testCannotDownloadFileIfNoOnStorage()
+    public function testCannotDownloadFileIfNoOnStorage(): void
     {
         $directory = $this->getFileRepository()->findOneBy(['name' => 'Image for all']);
 

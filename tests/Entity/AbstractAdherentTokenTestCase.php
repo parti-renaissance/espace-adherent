@@ -14,7 +14,7 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
 {
     protected $tokenClass;
 
-    public function testCannotCreateExpiredToken()
+    public function testCannotCreateExpiredToken(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $adherent = $this->createAdherent();
@@ -22,7 +22,7 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
         $this->generateToken($adherent, '-10 minutes');
     }
 
-    public function testCannotActivateKeyForAnotherAdherent()
+    public function testCannotActivateKeyForAnotherAdherent(): void
     {
         $this->expectException(AdherentTokenMismatchException::class);
         $adherent1 = $this->createAdherent('john.smith@example.org');
@@ -33,7 +33,7 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
         $token->consume($adherent2);
     }
 
-    public function testCannotActivateSameAdherentActivationTokenTwice()
+    public function testCannotActivateSameAdherentActivationTokenTwice(): void
     {
         $this->expectException(AdherentTokenAlreadyUsedException::class);
         $adherent = $this->createAdherent();
@@ -45,7 +45,7 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
         $token->consume($adherent);
     }
 
-    public function testConsumeTokenIsSuccessful()
+    public function testConsumeTokenIsSuccessful(): void
     {
         $adherent = $this->createAdherent();
         $token = $this->generateToken($adherent);

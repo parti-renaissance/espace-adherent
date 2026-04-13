@@ -29,7 +29,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
      */
     private $campaignRepository;
 
-    public function testLoadUserByUsername()
+    public function testLoadUserByUsername(): void
     {
         $this->assertInstanceOf(
             Adherent::class,
@@ -47,7 +47,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->adherentRepository->loadUserByIdentifier('someone@foobar.tld');
     }
 
-    public function testFindCommitteeHostMembersList()
+    public function testFindCommitteeHostMembersList(): void
     {
         // Approved committees
         $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)), '1 supervisor + 1 host');
@@ -59,14 +59,14 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->assertCount(0, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
     }
 
-    public function testCountHostMembersInCommittee()
+    public function testCountHostMembersInCommittee(): void
     {
         $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
         $this->assertSame(4, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
         $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)));
     }
 
-    public function testMemberIsCommitteeHost()
+    public function testMemberIsCommitteeHost(): void
     {
         $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID)));
         $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));

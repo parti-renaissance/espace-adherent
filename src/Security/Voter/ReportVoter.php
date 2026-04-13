@@ -8,6 +8,7 @@ use App\Entity\Administrator;
 use App\Report\ReportPermissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ReportVoter extends Voter
@@ -24,7 +25,7 @@ class ReportVoter extends Voter
         return ReportPermissions::REPORT === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         if ($token->getUser() instanceof Administrator) {
             return false;

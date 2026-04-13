@@ -16,7 +16,7 @@ class CommitteeCommandTest extends AbstractKernelTestCase
 {
     public const CREATOR_UUID = '3966af25-2b09-407c-9283-c4d2103d0448';
 
-    public function testCreateCommitteeCommandFromCommittee()
+    public function testCreateCommitteeCommandFromCommittee(): void
     {
         $name = 'En Marche ! de Lyon 1er';
         $description = 'Le comité En Marche ! de Lyon 1er';

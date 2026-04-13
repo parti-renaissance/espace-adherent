@@ -73,7 +73,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         parent::tearDown();
     }
 
-    public function testCannotCreateMandateIfIncorrectGender()
+    public function testCannotCreateMandateIfIncorrectGender(): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
@@ -89,7 +89,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->mandateManager->createMandate($adherent, $committee);
     }
 
-    public function testCannotCreateMandateIfAdherentHasActiveMandate()
+    public function testCannotCreateMandateIfAdherentHasActiveMandate(): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
@@ -125,7 +125,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     }
 
     #[DataProvider('provideGenders')]
-    public function testCannotCreateMandateIfCommitteeHasActiveMandate(string $gender)
+    public function testCannotCreateMandateIfCommitteeHasActiveMandate(string $gender): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
@@ -145,7 +145,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     }
 
     #[DataProvider('provideGenders')]
-    public function testCreateMandate(string $gender)
+    public function testCreateMandate(string $gender): void
     {
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
@@ -164,7 +164,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     }
 
     #[DataProvider('provideGenders')]
-    public function testCannotEndMandateBecauseMandateNotFound(string $gender)
+    public function testCannotEndMandateBecauseMandateNotFound(string $gender): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);
         $adherent = $this->createNewAdherent($gender);
@@ -181,7 +181,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     }
 
     #[DataProvider('provideGenders')]
-    public function testEndMandate(string $gender)
+    public function testEndMandate(string $gender): void
     {
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();

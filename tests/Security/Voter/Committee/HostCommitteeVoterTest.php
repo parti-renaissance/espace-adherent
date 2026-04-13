@@ -24,7 +24,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
         return new HostCommitteeVoter();
     }
 
-    public function testSupervisorIsNotGrantedIfCommitteeIsBlocked()
+    public function testSupervisorIsNotGrantedIfCommitteeIsBlocked(): void
     {
         $committee = $this->createCommitteeMock(true);
         $adherent = $this->createAdherentMock();
@@ -40,7 +40,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
-    public function testAdherentCanHostCommitteeIfSupervisor()
+    public function testAdherentCanHostCommitteeIfSupervisor(): void
     {
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, true);
@@ -48,7 +48,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
-    public function testAdherentCanHostCommitteeIfHost()
+    public function testAdherentCanHostCommitteeIfHost(): void
     {
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, true);
@@ -56,7 +56,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
-    public function testAdherentCannotHostCommitteeIfNotHostAndNotSupervisor()
+    public function testAdherentCannotHostCommitteeIfNotHostAndNotSupervisor(): void
     {
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, false);

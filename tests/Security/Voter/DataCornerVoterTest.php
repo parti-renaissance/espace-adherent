@@ -59,11 +59,11 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('isRenaissanceUser')
             ->willReturn(true)
         ;
-        $adherent->expects($this->any())
+        $adherent
             ->method('isDeputy')
             ->willReturn($isDeputy)
         ;

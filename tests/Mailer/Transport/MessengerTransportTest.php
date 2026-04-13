@@ -28,17 +28,17 @@ use Tests\App\Test\Mailer\DummyEmailClient;
 
 class MessengerTransportTest extends TestCase
 {
-    public function testCannotSendTemplateEmail()
+    public function testCannotSendTemplateEmail(): void
     {
         $this->expectException(HandlerFailedException::class);
         $this->expectExceptionMessageMatches('#.+Unable to send email to recipients\.#');
-        $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
+        $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects($this->once())->method('request')->willReturn(new MockResponse('', ['http_code' => 400]));
 
         /** @var EmailTemplate $email */
         [$message, $email] = $this->createDummyEmail();
 
-        $emailRepository = $this->getMockBuilder(EmailLogRepository::class)->disableOriginalConstructor()->getMock();
+        $emailRepository = $this->createMock(EmailLogRepository::class);
         $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn(EmailLog::createFromMessage($message, $email->getHttpRequestPayload()));
         $client = new DummyEmailClient($httpClient);
 
@@ -46,7 +46,7 @@ class MessengerTransportTest extends TestCase
         $transport->sendTemplateEmail($email);
     }
 
-    public function testSendTemplateEmail()
+    public function testSendTemplateEmail(): void
     {
         /** @var EmailTemplate $email */
         [$message, $email] = $this->createDummyEmail();

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class AlgoliaIndexedEntityManagerTest extends TestCase
 {
-    public function testPostPersist()
+    public function testPostPersist(): void
     {
         $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
 
@@ -25,7 +25,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $this->getManager($indexer)->postPersist($entity);
     }
 
-    public function testPostUpdate()
+    public function testPostUpdate(): void
     {
         $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
 
@@ -39,7 +39,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $this->getManager($indexer)->postUpdate($entity);
     }
 
-    public function testPreRemove()
+    public function testPreRemove(): void
     {
         $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
 

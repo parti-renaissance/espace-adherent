@@ -6,11 +6,12 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractAdherentVoter extends Voter
 {
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $adherent = $token->getUser();
         if (!$adherent instanceof Adherent) {

@@ -34,7 +34,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     }
 
     #[DataProvider('provideDocumentTypes')]
-    public function testSimpleAdherentCanNotUploadFile(string $type)
+    public function testSimpleAdherentCanNotUploadFile(string $type): void
     {
         $adherent = $this->getAdherentMock(false);
 

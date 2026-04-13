@@ -13,7 +13,7 @@ use Tests\App\AbstractKernelTestCase;
 #[Group('address')]
 class PostAddressFactoryTest extends AbstractKernelTestCase
 {
-    public function testCreateFrenchAddress()
+    public function testCreateFrenchAddress(): void
     {
         $address = new Address();
         $address->setCountry('FR');
@@ -39,7 +39,7 @@ class PostAddressFactoryTest extends AbstractKernelTestCase
         $this->assertNull($postAddress->getLongitude());
     }
 
-    public function testCreateForeignAddress()
+    public function testCreateForeignAddress(): void
     {
         $address = new Address();
         $address->setCountry('CH');

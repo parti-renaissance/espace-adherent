@@ -29,7 +29,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
     private ?CommitteeManager $committeeManager;
     private ?CommitteeMembershipManager $committeeMembershipManager;
 
-    public function testGetCommitteeHosts()
+    public function testGetCommitteeHosts(): void
     {
         $this->assertInstanceOf(
             AdherentCollection::class,

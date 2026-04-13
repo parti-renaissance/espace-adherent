@@ -10,16 +10,16 @@ use App\Entity\Event\EventCategory;
 use App\Entity\NullablePostAddress;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 
 class EventTest extends TestCase
 {
     #[DataProvider('provideNotFinishedEventDate')]
-    public function testEventIsNotConsideredFinished(string $timeZone, string $date)
+    public function testEventIsNotConsideredFinished(string $timeZone, string $date): void
     {
         $address = $this->createStub(NullablePostAddress::class);
 
-        $event = new Event($this->createStub(UuidInterface::class));
+        $event = new Event(Uuid::uuid4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
@@ -43,12 +43,12 @@ class EventTest extends TestCase
     }
 
     #[DataProvider('provideFinishedEventDate')]
-    public function testEventIsConsideredFinished(string $country, string $date)
+    public function testEventIsConsideredFinished(string $country, string $date): void
     {
         $address = $this->createStub(NullablePostAddress::class);
         $address->method('getCountry')->willReturn($country);
 
-        $event = new Event($this->createStub(UuidInterface::class));
+        $event = new Event(Uuid::uuid4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
@@ -72,9 +72,9 @@ class EventTest extends TestCase
         ];
     }
 
-    public function testIsFull()
+    public function testIsFull(): void
     {
-        $event = new Event($this->createStub(UuidInterface::class));
+        $event = new Event(Uuid::uuid4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCapacity(2);
 
@@ -89,7 +89,7 @@ class EventTest extends TestCase
 
     public function testSetNationalOnNewEventAutomaticallyPinsIt(): void
     {
-        $event = new Event($this->createStub(UuidInterface::class));
+        $event = new Event(Uuid::uuid4());
 
         $this->assertFalse($event->pinned);
 
@@ -101,7 +101,7 @@ class EventTest extends TestCase
 
     public function testSetNationalOnPersistedEventDoesNotForcePin(): void
     {
-        $event = new Event($this->createStub(UuidInterface::class));
+        $event = new Event(Uuid::uuid4());
 
         $idProperty = new \ReflectionProperty($event, 'id');
         $idProperty->setValue($event, 42);

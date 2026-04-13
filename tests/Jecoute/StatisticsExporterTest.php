@@ -25,9 +25,7 @@ class StatisticsExporterTest extends TestCase
     {
         parent::setUp();
 
-        $this->dataAnswerRepository = $this->getMockBuilder(DataAnswerRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock()
+        $this->dataAnswerRepository = $this->createMock(DataAnswerRepository::class)
         ;
         $this->statisticsExporter = new StatisticsExporter($this->dataAnswerRepository);
     }

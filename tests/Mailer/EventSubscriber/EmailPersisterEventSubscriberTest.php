@@ -23,7 +23,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
     private $manager;
     private $emailTemplateFactory;
 
-    public function testOnMailerDeliveryMessage()
+    public function testOnMailerDeliveryMessage(): void
     {
         $this->manager->expects($this->once())->method('persist');
         $this->manager->expects($this->once())->method('flush');
@@ -38,7 +38,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         ));
     }
 
-    public function testOnMailerDeliverySuccessWithEmptyJsonResponsePayload()
+    public function testOnMailerDeliverySuccessWithEmptyJsonResponsePayload(): void
     {
         $this->repository->expects($this->never())->method('findOneByUuid');
         $this->manager->expects($this->never())->method('flush');
@@ -50,7 +50,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         ));
     }
 
-    public function testOnMailerDeliverySuccessWithEmptyMessageCollection()
+    public function testOnMailerDeliverySuccessWithEmptyMessageCollection(): void
     {
         $responsePayload = <<<'EOF'
             {
@@ -71,7 +71,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->subscriber->onMailerDeliverySuccess(new MailerEvent($message, $email));
     }
 
-    public function testOnMailerDeliverySuccess()
+    public function testOnMailerDeliverySuccess(): void
     {
         $message = DummyMessage::create();
         $message->addRecipient('vincent777h@example.tld', 'Vincent Durand');
@@ -108,10 +108,10 @@ class EmailPersisterEventSubscriberTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $this->repository = $this->getMockBuilder(EmailLogRepository::class)->disableOriginalConstructor()->getMock();
+        $this->manager = $this->createMock(ObjectManager::class);
+        $this->repository = $this->createMock(EmailLogRepository::class);
 
-        $this->repository->expects($this->any())->method('getClassName')->willReturn(EmailLog::class);
+        $this->repository->method('getClassName')->willReturn(EmailLog::class);
 
         $this->emailTemplateFactory = new EmailTemplateFactory(
             'sender@test.com',

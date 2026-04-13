@@ -19,7 +19,7 @@ class GeocoderTest extends TestCase
     private $adapter;
     private $geocoder;
 
-    public function testGeocodeAddressSucceeds()
+    public function testGeocodeAddressSucceeds(): void
     {
         $addresses = new AddressCollection([
             Address::createFromArray(['latitude' => 48.901058, 'longitude' => 2.318325]),
@@ -42,7 +42,7 @@ class GeocoderTest extends TestCase
         $this->assertSame(2.318325, $coordinates->getLongitude());
     }
 
-    public function testGeocodeAddressFails()
+    public function testGeocodeAddressFails(): void
     {
         $this->expectException(GeocodingException::class);
         $this
@@ -56,7 +56,7 @@ class GeocoderTest extends TestCase
         $this->geocoder->geocode(self::ADDRESS);
     }
 
-    public function testCannotGeocodeAddress()
+    public function testCannotGeocodeAddress(): void
     {
         $this->expectException(GeocodingException::class);
         $this
@@ -74,7 +74,7 @@ class GeocoderTest extends TestCase
     {
         parent::setUp();
 
-        $this->adapter = $this->getMockBuilder(BazingaGeocoder::class)->getMock();
+        $this->adapter = $this->createMock(BazingaGeocoder::class);
         $this->geocoder = new Geocoder($this->adapter);
     }
 

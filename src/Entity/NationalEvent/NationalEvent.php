@@ -273,7 +273,7 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
         $totalAmount = 0;
         $hasChargeableItem = false;
 
-        foreach ($this->packageConfig as $fieldConfig) {
+        foreach ($this->packageConfig ?? [] as $fieldConfig) {
             $fieldKey = $fieldConfig['cle'] ?? null;
 
             if (!$fieldKey || empty($packageValues[$fieldKey])) {

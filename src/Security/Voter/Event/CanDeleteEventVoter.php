@@ -7,6 +7,7 @@ namespace App\Security\Voter\Event;
 use App\Entity\Event\Event;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class CanDeleteEventVoter extends Voter
@@ -17,7 +18,7 @@ class CanDeleteEventVoter extends Voter
     {
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         return $this->eventRegistrationRepository->countEventParticipantsWithoutCreator($subject) < 1;
     }
