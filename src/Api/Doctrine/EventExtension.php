@@ -112,7 +112,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         }
 
         $queryBuilder
-            ->addSelect("IF($alias.national = 1 AND $alias.beginAt >= NOW(), 2, IF($alias.beginAt >= NOW(), 1, 0)) AS HIDDEN priority")
+            ->addSelect("IF($alias.beginAt >= NOW(), 1, 0) AS HIDDEN priority")
             ->addSelect("ABS(TIMESTAMPDIFF(SECOND, NOW(), $alias.beginAt)) AS HIDDEN time_to_begin")
             ->leftJoin(EventRegistration::class, 'er', Join::WITH, 'er.event = '.$alias.' AND er.adherent = :adherent')
             ->andWhere('('.$alias.'.visibility NOT IN (:invitation_visibilities) OR er IS NOT NULL)')

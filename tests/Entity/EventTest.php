@@ -17,11 +17,11 @@ class EventTest extends TestCase
     #[DataProvider('provideNotFinishedEventDate')]
     public function testEventIsNotConsideredFinished(string $timeZone, string $date)
     {
-        $address = $this->createMock(NullablePostAddress::class);
+        $address = $this->createStub(NullablePostAddress::class);
 
-        $event = new Event($this->createMock(UuidInterface::class));
-        $event->setAuthor($this->createMock(Adherent::class));
-        $event->setCategory($this->createMock(EventCategory::class));
+        $event = new Event($this->createStub(UuidInterface::class));
+        $event->setAuthor($this->createStub(Adherent::class));
+        $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
         $event->setPostAddress($address);
         $event->setBeginAt(new \DateTime($date));
@@ -45,12 +45,12 @@ class EventTest extends TestCase
     #[DataProvider('provideFinishedEventDate')]
     public function testEventIsConsideredFinished(string $country, string $date)
     {
-        $address = $this->createMock(NullablePostAddress::class);
-        $address->expects($this->any())->method('getCountry')->willReturn($country);
+        $address = $this->createStub(NullablePostAddress::class);
+        $address->method('getCountry')->willReturn($country);
 
-        $event = new Event($this->createMock(UuidInterface::class));
-        $event->setAuthor($this->createMock(Adherent::class));
-        $event->setCategory($this->createMock(EventCategory::class));
+        $event = new Event($this->createStub(UuidInterface::class));
+        $event->setAuthor($this->createStub(Adherent::class));
+        $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
         $event->setPostAddress($address);
         $event->setFinishAt(new \DateTime($date));
@@ -74,8 +74,8 @@ class EventTest extends TestCase
 
     public function testIsFull()
     {
-        $event = new Event($this->createMock(UuidInterface::class));
-        $event->setAuthor($this->createMock(Adherent::class));
+        $event = new Event($this->createStub(UuidInterface::class));
+        $event->setAuthor($this->createStub(Adherent::class));
         $event->setCapacity(2);
 
         $this->assertFalse($event->isFull());
@@ -85,5 +85,32 @@ class EventTest extends TestCase
 
         $event->incrementParticipantsCount();
         $this->assertTrue($event->isFull());
+    }
+
+    public function testSetNationalOnNewEventAutomaticallyPinsIt(): void
+    {
+        $event = new Event($this->createStub(UuidInterface::class));
+
+        $this->assertFalse($event->pinned);
+
+        $event->setNational(true);
+
+        $this->assertTrue($event->isNational());
+        $this->assertTrue($event->pinned);
+    }
+
+    public function testSetNationalOnPersistedEventDoesNotForcePin(): void
+    {
+        $event = new Event($this->createStub(UuidInterface::class));
+
+        $idProperty = new \ReflectionProperty($event, 'id');
+        $idProperty->setValue($event, 42);
+
+        $this->assertFalse($event->pinned);
+
+        $event->setNational(true);
+
+        $this->assertTrue($event->isNational());
+        $this->assertFalse($event->pinned);
     }
 }

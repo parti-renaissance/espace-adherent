@@ -18,8 +18,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
 {
     private const PROPERTY_NAME = 'subscribedOnly';
 
-    /** @var Security */
-    private $security;
+    private Security $security;
 
     protected function filterProperty(
         string $property,
@@ -38,6 +37,11 @@ final class MySubscribedEventsFilter extends AbstractFilter
             return;
         }
 
+        $isSubscribedOnly = filter_var($value, \FILTER_VALIDATE_BOOLEAN);
+        if (!$isSubscribedOnly) {
+            return;
+        }
+
         $queryBuilder
             ->innerJoin(EventRegistration::class, 'event_registration', Join::WITH, 'event_registration.event = '.$queryBuilder->getRootAliases()[0])
             ->andWhere('event_registration.adherent = :adherent')
@@ -50,7 +54,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         return [
             self::PROPERTY_NAME => [
                 'property' => null,
-                'type' => 'string',
+                'type' => 'bool',
                 'required' => false,
             ],
         ];

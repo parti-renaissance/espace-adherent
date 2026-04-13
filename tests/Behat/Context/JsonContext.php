@@ -51,6 +51,23 @@ class JsonContext extends BehatchJsonContext
     }
 
     /**
+     * @Then the JSON node :node should contain an element with :key equal to :value
+     */
+    public function theJsonNodeShouldContainAnElementWith(string $node, string $key, string $value): void
+    {
+        $json = $this->getJson();
+        $actual = $this->inspector->evaluate($json, $node);
+
+        foreach ($actual as $element) {
+            if (isset($element->{$key}) && (string) $element->{$key} === $value) {
+                return;
+            }
+        }
+
+        throw new \Exception(\sprintf('The JSON node "%s" does not contain an element with "%s" equal to "%s"', $node, $key, $value));
+    }
+
+    /**
      * @Then the JSON node :node should not contain an element with :key equal to :value
      */
     public function theJsonNodeShouldNotContainAnElementWith(string $node, string $key, string $value): void
