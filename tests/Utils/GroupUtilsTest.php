@@ -13,7 +13,7 @@ use Tests\App\AbstractKernelTestCase;
 #[Group('functional')]
 class GroupUtilsTest extends AbstractKernelTestCase
 {
-    public function testGetUuidsFromJson()
+    public function testGetUuidsFromJson(): void
     {
         $this->assertSame([], GroupUtils::getUuidsFromJson(''));
         $this->assertSame([], GroupUtils::getUuidsFromJson('not valid JSON syntax'));
@@ -35,7 +35,7 @@ class GroupUtilsTest extends AbstractKernelTestCase
         $this->assertEquals($objectUuids, GroupUtils::getUuidsFromJson(json_encode($stringUuids)));
     }
 
-    public function testRemoveUnknownAdherents()
+    public function testRemoveUnknownAdherents(): void
     {
         $adherents = $this->getAdherents();
 
@@ -65,7 +65,7 @@ class GroupUtilsTest extends AbstractKernelTestCase
         ));
     }
 
-    public function testRemoveUnknownAdherentsBadCallCollection()
+    public function testRemoveUnknownAdherentsBadCallCollection(): void
     {
         $this->expectException(\BadMethodCallException::class);
 
@@ -75,7 +75,7 @@ class GroupUtilsTest extends AbstractKernelTestCase
         );
     }
 
-    public function testRemoveUnknownAdherentsBadCallIterable()
+    public function testRemoveUnknownAdherentsBadCallIterable(): void
     {
         $this->expectException(\BadMethodCallException::class);
 
@@ -85,7 +85,7 @@ class GroupUtilsTest extends AbstractKernelTestCase
         );
     }
 
-    public function testGetUuidsFromAdherents()
+    public function testGetUuidsFromAdherents(): void
     {
         $adherents = $this->getAdherents();
         $uuids = GroupUtils::getUuidsFromAdherents($adherents);
@@ -98,14 +98,14 @@ class GroupUtilsTest extends AbstractKernelTestCase
         }
     }
 
-    public function testGetUuidsFromAdherentsBadCallCollection()
+    public function testGetUuidsFromAdherentsBadCallCollection(): void
     {
         $this->expectException(\BadMethodCallException::class);
 
         GroupUtils::getUuidsFromAdherents(['this is not a collection of adherents']);
     }
 
-    public function testGetUuidsFromAdherentsBadCallIterable()
+    public function testGetUuidsFromAdherentsBadCallIterable(): void
     {
         $this->expectException(\BadMethodCallException::class);
 

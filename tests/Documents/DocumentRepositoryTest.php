@@ -18,7 +18,7 @@ class DocumentRepositoryTest extends TestCase
     /** @var DocumentRepository */
     private $repository;
 
-    public function testListDocuments()
+    public function testListDocuments(): void
     {
         $this->put(DocumentRepository::DIRECTORY_ADHERENTS, 'documenta.pdf', 'Document A');
         $this->createDir(DocumentRepository::DIRECTORY_ADHERENTS, 'mydir');
@@ -41,7 +41,7 @@ class DocumentRepositoryTest extends TestCase
         $this->assertSame('documentb.pdf', $adherentsMydir[1]->getName());
     }
 
-    public function testReadDocument()
+    public function testReadDocument(): void
     {
         $fixture = file_get_contents(__DIR__.'/../Fixtures/document.pdf');
         $this->put(DocumentRepository::DIRECTORY_ADHERENTS, 'document.pdf', $fixture);
@@ -53,18 +53,18 @@ class DocumentRepositoryTest extends TestCase
         $this->assertSame($fixture, $document['content']);
     }
 
-    public function testReadDocumentFailsWhenInvalid()
+    public function testReadDocumentFailsWhenInvalid(): void
     {
         $this->expectException(FilesystemException::class);
         $this->repository->readDocument(DocumentRepository::DIRECTORY_ADHERENTS, 'invalid.pdf');
     }
 
-    private function createDir(string $directory, string $path)
+    private function createDir(string $directory, string $path): void
     {
         $this->filesystem->createDirectory(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path);
     }
 
-    private function put(string $directory, string $path, string $content)
+    private function put(string $directory, string $path, string $content): void
     {
         $this->filesystem->write(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path, $content);
     }

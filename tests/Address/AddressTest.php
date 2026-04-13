@@ -11,7 +11,7 @@ use Tests\App\AbstractKernelTestCase;
 #[Group('address')]
 class AddressTest extends AbstractKernelTestCase
 {
-    public function testCreateValidForeignAddress()
+    public function testCreateValidForeignAddress(): void
     {
         $address = new Address();
         $address->setCountry('CH');
@@ -28,7 +28,7 @@ class AddressTest extends AbstractKernelTestCase
         $this->assertFalse($address->isFrenchAddress());
     }
 
-    public function testCreateValidFrenchAddress()
+    public function testCreateValidFrenchAddress(): void
     {
         $address = new Address();
         $address->setCountry('FR');
@@ -48,7 +48,7 @@ class AddressTest extends AbstractKernelTestCase
         $this->assertTrue($address->isFrenchAddress());
     }
 
-    public function testCreateInvalidValidFrenchAddress()
+    public function testCreateInvalidValidFrenchAddress(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

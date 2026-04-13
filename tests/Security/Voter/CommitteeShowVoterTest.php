@@ -11,6 +11,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CommitteeShowVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
@@ -27,7 +28,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
     }
 
     #[DataProvider('provideGroupCases')]
-    public function testAdherentIsGrantedIfGroupIsApproved(bool $approved, string $attribute)
+    public function testAdherentIsGrantedIfGroupIsApproved(bool $approved, string $attribute): void
     {
         $adherent = $this->getAdherentMock(!$approved);
         $group = $this->getCommitteeMock($approved, false);
@@ -36,7 +37,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
     }
 
     #[DataProvider('provideGroupCases')]
-    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(bool $approved, string $attribute)
+    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(bool $approved, string $attribute): void
     {
         $adherent = $this->getAdherentMock(!$approved);
         $group = $this->getCommitteeMock($approved, true);
@@ -60,7 +61,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
         if ($getUuidIsCalled) {
             $adherent->expects($this->once())
                 ->method('getUuid')
-                ->willReturn($this->createMock(UuidInterface::class))
+                ->willReturn(Uuid::uuid4())
             ;
         } else {
             $adherent->expects($this->never())

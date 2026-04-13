@@ -32,7 +32,7 @@ class ClientTest extends TestCase
         $client->setAllowedGrantTypes(['dummy']);
     }
 
-    public function testRedirectUrisCanBeAddedAndRemoved()
+    public function testRedirectUrisCanBeAddedAndRemoved(): void
     {
         $client = $this->createClient();
         $client->addRedirectUri('a');

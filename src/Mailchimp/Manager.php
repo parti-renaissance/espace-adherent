@@ -99,7 +99,7 @@ class Manager implements LoggerAwareInterface
         }
 
         // SMS reconciliation: align local SMS subscription with Mailchimp state before sync
-        if ($smsStatus = $memberInfo['sms_subscription_status']) {
+        if ($smsStatus = $memberInfo['sms_subscription_status'] ?? null) {
             if (ContactStatusEnum::SUBSCRIBED === $smsStatus && !$adherent->hasSmsSubscriptionType()) {
                 $smsType = $this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
                 if ($smsType) {

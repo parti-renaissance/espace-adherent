@@ -52,7 +52,7 @@ final class JeMarcheMessagingTest extends TestCase
         $this->notificationRepository
             ->expects(self::once())
             ->method('keyExists')
-            ->with(self::isType('string'))
+            ->with(self::isString())
             ->willReturn(false)
         ;
 
@@ -87,7 +87,7 @@ final class JeMarcheMessagingTest extends TestCase
 
         $this->notificationRepository
             ->method('keyExists')
-            ->with(self::isType('string'))
+            ->with(self::isString())
             ->willReturn(false)
         ;
 
@@ -114,7 +114,7 @@ final class JeMarcheMessagingTest extends TestCase
 
         $this->notificationRepository
             ->method('keyExists')
-            ->with(self::isType('string'))
+            ->with(self::isString())
             ->willReturn(false)
         ;
 
@@ -149,7 +149,7 @@ final class JeMarcheMessagingTest extends TestCase
         $this->notificationRepository
             ->expects(self::once())
             ->method('keyExists')
-            ->with(self::isType('string'))
+            ->with(self::isString())
             ->willReturn(true)
         ;
 
@@ -178,14 +178,14 @@ final class JeMarcheMessagingTest extends TestCase
 
         $this->notificationRepository
             ->method('keyExists')
-            ->with(self::isType('string'))
+            ->with(self::isString())
             ->willReturn(false)
         ;
 
         $this->firebaseMessaging
             ->expects(self::exactly(2))
             ->method('sendMulticast')
-            ->with(self::isInstanceOf(CloudMessage::class), self::isType('array'))
+            ->with(self::isInstanceOf(CloudMessage::class), self::isArray())
             ->willReturn($report)
         ;
 

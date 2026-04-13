@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectionsProviderTest extends TestCase
 {
-    public function testProdiver()
+    public function testProdiver(): void
     {
         $provider = new RedirectionsProvider();
 

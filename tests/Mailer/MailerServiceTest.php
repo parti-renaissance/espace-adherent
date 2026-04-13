@@ -17,7 +17,7 @@ use Tests\App\Test\Mailer\Transport\NullTransport;
 
 class MailerServiceTest extends TestCase
 {
-    public function testSendMessage()
+    public function testSendMessage(): void
     {
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
@@ -53,7 +53,7 @@ class MailerServiceTest extends TestCase
         $this->assertTrue($service->sendMessage(DummyMessage::create()));
     }
 
-    public function testCannotSendMessage()
+    public function testCannotSendMessage(): void
     {
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 

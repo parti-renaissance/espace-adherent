@@ -12,7 +12,7 @@ use App\Repository\AdherentRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\FollowerCommitteeVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
 class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
@@ -47,7 +47,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         return new FollowerCommitteeVoter($this->adherentRepository);
     }
 
-    public function testAdherentCannotFollowCommitteeIfAlreadyFollowing()
+    public function testAdherentCannotFollowCommitteeIfAlreadyFollowing(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee, true);
@@ -56,7 +56,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::FOLLOW, $committee);
     }
 
-    public function testAdherentCannotFollowCommitteeIfNotApproved()
+    public function testAdherentCannotFollowCommitteeIfNotApproved(): void
     {
         $committee = $this->getCommitteeMock(false);
         $adherent = $this->getAdherentMock();
@@ -65,7 +65,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::FOLLOW, $committee);
     }
 
-    public function testAdherentCanFollowCommittee()
+    public function testAdherentCanFollowCommittee(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee);
@@ -74,7 +74,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::FOLLOW, $committee);
     }
 
-    public function testAdherentCannotUnFollowCommitteeIfNotAlreadyFollowing()
+    public function testAdherentCannotUnFollowCommitteeIfNotAlreadyFollowing(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee);
@@ -83,7 +83,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
-    public function testAdherentCannotUnfollowCommitteeIfNotApproved()
+    public function testAdherentCannotUnfollowCommitteeIfNotApproved(): void
     {
         $committee = $this->getCommitteeMock(false);
         $adherent = $this->getAdherentMock();
@@ -92,7 +92,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
-    public function testSupervisorCannotUnfollowCommittee()
+    public function testSupervisorCannotUnfollowCommittee(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee, true, true);
@@ -101,7 +101,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
-    public function testAdherentCanUnfollowCommittee()
+    public function testAdherentCanUnfollowCommittee(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee, true, false);
@@ -110,7 +110,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
-    public function testHostCannotUnfollowCommitteeIfOnlyHost()
+    public function testHostCannotUnfollowCommitteeIfOnlyHost(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee, true, false, true);
@@ -119,7 +119,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
-    public function testHostCanUnfollowCommitteeIfManyHosts()
+    public function testHostCanUnfollowCommitteeIfManyHosts(): void
     {
         $committee = $this->getCommitteeMock(true);
         $adherent = $this->getAdherentMock($committee, true, false, true);
@@ -211,15 +211,9 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
             ;
         }
 
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->expects($this->any())
-            ->method('toString')
-            ->willReturn('test')
-        ;
-
-        $committee->expects($this->any())
+        $committee
             ->method('getUuid')
-            ->willReturn($uuid)
+            ->willReturn(Uuid::uuid4())
         ;
 
         return $committee;

@@ -67,33 +67,33 @@ class AdherentUnregistrationVoterTest extends TestCase
     ): void {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('isPresidentDepartmentalAssembly')
             ->willReturn($isPresidentDepartmentalAssembly)
         ;
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('isAnimator')
             ->willReturn($isAnimator)
         ;
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('isDeputy')
             ->willReturn($isDeputy)
         ;
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('isRegionalDelegate')
             ->willReturn($isRegionalDelegate)
         ;
 
         $membership = $this->createMock(CommitteeMembership::class);
-        $membership->expects($this->any())
+        $membership
             ->method('hasActiveCommitteeCandidacy')
             ->willReturn($hasCommitteeCandidacy)
         ;
 
-        $adherent->expects($this->any())
+        $adherent
             ->method('getCommitteeMembership')
             ->willReturn($hasCommitteeCandidacy ? $membership : null)
         ;

@@ -20,7 +20,7 @@ class EventRepositoryTest extends AbstractKernelTestCase
      */
     private $repository;
 
-    public function testSearchAllEvents()
+    public function testSearchAllEvents(): void
     {
         Chronos::setTestNow('2018-05-18');
 

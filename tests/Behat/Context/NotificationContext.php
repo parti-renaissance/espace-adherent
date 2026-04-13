@@ -29,7 +29,7 @@ class NotificationContext extends RawMinkContext
     /**
      * @Given I should have :expectedCount notification(s)
      */
-    public function iShouldHaveNotifications(int $expectedCount, array $criteria = [])
+    public function iShouldHaveNotifications(int $expectedCount, array $criteria = []): void
     {
         $actualCount = $this->countNonFixtureNotifications($criteria);
 
@@ -41,7 +41,7 @@ class NotificationContext extends RawMinkContext
     /**
      * @Given I should have 1 notification :notificationClass with data:
      */
-    public function iShouldHaveNotificationWithData(string $notificationClass, TableNode $data)
+    public function iShouldHaveNotificationWithData(string $notificationClass, TableNode $data): void
     {
         $this->iShouldHaveNotifications(1, ['notificationClass' => $notificationClass]);
 

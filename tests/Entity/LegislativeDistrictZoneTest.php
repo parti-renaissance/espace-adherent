@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class LegislativeDistrictZoneTest extends TestCase
 {
-    public function testCreateRegionDistrictZone()
+    public function testCreateRegionDistrictZone(): void
     {
         $zone = LegislativeDistrictZone::createRegionZone('1002', 'Amériques et Caraïbes');
 
@@ -28,7 +28,7 @@ class LegislativeDistrictZoneTest extends TestCase
         string $expectedToString,
         string $areaCode,
         string $name,
-    ) {
+    ): void {
         $zone = LegislativeDistrictZone::createDepartmentZone($areaCode, $name);
 
         $this->assertSame('departement', $zone->getAreaType());
@@ -51,7 +51,7 @@ class LegislativeDistrictZoneTest extends TestCase
     }
 
     #[DataProvider('provideDefaultRankGenerationFromAreaCodeData')]
-    public function testDefaultRankGenerationFromAreaCode(string $areaCode, int $rank)
+    public function testDefaultRankGenerationFromAreaCode(string $areaCode, int $rank): void
     {
         $zone = new LegislativeDistrictZone();
 

@@ -16,7 +16,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testDocumentsIndexAsAdherent()
+    public function testDocumentsIndexAsAdherent(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
@@ -37,7 +37,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    public function testDocumentsIndexAsHost()
+    public function testDocumentsIndexAsHost(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
@@ -58,7 +58,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    public function testDocumentsDirectory()
+    public function testDocumentsDirectory(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
@@ -86,7 +86,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    public function testDocumentsDirectoryUnauthorized()
+    public function testDocumentsDirectoryUnauthorized(): void
     {
         $documentsRoot = '/espace-adherent/documents/dossier';
 
@@ -111,7 +111,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->logout($this->client);
     }
 
-    public function testDocumentsRead()
+    public function testDocumentsRead(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
@@ -126,7 +126,7 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
     }
 
-    public function testDocumentsReadUnauthorized()
+    public function testDocumentsReadUnauthorized(): void
     {
         $documentsRoot = '/espace-adherent/documents/telecharger';
 

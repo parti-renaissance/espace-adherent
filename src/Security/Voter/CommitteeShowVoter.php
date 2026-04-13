@@ -8,6 +8,7 @@ use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 
 class CommitteeShowVoter extends AbstractAdherentVoter
 {
@@ -20,13 +21,13 @@ class CommitteeShowVoter extends AbstractAdherentVoter
      * @param string    $attribute
      * @param Committee $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         if ($subject->isApproved()) {
             return true;
         }
 
-        return parent::voteOnAttribute($attribute, $subject, $token);
+        return parent::voteOnAttribute($attribute, $subject, $token, $vote);
     }
 
     /**

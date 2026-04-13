@@ -17,7 +17,7 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     #[DataProvider('provideAdherentsWithNoAccess')]
-    public function testCannotEditJecouteRegion(string $adherentEmail)
+    public function testCannotEditJecouteRegion(string $adherentEmail): void
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
 

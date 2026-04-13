@@ -17,9 +17,9 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 class AdherentLoginTimestampRecorderTest extends TestCase
 {
-    public function testRecordLastLoginTimestamp()
+    public function testRecordLastLoginTimestamp(): void
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->createMock(ObjectManager::class);
         $manager->expects($this->once())->method('flush');
 
         $adherent = $this->createAdherent();
@@ -29,9 +29,9 @@ class AdherentLoginTimestampRecorderTest extends TestCase
 
         $this->assertNull($adherent->getLastLoggedAt());
 
-        $handler = new AuthenticationSuccessHandler($this->getMockBuilder(HttpUtils::class)->getMock());
+        $handler = new AuthenticationSuccessHandler($this->createMock(HttpUtils::class));
         $handler->setManager($manager);
-        $handler->setAnonymousFollowerSession($this->getMockBuilder(AnonymousFollowerSession::class)->disableOriginalConstructor()->getMock());
+        $handler->setAnonymousFollowerSession($this->createMock(AnonymousFollowerSession::class));
 
         $handler->onAuthenticationSuccess($request, $token);
 

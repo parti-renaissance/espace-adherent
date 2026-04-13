@@ -9,6 +9,7 @@ use App\Repository\ScopeRepository;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class DataCornerVoter extends Voter
@@ -32,7 +33,7 @@ class DataCornerVoter extends Voter
     /**
      * @param Adherent $subject
      */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         if (!$subject instanceof Adherent) {
             return false;

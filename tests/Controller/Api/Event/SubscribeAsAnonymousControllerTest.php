@@ -23,7 +23,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     use ApiControllerTestTrait;
 
     #[DataProvider('provideEvents')]
-    public function testAnonymousCanSubscribeOnEvent(string $eventUuid)
+    public function testAnonymousCanSubscribeOnEvent(string $eventUuid): void
     {
         $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
@@ -45,7 +45,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     }
 
     #[DataProvider('provideCancelledEvents')]
-    public function testAnonymousCannotSubscribeOnCancelledEvent(string $eventUuid, string $messageClass)
+    public function testAnonymousCannotSubscribeOnCancelledEvent(string $eventUuid, string $messageClass): void
     {
         $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
@@ -58,7 +58,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     }
 
     #[DataProvider('providePrivateEvents')]
-    public function testAnonymousCannotSubscribeOnPrivateEvent(string $eventUuid, string $messageClass)
+    public function testAnonymousCannotSubscribeOnPrivateEvent(string $eventUuid, string $messageClass): void
     {
         $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',

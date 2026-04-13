@@ -31,7 +31,7 @@ class JsonContext extends BehatchJsonContext
      *
      * @Then the JSON nodes should match:
      */
-    public function theJsonNodesShouldMatch(TableNode $nodes)
+    public function theJsonNodesShouldMatch(TableNode $nodes): void
     {
         foreach ($nodes->getRowsHash() as $node => $text) {
             $this->theJsonNodeShouldMatch($node, $text);
@@ -85,7 +85,7 @@ class JsonContext extends BehatchJsonContext
     /**
      * @Then /^the JSON should be a superset of:$/
      */
-    public function theJsonIsASupersetOf(PyStringNode $content)
+    public function theJsonIsASupersetOf(PyStringNode $content): void
     {
         $actual = json_decode($this->httpCallResultPool->getResult()->getValue(), true);
         PHPUnitHelper::assertArraySubset(json_decode($content->getRaw(), true), $actual);

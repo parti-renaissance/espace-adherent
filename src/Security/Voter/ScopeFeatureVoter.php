@@ -9,6 +9,7 @@ use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ScopeFeatureVoter extends Voter
@@ -23,7 +24,7 @@ class ScopeFeatureVoter extends Voter
     ) {
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
             try {

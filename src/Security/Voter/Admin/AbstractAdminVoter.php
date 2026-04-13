@@ -6,11 +6,12 @@ namespace App\Security\Voter\Admin;
 
 use App\Entity\Administrator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractAdminVoter extends Voter
 {
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $administrator = $token->getUser();
         if (!$administrator instanceof Administrator) {

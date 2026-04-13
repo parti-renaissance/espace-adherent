@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class CanAccessEventVoter extends Voter
@@ -19,7 +20,7 @@ class CanAccessEventVoter extends Voter
     }
 
     /** @param Event $subject */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         if ($subject->isPublic() || $subject->isPrivate()) {
             return true;

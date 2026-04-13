@@ -16,14 +16,14 @@ class SocialShareControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testList()
+    public function testList(): void
     {
         $this->client->request(Request::METHOD_GET, '/jepartage');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testShow()
+    public function testShow(): void
     {
         $this->client->request(Request::METHOD_GET, '/jepartage/culture');
 

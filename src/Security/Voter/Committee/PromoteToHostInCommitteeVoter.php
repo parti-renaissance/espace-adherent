@@ -8,6 +8,7 @@ use App\Committee\CommitteeManager;
 use App\Committee\CommitteePermissionEnum;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class PromoteToHostInCommitteeVoter extends Voter
@@ -28,7 +29,7 @@ class PromoteToHostInCommitteeVoter extends Voter
     /**
      * @param Committee $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         return $subject->isApproved() && $this->committeeManager->countCommitteeHosts($subject, true) < 2;
     }

@@ -13,7 +13,7 @@ use Tests\App\AbstractKernelTestCase;
 
 class CommitteeTest extends AbstractKernelTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $committee = $this->createCommittee();
 
@@ -34,7 +34,7 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertNull($committee->getApprovedAt());
     }
 
-    public function testGeoAddressAndCoordinates()
+    public function testGeoAddressAndCoordinates(): void
     {
         $committee = $this->createCommittee();
         $committee->updateCoordinates(new Coordinates(45.7713288, 4.8288758));
@@ -44,7 +44,7 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertSame(4.8288758, $committee->getLongitude());
     }
 
-    public function testCommitteeIsCreatedByAdherent()
+    public function testCommitteeIsCreatedByAdherent(): void
     {
         $committee = $this->createCommittee();
 
@@ -52,7 +52,7 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertFalse($committee->isCreatedBy(Uuid::fromString('82a861b6-4287-4f44-8a84-145b4dac0781')));
     }
 
-    public function testSetSocialNetworkPagesUrls()
+    public function testSetSocialNetworkPagesUrls(): void
     {
         $committee = $this->createCommittee();
 
@@ -71,7 +71,7 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertSame('EnMarcheLyon69', $committee->getTwitterNickname());
     }
 
-    public function testApproveCommittee()
+    public function testApproveCommittee(): void
     {
         $committee = $this->createCommittee();
         $timestamp = '2016-01-18 21:23:12';
@@ -82,7 +82,7 @@ class CommitteeTest extends AbstractKernelTestCase
         $this->assertFalse($committee->isClosed());
     }
 
-    public function testCloseCommittee()
+    public function testCloseCommittee(): void
     {
         $committee = $this->createCommittee();
         $committee->close();

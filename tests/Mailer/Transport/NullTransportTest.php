@@ -12,9 +12,9 @@ use Tests\App\Test\Mailer\Transport\NullTransport;
 
 class NullTransportTest extends TestCase
 {
-    public function testSendTemplateEmail()
+    public function testSendTemplateEmail(): void
     {
-        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger = $this->createMock(LoggerInterface::class);
         $logger
             ->expects($this->once())
             ->method('info')

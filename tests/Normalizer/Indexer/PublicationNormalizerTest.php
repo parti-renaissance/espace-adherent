@@ -10,7 +10,7 @@ use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Normalizer\Indexer\PublicationNormalizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class PublicationNormalizerTest extends TestCase
@@ -26,8 +26,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithoutScopeTargetsReturnsScopeTargetFalse(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = null;
@@ -59,8 +58,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithEmptyScopeTargetsReturnsScopeTargetFalse(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [];
@@ -92,8 +90,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsReturnsScopeTargetTrueAndIncludeKeys(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -123,8 +120,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsMissingRoleSkipsEntry(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -160,8 +156,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithoutFilterReturnsScopeTargetFalse(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $message = $this->createMock(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
@@ -182,8 +177,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsIncludeTeamAddsTeamKeys(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -219,8 +213,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsOnlyTeamNoDirectRole(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -253,8 +246,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsIncludeAllTeamAddsWildcard(): void
     {
-        $uuid = $this->createMock(UuidInterface::class);
-        $uuid->method('toString')->willReturn('test-uuid');
+        $uuid = Uuid::uuid4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [

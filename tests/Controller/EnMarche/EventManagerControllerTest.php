@@ -20,7 +20,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     #[DataProvider('provideCancelledInaccessiblePages')]
-    public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
+    public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
@@ -38,14 +38,14 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         ];
     }
 
-    public function testExportIcalEvent()
+    public function testExportIcalEvent(): void
     {
         $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testExportIcalForeignEvent()
+    public function testExportIcalForeignEvent(): void
     {
         $uuid = LoadCommitteeEventData::EVENT_12_UUID;
         /** @var Event $event */
@@ -81,7 +81,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertMatchesRegularExpression(\sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
-    private function redirectionEventNotPublishTest($url)
+    private function redirectionEventNotPublishTest($url): void
     {
         $this->client->request(Request::METHOD_GET, $url);
 

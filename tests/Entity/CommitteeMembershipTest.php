@@ -16,7 +16,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
     public const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
     public const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';
 
-    public function testCreateHostMembership()
+    public function testCreateHostMembership(): void
     {
         $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createNewAdherent(), new \DateTime());
 
@@ -30,7 +30,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
         $this->assertFalse($membership->isFollower());
     }
 
-    public function testCreateFollowerMembership()
+    public function testCreateFollowerMembership(): void
     {
         $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createNewAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
 
@@ -44,7 +44,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
         $this->assertTrue($membership->isFollower());
     }
 
-    public function testChangePrivileges()
+    public function testChangePrivileges(): void
     {
         $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createNewAdherent(), new \DateTime());
 

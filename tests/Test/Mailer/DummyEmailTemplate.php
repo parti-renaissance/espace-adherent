@@ -8,7 +8,7 @@ use App\Mailer\AbstractEmailTemplate;
 
 class DummyEmailTemplate extends AbstractEmailTemplate
 {
-    public function addRecipient(string $email, ?string $name = null, array $vars = [])
+    public function addRecipient(string $email, ?string $name = null, array $vars = []): void
     {
         $this->recipients[] = [
             'email' => $email,

@@ -13,7 +13,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @Given I resolved the captcha
      */
-    public function iResolvedTheCaptcha()
+    public function iResolvedTheCaptcha(): void
     {
         $this->getSession()->getPage()->find('css', 'input[name="g-recaptcha-response"]')->setValue('dummy');
     }
@@ -21,7 +21,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @When I fill in hidden field :fieldId with :value
      */
-    public function fillField($fieldId, $value)
+    public function fillField($fieldId, $value): void
     {
         $this->getSession()->getPage()->findById($fieldId)->setValue($value);
     }
@@ -29,7 +29,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @When I click the :elementId element
      */
-    public function clickLinkElement($elementId)
+    public function clickLinkElement($elementId): void
     {
         $field = $this->getSession()->getPage()->findById($elementId);
 
@@ -41,7 +41,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @Then I should see :text :times times
      */
-    public function iShouldSeeTextManyTimes(string $text, int $times)
+    public function iShouldSeeTextManyTimes(string $text, int $times): void
     {
         $count = substr_count($this->getSession()->getPage()->getText(), $text);
 
@@ -72,7 +72,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @When I click the :cssElementSelector selector
      */
-    public function clickElementSelector($cssElementSelector)
+    public function clickElementSelector($cssElementSelector): void
     {
         $field = $this->getSession()->getPage()->find('css', $cssElementSelector);
 

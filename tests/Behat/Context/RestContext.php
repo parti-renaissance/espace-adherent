@@ -46,7 +46,7 @@ class RestContext extends BehatchRestContext
     /**
      * @BeforeScenario
      */
-    public function before(BeforeScenarioScope $scope)
+    public function before(BeforeScenarioScope $scope): void
     {
         /** @var DIContext $diContext */
         $diContext = $scope->getEnvironment()->getContext(DIContext::class);
@@ -247,11 +247,9 @@ class RestContext extends BehatchRestContext
      *
      * @param string $page
      *
-     * @return void
-     *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
-    public function iAmRedirected($page = null)
+    public function iAmRedirected($page = null): void
     {
         $headers = $this->getSession()->getResponseHeaders();
 
@@ -279,7 +277,7 @@ class RestContext extends BehatchRestContext
     /**
      * @Given /^I stop following redirections$/
      */
-    public function iDontFollowRedirections()
+    public function iDontFollowRedirections(): void
     {
         $client = $this->getClient();
 

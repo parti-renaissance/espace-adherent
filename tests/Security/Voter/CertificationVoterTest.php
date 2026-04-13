@@ -71,7 +71,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTestCase
             ->method('isCertified')
             ->willReturn($isCertified)
         ;
-        $adherent->expects($this->any())
+        $adherent
             ->method('getBirthDate')
             ->willReturn(new \DateTime())
         ;
@@ -80,20 +80,20 @@ class CertificationVoterTest extends AbstractAdherentVoterTestCase
             $certificationRequests = $this->createMock(CertificationRequestCollection::class);
 
             if (null !== $hasPendingCertificationRequest) {
-                $certificationRequests->expects($this->any())
+                $certificationRequests
                     ->method('hasPendingCertificationRequest')
                     ->willReturn($hasPendingCertificationRequest)
                 ;
             }
 
             if (null !== $hasBlockedCertificationRequest) {
-                $certificationRequests->expects($this->any())
+                $certificationRequests
                     ->method('hasBlockedCertificationRequest')
                     ->willReturn($hasBlockedCertificationRequest)
                 ;
             }
 
-            $adherent->expects($this->any())
+            $adherent
                 ->method('getCertificationRequests')
                 ->willReturn($certificationRequests)
             ;

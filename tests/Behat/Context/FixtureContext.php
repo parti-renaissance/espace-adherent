@@ -27,7 +27,7 @@ class FixtureContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearDatabase()
+    public function clearDatabase(): void
     {
         $this->purger->purge();
     }

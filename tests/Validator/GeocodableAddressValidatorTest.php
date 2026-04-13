@@ -17,13 +17,13 @@ use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
 {
-    public function testUnsupportedValue()
+    public function testUnsupportedValue(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(12345, new GeocodableAddress());
     }
 
-    public function testUnsupportedConstraint()
+    public function testUnsupportedConstraint(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(
@@ -32,7 +32,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         );
     }
 
-    public function testSkipValidation()
+    public function testSkipValidation(): void
     {
         $this->validator->validate(null, new GeocodableAddress());
         $this->assertNoViolation();
@@ -42,7 +42,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
     }
 
     #[DataProvider('provideGeocodableAddress')]
-    public function testAddressIsValid(GeocodableInterface $address)
+    public function testAddressIsValid(GeocodableInterface $address): void
     {
         $this->validator->validate($address, new GeocodableAddress());
         $this->assertNoViolation();
@@ -63,7 +63,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function testAddressIsNotValid()
+    public function testAddressIsNotValid(): void
     {
         $address = new Address();
         $address->setCountry('FR');

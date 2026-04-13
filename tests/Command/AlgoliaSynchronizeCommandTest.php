@@ -15,7 +15,7 @@ use Tests\App\AbstractCommandTestCase;
 class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
 {
     #[DataProvider('dataProviderTestCommand')]
-    public function testCommand(string $indexName, string $className, int $expected)
+    public function testCommand(string $indexName, string $className, int $expected): void
     {
         $output = $this->runCommand('search:import', ['--indices' => $indexName]);
 

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd" colors="true" bootstrap="tests/bootstrap.php" cacheDirectory="var/.phpunit.cache">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.0/phpunit.xsd"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         cacheDirectory="var/.phpunit.cache"
+         failOnWarning="true"
+         failOnNotice="true">
   <php>
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="-1"/>
@@ -11,6 +17,12 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+  <source restrictNotices="true" restrictWarnings="true">
+    <include>
+      <directory>src</directory>
+      <directory>tests</directory>
+    </include>
+  </source>
   <extensions>
     <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
     <bootstrap class="Symfony\Bridge\PhpUnit\SymfonyExtension"/>

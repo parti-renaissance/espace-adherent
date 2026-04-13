@@ -22,7 +22,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testAnonymousUserCanRegisterToEvent()
+    public function testAnonymousUserCanRegisterToEvent(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -44,7 +44,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testRegisteredAdherentUserCanRegisterToEvent()
+    public function testRegisteredAdherentUserCanRegisterToEvent(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -63,7 +63,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testCantRegisterToAFullEvent()
+    public function testCantRegisterToAFullEvent(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -90,7 +90,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
     }
 
     #[DataProvider('dataProviderNearbyEvents')]
-    public function testAnonymousCanSeeThreeNearbyEvents(string $name, string $cityName)
+    public function testAnonymousCanSeeThreeNearbyEvents(string $name, string $cityName): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/2017-02-20-grand-meeting-de-paris');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -108,14 +108,14 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         yield ['Événement à Paris 1', 'Paris 8ème'];
     }
 
-    public function testAttendConfirmationWithoutRegistration()
+    public function testAttendConfirmationWithoutRegistration(): void
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
 
         $this->assertRedirectionEventNotPublishTest(\sprintf('/evenements/%s/confirmation', $event->getSlug()));
     }
 
-    public function testAttendConfirmationWithWrongRegistration()
+    public function testAttendConfirmationWithWrongRegistration(): void
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
 
@@ -126,7 +126,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
-    public function testAttendConfirmationAsAnonymous()
+    public function testAttendConfirmationAsAnonymous(): void
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadCommitteeEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
@@ -138,7 +138,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
     }
 
-    public function testAttendConfirmationAsAdherent()
+    public function testAttendConfirmationAsAdherent(): void
     {
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
@@ -152,7 +152,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    public function testUnpublishedEventNotFound()
+    public function testUnpublishedEventNotFound(): void
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_13_UUID);
         $eventUrl = \sprintf('/evenements/%s', $event->getSlug());
@@ -160,7 +160,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertRedirectionEventNotPublishTest($eventUrl);
     }
 
-    public function testRedirectIfEventNotExist()
+    public function testRedirectIfEventNotExist(): void
     {
         $this->assertRedirectionEventNotPublishTest('/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
     }
@@ -176,7 +176,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->isSuccessful($this->client->getResponse());
     }
 
-    public function testEventWithSpecialCharInTitle()
+    public function testEventWithSpecialCharInTitle(): void
     {
         Chronos::setTestNow('2018-05-18');
 
@@ -194,7 +194,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         Chronos::setTestNow();
     }
 
-    public function testSearchCategoryForm()
+    public function testSearchCategoryForm(): void
     {
         $crawler = $this->client->request('GET', '/evenements');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -216,7 +216,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame(4, $optgroup->count());
     }
 
-    public function testAdherentCanUnregisterToEvent()
+    public function testAdherentCanUnregisterToEvent(): void
     {
         Chronos::setTestNow('2018-05-18');
 
