@@ -21,6 +21,7 @@ class NewsletterValueObject
     private $type;
     private $subscribed = true;
     private $zones = [];
+    private array $tags = [];
 
     public function getEmail(): ?string
     {
@@ -68,6 +69,12 @@ class NewsletterValueObject
         return $this->type;
     }
 
+    /** @return string[] */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
     public static function createFromNewsletterSubscription(NewsletterSubscription $newsletter): self
     {
         $object = new self();
@@ -96,6 +103,11 @@ class NewsletterValueObject
         $object->subscribed = $newsletter->isConfirmed();
 
         return $object;
+    }
+
+    public function addTag(string $tag): void
+    {
+        $this->tags[] = $tag;
     }
 
     public static function createFromSiteNewsletterCommand(MailchimpSyncSiteNewsletterCommand $command): self

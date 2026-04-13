@@ -97,7 +97,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$goCardlessEnvironment', '%env(GOCARDLESS_ENV)%')
         ->bind('$openAIApiKey', '%env(OPENAI_API_KEY)%')
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
-        ->bind('$friendlyCaptchaNRPSiteKey', '%env(FRIENDLY_CAPTCHA_NRP_SITE_KEY)%')
+        ->bind('$friendlyCaptchaNewsletterSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%')
         ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
         ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
         ->bind('$ogoneUserPwd', '%env(OGONE_USER_PWD)%')

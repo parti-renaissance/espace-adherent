@@ -441,6 +441,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AdherentStaticLabelCategory::class, 'label' => 'Catégories de label statique', 'group' => 'Tech'])
     ;
     $services
+        ->set('app.admin.renaissance_newsletter_source', App\Admin\Renaissance\NewsletterSourceAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Renaissance\NewsletterSource::class, 'label' => 'Sources newsletter Renaissance', 'group' => 'Tech'])
+    ;
+    $services
         ->set('app.admin.geo.zone', App\Admin\Geo\ZoneAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Geo\Zone::class, 'show_in_dashboard' => false])
     ;
