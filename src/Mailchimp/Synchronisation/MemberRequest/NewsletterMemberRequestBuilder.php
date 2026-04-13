@@ -19,6 +19,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
     private $type;
     private $siteCode;
     private array $zones = [];
+    private array $additionalTags = [];
 
     public function setZipCode(?string $zipCode): self
     {
@@ -69,6 +70,13 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
         return $this;
     }
 
+    public function setAdditionalTags(array $additionalTags): self
+    {
+        $this->additionalTags = $additionalTags;
+
+        return $this;
+    }
+
     public function updateFromValueObject(NewsletterValueObject $newsletter): self
     {
         return $this
@@ -79,6 +87,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setCountryName($newsletter->getCountryName())
             ->setType($newsletter->getType())
             ->setZones($newsletter->getZones())
+            ->setAdditionalTags($newsletter->getTags())
             ->setIsSubscribeRequest($newsletter->isSubscribed())
         ;
     }
@@ -151,6 +160,10 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             case NewsletterTypeEnum::SITE_MUNICIPAL:
                 $request->addTag('Site municipal');
                 break;
+        }
+
+        foreach ($this->additionalTags as $tag) {
+            $request->addTag($tag);
         }
 
         return $request;

@@ -7,7 +7,7 @@ namespace App\Controller\Renaissance\Newsletter;
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Newsletter\Events;
 use App\Newsletter\NewsletterEvent;
-use App\Newsletter\NewsletterTypeEnum;
+use App\Repository\Renaissance\NewsletterSourceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +21,7 @@ class ConfirmNewsletterController extends AbstractController
         NewsletterSubscription $subscription,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
+        NewsletterSourceRepository $newsletterSourceRepository,
     ): Response {
         if (!$subscription->confirmedAt) {
             $subscription->confirmedAt = new \DateTime();
@@ -29,8 +30,12 @@ class ConfirmNewsletterController extends AbstractController
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
         }
 
-        if (\in_array($subscription->source, [NewsletterTypeEnum::SITE_ENSEMBLE, NewsletterTypeEnum::SITE_PROCURATION, NewsletterTypeEnum::SITE_EU, NewsletterTypeEnum::FROM_EVENT], true)) {
-            return $this->redirect($this->generateUrl('legislative_site').'confirmation-newsletter');
+        if ($subscription->source) {
+            $source = $newsletterSourceRepository->findOneByCode($subscription->source);
+
+            if ($source && $source->confirmationRedirectUrl) {
+                return $this->redirect($source->confirmationRedirectUrl);
+            }
         }
 
         $this->addFlash('success', 'Votre inscription à la newsletter a bien été confirmée.');

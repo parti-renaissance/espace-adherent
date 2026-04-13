@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Renaissance\Newsletter;
 
-use App\Newsletter\NewsletterTypeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -34,7 +33,7 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
-    #[Assert\Choice(callback: 'getValidSources')]
+    #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[Groups(['newsletter:write'])]
     public ?string $source = null;
@@ -42,15 +41,4 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\IsTrue]
     #[Groups(['newsletter:write'])]
     public ?bool $cguAccepted = false;
-
-    public function getValidSources(): array
-    {
-        return [
-            NewsletterTypeEnum::SITE_RENAISSANCE,
-            NewsletterTypeEnum::SITE_NRP,
-            NewsletterTypeEnum::SITE_EU,
-            NewsletterTypeEnum::SITE_ENSEMBLE,
-            NewsletterTypeEnum::SITE_STOPRESEAUX,
-        ];
-    }
 }
