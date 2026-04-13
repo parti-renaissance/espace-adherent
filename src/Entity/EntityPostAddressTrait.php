@@ -57,7 +57,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getAdditionalAddress();
     }
 
-    #[Groups(['user_profile', 'export', 'adherent_autocomplete', 'national_event_inscription:webhook'])]
+    #[Groups(['user_profile', 'export', 'adherent_autocomplete'])]
     public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();

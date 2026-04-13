@@ -9,9 +9,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'timeout' => 15,
             ],
             'scoped_clients' => [
-                'national_event_webhook.client' => [
-                    'base_uri' => '%env(NATIONAL_EVENT_WEBHOOK_HOST)%',
-                ],
                 'national_event_export.client' => [
                     'base_uri' => '%env(NATIONAL_EVENT_EXPORT_HOST)%',
                 ],

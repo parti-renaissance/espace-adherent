@@ -86,7 +86,6 @@ trait EntityIdentityTrait
         'my_team_member_read',
         'my_team_read',
         'my_team_read_list',
-        'national_event_inscription:webhook',
         'pap_address_list',
         'pap_address_read',
         'pap_address_voter_list',
