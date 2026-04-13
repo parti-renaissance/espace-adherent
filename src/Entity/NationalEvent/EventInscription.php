@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstName' => 'lastName', 'lastName' => 'firstName', 'addressEmail' => 'addressEmail'])]
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['event.type' => 'exact'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['event.uuid' => 'exact'])]
 #[ApiFilter(filterClass: ExistsFilter::class, properties: ['adherent'])]
 #[ApiResource(
     shortName: 'NationalEventInscription',
@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     denormalizationContext: ['groups' => ['event_inscription_update']],
     paginationItemsPerPage: 50,
-    security: "is_granted('REQUEST_SCOPE_GRANTED', 'rentree')"
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'national_event')"
 )]
 #[NationalEventPackage(groups: ['Admin'])]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]

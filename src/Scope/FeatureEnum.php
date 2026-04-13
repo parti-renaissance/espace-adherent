@@ -40,7 +40,7 @@ class FeatureEnum extends Enum
     public const CIRCONSCRIPTIONS = 'circonscriptions';
     public const REFERRALS = 'referrals';
     public const AGORAS = 'agoras';
-    public const RENTREE = 'rentree';
+    public const NATIONAL_EVENT = 'national_event';
     public const EAGGLE = 'eaggle';
 
     public const ALL = [
@@ -76,7 +76,7 @@ class FeatureEnum extends Enum
         self::EAGGLE,
         self::CIRCONSCRIPTIONS,
         self::REFERRALS,
-        self::RENTREE,
+        self::NATIONAL_EVENT,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [

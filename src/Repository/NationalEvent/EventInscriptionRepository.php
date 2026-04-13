@@ -26,6 +26,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface, UpdateAdherentLinkRepositoryInterface
 {
@@ -470,7 +471,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     /**
      * @return EventInscription[]
      */
-    public function findAllForCurrentCampus(array $zones, array $committeeUuids, ?bool $withAdherent, ?string $search): array
+    public function findAllForExport(UuidInterface $eventUuid, array $zones, array $committeeUuids, ?bool $withAdherent, ?string $search): array
     {
         $eventId = $this->getEntityManager()->createQueryBuilder()
             ->select('e.id')
@@ -482,10 +483,13 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                 END AS HIDDEN score'
             )
             ->from(NationalEvent::class, 'e')
-            ->where('e.type = :type')
+            ->where('e.uuid = :uuid')
             ->orderBy('score', 'ASC')
             ->setMaxResults(1)
-            ->setParameters(['type' => NationalEventTypeEnum::CAMPUS, 'now' => new \DateTime()])
+            ->setParameters([
+                'uuid' => $eventUuid,
+                'now' => new \DateTime(),
+            ])
             ->getQuery()
             ->getSingleScalarResult()
         ;

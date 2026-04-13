@@ -114,7 +114,7 @@ Feature:
                         "eaggle",
                         "circonscriptions",
                         "referrals",
-                        "rentree"
+                        "national_event"
                     ]
                 },
                 {
@@ -297,7 +297,7 @@ Feature:
                     "eaggle",
                     "circonscriptions",
                     "referrals",
-                    "rentree"
+                    "national_event"
                 ],
                 "attributes": {
                     "theme": {
@@ -669,7 +669,7 @@ Feature:
                     "eaggle",
                     "circonscriptions",
                     "referrals",
-                    "rentree"
+                    "national_event"
                 ],
                 "delegated_access": {
                     "delegator": {
@@ -737,7 +737,7 @@ Feature:
                     "eaggle",
                     "circonscriptions",
                     "referrals",
-                    "rentree"
+                    "national_event"
                 ],
                 "attributes": {
                     "theme": {

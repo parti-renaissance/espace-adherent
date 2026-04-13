@@ -490,7 +490,7 @@ Feature:
                                     "eaggle",
                                     "circonscriptions",
                                     "referrals",
-                                    "rentree"
+                                    "national_event"
                                 ],
                                 "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                             }
@@ -582,7 +582,7 @@ Feature:
                                     "eaggle",
                                     "circonscriptions",
                                     "referrals",
-                                    "rentree"
+                                    "national_event"
                                 ],
                                 "uuid": "@uuid@"
                             }
