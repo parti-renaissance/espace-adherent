@@ -19,6 +19,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'friendly_captcha.client' => [
                     'base_uri' => 'https://eu-api.friendlycaptcha.eu',
                 ],
+                'friendly_captcha_v2.client' => [
+                    'base_uri' => 'https://eu.frcapi.com',
+                ],
                 'mailchimp_signup.client' => [
                     'base_uri' => '%env(MAILCHIMP_SIGNUP_HOST)%',
                 ],

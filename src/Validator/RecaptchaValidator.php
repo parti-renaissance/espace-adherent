@@ -44,7 +44,9 @@ class RecaptchaValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->getClient($constraint->api)->verify($recaptchaAnswer, $value->getRecaptchaSiteKey())) {
+        $apiName = $value->getRecaptchaApi() ?? $constraint->api;
+
+        if (!$this->getClient($apiName)->verify($recaptchaAnswer, $value->getRecaptchaSiteKey())) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
