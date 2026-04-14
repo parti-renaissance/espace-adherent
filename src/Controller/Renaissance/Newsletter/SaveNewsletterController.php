@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Newsletter;
 
+use App\Recaptcha\FriendlyCaptchaV2ApiClient;
 use App\Renaissance\Newsletter\NewsletterManager;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use App\Repository\Renaissance\NewsletterSourceRepository;
@@ -37,6 +38,7 @@ class SaveNewsletterController extends AbstractController
         ]);
 
         $subscription->setRecaptchaSiteKey($this->friendlyCaptchaNewsletterSiteKey);
+        $subscription->setRecaptchaApi(FriendlyCaptchaV2ApiClient::NAME);
 
         $errors = $this->validator->validate($subscription);
 

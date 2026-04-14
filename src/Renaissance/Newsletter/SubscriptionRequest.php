@@ -24,7 +24,6 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     #[Groups(['newsletter:write'])]
     public ?string $lastName = null;
 
-    #[Assert\NotBlank]
     #[Groups(['newsletter:write'])]
     public ?string $postalCode = null;
 
