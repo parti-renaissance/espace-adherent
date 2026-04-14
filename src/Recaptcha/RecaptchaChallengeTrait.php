@@ -14,6 +14,8 @@ trait RecaptchaChallengeTrait
     #[Groups(['contact_create', 'legislative_newsletter_subscriptions_write'])]
     protected ?string $recaptchaSiteKey = null;
 
+    protected ?string $recaptchaApi = null;
+
     public function getRecaptcha(): ?string
     {
         return $this->recaptcha;
@@ -32,5 +34,15 @@ trait RecaptchaChallengeTrait
     public function setRecaptchaSiteKey(?string $recaptchaSiteKey): void
     {
         $this->recaptchaSiteKey = $recaptchaSiteKey;
+    }
+
+    public function getRecaptchaApi(): ?string
+    {
+        return $this->recaptchaApi;
+    }
+
+    public function setRecaptchaApi(?string $recaptchaApi): void
+    {
+        $this->recaptchaApi = $recaptchaApi;
     }
 }

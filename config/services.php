@@ -300,6 +300,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$privateKey', '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%')
         ->arg('$defaultSiteKey', '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%');
 
+    $services->set(App\Recaptcha\FriendlyCaptchaV2ApiClient::class)
+        ->arg('$apiKey', '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%')
+        ->arg('$defaultSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%');
+
     $services->set(App\Validator\RecaptchaValidator::class)
         ->args([
             tagged_iterator('app.recaptcha_api_client'),
