@@ -5,19 +5,27 @@ declare(strict_types=1);
 namespace App\OAuth\Repository;
 
 use App\Entity\Adherent;
+use App\Repository\AdherentRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use OpenIDConnectServer\Repositories\IdentityProviderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OAuthUserRepository implements UserRepositoryInterface
+class OAuthUserRepository implements UserRepositoryInterface, IdentityProviderInterface
 {
     public function __construct(
         private readonly UserProviderInterface $userProvider,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly AdherentRepository $adherentRepository,
     ) {
+    }
+
+    public function getUserEntityByIdentifier($identifier): ?Adherent
+    {
+        return $this->adherentRepository->findOneByUuid($identifier);
     }
 
     public function getUserEntityByUserCredentials(

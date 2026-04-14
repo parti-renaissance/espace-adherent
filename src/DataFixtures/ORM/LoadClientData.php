@@ -29,6 +29,7 @@ class LoadClientData extends Fixture
     public const CLIENT_12_UUID = '4498e44f-f214-110d-8b76-98a83f9d2b0c';
     public const CLIENT_13_UUID = '8128979a-cfdb-45d1-a386-f14f22bb19ae';
     public const CLIENT_14_UUID = '189456f3-7e43-413a-9d83-ad8b6045db50';
+    public const CLIENT_15_UUID = 'd4f1f7ea-9c8e-4b1f-9a2c-7f2b3c4d5e6f';
 
     public function load(ObjectManager $manager): void
     {
@@ -216,6 +217,26 @@ class LoadClientData extends Fixture
         $client14->addSupportedScope(Scope::WRITE_GENERAL_CONVENTIONS);
 
         $manager->persist($client14);
+
+        $client15 = new Client(
+            Uuid::fromString(self::CLIENT_15_UUID),
+            'Dashboard RFE',
+            'Dashboard OIDC + PKCE',
+            'dashboard-rfe-dev-secret-to-be-rotated-in-prod',
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://localhost:8080/auth/callback']
+        );
+        $client15->setAskUserForAuthorization(false);
+        $client15->setPkceRequired(true);
+        $client15->setPostLogoutRedirectUris([
+            'http://localhost:8080',
+        ]);
+        $client15->addSupportedScope(Scope::OPENID);
+        $client15->addSupportedScope(Scope::PROFILE);
+        $client15->addSupportedScope(Scope::EMAIL);
+        $client15->addSupportedScope(Scope::OFFLINE_ACCESS);
+
+        $manager->persist($client15);
 
         $manager->flush();
     }

@@ -39,6 +39,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('user_vox_host', '%env(USER_VOX_HOST)%');
 
+    $parameters->set('oidc.issuer', '%env(APP_SCHEME)%://%env(USER_VOX_HOST)%');
+
     $parameters->set('formation_auth_start_url', '%env(FORMATION_URL)%/auth/oauth2/login.php?id=1&wantsurl=%2F');
 
     $parameters->set('legislative_host', '%env(LEGISLATIVE_HOST)%');
@@ -249,6 +251,22 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$encryptionKey', '%env(SSL_ENCRYPTION_KEY)%')
         ->arg('$accessTokenTtlInterval', '%env(ACCESS_TOKEN_TTL_INTERVAL)%')
         ->arg('$refreshTokenTtlInterval', '%env(REFRESH_TOKEN_TTL_INTERVAL)%');
+
+    $services->set(App\OAuth\Oidc\JwkSetProvider::class)
+        ->arg('$publicKey', service('app.ssl_public_key'));
+
+    $services->set(OpenIDConnectServer\ClaimExtractor::class);
+
+    $services->set(App\OAuth\ResponseType\OidcBearerResponse::class)
+        ->arg('$identityProvider', service(App\OAuth\Repository\OAuthUserRepository::class))
+        ->arg('$issuer', '%oidc.issuer%');
+
+    $services->set(App\OAuth\Oidc\OidcDiscoveryMetadataBuilder::class)
+        ->arg('$issuer', '%oidc.issuer%');
+
+    $services->set(App\OAuth\Oidc\IdTokenHintValidator::class)
+        ->arg('$publicKey', service('app.ssl_public_key'))
+        ->arg('$issuer', '%oidc.issuer%');
 
     $services->set(App\Normalizer\AdherentMessageFilterSanitizeDenormalizer::class)
         ->tag('serializer.normalizer', [

@@ -86,6 +86,12 @@ class ClientAdmin extends AbstractAdmin
                     'label' => 'Adresses de redirection',
                     'template' => 'admin/oauth/client/_show_redirectUris.html.twig',
                 ])
+                ->add('postLogoutRedirectUris', 'array', [
+                    'label' => 'URIs de redirection post-logout (OIDC)',
+                ])
+                ->add('pkceRequired', 'boolean', [
+                    'label' => 'PKCE requis (S256)',
+                ])
                 ->add('createdAt', 'datetime', ['label' => 'Date de création'])
                 ->add('updatedAt', 'datetime', ['label' => 'Date de modification'])
             ->end()
@@ -134,6 +140,21 @@ class ClientAdmin extends AbstractAdmin
                 'allow_delete' => true,
                 'by_reference' => false,
                 'error_bubbling' => false,
+            ])
+            ->add('postLogoutRedirectUris', CollectionType::class, [
+                'label' => 'URIs de redirection post-logout (OIDC)',
+                'required' => false,
+                'entry_type' => UrlType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'error_bubbling' => false,
+                'help' => 'URIs autorisées pour le paramètre post_logout_redirect_uri du flow OIDC end-session. Laisser vide pour les clients non-OIDC.',
+            ])
+            ->add('pkceRequired', null, [
+                'label' => 'PKCE requis (S256)',
+                'required' => false,
+                'help' => 'Force l\'utilisation de PKCE (S256) pour les flows authorization_code de ce client.',
             ])
             ->add('requestedRoles', CollectionType::class, [
                 'required' => false,

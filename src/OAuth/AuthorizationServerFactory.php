@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\OAuth;
 
+use App\OAuth\Grant\OidcAuthCodeGrant;
 use App\OAuth\Grant\RefreshTokenGrant;
 use App\OAuth\Listener\SymfonyLeagueEventListener;
-use App\OAuth\ResponseType\SessionBearerResponse;
+use App\OAuth\ResponseType\OidcBearerResponse;
+use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -43,7 +44,8 @@ class AuthorizationServerFactory
         ScopeRepositoryInterface $scopeRepository,
         SymfonyLeagueEventListener $symfonyLeagueEventListener,
         CryptKey $privateKey,
-        private readonly SessionBearerResponse $sessionBearerResponse,
+        private readonly OidcBearerResponse $oidcBearerResponse,
+        private readonly ClientRepository $entityClientRepository,
         string $encryptionKey,
         private readonly int $maxIdleTime,
         string $accessTokenTtlInterval,
@@ -72,7 +74,7 @@ class AuthorizationServerFactory
             $this->scopeRepository,
             $this->privateKey,
             $this->encryptionKey,
-            $this->sessionBearerResponse,
+            $this->oidcBearerResponse,
         );
 
         $server->getEmitter()->useListenerProvider($this->symfonyLeagueEventListener);
@@ -106,10 +108,11 @@ class AuthorizationServerFactory
 
     private function createAuthCodeGrant(): GrantTypeInterface
     {
-        return new AuthCodeGrant(
+        return new OidcAuthCodeGrant(
+            $this->entityClientRepository,
             $this->authCodeRepository,
             $this->refreshTokenRepository,
-            new \DateInterval($this->authCodeTtlInterval)
+            new \DateInterval($this->authCodeTtlInterval),
         );
     }
 }

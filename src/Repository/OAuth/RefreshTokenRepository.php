@@ -81,6 +81,27 @@ class RefreshTokenRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    public function revokeTokensByUserAndClient(Adherent $user, Client $client): void
+    {
+        $tokens = $this
+            ->createQueryBuilder('rt')
+            ->join('rt.accessToken', 'at')
+            ->where('at.user = :user')
+            ->andWhere('at.client = :client')
+            ->andWhere('rt.revokedAt IS NULL')
+            ->setParameter('user', $user)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        foreach ($tokens as $refreshToken) {
+            $this->revokeToken($refreshToken);
+        }
+
+        $this->_em->flush();
+    }
+
     private function revokeToken(RefreshToken $token): void
     {
         if (!$token->isRevoked()) {

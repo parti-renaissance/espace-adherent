@@ -331,6 +331,8 @@ adherent.get_magic_link.email_sent: Si <strong>{email}</strong> existe, vous rec
 adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
 
+oidc.logout.confirmed: Vous avez été déconnecté.
+
 adherent.update_profile.success: Vos informations ont été mises à jour avec succès.
 adherent.update_interests.success: Vos centres d'intérêts ont bien été mis à jour.
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
