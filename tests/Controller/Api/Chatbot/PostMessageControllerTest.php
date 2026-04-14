@@ -8,7 +8,6 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Chatbot\Message;
 use App\Entity\Chatbot\Thread;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\AI\Platform\Message\Role;
@@ -55,11 +54,8 @@ class PostMessageControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'carl999@example.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'carl999@example.fr'
         );
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
@@ -285,11 +281,8 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
         return $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'michelle.dufour@example.ch',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'michelle.dufour@example.ch'
         );
     }
 }

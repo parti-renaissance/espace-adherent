@@ -65,25 +65,3 @@ Feature: OpenID Connect (OIDC) flow for the dashboard-rfe client
         Then the response status code should be 302
         And the header "Location" should match "#^/connexion$#"
 
-    Scenario: Non-OIDC client (jemarche_app scope) receives session UUID in both session_id and legacy id_token fields
-        When I send a "POST" request to "/oauth/v2/token" with parameters:
-            | key           | value                                       |
-            | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE= |
-            | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b        |
-            | grant_type    | password                                    |
-            | scope         | jemarche_app                                |
-            | username      | carl999@example.fr                          |
-            | password      | secret!12345                                |
-        Then the response status code should be 200
-        And the response should be in JSON
-        And the JSON should be equal to:
-            """
-            {
-              "token_type": "Bearer",
-              "expires_in": @integer@,
-              "access_token": "@string@",
-              "session_id": "@uuid@",
-              "id_token": "@uuid@",
-              "refresh_token": "@string@"
-            }
-            """

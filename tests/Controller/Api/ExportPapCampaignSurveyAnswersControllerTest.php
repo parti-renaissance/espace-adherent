@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
-use App\OAuth\Model\GrantTypeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +24,8 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            'benjyd@aol.com',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'benjyd@aol.com'
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
@@ -44,11 +39,8 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            'deputy@en-marche-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'deputy@en-marche-dev.fr'
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
@@ -71,11 +63,8 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            'president-ad@renaissance-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'president-ad@renaissance-dev.fr'
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=president_departmental_assembly', [], [], [
@@ -101,11 +90,8 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
     ): void {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            $email,
-            LoadAdherentData::DEFAULT_PASSWORD
+            $email
         );
 
         $this->client->request(

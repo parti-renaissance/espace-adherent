@@ -301,14 +301,16 @@ class RestContext extends BehatchRestContext
         $token->setClient($client);
         $token->setIdentifier($accessToken->getIdentifier());
         $token->setExpiryDateTime($accessToken->getExpiryDateTime());
-        $token->setUserIdentifier($accessToken->getUserIdentifier());
+        if (null !== $userIdentifier = $accessToken->getUserIdentifier()) {
+            $token->setUserIdentifier($userIdentifier);
+        }
         $token->setPrivateKey($this->privateCryptKey);
 
         foreach ($accessToken->getScopes() as $scope) {
             $token->addScope(new Scope($scope));
         }
 
-        return (string) $token;
+        return $token->toString();
     }
 
     /**

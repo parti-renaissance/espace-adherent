@@ -12,18 +12,15 @@ use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
-use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
 class AuthorizationServerFactory
 {
     private $accessTokenRepository;
-    private $userRepository;
     private $clientRepository;
     private $scopeRepository;
     private $privateKey;
@@ -37,7 +34,6 @@ class AuthorizationServerFactory
 
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
-        UserRepositoryInterface $userRepository,
         AuthCodeRepositoryInterface $authCodeRepository,
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
@@ -53,7 +49,6 @@ class AuthorizationServerFactory
         string $authCodeTtlInterval = 'PT10M',
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
-        $this->userRepository = $userRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
         $this->privateKey = $privateKey;
@@ -77,24 +72,15 @@ class AuthorizationServerFactory
             $this->oidcBearerResponse,
         );
 
-        $server->getEmitter()->useListenerProvider($this->symfonyLeagueEventListener);
+        $this->symfonyLeagueEventListener->register($server);
 
         $accessTokenTtl = new \DateInterval($this->accessTokenTtlInterval);
         $refreshTokenTtl = new \DateInterval($this->refreshTokenTtlInterval);
 
         $server->enableGrantType($this->createAuthCodeGrant(), $accessTokenTtl);
         $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
-        $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
 
         return $server;
-    }
-
-    private function createPasswordGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
-    {
-        $grant = new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
-        $grant->setRefreshTokenTTL($refreshTokenTtl);
-
-        return $grant;
     }
 
     private function createRefreshTokenGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
@@ -108,11 +94,18 @@ class AuthorizationServerFactory
 
     private function createAuthCodeGrant(): GrantTypeInterface
     {
-        return new OidcAuthCodeGrant(
+        $grant = new OidcAuthCodeGrant(
             $this->entityClientRepository,
             $this->authCodeRepository,
             $this->refreshTokenRepository,
             new \DateInterval($this->authCodeTtlInterval),
         );
+        // v8 backward-compat: legacy clients used the authorization_code flow without PKCE and without
+        // client_secret (i.e. public clients). v9 enforces PKCE for public clients by default; the custom
+        // OidcAuthCodeGrant::validateAuthorizationRequest() re-introduces PKCE enforcement for clients that
+        // explicitly opt in via Client::isPkceRequired().
+        $grant->disableRequireCodeChallengeForPublicClients();
+
+        return $grant;
     }
 }

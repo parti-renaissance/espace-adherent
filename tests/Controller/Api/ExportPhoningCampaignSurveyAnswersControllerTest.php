@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
-use App\OAuth\Model\GrantTypeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +24,8 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            'benjyd@aol.com',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'benjyd@aol.com'
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=phoning_national_manager', [], [], [
@@ -45,11 +40,8 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             null,
-            $email,
-            LoadAdherentData::DEFAULT_PASSWORD
+            $email
         );
 
         $this->client->request(

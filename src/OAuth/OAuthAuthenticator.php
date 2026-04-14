@@ -61,9 +61,10 @@ class OAuthAuthenticator extends AbstractAuthenticator
     {
         $roles = array_map([Scope::class, 'generateRole'], $credentials['oauth_scopes']);
 
-        // If user identifier is empty, it just means that the token is associated to an OAuth Client for
-        // machine-to-machine communication only
-        if (!$credentials['oauth_user_id']) {
+        // If user identifier is empty OR falls back to the client identifier (league v9 behavior when the
+        // access token has no user — see AccessTokenTrait::getSubjectIdentifier), the token is associated
+        // to an OAuth Client for machine-to-machine (or device) communication only.
+        if (!$credentials['oauth_user_id'] || $credentials['oauth_user_id'] === $credentials['oauth_client_id']) {
             if ($deviceUuid = $credentials['oauth_device_id']) {
                 if (!$device = $this->deviceRepository->findOneByDeviceUuid($deviceUuid)) {
                     throw new BadCredentialsException('Invalid credentials.', 0);

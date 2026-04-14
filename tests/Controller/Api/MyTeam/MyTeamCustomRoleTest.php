@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api\MyTeam;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadMyTeamData;
 use App\Entity\MyTeam\Member;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
@@ -83,11 +81,8 @@ class MyTeamCustomRoleTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'referent@en-marche-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'referent@en-marche-dev.fr'
         );
 
         $this->client->request(

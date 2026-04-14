@@ -16,22 +16,22 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 {
     use TokenStoreTrait;
 
-    private $persistentTokenFactory;
-    private $accessTokenRepository;
-
     public function __construct(
-        PersistentTokenFactory $persistentTokenFactory,
-        AccessTokenRepository $accessTokenRepository,
+        private readonly PersistentTokenFactory $persistentTokenFactory,
+        private readonly AccessTokenRepository $accessTokenRepository,
     ) {
-        $this->persistentTokenFactory = $persistentTokenFactory;
-        $this->accessTokenRepository = $accessTokenRepository;
     }
 
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null): InMemoryAccessToken
-    {
+    public function getNewToken(
+        ClientEntityInterface $clientEntity,
+        array $scopes,
+        ?string $userIdentifier = null,
+    ): AccessTokenEntityInterface {
         $token = new InMemoryAccessToken();
         $token->setClient($clientEntity);
-        $token->setUserIdentifier($userIdentifier);
+        if (null !== $userIdentifier) {
+            $token->setUserIdentifier($userIdentifier);
+        }
 
         array_map([$token, 'addScope'], $scopes);
 
@@ -43,7 +43,7 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         $this->store($this->persistentTokenFactory->createAccessToken($accessTokenEntity));
     }
 
-    public function revokeAccessToken($tokenId): void
+    public function revokeAccessToken(string $tokenId): void
     {
         if (!$token = $this->findAccessToken($tokenId)) {
             return;
@@ -55,7 +55,7 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         $this->store($token);
     }
 
-    public function isAccessTokenRevoked($tokenId): bool
+    public function isAccessTokenRevoked(string $tokenId): bool
     {
         if (!$token = $this->findAccessToken($tokenId)) {
             return true;

@@ -6,12 +6,13 @@ namespace App\OAuth\Grant;
 
 use App\OAuth\Model\AccessToken;
 use App\Repository\OAuth\ClientRepository;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class OidcAuthCodeGrant extends AuthCodeGrant
@@ -28,7 +29,7 @@ class OidcAuthCodeGrant extends AuthCodeGrant
         parent::__construct($authCodeRepository, $refreshTokenRepository, $authCodeTTL);
     }
 
-    public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequest
+    public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequestInterface
     {
         $authRequest = parent::validateAuthorizationRequest($request);
 
@@ -54,12 +55,10 @@ class OidcAuthCodeGrant extends AuthCodeGrant
     /**
      * Override to inject the captured OIDC `nonce` into the encrypted auth code payload,
      * so it can be extracted back when exchanging the code for an access token.
-     *
-     * @param string $unencryptedData
      */
-    protected function encrypt($unencryptedData): string
+    protected function encrypt(string $unencryptedData): string
     {
-        if (null !== $this->capturedNonce && \is_string($unencryptedData)) {
+        if (null !== $this->capturedNonce) {
             $payload = json_decode($unencryptedData, true);
             if (\is_array($payload)) {
                 $payload['nonce'] = $this->capturedNonce;
@@ -76,10 +75,8 @@ class OidcAuthCodeGrant extends AuthCodeGrant
     /**
      * Override to extract the OIDC `nonce` from the decrypted auth code payload,
      * stash it for `issueAccessToken` to propagate onto the AccessToken.
-     *
-     * @param string $encryptedData
      */
-    protected function decrypt($encryptedData): string
+    protected function decrypt(string $encryptedData): string
     {
         $decrypted = parent::decrypt($encryptedData);
 
@@ -94,12 +91,12 @@ class OidcAuthCodeGrant extends AuthCodeGrant
     protected function issueAccessToken(
         \DateInterval $accessTokenTTL,
         ClientEntityInterface $client,
-        $userIdentifier,
+        ?string $userIdentifier,
         array $scopes = [],
-    ) {
+    ): AccessTokenEntityInterface {
         $accessToken = parent::issueAccessToken($accessTokenTTL, $client, $userIdentifier, $scopes);
 
-        if ($accessToken instanceof AccessToken && null !== $this->decryptedNonce) {
+        if (null !== $this->decryptedNonce) {
             $accessToken->nonce = $this->decryptedNonce;
         }
 

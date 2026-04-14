@@ -13,28 +13,23 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface as OAuthAuthCo
 
 class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
 {
-    private $persistentTokenFactory;
-    private $authorizationCodeRepository;
-
     public function __construct(
-        PersistentTokenFactory $persistentTokenFactory,
-        AuthorizationCodeRepository $authorizationCodeRepository,
+        private readonly PersistentTokenFactory $persistentTokenFactory,
+        private readonly AuthorizationCodeRepository $authorizationCodeRepository,
     ) {
-        $this->persistentTokenFactory = $persistentTokenFactory;
-        $this->authorizationCodeRepository = $authorizationCodeRepository;
     }
 
-    public function getNewAuthCode()
+    public function getNewAuthCode(): AuthCodeEntityInterface
     {
         return new InMemoryAuthorizationCode();
     }
 
-    public function persistNewAuthCode(AuthCodeEntityInterface $authCode)
+    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
-        $this->store($this->persistentTokenFactory->createAuthorizationCode($authCode));
+        $this->store($this->persistentTokenFactory->createAuthorizationCode($authCodeEntity));
     }
 
-    public function revokeAuthCode($codeId)
+    public function revokeAuthCode(string $codeId): void
     {
         if (!$token = $this->findAuthorizationCode($codeId)) {
             return;
@@ -44,7 +39,7 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
         $this->store($token);
     }
 
-    public function isAuthCodeRevoked($codeId)
+    public function isAuthCodeRevoked(string $codeId): bool
     {
         if (!$token = $this->findAuthorizationCode($codeId)) {
             return true;

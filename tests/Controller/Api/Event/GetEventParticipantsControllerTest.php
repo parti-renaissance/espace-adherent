@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api\Event;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +23,8 @@ class GetEventParticipantsControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'president-ad@renaissance-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'president-ad@renaissance-dev.fr'
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants.xlsx?scope=president_departmental_assembly', [], [], [

@@ -12,13 +12,12 @@ class OAuthServerException extends BaseOAuthServerException
     private const INVALID_REQUEST_MESSAGE = 'Un paramètre requis est manquant, invalide, ou est inclus plus d\'une fois.';
     private const INVALID_REQUEST_HINT_MESSAGE = 'Vérifiez le paramètre \'%s\'.';
 
-    public static function invalidCredentials()
+    public static function invalidCredentials(): static
     {
         return new self(self::INVALID_CREDENTIALS_MESSAGE, 6, 'invalid_grant', 400);
     }
 
-    /** {@inheritDoc} */
-    public static function invalidRequest($parameter, $hint = null, ?\Throwable $previous = null)
+    public static function invalidRequest(string $parameter, ?string $hint = null, ?\Throwable $previous = null): static
     {
         $hint ??= \sprintf(self::INVALID_REQUEST_HINT_MESSAGE, $parameter);
 

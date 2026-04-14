@@ -7,12 +7,13 @@ namespace App\OAuth\Store;
 use App\OAuth\Model\Client;
 use App\OAuth\Model\Scope;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
 class ScopeStore implements ScopeRepositoryInterface
 {
-    public function getScopeEntityByIdentifier($identifier)
+    public function getScopeEntityByIdentifier(string $identifier): ?ScopeEntityInterface
     {
         if (!Scope::isValid($identifier)) {
             return null;
@@ -23,10 +24,11 @@ class ScopeStore implements ScopeRepositoryInterface
 
     public function finalizeScopes(
         array $scopes,
-        $grantType,
+        string $grantType,
         ClientEntityInterface $clientEntity,
-        $userIdentifier = null,
-    ) {
+        ?string $userIdentifier = null,
+        ?string $authCodeId = null,
+    ): array {
         if (!$clientEntity instanceof Client) {
             throw new \LogicException(\sprintf('Only %s instances are supported', Client::class));
         }

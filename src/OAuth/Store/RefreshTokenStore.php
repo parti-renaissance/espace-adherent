@@ -15,28 +15,23 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
 {
     use TokenStoreTrait;
 
-    private $persistentTokenFactory;
-    private $refreshTokenRepository;
-
     public function __construct(
-        PersistentTokenFactory $persistentTokenFactory,
-        RefreshTokenRepository $refreshTokenRepository,
+        private readonly PersistentTokenFactory $persistentTokenFactory,
+        private readonly RefreshTokenRepository $refreshTokenRepository,
     ) {
-        $this->persistentTokenFactory = $persistentTokenFactory;
-        $this->refreshTokenRepository = $refreshTokenRepository;
     }
 
-    public function getNewRefreshToken()
+    public function getNewRefreshToken(): ?RefreshTokenEntityInterface
     {
         return new InMemoryRefreshToken();
     }
 
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshToken)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
-        $this->store($this->persistentTokenFactory->createRefreshToken($refreshToken));
+        $this->store($this->persistentTokenFactory->createRefreshToken($refreshTokenEntity));
     }
 
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken(string $tokenId): void
     {
         if (!$token = $this->findRefreshToken($tokenId)) {
             return;
@@ -48,7 +43,7 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
         $this->store($token);
     }
 
-    public function isRefreshTokenRevoked($tokenId)
+    public function isRefreshTokenRevoked(string $tokenId): bool
     {
         if (!$token = $this->findRefreshToken($tokenId)) {
             return true;

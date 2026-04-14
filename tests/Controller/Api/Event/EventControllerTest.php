@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Tests\App\Controller\Api\Event;
 
 use App\AppCodeEnum;
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Event\Event;
 use App\Mailer\Message\Renaissance\EventUpdateMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,11 +27,8 @@ class EventControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'president-ad@renaissance-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'president-ad@renaissance-dev.fr'
         );
 
         $this->client->request(Request::METHOD_POST, '/api/v3/events?scope=president_departmental_assembly', [], [], [

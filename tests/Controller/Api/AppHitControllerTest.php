@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadAdherentMessageData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventData;
 use App\JeMengage\Hit\Stats\AggregatorInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
@@ -469,11 +467,8 @@ class AppHitControllerTest extends AbstractApiTestCase
 
         $this->accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_13_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ15',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMARCHE_APP,
-            'president-ad@renaissance-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'president-ad@renaissance-dev.fr'
         );
     }
 }
