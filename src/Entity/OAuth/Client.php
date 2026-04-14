@@ -66,6 +66,15 @@ class Client implements \Stringable, EntitySoftDeletedInterface
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $sessionEnabled = true;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $pkceRequired = false;
+
+    /**
+     * @var string[]|null
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $postLogoutRedirectUris = null;
+
     public function __construct(
         ?UuidInterface $uuid = null,
         string $name = '',
@@ -238,5 +247,36 @@ class Client implements \Stringable, EntitySoftDeletedInterface
     public function isCadreClient(): bool
     {
         return AppCodeEnum::JEMENGAGE_WEB === $this->code;
+    }
+
+    public function isPkceRequired(): bool
+    {
+        return $this->pkceRequired;
+    }
+
+    public function setPkceRequired(bool $pkceRequired): void
+    {
+        $this->pkceRequired = $pkceRequired;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPostLogoutRedirectUris(): array
+    {
+        return $this->postLogoutRedirectUris ?? [];
+    }
+
+    /**
+     * @param string[]|null $uris
+     */
+    public function setPostLogoutRedirectUris(?array $uris): void
+    {
+        $this->postLogoutRedirectUris = $uris;
+    }
+
+    public function hasPostLogoutRedirectUri(string $uri): bool
+    {
+        return \in_array($uri, $this->getPostLogoutRedirectUris(), true);
     }
 }

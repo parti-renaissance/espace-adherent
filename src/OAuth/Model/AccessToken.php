@@ -18,4 +18,5 @@ final class AccessToken implements AccessTokenEntityInterface
 
     public ?string $oldAccessTokenId = null;
     public ?UuidInterface $currentSessionUuid = null;
+    public ?string $nonce = null;
 }

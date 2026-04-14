@@ -32,6 +32,46 @@ class ClientTest extends TestCase
         $client->setAllowedGrantTypes(['dummy']);
     }
 
+    public function testPkceRequiredDefaultsToFalse(): void
+    {
+        $client = $this->createClient();
+        self::assertFalse($client->isPkceRequired());
+    }
+
+    public function testPkceRequiredCanBeSetTrue(): void
+    {
+        $client = $this->createClient();
+        $client->setPkceRequired(true);
+        self::assertTrue($client->isPkceRequired());
+    }
+
+    public function testPostLogoutRedirectUrisDefaultsToEmptyArray(): void
+    {
+        $client = $this->createClient();
+
+        self::assertSame([], $client->getPostLogoutRedirectUris());
+        self::assertFalse($client->hasPostLogoutRedirectUri('https://example.com/logout'));
+    }
+
+    public function testPostLogoutRedirectUrisCanBeSet(): void
+    {
+        $client = $this->createClient();
+
+        $client->setPostLogoutRedirectUris(['https://a.example.com/logout', 'https://b.example.com/logout']);
+
+        self::assertSame(['https://a.example.com/logout', 'https://b.example.com/logout'], $client->getPostLogoutRedirectUris());
+    }
+
+    public function testHasPostLogoutRedirectUriIsStrictEquality(): void
+    {
+        $client = $this->createClient();
+        $client->setPostLogoutRedirectUris(['https://example.com/logout']);
+
+        self::assertTrue($client->hasPostLogoutRedirectUri('https://example.com/logout'));
+        self::assertFalse($client->hasPostLogoutRedirectUri('https://example.com/logout/'));
+        self::assertFalse($client->hasPostLogoutRedirectUri('https://EXAMPLE.com/logout'));
+    }
+
     public function testRedirectUrisCanBeAddedAndRemoved(): void
     {
         $client = $this->createClient();

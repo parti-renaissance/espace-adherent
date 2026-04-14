@@ -21,6 +21,11 @@ use MyCLabs\Enum\Enum;
  */
 final class Scope extends Enum implements \Stringable, ScopeEntityInterface
 {
+    public const OPENID = 'openid';
+    public const PROFILE = 'profile';
+    public const EMAIL = 'email';
+    public const OFFLINE_ACCESS = 'offline_access';
+
     public const WRITE_USERS = 'write:users';
     public const WRITE_EVENT = 'write:event';
 

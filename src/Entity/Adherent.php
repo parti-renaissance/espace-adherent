@@ -75,6 +75,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use OpenIDConnectServer\Entities\ClaimSetInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -139,7 +140,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ImageManageableInterface, ImageExposeInterface
+class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface, GeoPointInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ImageManageableInterface, ImageExposeInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -695,6 +696,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getIdentifier(): string
     {
         return $this->getUuidAsString();
+    }
+
+    public function getClaims(): array
+    {
+        $claims = [
+            'email' => $this->emailAddress,
+            'email_verified' => null !== $this->activatedAt,
+            'name' => trim($this->getFullName()),
+            'given_name' => $this->getFirstName(),
+            'family_name' => $this->getLastName(),
+        ];
+
+        if (null !== $this->nickname) {
+            $claims['preferred_username'] = $this->nickname;
+        }
+
+        if (null !== $this->updatedAt) {
+            $claims['updated_at'] = $this->updatedAt->getTimestamp();
+        }
+
+        return $claims;
     }
 
     public static function createUuid(string $email): UuidInterface

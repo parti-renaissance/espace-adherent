@@ -74,6 +74,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
               "token_type": "Bearer",
               "expires_in": @integer@,
               "access_token": "@string@",
+              "session_id": "@uuid@",
               "id_token": "@uuid@",
               "refresh_token": "@string@"
             }
@@ -124,6 +125,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
               "token_type": "Bearer",
               "expires_in": @integer@,
               "access_token": "@string@",
+              "session_id": "@uuid@",
               "id_token": "@uuid@",
               "refresh_token": "@string@"
             }
