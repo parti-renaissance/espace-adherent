@@ -7,9 +7,9 @@ namespace App\Admin\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LaREMSupportEnum;
 use App\Entity\Geo\Zone;
 use App\Form\AdherentMandateType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -68,32 +68,23 @@ class MandateAdmin extends AbstractAdmin
                 'error_bubbling' => true,
                 'attr' => ['class' => 'width-140'],
             ])
-            ->add('geoZone', ModelAutocompleteType::class, [
+            ->add('geoZone', AdminZoneAutocompleteType::class, [
                 'label' => 'Périmètre géographique',
-                'property' => ['name', 'code'],
                 'required' => false,
                 'btn_add' => false,
-                'callback' => function ($admin, $property, $value) {
-                    $datagrid = $admin->getDatagrid();
-                    $queryBuilder = $datagrid->getQuery();
-                    $queryBuilder
-                        ->andWhere($queryBuilder->getRootAlias().'.type IN (:zone_types)')
-                        ->setParameter('zone_types', [
-                            Zone::CUSTOM,
-                            Zone::COUNTRY,
-                            Zone::REGION,
-                            Zone::DEPARTMENT,
-                            Zone::DISTRICT,
-                            Zone::CITY,
-                            Zone::BOROUGH,
-                            Zone::CITY_COMMUNITY,
-                            Zone::CANTON,
-                            Zone::FOREIGN_DISTRICT,
-                            Zone::CONSULAR_DISTRICT,
-                        ])
-                    ;
-                    $datagrid->setValue($property[0], null, $value);
-                },
+                'zone_types' => [
+                    Zone::CUSTOM,
+                    Zone::COUNTRY,
+                    Zone::REGION,
+                    Zone::DEPARTMENT,
+                    Zone::DISTRICT,
+                    Zone::CITY,
+                    Zone::BOROUGH,
+                    Zone::CITY_COMMUNITY,
+                    Zone::CANTON,
+                    Zone::FOREIGN_DISTRICT,
+                    Zone::CONSULAR_DISTRICT,
+                ],
             ])
         ;
     }

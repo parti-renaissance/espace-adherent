@@ -15,6 +15,7 @@ use App\Entity\Geo\Zone;
 use App\Event\EventEvent;
 use App\Event\EventVisibilityEnum;
 use App\Events;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\TipTapContentType;
 use App\Form\EventCategoryType;
 use App\Form\ReCountryType;
@@ -329,15 +330,10 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
             ->add('committee', ModelFilter::class, [

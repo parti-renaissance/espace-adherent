@@ -8,13 +8,12 @@ use App\Admin\AbstractAdmin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -116,27 +115,11 @@ class NewsAdmin extends AbstractAdmin
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => ['name', 'code'],
-                    'callback' => static function (AdminInterface $admin, array $property, $value): void {
-                        $datagrid = $admin->getDatagrid();
-                        $qb = $datagrid->getQuery();
-                        $alias = $qb->getRootAlias();
-
-                        $qb
-                            ->andWhere($alias.'.type IN (:types)')
-                            ->andWhere($alias.'.name LIKE :search OR '.$alias.'.code LIKE :search')
-                            ->setParameter('types', [
-                                Zone::REGION,
-                                Zone::DEPARTMENT,
-                            ])
-                            ->setParameter('search', '%'.$value.'%')
-                        ;
-                    },
+                    'zone_types' => [Zone::REGION, Zone::DEPARTMENT],
                 ],
             ])
             ->add('title', null, [

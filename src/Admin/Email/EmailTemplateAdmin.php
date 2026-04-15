@@ -7,16 +7,14 @@ namespace App\Admin\Email;
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\Scope;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\UnlayerContentType;
 use App\Form\DataTransformer\ScopeToCodeDataTransformer;
-use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -67,26 +65,12 @@ class EmailTemplateAdmin extends AbstractAdmin
             ->add('zones', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Zones',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
-                    'minimum_input_length' => 1,
+                    'class' => Zone::class,
                     'items_per_page' => 20,
                     'multiple' => true,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
-                    'callback' => function (AdminInterface $admin, array $property, $value): void {
-                        $datagrid = $admin->getDatagrid();
-                        $query = $datagrid->getQuery();
-                        $rootAlias = $query->getRootAlias();
-                        $query
-                            ->andWhere($rootAlias.'.type IN (:types)')
-                            ->setParameter('types', [Zone::DEPARTMENT])
-                        ;
-
-                        $datagrid->setValue($property[0], null, $value);
-                    },
+                    'zone_types' => [Zone::DEPARTMENT],
                 ],
             ])
         ;
@@ -128,14 +112,13 @@ class EmailTemplateAdmin extends AbstractAdmin
                     'class' => Scope::class,
                     'multiple' => true,
                 ])
-                ->add('zones', ModelAutocompleteType::class, [
-                    'property' => ['name', 'code'],
+                ->add('zones', AdminZoneAutocompleteType::class, [
                     'label' => 'Zones locales',
                     'multiple' => true,
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                     'btn_add' => false,
-                    'callback' => [$this, 'prepareZoneAutocompleteCallback'],
+                    'zone_types' => [Zone::DEPARTMENT],
                 ])
             ->end()
             ->with('Contenu')
@@ -154,26 +137,5 @@ class EmailTemplateAdmin extends AbstractAdmin
         $query->andWhere(\sprintf('%s.createdByAdministrator IS NOT NULL', $query->getRootAliases()[0]));
 
         return $query;
-    }
-
-    public static function prepareZoneAutocompleteCallback(
-        AdminInterface $admin,
-        array $properties,
-        string $value,
-    ): void {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-        $qb
-            ->orWhere($orx)
-            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
-            ->setParameter('type', Zone::DEPARTMENT)
-        ;
     }
 }

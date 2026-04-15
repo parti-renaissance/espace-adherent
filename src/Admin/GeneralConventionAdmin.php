@@ -8,12 +8,12 @@ use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\AdherentAutocompleteType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\SimpleMDEContent;
 use App\GeneralConvention\MeetingTypeEnum;
 use App\GeneralConvention\OrganizerEnum;
 use App\GeneralConvention\ParticipantQuality;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -86,23 +86,12 @@ class GeneralConventionAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('departmentZone', ModelAutocompleteType::class, [
+            ->add('departmentZone', AdminZoneAutocompleteType::class, [
                 'multiple' => false,
                 'label' => 'Département',
                 'required' => true,
-                'property' => ['name', 'code'],
-                'callback' => function (AdminInterface $admin, array $property, $value): void {
-                    $datagrid = $admin->getDatagrid();
-                    $query = $datagrid->getQuery();
-                    $rootAlias = $query->getRootAlias();
-                    $query
-                        ->andWhere($rootAlias.'.type = :type_department')
-                        ->setParameter('type_department', Zone::DEPARTMENT)
-                    ;
-
-                    $datagrid->setValue($property[0], null, $value);
-                },
                 'btn_add' => false,
+                'zone_types' => [Zone::DEPARTMENT],
             ])
             ->add('committee', ModelAutocompleteType::class, [
                 'multiple' => false,
@@ -111,23 +100,12 @@ class GeneralConventionAdmin extends AbstractAdmin
                 'property' => ['name'],
                 'btn_add' => false,
             ])
-            ->add('districtZone', ModelAutocompleteType::class, [
+            ->add('districtZone', AdminZoneAutocompleteType::class, [
                 'multiple' => false,
                 'label' => 'Circonscription',
                 'required' => false,
-                'property' => ['name', 'code'],
-                'callback' => function (AdminInterface $admin, array $property, $value): void {
-                    $datagrid = $admin->getDatagrid();
-                    $query = $datagrid->getQuery();
-                    $rootAlias = $query->getRootAlias();
-                    $query
-                        ->andWhere($rootAlias.'.type = :type_district')
-                        ->setParameter('type_district', Zone::DISTRICT)
-                    ;
-
-                    $datagrid->setValue($property[0], null, $value);
-                },
                 'btn_add' => false,
+                'zone_types' => [Zone::DISTRICT],
             ])
             ->add('organizer', EnumType::class, [
                 'label' => 'Instance organisatrice',

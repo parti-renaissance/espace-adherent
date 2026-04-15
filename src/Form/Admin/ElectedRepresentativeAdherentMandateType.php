@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use App\Admin\ElectedRepresentativeAdherentMandateAdmin;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Form\AdherentMandateType;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,8 +22,6 @@ class ElectedRepresentativeAdherentMandateType extends AbstractType
             ])
             ->add('zone', AdminZoneAutocompleteType::class, [
                 'label' => 'Zone',
-                'model_manager' => $options['model_manager'],
-                'admin_code' => ElectedRepresentativeAdherentMandateAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/elected_representative_adherent_mandate_autocomplete.html.twig',
             ])
             ->add('delegation', TextType::class, [
@@ -45,12 +41,8 @@ class ElectedRepresentativeAdherentMandateType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => ElectedRepresentativeAdherentMandate::class,
-            ])
-            ->setRequired('model_manager')
-            ->addAllowedTypes('model_manager', [ModelManagerInterface::class])
-        ;
+        $resolver->setDefaults([
+            'data_class' => ElectedRepresentativeAdherentMandate::class,
+        ]);
     }
 }

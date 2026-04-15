@@ -12,6 +12,7 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Procuration\AbstractProcuration;
 use App\Entity\Procuration\Round;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\GenderType;
 use App\Form\ReCountryType;
 use App\Form\TelNumberType;
@@ -22,7 +23,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -98,18 +98,16 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                     'label' => 'Vote là ou il vit',
                     'required' => false,
                 ])
-                ->add('voteZone', ModelAutocompleteType::class, [
+                ->add('voteZone', AdminZoneAutocompleteType::class, [
                     'label' => 'Zone de vote',
                     'btn_add' => false,
-                    'property' => ['name', 'code', 'postalCode'],
-                    'callback' => [$this, 'prepareVoteZoneAutocompleteFilterCallback'],
+                    'zone_types' => [Zone::COUNTRY, Zone::CITY, Zone::BOROUGH],
                 ])
-                ->add('votePlace', ModelAutocompleteType::class, [
+                ->add('votePlace', AdminZoneAutocompleteType::class, [
                     'label' => 'Bureau de vote',
                     'required' => false,
                     'btn_add' => false,
-                    'property' => ['name', 'code'],
-                    'callback' => [$this, 'prepareVotePlaceAutocompleteFilterCallback'],
+                    'zone_types' => [Zone::VOTE_PLACE],
                 ])
                 ->add('customVotePlace', null, [
                     'label' => 'Bureau de vote (custom)',
@@ -271,22 +269,20 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ])
             ->add('voteZone', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone de vote',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 2,
                     'items_per_page' => 20,
-                    'property' => ['name', 'code', 'postalCode'],
-                    'callback' => [$this, 'prepareVoteZoneAutocompleteFilterCallback'],
+                    'zone_types' => [Zone::COUNTRY, Zone::CITY, Zone::BOROUGH],
                 ],
             ])
             ->add('votePlace', ZoneAutocompleteFilter::class, [
                 'label' => 'Bureau de vote',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 2,
                     'items_per_page' => 20,
-                    'property' => ['name', 'code'],
-                    'callback' => [$this, 'prepareVotePlaceAutocompleteFilterCallback'],
+                    'zone_types' => [Zone::VOTE_PLACE],
                 ],
             ])
             ->add('customVotePlace', null, [
@@ -297,50 +293,6 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 'show_filter' => false,
                 'field_type' => DateRangePickerType::class,
             ])
-        ;
-    }
-
-    public static function prepareVoteZoneAutocompleteFilterCallback(
-        AbstractAdmin $admin,
-        array $properties,
-        string $value,
-    ): void {
-        self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [
-            Zone::COUNTRY,
-            Zone::CITY,
-            Zone::BOROUGH,
-        ]);
-    }
-
-    public static function prepareVotePlaceAutocompleteFilterCallback(
-        AbstractAdmin $admin,
-        array $properties,
-        string $value,
-    ): void {
-        self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [Zone::VOTE_PLACE]);
-    }
-
-    private static function prepareZoneAutocompleteFilterCallback(
-        AbstractAdmin $admin,
-        array $properties,
-        string $value,
-        array $types,
-    ): void {
-        $datagrid = $admin->getDatagrid();
-        $qb = $datagrid->getQuery();
-        $alias = $qb->getRootAlias();
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-
-        $qb
-            ->orWhere($orx)
-            ->andWhere("$alias.type IN (:zone_types)")
-            ->andWhere("$alias.active = 1")
-            ->setParameter('zone_types', $types)
         ;
     }
 

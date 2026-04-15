@@ -34,6 +34,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\ActivityPositionType;
 use App\Form\AdherentMandateType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\EventListener\CommitteeMembershipListener;
@@ -397,9 +398,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                             'entry_type' => AdherentZoneBasedRoleType::class,
                             'allow_add' => true,
                             'allow_delete' => true,
-                            'entry_options' => [
-                                'model_manager' => $this->getModelManager(),
-                            ],
                             'by_reference' => false,
                         ])
                     ->end()
@@ -408,7 +406,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                             'label' => 'jecoute_manager',
                             'required' => false,
                             'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
-                            'model_manager' => $this->getModelManager(),
                         ])
                         ->add('nationalRole', null, [
                             'label' => 'Rôle National',
@@ -459,9 +456,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                         'entry_type' => ElectedRepresentativeAdherentMandateType::class,
                         'allow_add' => true,
                         'allow_delete' => true,
-                        'entry_options' => [
-                            'model_manager' => $this->getModelManager(),
-                        ],
                         'by_reference' => true,
                     ])
                 ->end()
@@ -620,15 +614,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
             ->add('postalCode', PostalCodeFilter::class, [

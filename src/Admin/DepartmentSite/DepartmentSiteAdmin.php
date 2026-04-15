@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace App\Admin\DepartmentSite;
 
 use App\Admin\AbstractAdmin;
+use App\Controller\Admin\ZoneAutocompleteController;
 use App\Entity\DepartmentSite\DepartmentSite;
 use App\Entity\Geo\Zone;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\UnlayerContentType;
-use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -38,25 +37,12 @@ class DepartmentSiteAdmin extends AbstractAdmin
         $filter
             ->add('zone', ModelFilter::class, [
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
+                    'class' => Zone::class,
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => ['name', 'code'],
-                    'callback' => function (AdminInterface $admin, array $property, $value): void {
-                        $datagrid = $admin->getDatagrid();
-                        $query = $datagrid->getQuery();
-                        $rootAlias = $query->getRootAlias();
-                        $query
-                            ->andWhere(\sprintf('%1$s.type IN (:types) OR (%1$s.type = :custom_type AND %1$s.code = :zone_fde)', $rootAlias))
-                            ->setParameter('types', [Zone::DEPARTMENT])
-                            ->setParameter('custom_type', Zone::CUSTOM)
-                            ->setParameter('zone_fde', Zone::FDE_CODE)
-                        ;
-
-                        $datagrid->setValue($property[0], null, $value);
-                    },
+                    'preset' => ZoneAutocompleteController::PRESET_DEPARTMENT_SITE,
                 ],
             ])
         ;
@@ -87,11 +73,10 @@ class DepartmentSiteAdmin extends AbstractAdmin
     {
         $form
             ->with('Département', ['class' => 'col-md-6'])
-                ->add('zone', ModelAutocompleteType::class, [
-                    'property' => ['name', 'code'],
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'label' => 'Département',
                     'btn_add' => false,
-                    'callback' => [$this, 'prepareZoneAutocompleteCallback'],
+                    'preset' => ZoneAutocompleteController::PRESET_DEPARTMENT_SITE,
                 ])
             ->end()
             ->with('Contenu')
@@ -101,29 +86,6 @@ class DepartmentSiteAdmin extends AbstractAdmin
                     'unlayer_template_id' => $this->dptSiteUnlayerTemplateId,
                 ])
             ->end()
-        ;
-    }
-
-    public static function prepareZoneAutocompleteCallback(
-        AdminInterface $admin,
-        array $properties,
-        string $value,
-    ): void {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-        $qb
-            ->orWhere($orx)
-            ->andWhere(\sprintf('(%1$s.type = :type OR (%1$s.type = :custom_type AND %1$s.code = :code_fde)) AND %1$s.active = 1', $alias))
-            ->setParameter('type', Zone::DEPARTMENT)
-            ->setParameter('custom_type', Zone::CUSTOM)
-            ->setParameter('code_fde', Zone::FDE_CODE)
         ;
     }
 

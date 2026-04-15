@@ -461,10 +461,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate::class, 'show_in_dashboard' => false])
     ;
     $services
-        ->set('app.admin.audience', App\Admin\Audience\AudienceAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Audience\Audience::class, 'show_in_dashboard' => false])
-    ;
-    $services
         ->set('app.admin.elected_representative', App\Admin\ElectedRepresentative\ElectedRepresentativeAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\ElectedRepresentative\ElectedRepresentative::class, 'label' => 'Registre des élus', 'group' => 'Archives (à garder)'])
         ->call('setTemplate', ['edit', 'admin/elected_representative/edit.html.twig'])

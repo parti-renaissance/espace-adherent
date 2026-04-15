@@ -8,18 +8,16 @@ use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\DesignationGlobalZoneType;
 use App\Form\Admin\DesignationTypeType;
 use App\Form\Admin\SimpleMDEContent;
 use App\Form\Admin\VotingPlatform\DesignationNotificationType;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -100,13 +98,12 @@ class DesignationAdmin extends AbstractAdmin
                         'multiple' => true,
                         'help' => 'pour les élections de types: "Comités-Adhérents" ou "Comités-Animateurs"',
                     ])
-                    ->add('zones', ModelAutocompleteType::class, [
-                        'callback' => [$this, 'prepareZoneAutocompleteCallback'],
-                        'property' => ['name', 'code'],
+                    ->add('zones', AdminZoneAutocompleteType::class, [
                         'label' => 'Zones locales',
                         'multiple' => true,
                         'help' => 'Obligatoire pour l\'élection départementale et animateur territorial',
                         'btn_add' => false,
+                        'zone_types' => [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT],
                     ])
                     ->add('targetYear', ChoiceType::class, [
                         'required' => false,
@@ -369,27 +366,6 @@ class DesignationAdmin extends AbstractAdmin
     public function toString(object $object): string
     {
         return 'Désignation - '.$object->getUuid();
-    }
-
-    public static function prepareZoneAutocompleteCallback(
-        AdminInterface $admin,
-        array $properties,
-        string $value,
-    ): void {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-        $qb
-            ->orWhere($orx)
-            ->andWhere(\sprintf('%1$s.type IN(:types) AND %1$s.active = 1', $alias))
-            ->setParameter('types', [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT])
-        ;
     }
 
     private function getMainFieldsForFormType(string $formType): array

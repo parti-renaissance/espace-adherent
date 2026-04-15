@@ -343,7 +343,7 @@ class Mandate implements \Stringable
 
     public function __toString(): string
     {
-        $str = array_search($this->type, MandateTypeEnum::CHOICES);
+        $str = array_search($this->type, MandateTypeEnum::CHOICES, true) ?: $this->type;
 
         if (!$this->politicalAffiliation) {
             return $str;

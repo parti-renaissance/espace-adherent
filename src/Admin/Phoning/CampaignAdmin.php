@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Admin\Phoning;
 
 use App\Admin\AbstractAdmin;
-use App\Admin\Audience\AudienceAdmin;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
@@ -94,8 +93,7 @@ class CampaignAdmin extends AbstractAdmin
                     },
                     'required' => !$this->isPermanent(),
                 ])
-                ->add('zone', ModelAutocompleteType::class, [
-                    'property' => 'name',
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                     'btn_add' => false,
@@ -113,8 +111,6 @@ class CampaignAdmin extends AbstractAdmin
                 ->add('zones', AdminZoneAutocompleteType::class, [
                     'required' => false,
                     'multiple' => true,
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => AudienceAdmin::SERVICE_CODE,
                 ])
                 ->add('hasSmsSubscription', BooleanType::class, [
                     'transform' => true,
