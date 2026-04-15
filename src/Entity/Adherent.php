@@ -462,7 +462,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     /**
      * @var AdherentMandateInterface[]|Collection
      */
-    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $adherentMandates;
 
@@ -2520,6 +2519,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
         $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 
+    #[Assert\Valid]
     #[Groups(['adherent_elect_read'])]
     #[SerializedName('elect_mandates')]
     public function getElectedRepresentativeMandates(): array
