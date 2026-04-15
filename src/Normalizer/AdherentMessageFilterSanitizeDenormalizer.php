@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Normalizer;
 
 use App\Entity\AdherentMessage\AdherentMessageFilter;
-use App\JMEFilter\SupportedFilterCodesProvider;
+use App\JMEFilter\FiltersGenerator;
 use App\OAuth\Model\Scope as OAuthScope;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -26,7 +26,7 @@ class AdherentMessageFilterSanitizeDenormalizer implements DenormalizerInterface
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly Security $security,
-        private readonly SupportedFilterCodesProvider $codesProvider,
+        private readonly FiltersGenerator $filtersGenerator,
     ) {
     }
 
@@ -35,7 +35,7 @@ class AdherentMessageFilterSanitizeDenormalizer implements DenormalizerInterface
         if (\is_array($data) && ($scope = $this->scopeGeneratorResolver->generate())) {
             $feature = $context[AdherentMessageFilterDenormalizer::CONTEXT_FEATURE];
             $isVox = $this->security->isGranted(OAuthScope::generateRole(OAuthScope::JEMARCHE_APP));
-            $allowedKeys = $this->codesProvider->getCodes($scope->getMainCode(), $feature, $isVox);
+            $allowedKeys = $this->filtersGenerator->getCodes($scope->getCurrentUser(), $scope->getMainCode(), $feature, $isVox);
 
             $data = array_intersect_key($data, array_flip($allowedKeys));
         }

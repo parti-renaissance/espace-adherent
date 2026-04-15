@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Filter;
 
+use App\Entity\Adherent;
 use App\JMEFilter\FiltersGenerator;
 use App\OAuth\Model\Scope;
 use App\Scope\ScopeGeneratorResolver;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Cache(maxage: 3600, public: false)]
@@ -21,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
 class GetCollectionFiltersController extends AbstractController
 {
-    public function __invoke(Request $request, ScopeGeneratorResolver $scopeGeneratorResolver, FiltersGenerator $builder): Response
+    public function __invoke(Request $request, ScopeGeneratorResolver $scopeGeneratorResolver, FiltersGenerator $builder, #[CurrentUser] Adherent $user): Response
     {
         if (!$feature = $request->query->get('feature')) {
             throw new BadRequestHttpException('Parameter "feature" is missing or empty');
@@ -33,6 +35,6 @@ class GetCollectionFiltersController extends AbstractController
 
         $isVox = $this->isGranted(Scope::generateRole(Scope::JEMARCHE_APP));
 
-        return $this->json($builder->generate($scopeCode, $feature, $isVox), context: ['groups' => ['filter:read']]);
+        return $this->json($builder->generate($user, $scopeCode, $feature, $isVox), context: ['groups' => ['filter:read']]);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\JMEFilter;
 
+use App\Entity\Adherent;
 use App\JMEFilter\FilterBuilder\FilterBuilderInterface;
 use App\JMEFilter\FilterGroup\AbstractFilterGroup;
 use App\JMEFilter\FilterGroup\FilterGroupInterface;
@@ -27,9 +28,9 @@ class FiltersGenerator
     /**
      * @return FilterGroupInterface[]
      */
-    public function generate(string $scope, ?string $feature = null, bool $isVox = false): array
+    public function generate(Adherent $adherent, string $scope, ?string $feature = null, bool $isVox = false): array
     {
-        $cacheKey = \sprintf('filters.%s.%s.%d', $scope, $feature ?? 'null', (int) $isVox);
+        $cacheKey = \sprintf('filters.%d.%s.%s.%d', $adherent->getId(), $scope, $feature ?? 'null', (int) $isVox);
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($scope, $feature, $isVox): array {
             $item->expiresAfter(self::CACHE_TTL);
@@ -37,6 +38,21 @@ class FiltersGenerator
 
             return $this->doGenerate($scope, $feature, $isVox);
         });
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCodes(Adherent $adherent, string $scope, ?string $feature = null, bool $isVox = false): array
+    {
+        $codes = [];
+        foreach ($this->generate($adherent, $scope, $feature, $isVox) as $group) {
+            foreach ($group->getFilters() as $filter) {
+                $codes[] = $filter->getCode();
+            }
+        }
+
+        return $codes;
     }
 
     /**
