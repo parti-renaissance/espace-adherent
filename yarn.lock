@@ -2588,9 +2588,9 @@ __metadata:
   linkType: hard
 
 "@types/google.maps@npm:^3.55.9":
-  version: 3.58.1
-  resolution: "@types/google.maps@npm:3.58.1"
-  checksum: 10c0/0247c61d2aeb216d04ab9392602ef41d58328c6336ed4e9a4e9e69834002e82c116a34def2bf4ceb31c4292f14899815058da4bb8d803147295c6b47c1162621
+  version: 3.64.0
+  resolution: "@types/google.maps@npm:3.64.0"
+  checksum: 10c0/59895cade8d70d9d0b2a40b0edeea683555d117cfb4467079357eb8cc81a5e29358a6b22d4c1e3ce2618e3125ecf8853b9a108ada11a33c47f01b8db51a65d5f
   languageName: node
   linkType: hard
 
