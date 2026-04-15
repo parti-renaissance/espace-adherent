@@ -20,20 +20,20 @@
     {% endapply %}
 {% endmacro %}
 
-{% macro get_donation_type_badge(type) %}
+{% macro get_donation_payment_method_badge(method) %}
     {% apply spaceless %}
         <span class="badge
-            {% if type is constant('App\\Entity\\Donation::TYPE_CB') %}
+            {% if method is constant('App\\Entity\\Donation::TYPE_CB') %}
                 bg-blue
-            {% elseif type is constant('App\\Entity\\Donation::TYPE_CHECK') %}
+            {% elseif method is constant('App\\Entity\\Donation::TYPE_CHECK') %}
                 bg-green
-            {% elseif type is constant('App\\Entity\\Donation::TYPE_TRANSFER') %}
+            {% elseif method is constant('App\\Entity\\Donation::TYPE_TRANSFER') %}
                 bg-purple
-            {% elseif type is constant('App\\Entity\\Donation::TYPE_TPE') %}
+            {% elseif method is constant('App\\Entity\\Donation::TYPE_TPE') %}
                 bg-red
             {% endif %}
             ">
-            {{ ('donation.type.' ~ type)|trans }}
+            {{ ('donation.transaction_type.' ~ method)|trans }}
         </span>
     {% endapply %}
 {% endmacro %}
