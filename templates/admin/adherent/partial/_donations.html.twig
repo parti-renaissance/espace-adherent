@@ -3,6 +3,7 @@
 {% set donations = get_donations_history(adherent) %}
 {% set subscribed_donations = get_subscribed_donations(adherent) %}
 {% set last_subscription_ended = get_last_subscription_ended(adherent) %}
+{% set global_status_colors = {paid: 'green', refunded: 'yellow', failed: 'red'} %}
 
 <div class="box">
     <div class="box-header">
@@ -91,12 +92,14 @@
         {% if donations is not empty %}
             <table class="table">
                 <thead>
-                    <th>Date</th>
-                    <th>Montant</th>
-                    <th>Type</th>
-                    <th>Méthode</th>
-                    <th>Statut</th>
-                    <th>Donateur</th>
+                    <tr>
+                        <th>Date</th>
+                        <th>Montant</th>
+                        <th>Type</th>
+                        <th>Méthode</th>
+                        <th>Statut</th>
+                        <th>Donateur</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for donation in donations %}
@@ -105,22 +108,24 @@
                                 {{ donation.date|format_datetime('medium', 'none') }}
                             </td>
                             <td>
-                                {{ donation.amountInEuros|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }}
+                                {{ donation.amount|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }}
                             </td>
                             <td>
                                 {% if donation.isSubscription %}
                                     <span class="label label-primary">Don mensuel</span>
-                                {% elseif donation.membership %}
+                                {% elseif donation.isMembership %}
                                     <span class="label label-danger">Cotisation</span>
                                 {% else %}
                                     <span class="label label-info">Don ponctuel</span>
                                 {% endif %}
                             </td>
                             <td>
-                                {{ macros.get_donation_type_badge(donation.type) }}
+                                {{ macros.get_donation_payment_method_badge(donation.transactionType) }}
                             </td>
                             <td>
-                                {{ macros.get_donation_status_badge(donation.status) }}
+                                <span class="badge bg-{{ global_status_colors[donation.status] ?? 'default' }}">
+                                    {{ ('donation.status.' ~ donation.status)|trans }}
+                                </span>
                             </td>
                             <td>
                                 {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_APP_ADMIN_DONATOR_EDIT') %}

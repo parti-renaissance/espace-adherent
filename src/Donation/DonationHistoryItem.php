@@ -16,6 +16,9 @@ final readonly class DonationHistoryItem
         private DonationSemanticType $type,
         private DonationGlobalStatus $status,
         private UuidInterface $uuid,
+        private ?int $donatorId = null,
+        private ?string $donatorFullName = null,
+        private ?string $donatorIdentifier = null,
     ) {
     }
 
@@ -63,5 +66,30 @@ final readonly class DonationHistoryItem
     public function getStatusEnum(): DonationGlobalStatus
     {
         return $this->status;
+    }
+
+    public function isSubscription(): bool
+    {
+        return DonationSemanticType::RECURRING === $this->type;
+    }
+
+    public function isMembership(): bool
+    {
+        return DonationSemanticType::MEMBERSHIP === $this->type;
+    }
+
+    public function getDonatorId(): ?int
+    {
+        return $this->donatorId;
+    }
+
+    public function getDonatorFullName(): ?string
+    {
+        return $this->donatorFullName;
+    }
+
+    public function getDonatorIdentifier(): ?string
+    {
+        return $this->donatorIdentifier;
     }
 }

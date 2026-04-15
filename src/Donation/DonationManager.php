@@ -60,13 +60,18 @@ class DonationManager
         Donation $donation,
         string $status,
     ): DonationHistoryItem {
+        $donator = $donation->getDonator();
+
         return new DonationHistoryItem(
             $date,
             $donation->getAmount() ?? 0,
             $donation->getType() ?? '',
             DonationSemanticType::fromDonation($donation),
             DonationGlobalStatus::fromDonationStatus($status),
-            $donation->getUuid()
+            $donation->getUuid(),
+            $donator?->getId(),
+            $donator?->getFullName(),
+            $donator?->getIdentifier(),
         );
     }
 }
