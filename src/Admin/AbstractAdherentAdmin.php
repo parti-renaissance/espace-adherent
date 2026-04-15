@@ -456,7 +456,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                         'entry_type' => ElectedRepresentativeAdherentMandateType::class,
                         'allow_add' => true,
                         'allow_delete' => true,
-                        'by_reference' => true,
+                        'by_reference' => false,
+                        'prototype_data' => new ElectedRepresentativeAdherentMandate(),
                     ])
                 ->end()
                 ->with('Cotisation', [

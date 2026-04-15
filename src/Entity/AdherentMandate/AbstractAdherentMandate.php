@@ -45,7 +45,6 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
      * @var string|null
      */
     #[Assert\Choice(choices: Genders::MALE_FEMALE, message: 'common.gender.invalid_choice')]
-    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
     #[ORM\Column(length: 6, nullable: true)]
     protected $gender;
 
@@ -97,7 +96,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
         $this->uuid = Uuid::uuid4();
         $this->adherent = $adherent;
         $this->gender = $gender ?? $adherent?->getGender();
-        $this->beginAt = $beginAt;
+        $this->beginAt = $beginAt ?? new \DateTime();
         $this->finishAt = $finishAt;
         $this->quality = $quality;
         $this->provisional = $isProvisional;
@@ -138,7 +137,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
 
     public function setBeginAt(?\DateTime $beginAt): void
     {
-        $this->beginAt = $beginAt ?? new \DateTime();
+        $this->beginAt = $beginAt;
     }
 
     public function getFinishAt(): ?\DateTime
