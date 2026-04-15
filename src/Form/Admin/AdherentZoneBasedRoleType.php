@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Form\Admin;
 
 use App\Adherent\AdherentRoles;
-use App\Admin\AdherentZoneBasedRoleAdmin;
 use App\Entity\AdherentZoneBasedRole;
 use App\Scope\ScopeEnum;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -37,8 +35,6 @@ class AdherentZoneBasedRoleType extends AbstractType
             ->add('zones', AdminZoneAutocompleteType::class, [
                 'label' => 'Zones',
                 'multiple' => true,
-                'model_manager' => $options['model_manager'],
-                'admin_code' => AdherentZoneBasedRoleAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/zone_based_role_autocomplete.html.twig',
             ])
             ->add('hidden', CheckboxType::class, [
@@ -61,12 +57,8 @@ class AdherentZoneBasedRoleType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => AdherentZoneBasedRole::class,
-            ])
-            ->setRequired('model_manager')
-            ->addAllowedTypes('model_manager', [ModelManagerInterface::class])
-        ;
+        $resolver->setDefaults([
+            'data_class' => AdherentZoneBasedRole::class,
+        ]);
     }
 }

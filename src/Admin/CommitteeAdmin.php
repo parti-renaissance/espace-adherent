@@ -16,6 +16,7 @@ use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\AdherentAutocompleteType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\History\AdministratorActionEvents;
 use App\History\AdministratorCommitteeActionEvent;
 use App\Utils\PhoneNumberUtils;
@@ -325,15 +326,10 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
             ->add('createdAt', DateRangeFilter::class, [

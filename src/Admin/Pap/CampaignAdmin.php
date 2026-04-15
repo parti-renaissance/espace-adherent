@@ -8,13 +8,13 @@ use App\Admin\AbstractAdmin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Pap\Campaign;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\SimpleMDEContent;
 use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use App\Scope\ScopeVisibilityEnum;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
@@ -71,8 +71,7 @@ class CampaignAdmin extends AbstractAdmin
                     'error_bubbling' => true,
                     'attr' => ['class' => 'width-140'],
                 ])
-                ->add('zones', ModelAutocompleteType::class, [
-                    'property' => 'name',
+                ->add('zones', AdminZoneAutocompleteType::class, [
                     'required' => false,
                     'multiple' => true,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
@@ -121,15 +120,10 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Zones',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
         ;

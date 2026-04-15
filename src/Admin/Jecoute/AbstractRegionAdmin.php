@@ -6,15 +6,14 @@ namespace App\Admin\Jecoute;
 
 use App\Entity\Administrator;
 use App\Entity\Jecoute\Region;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Jecoute\RegionColorEnum;
 use App\Jecoute\RegionManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -52,23 +51,12 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
 
         $form
             ->with('Informations', ['class' => 'col-md-6'])
-                ->add('zone', ModelAutocompleteType::class, [
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'multiple' => false,
                     'label' => 'Zone',
                     'required' => true,
-                    'property' => ['name', 'code'],
-                    'callback' => function (AdminInterface $admin, array $property, $value): void {
-                        $datagrid = $admin->getDatagrid();
-                        $query = $datagrid->getQuery();
-                        $rootAlias = $query->getRootAlias();
-                        $query
-                            ->andWhere($rootAlias.'.type IN (:types)')
-                            ->setParameter('types', $this->getZoneTypes())
-                        ;
-
-                        $datagrid->setValue($property[0], null, $value);
-                    },
                     'btn_add' => false,
+                    'zone_types' => $this->getZoneTypes(),
                 ])
                 ->add('subtitle', TextType::class, [
                     'label' => 'Sous-titre',

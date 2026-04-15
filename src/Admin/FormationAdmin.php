@@ -6,13 +6,13 @@ namespace App\Admin;
 
 use App\Entity\AdherentFormation\Formation;
 use App\Entity\AdherentFormation\FormationContentTypeEnum;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\PositionType;
 use App\Formation\FormationHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,9 +49,8 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'Publiée ?',
                     'required' => false,
                 ])
-                ->add('zone', ModelAutocompleteType::class, [
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'label' => 'Zone',
-                    'property' => 'name',
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                     'btn_add' => false,

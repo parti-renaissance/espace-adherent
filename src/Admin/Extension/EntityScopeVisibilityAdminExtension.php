@@ -6,11 +6,11 @@ namespace App\Admin\Extension;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Admin\ReorderableAdminInterface;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Scope\ScopeVisibilityEnum;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -32,15 +32,10 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
         ;

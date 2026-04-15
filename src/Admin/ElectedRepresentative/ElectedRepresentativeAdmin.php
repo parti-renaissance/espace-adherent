@@ -14,6 +14,7 @@ use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Form\AdherentEmailType;
 use App\Form\AdherentMandateType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Form\TelNumberType;
@@ -26,7 +27,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -396,15 +396,10 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('mandates.geoZone', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
-                'field_type' => ModelAutocompleteType::class,
+                'field_type' => AdminZoneAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
                 ],
             ])
             ->add('isAdherent', CallbackFilter::class, [

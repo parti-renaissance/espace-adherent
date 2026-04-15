@@ -7,13 +7,12 @@ namespace App\Admin;
 use App\Entity\Administrator;
 use App\Entity\AdministratorRole;
 use App\Entity\Geo\Zone;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Repository\AdministratorRoleRepository;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
-use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -82,14 +81,12 @@ class AdministratorAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Périmètre géographique', ['class' => 'col-md-6'])
-                ->add('zones', ModelAutocompleteType::class, [
-                    'callback' => [$this, 'prepareAutocompleteFilterCallback'],
+                ->add('zones', AdminZoneAutocompleteType::class, [
                     'multiple' => true,
-                    'property' => ['name', 'code'],
-                    'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'btn_add' => false,
                     'label' => false,
+                    'zone_types' => [Zone::DEPARTMENT],
                 ])
             ->end()
             ->with('Permissions')
@@ -175,27 +172,5 @@ class AdministratorAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
-    }
-
-    public static function prepareAutocompleteFilterCallback(
-        SonataAbstractAdmin $admin,
-        array $properties,
-        string $value,
-    ): void {
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-
-        $qb
-            ->andWhere($orx)
-            ->andWhere($alias.'.type = :dpt_type')
-            ->setParameter('dpt_type', Zone::DEPARTMENT)
-        ;
     }
 }

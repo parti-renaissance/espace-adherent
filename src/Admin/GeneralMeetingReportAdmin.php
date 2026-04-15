@@ -6,13 +6,11 @@ namespace App\Admin;
 
 use App\Entity\GeneralMeeting\GeneralMeetingReport;
 use App\Entity\Geo\Zone;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\GeneralMeeting\GeneralMeetingReportHandler;
-use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
@@ -80,11 +78,10 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
                         ],
                     ],
                 ])
-                ->add('zone', ModelAutocompleteType::class, [
-                    'property' => ['name', 'code'],
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'label' => 'Département',
                     'btn_add' => false,
-                    'callback' => [$this, 'prepareZoneAutocompleteCallback'],
+                    'zone_types' => [Zone::DEPARTMENT],
                 ])
             ->end()
             ->with('Contenu', ['box_class' => 'box box-success'])
@@ -110,26 +107,5 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
     protected function preUpdate(object $object): void
     {
         $this->generalMeetingReportHandler->handleFile($object);
-    }
-
-    public static function prepareZoneAutocompleteCallback(
-        AdminInterface $admin,
-        array $properties,
-        string $value,
-    ): void {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-        $qb
-            ->orWhere($orx)
-            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
-            ->setParameter('type', Zone::DEPARTMENT)
-        ;
     }
 }

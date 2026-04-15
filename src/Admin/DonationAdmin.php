@@ -16,6 +16,7 @@ use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\ReCountryType;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipSourceEnum;
@@ -24,10 +25,8 @@ use App\Repository\AdherentRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -134,13 +133,12 @@ class DonationAdmin extends AbstractAdmin
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
-                ->add('zone', ModelAutocompleteType::class, [
-                    'property' => ['name', 'code'],
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'label' => 'Destination',
                     'help' => 'Sélectionnez un département pour un don local, laissez vide pour un don au siège.',
                     'required' => false,
                     'btn_add' => false,
-                    'callback' => [$this, 'prepareDestinationAutocompleteCallback'],
+                    'zone_types' => [Zone::DEPARTMENT],
                 ])
                 ->add('nationality', ReCountryType::class, [
                     'label' => 'Nationalité',
@@ -718,26 +716,5 @@ class DonationAdmin extends AbstractAdmin
         }
 
         return $choices;
-    }
-
-    public static function prepareDestinationAutocompleteCallback(
-        AdminInterface $admin,
-        array $properties,
-        string $value,
-    ): void {
-        /** @var QueryBuilder $qb */
-        $qb = $admin->getDatagrid()->getQuery();
-        $alias = $qb->getRootAliases()[0];
-
-        $orx = $qb->expr()->orX();
-        foreach ($properties as $property) {
-            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
-            $qb->setParameter('property_'.$property, '%'.$value.'%');
-        }
-        $qb
-            ->orWhere($orx)
-            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
-            ->setParameter('type', Zone::DEPARTMENT)
-        ;
     }
 }

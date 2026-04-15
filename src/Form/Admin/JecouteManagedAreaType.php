@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use App\Admin\Jecoute\JecouteManagedAreaAdmin;
+use App\Controller\Admin\ZoneAutocompleteController;
 use App\Entity\JecouteManagedArea;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -21,8 +20,7 @@ class JecouteManagedAreaType extends AbstractType
             ->add('zone', AdminZoneAutocompleteType::class, [
                 'required' => false,
                 'label' => false,
-                'model_manager' => $options['model_manager'],
-                'admin_code' => JecouteManagedAreaAdmin::SERVICE_ID,
+                'preset' => ZoneAutocompleteController::PRESET_JECOUTE_MANAGED_AREA,
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var JecouteManagedArea $data */
@@ -37,12 +35,8 @@ class JecouteManagedAreaType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => JecouteManagedArea::class,
-            ])
-            ->setRequired('model_manager')
-            ->addAllowedTypes('model_manager', [ModelManagerInterface::class])
-        ;
+        $resolver->setDefaults([
+            'data_class' => JecouteManagedArea::class,
+        ]);
     }
 }

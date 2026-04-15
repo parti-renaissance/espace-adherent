@@ -7,13 +7,13 @@ namespace App\Admin\Team;
 use App\Entity\Adherent;
 use App\Entity\Team\Team;
 use App\Form\Admin\AdherentAutocompleteType;
+use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberType;
 use App\Team\TeamMemberHistoryManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,8 +34,7 @@ class TeamAdmin extends AbstractAdmin
                 ->add('name', TextType::class, [
                     'label' => 'Nom',
                 ])
-                ->add('zone', ModelAutocompleteType::class, [
-                    'property' => 'name',
+                ->add('zone', AdminZoneAutocompleteType::class, [
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                     'btn_add' => false,

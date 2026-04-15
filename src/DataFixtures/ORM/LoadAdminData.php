@@ -153,6 +153,66 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
         $renaissanceAdmin->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->setReference('administrator-renaissance', $renaissanceAdmin);
 
+        // Five minimal-permission admins used by features/admin/zone_autocomplete_coverage.feature
+        // to prove the zone autocomplete endpoint works across every admin group.
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin.group-militants@test.code',
+            'password' => 'militants',
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_ADHERENT_ADHERENTS',
+                'ROLE_ADMIN_ADHERENT_REFERRERS',
+            ]),
+        ]));
+
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin.group-territoires@test.code',
+            'password' => 'territoires',
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_TERRITOIRES_COMMITTEES',
+                'ROLE_ADMIN_TERRITOIRES_EVENTS',
+                'ROLE_ADMIN_TERRITOIRES_TEAMS',
+                'ROLE_ADMIN_TERRITOIRES_JME_GENERAL_MEETING_REPORTS',
+                'ROLE_ADMIN_IDEES_GENERAL_CONVENTIONS',
+                'ROLE_ADMIN_TERRITOIRES_PROCURATION_MANAGERS',
+            ]),
+        ]));
+
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin.group-elus@test.code',
+            'password' => 'elus',
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_POLITIQUE_ELECTED_REPRESENTATIVES',
+                'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES',
+            ]),
+        ]));
+
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin.group-tech@test.code',
+            'password' => 'tech',
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_FINANCES_DONATIONS',
+                'ROLE_ADMIN_TECH_ADMINISTRATORS',
+                'ROLE_ADMIN_TERRITOIRES_JME_EMAIL_TEMPLATES',
+                'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
+            ]),
+        ]));
+
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin.group-campagnes@test.code',
+            'password' => 'campagnes',
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_PHONING_CAMPAIGNS',
+                'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGNS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_LOCAL_SURVEYS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_NEWS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_REGIONAL_NEWS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_DEPARTMENTAL_NEWS',
+                'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
+                'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATIONS',
+            ]),
+        ]));
+
         $manager->persist($superAdmin2fa);
         $manager->persist($admin);
         $manager->persist($writer);
