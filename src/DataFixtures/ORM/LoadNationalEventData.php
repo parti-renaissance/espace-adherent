@@ -70,10 +70,10 @@ class LoadNationalEventData extends Fixture
         $event->showVolunteer = true;
         $event->showIsJAM = true;
         $event->showAllowNotifications = true;
-        $event->startDate = new \DateTime('2024-11-15');
-        $event->endDate = new \DateTime('2024-11-17');
-        $event->ticketStartDate = new \DateTime('2024-09-01');
-        $event->ticketEndDate = new \DateTime('2024-11-14');
+        $event->startDate = new \DateTime('-2 years');
+        $event->endDate = new \DateTime('-2 years +2 days');
+        $event->ticketStartDate = new \DateTime('-2 years -2 months');
+        $event->ticketEndDate = new \DateTime('-2 years -1 day');
         $event->textIntro = '<p>Congrès Renaissance 2024</p>';
         $event->textHelp = '<p>Inscrivez-vous au congrès</p>';
         $event->textConfirmation = '<p>Votre inscription est confirmée</p>';

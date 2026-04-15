@@ -5,7 +5,7 @@ Feature:
     As a logged-in user with the national_event scope feature
     I should be able to list all national events sorted by start_date DESC
 
-    Scenario: As a user granted with national scope, I can list all national events sorted by start_date DESC
+    Scenario: As a user granted with national scope, I can list all national events sorted by start_date DESC, excluding JEM events and events older than January 1st of last year
         When I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
         When I send a "GET" request to "/api/v3/national_events?scope=national"
         Then the response status code should be 200
@@ -30,22 +30,12 @@ Feature:
                 },
                 {
                     "uuid": "@uuid@",
-                    "name": "Event JEM",
-                    "start_date": "@string@.isDateTime()"
-                },
-                {
-                    "uuid": "@uuid@",
                     "name": "Campus",
                     "start_date": "@string@.isDateTime()"
                 },
                 {
                     "uuid": "@uuid@",
                     "name": "Event passé",
-                    "start_date": "@string@.isDateTime()"
-                },
-                {
-                    "uuid": "@uuid@",
-                    "name": "Congres 2024",
                     "start_date": "@string@.isDateTime()"
                 }
             ]
