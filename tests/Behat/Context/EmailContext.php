@@ -78,7 +78,12 @@ class EmailContext extends RawMinkContext
      */
     public function iFillActivationCodeFromEmail(): void
     {
-        $this->getMink()->getSession()->getPage()->fillField('code', $this->getVarFromEmail('code'));
+        $code = $this->getVarFromEmail('code');
+
+        $this->getMink()->getSession()->executeScript(\sprintf(
+            "var input = document.querySelector('input[name=\"code\"]'); input.value = %s; input.dispatchEvent(new Event('input', {bubbles: true}));",
+            json_encode($code)
+        ));
     }
 
     private function getVarFromEmail(string $name): string
