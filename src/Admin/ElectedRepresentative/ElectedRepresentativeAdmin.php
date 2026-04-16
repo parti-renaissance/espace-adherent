@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\ElectedRepresentative;
 
+use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;

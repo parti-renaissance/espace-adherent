@@ -65,9 +65,6 @@ class ListFilter
     #[Groups(['filter_write'])]
     private ?bool $revenueDeclared = null;
 
-    #[Groups(['filter_write'])]
-    private ?bool $contributionActive = null;
-
     /**
      * @var Zone[]
      */
@@ -189,16 +186,6 @@ class ListFilter
         $this->revenueDeclared = $revenueDeclared;
     }
 
-    public function isContributionActive(): ?bool
-    {
-        return $this->contributionActive;
-    }
-
-    public function setContributionActive(?bool $contributionActive): void
-    {
-        $this->contributionActive = $contributionActive;
-    }
-
     /**
      * @return Zone[]
      */
@@ -275,7 +262,6 @@ class ListFilter
             'order' => $this->order,
             'contactType' => $this->contactType,
             'emailSubscription' => $this->emailSubscription,
-            'contributionActive' => $this->contributionActive,
             'committeeUuids' => $this->committeeUuids,
         ];
     }

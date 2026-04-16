@@ -24,7 +24,6 @@ class AuthenticatedAppLinkController extends AbstractController
     private const KEYS_TO_ROUTES = [
         'adhesion' => AdhesionController::ROUTE_NAME,
         'donation' => ['route_name' => 'app_donation_index', 'allowed_options' => ['duration']],
-        'contribution' => 'app_renaissance_contribution_fill_revenue',
         'cadre' => ['route_name' => 'cadre_app_redirect', 'allowed_options' => ['state']],
         'formation' => ['route_name' => 'formation_auth_start_redirect', 'allowed_options' => ['state']],
     ];
