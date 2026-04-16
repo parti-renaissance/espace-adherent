@@ -105,6 +105,17 @@ class DummyClient implements ClientInterface
         ]);
     }
 
+    public function getSubscription(string $subscriptionId): Subscription
+    {
+        $this->calls[] = ['method' => 'getSubscription', 'args' => ['subscriptionId' => $subscriptionId]];
+
+        return new Subscription((object) [
+            'id' => $subscriptionId,
+            'amount' => 5000,
+            'status' => 'active',
+        ]);
+    }
+
     public function cancelSubscription(string $subscriptionId): Subscription
     {
         $this->calls[] = ['method' => 'cancelSubscription', 'args' => ['subscriptionId' => $subscriptionId]];
