@@ -95,6 +95,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'match' => 'all',
                         'conditions' => [
                             [
+                                'condition_type' => 'DateMerge',
+                                'op' => 'greater',
+                                'field' => 'ADHESION',
+                                'value' => '2016-04-05',
+                            ],
+                            [
                                 'condition_type' => 'TextMerge',
                                 'op' => 'is',
                                 'field' => 'COMMITTEE',
@@ -167,6 +173,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 'value' => ' (code1)',
                             ],
                             [
+                                'condition_type' => 'DateMerge',
+                                'op' => 'greater',
+                                'field' => 'ADHESION',
+                                'value' => '2016-04-05',
+                            ],
+                            [
                                 'condition_type' => 'Interests',
                                 'op' => 'interestcontainsall',
                                 'field' => 'interests-C',
@@ -232,6 +244,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 'op' => 'contains',
                                 'field' => 'ZONE_DPT',
                                 'value' => ' (code1)',
+                            ],
+                            [
+                                'condition_type' => 'DateMerge',
+                                'op' => 'greater',
+                                'field' => 'ADHESION',
+                                'value' => '2016-04-05',
                             ],
                             [
                                 'condition_type' => 'Interests',
@@ -301,6 +319,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 'value' => ' (code1)',
                             ],
                             [
+                                'condition_type' => 'DateMerge',
+                                'op' => 'greater',
+                                'field' => 'ADHESION',
+                                'value' => '2016-04-05',
+                            ],
+                            [
                                 'condition_type' => 'Interests',
                                 'op' => 'interestcontainsall',
                                 'field' => 'interests-C',
@@ -362,6 +386,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 'op' => 'contains',
                                 'field' => 'ZONE_DPT',
                                 'value' => ' (code1)',
+                            ],
+                            [
+                                'condition_type' => 'DateMerge',
+                                'op' => 'greater',
+                                'field' => 'ADHESION',
+                                'value' => '2016-04-05',
                             ],
                             [
                                 'condition_type' => 'Interests',

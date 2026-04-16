@@ -31,16 +31,14 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        $conditions = [];
+        $registeredSince = $filter->getRegisteredSince() ?? new \DateTime('2016-04-06');
 
-        if ($registeredSince = $filter->getRegisteredSince()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'greater',
-                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => DateUtils::adjustDate($registeredSince, false)->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
+        $conditions = [[
+            'condition_type' => 'DateMerge',
+            'op' => 'greater',
+            'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
+            'value' => DateUtils::adjustDate($registeredSince, false)->format(MemberRequest::DATE_FORMAT),
+        ]];
 
         if ($registeredUntil = $filter->getRegisteredUntil()) {
             $conditions[] = [
