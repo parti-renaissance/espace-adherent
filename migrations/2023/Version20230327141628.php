@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Migrations;
 
-use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
+use App\Adherent\Contribution\ContributionStatusEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

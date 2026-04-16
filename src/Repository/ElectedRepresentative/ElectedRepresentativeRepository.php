@@ -239,11 +239,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $qb->andWhere(\sprintf('er.contributionStatus %s NULL', $revenueDeclared ? 'IS NOT' : 'IS'));
         }
 
-        $contributionActive = $filter->isContributionActive();
-        if (null !== $contributionActive) {
-            $qb->andWhere(\sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));
-        }
-
         if ($committees = $filter->getCommitteeUuids()) {
             if (!\in_array('adherent', $qb->getAllAliases(), true)) {
                 $qb->innerJoin('er.adherent', 'adherent');

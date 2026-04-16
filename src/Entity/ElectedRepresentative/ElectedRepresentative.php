@@ -155,11 +155,6 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $contributedAt = null;
 
-    #[Groups(['elected_representative_list', 'elected_representative_read'])]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\OneToOne(targetEntity: Contribution::class)]
-    private ?Contribution $lastContribution = null;
-
     /**
      * @var Adherent|null
      */
@@ -204,9 +199,6 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], orphanRemoval: true)]
     private $sponsorships;
 
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Contribution::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    private Collection $contributions;
-
     #[Groups(['elected_representative_read'])]
     #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Payment::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['date' => 'DESC'])]
@@ -225,7 +217,6 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
         $this->politicalFunctions = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->sponsorships = new ArrayCollection();
-        $this->contributions = new ArrayCollection();
         $this->payments = new ArrayCollection();
 
         $this->initializeSponsorships();
@@ -654,34 +645,6 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     public function setContributedAt(?\DateTime $contributedAt): void
     {
         $this->contributedAt = $contributedAt;
-    }
-
-    public function getLastContribution(): ?Contribution
-    {
-        return $this->lastContribution;
-    }
-
-    public function setLastContribution(?Contribution $lastContribution): void
-    {
-        $this->lastContribution = $lastContribution;
-    }
-
-    public function getContributions(): Collection
-    {
-        return $this->contributions;
-    }
-
-    public function addContribution(Contribution $contribution): void
-    {
-        if (!$this->contributions->contains($contribution)) {
-            $contribution->electedRepresentative = $this;
-            $this->contributions->add($contribution);
-        }
-    }
-
-    public function removeContribution(Contribution $contribution): void
-    {
-        $this->contributions->removeElement($contribution);
     }
 
     public function getPayments(): Collection
