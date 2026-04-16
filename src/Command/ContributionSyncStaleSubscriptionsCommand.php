@@ -8,6 +8,9 @@ use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\Contribution\ContributionRequestHandler;
 use App\Entity\Adherent;
 use App\Entity\Contribution\Contribution;
+use App\Entity\Contribution\Payment;
+use App\GoCardless\ClientInterface as GoCardlessClientInterface;
+use App\Ohme\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -23,9 +26,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ContributionSyncStaleSubscriptionsCommand extends Command
 {
+    private const GOCARDLESS_THROTTLE_MICROSECONDS = 500_000;
+
     public function __construct(
         private readonly ContributionRequestHandler $contributionRequestHandler,
         private readonly EntityManagerInterface $entityManager,
+        private readonly GoCardlessClientInterface $gocardless,
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
@@ -65,24 +71,27 @@ class ContributionSyncStaleSubscriptionsCommand extends Command
             $newExpectedAmount = ContributionAmountUtils::getContributionAmount($lastDeclaration->amount);
             $needContribution = ContributionAmountUtils::needContribution($lastDeclaration->amount);
 
-            $previousDeclarations = $adherent->getRevenueDeclarations()->slice(1, 1);
-            $currentAmount = $previousDeclarations
-                ? ContributionAmountUtils::getContributionAmount(reset($previousDeclarations)->amount)
-                : null;
+            $lastConfirmedPayment = $this->findLastConfirmedPayment($adherent);
+            $lastPaidLabel = $lastConfirmedPayment
+                ? \sprintf('%d€ (%s)', $lastConfirmedPayment->amount, $lastConfirmedPayment->date->format('Y-m-d'))
+                : 'no payment';
 
-            $action = !$needContribution
-                ? 'CANCEL'
-                : \sprintf('UPDATE %s → %d€/month', null !== $currentAmount ? $currentAmount.'€/month' : '?', $newExpectedAmount);
+            $gcSubAmountLabel = $this->fetchGoCardlessSubscriptionAmount($adherent);
+
+            $action = !$needContribution ? 'CANCEL' : 'UPDATE';
 
             $io->writeln(\sprintf(
-                '- %s %s (uuid=%s): currently paying %s, should pay %d€/month → %s',
+                '- %s %s (uuid=%s): last paid %s | GC sub %s → should pay %d€/month → %s',
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
                 $adherent->getUuidAsString(),
-                null !== $currentAmount ? $currentAmount.'€/month' : '?',
+                $lastPaidLabel,
+                $gcSubAmountLabel,
                 $newExpectedAmount,
                 $action,
             ));
+
+            usleep(self::GOCARDLESS_THROTTLE_MICROSECONDS);
 
             if ($dryRun) {
                 continue;
@@ -141,5 +150,43 @@ class ContributionSyncStaleSubscriptionsCommand extends Command
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    private function findLastConfirmedPayment(Adherent $adherent): ?Payment
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Payment::class, 'p')
+            ->where('p.adherent = :adherent')
+            ->andWhere('p.status IN (:confirmedStatuses)')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('confirmedStatuses', PaymentStatusEnum::CONFIRMED_PAYMENT_STATUSES)
+            ->orderBy('p.date', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    private function fetchGoCardlessSubscriptionAmount(Adherent $adherent): string
+    {
+        $subscriptionId = $adherent->getLastContribution()?->gocardlessSubscriptionId;
+
+        if (!$subscriptionId) {
+            return 'n/a';
+        }
+
+        try {
+            $subscription = $this->gocardless->getSubscription($subscriptionId);
+
+            return \sprintf('%d€/month', (int) ($subscription->amount / 100));
+        } catch (\Throwable $exception) {
+            $this->logger->warning('Failed to fetch GoCardless subscription', [
+                'subscription_id' => $subscriptionId,
+                'exception' => $exception,
+            ]);
+
+            return 'error';
+        }
     }
 }

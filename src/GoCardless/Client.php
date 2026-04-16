@@ -87,6 +87,11 @@ class Client implements ClientInterface
         ]);
     }
 
+    public function getSubscription(string $subscriptionId): Subscription
+    {
+        return $this->client->subscriptions()->get($subscriptionId);
+    }
+
     public function cancelSubscription(string $subscriptionId): Subscription
     {
         return $this->client->subscriptions()->cancel($subscriptionId);
