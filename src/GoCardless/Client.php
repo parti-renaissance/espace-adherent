@@ -92,7 +92,7 @@ class Client implements ClientInterface
         return $this->client->subscriptions()->cancel($subscriptionId);
     }
 
-    public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription
+    public function createSubscription(string $mandateId, int $amount, array $metadata = []): Subscription
     {
         return $this->client->subscriptions()->create([
             'params' => [
@@ -101,8 +101,17 @@ class Client implements ClientInterface
                 'name' => 'Cotisation élu',
                 'interval_unit' => 'monthly',
                 'day_of_month' => $this->getNextSubscriptionDay(),
-                'links' => ['mandate' => $mandate->id],
+                'links' => ['mandate' => $mandateId],
                 'metadata' => $metadata,
+            ],
+        ]);
+    }
+
+    public function updateSubscriptionAmount(string $subscriptionId, int $amount): Subscription
+    {
+        return $this->client->subscriptions()->update($subscriptionId, [
+            'params' => [
+                'amount' => $amount * 100,
             ],
         ]);
     }

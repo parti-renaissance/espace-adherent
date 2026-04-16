@@ -39,5 +39,7 @@ interface ClientInterface
 
     public function cancelSubscription(string $subscriptionId): Subscription;
 
-    public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription;
+    public function createSubscription(string $mandateId, int $amount, array $metadata = []): Subscription;
+
+    public function updateSubscriptionAmount(string $subscriptionId, int $amount): Subscription;
 }

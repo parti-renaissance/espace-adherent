@@ -11,6 +11,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\GoCardless\Subscription;
 use App\Repository\Contribution\ContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use GoCardlessPro\Resources\Subscription as GoCardlessSubscription;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
@@ -21,6 +22,7 @@ class Contribution
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    public const INACTIVE_SUBSCRIPTION_STATUSES = ['cancelled', 'finished'];
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $startDate = null;
@@ -62,6 +64,12 @@ class Contribution
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
+    public function isActive(): bool
+    {
+        return null !== $this->gocardlessSubscriptionStatus
+            && !\in_array($this->gocardlessSubscriptionStatus, self::INACTIVE_SUBSCRIPTION_STATUSES, true);
+    }
+
     public static function fromSubscription(
         Adherent $adherent,
         Subscription $subscription,
@@ -76,6 +84,25 @@ class Contribution
         $contribution->gocardlessMandateStatus = $subscription->mandate->status;
         $contribution->gocardlessSubscriptionId = $subscription->subscription->id;
         $contribution->gocardlessSubscriptionStatus = $subscription->subscription->status;
+        $contribution->type = ContributionTypeEnum::MANDATE;
+
+        return $contribution;
+    }
+
+    public static function fromPreviousWithNewSubscription(
+        self $previous,
+        GoCardlessSubscription $newSubscription,
+    ): self {
+        $contribution = new self();
+
+        $contribution->adherent = $previous->adherent;
+        $contribution->gocardlessCustomerId = $previous->gocardlessCustomerId;
+        $contribution->gocardlessBankAccountId = $previous->gocardlessBankAccountId;
+        $contribution->gocardlessBankAccountEnabled = $previous->gocardlessBankAccountEnabled;
+        $contribution->gocardlessMandateId = $previous->gocardlessMandateId;
+        $contribution->gocardlessMandateStatus = $previous->gocardlessMandateStatus;
+        $contribution->gocardlessSubscriptionId = $newSubscription->id;
+        $contribution->gocardlessSubscriptionStatus = $newSubscription->status;
         $contribution->type = ContributionTypeEnum::MANDATE;
 
         return $contribution;
