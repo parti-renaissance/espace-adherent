@@ -21990,11 +21990,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.49",
+            "version": "2.1.50",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d0082955396e7f5ba19cf298224b85e1099f0ed8",
-                "reference": "d0082955396e7f5ba19cf298224b85e1099f0ed8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
                 "shasum": ""
             },
             "require": {
@@ -22039,20 +22039,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-16T21:10:58+00:00"
+            "time": "2026-04-17T13:10:32+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.20",
+            "version": "2.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "72f4f7a02d6c98d9101e8616e0488bc0a785196d"
+                "reference": "81dac0ee4363c2359128aec844df31efb215dddc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/72f4f7a02d6c98d9101e8616e0488bc0a785196d",
-                "reference": "72f4f7a02d6c98d9101e8616e0488bc0a785196d",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/81dac0ee4363c2359128aec844df31efb215dddc",
+                "reference": "81dac0ee4363c2359128aec844df31efb215dddc",
                 "shasum": ""
             },
             "require": {
@@ -22113,9 +22113,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.20"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.21"
             },
-            "time": "2026-03-13T13:44:51+00:00"
+            "time": "2026-04-17T13:00:39+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
