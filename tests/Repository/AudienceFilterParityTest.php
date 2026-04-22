@@ -102,6 +102,21 @@ class AudienceFilterParityTest extends AbstractKernelTestCase
             'am_filter.mandateType = :mandate_type',
         ];
 
+        yield 'electMandate NOT' => [
+            function (AdherentMessageFilter $f): void { $f->setElectMandate('!conseiller_municipal'); },
+            'am_filter.id IS NULL',
+        ];
+
+        yield 'declaredMandate' => [
+            function (AdherentMessageFilter $f): void { $f->setDeclaredMandate('maire'); },
+            'FIND_IN_SET(:declared_mandate, a.mandates) > 0',
+        ];
+
+        yield 'declaredMandate NOT' => [
+            function (AdherentMessageFilter $f): void { $f->setDeclaredMandate('!maire'); },
+            'FIND_IN_SET(:declared_mandate, a.mandates) = 0',
+        ];
+
         yield 'isCommitteeMember true' => [
             function (AdherentMessageFilter $f): void { $f->setIsCommitteeMember(true); },
             'a.committeeMembership IS NOT NULL',
@@ -117,14 +132,29 @@ class AudienceFilterParityTest extends AbstractKernelTestCase
             'a.tags LIKE :tag_adherent',
         ];
 
+        yield 'adherentTags NOT' => [
+            function (AdherentMessageFilter $f): void { $f->adherentTags = '!adherent'; },
+            'a.tags NOT LIKE :tag_adherent',
+        ];
+
         yield 'electTags' => [
             function (AdherentMessageFilter $f): void { $f->electTags = 'elect_tag'; },
             'a.tags LIKE :tag_0',
         ];
 
+        yield 'electTags NOT' => [
+            function (AdherentMessageFilter $f): void { $f->electTags = '!elect_tag'; },
+            'a.tags NOT LIKE :tag_0',
+        ];
+
         yield 'staticTags' => [
             function (AdherentMessageFilter $f): void { $f->staticTags = 'static_tag'; },
             'a.tags LIKE :tag_',
+        ];
+
+        yield 'staticTags NOT' => [
+            function (AdherentMessageFilter $f): void { $f->staticTags = '!static_tag'; },
+            'a.tags NOT LIKE :tag_',
         ];
 
         yield 'registeredSince' => [
