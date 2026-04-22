@@ -89,7 +89,6 @@ class FeatureEnum extends Enum
         return array_diff(self::ALL, [
             self::FEATUREBASE,
             self::CONTACTS_EXPORT,
-            self::CHATBOT,
         ]);
     }
 }
