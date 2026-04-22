@@ -51,7 +51,7 @@ trait AudienceFilterTrait
 
             $qb
                 ->andWhere($mainAlias.'.tags '.$operator.' :tag_adherent')
-                ->setParameter('tag_adherent', $filter->adherentTags.'%')
+                ->setParameter('tag_adherent', ltrim($filter->adherentTags, '!').'%')
             ;
         }
 
@@ -60,7 +60,7 @@ trait AudienceFilterTrait
 
             $qb
                 ->andWhere($mainAlias.'.tags '.$operator.' :tag_'.$index)
-                ->setParameter('tag_'.$index, '%'.$tag.'%')
+                ->setParameter('tag_'.$index, '%'.ltrim($tag, '!').'%')
             ;
         }
 
@@ -139,11 +139,31 @@ trait AudienceFilterTrait
         }
 
         if ($electMandate = $filter->getElectMandate()) {
+            $isExclude = str_starts_with($electMandate, '!');
+            $mandateValue = ltrim($electMandate, '!');
+            $joinMethod = $isExclude ? 'leftJoin' : 'innerJoin';
+
             $qb
-                ->innerJoin($mainAlias.'.adherentMandates', 'am_filter', Join::WITH, 'am_filter INSTANCE OF :mandate_class AND am_filter.mandateType = :mandate_type')
+                ->$joinMethod($mainAlias.'.adherentMandates', 'am_filter', Join::WITH, 'am_filter INSTANCE OF :mandate_class AND am_filter.mandateType = :mandate_type')
                 ->setParameter('mandate_class', ElectedRepresentativeAdherentMandate::class)
-                ->setParameter('mandate_type', $electMandate)
+                ->setParameter('mandate_type', $mandateValue)
             ;
+
+            if ($isExclude) {
+                $qb->andWhere('am_filter.id IS NULL');
+            }
+        }
+
+        if ($declaredMandate = $filter->getDeclaredMandate()) {
+            $isExclude = str_starts_with($declaredMandate, '!');
+            $mandateValue = ltrim($declaredMandate, '!');
+
+            if ($isExclude) {
+                $qb->andWhere('('.$mainAlias.'.mandates IS NULL OR FIND_IN_SET(:declared_mandate, '.$mainAlias.'.mandates) = 0)');
+            } else {
+                $qb->andWhere('FIND_IN_SET(:declared_mandate, '.$mainAlias.'.mandates) > 0');
+            }
+            $qb->setParameter('declared_mandate', $mandateValue);
         }
 
         if (null !== $filter->getIsCommitteeMember()) {

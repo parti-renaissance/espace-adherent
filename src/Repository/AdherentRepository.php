@@ -1704,11 +1704,31 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             }
         }
 
-        if ($filter->getElectMandate()) {
-            $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+        if ($electMandate = $filter->getElectMandate()) {
+            $isExclude = str_starts_with($electMandate, '!');
+            $mandateValue = ltrim($electMandate, '!');
+
+            if ($isExclude) {
+                $fromJoin[] = 'LEFT JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+                $where[] = 'am.id IS NULL';
+            } else {
+                $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+            }
 
             $params['mandate_join_type'] = 'elected_representative';
-            $params['mandate_type'] = $filter->getElectMandate();
+            $params['mandate_type'] = $mandateValue;
+        }
+
+        if ($declaredMandate = $filter->getDeclaredMandate()) {
+            $isExclude = str_starts_with($declaredMandate, '!');
+            $mandateValue = ltrim($declaredMandate, '!');
+
+            if ($isExclude) {
+                $where[] = '(a.mandates IS NULL OR FIND_IN_SET(:declared_mandate, a.mandates) = 0)';
+            } else {
+                $where[] = 'FIND_IN_SET(:declared_mandate, a.mandates) > 0';
+            }
+            $params['declared_mandate'] = $mandateValue;
         }
 
         $where[] = 'a.status = :status_enabled';
