@@ -35,6 +35,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
+use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
 use App\Newsletter\NewsletterValueObject;
@@ -319,7 +320,9 @@ class Manager implements LoggerAwareInterface
         );
 
         if ($result) {
-            $this->updateMemberTags($emailAddress, $listId, $requestBuilder);
+            $tagsRequest = new MemberTagsRequest($emailAddress);
+            $tagsRequest->addTag($eventInscription->event->getSlug());
+            $this->driver->updateMemberTags($tagsRequest, $listId);
         }
     }
 

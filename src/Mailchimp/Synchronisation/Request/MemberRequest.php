@@ -125,6 +125,7 @@ class MemberRequest implements MemberRequestInterface
             'email_address' => $this->emailAddress ?? $this->memberIdentifier,
             'email_type' => $this->emailType,
             'status' => $this->status,
+            'status_if_new' => $this->status,
         ];
 
         if ($this->mergeFields) {
