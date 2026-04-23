@@ -46,7 +46,8 @@ class EventRegistrationManager
     {
         return $this->repository->findAdherentRegistration(
             $event->getUuid()->toString(),
-            $adherent->getUuid()->toString()
+            $adherent->getUuid()->toString(),
+            null
         );
     }
 

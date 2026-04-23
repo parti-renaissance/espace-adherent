@@ -12,6 +12,10 @@ class EventLiveBeginNotification extends AbstractMulticastNotification
 {
     public static function create(Event $event): self
     {
-        return new self('🔴 On est en direct !', $event->getName(), NotificationScope::national());
+        $scope = $event->isInvitation()
+            ? NotificationScope::event($event->getId())
+            : NotificationScope::national();
+
+        return new self('🔴 On est en direct !', $event->getName(), $scope);
     }
 }

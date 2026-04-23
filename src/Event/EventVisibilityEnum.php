@@ -13,7 +13,7 @@ enum EventVisibilityEnum: string implements TranslatableInterface
     case PRIVATE = 'private';
     case ADHERENT = 'adherent';
     case ADHERENT_DUES = 'adherent_dues';
-    case INVITATION_AGORA = 'invitation_agora';
+    case INVITATION = 'invitation';
 
     public static function isForAdherent(self $visibility): bool
     {
@@ -23,10 +23,5 @@ enum EventVisibilityEnum: string implements TranslatableInterface
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans('event.visibility.'.strtolower($this->name), locale: $locale);
-    }
-
-    public static function isInvitation(self $visibility): bool
-    {
-        return self::INVITATION_AGORA === $visibility;
     }
 }

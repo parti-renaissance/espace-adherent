@@ -7,6 +7,7 @@ namespace App\Repository\Event;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Agora;
+use App\Entity\Committee;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
@@ -459,25 +460,9 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Event[]
      */
-    public function findAllFuturAgoraEventsWithoutAdherent(Agora $agora, Adherent $adherent, \DateTime $from): array
+    public function findAllFutureInvitationEvents(Agora|Committee $container, \DateTime $from): array
     {
-        return $this->createQueryBuilder('e')
-            ->select('e')
-            ->leftJoin(EventRegistration::class, 'er', 'WITH', 'er.event = e AND er.adherent = :adherent')
-            ->where('e.agora = :agora')
-            ->andWhere('e.beginAt >= :from')
-            ->andWhere('e.published = :published')
-            ->andWhere('e.status = :status')
-            ->andWhere('e.hidden = :hidden')
-            ->andWhere('er IS NULL')
-            ->setParameters([
-                'agora' => $agora,
-                'from' => $from,
-                'published' => true,
-                'status' => Event::STATUS_SCHEDULED,
-                'adherent' => $adherent,
-                'hidden' => false,
-            ])
+        return $this->createFutureInvitationEventsQueryBuilder($container, $from)
             ->getQuery()
             ->getResult()
         ;
@@ -486,24 +471,35 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Event[]
      */
-    public function findAllFuturAgoraEvents(Agora $agora, \DateTime $from): array
+    public function findAllFutureInvitationEventsWithoutAdherent(Agora|Committee $container, Adherent $adherent, \DateTime $from): array
     {
+        return $this->createFutureInvitationEventsQueryBuilder($container, $from)
+            ->leftJoin(EventRegistration::class, 'er', 'WITH', 'er.event = e AND er.adherent = :adherent')
+            ->andWhere('er IS NULL')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function createFutureInvitationEventsQueryBuilder(Agora|Committee $container, \DateTime $from): QueryBuilder
+    {
+        $field = $container instanceof Agora ? 'agora' : 'committee';
+
         return $this->createQueryBuilder('e')
             ->select('e')
-            ->where('e.agora = :agora')
+            ->where("e.$field = :container")
+            ->andWhere('e.visibility = :visibility')
             ->andWhere('e.beginAt >= :from')
             ->andWhere('e.published = :published')
             ->andWhere('e.status = :status')
             ->andWhere('e.hidden = :hidden')
-            ->setParameters([
-                'agora' => $agora,
-                'from' => $from,
-                'published' => true,
-                'status' => Event::STATUS_SCHEDULED,
-                'hidden' => false,
-            ])
-            ->getQuery()
-            ->getResult()
+            ->setParameter('container', $container)
+            ->setParameter('visibility', EventVisibilityEnum::INVITATION)
+            ->setParameter('from', $from)
+            ->setParameter('published', true)
+            ->setParameter('status', Event::STATUS_SCHEDULED)
+            ->setParameter('hidden', false)
         ;
     }
 

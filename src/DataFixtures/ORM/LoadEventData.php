@@ -178,7 +178,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event8->setMode(Event::MODE_ONLINE);
         $event8->setVisioUrl('https://parti-renaissance.fr');
         $event8->setTimeZone('Europe/Paris');
-        $event8->visibility = EventVisibilityEnum::INVITATION_AGORA;
+        $event8->visibility = EventVisibilityEnum::INVITATION;
         $event8->setAuthor($adherent5);
         $event8->incrementParticipantsCount(3);
 

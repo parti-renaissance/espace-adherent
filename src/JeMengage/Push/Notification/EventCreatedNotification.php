@@ -12,31 +12,56 @@ class EventCreatedNotification extends AbstractMulticastNotification
 {
     public static function create(Event $event): self
     {
-        if ($event->getCommittee()) {
-            $titre = \sprintf('Nouvel événement dans votre comité %s', $event->getCommittee()->getName());
-            $scope = NotificationScope::committee($event->getCommittee()->getId());
-        } elseif ($event->isNational()) {
-            $titre = 'Nouvel événement';
-            $scope = NotificationScope::national();
-        } else {
-            $assemblyZone = $event->getAssemblyZone();
-
-            if (!$assemblyZone) {
-                throw new \RuntimeException(\sprintf('Event #%d has no assembly zone — cannot resolve notification scope.', $event->getId()));
-            }
-
-            $titre = \sprintf('%s, nouvel événement', $assemblyZone->getName());
-            $scope = NotificationScope::zone($assemblyZone->getCode());
-        }
-
         return new self(
-            $titre,
+            self::buildTitle($event),
             implode(' • ', array_filter([
                 $event->getName(),
                 self::formatDate($event->getBeginAt(), 'EEEE d MMMM y à HH\'h\'mm'),
                 $event->getInlineFormattedAddress(),
             ])),
-            $scope,
+            self::buildScope($event),
         );
+    }
+
+    private static function buildTitle(Event $event): string
+    {
+        if ($committee = $event->getCommittee()) {
+            return \sprintf('Nouvel événement dans votre comité %s', $committee->getName());
+        }
+
+        if ($agora = $event->agora) {
+            return \sprintf('Nouvel événement dans votre Agora %s', $agora->getName());
+        }
+
+        if ($event->isNational()) {
+            return 'Nouvel événement';
+        }
+
+        if (!$assemblyZone = $event->getAssemblyZone()) {
+            throw new \RuntimeException(\sprintf('Event #%d has no assembly zone — cannot resolve notification title.', $event->getId()));
+        }
+
+        return \sprintf('%s, nouvel événement', $assemblyZone->getName());
+    }
+
+    private static function buildScope(Event $event): string
+    {
+        if ($event->isInvitation()) {
+            return NotificationScope::event($event->getId());
+        }
+
+        if ($committee = $event->getCommittee()) {
+            return NotificationScope::committee($committee->getId());
+        }
+
+        if ($event->isNational()) {
+            return NotificationScope::national();
+        }
+
+        if (!$assemblyZone = $event->getAssemblyZone()) {
+            throw new \RuntimeException(\sprintf('Event #%d has no assembly zone — cannot resolve notification scope.', $event->getId()));
+        }
+
+        return NotificationScope::zone($assemblyZone->getCode());
     }
 }

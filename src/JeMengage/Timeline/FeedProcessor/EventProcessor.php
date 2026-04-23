@@ -56,7 +56,7 @@ class EventProcessor extends AbstractFeedProcessor
                 $hasAccess =
                     (EventVisibilityEnum::ADHERENT === $visibility && $user->hasTag(TagEnum::ADHERENT))
                     || (EventVisibilityEnum::ADHERENT_DUES === $visibility && $user->hasTag(TagEnum::getAdherentYearTag()))
-                    || (EventVisibilityEnum::isInvitation($visibility) && $this->eventRegistrationRepository->findAdherentRegistration($item['objectID'], $user->getUuidAsString(), null));
+                    || (EventVisibilityEnum::INVITATION === $visibility && $this->eventRegistrationRepository->findAdherentRegistration($item['objectID'], $user->getUuidAsString(), null));
 
                 if ($hasAccess) {
                     $needClean = false;
