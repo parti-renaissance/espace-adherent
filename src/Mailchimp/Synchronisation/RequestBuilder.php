@@ -66,7 +66,6 @@ class RequestBuilder implements LoggerAwareInterface
     private $favoriteCities;
     private $favoriteCitiesCodes;
     private $takenForCity = false;
-    private $isSubscribeRequest = true;
     private bool $smsSubscribed = false;
     private MarketingConsentStatusEnum $emailMarketingConsent = MarketingConsentStatusEnum::UNKNOWN;
 
@@ -149,7 +148,6 @@ class RequestBuilder implements LoggerAwareInterface
             ->setAdherentTags($adherent->tags)
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
-            ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setSmsSubscribed($adherent->hasSmsSubscriptionType())
             ->setEmailMarketingConsent(MarketingConsentStatusEnum::fromContactStatus($adherent->getMailchimpStatus()))
             ->setZones($adherent->getZones())
@@ -175,7 +173,6 @@ class RequestBuilder implements LoggerAwareInterface
             ->setBirthDay($electedRepresentative->getBirthDate())
             ->setIsAdherent($electedRepresentative->isAdherent())
             ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
-            ->setIsSubscribeRequest(false === $electedRepresentative->isEmailUnsubscribed())
         ;
     }
 
@@ -407,13 +404,6 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setIsSubscribeRequest(bool $isSubscribeRequest): self
-    {
-        $this->isSubscribeRequest = $isSubscribeRequest;
-
-        return $this;
-    }
-
     public function setFavoriteCities(array $favoriteCities): self
     {
         $this->favoriteCities = $favoriteCities;
@@ -543,10 +533,6 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->email) {
             $request->setEmailAddress($this->email);
-        }
-
-        if (false === $this->isSubscribeRequest) {
-            $request->setUnsubscriptionRequest();
         }
 
         $request->setMergeFields($this->buildMergeFields());

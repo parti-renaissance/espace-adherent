@@ -88,7 +88,6 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setType($newsletter->getType())
             ->setZones($newsletter->getZones())
             ->setAdditionalTags($newsletter->getTags())
-            ->setIsSubscribeRequest($newsletter->isSubscribed())
         ;
     }
 
