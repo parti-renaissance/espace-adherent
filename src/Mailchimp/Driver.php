@@ -379,11 +379,11 @@ class Driver implements LoggerAwareInterface
     private function send(string $method, string $uri, array $body = []): ?ResponseInterface
     {
         $fullUri = '/3.0/'.ltrim($uri, '/');
+        $isWriteCall = 'GET' !== $method;
 
         if ($this->debug) {
             $this->logger->info('[Mailchimp] Request : '.$fullUri, [
                 'method' => $method,
-                'uri' => $fullUri,
                 'body' => $body ?: null,
             ]);
         }
@@ -395,12 +395,11 @@ class Driver implements LoggerAwareInterface
                 $body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : []
             );
 
-            if ($this->debug) {
+            if ($this->debug && $isWriteCall) {
                 $this->logger->info('[Mailchimp] Response : '.$fullUri, [
                     'method' => $method,
-                    'uri' => $fullUri,
                     'status' => $this->lastResponse->getStatusCode(),
-                    'body' => $this->lastResponse->getContent(false),
+                    'response_body' => $this->lastResponse->getContent(false),
                 ]);
             }
 
