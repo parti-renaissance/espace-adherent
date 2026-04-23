@@ -122,6 +122,33 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return string[]
+     */
+    public function findEventSlugsByEmail(string $email): array
+    {
+        return array_column(
+            $this->createQueryBuilder('ei')
+                ->select('DISTINCT e.slug')
+                ->innerJoin('ei.event', 'e')
+                ->where('ei.addressEmail = :email')
+                ->andWhere('e.mailchimpSync = :true')
+                ->andWhere('ei.status NOT IN (:excluded_statuses)')
+                ->setParameters([
+                    'email' => $email,
+                    'true' => true,
+                    'excluded_statuses' => [
+                        InscriptionStatusEnum::CANCELED,
+                        InscriptionStatusEnum::DUPLICATE,
+                        InscriptionStatusEnum::REFUSED,
+                    ],
+                ])
+                ->getQuery()
+                ->getScalarResult(),
+            'slug'
+        );
+    }
+
     public function findAllForEventPaginated(NationalEvent $event, ?string $searchTerm, array $statuses, int $page = 1, $limit = 30): PaginatorInterface
     {
         $queryBuilder = $this->createQueryBuilder('ei')

@@ -86,7 +86,7 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
             ->createQueryBuilder('ei')
             ->select('PARTIAL ei.{id, uuid, addressEmail}')
             ->addSelect(
-                'CASE WHEN ei.status IN (:first_statuses) THEN 1
+                'CASE WHEN ei.status IN (:weak_statuses) THEN 1
                 WHEN ei.status = :waiting_payment THEN 6
                 WHEN ei.status IN (:pending_statuses) THEN 9
                 WHEN ei.status IN (:approved_statuses) THEN 10
@@ -94,10 +94,10 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
             )
             ->innerJoin('ei.event', 'e')
             ->andWhere('e.mailchimpSync = :true')
-            ->andWhere('ei.status != :cancelled')
+            ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->setParameter('true', true)
             ->setParameter('waiting_payment', InscriptionStatusEnum::WAITING_PAYMENT)
-            ->setParameter('first_statuses', [
+            ->setParameter('weak_statuses', [
                 InscriptionStatusEnum::DUPLICATE,
                 InscriptionStatusEnum::REFUSED,
             ])
@@ -106,8 +106,11 @@ class MailchimpSyncAllNationalEventInscriptionCommand extends Command
                 InscriptionStatusEnum::IN_VALIDATION,
             ])
             ->setParameter('approved_statuses', InscriptionStatusEnum::APPROVED_STATUSES)
-            ->setParameter('cancelled', InscriptionStatusEnum::CANCELED)
-            ->orderBy('score', 'ASC')
+            ->setParameter('excluded_statuses', [
+                InscriptionStatusEnum::CANCELED,
+            ])
+            ->orderBy('ei.createdAt', 'ASC')
+            ->addOrderBy('score', 'ASC')
         ;
 
         if ($eventId) {
