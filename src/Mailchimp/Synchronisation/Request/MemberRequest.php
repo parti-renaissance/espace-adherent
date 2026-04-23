@@ -85,7 +85,6 @@ class MemberRequest implements MemberRequestInterface
 
     private $emailAddress;
     private $emailType = 'html'; // or 'text'
-    private $status = 'subscribed';
     private $mergeFields = [];
     private $interests = [];
 
@@ -104,11 +103,6 @@ class MemberRequest implements MemberRequestInterface
         $this->emailAddress = $emailAddress;
     }
 
-    public function setUnsubscriptionRequest(): void
-    {
-        $this->status = 'unsubscribed';
-    }
-
     public function setMergeFields(array $mergeFields): void
     {
         $this->mergeFields = $mergeFields;
@@ -124,8 +118,7 @@ class MemberRequest implements MemberRequestInterface
         $data = [
             'email_address' => $this->emailAddress ?? $this->memberIdentifier,
             'email_type' => $this->emailType,
-            'status' => $this->status,
-            'status_if_new' => $this->status,
+            'status_if_new' => 'subscribed',
         ];
 
         if ($this->mergeFields) {

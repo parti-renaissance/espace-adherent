@@ -9,19 +9,11 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 abstract class AbstractMemberRequestBuilder
 {
     private $email;
-    private $isSubscribeRequest = true;
     private $interests;
 
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function setIsSubscribeRequest(bool $isSubscribeRequest): self
-    {
-        $this->isSubscribeRequest = $isSubscribeRequest;
 
         return $this;
     }
@@ -39,10 +31,6 @@ abstract class AbstractMemberRequestBuilder
 
         if ($this->email) {
             $request->setEmailAddress($this->email);
-        }
-
-        if (false === $this->isSubscribeRequest) {
-            $request->setUnsubscriptionRequest();
         }
 
         $request->setMergeFields($this->buildMergeFields());

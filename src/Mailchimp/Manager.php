@@ -555,7 +555,6 @@ class Manager implements LoggerAwareInterface
             'no-reply-mailchimp-contact+deleted-contact%d@en-marche.fr',
             $command->getAdherentId() ?: random_int(1, \PHP_INT_MAX)
         ));
-        $request->setUnsubscriptionRequest();
 
         $emailToDelete = $command->getEmail();
         if ($this->driver->editMember($request, $listId)) {
