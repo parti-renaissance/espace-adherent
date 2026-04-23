@@ -39,6 +39,7 @@ use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
 use App\Newsletter\NewsletterValueObject;
+use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\SmsOptOutRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -73,6 +74,7 @@ class Manager implements LoggerAwareInterface
         private readonly ServiceLocator $requestBuildersLocator,
         private readonly SmsOptOutRepository $smsOptOutRepository,
         private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
     ) {
     }
 
@@ -321,7 +323,11 @@ class Manager implements LoggerAwareInterface
 
         if ($result) {
             $tagsRequest = new MemberTagsRequest($emailAddress);
-            $tagsRequest->addTag($eventInscription->event->getSlug());
+
+            foreach ($this->eventInscriptionRepository->findEventSlugsByEmail($emailAddress) as $slug) {
+                $tagsRequest->addTag($slug);
+            }
+
             $this->driver->updateMemberTags($tagsRequest, $listId);
         }
     }
