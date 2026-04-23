@@ -743,10 +743,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_INSCRIPTION_DATE] = $this->inscriptionDate->format(MemberRequest::DATE_FORMAT);
         }
 
-        $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate?->format(MemberRequest::DATE_FORMAT);
-        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt?->format(MemberRequest::DATE_FORMAT);
-        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt?->format(MemberRequest::DATE_FORMAT);
-        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail;
+        $mergeFields[MemberRequest::MERGE_FIELD_CONFIRMATION_DATE] = $this->confirmationDate?->format(MemberRequest::DATE_FORMAT) ?? '';
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SENT_AT] = $this->ticketSentAt?->format(MemberRequest::DATE_FORMAT) ?? '';
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_SCANNED_AT] = $this->ticketScannedAt?->format(MemberRequest::DATE_FORMAT) ?? '';
+        $mergeFields[MemberRequest::MERGE_FIELD_TICKET_CUSTOM_DETAIL] = $this->ticketCustomDetail ?? '';
 
         if (null !== $this->isVolunteer) {
             $mergeFields[MemberRequest::MERGE_FIELD_IS_VOLUNTEER] = $this->isVolunteer ? 'oui' : 'non';
@@ -756,11 +756,11 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_IS_JAM] = $this->isJAM ? 'oui' : 'non';
         }
 
-        $mergeFields[MemberRequest::MERGE_FIELD_VISIT_DAY] = $this->visitDay;
-        $mergeFields[MemberRequest::MERGE_FIELD_ACCESSIBILITY] = $this->accessibility;
+        $mergeFields[MemberRequest::MERGE_FIELD_VISIT_DAY] = $this->visitDay ?? '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ACCESSIBILITY] = $this->accessibility ?? '';
         $mergeFields[MemberRequest::MERGE_FIELD_IS_TRANSPORT_NEEDS] = $this->isTransportNeeds ? 'oui' : 'non';
-        $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport;
-        $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accommodation;
+        $mergeFields[MemberRequest::MERGE_FIELD_TRANSPORT] = $this->transport ?? '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ACCOMODATION] = $this->accommodation ?? '';
         $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
 
         if ($this->participantUuid) {
