@@ -18,6 +18,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Request\ContactRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\RequestBuilder;
+use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\SmsOptOutRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -39,6 +40,7 @@ final class ManagerTest extends TestCase
     private RequestBuilder&MockObject $requestBuilder;
     private SmsOptOutRepository&MockObject $smsOptOutRepository;
     private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
+    private EventInscriptionRepository&MockObject $eventInscriptionRepository;
     private Manager $manager;
 
     protected function setUp(): void
@@ -50,6 +52,7 @@ final class ManagerTest extends TestCase
         $this->requestBuilder = $this->createMock(RequestBuilder::class);
         $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
         $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
+        $this->eventInscriptionRepository = $this->createMock(EventInscriptionRepository::class);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
@@ -67,6 +70,7 @@ final class ManagerTest extends TestCase
             $this->requestBuildersLocator,
             $this->smsOptOutRepository,
             $this->subscriptionTypeRepository,
+            $this->eventInscriptionRepository,
         );
     }
 

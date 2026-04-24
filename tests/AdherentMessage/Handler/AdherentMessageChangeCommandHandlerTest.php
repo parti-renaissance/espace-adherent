@@ -44,6 +44,7 @@ use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
+use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\SmsOptOutRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Scope\ScopeEnum;
@@ -556,6 +557,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 $serviceLocator,
                 $this->createMock(SmsOptOutRepository::class),
                 $this->createMock(SubscriptionTypeRepository::class),
+                $this->createMock(EventInscriptionRepository::class),
             ),
             $this->createMock(ObjectManager::class)
         );
