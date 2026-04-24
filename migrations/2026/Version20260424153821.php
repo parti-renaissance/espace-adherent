@@ -7,7 +7,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20260424151818 extends AbstractMigration
+final class Version20260424153821 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -35,16 +35,6 @@ final class Version20260424151818 extends AbstractMigration
             ADD
               CONSTRAINT FK_A6F1D64F25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE
         SQL);
-        $this->addSql(<<<'SQL'
-                ALTER TABLE adherent_activity
-                ADD CONSTRAINT chk_user_activity_history_no_sensitive_event_type
-                CHECK (event_type NOT IN ('impersonation_start', 'impersonation_end', 'sensitive_data_access'))
-            SQL);
-        $this->addSql(<<<'SQL'
-                ALTER TABLE adherent_activity
-                ADD CONSTRAINT chk_user_activity_history_hit_event_type
-                CHECK (source_type != 'hit' OR event_type IN ('open', 'click', 'activity_session'))
-            SQL);
     }
 
     public function down(Schema $schema): void
