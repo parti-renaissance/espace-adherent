@@ -69,3 +69,23 @@ Feature:
         And the JSON nodes should match:
             | metadata.total_items | 0 |
             | metadata.count       | 0 |
+
+    Scenario: As a logged-in user I can filter activity history by source type hit
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/user_activity_histories?adherent.uuid=e6977a4d-2646-5f6c-9c82-88e58dca8458&sourceType=hit"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 2 |
+            | metadata.count       | 2 |
+        And the JSON node "items" should contain an element with "source_type" equal to "hit"
+        And the JSON node "items" should not contain an element with "source_type" equal to "action_history"
+
+    Scenario: As a logged-in user I can filter activity history by source type action_history
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/user_activity_histories?adherent.uuid=e6977a4d-2646-5f6c-9c82-88e58dca8458&sourceType=action_history"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 1 |
+            | metadata.count       | 1 |
+        And the JSON node "items" should contain an element with "source_type" equal to "action_history"
+        And the JSON node "items" should not contain an element with "source_type" equal to "hit"
