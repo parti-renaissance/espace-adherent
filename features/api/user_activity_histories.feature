@@ -89,3 +89,22 @@ Feature:
             | metadata.count       | 1 |
         And the JSON node "items" should contain an element with "source_type" equal to "action_history"
         And the JSON node "items" should not contain an element with "source_type" equal to "hit"
+
+    Scenario: As a logged-in user I can filter activity history by event type
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/user_activity_histories?adherent.uuid=e6977a4d-2646-5f6c-9c82-88e58dca8458&eventType=open"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 1 |
+            | metadata.count       | 1 |
+        And the JSON node "items" should contain an element with "event_type" equal to "open"
+
+    Scenario: As a logged-in user I can combine source type and event type filters
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/user_activity_histories?adherent.uuid=e6977a4d-2646-5f6c-9c82-88e58dca8458&sourceType=hit&eventType=activity_session"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 1 |
+            | metadata.count       | 1 |
+        And the JSON node "items[0].event_type" should be equal to "activity_session"
+        And the JSON node "items[0].source_type" should be equal to "hit"

@@ -15,7 +15,13 @@ use App\Repository\Adherent\Activity\UserActivityHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['uuid' => 'exact', 'adherent.uuid' => 'exact', 'sourceType' => 'exact'])]
+#[ApiFilter(filterClass: SearchFilter::class,
+    properties: [
+        'uuid' => 'exact',
+        'adherent.uuid' => 'exact',
+        'sourceType' => 'exact',
+        'eventType' => 'exact']
+)]
 #[ApiResource(
     operations: [
         new GetCollection(
