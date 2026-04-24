@@ -9,6 +9,7 @@ use App\JMEFilter\FilterCollectionBuilder;
 use App\Repository\CommitteeRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 
 class CommitteeFilterBuilder implements FilterBuilderInterface
@@ -21,6 +22,10 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null, bool $isVox = false): array
     {
+        if (ScopeEnum::ANIMATOR === $scope) {
+            return [];
+        }
+
         $scopeObject = $this->scopeGeneratorResolver->generate();
 
         return new FilterCollectionBuilder()
