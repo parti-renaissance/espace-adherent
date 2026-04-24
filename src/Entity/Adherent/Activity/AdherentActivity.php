@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Adherent\Activity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -14,6 +16,12 @@ use App\Repository\Adherent\Activity\AdherentActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiFilter(filterClass: SearchFilter::class,
+    properties: [
+        'uuid' => 'exact',
+        'sourceType' => 'exact',
+        'eventType' => 'exact']
+)]
 #[ApiResource(
     operations: [
         new GetCollection(
