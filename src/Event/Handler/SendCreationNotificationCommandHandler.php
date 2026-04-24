@@ -31,7 +31,7 @@ class SendCreationNotificationCommandHandler
             return;
         }
 
-        if (!$event->isAnnounceEnabled()) {
+        if (!$event->isAnnounceEnabled() || $event->isInvitation()) {
             return;
         }
 

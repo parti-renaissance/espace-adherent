@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Agora\EventListener;
 
-use App\Agora\Command\InviteAdherentForAllFuturAgoraEventCommand;
-use App\Agora\Command\InviteAgoraMembersForEventCommand;
-use App\Agora\Command\RemoveAdherentForAllFuturAgoraEventCommand;
 use App\Agora\Event\NewAgoraMemberEvent;
 use App\Agora\Event\RemoveAgoraMemberEvent;
-use App\Event\EventEvent;
-use App\Event\EventVisibilityEnum;
-use App\Events;
+use App\Event\Command\InviteAdherentForAllFutureInvitationEventsCommand;
+use App\Event\Command\RemoveAdherentForAllFutureInvitationEventsCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -21,29 +17,27 @@ class UpdateAgoraMemberEventInvitationsListener implements EventSubscriberInterf
     {
     }
 
-    public function onEventCreated(EventEvent $event): void
-    {
-        if (EventVisibilityEnum::INVITATION_AGORA === $event->getEvent()->visibility) {
-            $this->messageBus->dispatch(new InviteAgoraMembersForEventCommand($event->getEvent()->getUuid()));
-        }
-    }
-
     public function onPostMemberAdd(NewAgoraMemberEvent $event): void
     {
         $agoraMembership = $event->agoraMembership;
-        $this->messageBus->dispatch(new InviteAdherentForAllFuturAgoraEventCommand($agoraMembership->adherent->getUuid(), $agoraMembership->agora->getId()));
+        $this->messageBus->dispatch(new InviteAdherentForAllFutureInvitationEventsCommand(
+            $agoraMembership->adherent->getUuid(),
+            agoraId: $agoraMembership->agora->getId(),
+        ));
     }
 
     public function onPostMemberRemove(RemoveAgoraMemberEvent $event): void
     {
         $agoraMembership = $event->agoraMembership;
-        $this->messageBus->dispatch(new RemoveAdherentForAllFuturAgoraEventCommand($agoraMembership->adherent->getUuid(), $agoraMembership->agora->getId()));
+        $this->messageBus->dispatch(new RemoveAdherentForAllFutureInvitationEventsCommand(
+            $agoraMembership->adherent->getUuid(),
+            agoraId: $agoraMembership->agora->getId(),
+        ));
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::EVENT_CREATED => 'onEventCreated',
             NewAgoraMemberEvent::class => 'onPostMemberAdd',
             RemoveAgoraMemberEvent::class => 'onPostMemberRemove',
         ];

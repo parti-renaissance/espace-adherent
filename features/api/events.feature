@@ -2500,12 +2500,12 @@ Feature:
                 "mode": "online",
                 "visio_url": "https://parti-renaissance.fr/reunions/123",
                 "time_zone": "Europe/Paris",
-                "visibility": "invitation_agora"
+                "visibility": "invitation"
             }
             """
         Then the response status code should be 400
         And the JSON nodes should match:
-            | violations[0].message | L'Agora doit être renseignée pour un événement |
+            | violations[0].message | L'Agora ou le Comité doit être renseigné pour un événement sur invitation |
         When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
             """
             {
@@ -2518,25 +2518,7 @@ Feature:
                 "mode": "online",
                 "visio_url": "https://parti-renaissance.fr/reunions/123",
                 "time_zone": "Europe/Paris",
-                "visibility": "public"
-            }
-            """
-        Then the response status code should be 400
-        And the JSON nodes should match:
-            | violations[0].message | Vous ne pouvez créer que des événements résérvés aux membres |
-        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
-            """
-            {
-                "name": "Nouvel event pour Agora",
-                "category": "kiosque",
-                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0",
-                "description": "Une description de l'événement",
-                "begin_at": "+1 hour",
-                "finish_at": "+2 hour",
-                "mode": "online",
-                "visio_url": "https://parti-renaissance.fr/reunions/123",
-                "time_zone": "Europe/Paris",
-                "visibility": "invitation_agora"
+                "visibility": "invitation"
             }
             """
         Then the response status code should be 201
@@ -2557,12 +2539,11 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "committee": null,
                 "live_url": null,
-                "visibility": "private",
                 "created_at": "@string@.isDateTime()",
                 "user_registered_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
-                "visibility": "invitation_agora",
+                "visibility": "invitation",
                 "organizer": {
                     "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
                     "first_name": "Michelle",
@@ -2616,8 +2597,9 @@ Feature:
             }
             """
         And I save this response
-        And I should have 0 notification
-        And I should have 1 email "AgoraEventInvitationMessage" for "carl999@example.fr" with payload:
+        # Carl (sympathisant) is filtered out by the ADHERENT filter; only Lucie (adhérent) is invited
+        And I should have 1 notification
+        And I should have 1 email "AgoraEventInvitationMessage" for "luciole1989@spambox.fr" with payload:
             """
             {
                 "template_name": "agora-event-invitation",
@@ -2666,15 +2648,6 @@ Feature:
                     ],
                     "merge_vars": [
                         {
-                            "rcpt": "carl999@example.fr",
-                            "vars": [
-                                {
-                                    "content": "Carl",
-                                    "name": "first_name"
-                                }
-                            ]
-                        },
-                        {
                             "rcpt": "luciole1989@spambox.fr",
                             "vars": [
                                 {
@@ -2686,11 +2659,6 @@ Feature:
                     ],
                     "from_name": "Renaissance",
                     "to": [
-                        {
-                            "email": "carl999@example.fr",
-                            "name": "Carl Mirabeau",
-                            "type": "to"
-                        },
                         {
                             "email": "luciole1989@spambox.fr",
                             "type": "to",
@@ -2709,7 +2677,7 @@ Feature:
             | metadata.count       | 1                       |
             | items[0].uuid        | @uuid@                  |
             | items[0].name        | Nouvel event pour Agora |
-            | items[0].visibility  | invitation_agora        |
+            | items[0].visibility  | invitation              |
         # Jacques Picard (president of agora-2, different from Michelle's agora-1) should see 0 events since there are no events for his agora
         When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         And I send a "GET" request to "/api/v3/events?scope=agora_president"
@@ -2809,16 +2777,39 @@ Feature:
             | agora.uuid         | 82ad6422-cb82-4c04-b478-bfb421c740e0 |
             | agora.name         | Première Agora                       |
             | participants_count | 2                                    |
-            | visibility         | invitation_agora                     |
+            | visibility         | invitation                           |
         When I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/events/:saved_response.uuid:/participants"
         Then the response status code should be 200
         And the JSON nodes should match:
-            | metadata.total_items | 4        |
-            | items[0].first_name  | Carl     |
-            | items[1].first_name  | Lucie    |
-            | items[2].first_name  | Michelle |
-            | items[3].first_name  | Jacques  |
+            | metadata.total_items | 3        |
+            | items[0].first_name  | Lucie    |
+            | items[1].first_name  | Michelle |
+            | items[2].first_name  | Jacques  |
+
+    Scenario: A non-member cannot subscribe to an agora invitation event
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
+            """
+            {
+                "name": "Event agora sur invitation privé",
+                "category": "kiosque",
+                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                "description": "Réservé aux membres de l'agora",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://parti-renaissance.fr/reunions/999",
+                "time_zone": "Europe/Paris",
+                "visibility": "invitation"
+            }
+            """
+        Then the response status code should be 201
+        And I save this response
+        # Non-member of the agora cannot subscribe
+        When I am logged with "adherent-male-51@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe"
+        Then the response status code should be 403
 
     Scenario: As a President of Agora I can get the count of invitations for an agora
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
@@ -2848,6 +2839,146 @@ Feature:
                 "count": 1
             }
             """
+
+    Scenario: As an Animator I can create a committee event with invitation visibility
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # Invitation without committee or agora should fail
+        When I send a "POST" request to "/api/v3/events?scope=animator" with body:
+            """
+            {
+                "name": "Event comité sur invitation",
+                "category": "kiosque",
+                "description": "Description de l'événement sur invitation",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://en-marche.fr/reunions/456",
+                "time_zone": "Europe/Paris",
+                "visibility": "invitation"
+            }
+            """
+        Then the response status code should be 400
+        And the JSON nodes should match:
+            | violations[0].message | L'Agora ou le Comité doit être renseigné pour un événement sur invitation |
+        # Invitation with committee should succeed
+        When I send a "POST" request to "/api/v3/events?scope=animator" with body:
+            """
+            {
+                "name": "Event comité sur invitation",
+                "category": "kiosque",
+                "committee": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                "description": "Description de l'événement sur invitation",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://en-marche.fr/reunions/456",
+                "time_zone": "Europe/Paris",
+                "visibility": "invitation"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON nodes should match:
+            | visibility     | invitation                           |
+            | committee.uuid | 5e00c264-1d4b-43b8-862e-29edc38389b3 |
+        # Push notification sent on committee scope (targets committee members)
+        And I should have 1 notification
+        # Invitation email sent to committee members (not announcement email)
+        And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
+            """
+            {
+                "template_name": "renaissance-event-notification",
+                "template_content": [],
+                "message": {
+                    "subject": "@string@",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "animator_firstname",
+                            "content": "Adherent 55"
+                        },
+                        {
+                            "name": "event_name",
+                            "content": "Event comité sur invitation"
+                        },
+                        {
+                            "name": "event_date",
+                            "content": "@string@"
+                        },
+                        {
+                            "name": "event_hour",
+                            "content": "@string@"
+                        },
+                        {
+                            "name": "event_address",
+                            "content": ""
+                        },
+                        {
+                            "name": "event_slug",
+                            "content": "@string@.isUrl()"
+                        },
+                        {
+                            "name": "event_description",
+                            "content": "Description de l'événement sur invitation"
+                        },
+                        {
+                            "name": "committee_name",
+                            "content": "Comité des 3 communes"
+                        },
+                        {
+                            "name": "visio_url",
+                            "content": "https://en-marche.fr/reunions/456"
+                        },
+                        {
+                            "name": "live_url",
+                            "content": null
+                        }
+                    ],
+                    "merge_vars": "@array@",
+                    "from_name": "Renaissance",
+                    "headers": "@array@",
+                    "to": "@array@.count(10)"
+                }
+            }
+            """
+        And I save this response
+        # A non-member cannot subscribe to a committee invitation event
+        When I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe"
+        Then the response status code should be 403
+        # An invited committee member can subscribe (INVITED → CONFIRMED)
+        When I am logged with "adherent-male-51@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/events/:saved_response.uuid:/subscribe"
+        Then the response status code should be 201
+        When I send a "GET" request to "/api/v3/events/:saved_response.uuid:"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | visibility         | invitation |
+            | participants_count | 2          |
+
+    Scenario: As a President of Agora I can create a public agora event
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events?scope=agora_president" with body:
+            """
+            {
+                "name": "Event agora public",
+                "category": "kiosque",
+                "agora": "82ad6422-cb82-4c04-b478-bfb421c740e0",
+                "description": "Un événement public pour l'agora",
+                "begin_at": "+1 hour",
+                "finish_at": "+2 hour",
+                "mode": "online",
+                "visio_url": "https://parti-renaissance.fr/reunions/789",
+                "time_zone": "Europe/Paris",
+                "visibility": "public"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON nodes should match:
+            | visibility | public                               |
+            | agora.uuid | 82ad6422-cb82-4c04-b478-bfb421c740e0 |
+        # No push notification for agora events
+        And I should have 0 notification
 
     Scenario: As a deputy I can create a hidden event that is accessible directly
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"

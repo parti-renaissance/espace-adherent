@@ -90,7 +90,7 @@ class PushTokenRepository extends ServiceEntityRepository
 
         $filterEnabled = false;
 
-        if ($object instanceof Event && !$object->getCommittee()) {
+        if ($object instanceof Event && ($object->isInvitation() || !$object->getCommittee())) {
             $filterEnabled = true;
 
             $queryBuilder
