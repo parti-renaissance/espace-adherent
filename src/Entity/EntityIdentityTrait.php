@@ -32,6 +32,7 @@ trait EntityIdentityTrait
     #[Groups([
         'action_read',
         'action_read_list',
+        'adherent_activity:list',
         'adherent_autocomplete',
         'adherent_elect_read',
         'adherent_message_update_filter',
