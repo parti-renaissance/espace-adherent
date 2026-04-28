@@ -14,6 +14,7 @@ class FeatureEnum extends Enum
     public const CHATBOT = 'chatbot';
     public const MESSAGES = 'messages';
     public const PUBLICATIONS = 'publications';
+    public const PUBLICATIONS_CADRES = 'publications_cadres';
     public const EVENTS = 'events';
     public const MY_TEAM = 'my_team';
     public const MY_TEAM_CUSTOM_ROLE = 'my_team_custom_role';
@@ -50,6 +51,7 @@ class FeatureEnum extends Enum
         self::CHATBOT,
         self::MESSAGES,
         self::PUBLICATIONS,
+        self::PUBLICATIONS_CADRES,
         self::EVENTS,
         self::MY_TEAM,
         self::MY_TEAM_CUSTOM_ROLE,
