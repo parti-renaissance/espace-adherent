@@ -2823,7 +2823,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "count": 2
+                "count": 1
             }
             """
         When I send a "POST" request to "/api/v3/events/count-invitations?scope=agora_president" with body:

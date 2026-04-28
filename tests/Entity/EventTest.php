@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
+use App\Entity\Agora;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventCategory;
 use App\Entity\NullablePostAddress;
+use App\Event\EventVisibilityEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -87,30 +89,48 @@ class EventTest extends TestCase
         $this->assertTrue($event->isFull());
     }
 
-    public function testSetNationalOnNewEventAutomaticallyPinsIt(): void
+    public function testApplyPinnedDefaultsForNationalEvent(): void
     {
         $event = new Event(Uuid::uuid4());
+        $event->setNational(true);
 
         $this->assertFalse($event->pinned);
 
-        $event->setNational(true);
+        $event->applyPinnedDefaults();
 
-        $this->assertTrue($event->isNational());
         $this->assertTrue($event->pinned);
     }
 
-    public function testSetNationalOnPersistedEventDoesNotForcePin(): void
+    public function testApplyPinnedDefaultsForAgoraEvent(): void
     {
         $event = new Event(Uuid::uuid4());
-
-        $idProperty = new \ReflectionProperty($event, 'id');
-        $idProperty->setValue($event, 42);
+        $event->agora = new Agora();
+        $event->visibility = EventVisibilityEnum::PUBLIC;
 
         $this->assertFalse($event->pinned);
 
-        $event->setNational(true);
+        $event->applyPinnedDefaults();
 
-        $this->assertTrue($event->isNational());
+        $this->assertTrue($event->pinned);
+    }
+
+    public function testApplyPinnedDefaultsForAgoraInvitationEventDoesNotPin(): void
+    {
+        $event = new Event(Uuid::uuid4());
+        $event->agora = new Agora();
+        $event->visibility = EventVisibilityEnum::INVITATION;
+
+        $event->applyPinnedDefaults();
+
+        $this->assertFalse($event->pinned);
+    }
+
+    public function testApplyPinnedDefaultsWithoutAgoraOrNationalDoesNothing(): void
+    {
+        $event = new Event(Uuid::uuid4());
+
+        $event->applyPinnedDefaults();
+
         $this->assertFalse($event->pinned);
     }
 }

@@ -36,7 +36,9 @@ class SendCreationNotificationCommandHandler
         }
 
         $recipients = [];
-        if ($committee = $event->getCommittee()) {
+        if ($agora = $event->agora) {
+            $recipients = $this->adherentRepository->findInAgora($agora, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
+        } elseif ($committee = $event->getCommittee()) {
             $recipients = $this->adherentRepository->findInCommittee($committee, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         } elseif ($zones = $event->getZones()->toArray()) {
             $recipients = $this->adherentRepository->findInZones($zones, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);

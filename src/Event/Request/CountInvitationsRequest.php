@@ -9,6 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 class CountInvitationsRequest
 {
     public ?UuidInterface $agora = null;
+    public ?UuidInterface $committee = null;
     public array $roles = [];
 
     public function __construct(
@@ -20,7 +21,7 @@ class CountInvitationsRequest
 
     public function isEmpty(): bool
     {
-        return empty($this->agora) && empty($this->roles);
+        return empty($this->agora) && empty($this->committee) && empty($this->roles);
     }
 
     public function hasPerimeter(): bool

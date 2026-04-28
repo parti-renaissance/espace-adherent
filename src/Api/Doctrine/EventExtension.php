@@ -56,10 +56,14 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        $queryBuilder
-            ->andWhere("$alias.hidden = :hidden")
-            ->setParameter('hidden', false)
-        ;
+        $isSubscribedOnly = isset($filters['subscribedOnly']) && filter_var($filters['subscribedOnly'], \FILTER_VALIDATE_BOOLEAN);
+
+        if (!$isSubscribedOnly) {
+            $queryBuilder
+                ->andWhere("$alias.hidden = :hidden")
+                ->setParameter('hidden', false)
+            ;
+        }
 
         if (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             $scope = $this->scopeResolver->generate();

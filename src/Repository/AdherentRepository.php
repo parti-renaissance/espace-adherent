@@ -19,6 +19,7 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
+use App\Entity\Agora;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -1475,6 +1476,32 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
+    public function findInAgora(Agora $agora, string $tag, ?string $subscriptionTypeCode = null): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
+            ->innerJoin('a.agoraMemberships', 'am')
+            ->where('am.agora = :agora')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.tags LIKE :adherent_tag')
+            ->setParameters([
+                'agora' => $agora,
+                'status' => Adherent::ENABLED,
+                'adherent_tag' => $tag.'%',
+            ])
+        ;
+
+        if ($subscriptionTypeCode) {
+            $qb
+                ->innerJoin('a.subscriptionTypes', 'subscription_type')
+                ->andWhere('subscription_type.code = :subscription_type_code')
+                ->setParameter('subscription_type_code', $subscriptionTypeCode)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findAdherentIdsWithSubscriptionTypes(array $subscriptionTypeCodes): array
     {
         $result = $this->createQueryBuilder('a')
@@ -1526,7 +1553,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $queryBuilder = $this->createQueryBuilder('a')
             ->select('COUNT(DISTINCT a.id)')
             ->where('a.status = :status')
+            ->andWhere('a.tags LIKE :adherent_tag')
             ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
         ;
 
         if ($filter->zones) {
@@ -1557,12 +1586,18 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ;
         }
 
-        if ($filter->committeeUuids) {
+        if ($filter->committeeUuids || $filter->committee) {
+            if ($filter->committeeUuids) {
+                $committeeUuids = $filter->committeeUuids;
+            } else {
+                $committeeUuids = [$filter->committee];
+            }
+
             $queryBuilder
                 ->innerJoin('a.committeeMembership', 'cm')
                 ->innerJoin('cm.committee', 'c')
                 ->andWhere('c.uuid IN (:committee_uuids)')
-                ->setParameter('committee_uuids', $filter->committeeUuids)
+                ->setParameter('committee_uuids', $committeeUuids)
             ;
         }
 

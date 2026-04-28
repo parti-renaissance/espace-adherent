@@ -15,7 +15,6 @@ use App\Event\EventRegistrationCommandHandler;
 use App\JeMengage\Push\Command\EventCreationNotificationCommand;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\Event\EventRepository;
-use App\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -102,8 +101,6 @@ class InviteMembersForEventCommandHandler
 
     private function isAdherentEligible(Adherent $adherent): bool
     {
-        return $adherent->isEnabled()
-            && $adherent->hasTag(TagEnum::ADHERENT)
-            && $adherent->hasSubscriptionType(SubscriptionTypeEnum::EVENT_EMAIL);
+        return $adherent->isEnabled() && $adherent->hasTag(TagEnum::ADHERENT);
     }
 }
