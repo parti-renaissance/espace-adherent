@@ -21,10 +21,14 @@ use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\JMEFilter\FilterGroup\ScopeTargetFilterGroup;
 use App\JMEFilter\FilterGroup\ZoneGeoFilterGroup;
 use App\Scope\FeatureEnum;
-use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 
 class PublicationsFilterLayout extends AbstractFilterLayout
 {
+    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
+    {
+    }
+
     public function supports(string $scope, ?string $feature, bool $isVox): bool
     {
         return FeatureEnum::PUBLICATIONS === $feature;
@@ -49,7 +53,7 @@ class PublicationsFilterLayout extends AbstractFilterLayout
             ]),
         ];
 
-        if (ScopeEnum::isNational($scope)) {
+        if ($this->scopeGeneratorResolver->generate()?->hasFeature(FeatureEnum::PUBLICATIONS_CADRES)) {
             $groups[] = $this->group(ScopeTargetFilterGroup::class, [
                 $this->filter(ScopeTargetFilterBuilder::class),
             ]);

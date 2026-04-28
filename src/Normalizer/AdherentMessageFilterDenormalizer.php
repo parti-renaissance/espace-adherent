@@ -6,6 +6,7 @@ namespace App\Normalizer;
 
 use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Repository\CommitteeRepository;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -41,6 +42,10 @@ class AdherentMessageFilterDenormalizer implements DenormalizerInterface, Denorm
 
             if (!$audienceFilter->getScope() && $scopeCode) {
                 $audienceFilter->setScope($scopeCode);
+            }
+
+            if (!$scope->hasFeature(FeatureEnum::PUBLICATIONS_CADRES)) {
+                $audienceFilter->scopeTargets = null;
             }
         }
 

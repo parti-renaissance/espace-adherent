@@ -1211,6 +1211,7 @@ scope.feature.contacts: Contacts
 scope.feature.contacts_export: Export contacts
 scope.feature.messages: Messagerie
 scope.feature.publications: Publications (beta)
+scope.feature.publications_cadres: Publication aux cadres
 scope.feature.events: Événements
 scope.feature.chatbot: ChatBot
 scope.feature.my_team: Mon équipe

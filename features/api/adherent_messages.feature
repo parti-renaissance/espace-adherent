@@ -2207,6 +2207,875 @@ Feature:
                     ]
                 },
                 {
+                    "color": "#F8F0FF",
+                    "filters": [
+                        {
+                            "code": "scope_targets",
+                            "label": "Cadres & Équipes",
+                            "options": {
+                                "instances": [
+                                    {
+                                        "code": "legislative_candidate",
+                                        "main_role": "Candidat",
+                                        "name": "Circonscription",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "municipal_candidate",
+                                        "main_role": "Candidat",
+                                        "name": "Municipales",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "president_departmental_assembly",
+                                        "main_role": "Président",
+                                        "name": "Assemblée départementale",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "regional_delegate",
+                                        "main_role": "Délégué",
+                                        "name": "Région",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "animator",
+                                        "main_role": "Responsable",
+                                        "name": "Comité local",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "deputy",
+                                        "main_role": "Délégué",
+                                        "name": "Circonscription",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "senator",
+                                        "main_role": "Sénateur",
+                                        "name": "Sénateur",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "regional_coordinator",
+                                        "main_role": "Coordinateur",
+                                        "name": "Région",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "fde_coordinator",
+                                        "main_role": "Coordinateur",
+                                        "name": "Français de l'Étranger",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "agora_president",
+                                        "main_role": "Président",
+                                        "name": "Agora",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "agora_general_secretary",
+                                        "main_role": "Secrétaire général",
+                                        "name": "Agora",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "correspondent",
+                                        "main_role": "Responsable local",
+                                        "name": "Responsable local",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "procurations_manager",
+                                        "main_role": "Responsable procurations",
+                                        "name": "Responsable procurations",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "national",
+                                        "main_role": "Rôle national",
+                                        "name": "National",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "national_communication",
+                                        "main_role": "Directeur général adjoint",
+                                        "name": "National",
+                                        "team_roles": []
+                                    },
+                                    {
+                                        "code": "national_territories_division",
+                                        "main_role": "Chef de pôle",
+                                        "name": "Pôle Territoires",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "national_elected_representatives_division",
+                                        "main_role": "Chef de pôle",
+                                        "name": "Pôle Élus",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "national_formation_division",
+                                        "main_role": "Chef de pôle",
+                                        "name": "Pôle Formations",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "national_ideas_division",
+                                        "main_role": "Directeur général adjoint",
+                                        "name": "Pôle Idées",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "code": "national_tech_division",
+                                        "main_role": "Chef de pôle",
+                                        "name": "Pôle Tech",
+                                        "team_roles": [
+                                            {
+                                                "code": "general_secretary",
+                                                "label": "Secrétaire général"
+                                            },
+                                            {
+                                                "code": "treasurer",
+                                                "label": "Trésorier"
+                                            },
+                                            {
+                                                "code": "mobilization_manager",
+                                                "label": "Responsable mobilisation"
+                                            },
+                                            {
+                                                "code": "logistics_manager",
+                                                "label": "Responsable logistique"
+                                            },
+                                            {
+                                                "code": "communication_manager",
+                                                "label": "Responsable communication"
+                                            },
+                                            {
+                                                "code": "compliance_and_finance_manager",
+                                                "label": "Responsables conformité et finance"
+                                            },
+                                            {
+                                                "code": "head_of_gender_equality",
+                                                "label": "Responsable Égalité Femme / Homme"
+                                            },
+                                            {
+                                                "code": "head_of_european_affairs",
+                                                "label": "Responsable des questions européennes"
+                                            },
+                                            {
+                                                "code": "head_of_relations_and_training_of_elected_officials",
+                                                "label": "Responsable des relations et formation élus"
+                                            },
+                                            {
+                                                "code": "new_members_manager",
+                                                "label": "Responsable nouveaux adhérents"
+                                            },
+                                            {
+                                                "code": "training_manager",
+                                                "label": "Responsable formation"
+                                            },
+                                            {
+                                                "code": "manager",
+                                                "label": "Responsable"
+                                            },
+                                            {
+                                                "code": "custom",
+                                                "label": "Rôle personnalisé"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "scope_target"
+                        }
+                    ],
+                    "label": "Cadres & Équipes"
+                },
+                {
                     "label": "Filtres élus",
                     "color": "#2563EB",
                     "filters": [
