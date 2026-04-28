@@ -74,7 +74,7 @@ class AppHit
     public ?SourceGroupEnum $sourceGroup = SourceGroupEnum::App;
 
     #[Groups(['hit:write', 'hit:click:read'])]
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $buttonName = null;
 
     #[Groups(['hit:write', 'hit:click:read'])]
