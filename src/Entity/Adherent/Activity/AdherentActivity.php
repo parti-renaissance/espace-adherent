@@ -18,9 +18,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiFilter(filterClass: SearchFilter::class,
     properties: [
-        'uuid' => 'exact',
         'sourceType' => 'exact',
-        'eventType' => 'exact']
+        'eventType' => 'exact',
+    ]
 )]
 #[ApiResource(
     operations: [
