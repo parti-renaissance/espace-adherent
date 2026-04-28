@@ -36,6 +36,7 @@ abstract class PublicationZone
                 Zone::CANTON,
                 Zone::CITY,
                 Zone::DISTRICT,
+                Zone::COUNTRY,
             ],
             ScopeEnum::MUNICIPAL_CANDIDATE => [
                 Zone::BOROUGH,

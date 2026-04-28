@@ -641,7 +641,7 @@ Feature:
                                 "label_param": "name",
                                 "multiple": true,
                                 "required": false,
-                                "help": "<strong>Toutes les zones incluses dans votre zone de gestion sont filtrables.</strong> Exemple : Arrondissement, Canton, Ville, Circonscription électorale"
+                                "help": "<strong>Toutes les zones incluses dans votre zone de gestion sont filtrables.</strong> Exemple : Arrondissement, Canton, Ville, Circonscription électorale, Pays"
                             },
                             "type": "zone_autocomplete"
                         },
