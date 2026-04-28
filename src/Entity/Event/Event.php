@@ -172,6 +172,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Index(columns: ['begin_at'])]
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
@@ -473,8 +474,18 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     public function setNational(bool $national): void
     {
         $this->national = $national;
+    }
 
-        if ($national && null === $this->id) {
+    #[ORM\PrePersist]
+    public function applyPinnedDefaults(): void
+    {
+        if ($this->national) {
+            $this->pinned = true;
+
+            return;
+        }
+
+        if (null !== $this->agora && EventVisibilityEnum::INVITATION !== $this->visibility) {
             $this->pinned = true;
         }
     }
