@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\History;
 
 use App\Entity\Adherent;
+use App\Entity\Adherent\Note\AdherentNote;
 use App\Entity\Administrator;
 use App\Entity\Agora;
 use App\Entity\Committee;
@@ -269,6 +270,30 @@ class UserActionHistoryHandler
             [
                 'committee_id' => $committee->getId(),
                 'name' => $committee->getName(),
+            ]
+        );
+    }
+
+    public function createAdherentNoteAdd(Adherent $adherent, AdherentNote $note): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::ADHERENT_NOTE_ADD,
+            [
+                'note_uuid' => $note->getUuid()->toString(),
+                'content' => $note->content,
+            ]
+        );
+    }
+
+    public function createAdherentNoteEdit(Adherent $adherent, AdherentNote $note): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::ADHERENT_NOTE_EDIT,
+            [
+                'note_uuid' => $note->getUuid()->toString(),
+                'content' => $note->content,
             ]
         );
     }

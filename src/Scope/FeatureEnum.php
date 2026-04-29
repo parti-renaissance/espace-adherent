@@ -43,6 +43,7 @@ class FeatureEnum extends Enum
     public const AGORAS = 'agoras';
     public const NATIONAL_EVENT = 'national_event';
     public const EAGGLE = 'eaggle';
+    public const ADHERENT_NOTES = 'adherent_notes';
 
     public const ALL = [
         self::DASHBOARD,
@@ -79,6 +80,7 @@ class FeatureEnum extends Enum
         self::CIRCONSCRIPTIONS,
         self::REFERRALS,
         self::NATIONAL_EVENT,
+        self::ADHERENT_NOTES,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [
