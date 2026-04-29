@@ -33,7 +33,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 ),
             ],
             requirements: ['uuid' => '%pattern_uuid%'],
-            paginationItemsPerPage: 30,
+            paginationItemsPerPage: 10,
             order: ['occurredAt' => 'DESC'],
             normalizationContext: ['groups' => ['adherent_activity:list']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts')",
@@ -67,7 +67,6 @@ class AdherentActivity
     #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $occurredAt = null;
 
-    #[Groups(['adherent_activity:list'])]
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $metadata = null;
 

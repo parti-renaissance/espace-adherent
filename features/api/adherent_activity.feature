@@ -19,7 +19,7 @@ Feature:
             {
                 "metadata": {
                     "total_items": "@integer@.greaterThan(0)",
-                    "items_per_page": 30,
+                    "items_per_page": 10,
                     "count": "@integer@.greaterThan(0)",
                     "current_page": 1,
                     "last_page": "@integer@.greaterThan(0)"
