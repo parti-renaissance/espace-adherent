@@ -101,11 +101,24 @@ readonly class PopulateAdherentActivityService
                             'source', h.source,
                             'object_type', h.object_type,
                             'object_id', h.object_id,
+                            'object_name', CASE h.object_type
+                                WHEN 'event' THEN ev.name
+                                WHEN 'publication' THEN am.label
+                                WHEN 'transactional_message' THEN am.label
+                                WHEN 'news' THEN jn.title
+                                WHEN 'action' THEN va.`type`
+                                WHEN 'alert' THEN aa.label
+                            END,
                             'button_name', h.button_name,
                             'target_url', h.target_url
                         ),
                         NOW()
                     FROM app_hit h
+                    LEFT JOIN `events` ev ON h.object_type = 'event' AND ev.uuid = h.object_id
+                    LEFT JOIN adherent_messages am ON h.object_type IN ('publication', 'transactional_message') AND am.uuid = h.object_id
+                    LEFT JOIN jecoute_news jn ON h.object_type = 'news' AND jn.uuid = h.object_id
+                    LEFT JOIN vox_action va ON h.object_type = 'action' AND va.uuid = h.object_id
+                    LEFT JOIN app_alert aa ON h.object_type = 'alert' AND aa.uuid = h.object_id
                     WHERE h.event_type IN (:eventTypes)
                       AND h.adherent_id IS NOT NULL
                       AND h.id > :lastId
