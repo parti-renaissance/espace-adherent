@@ -28,6 +28,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
     private const EVENT_6_UUID = 'e770cda4-b215-4ea2-85e5-03fc3e4423e3';
     private const EVENT_7_UUID = '06d88cb2-d254-4ba3-9e00-b9d4611d90fc';
     public const EVENT_8_UUID = 'b4938d40-337b-4bdf-83ac-f84dd182eefb';
+    public const EVENT_9_UUID = '7b1b5cf7-7e0e-4f5e-9c2b-93b6b8f9e119';
 
     public function __construct(
         string $environment,
@@ -182,6 +183,22 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $event8->setAuthor($adherent5);
         $event8->incrementParticipantsCount(3);
 
+        $event9 = new Event(Uuid::fromString(self::EVENT_9_UUID));
+        $event9->setName('Un événement masqué de l\'assemblée départementale');
+        $event9->setDescription('Description de l\'événement masqué de l\'assemblée départementale');
+        $event9->setCategory($eventCategory7);
+        $event9->setPublished(true);
+        $event9->setBeginAt(new \DateTime('now')->modify('+10 hours'));
+        $event9->setFinishAt(new \DateTime('now')->modify('+12 hours'));
+        $event9->setCapacity(50);
+        $event9->setStatus(Event::STATUS_SCHEDULED);
+        $event9->setMode(Event::MODE_ONLINE);
+        $event9->setTimeZone('Europe/Paris');
+        $event9->setAuthor($adherent5);
+        $event9->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
+        $event9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
+        $event9->hidden = true;
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -190,6 +207,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $manager->persist($event6);
         $manager->persist($event7);
         $manager->persist($event8);
+        $manager->persist($event9);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
         $command = new EventRegistrationCommand($event1, $this->getReference('adherent-7', Adherent::class));
@@ -206,6 +224,7 @@ class LoadEventData extends AbstractLoadEventData implements DependentFixtureInt
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event7, $pad92)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $pad92)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $adherent5)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event9, $pad92)));
         $eventRegistration1 = new EventRegistrationCommand($event1);
         $eventRegistration1->setFirstName('Marie');
         $eventRegistration1->setLastName('CLAIRE');

@@ -411,7 +411,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $sendInvitationEmail = true;
 
-    #[Groups(['event_read', 'event_write'])]
+    #[Groups(['event_read', 'event_list_read', 'event_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $hidden = false;
 
