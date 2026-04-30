@@ -14,6 +14,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         'enable_docs' => false,
         'enable_swagger_ui' => false,
         'enable_entrypoint' => false,
+        'enable_link_security' => true,
         'exception_to_status' => [
             App\Api\Exception\InvalidIdentifierException::class => Response::HTTP_BAD_REQUEST,
             App\Api\Exception\ItemNotFoundException::class => Response::HTTP_BAD_REQUEST,

@@ -538,3 +538,22 @@ Feature:
                 }
             }
             """
+
+    Scenario: A correspondent cannot read elect data of an adherent outside their zone
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/elect?scope=correspondent"
+        Then the response status code should be 403
+
+    Scenario: A correspondent cannot update elect data of an adherent outside their zone
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "PUT" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/elect?scope=correspondent" with body:
+            """
+            { "exempt_from_cotisation": true }
+            """
+        Then the response status code should be 403
+
+    Scenario: A manager whose scope does not grant the elected_representative feature cannot access elect
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # agora_president scope grants CONTACTS but NOT ELECTED_REPRESENTATIVE -> REQUEST_SCOPE_GRANTED fails first.
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084/elect?scope=agora_president"
+        Then the response status code should be 403
