@@ -79,7 +79,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             'reload',
         ];
 
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('-5 minutes');
 
         foreach ($events as $event) {
             $copyAdherents = $adherents;
@@ -227,6 +227,10 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
         }
 
         $manager->flush();
+
+        // Align created_at (set to NOW by EntityTimestampableTrait) with appDate so the
+        // AdherentActivity pipeline buffer (filtering on created_at) treats fixtures as past events.
+        $manager->getConnection()->executeStatement('UPDATE app_hit SET created_at = app_date');
     }
 
     /**

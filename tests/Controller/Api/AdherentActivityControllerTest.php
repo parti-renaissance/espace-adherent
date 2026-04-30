@@ -22,7 +22,7 @@ class AdherentActivityControllerTest extends AbstractApiTestCase
     use ApiControllerTestTrait;
     use ControllerTestTrait;
 
-    private const string ADHERENT_UUID = LoadAdherentData::ADHERENT_1_UUID;
+    private const string ADHERENT_UUID = LoadAdherentData::ADHERENT_2_UUID;
 
     public function testGetActivityWithoutFiltersReturnsAllItems(): void
     {
@@ -37,6 +37,16 @@ class AdherentActivityControllerTest extends AbstractApiTestCase
         }
     }
 
+    public function testGetActivityFilteredByHitSourceType(): void
+    {
+        $payload = $this->requestActivity(['source_type' => 'hit']);
+
+        self::assertGreaterThan(0, $payload['metadata']['total_items']);
+        foreach ($payload['items'] as $item) {
+            self::assertSame('hit', $item['source_type']);
+        }
+    }
+
     public function testGetActivityFilteredByActionHistorySourceType(): void
     {
         $payload = $this->requestActivity(['source_type' => 'action_history']);
@@ -44,19 +54,33 @@ class AdherentActivityControllerTest extends AbstractApiTestCase
         self::assertGreaterThan(0, $payload['metadata']['total_items']);
         foreach ($payload['items'] as $item) {
             self::assertSame('action_history', $item['source_type']);
-            self::assertNull($item['description'] ?? null, 'action_history items must not carry a description');
         }
     }
 
-    public function testGetActivityFilteredByEventType(): void
+    public function testGetActivityFilteredByHitEventType(): void
     {
-        $payload = $this->requestActivity(['source_type' => 'action_history', 'event_type' => 'login_success']);
+        $payload = $this->requestActivity(['source_type' => 'hit', 'event_type' => 'open']);
+
+        self::assertGreaterThan(0, $payload['metadata']['total_items']);
+        foreach ($payload['items'] as $item) {
+            self::assertSame('hit', $item['source_type']);
+            self::assertSame('open', $item['event_type']);
+            self::assertSame('Ouverture', $item['event_label']);
+        }
+    }
+
+    public function testGetActivityForDelegatedAccessAddIncludesDescriptionWithActorAndRole(): void
+    {
+        $payload = $this->requestActivity(['source_type' => 'action_history', 'event_type' => 'delegated_access_add']);
 
         self::assertGreaterThan(0, $payload['metadata']['total_items']);
         foreach ($payload['items'] as $item) {
             self::assertSame('action_history', $item['source_type']);
-            self::assertSame('login_success', $item['event_type']);
-            self::assertSame('Connexion réussie', $item['event_label']);
+            self::assertSame('delegated_access_add', $item['event_type']);
+            self::assertSame("Création d'accès délégué", $item['event_label']);
+            self::assertNotNull($item['description']);
+            self::assertStringContainsString('Victorio Fortest', $item['description']);
+            self::assertStringContainsString('Responsable mobilisation', $item['description']);
         }
     }
 
