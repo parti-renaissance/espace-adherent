@@ -165,6 +165,7 @@ Feature:
                         },
                         "visio_url": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -219,6 +220,7 @@ Feature:
                         },
                         "visio_url": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -303,6 +305,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -357,6 +360,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -411,6 +415,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     }
                 ]
@@ -481,6 +486,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": true,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -526,6 +532,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -571,6 +578,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": true,
+                        "hidden": false,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     }
@@ -642,6 +650,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -696,6 +705,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -750,6 +760,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     }
                 ]
@@ -819,6 +830,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     },
                     {
@@ -864,6 +876,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": true,
+                        "hidden": false,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     },
@@ -910,6 +923,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "pinned": false,
+                        "hidden": false,
                         "editable": false
                     }
                 ]
@@ -3113,19 +3127,39 @@ Feature:
         Then the response status code should be 200
         And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
         And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"
+        And the JSON node "items" should not contain an element with "name" equal to "Un événement masqué de l'assemblée départementale"
         When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=true"
         Then the response status code should be 200
         And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
         And the JSON node "items" should not contain an element with "name" equal to "Nouvel événement online"
+        And the JSON node "items" should contain an element with "name" equal to "Un événement masqué de l'assemblée départementale"
         When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=1"
         Then the response status code should be 200
         And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
         And the JSON node "items" should not contain an element with "name" equal to "Nouvel événement online"
+        And the JSON node "items" should contain an element with "name" equal to "Un événement masqué de l'assemblée départementale"
         When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=false"
         Then the response status code should be 200
         And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
         And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"
+        And the JSON node "items" should not contain an element with "name" equal to "Un événement masqué de l'assemblée départementale"
         When I send a "GET" request to "/api/v3/events?page_size=100&subscribedOnly=0"
         Then the response status code should be 200
         And the JSON node "items" should contain an element with "name" equal to "Un événement de l'assemblée départementale"
         And the JSON node "items" should contain an element with "name" equal to "Nouvel événement online"
+        And the JSON node "items" should not contain an element with "name" equal to "Un événement masqué de l'assemblée départementale"
+
+    Scenario: As a user with subscribedOnly I get hidden events with hidden=true and others with hidden=false
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/events?subscribedOnly=true&name=masqué"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 1                                                 |
+            | items[0].name        | Un événement masqué de l'assemblée départementale |
+            | items[0].hidden      | true                                              |
+        When I send a "GET" request to "/api/v3/events?subscribedOnly=true&name=passé"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 1                                                |
+            | items[0].name        | Un événement de l'assemblée départementale passé |
+            | items[0].hidden      | false                                            |
