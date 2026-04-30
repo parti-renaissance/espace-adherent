@@ -91,20 +91,20 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "(is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative')) or (is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and object === user)"
+            security: "(is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)) or (is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and object === user)"
         ),
         new Post(
             uriTemplate: '/adherents/{uuid}/send-resubscribe-email',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendResubscribeEmailController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts')",
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
             deserialize: false,
         ),
         new Put(
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
             denormalizationContext: ['groups' => ['adherent_elect_update']],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative')",
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
             validationContext: ['groups' => ['adherent_elect_update']]
         ),
         new HttpOperation(

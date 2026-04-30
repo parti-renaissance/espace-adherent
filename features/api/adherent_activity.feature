@@ -11,7 +11,7 @@ Feature:
 
     Scenario: As a cadre with contacts scope I can get a militant's activity history paginated and ordered by occurredAt DESC
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/adherents/a046adbe-9c7b-56a9-a676-6151a6785dda/activity?scope=president_departmental_assembly"
+        When I send a "GET" request to "/api/v3/adherents/e6977a4d-2646-5f6c-9c82-88e58dca8458/activity?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be a superset of:
@@ -67,3 +67,26 @@ Feature:
             """
         And the JSON node "items[0].event_type" should be equal to "activity_session"
         And the JSON node "items[0].source_type" should be equal to "hit"
+
+    Scenario: A correspondent cannot read activity history of an adherent outside their zone
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/activity?scope=correspondent"
+        Then the response status code should be 403
+
+    Scenario: An Agora President cannot read activity of an adherent who is not member of their agora
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # michelle.dufour is President of agora-1; adherent a9fc8d48 is NOT a member and not in Michelle's geographic zone (CH).
+        When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4/activity?scope=agora_president"
+        Then the response status code should be 403
+
+    Scenario: An Agora President can read activity history of a member of their agora
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # adherent e6977a4d is member of agora-1; access works via agora membership (not via geo zone).
+        When I send a "GET" request to "/api/v3/adherents/e6977a4d-2646-5f6c-9c82-88e58dca8458/activity?scope=agora_president"
+        Then the response status code should be 200
+
+    Scenario: A request to /activity with an unknown adherent UUID returns 404 (not 403)
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        # The UUID is well-formed but does not match any adherent in DB.
+        When I send a "GET" request to "/api/v3/adherents/00000000-0000-4000-8000-000000000000/activity?scope=president_departmental_assembly"
+        Then the response status code should be 404

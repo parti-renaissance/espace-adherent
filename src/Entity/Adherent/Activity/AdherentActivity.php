@@ -30,6 +30,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 'uuid' => new Link(
                     toProperty: 'adherent',
                     fromClass: Adherent::class,
+                    security: "is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', adherent)",
                 ),
             ],
             requirements: ['uuid' => '%pattern_uuid%'],
