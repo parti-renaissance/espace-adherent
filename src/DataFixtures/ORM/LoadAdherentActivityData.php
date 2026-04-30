@@ -19,10 +19,9 @@ class LoadAdherentActivityData extends Fixture implements DependentFixtureInterf
     public function load(ObjectManager $manager): void
     {
         foreach ([SourceTypeEnum::ActionHistory, SourceTypeEnum::Hit] as $sourceType) {
-            $shouldContinue = true;
-            while ($shouldContinue) {
-                $shouldContinue = $this->service->processBatch($sourceType);
-            }
+            do {
+                $result = $this->service->processBatch($sourceType);
+            } while ($result->hasMore(PopulateAdherentActivityService::BATCH_SIZE));
         }
     }
 

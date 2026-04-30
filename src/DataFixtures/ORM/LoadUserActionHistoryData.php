@@ -52,6 +52,7 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS, FeatureEnum::ELECTED_REPRESENTATIVE],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
+            'actor_name' => 'Damien Schmidt',
         ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, new \DateTime('-14 minutes'), [
             'delegator_uuid' => $adherent2->getUuid()->toString(),
@@ -72,20 +73,41 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_REQUEST, new \DateTime('-9 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE, new \DateTime('-8 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-7 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-6 minutes'), ['first_name']));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-6 minutes'), [
+            'properties' => ['first_name'],
+            'modified_field_labels' => ['Prénom'],
+        ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_START, new \DateTime('-5 minutes'), null, $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-4 minutes'), ['birthdate'], $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-4 minutes'), [
+            'properties' => ['birthdate'],
+            'modified_field_labels' => ['Date de naissance'],
+        ], $administrator1));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-3 minutes'), null, $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTime('-2 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTime('-1 minutes')));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_ADD, new \DateTime('-2 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTime('-3 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTime('-2 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_ADD, new \DateTime('-3 minutes'), [
             'role' => 'deputy',
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ], $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_REMOVE, new \DateTime('-1 minutes'), [
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_REMOVE, new \DateTime('-2 minutes'), [
             'role' => 'deputy',
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ], $administrator1));
+
+        // Action history for ADHERENT_2 (used by AdherentActivityControllerTest fixtures)
+        $manager->persist($this->create($adherent2, UserActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-30 minutes')));
+        $manager->persist($this->create($adherent2, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-25 minutes'), [
+            'properties' => ['birthdate'],
+            'modified_field_labels' => ['Date de naissance'],
+        ]));
+        $manager->persist($this->create($adherent2, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTime('-20 minutes'), [
+            'delegator_uuid' => $adherent1->getUuid()->toString(),
+            'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+            'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
+            'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
+            'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
+            'actor_name' => 'Victorio Fortest',
+        ]));
 
         $manager->flush();
     }

@@ -18,6 +18,25 @@ use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
 class UserActionHistoryHandler
 {
+    private const array PROFILE_PROPERTY_LABELS = [
+        'first_name' => 'Prénom',
+        'last_name' => 'Nom',
+        'birthdate' => 'Date de naissance',
+        'gender' => 'Civilité',
+        'email_address' => 'Adresse email',
+        'phone' => 'Téléphone',
+        'nationality' => 'Nationalité',
+        'position' => 'Profession',
+        'post_address' => 'Adresse postale',
+        'subscription_types' => 'Préférences emails',
+        'facebook_page_url' => 'URL Facebook',
+        'twitter_page_url' => 'URL Twitter',
+        'linkedin_page_url' => 'URL LinkedIn',
+        'telegram_page_url' => 'URL Telegram',
+        'instagram_page_url' => 'URL Instagram',
+        'tiktok_page_url' => 'URL TikTok',
+    ];
+
     public function __construct(
         private readonly Security $security,
         private readonly MessageBusInterface $bus,
@@ -42,10 +61,18 @@ class UserActionHistoryHandler
 
     public function createProfileUpdate(Adherent $adherent, array $properties): void
     {
+        $modifiedFieldLabels = array_map(
+            static fn (string $property): string => self::PROFILE_PROPERTY_LABELS[$property] ?? $property,
+            $properties,
+        );
+
         $this->dispatch(
             $adherent,
             UserActionHistoryTypeEnum::PROFILE_UPDATE,
-            $properties,
+            [
+                'properties' => $properties,
+                'modified_field_labels' => $modifiedFieldLabels,
+            ],
             $this->getImpersonator()
         );
     }
@@ -166,6 +193,8 @@ class UserActionHistoryHandler
         $delegator = $delegatedAccess->getDelegator();
         $zoneBasedRole = $delegator->findZoneBasedRole($delegatedAccess->getType());
 
+        $author = $this->getCurrentUser();
+
         $data = [
             'delegator_uuid' => $delegator->getUuid()->toString(),
             'scope' => $delegatedAccess->getType(),
@@ -173,15 +202,19 @@ class UserActionHistoryHandler
             'role' => $delegatedAccess->getRole(),
             'role_code' => $delegatedAccess->roleCode,
             'zones' => $zoneBasedRole ? $this->getZoneNames($zoneBasedRole->getZones()->toArray()) : null,
+            'actor_name' => $author ? $this->buildFullName($author) : null,
         ];
-
-        $author = $this->getCurrentUser();
 
         if ($author && !$author->equals($delegator)) {
             $data['author_uuid'] = $author->getUuid()->toString();
         }
 
         $this->dispatch($delegatedAccess->getDelegated(), $type, $data);
+    }
+
+    private function buildFullName(Adherent $adherent): string
+    {
+        return trim(\sprintf('%s %s', $adherent->getFirstName() ?? '', $adherent->getLastName() ?? ''));
     }
 
     public function createAgoraMembershipAdd(Adherent $adherent, Agora $agora, ?Administrator $administrator = null): void

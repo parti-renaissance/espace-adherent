@@ -65,6 +65,14 @@ class AdherentActivity
     public string $eventType = '';
 
     #[Groups(['adherent_activity:list'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $eventLabel = null;
+
+    #[Groups(['adherent_activity:list'])]
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $description = null;
+
+    #[Groups(['adherent_activity:list'])]
     #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $occurredAt = null;
 

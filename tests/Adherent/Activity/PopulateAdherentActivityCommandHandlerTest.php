@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Adherent\Activity;
 
+use App\Adherent\Activity\AdherentActivityDescriptionBuilder;
+use App\Adherent\Activity\BatchResult;
 use App\Adherent\Activity\PopulateAdherentActivityCommand;
 use App\Adherent\Activity\PopulateAdherentActivityCommandHandler;
 use App\Adherent\Activity\PopulateAdherentActivityService;
@@ -20,6 +22,7 @@ use App\Repository\Adherent\Activity\AdherentActivityRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,6 +34,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
     private PopulateAdherentActivityCommandHandler $handler;
     private AdherentActivityRepository $activityRepository;
     private MessageBusInterface&MockObject $bus;
+    private LoggerInterface&MockObject $logger;
     private Adherent $adherent;
 
     public function testInsertsAllowedActionHistoryRows(): void
@@ -76,8 +80,32 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         self::assertNotNull($activity);
         self::assertSame($this->adherent->getId(), $activity->adherent->getId());
         self::assertSame(UserActionHistoryTypeEnum::LOGIN_SUCCESS->value, $activity->eventType);
+        self::assertSame('Connexion réussie', $activity->eventLabel);
+        self::assertNull($activity->description); // login_success has no description by design
         self::assertEquals($date, $activity->occurredAt);
         self::assertSame(['ip' => '127.0.0.1'], $activity->metadata);
+    }
+
+    public function testStoresDescriptionForDelegatedAccessAdd(): void
+    {
+        // Given
+        $this->createActionHistory(
+            UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD,
+            [
+                'actor_name' => 'Victorio Fortest',
+                'role' => 'Responsable de communication',
+                'zones' => ['Hauts-de-Seine (92)'],
+            ],
+        );
+
+        // When
+        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+
+        // Then
+        $activity = $this->activityRepository->findOneBy(['sourceType' => SourceTypeEnum::ActionHistory]);
+        self::assertNotNull($activity);
+        self::assertSame("Création d'accès délégué", $activity->eventLabel);
+        self::assertSame('Victorio Fortest a ouvert un accès "Responsable de communication" sur Hauts-de-Seine (92)', $activity->description);
     }
 
     public function testFiltersHitsByEventType(): void
@@ -119,6 +147,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         self::assertNotNull($activity);
         self::assertSame($this->adherent->getId(), $activity->adherent->getId());
         self::assertSame(EventTypeEnum::Open->value, $activity->eventType);
+        self::assertSame('Ouverture', $activity->eventLabel);
         self::assertEquals($date, $activity->occurredAt);
         self::assertSame('page_events', $activity->metadata['source']);
         self::assertSame(TargetTypeEnum::Event->value, $activity->metadata['object_type']);
@@ -158,6 +187,115 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
     }
 
+    public function testSkipsActionHistoryRowsCreatedWithinLastMinute(): void
+    {
+        // Given
+        $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_SUCCESS, null, new \DateTime('-30 seconds'));
+        $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_FAILURE, null, new \DateTime('-2 minutes'));
+
+        // When
+        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+
+        // Then
+        $activities = $this->activityRepository->findBy(['sourceType' => SourceTypeEnum::ActionHistory]);
+        self::assertCount(1, $activities);
+        self::assertSame(UserActionHistoryTypeEnum::LOGIN_FAILURE->value, $activities[0]->eventType);
+    }
+
+    public function testSkipsHitRowsCreatedWithinLastMinute(): void
+    {
+        // Given
+        $this->createHit(EventTypeEnum::Open, new \DateTimeImmutable('-30 seconds'));
+        $this->createHit(EventTypeEnum::Click, new \DateTimeImmutable('-2 minutes'));
+
+        // When
+        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::Hit));
+
+        // Then
+        $activities = $this->activityRepository->findBy(['sourceType' => SourceTypeEnum::Hit]);
+        self::assertCount(1, $activities);
+        self::assertSame(EventTypeEnum::Click->value, $activities[0]->eventType);
+    }
+
+    public function testLogsInfoWithStructuredContextAfterBatch(): void
+    {
+        // Given
+        $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_SUCCESS);
+
+        $this->logger
+            ->expects(self::atLeastOnce())
+            ->method('info')
+            ->with(
+                'AdherentActivity batch finished',
+                self::callback(static function (array $context): bool {
+                    return 'action_history' === $context['source_type']
+                        && $context['inserted'] >= 1
+                        && \array_key_exists('last_id_before', $context)
+                        && \array_key_exists('last_id_after', $context)
+                        && \array_key_exists('duration_ms', $context);
+                }),
+            );
+
+        // When
+        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+    }
+
+    public function testLogsWarningWhenBatchEmptyButSourceHasEligibleRow(): void
+    {
+        // Given — service mock simulates a stalled pipeline scenario
+        $serviceMock = $this->createMock(PopulateAdherentActivityService::class);
+        $serviceMock
+            ->expects(self::once())
+            ->method('processBatch')
+            ->with(SourceTypeEnum::ActionHistory)
+            ->willReturn(new BatchResult(inserted: 0, lastIdBefore: 100, lastIdAfter: 100));
+        $serviceMock
+            ->expects(self::once())
+            ->method('findNextEligibleId')
+            ->with(SourceTypeEnum::ActionHistory)
+            ->willReturn(123);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
+            ->expects(self::once())
+            ->method('warning')
+            ->with(
+                self::stringContains('stalled'),
+                self::callback(static fn (array $context): bool => 123 === $context['next_eligible_id']),
+            );
+        $logger->expects(self::never())->method('info');
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturn(new Envelope(new \stdClass()));
+
+        $handler = new PopulateAdherentActivityCommandHandler($serviceMock, $bus, $logger);
+
+        // When
+        $handler(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+    }
+
+    public function testFindNextEligibleIdReturnsNullWhenSourceEmpty(): void
+    {
+        $service = new PopulateAdherentActivityService($this->get(Connection::class), new AdherentActivityDescriptionBuilder());
+
+        self::assertNull($service->findNextEligibleId(SourceTypeEnum::ActionHistory));
+    }
+
+    public function testFindNextEligibleIdReturnsMinIdWhenEligibleRowsExist(): void
+    {
+        // Given
+        $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_SUCCESS, null, new \DateTime('-3 minutes'));
+        $this->createActionHistory(UserActionHistoryTypeEnum::PROFILE_UPDATE, ['x'], new \DateTime('-2 minutes'));
+
+        // When
+        $service = new PopulateAdherentActivityService($this->get(Connection::class), new AdherentActivityDescriptionBuilder());
+        $nextId = $service->findNextEligibleId(SourceTypeEnum::ActionHistory);
+
+        // Then
+        $minId = (int) $this->get(Connection::class)->fetchOne('SELECT MIN(id) FROM user_action_history');
+        self::assertSame($minId, $nextId);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -175,9 +313,12 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         $this->bus = $this->createMock(MessageBusInterface::class);
         $this->bus->method('dispatch')->willReturn(new Envelope(new \stdClass()));
 
+        $this->logger = $this->createMock(LoggerInterface::class);
+
         $this->handler = new PopulateAdherentActivityCommandHandler(
-            new PopulateAdherentActivityService($connection),
+            new PopulateAdherentActivityService($connection, new AdherentActivityDescriptionBuilder()),
             $this->bus,
+            $this->logger,
         );
     }
 
@@ -186,7 +327,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         ?array $data = null,
         ?\DateTimeInterface $date = null,
     ): void {
-        $history = new UserActionHistory($this->adherent, $type, $date ?? new \DateTime(), $data);
+        $history = new UserActionHistory($this->adherent, $type, $date ?? new \DateTime('-5 minutes'), $data);
         $this->manager->persist($history);
         $this->manager->flush();
     }
@@ -204,7 +345,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         $hit->eventType = $eventType;
         $hit->adherent = $this->adherent;
         $hit->activitySessionUuid = Uuid::uuid4();
-        $hit->appDate = $appDate ?? new \DateTimeImmutable();
+        $hit->appDate = $appDate ?? new \DateTimeImmutable('-5 minutes');
         $hit->objectType = $objectType;
         $hit->objectId = $objectId;
         $hit->source = $source;
@@ -213,6 +354,13 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
 
         $this->manager->persist($hit);
         $this->manager->flush();
+
+        // Align created_at (set to NOW by EntityTimestampableTrait) with appDate, so the
+        // pipeline buffer (filtering on created_at) treats fixture rows as past events.
+        $this->get(Connection::class)->executeStatement(
+            'UPDATE app_hit SET created_at = ? WHERE id = ?',
+            [$hit->appDate->format('Y-m-d H:i:s'), $hit->getId()],
+        );
 
         return $hit;
     }

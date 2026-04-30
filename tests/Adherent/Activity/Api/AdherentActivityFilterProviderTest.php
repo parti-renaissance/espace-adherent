@@ -59,6 +59,14 @@ class AdherentActivityFilterProviderTest extends TestCase
             ['value' => 'delegated_access_remove', 'label' => "Suppression d'accès délégué"],
             ['value' => 'agora_membership_add', 'label' => "Membre d'Agora ajouté"],
             ['value' => 'agora_membership_remove', 'label' => "Membre d'Agora supprimé"],
+            ['value' => 'agora_president_add', 'label' => "Président d'Agora ajouté"],
+            ['value' => 'agora_president_remove', 'label' => "Président d'Agora supprimé"],
+            ['value' => 'agora_general_secretary_add', 'label' => "Secrétaire général d'Agora ajouté"],
+            ['value' => 'agora_general_secretary_remove', 'label' => "Secrétaire général d'Agora supprimé"],
+            ['value' => 'membership_anniversary_reminded', 'label' => "Rappel anniversaire d'adhésion"],
+            ['value' => 'committee_create', 'label' => 'Création de comité'],
+            ['value' => 'committee_update', 'label' => 'Modification de comité'],
+            ['value' => 'committee_delete', 'label' => 'Suppression de comité'],
         ], $result->eventTypes['action_history']);
     }
 

@@ -4,35 +4,55 @@ declare(strict_types=1);
 
 namespace App\Adherent\Activity;
 
+use App\History\UserActionHistoryTypeEnum;
+use App\JeMengage\Hit\EventTypeEnum;
+use App\JeMengage\Hit\TargetTypeEnum;
+
 class AdherentActivityLabels
 {
     public const array SOURCE_TYPES = [
-        'hit' => 'Activité in-app',
-        'action_history' => "Action de l'utilisateur",
+        SourceTypeEnum::Hit->value => 'Activité in-app',
+        SourceTypeEnum::ActionHistory->value => "Action de l'utilisateur",
+    ];
+
+    public const array OBJECT_TYPES = [
+        TargetTypeEnum::Event->value => ['article' => 'un', 'label' => 'événement'],
+        TargetTypeEnum::Publication->value => ['article' => 'une', 'label' => 'publication'],
+        TargetTypeEnum::News->value => ['article' => 'une', 'label' => 'actualité'],
+        TargetTypeEnum::Alert->value => ['article' => 'une', 'label' => 'alerte'],
+        TargetTypeEnum::Action->value => ['article' => 'une', 'label' => 'action'],
     ];
 
     public const array HIT_EVENTS = [
-        'click' => 'Clic',
-        'open' => 'Ouverture',
-        'activity_session' => 'Session active',
+        EventTypeEnum::Click->value => 'Clic',
+        EventTypeEnum::Open->value => 'Ouverture',
+        EventTypeEnum::ActivitySession->value => 'Session active',
     ];
 
     public const array ACTION_HISTORY_EVENTS = [
-        'login_success' => 'Connexion réussie',
-        'login_failure' => 'Connexion échouée',
-        'profile_update' => 'Mise à jour du profil',
-        'email_change_request' => "Changement d'email (demande)",
-        'email_change_validate' => "Changement d'email (validation)",
-        'password_reset_request' => 'Mot de passe oublié (demande)',
-        'password_reset_validate' => 'Mot de passe oublié (changement)',
-        'role_add' => 'Ajout de rôle',
-        'role_remove' => 'Suppression de rôle',
-        'live_view' => "Vue d'un live",
-        'delegated_access_add' => "Création d'accès délégué",
-        'delegated_access_edit' => "Modification d'accès délégué",
-        'delegated_access_remove' => "Suppression d'accès délégué",
-        'agora_membership_add' => "Membre d'Agora ajouté",
-        'agora_membership_remove' => "Membre d'Agora supprimé",
+        UserActionHistoryTypeEnum::LOGIN_SUCCESS->value => 'Connexion réussie',
+        UserActionHistoryTypeEnum::LOGIN_FAILURE->value => 'Connexion échouée',
+        UserActionHistoryTypeEnum::PROFILE_UPDATE->value => 'Mise à jour du profil',
+        UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST->value => "Changement d'email (demande)",
+        UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE->value => "Changement d'email (validation)",
+        UserActionHistoryTypeEnum::PASSWORD_RESET_REQUEST->value => 'Mot de passe oublié (demande)',
+        UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE->value => 'Mot de passe oublié (changement)',
+        UserActionHistoryTypeEnum::ROLE_ADD->value => 'Ajout de rôle',
+        UserActionHistoryTypeEnum::ROLE_REMOVE->value => 'Suppression de rôle',
+        UserActionHistoryTypeEnum::LIVE_VIEW->value => "Vue d'un live",
+        UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD->value => "Création d'accès délégué",
+        UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT->value => "Modification d'accès délégué",
+        UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE->value => "Suppression d'accès délégué",
+        UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_ADD->value => "Membre d'Agora ajouté",
+        UserActionHistoryTypeEnum::AGORA_MEMBERSHIP_REMOVE->value => "Membre d'Agora supprimé",
+        UserActionHistoryTypeEnum::AGORA_PRESIDENT_ADD->value => "Président d'Agora ajouté",
+        UserActionHistoryTypeEnum::AGORA_PRESIDENT_REMOVE->value => "Président d'Agora supprimé",
+        UserActionHistoryTypeEnum::AGORA_GENERAL_SECRETARY_ADD->value => "Secrétaire général d'Agora ajouté",
+        UserActionHistoryTypeEnum::AGORA_GENERAL_SECRETARY_REMOVE->value => "Secrétaire général d'Agora supprimé",
+        UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED->value => "Rappel anniversaire d'adhésion",
+        UserActionHistoryTypeEnum::COMMITTEE_CREATE->value => 'Création de comité',
+        UserActionHistoryTypeEnum::COMMITTEE_UPDATE->value => 'Modification de comité',
+        UserActionHistoryTypeEnum::COMMITTEE_DELETE->value => 'Suppression de comité',
     ];
 
     public const array EVENT_TYPES = self::HIT_EVENTS + self::ACTION_HISTORY_EVENTS;
@@ -53,14 +73,6 @@ class AdherentActivityLabels
         'page_publication_edition' => 'la page de publication',
     ];
 
-    public const array OBJECT_TYPES = [
-        'event' => ['article' => 'un', 'label' => 'événement'],
-        'publication' => ['article' => 'une', 'label' => 'publication'],
-        'news' => ['article' => 'une', 'label' => 'actualité'],
-        'alert' => ['article' => 'une', 'label' => 'alerte'],
-        'action' => ['article' => 'une', 'label' => 'action'],
-    ];
-
     /** @return list<array{value: string, label: string}> */
     public static function asOptions(array $labels): array
     {
@@ -70,5 +82,17 @@ class AdherentActivityLabels
         }
 
         return $options;
+    }
+
+    /** @return list<string> */
+    public static function actionHistoryKeys(): array
+    {
+        return array_keys(self::ACTION_HISTORY_EVENTS);
+    }
+
+    /** @return list<string> */
+    public static function hitEventKeys(): array
+    {
+        return array_keys(self::HIT_EVENTS);
     }
 }
