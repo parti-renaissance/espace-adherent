@@ -13,6 +13,7 @@ use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepositor
 use App\Repository\DonationRepository;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\SmsOptOutRepository;
+use App\Utils\PhoneNumberUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,13 +41,14 @@ final class RequestBuilderTest extends TestCase
 
     public function testBuildContactRequestWithOptedOutPhoneDoesNotIncludeSmsChannel(): void
     {
-        $phone = '+33612345678';
+        $phone = PhoneNumberUtils::create('+33612345678');
+        $formattedPhone = '+33612345678';
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::once())
             ->method('isOptedOut')
-            ->with($phone)
+            ->with($formattedPhone)
             ->willReturn(true)
         ;
 
@@ -64,13 +66,14 @@ final class RequestBuilderTest extends TestCase
 
     public function testBuildContactRequestWithNonOptedOutPhoneIncludesSmsChannel(): void
     {
-        $phone = '+33612345678';
+        $phone = PhoneNumberUtils::create('+33612345678');
+        $formattedPhone = '+33612345678';
         $email = 'test@example.com';
 
         $this->smsOptOutRepository
             ->expects(self::once())
             ->method('isOptedOut')
-            ->with($phone)
+            ->with($formattedPhone)
             ->willReturn(false)
         ;
 
@@ -83,8 +86,30 @@ final class RequestBuilderTest extends TestCase
         $data = $contactRequest->toArray();
 
         self::assertArrayHasKey('sms_channel', $data);
-        self::assertSame($phone, $data['sms_channel']['sms_phone']);
+        self::assertSame($formattedPhone, $data['sms_channel']['sms_phone']);
         self::assertSame('confirmed', $data['sms_channel']['marketing_consent']['status']);
+    }
+
+    public function testBuildContactRequestWithNonFrenchPhoneDoesNotIncludeSmsChannel(): void
+    {
+        $phone = PhoneNumberUtils::create('+15551234567');
+        $email = 'test@example.com';
+
+        $this->smsOptOutRepository
+            ->expects(self::never())
+            ->method('isOptedOut')
+        ;
+
+        $this->requestBuilder
+            ->setPhone($phone)
+            ->setSmsSubscribed(true)
+            ->setEmailMarketingConsent(MarketingConsentStatusEnum::CONFIRMED);
+
+        $contactRequest = $this->requestBuilder->buildContactRequest($email);
+        $data = $contactRequest->toArray();
+
+        self::assertArrayNotHasKey('sms_channel', $data);
+        self::assertArrayHasKey('email_channel', $data);
     }
 
     public function testBuildContactRequestWithoutPhoneDoesNotCheckOptOut(): void
@@ -104,7 +129,7 @@ final class RequestBuilderTest extends TestCase
         self::assertArrayNotHasKey('sms_channel', $data);
     }
 
-    public function testBuildContactRequestWithEmptyPhoneDoesNotCheckOptOut(): void
+    public function testBuildContactRequestWithNullPhoneDoesNotCheckOptOut(): void
     {
         $email = 'test@example.com';
 
@@ -114,7 +139,7 @@ final class RequestBuilderTest extends TestCase
         ;
 
         $this->requestBuilder
-            ->setPhone('')
+            ->setPhone(null)
             ->setEmailMarketingConsent(MarketingConsentStatusEnum::CONFIRMED);
 
         $contactRequest = $this->requestBuilder->buildContactRequest($email);

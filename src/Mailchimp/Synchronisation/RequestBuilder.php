@@ -28,6 +28,8 @@ use App\Repository\SmsOptOutRepository;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberFormat;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -135,7 +137,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
-            ->setPhone(PhoneNumberUtils::format($adherent->getPhone()))
+            ->setPhone($adherent->getPhone())
             ->setLastName($adherent->getLastName())
             ->setBirthDay($adherent->getBirthdate())
             ->setZipCode($adherent->getPostalCode())
@@ -180,7 +182,7 @@ class RequestBuilder implements LoggerAwareInterface
     {
         return $this
             ->setEmail($eventInscription->addressEmail)
-            ->setPhone(PhoneNumberUtils::format($eventInscription->phone))
+            ->setPhone($eventInscription->phone)
             ->setFirstName($eventInscription->firstName)
             ->setLastName($eventInscription->lastName)
             ->setGender($eventInscription->gender)
@@ -241,9 +243,11 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(?PhoneNumber $phone): self
     {
-        $this->phone = str_replace(' ', '', $phone);
+        $this->phone = PhoneNumberUtils::isFrench($phone)
+            ? PhoneNumberUtils::format($phone, PhoneNumberFormat::E164)
+            : null;
 
         return $this;
     }
