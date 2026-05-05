@@ -213,9 +213,9 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         return $this->duration;
     }
 
-    public function setDuration(?int $duration): void
+    public function setDuration(int|string|null $duration): void
     {
-        $this->duration = $duration ?? PayboxPaymentSubscription::NONE;
+        $this->duration = (int) ($duration ?? PayboxPaymentSubscription::NONE);
     }
 
     public function isSubscription(): bool
