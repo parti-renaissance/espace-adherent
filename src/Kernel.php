@@ -18,9 +18,9 @@ class Kernel extends BaseKernel
         configureContainer as protected baseConfigureContainer;
     }
 
-    protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
+    protected function configureContainer(ContainerConfigurator $container): void
     {
-        $this->baseConfigureContainer($container, $loader, $builder);
+        $this->baseConfigureContainer($container);
 
         $configDir = $this->getConfigDir();
         $container->import($configDir.'/{services}/*.php');
