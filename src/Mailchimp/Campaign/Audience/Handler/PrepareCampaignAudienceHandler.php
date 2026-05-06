@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\Audience\Handler;
 
 use App\Doctrine\Utils\BulkInsertHelper;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
@@ -12,10 +13,10 @@ use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -29,7 +30,7 @@ class PrepareCampaignAudienceHandler
 {
     private const int TOO_LARGE_THRESHOLD = 500_000;
     private const int PUSH_CHUNK_SIZE = 500;
-    private const int TARGETED_INSERT_BATCH = 5_000;
+    private const int MEMBER_INSERT_BATCH = 5_000;
 
     private LoggerInterface $logger;
 
@@ -38,7 +39,7 @@ class PrepareCampaignAudienceHandler
         private readonly MailchimpStaticSegmentServiceInterface $staticSegmentService,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AdherentRepository $adherentRepository,
-        private readonly AdherentMessageTargetedRepository $targetedRepository,
+        private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly BulkInsertHelper $bulkInsertHelper,
         private readonly MessageBusInterface $bus,
         private readonly NormalizerInterface $normalizer,
@@ -64,7 +65,7 @@ class PrepareCampaignAudienceHandler
         $staticSegment = $campaign->getMailchimpStaticSegment();
         if (null === $segmentId || null === $staticSegment) {
             $this->logger->error('Static segment not initialised before /prepare', ['campaign_id' => $campaign->getId()]);
-            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable, 'Static segment was not initialised before /prepare.');
+            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
             $this->entityManager->flush();
 
             return;
@@ -85,30 +86,40 @@ class PrepareCampaignAudienceHandler
             return;
         }
 
-        $campaign->markAsPreparing($message->lockedBy);
+        $lockedBy = $this->entityManager->find(Adherent::class, $message->lockedById);
+        if (null === $lockedBy) {
+            $this->logger->error('Locking adherent not found', ['adherent_id' => $message->lockedById, 'campaign_id' => $campaign->getId()]);
+            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
+            $staticSegment->errorSummary = \sprintf('Locking adherent %d not found.', $message->lockedById);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $campaign->markAsPreparing($lockedBy);
         $this->resetTrackingFields($staticSegment);
         $this->captureFilterSnapshot($staticSegment, $campaign);
         $this->entityManager->flush();
 
         try {
-            $messageId = $campaign->getMessage()->getId();
-
             // Wipe any residual rows from a previous (legacy) preparation before bulk-inserting.
-            $this->targetedRepository->deleteByMessageId($messageId);
+            $this->memberRepository->deleteBySegmentId($staticSegment->id);
 
-            $expected = $this->streamAndInsertTargeted($campaign);
+            $expected = $this->loadAndInsertMembers($campaign);
             $staticSegment->expectedCount = $expected;
             $this->entityManager->flush();
 
             if (0 === $expected) {
-                $campaign->markAsFailed(BlockReasonEnum::Empty, 'SQL audience returned 0 valid emails.');
+                $campaign->markAsFailed(BlockReasonEnum::Empty);
+                $staticSegment->errorSummary = 'SQL audience returned 0 valid emails.';
                 $this->entityManager->flush();
 
                 return;
             }
 
             if ($expected > self::TOO_LARGE_THRESHOLD) {
-                $campaign->markAsFailed(BlockReasonEnum::TooLarge, \sprintf('Audience %d > threshold %d.', $expected, self::TOO_LARGE_THRESHOLD));
+                $campaign->markAsFailed(BlockReasonEnum::TooLarge);
+                $staticSegment->errorSummary = \sprintf('Audience %d > threshold %d.', $expected, self::TOO_LARGE_THRESHOLD);
                 $this->entityManager->flush();
 
                 return;
@@ -124,7 +135,7 @@ class PrepareCampaignAudienceHandler
             $this->staticSegmentService->update($segmentId, [], $listId);
 
             $campaignId = $campaign->getId();
-            for ($n = 0; $n < $chunksTotal; ++$n) {
+            for ($n = 1; $n <= $chunksTotal; ++$n) {
                 $this->bus->dispatch(new ProcessAudienceChunkMessage($campaignId, $n));
             }
 
@@ -137,7 +148,7 @@ class PrepareCampaignAudienceHandler
                 'campaign_id' => $message->mailchimpCampaignId,
                 'exception' => $e,
             ]);
-            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable, $e->getMessage());
+            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
             $staticSegment->errorSummary = $e->getMessage();
             $this->entityManager->flush();
             throw $e; // let Messenger handle retry/DLQ
@@ -146,8 +157,8 @@ class PrepareCampaignAudienceHandler
 
     private function redispatchPendingChunks(MailchimpCampaign $campaign): void
     {
-        $messageId = $campaign->getMessage()->getId();
-        $pendingChunks = $this->targetedRepository->findChunksWithPending($messageId);
+        $staticSegmentId = $campaign->getMailchimpStaticSegment()->id;
+        $pendingChunks = $this->memberRepository->findChunksWithPending($staticSegmentId);
         $campaignId = $campaign->getId();
 
         foreach ($pendingChunks as $chunkNumber) {
@@ -172,52 +183,39 @@ class PrepareCampaignAudienceHandler
     }
 
     /**
-     * Streams emails from the audience query, batches them, and bulk-inserts targeted rows
-     * with chunk_number assigned on the fly. Avoids materialising the full email list in RAM.
+     * Loads the full audience in one query and bulk-inserts member rows by batch,
+     * with `chunk_number` derived from the absolute position in the result set.
      */
-    private function streamAndInsertTargeted(MailchimpCampaign $campaign): int
+    private function loadAndInsertMembers(MailchimpCampaign $campaign): int
     {
-        $messageId = $campaign->getMessage()->getId();
+        $staticSegmentId = $campaign->getMailchimpStaticSegment()->id;
         $now = new \DateTimeImmutable()->format('Y-m-d H:i:s');
-        $expected = 0;
-        $bufferEmails = [];
+        $adherentIds = $this->adherentRepository->findAdherentIdsForMessage($campaign->getMessage());
 
-        foreach ($this->adherentRepository->findAdherentEmailsForMessage($campaign->getMessage()) as $email) {
-            $bufferEmails[$expected] = $email;
-            ++$expected;
-
-            if (\count($bufferEmails) >= self::TARGETED_INSERT_BATCH) {
-                $this->insertTargetedBatch($messageId, $bufferEmails, $now);
-                $bufferEmails = [];
-            }
+        foreach (array_chunk($adherentIds, self::MEMBER_INSERT_BATCH, true) as $batch) {
+            $this->insertMemberBatch($staticSegmentId, $batch, $now);
         }
 
-        if ($bufferEmails) {
-            $this->insertTargetedBatch($messageId, $bufferEmails, $now);
-        }
-
-        return $expected;
+        return \count($adherentIds);
     }
 
     /**
-     * @param array<int, string> $bufferEmails index (= absolute row position) => email
+     * @param array<int, int> $batch index (= absolute row position) => adherent id
      */
-    private function insertTargetedBatch(int $messageId, array $bufferEmails, string $now): void
+    private function insertMemberBatch(int $staticSegmentId, array $batch, string $now): void
     {
-        $emailToAdherentId = $this->adherentRepository->mapIdsByEmails(array_values($bufferEmails));
-
         $rows = [];
-        foreach ($bufferEmails as $index => $email) {
+        foreach ($batch as $index => $adherentId) {
             $rows[] = [
-                'message_id' => $messageId,
-                'adherent_id' => $emailToAdherentId[$email] ?? null,
-                'chunk_number' => intdiv($index, self::PUSH_CHUNK_SIZE),
-                'processing_status' => TargetedProcessingStatusEnum::Pending->value,
-                'targeted_at' => $now,
+                'static_segment_id' => $staticSegmentId,
+                'adherent_id' => $adherentId,
+                'chunk_number' => intdiv($index, self::PUSH_CHUNK_SIZE) + 1,
+                'processing_status' => SegmentMemberStatusEnum::Pending->value,
+                'created_at' => $now,
             ];
         }
 
-        $this->bulkInsertHelper->insertIgnore('adherent_message_targeted', $rows);
+        $this->bulkInsertHelper->insertIgnore('mailchimp_static_segment_member', $rows);
     }
 
     private function captureFilterSnapshot(MailchimpStaticSegment $segment, MailchimpCampaign $campaign): void

@@ -9,10 +9,10 @@ use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Driver;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -26,7 +26,7 @@ class ProcessAudienceChunkHandler
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AdherentMessageTargetedRepository $targetedRepository,
+        private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly Driver $driver,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly MessageBusInterface $bus,
@@ -65,8 +65,7 @@ class ProcessAudienceChunkHandler
             return;
         }
 
-        $messageId = $campaign->getMessage()->getId();
-        $idToEmail = $this->targetedRepository->findPendingEmailsByChunk($messageId, $message->chunkNumber);
+        $idToEmail = $this->memberRepository->findPendingEmailsByChunk($staticSegment->id, $message->chunkNumber);
 
         if ([] === $idToEmail) {
             // Chunk already processed (retry-safe no-op).
@@ -77,11 +76,11 @@ class ProcessAudienceChunkHandler
 
         $idToStatus = $this->pushChunkAndMapStatuses($segmentId, $listId, $idToEmail);
 
-        $this->targetedRepository->markRowsAsProcessed($idToStatus);
+        $this->memberRepository->markRowsAsProcessed($idToStatus);
 
         $this->incrementChunksDone($staticSegment);
 
-        if (!$this->targetedRepository->existsPending($messageId)) {
+        if (!$this->memberRepository->existsPending($staticSegment->id)) {
             $this->bus->dispatch(new FinalizeCampaignAudienceMessage($campaign->getId()));
         }
     }
@@ -91,7 +90,7 @@ class ProcessAudienceChunkHandler
      *
      * @param array<int, string> $idToEmail row id => email
      *
-     * @return array<int, TargetedProcessingStatusEnum> row id => status
+     * @return array<int, SegmentMemberStatusEnum> row id => status
      */
     private function pushChunkAndMapStatuses(int $segmentId, string $listId, array $idToEmail): array
     {
@@ -124,8 +123,8 @@ class ProcessAudienceChunkHandler
         $idToStatus = [];
         foreach ($idToEmail as $rowId => $email) {
             $idToStatus[$rowId] = isset($refusedSet[$email])
-                ? TargetedProcessingStatusEnum::Refused
-                : TargetedProcessingStatusEnum::Added;
+                ? SegmentMemberStatusEnum::Refused
+                : SegmentMemberStatusEnum::Added;
         }
 
         return $idToStatus;

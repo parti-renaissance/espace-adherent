@@ -19,7 +19,7 @@ class FinalizeCampaignAudienceMessage implements DefaultStampsProviderInterface
     {
         return [
             new TransportNamesStamp(QueuePriorityLevelEnum::QUEUE_NAME),
-            AmqpStamp::createWithAttributes(['priority' => QueuePriorityLevelEnum::LOW]),
+            AmqpStamp::createWithAttributes(['priority' => QueuePriorityLevelEnum::MEDIUM]),
         ];
     }
 }

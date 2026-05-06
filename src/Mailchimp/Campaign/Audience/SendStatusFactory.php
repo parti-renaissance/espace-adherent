@@ -27,7 +27,6 @@ class SendStatusFactory
                 'diff' => null !== $expected && null !== $prepared ? $prepared - $expected : null,
             ],
             'prepared_at' => $campaign->getPreparedAt()?->format(\DATE_ATOM),
-            'blocking_user' => $campaign->getPreparationLockedBy(),
             // failure_detail intentionally NOT exposed here: DESIGN §5.1 states
             // "logged, not displayed". block_reason is enough for UX; the
             // technical detail stays in server logs (Phase 5 handler logger->error).

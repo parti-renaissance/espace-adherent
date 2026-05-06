@@ -1709,19 +1709,19 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     /**
-     * Yield the emails of a message's audience by SQL chunks to avoid
-     * materializing 200k strings in memory at once.
+     * Returns all adherent ids of a message's audience in a single query.
      *
-     * Forces `byEmail=true` (mailchimp_status='subscribed') because emails pushed
-     * to Mailchimp must be subscribed.
+     * Forces `byEmail=true` (mailchimp_status='subscribed') because rows pushed
+     * to Mailchimp must be subscribed. The email is resolved later via JOIN at
+     * chunk-push time (see `MailchimpStaticSegmentMemberRepository::findPendingEmailsByChunk`).
      *
-     * @return iterable<string>
+     * @return list<int>
      */
-    public function findAdherentEmailsForMessage(AdherentMessage $message, int $chunkSize = 5000): iterable
+    public function findAdherentIdsForMessage(AdherentMessage $message): array
     {
         $pieces = $this->buildAudienceQueryPieces($message, byEmail: true, byPush: null);
         if (null === $pieces) {
-            return;
+            return [];
         }
 
         $where = $pieces['baseWhere'];
@@ -1729,34 +1729,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $where[] = $pieces['branchEmailSql'];
         }
 
-        $cnx = $this->getEntityManager()->getConnection();
-        $with = $pieces['with'];
-        $baseFrom = $pieces['baseFrom'];
-        $whereClause = implode(' AND ', $where);
+        $sql = ($pieces['with'] ? $pieces['with']."\n" : '')
+            ."SELECT a.id {$pieces['baseFrom']}
+                WHERE ".implode(' AND ', $where).'
+                ORDER BY a.id';
 
-        $offset = 0;
-        do {
-            $params = $pieces['params'];
-            $types = $pieces['types'];
-            $params['_limit'] = $chunkSize;
-            $params['_offset'] = $offset;
-            $types['_limit'] = ParameterType::INTEGER;
-            $types['_offset'] = ParameterType::INTEGER;
-
-            $sql = ($with ? "$with\n" : '')."SELECT DISTINCT a.email_address
-                $baseFrom
-                WHERE $whereClause
-                ORDER BY a.id
-                LIMIT :_limit OFFSET :_offset";
-
-            $rows = $cnx->fetchFirstColumn($sql, $params, $types);
-
-            foreach ($rows as $email) {
-                yield $email;
-            }
-
-            $offset += $chunkSize;
-        } while (\count($rows) === $chunkSize);
+        return $this->getEntityManager()->getConnection()->fetchFirstColumn($sql, $pieces['params'], $pieces['types']);
     }
 
     /**

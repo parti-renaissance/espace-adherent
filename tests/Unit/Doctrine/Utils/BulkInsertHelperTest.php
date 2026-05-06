@@ -46,17 +46,17 @@ class BulkInsertHelperTest extends TestCase
         $connection->expects(self::once())
             ->method('executeStatement')
             ->with(
-                'INSERT IGNORE INTO adherent_message_targeted (message_id,adherent_id,targeted_at) VALUES (?,?,?),(?,?,?),(?,?,?)',
+                'INSERT IGNORE INTO mailchimp_static_segment_member (static_segment_id,adherent_id,created_at) VALUES (?,?,?),(?,?,?),(?,?,?)',
                 [10, 1, '2026-05-05 10:00:00', 10, 2, '2026-05-05 10:00:00', 10, null, '2026-05-05 10:00:00'],
             )
             ->willReturn(3);
 
         $helper = new BulkInsertHelper($connection);
 
-        $result = $helper->insertIgnore('adherent_message_targeted', [
-            ['message_id' => 10, 'adherent_id' => 1, 'targeted_at' => '2026-05-05 10:00:00'],
-            ['message_id' => 10, 'adherent_id' => 2, 'targeted_at' => '2026-05-05 10:00:00'],
-            ['message_id' => 10, 'adherent_id' => null, 'targeted_at' => '2026-05-05 10:00:00'],
+        $result = $helper->insertIgnore('mailchimp_static_segment_member', [
+            ['static_segment_id' => 10, 'adherent_id' => 1, 'created_at' => '2026-05-05 10:00:00'],
+            ['static_segment_id' => 10, 'adherent_id' => 2, 'created_at' => '2026-05-05 10:00:00'],
+            ['static_segment_id' => 10, 'adherent_id' => null, 'created_at' => '2026-05-05 10:00:00'],
         ]);
 
         self::assertSame(3, $result);

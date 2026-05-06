@@ -12,10 +12,10 @@ use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
 use App\Mailchimp\Campaign\Audience\Handler\FinalizeCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Driver;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $em->method('find')->willReturn(null);
         $em->expects(self::never())->method('flush');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('existsPending');
 
         $driver = $this->createMock(Driver::class);
@@ -48,7 +48,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $em->expects(self::never())->method('flush');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('existsPending');
         $repo->expects(self::never())->method('aggregateStatusCounts');
 
@@ -64,14 +64,14 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
         $campaign->requestCancellation();
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
         $em->expects(self::never())->method('flush');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('existsPending');
 
         $driver = $this->createMock(Driver::class);
@@ -86,14 +86,14 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
         $em->expects(self::never())->method('flush');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
-        $repo->expects(self::once())->method('existsPending')->with(100)->willReturn(true);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $repo->expects(self::once())->method('existsPending')->with(4242)->willReturn(true);
         $repo->expects(self::never())->method('aggregateStatusCounts');
 
         $driver = $this->createMock(Driver::class);
@@ -108,7 +108,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
         $segment = $campaign->getMailchimpStaticSegment();
         $segment->expectedCount = 1_000;
 
@@ -116,15 +116,15 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $em->expects(self::once())->method('flush');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('existsPending')->willReturn(false);
         $repo->expects(self::once())
             ->method('aggregateStatusCounts')
-            ->with(100)
+            ->with(4242)
             ->willReturn([
-                TargetedProcessingStatusEnum::Added->value => 950,
-                TargetedProcessingStatusEnum::Refused->value => 30,
-                TargetedProcessingStatusEnum::Errored->value => 20,
+                SegmentMemberStatusEnum::Added->value => 950,
+                SegmentMemberStatusEnum::Refused->value => 30,
+                SegmentMemberStatusEnum::Errored->value => 20,
             ])
         ;
 
@@ -147,7 +147,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
     private function buildHandler(
         EntityManagerInterface $em,
-        AdherentMessageTargetedRepository $repo,
+        MailchimpStaticSegmentMemberRepository $repo,
         Driver $driver,
     ): FinalizeCampaignAudienceHandler {
         $mapping = $this->createStub(MailchimpObjectIdMapping::class);

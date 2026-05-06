@@ -8,7 +8,7 @@ use App\Mailchimp\Campaign\Audience\EventSubscriber\AudienceChunkFailureSubscrib
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
@@ -18,7 +18,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 {
     public function testWillRetryIsNoOp(): void
     {
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('markChunkAsErroredByCampaignId');
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -36,14 +36,14 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 
     public function testNonChunkMessageIsIgnored(): void
     {
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('markChunkAsErroredByCampaignId');
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
         $event = new WorkerMessageFailedEvent(
-            new Envelope(new PrepareCampaignAudienceMessage(7, 'alice@example.com')),
+            new Envelope(new PrepareCampaignAudienceMessage(7, 1)),
             'mailchimp_campaign',
             new \RuntimeException('boom'),
         );
@@ -53,7 +53,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 
     public function testDefinitiveFailureMarksChunkAndDispatchesFinalize(): void
     {
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::once())
             ->method('markChunkAsErroredByCampaignId')
             ->with(7, 3, 'Mailchimp HTTP 500')
@@ -82,7 +82,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
     {
         $longMessage = str_repeat('A', 5_000);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::once())
             ->method('markChunkAsErroredByCampaignId')
             ->with(7, 3, self::callback(function (string $msg): bool {

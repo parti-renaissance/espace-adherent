@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience\Handler;
 
 use App\Doctrine\Utils\BulkInsertHelper;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
@@ -17,7 +18,7 @@ use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +38,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $bus->expects(self::never())->method('dispatch');
 
         $handler = $this->buildHandler($em, bus: $bus);
-        $handler(new PrepareCampaignAudienceMessage(99, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(99, 1));
     }
 
     public function testAlreadyPreparedAndFreshIsNoOp(): void
@@ -46,7 +47,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $message->setFilter($filter);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
         $campaign->markAsReady(AudienceCheckEnum::Match);
 
         $em = $this->createMock(EntityManagerInterface::class);
@@ -57,7 +58,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $bus->expects(self::never())->method('dispatch');
 
         $handler = $this->buildHandler($em, bus: $bus);
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
     }
 
     public function testMissingStaticSegmentMarksAsFailed(): void
@@ -76,7 +77,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $bus->expects(self::never())->method('dispatch');
 
         $handler = $this->buildHandler($em, bus: $bus);
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::MailchimpUnavailable, $campaign->getBlockReason());
@@ -89,16 +90,16 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $campaign = $this->buildCampaign($message, segmentId: 555);
 
         $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->method('findAdherentEmailsForMessage')->willReturn(new \ArrayIterator([]));
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn([]);
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('find')->willReturn($campaign);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
         $handler = $this->buildHandler($em, adherentRepository: $adherentRepository, bus: $bus);
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::Empty, $campaign->getBlockReason());
@@ -110,19 +111,14 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
 
-        $emails = function () {
-            // 500_001 emails — just above the 500_000 threshold.
-            for ($i = 0; $i < 500_001; ++$i) {
-                yield 'a'.$i.'@example.com';
-            }
-        };
+        // 500_001 ids — just above the 500_000 threshold.
+        $adherentIds = range(1, 500_001);
 
         $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->method('findAdherentEmailsForMessage')->willReturn($emails());
-        $adherentRepository->method('mapIdsByEmails')->willReturn([]);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn($adherentIds);
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('find')->willReturn($campaign);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
@@ -136,7 +132,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
             bus: $bus,
             bulkInsertHelper: $bulkInsertHelper,
         );
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::TooLarge, $campaign->getBlockReason());
@@ -148,22 +144,17 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
 
-        // 1500 emails → ceil(1500/500) = 3 chunks
-        $emails = function () {
-            for ($i = 0; $i < 1500; ++$i) {
-                yield 'a'.$i.'@example.com';
-            }
-        };
+        // 1500 ids → ceil(1500/500) = 3 chunks
+        $adherentIds = range(1, 1500);
 
         $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->method('findAdherentEmailsForMessage')->willReturn($emails());
-        $adherentRepository->method('mapIdsByEmails')->willReturn([]);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn($adherentIds);
 
-        $targetedRepository = $this->createMock(AdherentMessageTargetedRepository::class);
-        $targetedRepository->expects(self::once())->method('deleteByMessageId');
+        $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $memberRepository->expects(self::once())->method('deleteBySegmentId');
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('find')->willReturn($campaign);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
         $staticSegmentService->expects(self::once())
@@ -186,11 +177,11 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $handler = $this->buildHandler(
             $em,
             adherentRepository: $adherentRepository,
-            targetedRepository: $targetedRepository,
+            memberRepository: $memberRepository,
             staticSegmentService: $staticSegmentService,
             bus: $bus,
         );
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
 
         self::assertCount(4, $dispatched);
         $chunkMessages = array_filter($dispatched, fn ($m) => $m instanceof ProcessAudienceChunkMessage);
@@ -210,7 +201,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
         $segment = $campaign->getMailchimpStaticSegment();
         $segment->chunksTotal = 10;
         $segment->chunksDone = 4;
@@ -219,14 +210,14 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $em->expects(self::never())->method('flush');
 
-        $targetedRepository = $this->createMock(AdherentMessageTargetedRepository::class);
-        $targetedRepository->expects(self::once())
+        $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $memberRepository->expects(self::once())
             ->method('findChunksWithPending')
-            ->with(100)
+            ->with(4242)
             ->willReturn([5, 6, 7, 8, 9])
         ;
-        // No deleteByMessageId in the retry branch.
-        $targetedRepository->expects(self::never())->method('deleteByMessageId');
+        // No deleteBySegmentId in the retry branch.
+        $memberRepository->expects(self::never())->method('deleteBySegmentId');
 
         $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
         $staticSegmentService->expects(self::never())->method('update');
@@ -244,11 +235,11 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         $handler = $this->buildHandler(
             $em,
-            targetedRepository: $targetedRepository,
+            memberRepository: $memberRepository,
             staticSegmentService: $staticSegmentService,
             bus: $bus,
         );
-        $handler(new PrepareCampaignAudienceMessage(7, 'alice@example.com'));
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
 
         $chunkNumbers = array_map(
             fn ($m) => $m->chunkNumber,
@@ -261,7 +252,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         EntityManagerInterface $em,
         ?MailchimpStaticSegmentServiceInterface $staticSegmentService = null,
         ?AdherentRepository $adherentRepository = null,
-        ?AdherentMessageTargetedRepository $targetedRepository = null,
+        ?MailchimpStaticSegmentMemberRepository $memberRepository = null,
         ?BulkInsertHelper $bulkInsertHelper = null,
         ?MessageBusInterface $bus = null,
     ): PrepareCampaignAudienceHandler {
@@ -273,7 +264,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
             $staticSegmentService ?? $this->createStub(MailchimpStaticSegmentServiceInterface::class),
             $mapping,
             $adherentRepository ?? $this->createStub(AdherentRepository::class),
-            $targetedRepository ?? $this->createStub(AdherentMessageTargetedRepository::class),
+            $memberRepository ?? $this->createStub(MailchimpStaticSegmentMemberRepository::class),
             $bulkInsertHelper ?? $this->createStub(BulkInsertHelper::class),
             $bus ?? $this->createStub(MessageBusInterface::class),
             $this->createStub(NormalizerInterface::class),
@@ -309,5 +300,18 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $reflection = new \ReflectionObject($entity);
         $property = $reflection->getProperty('id');
         $property->setValue($entity, $id);
+    }
+
+    private function buildFindCallback(MailchimpCampaign $campaign): \Closure
+    {
+        $adherent = $this->createStub(Adherent::class);
+
+        return static function (string $class) use ($campaign, $adherent): ?object {
+            return match ($class) {
+                MailchimpCampaign::class => $campaign,
+                Adherent::class => $adherent,
+                default => null,
+            };
+        };
     }
 }

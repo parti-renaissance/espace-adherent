@@ -15,16 +15,16 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Targeted unit tests for findAdherentEmailsForMessage (Phase 2).
+ * Targeted unit tests for findAdherentIdsForMessage.
  *
  * We mock the DBAL Connection. The tested logic:
- * - Iteration by fixed-size chunks (correct yield)
- * - Natural stop when the last chunk is smaller than chunkSize
- * - No-audience case (invalid filter) → return early
+ * - Single fetchFirstColumn call (no pagination)
+ * - No-audience cases (invalid filter, non-national without zones) → return early
+ * - Result is cast to list<int>
  */
 class AdherentRepositoryFindEmailsTest extends TestCase
 {
-    public function testFindAdherentEmailsForMessageWithoutFilterYieldsNothing(): void
+    public function testFindAdherentIdsForMessageWithoutFilterReturnsEmpty(): void
     {
         $message = $this->createStub(AdherentMessage::class);
         $message->method('getFilter')->willReturn(null);
@@ -32,12 +32,10 @@ class AdherentRepositoryFindEmailsTest extends TestCase
         $repository = $this->createRepositoryWithConnection($connection = $this->createMock(Connection::class));
         $connection->expects(self::never())->method('fetchFirstColumn');
 
-        $emails = iterator_to_array($repository->findAdherentEmailsForMessage($message), false);
-
-        self::assertSame([], $emails);
+        self::assertSame([], $repository->findAdherentIdsForMessage($message));
     }
 
-    public function testFindAdherentEmailsForMessageNonNationalScopeWithoutZonesYieldsNothing(): void
+    public function testFindAdherentIdsForMessageNonNationalScopeWithoutZonesReturnsEmpty(): void
     {
         $filter = new AdherentMessageFilter([]);
         $message = $this->createStub(AdherentMessage::class);
@@ -47,35 +45,10 @@ class AdherentRepositoryFindEmailsTest extends TestCase
         $repository = $this->createRepositoryWithConnection($connection = $this->createMock(Connection::class));
         $connection->expects(self::never())->method('fetchFirstColumn');
 
-        $emails = iterator_to_array($repository->findAdherentEmailsForMessage($message), false);
-
-        self::assertSame([], $emails);
+        self::assertSame([], $repository->findAdherentIdsForMessage($message));
     }
 
-    public function testFindAdherentEmailsForMessagePaginatesUntilLastIncompleteChunk(): void
-    {
-        $filter = new AdherentMessageFilter([]);
-        $message = $this->createStub(AdherentMessage::class);
-        $message->method('getFilter')->willReturn($filter);
-        $message->method('getInstanceScope')->willReturn(ScopeEnum::NATIONAL);
-
-        $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(3))
-            ->method('fetchFirstColumn')
-            ->willReturnOnConsecutiveCalls(
-                ['a@b.com', 'c@d.com'], // chunk 1 — full (size=2)
-                ['e@f.com', 'g@h.com'], // chunk 2 — full (size=2)
-                ['i@j.com'],            // chunk 3 — partial → stop
-            );
-
-        $repository = $this->createRepositoryWithConnection($connection);
-
-        $emails = iterator_to_array($repository->findAdherentEmailsForMessage($message, chunkSize: 2), false);
-
-        self::assertSame(['a@b.com', 'c@d.com', 'e@f.com', 'g@h.com', 'i@j.com'], $emails);
-    }
-
-    public function testFindAdherentEmailsForMessageEmptyFirstChunkStopsImmediately(): void
+    public function testFindAdherentIdsForMessageReturnsFullResultSet(): void
     {
         $filter = new AdherentMessageFilter([]);
         $message = $this->createStub(AdherentMessage::class);
@@ -85,13 +58,30 @@ class AdherentRepositoryFindEmailsTest extends TestCase
         $connection = $this->createMock(Connection::class);
         $connection->expects(self::once())
             ->method('fetchFirstColumn')
-            ->willReturn([]); // immediate stop
+            ->willReturn([10, 20, 30])
+        ;
 
         $repository = $this->createRepositoryWithConnection($connection);
 
-        $emails = iterator_to_array($repository->findAdherentEmailsForMessage($message, chunkSize: 100), false);
+        self::assertSame([10, 20, 30], $repository->findAdherentIdsForMessage($message));
+    }
 
-        self::assertSame([], $emails);
+    public function testFindAdherentIdsForMessageEmptyAudienceReturnsEmpty(): void
+    {
+        $filter = new AdherentMessageFilter([]);
+        $message = $this->createStub(AdherentMessage::class);
+        $message->method('getFilter')->willReturn($filter);
+        $message->method('getInstanceScope')->willReturn(ScopeEnum::NATIONAL);
+
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchFirstColumn')
+            ->willReturn([])
+        ;
+
+        $repository = $this->createRepositoryWithConnection($connection);
+
+        self::assertSame([], $repository->findAdherentIdsForMessage($message));
     }
 
     private function createRepositoryWithConnection(Connection $connection): AdherentRepository

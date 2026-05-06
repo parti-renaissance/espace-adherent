@@ -6,7 +6,7 @@ namespace App\Mailchimp\Campaign\Audience\EventSubscriber;
 
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,7 +24,7 @@ class AudienceChunkFailureSubscriber implements EventSubscriberInterface
     private LoggerInterface $logger;
 
     public function __construct(
-        private readonly AdherentMessageTargetedRepository $targetedRepository,
+        private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
     ) {
@@ -58,7 +58,7 @@ class AudienceChunkFailureSubscriber implements EventSubscriberInterface
             'error' => $errorMessage,
         ]);
 
-        $this->targetedRepository->markChunkAsErroredByCampaignId(
+        $this->memberRepository->markChunkAsErroredByCampaignId(
             $message->mailchimpCampaignId,
             $message->chunkNumber,
             $errorMessage,
