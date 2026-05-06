@@ -6,7 +6,6 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Donation\DonatorStatusEnum;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
-use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\SegmentFilterInterface;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -15,11 +14,6 @@ class DonatorStatusConditionBuilder implements SegmentConditionBuilderInterface
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AdherentMessageFilter && null !== $filter->getDonatorStatus();
-    }
-
-    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
-    {
-        return $this->buildFromFilter($campaign->getMessage()->getFilter());
     }
 
     /**

@@ -6,11 +6,11 @@ namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
 use App\AdherentMessage\MailchimpStatusEnum;
+use App\Doctrine\Utils\BulkInsertHelper;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,6 +25,7 @@ class CreatePublicationReachFromEmailCommandHandler
         private readonly Manager $manager,
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
+        private readonly BulkInsertHelper $bulkInsertHelper,
     ) {
     }
 
@@ -51,7 +52,6 @@ class CreatePublicationReachFromEmailCommandHandler
 
     private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage): void
     {
-        $conn = $this->entityManager->getConnection();
         $objectId = $adherentMessage->getId();
         $offset = 0;
         $now = ($adherentMessage->getSentAt() ?? new \DateTime())->format('Y-m-d H:i:s');
@@ -76,40 +76,12 @@ class CreatePublicationReachFromEmailCommandHandler
             }
 
             if ($rows) {
-                $this->insertBatchAppHits($conn, $rows);
+                $this->bulkInsertHelper->insertIgnore('adherent_message_reach', $rows);
             }
 
             $offset += \count($members);
             $this->entityManager->clear();
             sleep(1);
         }
-    }
-
-    private function insertBatchAppHits(Connection $conn, array $rows): void
-    {
-        if (!$rows) {
-            return;
-        }
-
-        $cols = array_keys(reset($rows));
-
-        $placeholders = [];
-        $params = [];
-
-        foreach ($rows as $r) {
-            $placeholders[] = '('.implode(',', array_fill(0, \count($cols), '?')).')';
-
-            foreach ($cols as $c) {
-                $params[] = $r[$c] ?? null;
-            }
-        }
-
-        $sql = \sprintf(
-            'INSERT IGNORE INTO adherent_message_reach (%s) VALUES %s',
-            implode(',', $cols),
-            implode(',', $placeholders)
-        );
-
-        $conn->executeStatement($sql, $params);
     }
 }

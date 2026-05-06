@@ -11,15 +11,16 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class AdherentMessageDeleteCommandHandler
 {
-    private $mailchimpManager;
-
-    public function __construct(Manager $mailchimpManager)
+    public function __construct(private readonly Manager $mailchimpManager)
     {
-        $this->mailchimpManager = $mailchimpManager;
     }
 
     public function __invoke(AdherentMessageDeleteCommand $command): void
     {
         $this->mailchimpManager->deleteCampaign($command->getCampaignId());
+
+        if ($staticSegmentId = $command->getStaticSegmentId()) {
+            $this->mailchimpManager->deleteStaticSegment($staticSegmentId);
+        }
     }
 }

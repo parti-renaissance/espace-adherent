@@ -38,7 +38,6 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\DonatorStatusConditionBuilder
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ElectMandateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\JMECommitteeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MembershipDateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\StaticSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
@@ -90,32 +89,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'DateMerge',
-                                'op' => 'greater',
-                                'field' => 'ADHESION',
-                                'value' => '2016-04-05',
-                            ],
-                            [
-                                'condition_type' => 'TextMerge',
-                                'op' => 'is',
-                                'field' => 'COMMITTEE',
-                                'value' => '9106f810-9e1f-4ed8-b0dd-5c5ddc17cf61',
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [],
-                            ],
-                        ],
-                    ],
-                ],
             ]]],
             ['PUT', '/3.0/campaigns/123/content', ['json' => [
                 'template' => [
@@ -161,32 +134,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'title' => date('Y/m/d').' - Full Name : Subject',
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'TextMerge',
-                                'op' => 'contains',
-                                'field' => 'ZONE_DPT',
-                                'value' => ' (code1)',
-                            ],
-                            [
-                                'condition_type' => 'DateMerge',
-                                'op' => 'greater',
-                                'field' => 'ADHESION',
-                                'value' => '2016-04-05',
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [],
-                            ],
-                        ],
-                    ],
                 ],
             ]]],
             ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
@@ -235,32 +182,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'TextMerge',
-                                'op' => 'contains',
-                                'field' => 'ZONE_DPT',
-                                'value' => ' (code1)',
-                            ],
-                            [
-                                'condition_type' => 'DateMerge',
-                                'op' => 'greater',
-                                'field' => 'ADHESION',
-                                'value' => '2016-04-05',
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [],
-                            ],
-                        ],
-                    ],
-                ],
             ]]],
             ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
                 'template' => [
@@ -308,32 +229,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'TextMerge',
-                                'op' => 'contains',
-                                'field' => 'ZONE_DPT',
-                                'value' => ' (code1)',
-                            ],
-                            [
-                                'condition_type' => 'DateMerge',
-                                'op' => 'greater',
-                                'field' => 'ADHESION',
-                                'value' => '2016-04-05',
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [1],
-                            ],
-                        ],
-                    ],
-                ],
             ]]],
             ['PUT', '/3.0/campaigns/id1/content', ['json' => [
                 'template' => [
@@ -376,32 +271,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'title' => date('Y/m/d').' - Full Name : Subject',
                     'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'TextMerge',
-                                'op' => 'contains',
-                                'field' => 'ZONE_DPT',
-                                'value' => ' (code1)',
-                            ],
-                            [
-                                'condition_type' => 'DateMerge',
-                                'op' => 'greater',
-                                'field' => 'ADHESION',
-                                'value' => '2016-04-05',
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [1],
-                            ],
-                        ],
-                    ],
                 ],
             ]]],
             ['PUT', '/3.0/campaigns/id1/content', ['json' => [
@@ -509,7 +378,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 new JMECommitteeConditionBuilder(),
                 new ElectMandateConditionBuilder(),
                 new MembershipDateConditionBuilder(),
-                new StaticSegmentConditionBuilder(),
                 new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
             ])
         );

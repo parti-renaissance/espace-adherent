@@ -1668,10 +1668,119 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countAdherentsForMessage(AdherentMessage $message, ?bool $byEmail = null, ?bool $byPush = null, bool $asUnion = false): int
     {
+        $pieces = $this->buildAudienceQueryPieces($message, $byEmail, $byPush);
+        if (null === $pieces) {
+            return 0;
+        }
+
+        $cnx = $this->getEntityManager()->getConnection();
+        $with = $pieces['with'];
+        $baseFrom = $pieces['baseFrom'];
+        $baseWhere = $pieces['baseWhere'];
+        $branchEmailSql = $pieces['branchEmailSql'];
+        $branchPushSql = $pieces['branchPushSql'];
+
+        if ($asUnion && null !== $branchEmailSql && null !== $branchPushSql) {
+            $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT u.id) AS cnt
+            FROM (
+                SELECT a.id
+                $baseFrom
+                WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
+                UNION ALL
+                SELECT a.id
+                $baseFrom
+                WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
+            ) u";
+
+            return (int) $cnx->fetchOne($sql, $pieces['params'], $pieces['types']);
+        }
+
+        if (null !== $branchEmailSql) {
+            $baseWhere[] = $branchEmailSql;
+        }
+
+        if (null !== $branchPushSql) {
+            $baseWhere[] = $branchPushSql;
+        }
+
+        $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT a.id) AS cnt $baseFrom WHERE ".implode(' AND ', $baseWhere);
+
+        return (int) $cnx->fetchOne($sql, $pieces['params'], $pieces['types']);
+    }
+
+    /**
+     * Yield the emails of a message's audience by SQL chunks to avoid
+     * materializing 200k strings in memory at once.
+     *
+     * Forces `byEmail=true` (mailchimp_status='subscribed') because emails pushed
+     * to Mailchimp must be subscribed.
+     *
+     * @return iterable<string>
+     */
+    public function findAdherentEmailsForMessage(AdherentMessage $message, int $chunkSize = 5000): iterable
+    {
+        $pieces = $this->buildAudienceQueryPieces($message, byEmail: true, byPush: null);
+        if (null === $pieces) {
+            return;
+        }
+
+        $where = $pieces['baseWhere'];
+        if (null !== $pieces['branchEmailSql']) {
+            $where[] = $pieces['branchEmailSql'];
+        }
+
+        $cnx = $this->getEntityManager()->getConnection();
+        $with = $pieces['with'];
+        $baseFrom = $pieces['baseFrom'];
+        $whereClause = implode(' AND ', $where);
+
+        $offset = 0;
+        do {
+            $params = $pieces['params'];
+            $types = $pieces['types'];
+            $params['_limit'] = $chunkSize;
+            $params['_offset'] = $offset;
+            $types['_limit'] = ParameterType::INTEGER;
+            $types['_offset'] = ParameterType::INTEGER;
+
+            $sql = ($with ? "$with\n" : '')."SELECT DISTINCT a.email_address
+                $baseFrom
+                WHERE $whereClause
+                ORDER BY a.id
+                LIMIT :_limit OFFSET :_offset";
+
+            $rows = $cnx->fetchFirstColumn($sql, $params, $types);
+
+            foreach ($rows as $email) {
+                yield $email;
+            }
+
+            $offset += $chunkSize;
+        } while (\count($rows) === $chunkSize);
+    }
+
+    /**
+     * Builds the common SQL fragments for the COUNT and SELECT email_address for
+     * the audience of an AdherentMessage. Returns `null` if the audience is empty by
+     * design (invalid filter, non-national scope without zones or committee,
+     * unresolvable target scope).
+     *
+     * @return array{
+     *     with: string,
+     *     baseFrom: string,
+     *     baseWhere: list<string>,
+     *     params: array<string, mixed>,
+     *     types: array<string, mixed>,
+     *     branchEmailSql: ?string,
+     *     branchPushSql: ?string,
+     * }|null
+     */
+    private function buildAudienceQueryPieces(AdherentMessage $message, ?bool $byEmail, ?bool $byPush): ?array
+    {
         $filter = $message->getFilter();
 
         if (!$filter instanceof AdherentMessageFilter) {
-            return 0;
+            return null;
         }
 
         $params = [
@@ -1684,7 +1793,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $managedZoneIds = $filter->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
 
         if (!ScopeEnum::isNational($message->getInstanceScope()) && empty($managedZoneIds) && !$filter->getCommittee()) {
-            return 0;
+            return null;
         }
 
         $targetZoneIds = array_unique($managedZoneIds);
@@ -1832,7 +1941,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if (!empty($filter->scopeTargets)) {
             $scopeQuery = $this->buildScopeTargetsQuery($filter->scopeTargets, 'a.id');
             if (null === $scopeQuery) {
-                return 0;
+                return null;
             }
             foreach ($scopeQuery['params'] as $key => $value) {
                 $params[$key] = $value;
@@ -1897,34 +2006,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             .($scopeTargetJoin ? "\n$scopeTargetJoin" : '')
             .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
 
-        $baseWhere = $where;
-
-        if ($asUnion && null !== $branchEmailSql && null !== $branchPushSql) {
-            $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT u.id) AS cnt
-            FROM (
-                SELECT a.id
-                $baseFrom
-                WHERE ".implode(' AND ', $baseWhere)." AND $branchPushSql
-                UNION ALL
-                SELECT a.id
-                $baseFrom
-                WHERE ".implode(' AND ', $baseWhere)." AND $branchEmailSql
-            ) u";
-
-            return (int) $cnx->fetchOne($sql, $params, $types);
-        }
-
-        if (null !== $branchEmailSql) {
-            $baseWhere[] = $branchEmailSql;
-        }
-
-        if (null !== $branchPushSql) {
-            $baseWhere[] = $branchPushSql;
-        }
-
-        $sql = ($with ? "$with\n" : '')."SELECT COUNT(DISTINCT a.id) AS cnt $baseFrom WHERE ".implode(' AND ', $baseWhere);
-
-        return (int) $cnx->fetchOne($sql, $params, $types);
+        return [
+            'with' => $with,
+            'baseFrom' => $baseFrom,
+            'baseWhere' => $where,
+            'params' => $params,
+            'types' => $types,
+            'branchEmailSql' => $branchEmailSql,
+            'branchPushSql' => $branchPushSql,
+        ];
     }
 
     public function publicIdExists(string $publicId): bool
