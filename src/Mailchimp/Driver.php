@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 class Driver implements LoggerAwareInterface
 {
@@ -188,6 +189,19 @@ class Driver implements LoggerAwareInterface
         $response = $this->send('GET', \sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
 
         return $this->isSuccessfulResponse($response) ? $response->toArray()['segments'] : [];
+    }
+
+    /**
+     * Reads a single segment with its effective member_count (used after
+     * preparation to verify how many emails Mailchimp actually accepted).
+     *
+     * @return array{id?: int, name?: string, member_count?: int, ...}
+     */
+    public function getSegment(int $segmentId, string $listId): array
+    {
+        $response = $this->send('GET', \sprintf('/lists/%s/segments/%d', $listId, $segmentId));
+
+        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
     public function getMembers(string $listId, int $offset = 0, int $limit = 1000): array
@@ -376,7 +390,15 @@ class Driver implements LoggerAwareInterface
         return $response ? $this->isSuccessfulResponse($response, $log) : false;
     }
 
-    private function send(string $method, string $uri, array $body = []): ?ResponseInterface
+    /**
+     * @param iterable<ResponseInterface> $responses
+     */
+    public function stream(iterable $responses): ResponseStreamInterface
+    {
+        return $this->client->stream($responses);
+    }
+
+    public function send(string $method, string $uri, array $body = [], bool $blockOnResponseLog = true): ?ResponseInterface
     {
         $fullUri = '/3.0/'.ltrim($uri, '/');
         $isWriteCall = 'GET' !== $method;
@@ -395,7 +417,7 @@ class Driver implements LoggerAwareInterface
                 $body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : []
             );
 
-            if ($this->debug && $isWriteCall) {
+            if ($this->debug && $isWriteCall && $blockOnResponseLog) {
                 $this->logger->info('[Mailchimp] Response : '.$fullUri, [
                     'method' => $method,
                     'status' => $this->lastResponse->getStatusCode(),

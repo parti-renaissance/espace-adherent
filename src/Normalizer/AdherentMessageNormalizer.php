@@ -7,6 +7,7 @@ namespace App\Normalizer;
 use App\AdherentMessage\Variable\Renderer;
 use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Mailchimp\Campaign\Audience\SendStatusFactory;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Security\Voter\PublicationVoter;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,6 +25,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly Renderer $variableRenderer,
         private readonly Security $security,
+        private readonly SendStatusFactory $sendStatusFactory,
     ) {
     }
 
@@ -36,6 +38,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         if (\in_array('message_read', $groups, true) && $user = $this->security->getUser()) {
             $data['json_content'] = $this->variableRenderer->renderTipTap($data['json_content'] ?? '', $user);
+        }
+
+        if (\in_array('message_read', $groups, true) && $campaign = ($object->getMailchimpCampaigns()[0] ?? null)) {
+            $data['send_status'] = $this->sendStatusFactory->build($campaign);
         }
 
         if (array_intersect($groups, ['message_read_list', 'message_read'])) {

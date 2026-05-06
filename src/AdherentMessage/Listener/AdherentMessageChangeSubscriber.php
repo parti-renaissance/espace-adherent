@@ -33,7 +33,10 @@ class AdherentMessageChangeSubscriber
         $object = $args->getObject();
 
         if ($object instanceof MailchimpCampaign && $object->getExternalId()) {
-            $this->bus->dispatch(new AdherentMessageDeleteCommand($object->getExternalId()));
+            $this->bus->dispatch(new AdherentMessageDeleteCommand(
+                $object->getExternalId(),
+                $object->getStaticSegmentId(),
+            ));
         }
     }
 

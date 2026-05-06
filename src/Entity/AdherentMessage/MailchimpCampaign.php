@@ -8,13 +8,17 @@ use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
+use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
+use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
+use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
+use App\Repository\MailchimpCampaignRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: MailchimpCampaignRepository::class)]
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, Timestampable
 {
     use TimestampableEntity;
@@ -104,6 +108,30 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     #[ORM\ManyToOne]
     private ?Zone $zone = null;
+
+    #[ORM\Column(enumType: PreparationStatusEnum::class, options: ['default' => PreparationStatusEnum::NotStarted->value])]
+    private PreparationStatusEnum $preparationStatus = PreparationStatusEnum::NotStarted;
+
+    #[ORM\Column(nullable: true, enumType: AudienceCheckEnum::class)]
+    private ?AudienceCheckEnum $audienceCheck = null;
+
+    #[ORM\Column(nullable: true, enumType: BlockReasonEnum::class)]
+    private ?BlockReasonEnum $blockReason = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $preparedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $preparationLockedBy = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $preparationFailureDetail = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $cancellationRequested = false;
+
+    #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
 
     public function __construct(AdherentMessageInterface $message)
     {
@@ -280,5 +308,97 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function getPreparationStatus(): PreparationStatusEnum
+    {
+        return $this->preparationStatus;
+    }
+
+    public function getAudienceCheck(): ?AudienceCheckEnum
+    {
+        return $this->audienceCheck;
+    }
+
+    public function getBlockReason(): ?BlockReasonEnum
+    {
+        return $this->blockReason;
+    }
+
+    public function getPreparedAt(): ?\DateTimeInterface
+    {
+        return $this->preparedAt;
+    }
+
+    public function getPreparationLockedBy(): ?string
+    {
+        return $this->preparationLockedBy;
+    }
+
+    public function getPreparationFailureDetail(): ?string
+    {
+        return $this->preparationFailureDetail;
+    }
+
+    public function isCancellationRequested(): bool
+    {
+        return $this->cancellationRequested;
+    }
+
+    public function canSend(): bool
+    {
+        if (PreparationStatusEnum::Ready !== $this->preparationStatus) {
+            return false;
+        }
+
+        if (null !== $this->blockReason) {
+            return false;
+        }
+
+        if (null === $this->audienceCheck || AudienceCheckEnum::Mismatch === $this->audienceCheck) {
+            return false;
+        }
+
+        return !$this->message instanceof AdherentMessage || !$this->message->isSent();
+    }
+
+    public function markAsPreparing(string $lockedBy): void
+    {
+        $this->preparationStatus = PreparationStatusEnum::Preparing;
+        $this->preparationLockedBy = $lockedBy;
+        $this->blockReason = null;
+        $this->audienceCheck = null;
+        $this->preparedAt = null;
+        $this->preparationFailureDetail = null;
+        $this->cancellationRequested = false;
+    }
+
+    public function markAsReady(AudienceCheckEnum $audienceCheck): void
+    {
+        $this->preparationStatus = PreparationStatusEnum::Ready;
+        $this->audienceCheck = $audienceCheck;
+        $this->preparedAt = new \DateTime();
+    }
+
+    public function markAsFailed(BlockReasonEnum $blockReason, ?string $detail = null): void
+    {
+        $this->preparationStatus = PreparationStatusEnum::Failed;
+        $this->blockReason = $blockReason;
+        $this->preparationFailureDetail = $detail;
+    }
+
+    public function requestCancellation(): void
+    {
+        $this->cancellationRequested = true;
+    }
+
+    public function getMailchimpStaticSegment(): ?MailchimpStaticSegment
+    {
+        return $this->mailchimpStaticSegment;
+    }
+
+    public function setMailchimpStaticSegment(?MailchimpStaticSegment $segment): void
+    {
+        $this->mailchimpStaticSegment = $segment;
     }
 }

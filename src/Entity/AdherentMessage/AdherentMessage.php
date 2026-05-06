@@ -19,11 +19,13 @@ use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Api\Filter\AdherentMessageScopeFilter;
+use App\Controller\Api\AdherentMessage\CancelPrepareAdherentMessageController;
 use App\Controller\Api\AdherentMessage\DuplicateMessageController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
 use App\Controller\Api\AdherentMessage\GetAdherentMessageRecipientsCountController;
 use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Controller\Api\AdherentMessage\GetAvailableVariablesController;
+use App\Controller\Api\AdherentMessage\PrepareAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
 use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
@@ -90,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['message_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
-            security: "not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)",
+            security: "object and not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)",
         ),
         new HttpOperation(
             method: 'POST',
@@ -98,6 +100,22 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendAdherentMessageController::class,
             security: "is_granted('CAN_EDIT_PUBLICATION', object)",
+            deserialize: false,
+        ),
+        new HttpOperation(
+            method: 'POST',
+            uriTemplate: '/adherent_messages/{uuid}/prepare',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: PrepareAdherentMessageController::class,
+            security: "object and not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)",
+            deserialize: false,
+        ),
+        new HttpOperation(
+            method: 'POST',
+            uriTemplate: '/adherent_messages/{uuid}/prepare/cancel',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: CancelPrepareAdherentMessageController::class,
+            security: "object and not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)",
             deserialize: false,
         ),
         new HttpOperation(
@@ -127,7 +145,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/adherent_messages/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)"
+            security: "object and not object.isSent() and is_granted('CAN_EDIT_PUBLICATION', object)"
         ),
         new GetCollection(
             uriTemplate: '/adherent_messages',
