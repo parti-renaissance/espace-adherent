@@ -35,6 +35,13 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             service('logger'),
         ]);
 
+    $services->set(App\Mailchimp\Http\MailchimpThrottlingHttpClient::class)
+        ->decorate('mailchimp.client')
+        ->args([
+            service('.inner'),
+            service(App\Mailchimp\Concurrency\MailchimpSemaphore::class),
+        ]);
+
     $services->set(App\Mailchimp\Manager::class)
         ->arg('$requestBuildersLocator', service('app.mailchimp.request_builders_locator'))
         ->tag('monolog.logger', [
