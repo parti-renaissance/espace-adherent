@@ -7,7 +7,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20260506073432 extends AbstractMigration
+final class Version20260506082959 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -69,17 +69,11 @@ final class Version20260506073432 extends AbstractMigration
                 ALTER TABLE
                   mailchimp_campaign
                 ADD
-                  preparation_status VARCHAR(20) DEFAULT 'not_started' NOT NULL,
+                  preparation_status VARCHAR(255) DEFAULT 'not_started' NOT NULL,
                 ADD
-                  mailchimp_segment_name VARCHAR(255) DEFAULT NULL,
+                  audience_check VARCHAR(255) DEFAULT NULL,
                 ADD
-                  expected_audience_count INT UNSIGNED DEFAULT NULL,
-                ADD
-                  prepared_audience_count INT UNSIGNED DEFAULT NULL,
-                ADD
-                  audience_check VARCHAR(20) DEFAULT NULL,
-                ADD
-                  block_reason VARCHAR(50) DEFAULT NULL,
+                  block_reason VARCHAR(255) DEFAULT NULL,
                 ADD
                   prepared_at DATETIME DEFAULT NULL,
                 ADD
@@ -87,11 +81,7 @@ final class Version20260506073432 extends AbstractMigration
                 ADD
                   preparation_failure_detail LONGTEXT DEFAULT NULL,
                 ADD
-                  delete_segment_at DATETIME DEFAULT NULL,
-                ADD
-                  cancellation_requested TINYINT(1) DEFAULT 0 NOT NULL,
-                ADD
-                  prepared_chunks_done INT UNSIGNED DEFAULT 0 NOT NULL
+                  cancellation_requested TINYINT(1) DEFAULT 0 NOT NULL
             SQL);
     }
 
@@ -108,12 +98,6 @@ final class Version20260506073432 extends AbstractMigration
                 DROP
                   preparation_status,
                 DROP
-                  mailchimp_segment_name,
-                DROP
-                  expected_audience_count,
-                DROP
-                  prepared_audience_count,
-                DROP
                   audience_check,
                 DROP
                   block_reason,
@@ -124,11 +108,7 @@ final class Version20260506073432 extends AbstractMigration
                 DROP
                   preparation_failure_detail,
                 DROP
-                  delete_segment_at,
-                DROP
-                  cancellation_requested,
-                DROP
-                  prepared_chunks_done
+                  cancellation_requested
             SQL);
     }
 }

@@ -232,6 +232,23 @@ Feature:
                 "subject": "L'objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -316,6 +333,23 @@ Feature:
                 "subject": "L'objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -417,6 +451,23 @@ Feature:
                 "subject": "L'objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -512,6 +563,23 @@ Feature:
                 "subject": "Mon nouveau objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -619,6 +687,23 @@ Feature:
                 "subject": "L'objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -3237,6 +3322,23 @@ Feature:
                 "subject": "L'objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
+                "send_status": {
+                    "preparation_status": "not_started",
+                    "audience_check": null,
+                    "block_reason": null,
+                    "can_send": false,
+                    "cancellation_requested": false,
+                    "counts": {
+                        "expected": null,
+                        "prepared": null,
+                        "diff": null
+                    },
+                    "prepared_at": null,
+                    "blocking_user": null,
+                    "progress": {
+                        "chunks_done": 0
+                    }
+                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,

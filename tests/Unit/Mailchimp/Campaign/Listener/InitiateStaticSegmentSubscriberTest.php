@@ -51,7 +51,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $subscriber->onCampaignFiltersPreBuild(new CampaignEvent($campaign));
 
         self::assertSame(4242, $campaign->getStaticSegmentId());
-        self::assertSame(\sprintf('campaign_%s', $uuid->toString()), $campaign->getMailchimpSegmentName());
+        self::assertSame(\sprintf('campaign_%s', $uuid->toString()), $campaign->getMailchimpStaticSegment()->name);
     }
 
     public function testNoOpWhenStaticSegmentIdAlreadySet(): void
@@ -105,7 +105,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $subscriber->onCampaignFiltersPreBuild(new CampaignEvent($campaign));
 
         self::assertNull($campaign->getStaticSegmentId());
-        self::assertNull($campaign->getMailchimpSegmentName());
+        self::assertNull($campaign->getMailchimpStaticSegment());
     }
 
     private function createCampaign(?\Ramsey\Uuid\UuidInterface $uuid = null): MailchimpCampaign

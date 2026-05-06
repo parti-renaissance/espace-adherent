@@ -6,6 +6,7 @@ namespace Tests\App\Unit\Mailchimp\Campaign\Audience\Handler;
 
 use App\Doctrine\Utils\BulkInsertHelper;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\AudienceCheckCalculator;
@@ -23,6 +24,7 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PrepareCampaignAudienceHandlerTest extends TestCase
 {
@@ -85,7 +87,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::Empty, $campaign->getBlockReason());
-        self::assertSame(1, $campaign->getMailchimpStaticSegment()->getAttempts());
+        self::assertSame(1, $campaign->getMailchimpStaticSegment()->attempts);
     }
 
     public function testHandleTooLargeAudienceMarksAsFailedWithTooLargeReason(): void
@@ -108,7 +110,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $handler(new PrepareCampaignAudienceMessage(1, 'user@example.com'));
 
         self::assertSame(BlockReasonEnum::TooLarge, $campaign->getBlockReason());
-        self::assertSame(500_001, $campaign->getExpectedAudienceCount());
+        self::assertSame(500_001, $campaign->getMailchimpStaticSegment()->expectedCount);
     }
 
     public function testHandleResetsSegmentThenPushesEmailsAndFillsStaticSegment(): void
@@ -126,7 +128,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $pushService->expects(self::once())
             ->method('pushEmails')
             ->with(self::PRE_INITIATED_SEGMENT_ID, self::LIST_ID, $emails, 5, self::isCallable(), self::isCallable())
-            ->willReturn(new PushResult(15_000, 0, [], [], 3.2));
+            ->willReturn(new PushResult(okCount: 30, erroredCount: 0, addedCount: 15_000, refusedCount: 0, refusedEmails: [], errorMessages: [], durationSeconds: 3.2));
 
         $driver = $this->createStub(Driver::class);
         $driver->method('getSegment')->willReturn(['member_count' => 14_500]);
@@ -146,20 +148,18 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
         self::assertSame(self::PRE_INITIATED_SEGMENT_ID, $campaign->getStaticSegmentId());
-        self::assertSame(15_000, $campaign->getExpectedAudienceCount());
-        self::assertSame(14_500, $campaign->getPreparedAudienceCount());
         self::assertSame(AudienceCheckEnum::Match, $campaign->getAudienceCheck());
 
         $segment = $campaign->getMailchimpStaticSegment();
         self::assertNotNull($segment);
-        self::assertSame(15_000, $segment->getExpectedCount());
-        self::assertSame(15_000, $segment->getPreparedCount());
-        self::assertSame(0, $segment->getErroredCount());
-        self::assertSame(30, $segment->getChunksTotal()); // 15000 / 500
-        self::assertNotNull($segment->getBuiltAt());
-        self::assertNotNull($segment->getBuildDurationMs());
-        self::assertSame(1, $segment->getAttempts());
-        self::assertNull($segment->getErrorSummary());
+        self::assertSame(15_000, $segment->expectedCount);
+        self::assertSame(15_000, $segment->preparedCount);
+        self::assertSame(0, $segment->erroredCount);
+        self::assertSame(30, $segment->chunksTotal); // 15000 / 500
+        self::assertNotNull($segment->builtAt);
+        self::assertNotNull($segment->buildDurationMs);
+        self::assertSame(1, $segment->attempts);
+        self::assertNull($segment->errorSummary);
     }
 
     public function testHandleStoresErrorSummaryWhenPushHasErrors(): void
@@ -172,7 +172,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         $pushService = $this->createStub(MailchimpParallelPushService::class);
         $pushService->method('pushEmails')->willReturn(
-            new PushResult(800, 200, [], ['HTTP 429 on chunk 3', 'HTTP 500 on chunk 5'], 1.5)
+            new PushResult(okCount: 0, erroredCount: 200, addedCount: 800, refusedCount: 0, refusedEmails: [], errorMessages: ['HTTP 429 on chunk 3', 'HTTP 500 on chunk 5'], durationSeconds: 1.5)
         );
 
         $driver = $this->createStub(Driver::class);
@@ -192,24 +192,20 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $handler(new PrepareCampaignAudienceMessage(1, 'user@example.com'));
 
         $segment = $campaign->getMailchimpStaticSegment();
-        self::assertSame(200, $segment->getErroredCount());
-        self::assertNotNull($segment->getErrorSummary());
-        self::assertStringContainsString('HTTP 429', $segment->getErrorSummary());
-        self::assertStringContainsString('HTTP 500', $segment->getErrorSummary());
+        self::assertSame(200, $segment->erroredCount);
+        self::assertNotNull($segment->errorSummary);
+        self::assertStringContainsString('HTTP 429', $segment->errorSummary);
+        self::assertStringContainsString('HTTP 500', $segment->errorSummary);
     }
 
     public function testHandleCapturesFilterSnapshotAndHash(): void
     {
         $campaign = $this->createCampaignWithMessage(withSegmentId: true);
 
-        $filter = new \stdClass();
-        $filter->gender = 'male';
-        $filter->ageMin = 30;
-        $filter->ageMax = 50;
+        $filter = $this->createStub(AdherentMessageFilter::class);
 
         $message = $campaign->getMessage();
         \assert($message instanceof AdherentMessage);
-        // Replace the stub message with one that returns our filter.
         $newMessage = $this->createStub(AdherentMessage::class);
         $newMessage->method('getId')->willReturn(1);
         $newMessage->method('getUuid')->willReturn(Uuid::uuid4());
@@ -221,7 +217,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $segmentService->method('update')->willReturn(true);
 
         $pushService = $this->createStub(MailchimpParallelPushService::class);
-        $pushService->method('pushEmails')->willReturn(new PushResult(1, 0, [], [], 0.1));
+        $pushService->method('pushEmails')->willReturn(new PushResult(okCount: 1, erroredCount: 0, addedCount: 1, refusedCount: 0, refusedEmails: [], errorMessages: [], durationSeconds: 0.1));
 
         $driver = $this->createStub(Driver::class);
         $driver->method('getSegment')->willReturn(['member_count' => 1]);
@@ -229,24 +225,26 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $repo = $this->createRepoReturningEmails(['a@b.com']);
         $repo->method('mapIdsByEmails')->willReturn([]);
 
+        $normalizer = $this->createMock(NormalizerInterface::class);
+        $normalizer->expects(self::once())
+            ->method('normalize')
+            ->with($filter, 'json', ['groups' => ['adherent_message_read_filter']])
+            ->willReturn(['gender' => 'male', 'age_min' => 30, 'age_max' => 50]);
+
         $handler = $this->createHandler(
             em: $this->createEmReturning($campaign),
             segmentService: $segmentService,
             pushService: $pushService,
             driver: $driver,
             repo: $repo,
+            normalizer: $normalizer,
         );
 
         $handler(new PrepareCampaignAudienceMessage(1, 'user@example.com'));
 
         $segment = $campaign->getMailchimpStaticSegment();
-        $snapshot = $segment->getFilterSnapshot();
-        self::assertIsArray($snapshot);
-        self::assertSame('male', $snapshot['gender']);
-        self::assertSame(30, $snapshot['ageMin']);
-        self::assertSame(50, $snapshot['ageMax']);
-        self::assertNotNull($segment->getFilterHash());
-        self::assertSame(64, \strlen($segment->getFilterHash())); // sha256 hex
+        self::assertSame(['age_max' => 50, 'age_min' => 30, 'gender' => 'male'], $segment->filterSnapshot, 'snapshot is ksorted');
+        self::assertSame(64, \strlen($segment->filterHash)); // sha256 hex
     }
 
     public function testHandleBulkInsertCalledWithMappedAdherentIds(): void
@@ -258,7 +256,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $segmentService->method('update')->willReturn(true);
 
         $pushService = $this->createStub(MailchimpParallelPushService::class);
-        $pushService->method('pushEmails')->willReturn(new PushResult(1, 0, [], [], 0.1));
+        $pushService->method('pushEmails')->willReturn(new PushResult(okCount: 1, erroredCount: 0, addedCount: 1, refusedCount: 0, refusedEmails: [], errorMessages: [], durationSeconds: 0.1));
 
         $driver = $this->createStub(Driver::class);
         $driver->method('getSegment')->willReturn(['member_count' => 3]);
@@ -323,7 +321,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::MailchimpUnavailable, $campaign->getBlockReason());
-        self::assertSame('Mailchimp 500', $campaign->getMailchimpStaticSegment()->getErrorSummary());
+        self::assertSame('Mailchimp 500', $campaign->getMailchimpStaticSegment()->errorSummary);
     }
 
     private function createHandler(
@@ -333,6 +331,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         ?Driver $driver = null,
         ?AdherentRepository $repo = null,
         ?BulkInsertHelper $bulkInsert = null,
+        ?NormalizerInterface $normalizer = null,
     ): PrepareCampaignAudienceHandler {
         $mapping = $this->createStub(MailchimpObjectIdMapping::class);
         $mapping->method('getMainListId')->willReturn(self::LIST_ID);
@@ -346,6 +345,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
             adherentRepository: $repo ?? $this->createStub(AdherentRepository::class),
             bulkInsertHelper: $bulkInsert ?? $this->createStub(BulkInsertHelper::class),
             audienceCheckCalculator: new AudienceCheckCalculator(),
+            normalizer: $normalizer ?? $this->createStub(NormalizerInterface::class),
         );
     }
 
@@ -371,11 +371,10 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         if ($withSegmentId) {
             $campaign->setStaticSegmentId(self::PRE_INITIATED_SEGMENT_ID);
-            $campaign->setMailchimpSegmentName('campaign_test');
 
             $segment = new MailchimpStaticSegment($campaign);
-            $segment->setMailchimpSegmentId(self::PRE_INITIATED_SEGMENT_ID);
-            $segment->setName('campaign_test');
+            $segment->mailchimpSegmentId = self::PRE_INITIATED_SEGMENT_ID;
+            $segment->name = 'campaign_test';
             $campaign->setMailchimpStaticSegment($segment);
         }
 

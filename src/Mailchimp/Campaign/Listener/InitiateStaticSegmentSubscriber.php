@@ -49,11 +49,10 @@ class InitiateStaticSegmentSubscriber implements EventSubscriberInterface
         }
 
         $campaign->setStaticSegmentId($segmentId);
-        $campaign->setMailchimpSegmentName($segmentName);
 
         $segment = new MailchimpStaticSegment($campaign);
-        $segment->setMailchimpSegmentId($segmentId);
-        $segment->setName($segmentName);
+        $segment->mailchimpSegmentId = $segmentId;
+        $segment->name = $segmentName;
         $campaign->setMailchimpStaticSegment($segment);
         $this->entityManager->persist($segment);
 

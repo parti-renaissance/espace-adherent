@@ -11,8 +11,9 @@ class SendStatusFactory
 {
     public function build(MailchimpCampaign $campaign): array
     {
-        $expected = $campaign->getExpectedAudienceCount();
-        $prepared = $campaign->getPreparedAudienceCount();
+        $segment = $campaign->getMailchimpStaticSegment();
+        $expected = $segment?->expectedCount;
+        $prepared = $segment?->preparedCount;
 
         return [
             'preparation_status' => $campaign->getPreparationStatus()->value,
@@ -31,7 +32,7 @@ class SendStatusFactory
             // "logged, not displayed". block_reason is enough for UX; the
             // technical detail stays in server logs (Phase 5 handler logger->error).
             'progress' => [
-                'chunks_done' => $campaign->getPreparedChunksDone(),
+                'chunks_done' => $segment?->chunksDone ?? 0,
             ],
         ];
     }

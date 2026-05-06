@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\AdherentMessage;
 
 use App\Entity\Adherent;
-use App\Repository\AdherentMessageTargetedRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AdherentMessageTargetedRepository::class)]
+#[ORM\Entity]
 #[ORM\Index(fields: ['message'])]
 #[ORM\UniqueConstraint(fields: ['adherent', 'message'])]
 class AdherentMessageTargeted

@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[AsMessageHandler]
 class PrepareCampaignAudienceHandler
@@ -42,6 +43,7 @@ class PrepareCampaignAudienceHandler
         private readonly AdherentRepository $adherentRepository,
         private readonly BulkInsertHelper $bulkInsertHelper,
         private readonly AudienceCheckCalculator $audienceCheckCalculator,
+        private readonly NormalizerInterface $normalizer,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -75,22 +77,21 @@ class PrepareCampaignAudienceHandler
             : $this->mailchimpObjectIdMapping->getMainListId();
 
         $campaign->markAsPreparing($message->lockedBy);
-        $staticSegment->incrementAttempts();
-        $staticSegment->setBuiltAt(null);
-        $staticSegment->setBuildDurationMs(null);
-        $staticSegment->setPreparedCount(null);
-        $staticSegment->setErroredCount(null);
-        $staticSegment->setChunksTotal(null);
-        $staticSegment->setChunksDone(0);
-        $staticSegment->setErrorSummary(null);
+        ++$staticSegment->attempts;
+        $staticSegment->builtAt = null;
+        $staticSegment->buildDurationMs = null;
+        $staticSegment->preparedCount = null;
+        $staticSegment->erroredCount = null;
+        $staticSegment->chunksTotal = null;
+        $staticSegment->chunksDone = 0;
+        $staticSegment->errorSummary = null;
         $this->captureFilterSnapshot($staticSegment, $campaign);
         $this->entityManager->flush();
 
         try {
             $emails = iterator_to_array($this->adherentRepository->findAdherentEmailsForMessage($campaign->getMessage()), preserve_keys: false);
             $expected = \count($emails);
-            $campaign->setExpectedAudienceCount($expected);
-            $staticSegment->setExpectedCount($expected);
+            $staticSegment->expectedCount = $expected;
             $this->entityManager->flush();
 
             if (0 === $expected) {
@@ -107,18 +108,18 @@ class PrepareCampaignAudienceHandler
                 return;
             }
 
-            $staticSegment->setChunksTotal((int) ceil($expected / self::PUSH_CHUNK_SIZE));
+            $staticSegment->chunksTotal = (int) ceil($expected / self::PUSH_CHUNK_SIZE);
             $this->entityManager->flush();
 
             $startedAt = microtime(true);
             $result = $this->resetAndPush($campaign, $staticSegment, $segmentId, $listId, $emails);
-            $staticSegment->setBuildDurationMs((int) round((microtime(true) - $startedAt) * 1000));
-            $staticSegment->setBuiltAt(new \DateTimeImmutable());
-            $staticSegment->setPreparedCount($result->addedCount);
-            $staticSegment->setRefusedCount($result->refusedCount);
-            $staticSegment->setErroredCount($result->erroredCount);
+            $staticSegment->buildDurationMs = (int) round((microtime(true) - $startedAt) * 1000);
+            $staticSegment->builtAt = new \DateTimeImmutable();
+            $staticSegment->preparedCount = $result->addedCount;
+            $staticSegment->refusedCount = $result->refusedCount;
+            $staticSegment->erroredCount = $result->erroredCount;
             if ($result->errorMessages) {
-                $staticSegment->setErrorSummary(implode("\n", \array_slice($result->errorMessages, 0, self::ERROR_SUMMARY_MAX_ENTRIES)));
+                $staticSegment->errorSummary = implode("\n", \array_slice($result->errorMessages, 0, self::ERROR_SUMMARY_MAX_ENTRIES));
             }
 
             $segmentData = $this->driver->getSegment($segmentId, $listId);
@@ -128,7 +129,7 @@ class PrepareCampaignAudienceHandler
 
             $this->insertTargeted($campaign, $emails);
 
-            $campaign->markAsReady($expected, $prepared, $audienceCheck);
+            $campaign->markAsReady($audienceCheck);
             $this->entityManager->flush();
         } catch (\Throwable $e) {
             $this->logger->error('Audience preparation failed', [
@@ -136,7 +137,7 @@ class PrepareCampaignAudienceHandler
                 'exception' => $e,
             ]);
             $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable, $e->getMessage());
-            $staticSegment->setErrorSummary($e->getMessage());
+            $staticSegment->errorSummary = $e->getMessage();
             $this->entityManager->flush();
             throw $e; // let Messenger handle retry/DLQ
         }
@@ -161,9 +162,8 @@ class PrepareCampaignAudienceHandler
             listId: $listId,
             emails: $emails,
             concurrency: self::PUSH_CONCURRENCY,
-            onChunkSuccess: function () use ($campaign, $staticSegment): void {
-                $campaign->incrementChunksDone();
-                $staticSegment->incrementChunksDone();
+            onChunkSuccess: function () use ($staticSegment): void {
+                ++$staticSegment->chunksDone;
                 $this->entityManager->flush();
             },
             cancellationProbe: function () use ($campaign): bool {
@@ -188,64 +188,21 @@ class PrepareCampaignAudienceHandler
         $filter = method_exists($message, 'getFilter') ? $message->getFilter() : null;
 
         if (null === $filter) {
-            $segment->setFilterSnapshot(null);
-            $segment->setFilterHash(null);
+            $segment->filterSnapshot = null;
+            $segment->filterHash = null;
 
             return;
         }
 
-        // Force lazy proxy / lazy-object initialisation so reflection sees the real
-        // scalar fields (gender, ageMin, registeredSince, …) instead of just the
-        // Doctrine proxy infrastructure (__initializer__, lazyPropertiesNames, …).
         $this->entityManager->initializeObject($filter);
 
-        $snapshot = $this->dumpToScalarArray($filter);
-        $segment->setFilterSnapshot($snapshot);
-        $segment->setFilterHash(hash('sha256', json_encode($snapshot, \JSON_THROW_ON_ERROR)));
-    }
+        // Reuse the same shape exposed by the API (#[ApiResource] normalizationContext
+        // on AdherentMessageFilter) so the snapshot mirrors what the front sees.
+        $snapshot = $this->normalizer->normalize($filter, 'json', ['groups' => ['adherent_message_read_filter']]);
+        ksort($snapshot);
 
-    /**
-     * @return array<string, scalar|array|null>
-     */
-    private function dumpToScalarArray(object $object): array
-    {
-        $out = [];
-        foreach (new \ReflectionObject($object)->getProperties() as $prop) {
-            $name = $prop->getName();
-
-            // Skip Doctrine proxy + Symfony lazy-object internal infrastructure.
-            if (str_starts_with($name, '__') || str_starts_with($name, 'lazyProperties')) {
-                continue;
-            }
-
-            $value = $prop->getValue($object);
-            $out[$name] = $this->normaliseScalar($value);
-        }
-        ksort($out);
-
-        return $out;
-    }
-
-    /**
-     * @return scalar|array|null
-     */
-    private function normaliseScalar(mixed $value): mixed
-    {
-        if (null === $value || \is_scalar($value)) {
-            return $value;
-        }
-        if ($value instanceof \BackedEnum) {
-            return $value->value;
-        }
-        if ($value instanceof \DateTimeInterface) {
-            return $value->format(\DateTimeInterface::ATOM);
-        }
-        if (\is_array($value)) {
-            return $value;
-        }
-
-        // Doctrine relation, collection, etc. — skip to keep the snapshot stable.
-        return null;
+        $segment->filterSnapshot = $snapshot;
+        $segment->filterHash = hash('sha256', json_encode($snapshot, \JSON_THROW_ON_ERROR));
     }
 
     /**

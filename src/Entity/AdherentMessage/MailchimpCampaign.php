@@ -109,41 +109,26 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\ManyToOne]
     private ?Zone $zone = null;
 
-    #[ORM\Column(length: 20, enumType: PreparationStatusEnum::class, options: ['default' => PreparationStatusEnum::NotStarted->value])]
+    #[ORM\Column(enumType: PreparationStatusEnum::class, options: ['default' => PreparationStatusEnum::NotStarted->value])]
     private PreparationStatusEnum $preparationStatus = PreparationStatusEnum::NotStarted;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $mailchimpSegmentName = null;
-
-    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
-    private ?int $expectedAudienceCount = null;
-
-    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
-    private ?int $preparedAudienceCount = null;
-
-    #[ORM\Column(length: 20, enumType: AudienceCheckEnum::class, nullable: true)]
+    #[ORM\Column(nullable: true, enumType: AudienceCheckEnum::class)]
     private ?AudienceCheckEnum $audienceCheck = null;
 
-    #[ORM\Column(length: 50, enumType: BlockReasonEnum::class, nullable: true)]
+    #[ORM\Column(nullable: true, enumType: BlockReasonEnum::class)]
     private ?BlockReasonEnum $blockReason = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $preparedAt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $preparationLockedBy = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $preparationFailureDetail = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $deleteSegmentAt = null;
-
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $cancellationRequested = false;
-
-    #[ORM\Column(type: 'integer', options: ['default' => 0, 'unsigned' => true])]
-    private int $preparedChunksDone = 0;
 
     #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
@@ -330,31 +315,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return $this->preparationStatus;
     }
 
-    public function getMailchimpSegmentName(): ?string
-    {
-        return $this->mailchimpSegmentName;
-    }
-
-    public function setMailchimpSegmentName(?string $name): void
-    {
-        $this->mailchimpSegmentName = $name;
-    }
-
-    public function getExpectedAudienceCount(): ?int
-    {
-        return $this->expectedAudienceCount;
-    }
-
-    public function setExpectedAudienceCount(?int $count): void
-    {
-        $this->expectedAudienceCount = $count;
-    }
-
-    public function getPreparedAudienceCount(): ?int
-    {
-        return $this->preparedAudienceCount;
-    }
-
     public function getAudienceCheck(): ?AudienceCheckEnum
     {
         return $this->audienceCheck;
@@ -380,24 +340,9 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return $this->preparationFailureDetail;
     }
 
-    public function getDeleteSegmentAt(): ?\DateTimeInterface
-    {
-        return $this->deleteSegmentAt;
-    }
-
-    public function setDeleteSegmentAt(?\DateTimeInterface $deleteSegmentAt): void
-    {
-        $this->deleteSegmentAt = $deleteSegmentAt;
-    }
-
     public function isCancellationRequested(): bool
     {
         return $this->cancellationRequested;
-    }
-
-    public function getPreparedChunksDone(): int
-    {
-        return $this->preparedChunksDone;
     }
 
     public function canSend(): bool
@@ -423,19 +368,14 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         $this->preparationLockedBy = $lockedBy;
         $this->blockReason = null;
         $this->audienceCheck = null;
-        $this->expectedAudienceCount = null;
-        $this->preparedAudienceCount = null;
         $this->preparedAt = null;
         $this->preparationFailureDetail = null;
         $this->cancellationRequested = false;
-        $this->preparedChunksDone = 0;
     }
 
-    public function markAsReady(int $expected, int $prepared, AudienceCheckEnum $audienceCheck): void
+    public function markAsReady(AudienceCheckEnum $audienceCheck): void
     {
         $this->preparationStatus = PreparationStatusEnum::Ready;
-        $this->expectedAudienceCount = $expected;
-        $this->preparedAudienceCount = $prepared;
         $this->audienceCheck = $audienceCheck;
         $this->preparedAt = new \DateTime();
     }
@@ -450,11 +390,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     public function requestCancellation(): void
     {
         $this->cancellationRequested = true;
-    }
-
-    public function incrementChunksDone(): void
-    {
-        ++$this->preparedChunksDone;
     }
 
     public function getMailchimpStaticSegment(): ?MailchimpStaticSegment

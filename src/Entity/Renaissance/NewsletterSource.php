@@ -24,14 +24,14 @@ class NewsletterSource
     public string $code;
 
     #[Assert\NotBlank]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     public string $label;
 
     #[Assert\Url(protocols: ['https'])]
     #[ORM\Column(length: 500, nullable: true)]
     public ?string $confirmationRedirectUrl = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     public ?string $mailchimpTag = null;
 
     #[ORM\Column(options: ['default' => true])]

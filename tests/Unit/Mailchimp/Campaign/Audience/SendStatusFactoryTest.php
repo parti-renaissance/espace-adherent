@@ -6,6 +6,7 @@ namespace Tests\App\Unit\Mailchimp\Campaign\Audience;
 
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
@@ -19,7 +20,8 @@ class SendStatusFactoryTest extends TestCase
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing('user@example.com');
-        $campaign->markAsReady(1000, 980, AudienceCheckEnum::Drift);
+        $campaign->markAsReady(AudienceCheckEnum::Drift);
+        $this->attachSegmentWithCounts($campaign, expected: 1000, prepared: 980);
 
         $payload = new SendStatusFactory()->build($campaign);
 
@@ -40,7 +42,7 @@ class SendStatusFactoryTest extends TestCase
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing('user@example.com');
-        $campaign->markAsReady(1000, 500, AudienceCheckEnum::Mismatch);
+        $campaign->markAsReady(AudienceCheckEnum::Mismatch);
 
         $payload = new SendStatusFactory()->build($campaign);
 
@@ -67,7 +69,7 @@ class SendStatusFactoryTest extends TestCase
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing('user@example.com');
-        $campaign->markAsReady(100, 100, AudienceCheckEnum::Match);
+        $campaign->markAsReady(AudienceCheckEnum::Match);
 
         // Mark the AdherentMessage as sent → can_send must drop to false
         $message->markAsSent();
@@ -105,5 +107,13 @@ class SendStatusFactoryTest extends TestCase
 
         self::assertTrue($payload['cancellation_requested']);
         self::assertSame(PreparationStatusEnum::Preparing->value, $payload['preparation_status']);
+    }
+
+    private function attachSegmentWithCounts(MailchimpCampaign $campaign, int $expected, int $prepared): void
+    {
+        $segment = new MailchimpStaticSegment($campaign);
+        $segment->expectedCount = $expected;
+        $segment->preparedCount = $prepared;
+        $campaign->setMailchimpStaticSegment($segment);
     }
 }

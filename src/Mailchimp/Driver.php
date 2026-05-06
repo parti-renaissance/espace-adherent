@@ -192,41 +192,6 @@ class Driver implements LoggerAwareInterface
     }
 
     /**
-     * Paginates `GET /lists/{id}/segments` and yields segments whose name starts
-     * with `$prefix`. Includes `created_at` (used to filter orphan segments by age).
-     *
-     * @return iterable<array{id: int, name: string, created_at: string}>
-     */
-    public function getAllSegmentsWithPrefix(string $prefix, string $listId, int $pageSize = 1000): iterable
-    {
-        $offset = 0;
-        do {
-            $params = [
-                'offset' => $offset,
-                'count' => $pageSize,
-                'fields' => 'segments.id,segments.name,segments.created_at,total_items',
-            ];
-
-            $response = $this->send('GET', \sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
-            if (!$this->isSuccessfulResponse($response)) {
-                return;
-            }
-
-            $payload = $response->toArray();
-            $segments = $payload['segments'] ?? [];
-            $total = (int) ($payload['total_items'] ?? 0);
-
-            foreach ($segments as $segment) {
-                if (isset($segment['name']) && str_starts_with($segment['name'], $prefix)) {
-                    yield $segment;
-                }
-            }
-
-            $offset += $pageSize;
-        } while ($offset < $total);
-    }
-
-    /**
      * Reads a single segment with its effective member_count (used after
      * preparation to verify how many emails Mailchimp actually accepted).
      *

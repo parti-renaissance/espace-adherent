@@ -78,7 +78,7 @@ class AudienceMessagePreparerTest extends TestCase
         $message->setFilter($filter);
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing('alice@example.com');
-        $campaign->markAsReady(100, 100, AudienceCheckEnum::Match);
+        $campaign->markAsReady(AudienceCheckEnum::Match);
         $message->addMailchimpCampaign($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);

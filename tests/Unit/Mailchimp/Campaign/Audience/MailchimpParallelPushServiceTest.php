@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience;
 
 use App\Mailchimp\Campaign\Audience\MailchimpParallelPushService;
+use App\Mailchimp\Driver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -14,7 +15,7 @@ class MailchimpParallelPushServiceTest extends TestCase
     public function testPushEmailsWithEmptyEmailsReturnsZeroResultWithoutHttpCall(): void
     {
         $client = new MockHttpClient([]);
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(123, 'list-abc', []);
 
@@ -33,7 +34,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             new MockResponse(json_encode(['total_added' => 250]), ['http_code' => 200]),
         ];
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(99, 'list-abc', $emails, concurrency: 5);
 
@@ -53,7 +54,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             ],
         ]);
         $client = new MockHttpClient([new MockResponse($body, ['http_code' => 200])], 'https://us16.api.mailchimp.com');
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(99, 'list-abc', $emails);
 
@@ -71,7 +72,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             new MockResponse(json_encode(['total_added' => 1]), ['http_code' => 200]),
         ];
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new TestableMailchimpParallelPushService($client);
+        $service = new TestableMailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(99, 'list-abc', $emails, concurrency: 1);
 
@@ -90,7 +91,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             new MockResponse('Too Many', ['http_code' => 429]),
         ];
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new TestableMailchimpParallelPushService($client);
+        $service = new TestableMailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(99, 'list-abc', $emails, concurrency: 1);
 
@@ -108,7 +109,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             new MockResponse('Bad Request', ['http_code' => 400]),
         ];
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $result = $service->pushEmails(99, 'list-abc', $emails);
 
@@ -126,7 +127,7 @@ class MailchimpParallelPushServiceTest extends TestCase
             new MockResponse(json_encode(['total_added' => 500]), ['http_code' => 200]),
         ];
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $callbackCount = 0;
         $service->pushEmails(99, 'list-abc', $emails, onChunkSuccess: static function () use (&$callbackCount) {
@@ -142,7 +143,7 @@ class MailchimpParallelPushServiceTest extends TestCase
         // We never get to send all 5 because cancellation triggers after the first
         $responses = array_fill(0, 5, new MockResponse(json_encode(['total_added' => 500]), ['http_code' => 200]));
         $client = new MockHttpClient($responses, 'https://us16.api.mailchimp.com');
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $callCount = 0;
         $probe = static function () use (&$callCount): bool {
@@ -164,7 +165,7 @@ class MailchimpParallelPushServiceTest extends TestCase
 
             return new MockResponse(json_encode(['total_added' => 2]), ['http_code' => 200]);
         });
-        $service = new MailchimpParallelPushService($client);
+        $service = new MailchimpParallelPushService(new Driver($client, 'list-abc'));
 
         $service->pushEmails(456, 'my-list', $emails);
 
