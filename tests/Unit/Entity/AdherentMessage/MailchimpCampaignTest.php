@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Entity\AdherentMessage;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -28,14 +29,15 @@ class MailchimpCampaignTest extends TestCase
 
     public function testMarkAsPreparingResetsAllPreparationFieldsAndStoresLockedBy(): void
     {
+        $alice = $this->createUser();
         $campaign = $this->createCampaign();
         // Simulates a previous state by triggering a ready cycle then re-preparation
         $campaign->markAsReady(AudienceCheckEnum::Drift);
 
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($alice);
 
         self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
-        self::assertSame('alice@example.com', $campaign->getPreparationLockedBy());
+        self::assertSame($alice, $campaign->getPreparationLockedBy());
         self::assertNull($campaign->getBlockReason());
         self::assertNull($campaign->getAudienceCheck());
         self::assertNull($campaign->getPreparedAt());
@@ -90,7 +92,7 @@ class MailchimpCampaignTest extends TestCase
     public function testCanSendWhenStillPreparingReturnsFalse(): void
     {
         $campaign = $this->createCampaign();
-        $campaign->markAsPreparing('user@example.com');
+        $campaign->markAsPreparing($this->createUser());
 
         self::assertFalse($campaign->canSend());
     }
@@ -99,11 +101,10 @@ class MailchimpCampaignTest extends TestCase
     {
         $campaign = $this->createCampaign();
 
-        $campaign->markAsFailed(BlockReasonEnum::Empty, 'Audience SQL retourne 0 emails valides.');
+        $campaign->markAsFailed(BlockReasonEnum::Empty);
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::Empty, $campaign->getBlockReason());
-        self::assertSame('Audience SQL retourne 0 emails valides.', $campaign->getPreparationFailureDetail());
         self::assertFalse($campaign->canSend());
     }
 
@@ -121,5 +122,10 @@ class MailchimpCampaignTest extends TestCase
     private function createCampaign(?AdherentMessageInterface $message = null): MailchimpCampaign
     {
         return new MailchimpCampaign($message ?? $this->createStub(AdherentMessageInterface::class));
+    }
+
+    private function createUser(): Adherent
+    {
+        return $this->createStub(Adherent::class);
     }
 }

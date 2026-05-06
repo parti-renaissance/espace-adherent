@@ -6,6 +6,7 @@ namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use App\AdherentMessage\MailchimpStatusEnum;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
@@ -121,11 +122,9 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $preparedAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $preparationLockedBy = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $preparationFailureDetail = null;
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    private ?Adherent $preparationLockedBy = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $cancellationRequested = false;
@@ -330,14 +329,9 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return $this->preparedAt;
     }
 
-    public function getPreparationLockedBy(): ?string
+    public function getPreparationLockedBy(): ?Adherent
     {
         return $this->preparationLockedBy;
-    }
-
-    public function getPreparationFailureDetail(): ?string
-    {
-        return $this->preparationFailureDetail;
     }
 
     public function isCancellationRequested(): bool
@@ -362,14 +356,13 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return !$this->message instanceof AdherentMessage || !$this->message->isSent();
     }
 
-    public function markAsPreparing(string $lockedBy): void
+    public function markAsPreparing(Adherent $lockedBy): void
     {
         $this->preparationStatus = PreparationStatusEnum::Preparing;
         $this->preparationLockedBy = $lockedBy;
         $this->blockReason = null;
         $this->audienceCheck = null;
         $this->preparedAt = null;
-        $this->preparationFailureDetail = null;
         $this->cancellationRequested = false;
     }
 
@@ -380,11 +373,10 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         $this->preparedAt = new \DateTime();
     }
 
-    public function markAsFailed(BlockReasonEnum $blockReason, ?string $detail = null): void
+    public function markAsFailed(BlockReasonEnum $blockReason): void
     {
         $this->preparationStatus = PreparationStatusEnum::Failed;
         $this->blockReason = $blockReason;
-        $this->preparationFailureDetail = $detail;
     }
 
     public function requestCancellation(): void

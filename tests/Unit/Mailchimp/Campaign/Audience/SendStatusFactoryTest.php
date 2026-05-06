@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
@@ -19,7 +20,7 @@ class SendStatusFactoryTest extends TestCase
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('user@example.com');
+        $campaign->markAsPreparing($this->createUser('user@example.com'));
         $campaign->markAsReady(AudienceCheckEnum::Drift);
         $this->attachSegmentWithCounts($campaign, expected: 1000, prepared: 980);
 
@@ -34,14 +35,13 @@ class SendStatusFactoryTest extends TestCase
         self::assertSame(980, $payload['counts']['prepared']);
         self::assertSame(-20, $payload['counts']['diff']);
         self::assertNotNull($payload['prepared_at']);
-        self::assertSame('user@example.com', $payload['blocking_user']);
     }
 
     public function testBuildMismatchAudienceCheckCanSendIsFalse(): void
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('user@example.com');
+        $campaign->markAsPreparing($this->createUser('user@example.com'));
         $campaign->markAsReady(AudienceCheckEnum::Mismatch);
 
         $payload = new SendStatusFactory()->build($campaign);
@@ -54,7 +54,7 @@ class SendStatusFactoryTest extends TestCase
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsFailed(BlockReasonEnum::Empty, 'no recipients');
+        $campaign->markAsFailed(BlockReasonEnum::Empty);
 
         $payload = new SendStatusFactory()->build($campaign);
 
@@ -68,7 +68,7 @@ class SendStatusFactoryTest extends TestCase
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('user@example.com');
+        $campaign->markAsPreparing($this->createUser('user@example.com'));
         $campaign->markAsReady(AudienceCheckEnum::Match);
 
         // Mark the AdherentMessage as sent → can_send must drop to false
@@ -92,7 +92,6 @@ class SendStatusFactoryTest extends TestCase
         self::assertNull($payload['counts']['prepared']);
         self::assertNull($payload['counts']['diff']);
         self::assertSame(0, $payload['progress']['chunks_done']);
-        self::assertNull($payload['blocking_user']);
         self::assertFalse($payload['can_send']);
     }
 
@@ -100,7 +99,7 @@ class SendStatusFactoryTest extends TestCase
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('user@example.com');
+        $campaign->markAsPreparing($this->createUser('user@example.com'));
         $campaign->requestCancellation();
 
         $payload = new SendStatusFactory()->build($campaign);
@@ -115,5 +114,13 @@ class SendStatusFactoryTest extends TestCase
         $segment->expectedCount = $expected;
         $segment->preparedCount = $prepared;
         $campaign->setMailchimpStaticSegment($segment);
+    }
+
+    private function createUser(string $email): Adherent
+    {
+        $user = $this->createStub(Adherent::class);
+        $user->method('getEmailAddress')->willReturn($email);
+
+        return $user;
     }
 }

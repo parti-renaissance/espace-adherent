@@ -10,7 +10,7 @@ class PrepareCampaignAudienceMessage implements CampaignMessageInterface
 {
     public function __construct(
         public int $mailchimpCampaignId,
-        public string $lockedBy,
+        public int $lockedById,
     ) {
     }
 }

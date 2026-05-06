@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Entity\AdherentMessage;
 
 use App\Entity\Adherent;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AdherentMessageTargetedRepository::class)]
-#[ORM\Index(fields: ['message'])]
-#[ORM\Index(fields: ['message', 'chunkNumber'])]
-#[ORM\Index(fields: ['message', 'processingStatus'])]
-#[ORM\UniqueConstraint(fields: ['adherent', 'message'])]
-class AdherentMessageTargeted
+#[ORM\Entity(repositoryClass: MailchimpStaticSegmentMemberRepository::class)]
+#[ORM\Index(fields: ['staticSegment'])]
+#[ORM\Index(fields: ['staticSegment', 'chunkNumber'])]
+#[ORM\Index(fields: ['staticSegment', 'processingStatus'])]
+#[ORM\UniqueConstraint(fields: ['adherent', 'staticSegment'])]
+class MailchimpStaticSegmentMember
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
@@ -23,7 +23,7 @@ class AdherentMessageTargeted
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne]
-    public AdherentMessage $message;
+    public MailchimpStaticSegment $staticSegment;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne]
@@ -32,8 +32,8 @@ class AdherentMessageTargeted
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $chunkNumber = 0;
 
-    #[ORM\Column(enumType: TargetedProcessingStatusEnum::class, options: ['default' => TargetedProcessingStatusEnum::Pending->value])]
-    public TargetedProcessingStatusEnum $processingStatus = TargetedProcessingStatusEnum::Pending;
+    #[ORM\Column(enumType: SegmentMemberStatusEnum::class, options: ['default' => SegmentMemberStatusEnum::Pending->value])]
+    public SegmentMemberStatusEnum $processingStatus = SegmentMemberStatusEnum::Pending;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $processedAt = null;
@@ -42,17 +42,17 @@ class AdherentMessageTargeted
     public ?string $errorMessage = null;
 
     #[ORM\Column(type: 'datetime')]
-    public \DateTimeInterface $targetedAt;
+    public \DateTimeInterface $createdAt;
 
     public function __construct(
-        AdherentMessage $message,
+        MailchimpStaticSegment $staticSegment,
         ?Adherent $adherent,
         int $chunkNumber = 0,
-        ?\DateTimeInterface $targetedAt = null,
+        ?\DateTimeInterface $createdAt = null,
     ) {
-        $this->message = $message;
+        $this->staticSegment = $staticSegment;
         $this->adherent = $adherent;
         $this->chunkNumber = $chunkNumber;
-        $this->targetedAt = $targetedAt ?? new \DateTimeImmutable();
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
     }
 }

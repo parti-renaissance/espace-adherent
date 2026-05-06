@@ -32,11 +32,10 @@ class AudienceMessagePreparer
             return PrepareResult::alreadyReady($this->sendStatusFactory->build($campaign));
         }
 
-        $lockedBy = $currentUser->getEmailAddress();
-        $campaign->markAsPreparing($lockedBy);
+        $campaign->markAsPreparing($currentUser);
         $this->entityManager->flush();
 
-        $this->bus->dispatch(new PrepareCampaignAudienceMessage($campaign->getId(), $lockedBy));
+        $this->bus->dispatch(new PrepareCampaignAudienceMessage($campaign->getId(), $currentUser->getId()));
 
         return PrepareResult::preparing($this->sendStatusFactory->build($campaign));
     }
@@ -77,7 +76,7 @@ class AudienceMessagePreparer
 
         $lockedBy = $campaign->getPreparationLockedBy();
 
-        return null !== $lockedBy && $lockedBy !== $currentUser->getEmailAddress();
+        return null !== $lockedBy && $lockedBy->getId() !== $currentUser->getId();
     }
 
     private function isAlreadyPreparedAndFresh(MailchimpCampaign $campaign): bool

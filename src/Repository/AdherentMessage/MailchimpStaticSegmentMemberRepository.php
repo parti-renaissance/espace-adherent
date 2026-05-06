@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Repository\AdherentMessage;
 
-use App\Entity\AdherentMessage\AdherentMessageTargeted;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class AdherentMessageTargetedRepository extends ServiceEntityRepository
+class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AdherentMessageTargeted::class);
+        parent::__construct($registry, MailchimpStaticSegmentMember::class);
     }
 
     /**
@@ -23,17 +23,17 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
      *
      * @return array<int, string> map id => email
      */
-    public function findPendingEmailsByChunk(int $messageId, int $chunkNumber): array
+    public function findPendingEmailsByChunk(int $staticSegmentId, int $chunkNumber): array
     {
-        $rows = $this->createQueryBuilder('t')
-            ->select('t.id, a.emailAddress AS email')
-            ->innerJoin('t.adherent', 'a')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->andWhere('t.chunkNumber = :chunkNumber')
-            ->andWhere('t.processingStatus = :pending')
-            ->setParameter('messageId', $messageId)
+        $rows = $this->createQueryBuilder('m')
+            ->select('m.id, a.emailAddress AS email')
+            ->innerJoin('m.adherent', 'a')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.chunkNumber = :chunkNumber')
+            ->andWhere('m.processingStatus = :pending')
+            ->setParameter('staticSegmentId', $staticSegmentId)
             ->setParameter('chunkNumber', $chunkNumber)
-            ->setParameter('pending', TargetedProcessingStatusEnum::Pending)
+            ->setParameter('pending', SegmentMemberStatusEnum::Pending)
             ->getQuery()
             ->getArrayResult()
         ;
@@ -49,7 +49,7 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
     /**
      * Apply per-row processing status updates returned by Mailchimp push.
      *
-     * @param array<int, TargetedProcessingStatusEnum> $idToStatus row id => status
+     * @param array<int, SegmentMemberStatusEnum> $idToStatus row id => status
      */
     public function markRowsAsProcessed(array $idToStatus, ?string $errorMessage = null): void
     {
@@ -66,21 +66,21 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
         $now = new \DateTimeImmutable();
 
         foreach ($grouped as $statusValue => $ids) {
-            $status = TargetedProcessingStatusEnum::from($statusValue);
+            $status = SegmentMemberStatusEnum::from($statusValue);
 
             $qb = $em->createQueryBuilder()
-                ->update(AdherentMessageTargeted::class, 't')
-                ->set('t.processingStatus', ':status')
-                ->set('t.processedAt', ':now')
-                ->where('t.id IN (:ids)')
+                ->update(MailchimpStaticSegmentMember::class, 'm')
+                ->set('m.processingStatus', ':status')
+                ->set('m.processedAt', ':now')
+                ->where('m.id IN (:ids)')
                 ->setParameter('status', $status)
                 ->setParameter('now', $now)
                 ->setParameter('ids', $ids)
             ;
 
-            if (TargetedProcessingStatusEnum::Errored === $status && null !== $errorMessage) {
+            if (SegmentMemberStatusEnum::Errored === $status && null !== $errorMessage) {
                 $qb
-                    ->set('t.errorMessage', ':errorMessage')
+                    ->set('m.errorMessage', ':errorMessage')
                     ->setParameter('errorMessage', $errorMessage)
                 ;
             }
@@ -93,35 +93,35 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
      * Mark all pending rows of a chunk as errored. Called by the failure subscriber when
      * a ProcessAudienceChunkMessage exhausts its retries.
      */
-    public function markChunkAsErrored(int $messageId, int $chunkNumber, ?string $errorMessage): int
+    public function markChunkAsErrored(int $staticSegmentId, int $chunkNumber, ?string $errorMessage): int
     {
         return (int) $this->getEntityManager()->createQueryBuilder()
-            ->update(AdherentMessageTargeted::class, 't')
-            ->set('t.processingStatus', ':errored')
-            ->set('t.processedAt', ':now')
-            ->set('t.errorMessage', ':message')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->andWhere('t.chunkNumber = :chunkNumber')
-            ->andWhere('t.processingStatus = :pending')
-            ->setParameter('errored', TargetedProcessingStatusEnum::Errored)
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':errored')
+            ->set('m.processedAt', ':now')
+            ->set('m.errorMessage', ':message')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.chunkNumber = :chunkNumber')
+            ->andWhere('m.processingStatus = :pending')
+            ->setParameter('errored', SegmentMemberStatusEnum::Errored)
             ->setParameter('now', new \DateTimeImmutable())
             ->setParameter('message', $errorMessage)
-            ->setParameter('messageId', $messageId)
+            ->setParameter('staticSegmentId', $staticSegmentId)
             ->setParameter('chunkNumber', $chunkNumber)
-            ->setParameter('pending', TargetedProcessingStatusEnum::Pending)
+            ->setParameter('pending', SegmentMemberStatusEnum::Pending)
             ->getQuery()
             ->execute()
         ;
     }
 
     /**
-     * Same as markChunkAsErrored but resolves messageId from a MailchimpCampaign id. Used by
+     * Same as markChunkAsErrored but resolves staticSegmentId from a MailchimpCampaign id. Used by
      * AudienceChunkFailureSubscriber which only receives the campaign id in the message payload.
      */
     public function markChunkAsErroredByCampaignId(int $campaignId, int $chunkNumber, ?string $errorMessage): int
     {
         $row = $this->getEntityManager()->createQueryBuilder()
-            ->select('IDENTITY(c.message) AS messageId')
+            ->select('IDENTITY(c.mailchimpStaticSegment) AS staticSegmentId')
             ->from(MailchimpCampaign::class, 'c')
             ->where('c.id = :id')
             ->setParameter('id', $campaignId)
@@ -129,11 +129,11 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
 
-        if (null === $row) {
+        if (null === $row || null === $row['staticSegmentId']) {
             return 0;
         }
 
-        return $this->markChunkAsErrored((int) $row['messageId'], $chunkNumber, $errorMessage);
+        return $this->markChunkAsErrored((int) $row['staticSegmentId'], $chunkNumber, $errorMessage);
     }
 
     /**
@@ -141,15 +141,15 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
      * NULL after cascade SET NULL) are excluded by the INNER JOIN — they would never be processed
      * and must not block the finalize handler.
      */
-    public function existsPending(int $messageId): bool
+    public function existsPending(int $staticSegmentId): bool
     {
-        $row = $this->createQueryBuilder('t')
-            ->select('t.id')
-            ->innerJoin('t.adherent', 'a')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->andWhere('t.processingStatus = :pending')
-            ->setParameter('messageId', $messageId)
-            ->setParameter('pending', TargetedProcessingStatusEnum::Pending)
+        $row = $this->createQueryBuilder('m')
+            ->select('m.id')
+            ->innerJoin('m.adherent', 'a')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.processingStatus = :pending')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->setParameter('pending', SegmentMemberStatusEnum::Pending)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -162,16 +162,16 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
      * @return list<int> distinct chunk numbers having at least one pushable pending row.
      *                   Orphan rows (adherent_id NULL) are excluded by the INNER JOIN.
      */
-    public function findChunksWithPending(int $messageId): array
+    public function findChunksWithPending(int $staticSegmentId): array
     {
-        $rows = $this->createQueryBuilder('t')
-            ->select('DISTINCT t.chunkNumber')
-            ->innerJoin('t.adherent', 'a')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->andWhere('t.processingStatus = :pending')
-            ->setParameter('messageId', $messageId)
-            ->setParameter('pending', TargetedProcessingStatusEnum::Pending)
-            ->orderBy('t.chunkNumber', 'ASC')
+        $rows = $this->createQueryBuilder('m')
+            ->select('DISTINCT m.chunkNumber')
+            ->innerJoin('m.adherent', 'a')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.processingStatus = :pending')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->setParameter('pending', SegmentMemberStatusEnum::Pending)
+            ->orderBy('m.chunkNumber', 'ASC')
             ->getQuery()
             ->getArrayResult()
         ;
@@ -182,15 +182,15 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
     }
 
     /**
-     * Purge all targeted rows for a given message. Called by the orchestrator before a fresh
+     * Purge all member rows for a given static segment. Called by the orchestrator before a fresh
      * bulk insert to avoid residual rows from a previous (legacy) preparation run.
      */
-    public function deleteByMessageId(int $messageId): int
+    public function deleteBySegmentId(int $staticSegmentId): int
     {
         return (int) $this->getEntityManager()->createQueryBuilder()
-            ->delete(AdherentMessageTargeted::class, 't')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->setParameter('messageId', $messageId)
+            ->delete(MailchimpStaticSegmentMember::class, 'm')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->setParameter('staticSegmentId', $staticSegmentId)
             ->getQuery()
             ->execute()
         ;
@@ -199,20 +199,20 @@ class AdherentMessageTargetedRepository extends ServiceEntityRepository
     /**
      * @return array<string, int> status value => count
      */
-    public function aggregateStatusCounts(int $messageId): array
+    public function aggregateStatusCounts(int $staticSegmentId): array
     {
-        $rows = $this->createQueryBuilder('t')
-            ->select('t.processingStatus AS status, COUNT(t.id) AS cnt')
-            ->where('IDENTITY(t.message) = :messageId')
-            ->setParameter('messageId', $messageId)
-            ->groupBy('t.processingStatus')
+        $rows = $this->createQueryBuilder('m')
+            ->select('m.processingStatus AS status, COUNT(m.id) AS cnt')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->groupBy('m.processingStatus')
             ->getQuery()
             ->getArrayResult()
         ;
 
         $result = [];
         foreach ($rows as $row) {
-            $status = $row['status'] instanceof TargetedProcessingStatusEnum
+            $status = $row['status'] instanceof SegmentMemberStatusEnum
                 ? $row['status']->value
                 : (string) $row['status'];
             $result[$status] = (int) $row['cnt'];

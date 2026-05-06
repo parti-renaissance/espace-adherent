@@ -8,10 +8,10 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\AudienceCheckCalculator;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Driver;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -24,7 +24,7 @@ class FinalizeCampaignAudienceHandler
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AdherentMessageTargetedRepository $targetedRepository,
+        private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly Driver $driver,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AudienceCheckCalculator $audienceCheckCalculator,
@@ -72,10 +72,10 @@ class FinalizeCampaignAudienceHandler
             return;
         }
 
-        $messageId = $campaign->getMessage()->getId();
+        $staticSegmentId = $staticSegment->id;
 
         // Premature finalize: chunks not all done yet. Subsequent chunk workers will re-dispatch.
-        if ($this->targetedRepository->existsPending($messageId)) {
+        if ($this->memberRepository->existsPending($staticSegmentId)) {
             return;
         }
 
@@ -84,10 +84,10 @@ class FinalizeCampaignAudienceHandler
         $segmentData = $this->driver->getSegment($segmentId, $listId);
         $prepared = (int) ($segmentData['member_count'] ?? 0);
 
-        $counts = $this->targetedRepository->aggregateStatusCounts($messageId);
-        $staticSegment->preparedCount = $counts[TargetedProcessingStatusEnum::Added->value] ?? 0;
-        $staticSegment->refusedCount = $counts[TargetedProcessingStatusEnum::Refused->value] ?? 0;
-        $staticSegment->erroredCount = $counts[TargetedProcessingStatusEnum::Errored->value] ?? 0;
+        $counts = $this->memberRepository->aggregateStatusCounts($staticSegmentId);
+        $staticSegment->preparedCount = $counts[SegmentMemberStatusEnum::Added->value] ?? 0;
+        $staticSegment->refusedCount = $counts[SegmentMemberStatusEnum::Refused->value] ?? 0;
+        $staticSegment->erroredCount = $counts[SegmentMemberStatusEnum::Errored->value] ?? 0;
         $staticSegment->builtAt = new \DateTimeImmutable();
 
         $expected = $staticSegment->expectedCount ?? 0;

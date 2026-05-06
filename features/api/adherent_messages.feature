@@ -244,7 +244,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }
@@ -345,7 +344,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }
@@ -463,7 +461,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }
@@ -575,7 +572,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }
@@ -699,7 +695,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }
@@ -3334,7 +3329,6 @@ Feature:
                         "diff": null
                     },
                     "prepared_at": null,
-                    "blocking_user": null,
                     "progress": {
                         "chunks_done": 0
                     }

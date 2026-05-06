@@ -10,10 +10,10 @@ use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\Handler\ProcessAudienceChunkHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
-use App\Mailchimp\Campaign\Audience\TargetedProcessingStatusEnum;
+use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Driver;
-use App\Repository\AdherentMessage\AdherentMessageTargetedRepository;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 99)->willReturn(null);
         $em->expects(self::never())->method('refresh');
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('findPendingEmailsByChunk');
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -44,14 +44,14 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
         $campaign->requestCancellation();
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->willReturn($campaign);
         $em->expects(self::once())->method('refresh')->with($campaign);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::never())->method('findPendingEmailsByChunk');
 
         $driver = $this->createMock(Driver::class);
@@ -74,10 +74,10 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::once())
             ->method('findPendingEmailsByChunk')
-            ->with(100, 3)
+            ->with(4242, 3)
             ->willReturn([])
         ;
         $repo->expects(self::never())->method('markRowsAsProcessed');
@@ -106,22 +106,22 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->expects(self::once())
             ->method('findPendingEmailsByChunk')
-            ->with(100, 0)
+            ->with(4242, 0)
             ->willReturn($idToEmail)
         ;
         $repo->expects(self::once())
             ->method('markRowsAsProcessed')
             ->with([
-                10 => TargetedProcessingStatusEnum::Added,
-                11 => TargetedProcessingStatusEnum::Added,
+                10 => SegmentMemberStatusEnum::Added,
+                11 => SegmentMemberStatusEnum::Added,
             ])
         ;
         $repo->expects(self::once())
             ->method('existsPending')
-            ->with(100)
+            ->with(4242)
             ->willReturn(true)
         ;
 
@@ -156,7 +156,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('findPendingEmailsByChunk')->willReturn([10 => 'last@example.com']);
         $repo->method('existsPending')->willReturn(false);
 
@@ -187,7 +187,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('findPendingEmailsByChunk')->willReturn([
             10 => 'ok@example.com',
             11 => 'refused@example.com',
@@ -195,8 +195,8 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $repo->expects(self::once())
             ->method('markRowsAsProcessed')
             ->with([
-                10 => TargetedProcessingStatusEnum::Added,
-                11 => TargetedProcessingStatusEnum::Refused,
+                10 => SegmentMemberStatusEnum::Added,
+                11 => SegmentMemberStatusEnum::Refused,
             ])
         ;
         $repo->method('existsPending')->willReturn(true);
@@ -224,7 +224,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
 
-        $repo = $this->createMock(AdherentMessageTargetedRepository::class);
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('findPendingEmailsByChunk')->willReturn([10 => 'a@example.com']);
         $repo->expects(self::never())->method('markRowsAsProcessed');
 
@@ -247,7 +247,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
 
     private function buildHandler(
         EntityManagerInterface $em,
-        AdherentMessageTargetedRepository $repo,
+        MailchimpStaticSegmentMemberRepository $repo,
         Driver $driver,
         MessageBusInterface $bus,
     ): ProcessAudienceChunkHandler {
@@ -266,7 +266,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $this->setEntityId($segment, 4242);
         $segment->mailchimpSegmentId = $segmentId;
         $campaign->setMailchimpStaticSegment($segment);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
 
         return $campaign;
     }

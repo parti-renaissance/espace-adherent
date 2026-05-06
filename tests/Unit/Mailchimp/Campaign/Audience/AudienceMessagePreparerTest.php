@@ -22,9 +22,12 @@ class AudienceMessagePreparerTest extends TestCase
 {
     public function testPrepareLockedByOtherUserReturnsConflict(): void
     {
+        $alice = $this->createUser(1, 'alice@example.com');
+        $bob = $this->createUser(2, 'bob@example.com');
+
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($alice);
         $message->addMailchimpCampaign($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -35,19 +38,20 @@ class AudienceMessagePreparerTest extends TestCase
 
         $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
 
-        $result = $preparer->prepare($message, $this->createUser('bob@example.com'));
+        $result = $preparer->prepare($message, $bob);
 
         self::assertSame(PrepareResult::STATUS_CONFLICT, $result->status);
         self::assertTrue($result->isConflict());
-        self::assertSame('alice@example.com', $result->sendStatus['blocking_user']);
     }
 
     public function testPrepareLockedBySameUserReDispatches(): void
     {
+        $alice = $this->createUser(1, 'alice@example.com');
+
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 42);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($alice);
         $message->addMailchimpCampaign($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -61,7 +65,7 @@ class AudienceMessagePreparerTest extends TestCase
 
         $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
 
-        $result = $preparer->prepare($message, $this->createUser('alice@example.com'));
+        $result = $preparer->prepare($message, $alice);
 
         self::assertSame(PrepareResult::STATUS_PREPARING, $result->status);
         self::assertTrue($result->isPreparing());
@@ -69,6 +73,8 @@ class AudienceMessagePreparerTest extends TestCase
 
     public function testPrepareAlreadyReadyAndFilterFreshReturnsAlreadyReady(): void
     {
+        $alice = $this->createUser(1, 'alice@example.com');
+
         $filter = new \App\Entity\AdherentMessage\AdherentMessageFilter();
         $filterReflection = new \ReflectionObject($filter);
         $updatedAtProp = $filterReflection->getProperty('updatedAt');
@@ -77,7 +83,7 @@ class AudienceMessagePreparerTest extends TestCase
         $message = new AdherentMessage();
         $message->setFilter($filter);
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($alice);
         $campaign->markAsReady(AudienceCheckEnum::Match);
         $message->addMailchimpCampaign($campaign);
 
@@ -89,13 +95,15 @@ class AudienceMessagePreparerTest extends TestCase
 
         $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
 
-        $result = $preparer->prepare($message, $this->createUser('alice@example.com'));
+        $result = $preparer->prepare($message, $alice);
 
         self::assertSame(PrepareResult::STATUS_ALREADY_READY, $result->status);
     }
 
     public function testPrepareFreshCampaignDispatchesAndMarksAsPreparing(): void
     {
+        $alice = $this->createUser(1, 'alice@example.com');
+
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
@@ -116,13 +124,13 @@ class AudienceMessagePreparerTest extends TestCase
 
         $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
 
-        $result = $preparer->prepare($message, $this->createUser('alice@example.com'));
+        $result = $preparer->prepare($message, $alice);
 
         self::assertTrue($result->isPreparing());
         self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
-        self::assertSame('alice@example.com', $campaign->getPreparationLockedBy());
+        self::assertSame($alice, $campaign->getPreparationLockedBy());
         self::assertInstanceOf(PrepareCampaignAudienceMessage::class, $dispatched);
-        self::assertSame('alice@example.com', $dispatched->lockedBy);
+        self::assertSame(1, $dispatched->lockedById);
     }
 
     public function testPrepareNoCampaignThrowsLogicException(): void
@@ -135,14 +143,16 @@ class AudienceMessagePreparerTest extends TestCase
         $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
 
         $this->expectException(\LogicException::class);
-        $preparer->prepare($message, $this->createUser('alice@example.com'));
+        $preparer->prepare($message, $this->createUser(1, 'alice@example.com'));
     }
 
     public function testRequestCancellationFlipsFlagAndFlushes(): void
     {
+        $alice = $this->createUser(1, 'alice@example.com');
+
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing('alice@example.com');
+        $campaign->markAsPreparing($alice);
         $message->addMailchimpCampaign($campaign);
 
         self::assertFalse($campaign->isCancellationRequested());
@@ -167,9 +177,10 @@ class AudienceMessagePreparerTest extends TestCase
         $preparer->requestCancellation($message);
     }
 
-    private function createUser(string $email): Adherent
+    private function createUser(int $id, string $email): Adherent
     {
         $user = $this->createStub(Adherent::class);
+        $user->method('getId')->willReturn($id);
         $user->method('getEmailAddress')->willReturn($email);
 
         return $user;
