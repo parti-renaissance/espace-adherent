@@ -112,6 +112,28 @@ final class RequestBuilderTest extends TestCase
         self::assertArrayHasKey('email_channel', $data);
     }
 
+    public function testBuildContactRequestWithFrenchLandlineDoesNotIncludeSmsChannel(): void
+    {
+        $phone = PhoneNumberUtils::create('+33143444259'); // Paris landline
+        $email = 'test@example.com';
+
+        $this->smsOptOutRepository
+            ->expects(self::never())
+            ->method('isOptedOut')
+        ;
+
+        $this->requestBuilder
+            ->setPhone($phone)
+            ->setSmsSubscribed(true)
+            ->setEmailMarketingConsent(MarketingConsentStatusEnum::CONFIRMED);
+
+        $contactRequest = $this->requestBuilder->buildContactRequest($email);
+        $data = $contactRequest->toArray();
+
+        self::assertArrayNotHasKey('sms_channel', $data);
+        self::assertArrayHasKey('email_channel', $data);
+    }
+
     public function testBuildContactRequestWithoutPhoneDoesNotCheckOptOut(): void
     {
         $email = 'test@example.com';

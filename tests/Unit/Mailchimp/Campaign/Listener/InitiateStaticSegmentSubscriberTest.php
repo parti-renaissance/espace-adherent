@@ -36,7 +36,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
         $segmentService->expects(self::once())
             ->method('create')
-            ->with(\sprintf('campaign_%s', $uuid->toString()), [], self::MAIN_LIST_ID)
+            ->with(\sprintf('PROD_%s', $uuid->toString()), [], self::MAIN_LIST_ID)
             ->willReturn(4242);
 
         $em = $this->createMock(EntityManagerInterface::class);
@@ -51,7 +51,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $subscriber->onCampaignFiltersPreBuild(new CampaignEvent($campaign));
 
         self::assertSame(4242, $campaign->getStaticSegmentId());
-        self::assertSame(\sprintf('campaign_%s', $uuid->toString()), $campaign->getMailchimpStaticSegment()->name);
+        self::assertSame(\sprintf('PROD_%s', $uuid->toString()), $campaign->getMailchimpStaticSegment()->name);
     }
 
     public function testNoOpWhenStaticSegmentIdAlreadySet(): void
@@ -79,7 +79,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
         $segmentService->expects(self::once())
             ->method('create')
-            ->with(self::stringStartsWith('campaign_'), [], self::ELECTED_LIST_ID)
+            ->with(self::stringStartsWith('PROD_'), [], self::ELECTED_LIST_ID)
             ->willReturn(7);
 
         $em = $this->createMock(EntityManagerInterface::class);

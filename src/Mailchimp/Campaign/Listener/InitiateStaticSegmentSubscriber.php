@@ -40,7 +40,7 @@ class InitiateStaticSegmentSubscriber implements EventSubscriberInterface
             ? $this->mailchimpObjectIdMapping->getListIdFromSource($campaign->getMailchimpListType())
             : $this->mailchimpObjectIdMapping->getMainListId();
 
-        $segmentName = \sprintf('campaign_%s', $campaign->getMessage()->getUuid()->toString());
+        $segmentName = \sprintf('PROD_%s', $campaign->getMessage()->getUuid()->toString());
 
         $segmentId = $this->staticSegmentService->create($segmentName, [], $listId);
 

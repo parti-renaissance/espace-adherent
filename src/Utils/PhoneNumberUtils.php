@@ -7,6 +7,7 @@ namespace App\Utils;
 use App\Address\AddressInterface;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
 
 class PhoneNumberUtils
@@ -32,5 +33,14 @@ class PhoneNumberUtils
         }
 
         return AddressInterface::FRANCE === PhoneNumberUtil::getInstance()->getRegionCodeForNumber($phone);
+    }
+
+    public static function isMobile(?PhoneNumber $phone): bool
+    {
+        if (!$phone) {
+            return false;
+        }
+
+        return PhoneNumberType::MOBILE === PhoneNumberUtil::getInstance()->getNumberType($phone);
     }
 }
