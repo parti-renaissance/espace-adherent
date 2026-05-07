@@ -143,8 +143,9 @@ trait AudienceFilterTrait
             $mandateValue = ltrim($electMandate, '!');
             $joinMethod = $isExclude ? 'leftJoin' : 'innerJoin';
 
+            // Sémantique : un mandat compte uniquement s'il est actif (finishAt IS NULL).
             $qb
-                ->$joinMethod($mainAlias.'.adherentMandates', 'am_filter', Join::WITH, 'am_filter INSTANCE OF :mandate_class AND am_filter.mandateType = :mandate_type')
+                ->$joinMethod($mainAlias.'.adherentMandates', 'am_filter', Join::WITH, 'am_filter INSTANCE OF :mandate_class AND am_filter.mandateType = :mandate_type AND am_filter.finishAt IS NULL')
                 ->setParameter('mandate_class', ElectedRepresentativeAdherentMandate::class)
                 ->setParameter('mandate_type', $mandateValue)
             ;

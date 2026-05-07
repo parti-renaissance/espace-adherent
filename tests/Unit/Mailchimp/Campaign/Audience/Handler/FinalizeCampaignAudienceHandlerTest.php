@@ -264,8 +264,10 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
     }
 
-    public function testPendingSendButMismatchAudienceLogsErrorAndClears(): void
+    public function testPendingSendDispatchesEvenWithMismatchAudience(): void
     {
+        // Mailchimp's member_count is informational and unreliable (lag, divergence with
+        // /campaigns/{id}.recipients.recipient_count). Mismatch must NOT block the send.
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
@@ -280,36 +282,29 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $repo = $this->createStub(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('existsPending')->willReturn(false);
-        // Heavy mismatch (>= threshold) → AudienceCheckCalculator returns Mismatch → canSend=false
         $repo->method('aggregateStatusCounts')->willReturn([
             SegmentMemberStatusEnum::Added->value => 100,
         ]);
 
+        // Heavy mismatch: 100 vs 1000 expected → AudienceCheckCalculator returns Mismatch.
         $driver = $this->createStub(Driver::class);
         $driver->method('getSegment')->willReturn(['member_count' => 100]);
 
         $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects(self::never())->method('dispatch');
-
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects(self::once())
-            ->method('error')
-            ->with(
-                '[AudienceFinalize] Auto-send blocked: cannot send after preparation',
-                self::callback(function (array $context): bool {
-                    return 7 === $context['campaign_id']
-                        && 'ready' === $context['preparation_status']
-                        && AudienceCheckEnum::Mismatch->value === $context['audience_check'];
-                }),
-            )
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback(function (object $cmd): bool {
+                return $cmd instanceof SendAdherentMessageCommand && 100 === $cmd->adherentMessageId;
+            }))
+            ->willReturn(new Envelope(new \stdClass()))
         ;
 
-        $handler = $this->buildHandler($em, $repo, $driver, $bus, $logger);
+        $handler = $this->buildHandler($em, $repo, $driver, $bus);
         $handler(new FinalizeCampaignAudienceMessage(7));
 
-        self::assertSame(AudienceCheckEnum::Mismatch, $campaign->getAudienceCheck());
-        // pendingSend cleared after logging error to avoid Sentry spam on Messenger retries.
-        self::assertFalse($campaign->isPendingSend());
+        self::assertSame(AudienceCheckEnum::Mismatch, $campaign->getAudienceCheck(), 'audienceCheck stays informational.');
+        self::assertFalse($campaign->isPendingSend(), 'pendingSend cleared after dispatch.');
+        self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
     }
 
     public function testFinalizeDispatchFailureLogsAndRethrowsKeepsPendingSend(): void

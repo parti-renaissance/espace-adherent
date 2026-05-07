@@ -17,13 +17,14 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 #[AsMessageHandler]
 final class RetrySendMailchimpCampaignCommandHandler
 {
-    private const int MAX_RETRIES = 5;
+    private const int MAX_RETRIES = 6;
     private const array DELAY_SCHEDULE_MS = [
         30_000,    // 30s
         60_000,    // 1min
         300_000,   // 5min
         600_000,   // 10min
         1_800_000, // 30min
+        3_600_000, // 60min
     ];
 
     public function __construct(

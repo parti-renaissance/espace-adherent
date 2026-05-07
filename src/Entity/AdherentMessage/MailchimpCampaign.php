@@ -359,11 +359,9 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
             return false;
         }
 
-        if (null === $this->audienceCheck || AudienceCheckEnum::Mismatch === $this->audienceCheck) {
-            return false;
-        }
-
-        return !$this->message instanceof AdherentMessage || !$this->message->isSent();
+        // audienceCheck is informational only (Mailchimp member_count lags and is unreliable).
+        // The send is gated by preparationStatus + blockReason + isSent, never by Mismatch.
+        return !$this->message->isSent();
     }
 
     /**
