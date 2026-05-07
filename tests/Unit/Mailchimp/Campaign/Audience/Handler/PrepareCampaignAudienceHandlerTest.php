@@ -22,6 +22,7 @@ use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -59,6 +60,46 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         $handler = $this->buildHandler($em, bus: $bus);
         $handler(new PrepareCampaignAudienceMessage(7, 1));
+    }
+
+    public function testPendingSendBypassesFreshnessShortCircuit(): void
+    {
+        // No filter on the message → captureFilterSnapshot is a no-op,
+        // so we don't need to mock the normalizer.
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $campaign->markAsReady(AudienceCheckEnum::Mismatch);
+        $campaign->markAsPendingSend();
+
+        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn([]);
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('error')
+            ->with(
+                '[AudiencePrepare] Auto-send aborted: preparation failed',
+                self::callback(function (array $context): bool {
+                    return 7 === $context['campaign_id']
+                        && BlockReasonEnum::Empty->value === $context['block_reason'];
+                }),
+            )
+        ;
+
+        $handler = $this->buildHandler($em, adherentRepository: $adherentRepository, bus: $bus, logger: $logger);
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
+
+        // Got past the early return: status moves out of Ready (rebuild attempted).
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertFalse($campaign->isPendingSend(), 'markAsFailed clears the flag so next /send re-arms preparation');
     }
 
     public function testMissingStaticSegmentMarksAsFailed(): void
@@ -255,6 +296,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         ?MailchimpStaticSegmentMemberRepository $memberRepository = null,
         ?BulkInsertHelper $bulkInsertHelper = null,
         ?MessageBusInterface $bus = null,
+        ?LoggerInterface $logger = null,
     ): PrepareCampaignAudienceHandler {
         $mapping = $this->createStub(MailchimpObjectIdMapping::class);
         $mapping->method('getMainListId')->willReturn('main-list');
@@ -268,6 +310,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
             $bulkInsertHelper ?? $this->createStub(BulkInsertHelper::class),
             $bus ?? $this->createStub(MessageBusInterface::class),
             $this->createStub(NormalizerInterface::class),
+            $logger,
         );
     }
 

@@ -31,6 +31,9 @@ class MailchimpStaticSegment
     public ?string $filterHash = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $buildStartedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $builtAt = null;
 
     #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]

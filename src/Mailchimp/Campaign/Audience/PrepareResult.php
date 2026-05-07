@@ -7,7 +7,6 @@ namespace App\Mailchimp\Campaign\Audience;
 class PrepareResult
 {
     public const STATUS_PREPARING = 'preparing';
-    public const STATUS_ALREADY_READY = 'already_ready';
     public const STATUS_CONFLICT = 'conflict';
 
     private function __construct(
@@ -19,11 +18,6 @@ class PrepareResult
     public static function preparing(array $sendStatus): self
     {
         return new self(self::STATUS_PREPARING, $sendStatus);
-    }
-
-    public static function alreadyReady(array $sendStatus): self
-    {
-        return new self(self::STATUS_ALREADY_READY, $sendStatus);
     }
 
     public static function conflict(array $sendStatus): self

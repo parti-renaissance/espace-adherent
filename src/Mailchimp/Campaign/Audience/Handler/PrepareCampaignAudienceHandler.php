@@ -57,7 +57,12 @@ class PrepareCampaignAudienceHandler
             return;
         }
 
-        if ($this->isAlreadyPreparedAndFresh($campaign)) {
+        // Skip when the segment is fresh and Ready, unless the user explicitly asked to send:
+        // a pending-send on a Ready+Mismatch state means "rebuild and retry".
+        if (!$campaign->isPendingSend()
+            && PreparationStatusEnum::Ready === $campaign->getPreparationStatus()
+            && $campaign->isAudienceFresh()
+        ) {
             return;
         }
 
@@ -65,7 +70,7 @@ class PrepareCampaignAudienceHandler
         $staticSegment = $campaign->getMailchimpStaticSegment();
         if (null === $segmentId || null === $staticSegment) {
             $this->logger->error('Static segment not initialised before /prepare', ['campaign_id' => $campaign->getId()]);
-            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
+            $this->failPreparation($campaign, BlockReasonEnum::MailchimpUnavailable);
             $this->entityManager->flush();
 
             return;
@@ -89,7 +94,7 @@ class PrepareCampaignAudienceHandler
         $lockedBy = $this->entityManager->find(Adherent::class, $message->lockedById);
         if (null === $lockedBy) {
             $this->logger->error('Locking adherent not found', ['adherent_id' => $message->lockedById, 'campaign_id' => $campaign->getId()]);
-            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
+            $this->failPreparation($campaign, BlockReasonEnum::MailchimpUnavailable);
             $staticSegment->errorSummary = \sprintf('Locking adherent %d not found.', $message->lockedById);
             $this->entityManager->flush();
 
@@ -110,7 +115,7 @@ class PrepareCampaignAudienceHandler
             $this->entityManager->flush();
 
             if (0 === $expected) {
-                $campaign->markAsFailed(BlockReasonEnum::Empty);
+                $this->failPreparation($campaign, BlockReasonEnum::Empty);
                 $staticSegment->errorSummary = 'SQL audience returned 0 valid emails.';
                 $this->entityManager->flush();
 
@@ -118,7 +123,7 @@ class PrepareCampaignAudienceHandler
             }
 
             if ($expected > self::TOO_LARGE_THRESHOLD) {
-                $campaign->markAsFailed(BlockReasonEnum::TooLarge);
+                $this->failPreparation($campaign, BlockReasonEnum::TooLarge);
                 $staticSegment->errorSummary = \sprintf('Audience %d > threshold %d.', $expected, self::TOO_LARGE_THRESHOLD);
                 $this->entityManager->flush();
 
@@ -148,11 +153,28 @@ class PrepareCampaignAudienceHandler
                 'campaign_id' => $message->mailchimpCampaignId,
                 'exception' => $e,
             ]);
-            $campaign->markAsFailed(BlockReasonEnum::MailchimpUnavailable);
+            $this->failPreparation($campaign, BlockReasonEnum::MailchimpUnavailable);
             $staticSegment->errorSummary = $e->getMessage();
             $this->entityManager->flush();
             throw $e; // let Messenger handle retry/DLQ
         }
+    }
+
+    /**
+     * Marks the campaign as failed and alerts (via logger->error → Sentry) when the user
+     * was awaiting an auto-send (pendingSend = true). markAsFailed() clears the flag silently,
+     * so the alert must be emitted before that mutation to surface the missed send.
+     */
+    private function failPreparation(MailchimpCampaign $campaign, BlockReasonEnum $reason): void
+    {
+        if ($campaign->isPendingSend()) {
+            $this->logger->error('[AudiencePrepare] Auto-send aborted: preparation failed', [
+                'campaign_id' => $campaign->getId(),
+                'block_reason' => $reason->value,
+            ]);
+        }
+
+        $campaign->markAsFailed($reason);
     }
 
     private function redispatchPendingChunks(MailchimpCampaign $campaign): void
@@ -172,6 +194,7 @@ class PrepareCampaignAudienceHandler
     private function resetTrackingFields(MailchimpStaticSegment $staticSegment): void
     {
         ++$staticSegment->attempts;
+        $staticSegment->buildStartedAt = new \DateTimeImmutable();
         $staticSegment->builtAt = null;
         $staticSegment->buildDurationMs = null;
         $staticSegment->preparedCount = null;
@@ -239,21 +262,5 @@ class PrepareCampaignAudienceHandler
 
         $segment->filterSnapshot = $snapshot;
         $segment->filterHash = hash('sha256', json_encode($snapshot, \JSON_THROW_ON_ERROR));
-    }
-
-    private function isAlreadyPreparedAndFresh(MailchimpCampaign $campaign): bool
-    {
-        if (PreparationStatusEnum::Ready !== $campaign->getPreparationStatus()) {
-            return false;
-        }
-
-        $message = $campaign->getMessage();
-        $filter = method_exists($message, 'getFilter') ? $message->getFilter() : null;
-        $filterUpdatedAt = $filter && method_exists($filter, 'getUpdatedAt') ? $filter->getUpdatedAt() : null;
-        $preparedAt = $campaign->getPreparedAt();
-
-        return null !== $filterUpdatedAt
-            && null !== $preparedAt
-            && $filterUpdatedAt < $preparedAt;
     }
 }

@@ -9,15 +9,21 @@ use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class AudienceMessagePreparer
 {
+    private LoggerInterface $logger;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
         private readonly SendStatusFactory $sendStatusFactory,
+        ?LoggerInterface $logger = null,
     ) {
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function prepare(AdherentMessage $message, Adherent $currentUser): PrepareResult
@@ -28,27 +34,22 @@ class AudienceMessagePreparer
             return PrepareResult::conflict($this->sendStatusFactory->build($campaign));
         }
 
-        if ($this->isAlreadyPreparedAndFresh($campaign)) {
-            return PrepareResult::alreadyReady($this->sendStatusFactory->build($campaign));
-        }
-
         $campaign->markAsPreparing($currentUser);
+        $campaign->markAsPendingSend();
         $this->entityManager->flush();
 
-        $this->bus->dispatch(new PrepareCampaignAudienceMessage($campaign->getId(), $currentUser->getId()));
+        try {
+            $this->bus->dispatch(new PrepareCampaignAudienceMessage($campaign->getId(), $currentUser->getId()));
+        } catch (\Throwable $e) {
+            $this->logger->error('[AudienceMessagePreparer] PrepareCampaignAudienceMessage dispatch failed', [
+                'campaign_id' => $campaign->getId(),
+                'exception' => $e,
+            ]);
+
+            throw $e;
+        }
 
         return PrepareResult::preparing($this->sendStatusFactory->build($campaign));
-    }
-
-    public function requestCancellation(AdherentMessage $message): void
-    {
-        $campaign = $this->findCampaign($message);
-        if (null === $campaign) {
-            return;
-        }
-
-        $campaign->requestCancellation();
-        $this->entityManager->flush();
     }
 
     private function resolveCampaign(AdherentMessage $message): MailchimpCampaign
@@ -77,20 +78,5 @@ class AudienceMessagePreparer
         $lockedBy = $campaign->getPreparationLockedBy();
 
         return null !== $lockedBy && $lockedBy->getId() !== $currentUser->getId();
-    }
-
-    private function isAlreadyPreparedAndFresh(MailchimpCampaign $campaign): bool
-    {
-        if (PreparationStatusEnum::Ready !== $campaign->getPreparationStatus()) {
-            return false;
-        }
-
-        $filter = $campaign->getMessage()->getFilter();
-        $filterUpdatedAt = $filter && method_exists($filter, 'getUpdatedAt') ? $filter->getUpdatedAt() : null;
-        $preparedAt = $campaign->getPreparedAt();
-
-        return null !== $filterUpdatedAt
-            && null !== $preparedAt
-            && $filterUpdatedAt < $preparedAt;
     }
 }

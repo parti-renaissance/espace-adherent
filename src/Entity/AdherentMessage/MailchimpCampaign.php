@@ -127,7 +127,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     private ?Adherent $preparationLockedBy = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $cancellationRequested = false;
+    private bool $pendingSend = false;
 
     #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
@@ -334,9 +334,19 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return $this->preparationLockedBy;
     }
 
-    public function isCancellationRequested(): bool
+    public function isPendingSend(): bool
     {
-        return $this->cancellationRequested;
+        return $this->pendingSend;
+    }
+
+    public function markAsPendingSend(): void
+    {
+        $this->pendingSend = true;
+    }
+
+    public function clearPendingSend(): void
+    {
+        $this->pendingSend = false;
     }
 
     public function canSend(): bool
@@ -356,6 +366,23 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return !$this->message instanceof AdherentMessage || !$this->message->isSent();
     }
 
+    /**
+     * The static segment is considered fresh when it was prepared after the last filter update.
+     * A null filterUpdatedAt — happens when the filter is missing or didn't expose the timestamp —
+     * counts as fresh: nothing has invalidated the prepared audience.
+     */
+    public function isAudienceFresh(): bool
+    {
+        if (null === $this->preparedAt) {
+            return false;
+        }
+
+        $filter = $this->message instanceof AdherentMessage ? $this->message->getFilter() : null;
+        $filterUpdatedAt = $filter instanceof AdherentMessageFilter ? $filter->getUpdatedAt() : null;
+
+        return null === $filterUpdatedAt || $filterUpdatedAt < $this->preparedAt;
+    }
+
     public function markAsPreparing(Adherent $lockedBy): void
     {
         $this->preparationStatus = PreparationStatusEnum::Preparing;
@@ -363,7 +390,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         $this->blockReason = null;
         $this->audienceCheck = null;
         $this->preparedAt = null;
-        $this->cancellationRequested = false;
     }
 
     public function markAsReady(AudienceCheckEnum $audienceCheck): void
@@ -377,11 +403,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     {
         $this->preparationStatus = PreparationStatusEnum::Failed;
         $this->blockReason = $blockReason;
-    }
-
-    public function requestCancellation(): void
-    {
-        $this->cancellationRequested = true;
+        $this->pendingSend = false;
     }
 
     public function getMailchimpStaticSegment(): ?MailchimpStaticSegment
