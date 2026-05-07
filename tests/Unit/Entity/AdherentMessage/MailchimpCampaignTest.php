@@ -66,15 +66,17 @@ class MailchimpCampaignTest extends TestCase
         self::assertTrue($campaign->canSend());
     }
 
-    public function testCanSendWithMismatchAudienceReturnsFalse(): void
+    public function testCanSendWithMismatchAudienceReturnsTrue(): void
     {
+        // Mismatch is informational only (Mailchimp member_count is unreliable);
+        // it must NOT block the send.
         $message = $this->createStub(AdherentMessage::class);
         $message->method('isSent')->willReturn(false);
         $campaign = $this->createCampaign($message);
 
         $campaign->markAsReady(AudienceCheckEnum::Mismatch);
 
-        self::assertFalse($campaign->canSend());
+        self::assertTrue($campaign->canSend());
     }
 
     public function testCanSendWhenMessageAlreadySentReturnsFalse(): void

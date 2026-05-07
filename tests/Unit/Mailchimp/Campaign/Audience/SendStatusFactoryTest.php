@@ -37,8 +37,11 @@ class SendStatusFactoryTest extends TestCase
         self::assertNotNull($payload['prepared_at']);
     }
 
-    public function testBuildMismatchAudienceCheckCanSendIsFalse(): void
+    public function testBuildMismatchAudienceCheckIsInformationalAndDoesNotBlockSend(): void
     {
+        // audienceCheck is purely informational: Mailchimp member_count is
+        // unreliable (lag) → we don't use Mismatch to block the send.
+        // The gate is preparationStatus + blockReason + isSent (cf. MailchimpCampaign::canSend).
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing($this->createUser('user@example.com'));
@@ -46,7 +49,7 @@ class SendStatusFactoryTest extends TestCase
 
         $payload = new SendStatusFactory()->build($campaign);
 
-        self::assertFalse($payload['can_send']);
+        self::assertTrue($payload['can_send']);
         self::assertSame(AudienceCheckEnum::Mismatch->value, $payload['audience_check']);
     }
 

@@ -14,6 +14,7 @@ use App\Adherent\Tag\TagEnum;
 use App\AppSession\SessionStatusEnum;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Donation\DonatorStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
@@ -1831,10 +1832,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $mandateValue = ltrim($electMandate, '!');
 
             if ($isExclude) {
-                $fromJoin[] = 'LEFT JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+                $fromJoin[] = 'LEFT JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type AND am.finish_at IS NULL';
                 $where[] = 'am.id IS NULL';
             } else {
-                $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type';
+                $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type AND am.finish_at IS NULL';
             }
 
             $params['mandate_join_type'] = 'elected_representative';
@@ -1913,6 +1914,35 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $where[] = 'a.tags '.(str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE')." :tag_contains_$idx";
             $params["tag_contains_$idx"] = '%'.$needle.'%';
             ++$idx;
+        }
+
+        if (null !== $isCertified = $filter->getIsCertified()) {
+            $where[] = $isCertified ? 'a.certified_at IS NOT NULL' : 'a.certified_at IS NULL';
+        }
+
+        if (null !== $firstName = $filter->getFirstName()) {
+            $where[] = 'a.first_name = :first_name';
+            $params['first_name'] = $firstName;
+        }
+
+        if (null !== $lastName = $filter->getLastName()) {
+            $where[] = 'a.last_name = :last_name';
+            $params['last_name'] = $lastName;
+        }
+
+        if (null !== $donatorStatus = $filter->getDonatorStatus()) {
+            // The donator status is not a denormalized column on adherents: it is derived from
+            // first_membership_donation / last_membership_donation. Aligned with DonatorStatusConditionBuilder
+            // (Mailchimp), which relies on the MERGE_FIELD_DONATION_YEARS field on the push audience side.
+            $params['donator_current_year'] = (int) new \DateTimeImmutable()->format('Y');
+            $types['donator_current_year'] = ParameterType::INTEGER;
+
+            $where[] = match ($donatorStatus) {
+                DonatorStatusEnum::DONATOR_N => 'YEAR(a.last_membership_donation) = :donator_current_year',
+                DonatorStatusEnum::DONATOR_N_X => 'a.first_membership_donation IS NOT NULL AND (a.last_membership_donation IS NULL OR YEAR(a.last_membership_donation) < :donator_current_year)',
+                DonatorStatusEnum::NOT_DONATOR => 'a.first_membership_donation IS NULL',
+                default => '1 = 0',
+            };
         }
 
         $scopeTargetJoin = '';

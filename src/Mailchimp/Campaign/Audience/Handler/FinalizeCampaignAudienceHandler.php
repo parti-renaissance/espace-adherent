@@ -84,6 +84,9 @@ class FinalizeCampaignAudienceHandler
 
         $listId = $this->mailchimpObjectIdMapping->getMainListId();
 
+        // member_count from Mailchimp is informational only: their indexation lags and the value
+        // can disagree with /campaigns/{id}.recipients.recipient_count. We compute audienceCheck
+        // for visibility but it does NOT block the send (see MailchimpCampaign::canSend).
         $segmentData = $this->driver->getSegment($segmentId, $listId);
         $prepared = (int) ($segmentData['member_count'] ?? 0);
 

@@ -181,6 +181,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         yield 'retry 2 -> 5min delay' => [2, 300_000];
         yield 'retry 3 -> 10min delay' => [3, 600_000];
         yield 'retry 4 -> 30min delay' => [4, 1_800_000];
+        yield 'retry 5 -> 60min delay' => [5, 3_600_000];
     }
 
     #[DataProvider('provideProgressiveDelays')]
@@ -231,7 +232,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
     public function testHandlerStopsAfterMaxRetries(): void
     {
-        $command = new RetrySendMailchimpCampaignCommand(123, 5);
+        $command = new RetrySendMailchimpCampaignCommand(123, 6);
 
         $message = $this->createStub(AdherentMessageInterface::class);
         $campaign = new MailchimpCampaign($message);
