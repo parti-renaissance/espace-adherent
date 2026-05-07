@@ -54,7 +54,7 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "50.00 EUR"
+        And I wait 10 seconds until I see "50.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "adherent@renaissance.code"
         And I am on payment status page for the last donation of "adherent@renaissance.code"
         Then I should be on "/adhesion/confirmation-email" wait otherwise
@@ -426,7 +426,7 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "50.00 EUR"
+        And I wait 10 seconds until I see "50.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
         And I am on payment status page for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/carte-adherent" wait otherwise

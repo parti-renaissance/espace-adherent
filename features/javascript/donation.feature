@@ -36,7 +36,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I click the "donation_request_autorisations" element
         And I click the "#step_3 button" selector
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "60.00 EUR"
+        And I wait 10 seconds until I see "60.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         And I am on payment status page for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
@@ -71,7 +71,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I click the "donation_request_autorisations" element
         And I click the "#step_3 button" selector
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "60.00 EUR"
+        And I wait 10 seconds until I see "60.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         And I am on payment status page for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
@@ -125,7 +125,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I click the "#step_2 button" selector
         And I click the "#step_3 button" selector
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "60.00 EUR"
+        And I wait 10 seconds until I see "60.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         And I am on payment status page for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
@@ -158,7 +158,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I click the "donation_request_autorisations" element
         And I click the "#step_3 button" selector
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "1500.00 EUR"
+        And I wait 10 seconds until I see "1500.00 EUR"
         When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         And I am on payment status page for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise

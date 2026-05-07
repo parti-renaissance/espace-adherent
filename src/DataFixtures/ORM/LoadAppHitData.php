@@ -110,7 +110,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
 
                 $activityUuid = Uuid::uuid4();
                 $sessionStart = $now
-                    ->sub(new \DateInterval('P'.$faker->numberBetween(0, 14).'D'))
+                    ->sub(new \DateInterval('P'.$faker->numberBetween(2, 14).'D'))
                     ->setTime($faker->numberBetween(8, 22), $faker->numberBetween(0, 59))
                 ;
 
