@@ -429,7 +429,13 @@ class Manager implements LoggerAwareInterface
             if ($success) {
                 $campaign->markAsSending();
             } else {
-                $campaign->markAsError($this->driver->getLastError());
+                $lastError = $this->driver->getLastError();
+                $this->logger->error('[Mailchimp] sendCampaign refused — retry scheduled in 30s', [
+                    'campaign_id' => $campaign->getId(),
+                    'external_id' => $campaign->getExternalId(),
+                    'last_error' => $lastError,
+                ]);
+                $campaign->markAsError($lastError);
                 $this->bus->dispatch(
                     new RetrySendMailchimpCampaignCommand($campaign->getId()),
                     [new DelayStamp(30_000)]
