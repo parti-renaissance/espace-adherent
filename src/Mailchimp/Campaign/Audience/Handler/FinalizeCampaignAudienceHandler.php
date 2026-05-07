@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\Audience\Handler;
 
+use App\AdherentMessage\Command\SendAdherentMessageCommand;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\AudienceCheckCalculator;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
@@ -16,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class FinalizeCampaignAudienceHandler
@@ -28,6 +30,7 @@ class FinalizeCampaignAudienceHandler
         private readonly Driver $driver,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly AudienceCheckCalculator $audienceCheckCalculator,
+        private readonly MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -46,12 +49,12 @@ class FinalizeCampaignAudienceHandler
 
         $this->entityManager->refresh($campaign);
 
-        // Idempotent: a previous dispatch already completed.
+        // Re-entry path: a prior finalize already marked Ready, but pendingSend is still set
+        // (auto-send dispatch failed previously). Replay only the dispatch step.
         if (PreparationStatusEnum::Ready === $campaign->getPreparationStatus()) {
-            return;
-        }
+            $this->dispatchAutoSendIfNeeded($campaign);
+            $this->entityManager->flush();
 
-        if ($campaign->isCancellationRequested()) {
             return;
         }
 
@@ -88,12 +91,52 @@ class FinalizeCampaignAudienceHandler
         $staticSegment->preparedCount = $counts[SegmentMemberStatusEnum::Added->value] ?? 0;
         $staticSegment->refusedCount = $counts[SegmentMemberStatusEnum::Refused->value] ?? 0;
         $staticSegment->erroredCount = $counts[SegmentMemberStatusEnum::Errored->value] ?? 0;
-        $staticSegment->builtAt = new \DateTimeImmutable();
+
+        $builtAt = new \DateTimeImmutable();
+        $staticSegment->builtAt = $builtAt;
+        if (null !== $staticSegment->buildStartedAt) {
+            $staticSegment->buildDurationMs = (int) (($builtAt->format('U.u') - $staticSegment->buildStartedAt->format('U.u')) * 1000);
+        }
 
         $expected = $staticSegment->expectedCount ?? 0;
         $audienceCheck = $this->audienceCheckCalculator->compute($expected, $prepared);
 
         $campaign->markAsReady($audienceCheck);
         $this->entityManager->flush();
+
+        $this->dispatchAutoSendIfNeeded($campaign);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Dispatches the deferred SendAdherentMessageCommand if the campaign asked for it.
+     *
+     * Order is intentional: dispatch first, then clearPendingSend. If the dispatch raises
+     * (broker down, transport error), pendingSend stays true so the Messenger retry of
+     * the FinalizeCampaignAudienceMessage re-enters via the Ready guard and replays.
+     */
+    private function dispatchAutoSendIfNeeded(MailchimpCampaign $campaign): void
+    {
+        if (!$campaign->isPendingSend() || !$campaign->canSend()) {
+            return;
+        }
+
+        $message = $campaign->getMessage();
+        if (null === $message->getId()) {
+            return;
+        }
+
+        try {
+            $this->bus->dispatch(new SendAdherentMessageCommand($message->getId()));
+            $campaign->clearPendingSend();
+        } catch (\Throwable $e) {
+            $this->logger->error('[AudienceFinalize] Auto-send dispatch failed', [
+                'campaign_id' => $campaign->getId(),
+                'message_id' => $message->getId(),
+                'exception' => $e,
+            ]);
+
+            throw $e;
+        }
     }
 }

@@ -53,10 +53,6 @@ class ProcessAudienceChunkHandler
             return;
         }
 
-        if ($campaign->isCancellationRequested()) {
-            return;
-        }
-
         $segmentId = $campaign->getStaticSegmentId();
         $staticSegment = $campaign->getMailchimpStaticSegment();
         if (null === $segmentId || null === $staticSegment) {

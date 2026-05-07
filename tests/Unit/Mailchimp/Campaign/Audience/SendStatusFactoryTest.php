@@ -30,7 +30,7 @@ class SendStatusFactoryTest extends TestCase
         self::assertSame(AudienceCheckEnum::Drift->value, $payload['audience_check']);
         self::assertNull($payload['block_reason']);
         self::assertTrue($payload['can_send']);
-        self::assertFalse($payload['cancellation_requested']);
+        self::assertArrayNotHasKey('cancellation_requested', $payload);
         self::assertSame(1000, $payload['counts']['expected']);
         self::assertSame(980, $payload['counts']['prepared']);
         self::assertSame(-20, $payload['counts']['diff']);
@@ -93,19 +93,6 @@ class SendStatusFactoryTest extends TestCase
         self::assertNull($payload['counts']['diff']);
         self::assertSame(0, $payload['progress']['chunks_done']);
         self::assertFalse($payload['can_send']);
-    }
-
-    public function testBuildCancellationRequestedFlagPropagatedToPayload(): void
-    {
-        $message = new AdherentMessage();
-        $campaign = new MailchimpCampaign($message);
-        $campaign->markAsPreparing($this->createUser('user@example.com'));
-        $campaign->requestCancellation();
-
-        $payload = new SendStatusFactory()->build($campaign);
-
-        self::assertTrue($payload['cancellation_requested']);
-        self::assertSame(PreparationStatusEnum::Preparing->value, $payload['preparation_status']);
     }
 
     private function attachSegmentWithCounts(MailchimpCampaign $campaign, int $expected, int $prepared): void

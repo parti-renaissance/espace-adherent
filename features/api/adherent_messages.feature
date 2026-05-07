@@ -237,7 +237,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,
@@ -337,7 +336,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,
@@ -454,7 +452,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,
@@ -565,7 +562,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,
@@ -688,7 +684,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,
@@ -3322,7 +3317,6 @@ Feature:
                     "audience_check": null,
                     "block_reason": null,
                     "can_send": false,
-                    "cancellation_requested": false,
                     "counts": {
                         "expected": null,
                         "prepared": null,

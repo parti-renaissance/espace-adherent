@@ -24,7 +24,7 @@ class MailchimpCampaignTest extends TestCase
         self::assertNull($campaign->getBlockReason());
         self::assertNull($campaign->getPreparedAt());
         self::assertNull($campaign->getPreparationLockedBy());
-        self::assertFalse($campaign->isCancellationRequested());
+        self::assertFalse($campaign->isPendingSend());
     }
 
     public function testMarkAsPreparingResetsAllPreparationFieldsAndStoresLockedBy(): void
@@ -41,7 +41,6 @@ class MailchimpCampaignTest extends TestCase
         self::assertNull($campaign->getBlockReason());
         self::assertNull($campaign->getAudienceCheck());
         self::assertNull($campaign->getPreparedAt());
-        self::assertFalse($campaign->isCancellationRequested());
     }
 
     public function testMarkAsReadyWithMatchAudienceAllowsSendingWhenMessageNotSent(): void
@@ -108,15 +107,29 @@ class MailchimpCampaignTest extends TestCase
         self::assertFalse($campaign->canSend());
     }
 
-    public function testRequestCancellationFlipsTheFlag(): void
+    public function testMarkAsPendingSendFlipsFlag(): void
     {
         $campaign = $this->createCampaign();
 
-        self::assertFalse($campaign->isCancellationRequested());
+        self::assertFalse($campaign->isPendingSend());
 
-        $campaign->requestCancellation();
+        $campaign->markAsPendingSend();
 
-        self::assertTrue($campaign->isCancellationRequested());
+        self::assertTrue($campaign->isPendingSend());
+
+        $campaign->clearPendingSend();
+
+        self::assertFalse($campaign->isPendingSend());
+    }
+
+    public function testMarkAsFailedClearsPendingSend(): void
+    {
+        $campaign = $this->createCampaign();
+        $campaign->markAsPendingSend();
+
+        $campaign->markAsFailed(BlockReasonEnum::Empty);
+
+        self::assertFalse($campaign->isPendingSend());
     }
 
     private function createCampaign(?AdherentMessageInterface $message = null): MailchimpCampaign

@@ -39,31 +39,6 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $handler(new ProcessAudienceChunkMessage(99, 0));
     }
 
-    public function testCancellationRequestedSkips(): void
-    {
-        $message = new AdherentMessage();
-        $campaign = new MailchimpCampaign($message);
-        $this->setEntityId($campaign, 7);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
-        $campaign->requestCancellation();
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(self::once())->method('find')->willReturn($campaign);
-        $em->expects(self::once())->method('refresh')->with($campaign);
-
-        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
-        $repo->expects(self::never())->method('findPendingEmailsByChunk');
-
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::never())->method('send');
-
-        $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects(self::never())->method('dispatch');
-
-        $handler = $this->buildHandler($em, $repo, $driver, $bus);
-        $handler(new ProcessAudienceChunkMessage(7, 0));
-    }
-
     public function testNoPendingRowsRetrySafeNoOp(): void
     {
         $message = new AdherentMessage();
