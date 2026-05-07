@@ -74,9 +74,9 @@ class ProcessAudienceChunkHandler
 
         $listId = $this->mailchimpObjectIdMapping->getMainListId();
 
-        $idToStatus = $this->pushChunkAndMapStatuses($segmentId, $listId, $idToEmail);
+        [$idToStatus, $idToErrorMessage] = $this->pushChunkAndMapStatuses($segmentId, $listId, $idToEmail);
 
-        $this->memberRepository->markRowsAsProcessed($idToStatus);
+        $this->memberRepository->markRowsAsProcessed($idToStatus, $idToErrorMessage);
 
         $this->incrementChunksDone($staticSegment);
 
@@ -86,11 +86,12 @@ class ProcessAudienceChunkHandler
     }
 
     /**
-     * Push the chunk to Mailchimp and map per-row processing status.
+     * Push the chunk to Mailchimp and map per-row processing status + error message.
      *
      * @param array<int, string> $idToEmail row id => email
      *
-     * @return array<int, SegmentMemberStatusEnum> row id => status
+     * @return array{0: array<int, SegmentMemberStatusEnum>, 1: array<int, string>}
+     *                                                                              [0] row id => status, [1] row id => Mailchimp error message (only refused rows)
      */
     private function pushChunkAndMapStatuses(int $segmentId, string $listId, array $idToEmail): array
     {
@@ -103,8 +104,26 @@ class ProcessAudienceChunkHandler
         }
 
         $statusCode = $response->getStatusCode();
+
+        // Mailchimp returns HTTP 400 with errors[].field = "members_to_add" when *all* emails in the
+        // batch are not list subscribers. Unlike the 200 path (per-email errors), the whole request
+        // is rejected. Treat as "all refused" instead of throwing — otherwise Messenger retries this
+        // forever and the failure subscriber finally marks the chunk errored.
+        if (400 === $statusCode) {
+            $data = $response->toArray(throw: false);
+            if ($this->isAllRefusedError($data)) {
+                $globalMessage = $this->extractAllRefusedMessage($data);
+                $ids = array_keys($idToEmail);
+
+                return [
+                    array_fill_keys($ids, SegmentMemberStatusEnum::Refused),
+                    array_fill_keys($ids, $globalMessage),
+                ];
+            }
+        }
+
         if (200 !== $statusCode && 204 !== $statusCode) {
-            $body = (string) $response->getContent(throw: false);
+            $body = $response->getContent(throw: false);
             throw new \RuntimeException(\sprintf('Mailchimp HTTP %d on chunk push: %s', $statusCode, substr($body, 0, 500)));
         }
 
@@ -117,23 +136,42 @@ class ProcessAudienceChunkHandler
             throw new \RuntimeException(\sprintf('Mailchimp 200 but total_added=0 on chunk of %d emails.', \count($emails)));
         }
 
-        $refused = $this->extractRefusedEmails($data);
-        $refusedSet = array_flip($refused);
+        $emailToError = $this->extractRefusedErrors($data);
 
         $idToStatus = [];
+        $idToErrorMessage = [];
         foreach ($idToEmail as $rowId => $email) {
-            $idToStatus[$rowId] = isset($refusedSet[$email])
-                ? SegmentMemberStatusEnum::Refused
-                : SegmentMemberStatusEnum::Added;
+            if (isset($emailToError[$email])) {
+                $idToStatus[$rowId] = SegmentMemberStatusEnum::Refused;
+                $idToErrorMessage[$rowId] = $emailToError[$email];
+            } else {
+                $idToStatus[$rowId] = SegmentMemberStatusEnum::Added;
+            }
         }
 
-        return $idToStatus;
+        return [$idToStatus, $idToErrorMessage];
+    }
+
+    private function isAllRefusedError(array $data): bool
+    {
+        $errors = $data['errors'] ?? null;
+        if (!\is_array($errors)) {
+            return false;
+        }
+
+        foreach ($errors as $error) {
+            if (\is_array($error) && 'members_to_add' === ($error['field'] ?? null)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * @return list<string>
+     * @return array<string, string> email => Mailchimp error message
      */
-    private function extractRefusedEmails(array $data): array
+    private function extractRefusedErrors(array $data): array
     {
         $errors = $data['errors'] ?? [];
         if (!\is_array($errors)) {
@@ -143,11 +181,25 @@ class ProcessAudienceChunkHandler
         $refused = [];
         foreach ($errors as $error) {
             if (\is_array($error) && isset($error['email_address'])) {
-                $refused[] = (string) $error['email_address'];
+                $refused[(string) $error['email_address']] = (string) ($error['error'] ?? 'Mailchimp refused this email');
             }
         }
 
         return $refused;
+    }
+
+    private function extractAllRefusedMessage(array $data): string
+    {
+        $errors = $data['errors'] ?? null;
+        if (\is_array($errors)) {
+            foreach ($errors as $error) {
+                if (\is_array($error) && 'members_to_add' === ($error['field'] ?? null) && !empty($error['message'])) {
+                    return (string) $error['message'];
+                }
+            }
+        }
+
+        return 'None of the emails were subscribed to the list';
     }
 
     private function incrementChunksDone(MailchimpStaticSegment $staticSegment): void

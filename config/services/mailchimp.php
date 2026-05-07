@@ -40,6 +40,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->args([
             service('.inner'),
             service(App\Mailchimp\Concurrency\MailchimpSemaphore::class),
+            service(App\Mailchimp\Concurrency\MailchimpPriorityContext::class),
         ]);
 
     $services->set(App\Mailchimp\Manager::class)

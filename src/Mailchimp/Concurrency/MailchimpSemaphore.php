@@ -12,8 +12,11 @@ use Symfony\Component\Lock\LockFactory;
 class MailchimpSemaphore
 {
     public const int SLOT_COUNT = 10;
+    /** Hard cap for Low-priority callers (mailchimp_batch). Reserves SLOT_COUNT - LOW_PRIORITY_SLOT_LIMIT slots for High. */
+    public const int LOW_PRIORITY_SLOT_LIMIT = 8;
     public const int TTL_SECONDS = 90;
-    public const int ACQUIRE_TIMEOUT_MS = 10_000;
+    /** Long enough to outlast a full Lock TTL recovery cycle if all slots are stuck on crashed workers. Beyond this, throwing surfaces a real systemic issue (Redis outage, etc.). */
+    public const int ACQUIRE_TIMEOUT_MS = 120_000;
 
     private const array BACKOFF_STEPS_MS = [100, 250, 500, 1_000, 2_000];
 
@@ -26,8 +29,10 @@ class MailchimpSemaphore
         $this->logger = $logger ?? new NullLogger();
     }
 
-    public function acquire(): MailchimpSlot
+    public function acquire(Priority $priority = Priority::High): MailchimpSlot
     {
+        $maxSlot = Priority::Low === $priority ? self::LOW_PRIORITY_SLOT_LIMIT : self::SLOT_COUNT;
+
         $startMs = $this->nowMs();
         $stepIndex = 0;
         $attempt = 0;
@@ -35,7 +40,7 @@ class MailchimpSemaphore
         while (true) {
             ++$attempt;
             try {
-                $slot = $this->tryAcquireRandomSlot();
+                $slot = $this->tryAcquireRandomSlot($maxSlot);
             } catch (\Throwable $e) {
                 $this->logger->warning('Mailchimp semaphore failed to reach Redis — fail-open', [
                     'exception' => $e,
@@ -62,9 +67,9 @@ class MailchimpSemaphore
         }
     }
 
-    private function tryAcquireRandomSlot(): ?MailchimpSlot
+    private function tryAcquireRandomSlot(int $maxSlot): ?MailchimpSlot
     {
-        $slotIndex = random_int(0, self::SLOT_COUNT - 1);
+        $slotIndex = random_int(0, $maxSlot - 1);
         $lock = $this->lockFactory->createLock(\sprintf('mailchimp.slot.%d', $slotIndex), (float) self::TTL_SECONDS);
 
         if (!$lock->acquire(false)) {

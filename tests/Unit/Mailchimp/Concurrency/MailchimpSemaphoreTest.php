@@ -8,6 +8,7 @@ use App\Mailchimp\Concurrency\Exception\MailchimpConcurrencyTimeoutException;
 use App\Mailchimp\Concurrency\MailchimpSemaphore;
 use App\Mailchimp\Concurrency\MailchimpSlot;
 use App\Mailchimp\Concurrency\NullSlot;
+use App\Mailchimp\Concurrency\Priority;
 use App\Mailchimp\Concurrency\RedisSlot;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Lock\Exception\LockAcquiringException;
@@ -89,7 +90,7 @@ final class MailchimpSemaphoreTest extends TestCase
         $semaphore = new TestableMailchimpSemaphore($lockFactory);
 
         $this->expectException(MailchimpConcurrencyTimeoutException::class);
-        $this->expectExceptionMessage('10000ms');
+        $this->expectExceptionMessage('120000ms');
 
         $semaphore->acquire();
     }
@@ -153,6 +154,71 @@ final class MailchimpSemaphoreTest extends TestCase
         $slot->release();
 
         self::assertInstanceOf(MailchimpSlot::class, $slot);
+    }
+
+    public function testLowPriorityNeverPicksReservedSlots(): void
+    {
+        $lock = $this->createMock(SharedLockInterface::class);
+        $lock->method('acquire')->with(false)->willReturn(true);
+
+        $pickedKeys = [];
+        $lockFactory = $this->createMock(LockFactory::class);
+        $lockFactory
+            ->expects(self::atLeast(50))
+            ->method('createLock')
+            ->willReturnCallback(function (string $key) use (&$pickedKeys, $lock): SharedLockInterface {
+                $pickedKeys[] = $key;
+
+                return $lock;
+            });
+
+        $semaphore = new TestableMailchimpSemaphore($lockFactory);
+
+        for ($i = 0; $i < 50; ++$i) {
+            $semaphore->acquire(Priority::Low);
+        }
+
+        $reservedKeys = [];
+        for ($i = MailchimpSemaphore::LOW_PRIORITY_SLOT_LIMIT; $i < MailchimpSemaphore::SLOT_COUNT; ++$i) {
+            $reservedKeys[] = \sprintf('mailchimp.slot.%d', $i);
+        }
+
+        foreach ($pickedKeys as $key) {
+            self::assertNotContains($key, $reservedKeys, 'Low priority must not pick reserved slots');
+        }
+    }
+
+    public function testHighPriorityCanPickAnySlot(): void
+    {
+        $allReachableSlots = [];
+        for ($i = 0; $i < MailchimpSemaphore::SLOT_COUNT; ++$i) {
+            $allReachableSlots[\sprintf('mailchimp.slot.%d', $i)] = false;
+        }
+
+        $lock = $this->createMock(SharedLockInterface::class);
+        $lock->method('acquire')->with(false)->willReturn(true);
+
+        $lockFactory = $this->createMock(LockFactory::class);
+        $lockFactory
+            ->method('createLock')
+            ->willReturnCallback(function (string $key) use (&$allReachableSlots, $lock): SharedLockInterface {
+                if (\array_key_exists($key, $allReachableSlots)) {
+                    $allReachableSlots[$key] = true;
+                }
+
+                return $lock;
+            });
+
+        $semaphore = new TestableMailchimpSemaphore($lockFactory);
+
+        // 200 acquires gives ~99.99% chance of covering all 10 slots if random is uniform.
+        for ($i = 0; $i < 200; ++$i) {
+            $semaphore->acquire(Priority::High);
+        }
+
+        foreach ($allReachableSlots as $key => $reached) {
+            self::assertTrue($reached, \sprintf('High priority should be able to reach %s', $key));
+        }
     }
 }
 

@@ -24,6 +24,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'middleware' => [
                         'doctrine_ping_connection',
                         App\Messenger\LockMiddleware::class,
+                        App\Mailchimp\Messenger\MailchimpHandlerMiddleware::class,
                         'doctrine_close_connection',
                     ],
                 ],
@@ -99,7 +100,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                         ],
                     ],
                 ],
-                'mailchimp_batch' => [
+                App\Mailchimp\Synchronisation\QueuePriorityLevelEnum::QUEUE_NAME => [
                     'dsn' => '%env(RABBITMQ_DSN)%',
                     'retry_strategy' => [
                         'delay' => 10000,
@@ -111,7 +112,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                             'default_publish_routing_key' => 'mailchimp.batch',
                         ],
                         'queues' => [
-                            'mailchimp_batch' => [
+                            App\Mailchimp\Synchronisation\QueuePriorityLevelEnum::QUEUE_NAME => [
                                 'binding_keys' => [
                                     'mailchimp.batch',
                                 ],
