@@ -36,6 +36,10 @@ class CommitteeMembershipManager
             $this->unfollowCommittee($membership);
         }
 
+        if ($this->committeeMembershipRepository->findOneBy(['adherent' => $adherent, 'committee' => $committee])) {
+            return;
+        }
+
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
         $membership->setTrigger($trigger);
 
