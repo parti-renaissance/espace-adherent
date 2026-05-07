@@ -245,7 +245,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function setPhone(?PhoneNumber $phone): self
     {
-        $this->phone = PhoneNumberUtils::isFrench($phone)
+        $this->phone = PhoneNumberUtils::isFrench($phone) && PhoneNumberUtils::isMobile($phone)
             ? PhoneNumberUtils::format($phone, PhoneNumberFormat::E164)
             : null;
 
