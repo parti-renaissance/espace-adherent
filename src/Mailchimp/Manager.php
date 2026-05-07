@@ -108,7 +108,7 @@ class Manager implements LoggerAwareInterface
                 if ($smsType) {
                     $adherent->addSubscriptionType($smsType);
                     $this->logger?->info('[Mailchimp] SMS reconciled: added locally to match Mailchimp', [
-                        'email' => $adherent->getEmailAddress(),
+                        'adherentUuid' => $adherent->getUuidAsString(),
                     ]);
                 }
             } elseif (ContactStatusEnum::UNSUBSCRIBED === $smsStatus) {
@@ -117,7 +117,7 @@ class Manager implements LoggerAwareInterface
                     $this->smsOptOutRepository->add(PhoneNumberUtils::format($adherent->getPhone()), SmsOptOutSourceEnum::Mailchimp);
                 }
                 $this->logger?->info('[Mailchimp] SMS reconciled: removed locally (carrier opt-out)', [
-                    'email' => $adherent->getEmailAddress(),
+                    'adherentUuid' => $adherent->getUuidAsString(),
                 ]);
             }
         }
@@ -129,17 +129,12 @@ class Manager implements LoggerAwareInterface
 
         $result = false;
         $email = $message->getEmailAddress();
-
-        $this->logger?->info('[Mailchimp] editMember start', [
-            'email' => $email,
-            'contactId' => $adherent->mailchimpContactId,
-        ]);
+        $adherentUuid = $adherent->getUuidAsString();
 
         try {
             $contactRequest = $requestBuilder->buildContactRequest($email);
 
             if ($adherent->mailchimpContactId) {
-                $this->logger?->info('[Mailchimp] updateContact', ['email' => $email, 'contactId' => $adherent->mailchimpContactId]);
                 $result = $this->driver->updateContact(
                     $adherent->mailchimpContactId,
                     $contactRequest,
@@ -147,7 +142,6 @@ class Manager implements LoggerAwareInterface
                     true
                 );
             } else {
-                $this->logger?->info('[Mailchimp] addContact', ['email' => $email]);
                 $contactId = $this->driver->addContact($contactRequest, $listId, true);
 
                 if (null !== $contactId) {
@@ -156,20 +150,18 @@ class Manager implements LoggerAwareInterface
                 }
             }
 
-            $this->logger?->info('[Mailchimp] contact sync OK', ['email' => $email]);
-
             $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
             $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
             $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
             // Reset unsubscription request date
             $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
-            $this->logger?->warning('[Mailchimp] invalid email', ['email' => $email]);
+            $this->logger?->warning('[Mailchimp] invalid email', ['adherentUuid' => $adherentUuid]);
             $adherent->emailStatusComment = 'Email invalid';
         } catch (InvalidPayloadException $e) {
             // Fallback to legacy /members endpoint
             $this->logger?->warning('[Mailchimp] BETA contact endpoint failed, falling back to member endpoint', [
-                'email' => $email,
+                'adherentUuid' => $adherentUuid,
                 'error' => $e->getMessage(),
             ]);
             try {
@@ -178,7 +170,6 @@ class Manager implements LoggerAwareInterface
                     $listId,
                     true
                 );
-                $this->logger?->info('[Mailchimp] legacy member sync OK', ['email' => $email]);
                 $adherent->emailStatusComment = null;
                 $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
                 $adherent->mailchimpSyncEndpoint = self::API_MEMBER;
@@ -189,13 +180,12 @@ class Manager implements LoggerAwareInterface
                 $adherent->setEmailUnsubscribed(true);
                 $adherent->emailStatusComment = $fallbackException->getMessage();
             } catch (FailedSyncException $fallbackException) {
-                $this->logger?->error('[Mailchimp] legacy member sync failed', ['email' => $email, 'error' => $fallbackException->getMessage()]);
+                $this->logger?->error('[Mailchimp] legacy member sync failed', ['adherentUuid' => $adherentUuid, 'error' => $fallbackException->getMessage()]);
                 $adherent->lastMailchimpFailedSyncResponse = $fallbackException->getMessage();
             }
         } catch (SmsPhoneAlreadySubscribedException $e) {
             $this->logger?->warning('[Mailchimp] SMS phone conflict, retrying without SMS', [
-                'email' => $email,
-                'phone' => $e->phone,
+                'adherentUuid' => $adherentUuid,
                 'error' => $e->getMessage(),
             ]);
 
@@ -218,7 +208,6 @@ class Manager implements LoggerAwareInterface
                 }
 
                 if ($result) {
-                    $this->logger?->info('[Mailchimp] retry without SMS OK', ['email' => $email]);
                     $adherent->emailStatusComment = null;
                     $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
                     $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
@@ -226,13 +215,13 @@ class Manager implements LoggerAwareInterface
                 }
             } catch (\Throwable $retryException) {
                 $this->logger?->error('[Mailchimp] retry without SMS failed', [
-                    'email' => $email,
+                    'adherentUuid' => $adherentUuid,
                     'error' => $retryException->getMessage(),
                 ]);
                 $adherent->lastMailchimpFailedSyncResponse = $retryException->getMessage();
             }
         } catch (RemovedContactStatusException $e) {
-            $this->logger?->warning('[Mailchimp] removed contact status, redispatching', ['email' => $email]);
+            $this->logger?->warning('[Mailchimp] removed contact status, redispatching', ['adherentUuid' => $adherentUuid]);
             $adherent->setEmailUnsubscribed(true);
             $adherent->emailStatusComment = $e->getMessage();
             // Redispatch to re-sync after Mailchimp has processed the unsubscription
@@ -240,12 +229,11 @@ class Manager implements LoggerAwareInterface
 
             return;
         } catch (FailedSyncException $e) {
-            $this->logger?->error('[Mailchimp] sync failed', ['email' => $email, 'error' => $e->getMessage()]);
+            $this->logger?->error('[Mailchimp] sync failed', ['adherentUuid' => $adherentUuid, 'error' => $e->getMessage()]);
             $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
         }
 
         if ($result) {
-            $this->logger?->info('[Mailchimp] updating member tags', ['email' => $email]);
             $this->updateMemberTags(
                 $email,
                 $this->mailchimpObjectIdMapping->getMainListId(),
@@ -631,10 +619,12 @@ class Manager implements LoggerAwareInterface
 
     private function updateMemberTags(string $emailAddress, string $listId, RequestBuilder $requestBuilder): void
     {
-        $currentTags = $this->driver->getMemberTags($emailAddress, $listId);
-
+        // Only push the explicit active/inactive sets — do NOT GET current tags and mark them all
+        // false, otherwise we wipe tags managed outside RequestBuilder (national_event:*, static
+        // labels, etc.) on every sync. The RequestBuilder already declares which managed tags need
+        // to be deactivated based on the adherent state via getInactiveTags().
         $this->driver->updateMemberTags(
-            $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
+            $requestBuilder->createMemberTagsRequest($emailAddress),
             $listId
         );
     }
