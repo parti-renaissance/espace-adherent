@@ -53,11 +53,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     shortName: 'NationalEventInscription',
     operations: [
-        new GetCollection(order: ['createdAt' => 'DESC']),
-        new Put(requirements: ['uuid' => '%pattern_uuid%'], normalizationContext: ['groups' => []], output: RemainingStatsOutput::class, processor: UpdateStatusPutProcessor::class),
+        new GetCollection(
+            order: ['createdAt' => 'DESC'],
+            security: "is_granted('ROLE_CANARY_TESTER')",
+        ),
+        new Put(
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => []],
+            security: "is_granted('ROLE_CANARY_TESTER')",
+            output: RemainingStatsOutput::class,
+            processor: UpdateStatusPutProcessor::class,
+        ),
         new Post(
             uriTemplate: '/national_event_inscriptions/next-to-validate',
             controller: GetNextInscriptionForValidationController::class,
+            security: "is_granted('ROLE_CANARY_TESTER')",
             deserialize: false,
         ),
         new Post(
