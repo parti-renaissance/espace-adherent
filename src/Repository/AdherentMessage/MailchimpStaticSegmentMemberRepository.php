@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\AdherentMessage;
 
-use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -49,39 +49,47 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
     /**
      * Apply per-row processing status updates returned by Mailchimp push.
      *
-     * @param array<int, SegmentMemberStatusEnum> $idToStatus row id => status
+     * @param array<int, SegmentMemberStatusEnum> $idToStatus       row id => status
+     * @param array<int, string>                  $idToErrorMessage row id => Mailchimp error message
+     *                                                              (only set for refused/errored rows)
      */
-    public function markRowsAsProcessed(array $idToStatus, ?string $errorMessage = null): void
+    public function markRowsAsProcessed(array $idToStatus, array $idToErrorMessage = []): void
     {
         if ([] === $idToStatus) {
             return;
         }
 
-        $grouped = [];
+        // Group rows by (status, errorMessage) so each unique combination becomes a single UPDATE.
+        // In practice Mailchimp returns the same error message for all refused rows of a chunk,
+        // so this typically collapses to 1-2 buckets.
+        $buckets = [];
         foreach ($idToStatus as $id => $status) {
-            $grouped[$status->value][] = $id;
+            $errorMessage = $idToErrorMessage[$id] ?? null;
+            $key = $status->value.'|'.($errorMessage ?? '');
+            if (!isset($buckets[$key])) {
+                $buckets[$key] = ['status' => $status, 'errorMessage' => $errorMessage, 'ids' => []];
+            }
+            $buckets[$key]['ids'][] = $id;
         }
 
         $em = $this->getEntityManager();
         $now = new \DateTimeImmutable();
 
-        foreach ($grouped as $statusValue => $ids) {
-            $status = SegmentMemberStatusEnum::from($statusValue);
-
+        foreach ($buckets as $bucket) {
             $qb = $em->createQueryBuilder()
                 ->update(MailchimpStaticSegmentMember::class, 'm')
                 ->set('m.processingStatus', ':status')
                 ->set('m.processedAt', ':now')
                 ->where('m.id IN (:ids)')
-                ->setParameter('status', $status)
+                ->setParameter('status', $bucket['status'])
                 ->setParameter('now', $now)
-                ->setParameter('ids', $ids)
+                ->setParameter('ids', $bucket['ids'])
             ;
 
-            if (SegmentMemberStatusEnum::Errored === $status && null !== $errorMessage) {
+            if (null !== $bucket['errorMessage']) {
                 $qb
                     ->set('m.errorMessage', ':errorMessage')
-                    ->setParameter('errorMessage', $errorMessage)
+                    ->setParameter('errorMessage', $bucket['errorMessage'])
                 ;
             }
 
@@ -121,15 +129,15 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
     public function markChunkAsErroredByCampaignId(int $campaignId, int $chunkNumber, ?string $errorMessage): int
     {
         $row = $this->getEntityManager()->createQueryBuilder()
-            ->select('IDENTITY(c.mailchimpStaticSegment) AS staticSegmentId')
-            ->from(MailchimpCampaign::class, 'c')
-            ->where('c.id = :id')
+            ->select('s.id AS staticSegmentId')
+            ->from(MailchimpStaticSegment::class, 's')
+            ->where('IDENTITY(s.campaign) = :id')
             ->setParameter('id', $campaignId)
             ->getQuery()
             ->getOneOrNullResult()
         ;
 
-        if (null === $row || null === $row['staticSegmentId']) {
+        if (null === $row) {
             return 0;
         }
 

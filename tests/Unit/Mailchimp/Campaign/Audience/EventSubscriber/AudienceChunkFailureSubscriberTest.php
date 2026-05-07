@@ -8,6 +8,7 @@ use App\Mailchimp\Campaign\Audience\EventSubscriber\AudienceChunkFailureSubscrib
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
+use App\Mailchimp\Synchronisation\QueuePriorityLevelEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -26,7 +27,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 
         $event = new WorkerMessageFailedEvent(
             new Envelope(new ProcessAudienceChunkMessage(7, 3)),
-            'mailchimp_batch',
+            QueuePriorityLevelEnum::QUEUE_NAME,
             new \RuntimeException('temporary failure'),
         );
         $event->setForRetry();
@@ -71,7 +72,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 
         $event = new WorkerMessageFailedEvent(
             new Envelope(new ProcessAudienceChunkMessage(7, 3)),
-            'mailchimp_batch',
+            QueuePriorityLevelEnum::QUEUE_NAME,
             new \RuntimeException('Mailchimp HTTP 500'),
         );
 
@@ -96,7 +97,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
 
         $event = new WorkerMessageFailedEvent(
             new Envelope(new ProcessAudienceChunkMessage(7, 3)),
-            'mailchimp_batch',
+            QueuePriorityLevelEnum::QUEUE_NAME,
             new \RuntimeException($longMessage),
         );
 

@@ -114,10 +114,13 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         ;
         $repo->expects(self::once())
             ->method('markRowsAsProcessed')
-            ->with([
-                10 => SegmentMemberStatusEnum::Added,
-                11 => SegmentMemberStatusEnum::Added,
-            ])
+            ->with(
+                [
+                    10 => SegmentMemberStatusEnum::Added,
+                    11 => SegmentMemberStatusEnum::Added,
+                ],
+                [],
+            )
         ;
         $repo->expects(self::once())
             ->method('existsPending')
@@ -194,10 +197,15 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         ]);
         $repo->expects(self::once())
             ->method('markRowsAsProcessed')
-            ->with([
-                10 => SegmentMemberStatusEnum::Added,
-                11 => SegmentMemberStatusEnum::Refused,
-            ])
+            ->with(
+                [
+                    10 => SegmentMemberStatusEnum::Added,
+                    11 => SegmentMemberStatusEnum::Refused,
+                ],
+                [
+                    11 => 'unsubscribed',
+                ],
+            )
         ;
         $repo->method('existsPending')->willReturn(true);
 

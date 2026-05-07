@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp\Http;
 
 use App\Mailchimp\Concurrency\Exception\MailchimpConcurrencyTimeoutException;
+use App\Mailchimp\Concurrency\MailchimpPriorityContext;
 use App\Mailchimp\Concurrency\MailchimpSemaphore;
 use App\Mailchimp\Concurrency\MailchimpSlot;
 use App\Mailchimp\Http\MailchimpThrottlingHttpClient;
@@ -25,7 +26,7 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             ->willReturn($slot);
 
         $client = new MockHttpClient([new MockResponse('{"ok":true}', ['http_code' => 200])]);
-        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, new MailchimpPriorityContext());
 
         $response = $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
         self::assertSame(200, $response->getStatusCode());
@@ -44,7 +45,7 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             ->willReturn($slot);
 
         $client = new MockHttpClient([new MockResponse('{"error":"boom"}', ['http_code' => 503])]);
-        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, new MailchimpPriorityContext());
 
         $response = $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
         self::assertSame(503, $response->getStatusCode());
@@ -63,7 +64,7 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             ->willReturn($slot);
 
         $client = new MockHttpClient([new MockResponse('', ['error' => 'connection refused'])]);
-        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, new MailchimpPriorityContext());
 
         $response = $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
 
@@ -88,7 +89,7 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             ->willReturn($slot);
 
         $client = new MockHttpClient([new MockResponse('{"ok":true}', ['http_code' => 200])]);
-        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, new MailchimpPriorityContext());
 
         $response = $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
         $response->cancel();
@@ -113,7 +114,7 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             new MockResponse('b', ['http_code' => 200]),
             new MockResponse('c', ['http_code' => 200]),
         ]);
-        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, new MailchimpPriorityContext());
 
         $responses = [
             $throttling->request('GET', 'https://api.mailchimp.test/a'),
@@ -146,10 +147,29 @@ final class MailchimpThrottlingHttpClientTest extends TestCase
             self::fail('HTTP client must not be hit when semaphore acquire fails');
         });
 
-        $throttling = new MailchimpThrottlingHttpClient($mockClient, $semaphore);
+        $throttling = new MailchimpThrottlingHttpClient($mockClient, $semaphore, new MailchimpPriorityContext());
 
         $this->expectException(MailchimpConcurrencyTimeoutException::class);
         $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
+    }
+
+    public function testRequestSkipsSemaphoreWhenContextHoldsSlot(): void
+    {
+        $heldSlot = $this->createMock(MailchimpSlot::class);
+        $heldSlot->expects(self::never())->method('release');
+
+        $context = new MailchimpPriorityContext();
+        $context->setHeldSlot($heldSlot);
+
+        $semaphore = $this->createMock(MailchimpSemaphore::class);
+        $semaphore->expects(self::never())->method('acquire');
+
+        $client = new MockHttpClient([new MockResponse('{"ok":true}', ['http_code' => 200])]);
+        $throttling = new MailchimpThrottlingHttpClient($client, $semaphore, $context);
+
+        $response = $throttling->request('GET', 'https://api.mailchimp.test/3.0/lists');
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('{"ok":true}', $response->getContent());
     }
 }
 

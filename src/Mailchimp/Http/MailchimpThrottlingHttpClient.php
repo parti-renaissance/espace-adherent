@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Http;
 
+use App\Mailchimp\Concurrency\MailchimpPriorityContext;
 use App\Mailchimp\Concurrency\MailchimpSemaphore;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\Response\AsyncContext;
@@ -19,13 +20,21 @@ class MailchimpThrottlingHttpClient implements HttpClientInterface
     public function __construct(
         HttpClientInterface $client,
         private readonly MailchimpSemaphore $semaphore,
+        private readonly MailchimpPriorityContext $priorityContext,
     ) {
         $this->client = $client;
     }
 
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
-        $slot = $this->semaphore->acquire();
+        // A parent middleware may already hold the slot for the whole handler.
+        // In that case, skip the per-request acquire/release: the call piggy-backs
+        // on the parent's slot and Mailchimp concurrency stays bounded.
+        if ($this->priorityContext->hasHeldSlot()) {
+            return $this->client->request($method, $url, $options);
+        }
+
+        $slot = $this->semaphore->acquire($this->priorityContext->getPriority());
 
         return new AsyncResponse(
             $this->client,
