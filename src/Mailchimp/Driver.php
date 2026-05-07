@@ -372,10 +372,14 @@ class Driver implements LoggerAwareInterface
         if (
             str_contains($responseContent, 'already subscribed to another contact')
             || str_contains($responseContent, 'already subscribed to our SMS marketing list')
-            // Mailchimp leaks an internal SQL error when a phone number conflicts on their
-            // contact_sms_subscription table — same root cause as the cleaner messages above
-            // (phone already attached to another contact), so route to the same retry path.
+            // Mailchimp leaks its internal SQL error when the phone hits a unique-key conflict on
+            // their contact_sms_subscription table — same root cause as the messages above, route
+            // to the same retry-without-SMS path.
             || (str_contains($responseContent, 'contact_sms_subscription.PRIMARY') && str_contains($responseContent, 'Duplicate entry'))
+            // Phone flagged ineligible by Mailchimp (invalid number, opted-out network-wide, etc).
+            // Same outcome: retry the sync without the SMS channel so the contact still gets its
+            // email/profile update.
+            || str_contains($responseContent, 'phone number cannot receive messages')
         ) {
             throw new SmsPhoneAlreadySubscribedException($phone ?? '', $responseContent);
         }
