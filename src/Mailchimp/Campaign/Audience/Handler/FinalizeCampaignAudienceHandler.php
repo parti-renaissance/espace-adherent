@@ -117,12 +117,29 @@ class FinalizeCampaignAudienceHandler
      */
     private function dispatchAutoSendIfNeeded(MailchimpCampaign $campaign): void
     {
-        if (!$campaign->isPendingSend() || !$campaign->canSend()) {
+        if (!$campaign->isPendingSend()) {
+            return;
+        }
+
+        if (!$campaign->canSend()) {
+            $this->logger->error('[AudienceFinalize] Auto-send blocked: cannot send after preparation', [
+                'campaign_id' => $campaign->getId(),
+                'preparation_status' => $campaign->getPreparationStatus()->value,
+                'audience_check' => $campaign->getAudienceCheck()?->value,
+                'block_reason' => $campaign->getBlockReason()?->value,
+            ]);
+            $campaign->clearPendingSend();
+
             return;
         }
 
         $message = $campaign->getMessage();
         if (null === $message->getId()) {
+            $this->logger->error('[AudienceFinalize] Auto-send aborted: message has no ID', [
+                'campaign_id' => $campaign->getId(),
+            ]);
+            $campaign->clearPendingSend();
+
             return;
         }
 

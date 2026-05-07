@@ -264,7 +264,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
     }
 
-    public function testPendingSendButMismatchAudienceDoesNotDispatch(): void
+    public function testPendingSendButMismatchAudienceLogsErrorAndClears(): void
     {
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
@@ -291,12 +291,25 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
-        $handler = $this->buildHandler($em, $repo, $driver, $bus);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('error')
+            ->with(
+                '[AudienceFinalize] Auto-send blocked: cannot send after preparation',
+                self::callback(function (array $context): bool {
+                    return 7 === $context['campaign_id']
+                        && 'ready' === $context['preparation_status']
+                        && AudienceCheckEnum::Mismatch->value === $context['audience_check'];
+                }),
+            )
+        ;
+
+        $handler = $this->buildHandler($em, $repo, $driver, $bus, $logger);
         $handler(new FinalizeCampaignAudienceMessage(7));
 
         self::assertSame(AudienceCheckEnum::Mismatch, $campaign->getAudienceCheck());
-        // pendingSend stays so the next /send call retriggers a fresh prepare
-        self::assertTrue($campaign->isPendingSend());
+        // pendingSend cleared after logging error to avoid Sentry spam on Messenger retries.
+        self::assertFalse($campaign->isPendingSend());
     }
 
     public function testFinalizeDispatchFailureLogsAndRethrowsKeepsPendingSend(): void
