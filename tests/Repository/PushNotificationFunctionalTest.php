@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Repository;
 
+use App\DataFixtures\ORM\LoadAudienceFilterTestData;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\Event\Event;
 use App\Entity\PushNotification;
 use App\Entity\PushToken;
@@ -14,6 +18,7 @@ use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
 use App\JeMengage\Push\NotificationFactory;
 use App\Repository\PushTokenRepository;
+use App\Scope\ScopeEnum;
 use Kreait\Firebase\Exception\Messaging\NotFound;
 use Kreait\Firebase\Messaging\MessageTarget;
 use Kreait\Firebase\Messaging\MulticastSendReport;
@@ -203,11 +208,33 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
 
     public function testFindAllForAdherentMessageRunsWithoutError(): void
     {
-        $message = $this->createMock(\App\Entity\AdherentMessage\AdherentMessage::class);
-        $filter = new \App\Entity\AdherentMessage\AdherentMessageFilter();
+        $message = $this->createMock(AdherentMessage::class);
+        $filter = new AdherentMessageFilter();
         $message->method('getFilter')->willReturn($filter);
 
         $result = $this->pushTokenRepository->findAllForAdherentMessage($message);
+
+        self::assertIsArray($result);
+    }
+
+    /**
+     * Smoke test on the SQL builder path used during the shadow run (Phase 4 of
+     * audience-filter-unification chantier). The method is private; we drive it via
+     * reflection to avoid widening visibility for testing. Returns an array of FCM
+     * identifiers (possibly empty depending on fixtures).
+     */
+    public function testFetchPushIdentifiersViaSqlBuilderReturnsArrayForNationalMessage(): void
+    {
+        $author = $this->getRepository(Adherent::class)
+            ->findOneByEmail(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG);
+        self::assertInstanceOf(Adherent::class, $author);
+
+        $message = AdherentMessage::createFromAdherent($author);
+        $message->setInstanceScope(ScopeEnum::NATIONAL);
+        $message->setFilter(new AdherentMessageFilter());
+
+        $reflection = new \ReflectionMethod(PushTokenRepository::class, 'fetchPushIdentifiersViaSqlBuilder');
+        $result = $reflection->invoke($this->pushTokenRepository, $message);
 
         self::assertIsArray($result);
     }

@@ -75,6 +75,12 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('national_event_ticket_host', '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%');
 
+    // Shadow run for the audience filter unification (Phase 4 of audience-filter-unification chantier).
+    // While true, PushTokenRepository::findAllForAdherentMessage runs both the legacy DQL trait and
+    // the new SQL builder in parallel, returns the legacy result, and logs divergences on the
+    // audience_filter_shadow channel. Phase 5 sets this to false and removes the legacy path.
+    $parameters->set('audience_filter.shadow_run', true);
+
     $services = $containerConfigurator->services();
 
     $services->defaults()

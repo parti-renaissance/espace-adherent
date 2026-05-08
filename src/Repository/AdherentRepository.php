@@ -11,10 +11,8 @@ use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
-use App\AppSession\SessionStatusEnum;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
-use App\Donation\DonatorStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
@@ -46,6 +44,7 @@ use App\MyTeam\RoleEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\PublicId\PublicIdRepositoryInterface;
+use App\Repository\Audience\AdherentMessageAudiencePiecesBuilder;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -53,7 +52,6 @@ use App\Utils\AreaUtils;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -1739,9 +1737,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     /**
-     * Builds the common SQL fragments for the COUNT and SELECT email_address for
-     * the audience of an AdherentMessage. Returns `null` if the audience is empty by
-     * design (invalid filter, non-national scope without zones or committee,
+     * Builds the common SQL fragments for the COUNT and SELECT for the audience
+     * of an AdherentMessage. Returns `null` if the audience is empty by design
+     * (invalid filter, non-national scope without zones or committee,
      * unresolvable target scope).
      *
      * @return array{
@@ -1762,267 +1760,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             return null;
         }
 
-        $params = [
-            'status_enabled' => 'ENABLED',
-            'mailchimp_subscribed' => 'subscribed',
-        ];
-        $types = [];
-        $joinPerimeter = $with = '';
-
-        $managedZoneIds = $filter->getZones()->map(static fn (Zone $zone) => $zone->getId())->toArray();
-
-        if (!ScopeEnum::isNational($message->getInstanceScope()) && empty($managedZoneIds) && !$filter->getCommittee()) {
-            return null;
-        }
-
-        $targetZoneIds = array_unique($managedZoneIds);
-
-        if (!empty($targetZoneIds)) {
-            $placeholders = [];
-            foreach ($targetZoneIds as $i => $id) {
-                $key = "target_zone_$i";
-                $placeholders[] = ":$key";
-                $params[$key] = $id;
-                $types[$key] = ParameterType::INTEGER;
-            }
-            $inClause = implode(', ', $placeholders);
-
-            $with = <<<SQL
-                    WITH z_adherents AS (
-                        SELECT DISTINCT a.adherent_id
-                        FROM adherent_zone a
-                        LEFT JOIN geo_zone_parent p ON p.child_id = a.zone_id
-                        WHERE p.parent_id IN ($inClause) OR a.zone_id IN ($inClause)
-                    )
-                SQL;
-
-            $joinPerimeter = 'JOIN z_adherents za ON za.adherent_id = a.id';
-        }
-
-        $fromJoin = [];
-        $where = [];
-
-        if ($filterZoneId = $filter->getZone()?->getId()) {
-            $where[] = 'EXISTS (
-                SELECT 1
-                FROM adherent_zone az_filter
-                LEFT JOIN geo_zone_parent p_filter ON p_filter.child_id = az_filter.zone_id
-                WHERE az_filter.adherent_id = a.id
-                AND (p_filter.parent_id = :filter_zone_id OR az_filter.zone_id = :filter_zone_id)
-            )';
-            $params['filter_zone_id'] = $filterZoneId;
-            $types['filter_zone_id'] = ParameterType::INTEGER;
-        }
-
-        if ($filter->getCommittee() || null !== $filter->getIsCommitteeMember()) {
-            $fromJoin[] = 'LEFT JOIN committees_memberships cm ON cm.adherent_id = a.id';
-
-            if ($filter->getCommittee()) {
-                $where[] = 'cm.committee_id = :committee_id';
-                $params['committee_id'] = $filter->getCommittee()->getId();
-                $types['committee_id'] = ParameterType::INTEGER;
-            }
-            if (null !== $filter->getIsCommitteeMember()) {
-                $where[] = 'cm.id '.($filter->getIsCommitteeMember() ? 'IS NOT NULL' : 'IS NULL');
-            }
-        }
-
-        if ($electMandate = $filter->getElectMandate()) {
-            $isExclude = str_starts_with($electMandate, '!');
-            $mandateValue = ltrim($electMandate, '!');
-
-            if ($isExclude) {
-                $fromJoin[] = 'LEFT JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type AND am.finish_at IS NULL';
-                $where[] = 'am.id IS NULL';
-            } else {
-                $fromJoin[] = 'JOIN adherent_mandate am ON am.adherent_id = a.id AND am.type = :mandate_join_type AND am.mandate_type = :mandate_type AND am.finish_at IS NULL';
-            }
-
-            $params['mandate_join_type'] = 'elected_representative';
-            $params['mandate_type'] = $mandateValue;
-        }
-
-        if ($declaredMandate = $filter->getDeclaredMandate()) {
-            $isExclude = str_starts_with($declaredMandate, '!');
-            $mandateValue = ltrim($declaredMandate, '!');
-
-            if ($isExclude) {
-                $where[] = '(a.mandates IS NULL OR FIND_IN_SET(:declared_mandate, a.mandates) = 0)';
-            } else {
-                $where[] = 'FIND_IN_SET(:declared_mandate, a.mandates) > 0';
-            }
-            $params['declared_mandate'] = $mandateValue;
-        }
-
-        $where[] = 'a.status = :status_enabled';
-
-        if ($filter->getGender()) {
-            $where[] = 'a.gender = :gender';
-            $params['gender'] = $filter->getGender();
-        }
-
-        if ($filter->getAgeMin() || $filter->getAgeMax()) {
-            $now = new \DateTimeImmutable();
-
-            if ($filter->getAgeMin()) {
-                $where[] = 'a.birthdate <= :min_birth_date';
-                $params['min_birth_date'] = $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMin())))->format('Y-m-d');
-            }
-
-            if ($filter->getAgeMax()) {
-                $where[] = 'a.birthdate >= :max_birth_date';
-                $params['max_birth_date'] = $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax())))->format('Y-m-d');
-            }
-        }
-
-        if ($rs = $filter->getRegisteredSince()) {
-            $where[] = 'a.registered_at >= :registered_since';
-            $params['registered_since'] = $rs->format('Y-m-d 00:00:00');
-        }
-        if ($ru = $filter->getRegisteredUntil()) {
-            $where[] = 'a.registered_at <= :registered_until';
-            $params['registered_until'] = $ru->format('Y-m-d 23:59:59');
-        }
-
-        if ($fs = $filter->firstMembershipSince) {
-            $where[] = 'a.first_membership_donation >= :first_membership_since';
-            $params['first_membership_since'] = $fs->format('Y-m-d 00:00:00');
-        }
-        if ($fb = $filter->firstMembershipBefore) {
-            $where[] = 'a.first_membership_donation <= :first_membership_before';
-            $params['first_membership_before'] = $fb->format('Y-m-d 23:59:59');
-        }
-
-        if ($ls = $filter->getLastMembershipSince()) {
-            $where[] = 'a.last_membership_donation >= :last_membership_since';
-            $params['last_membership_since'] = $ls->format('Y-m-d 00:00:00');
-        }
-        if ($lb = $filter->getLastMembershipBefore()) {
-            $where[] = 'a.last_membership_donation <= :last_membership_before';
-            $params['last_membership_before'] = $lb->format('Y-m-d 23:59:59');
-        }
-
-        if ($tagPrefix = $filter->adherentTags) {
-            $needle = ltrim($tagPrefix, '!');
-            $where[] = 'a.tags '.(str_starts_with($tagPrefix, '!') ? 'NOT LIKE' : 'LIKE').' :tag_prefix';
-            $params['tag_prefix'] = $needle.'%';
-        }
-
-        $idx = 0;
-        foreach (array_filter([$filter->electTags, $filter->staticTags]) as $tag) {
-            $needle = ltrim($tag, '!');
-            $where[] = 'a.tags '.(str_starts_with($tag, '!') ? 'NOT LIKE' : 'LIKE')." :tag_contains_$idx";
-            $params["tag_contains_$idx"] = '%'.$needle.'%';
-            ++$idx;
-        }
-
-        if (null !== $isCertified = $filter->getIsCertified()) {
-            $where[] = $isCertified ? 'a.certified_at IS NOT NULL' : 'a.certified_at IS NULL';
-        }
-
-        if (null !== $firstName = $filter->getFirstName()) {
-            $where[] = 'a.first_name = :first_name';
-            $params['first_name'] = $firstName;
-        }
-
-        if (null !== $lastName = $filter->getLastName()) {
-            $where[] = 'a.last_name = :last_name';
-            $params['last_name'] = $lastName;
-        }
-
-        if (null !== $donatorStatus = $filter->getDonatorStatus()) {
-            // The donator status is not a denormalized column on adherents: it is derived from
-            // first_membership_donation / last_membership_donation. Aligned with DonatorStatusConditionBuilder
-            // (Mailchimp), which relies on the MERGE_FIELD_DONATION_YEARS field on the push audience side.
-            $params['donator_current_year'] = (int) new \DateTimeImmutable()->format('Y');
-            $types['donator_current_year'] = ParameterType::INTEGER;
-
-            $where[] = match ($donatorStatus) {
-                DonatorStatusEnum::DONATOR_N => 'YEAR(a.last_membership_donation) = :donator_current_year',
-                DonatorStatusEnum::DONATOR_N_X => 'a.first_membership_donation IS NOT NULL AND (a.last_membership_donation IS NULL OR YEAR(a.last_membership_donation) < :donator_current_year)',
-                DonatorStatusEnum::NOT_DONATOR => 'a.first_membership_donation IS NULL',
-                default => '1 = 0',
-            };
-        }
-
-        $scopeTargetJoin = '';
+        $scopeTargetsQuery = null;
         if (!empty($filter->scopeTargets)) {
-            $scopeQuery = $this->buildScopeTargetsQuery($filter->scopeTargets, 'a.id');
-            if (null === $scopeQuery) {
+            $scopeTargetsQuery = $this->buildScopeTargetsQuery($filter->scopeTargets, 'a.id');
+            if (null === $scopeTargetsQuery) {
                 return null;
             }
-            foreach ($scopeQuery['params'] as $key => $value) {
-                $params[$key] = $value;
-            }
-            foreach ($scopeQuery['types'] as $key => $type) {
-                $types[$key] = $type;
-            }
-            $with .= ($with ? ",\n" : 'WITH ')."scope_target_adherents AS (\n".$scopeQuery['sql']."\n)";
-            $scopeTargetJoin = 'JOIN scope_target_adherents sta ON sta.id = a.id';
         }
 
-        $cnx = $this->getEntityManager()->getConnection();
-
-        $stId = null;
-        if (($scope = $filter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
-            $stCode = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope];
-            $stId = (int) $cnx->fetchOne('SELECT id FROM subscription_type WHERE code = ?', [$stCode]);
-            $params['st_id'] = $stId;
-            $types['st_id'] = ParameterType::INTEGER;
-        }
-
-        $branchEmailSql = null;
-        $branchPushSql = null;
-
-        if (null !== $byEmail) {
-            if ($byEmail) {
-                $emailConds = ['a.mailchimp_status = :mailchimp_subscribed'];
-                if ($stId) {
-                    $emailConds[] = 'EXISTS (
-                        SELECT 1
-                        FROM adherent_subscription_type ast
-                        WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
-                    )';
-                }
-                $branchEmailSql = '('.implode(' AND ', $emailConds).')';
-            } else {
-                $emailConds = ['a.mailchimp_status <> :mailchimp_subscribed'];
-                if ($stId) {
-                    $emailConds[] = 'NOT EXISTS (
-                        SELECT 1
-                        FROM adherent_subscription_type ast
-                        WHERE ast.adherent_id = a.id AND ast.subscription_type_id = :st_id
-                    )';
-                }
-                $branchEmailSql = '('.implode(' OR ', $emailConds).')';
-            }
-        }
-
-        if (null !== $byPush) {
-            $branchPushSql = ($byPush ? '' : 'NOT ').'EXISTS (
-                SELECT 1
-                FROM app_session s
-                JOIN app_session_push_token_link p ON p.app_session_id = s.id AND p.unsubscribed_at IS NULL
-                JOIN push_token pt ON pt.id = p.push_token_id AND pt.unsubscribed_at IS NULL
-                WHERE s.adherent_id = a.id AND s.status = :session_status
-            )';
-            $params['session_status'] = SessionStatusEnum::ACTIVE->value;
-        }
-
-        $baseFrom = 'FROM adherents a'
-            .($joinPerimeter ? "\n$joinPerimeter" : '')
-            .($scopeTargetJoin ? "\n$scopeTargetJoin" : '')
-            .(!empty($fromJoin) ? "\n".implode("\n", $fromJoin) : '');
-
-        return [
-            'with' => $with,
-            'baseFrom' => $baseFrom,
-            'baseWhere' => $where,
-            'params' => $params,
-            'types' => $types,
-            'branchEmailSql' => $branchEmailSql,
-            'branchPushSql' => $branchPushSql,
-        ];
+        return new AdherentMessageAudiencePiecesBuilder($this->getEntityManager()->getConnection())
+            ->build($message, $byEmail, $byPush, $scopeTargetsQuery);
     }
 
     public function publicIdExists(string $publicId): bool
@@ -2102,7 +1849,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
      *
      * @return array{sql: string, params: array<string, mixed>, types: array<string, int>}|null Query data or null if no valid targets
      */
-    private function buildScopeTargetsQuery(array $scopeTargets, string $selectField): ?array
+    public function buildScopeTargetsQuery(array $scopeTargets, string $selectField): ?array
     {
         if (empty($scopeTargets)) {
             return null;

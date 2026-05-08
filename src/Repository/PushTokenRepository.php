@@ -24,19 +24,28 @@ use App\Entity\TimelineItemPrivateMessage;
 use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
+use App\Repository\Audience\AdherentMessageAudiencePiecesBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class PushTokenRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
     use AudienceFilterTrait;
 
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly AdherentRepository $adherentRepository,
+        #[Autowire(service: 'monolog.logger.audience_filter_shadow')]
+        private readonly LoggerInterface $audienceFilterShadowLogger,
+        #[Autowire(param: 'audience_filter.shadow_run')]
+        private readonly bool $audienceFilterShadowRunEnabled,
+    ) {
         parent::__construct($registry, PushToken::class);
     }
 
@@ -161,6 +170,16 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Returns the FCM identifiers of push tokens matching an AdherentMessage audience.
+     *
+     * Phase 4 of the audience-filter-unification chantier: while shadow_run is enabled,
+     * the legacy DQL implementation is canonical (its result is returned) and the new
+     * SQL builder runs in parallel for divergence detection. Phase 5 will swap the canonical
+     * path to the SQL builder and remove this shadow run plumbing along with AudienceFilterTrait.
+     *
+     * @return list<string>
+     */
     public function findAllForAdherentMessage(AdherentMessage $message): array
     {
         /** @var AdherentMessageFilter $filter */
@@ -170,7 +189,82 @@ class PushTokenRepository extends ServiceEntityRepository
 
         $this->applyAudienceFilter($filter, $qb, $adherentAlias);
 
-        return $qb->getQuery()->getSingleColumnResult();
+        $legacyResult = $qb->getQuery()->getSingleColumnResult();
+
+        if ($this->audienceFilterShadowRunEnabled) {
+            try {
+                $newResult = $this->fetchPushIdentifiersViaSqlBuilder($message);
+                $this->logShadowDiff($message, $legacyResult, $newResult);
+            } catch (\Throwable $e) {
+                $this->audienceFilterShadowLogger->error(
+                    'audience_filter_shadow: SQL builder threw',
+                    [
+                        'message_uuid' => $message->getUuid()->toString(),
+                        'exception' => $e->getMessage(),
+                    ]
+                );
+            }
+        }
+
+        return $legacyResult;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function fetchPushIdentifiersViaSqlBuilder(AdherentMessage $message): array
+    {
+        $filter = $message->getFilter();
+
+        $scopeTargetsQuery = null;
+        if ($filter instanceof AdherentMessageFilter && !empty($filter->scopeTargets)) {
+            $scopeTargetsQuery = $this->adherentRepository->buildScopeTargetsQuery($filter->scopeTargets, 'a.id');
+            if (null === $scopeTargetsQuery) {
+                return [];
+            }
+        }
+
+        $piecesQuery = new AdherentMessageAudiencePiecesBuilder($this->getEntityManager()->getConnection())
+            ->buildPushIdentifiersSql($message, $scopeTargetsQuery);
+
+        if (null === $piecesQuery) {
+            return [];
+        }
+
+        return $this->getEntityManager()->getConnection()->fetchFirstColumn(
+            $piecesQuery['sql'],
+            $piecesQuery['params'],
+            $piecesQuery['types']
+        );
+    }
+
+    /**
+     * @param list<string> $legacy
+     * @param list<string> $candidate
+     */
+    private function logShadowDiff(AdherentMessage $message, array $legacy, array $candidate): void
+    {
+        $legacySet = array_flip($legacy);
+        $candidateSet = array_flip($candidate);
+        $added = array_keys(array_diff_key($candidateSet, $legacySet));
+        $removed = array_keys(array_diff_key($legacySet, $candidateSet));
+
+        if ([] === $added && [] === $removed) {
+            return;
+        }
+
+        $this->audienceFilterShadowLogger->info(
+            'audience_filter_shadow: divergence detected',
+            [
+                'message_uuid' => $message->getUuid()->toString(),
+                'count_legacy' => \count($legacy),
+                'count_candidate' => \count($candidate),
+                'count_added' => \count($added),
+                'count_removed' => \count($removed),
+                'added_sample' => \array_slice($added, 0, 5),
+                'removed_sample' => \array_slice($removed, 0, 5),
+            ]
+        );
     }
 
     public function findAllIdsForNational(): array
