@@ -226,6 +226,65 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             }
         }
 
+        /** @var Adherent $adherent2 */
+        $adherent2 = $this->getReference('adherent-2', Adherent::class);
+        $event2 = $events[0];
+        $event2Uuid = (string) $event2->getUuid();
+        $adherent2SessionUuid = Uuid::uuid4();
+        $adherent2SessionStart = $now->sub(new \DateInterval('P3D'))->setTime(10, 30);
+        $adherent2AppSession = $pickAppSession($adherent2, $adherent2SessionStart);
+
+        $manager->persist(self::makeHit(
+            eventType: EventTypeEnum::ActivitySession,
+            adherent: $adherent2,
+            referrer: null,
+            objectType: null,
+            objectId: null,
+            source: 'page_events',
+            activitySessionUuid: $adherent2SessionUuid,
+            appSystem: SystemEnum::WEB,
+            appVersion: 'v5.15.5#5',
+            appDate: $adherent2SessionStart,
+            targetUrl: null,
+            buttonName: null,
+            faker: $faker,
+            appSession: $adherent2AppSession,
+        ));
+
+        $manager->persist(self::makeHit(
+            eventType: EventTypeEnum::Open,
+            adherent: $adherent2,
+            referrer: null,
+            objectType: TargetTypeEnum::Event,
+            objectId: $event2Uuid,
+            source: 'direct_link',
+            activitySessionUuid: $adherent2SessionUuid,
+            appSystem: SystemEnum::WEB,
+            appVersion: 'v5.15.5#5',
+            appDate: $adherent2SessionStart->add(new \DateInterval('PT5M')),
+            targetUrl: '/evenements/'.$event2Uuid,
+            buttonName: null,
+            faker: $faker,
+            appSession: $adherent2AppSession,
+        ));
+
+        $manager->persist(self::makeHit(
+            eventType: EventTypeEnum::Click,
+            adherent: $adherent2,
+            referrer: null,
+            objectType: TargetTypeEnum::Event,
+            objectId: $event2Uuid,
+            source: 'page_events',
+            activitySessionUuid: $adherent2SessionUuid,
+            appSystem: SystemEnum::WEB,
+            appVersion: 'v5.15.5#5',
+            appDate: $adherent2SessionStart->add(new \DateInterval('PT10M')),
+            targetUrl: '/evenements/'.$event2Uuid.'/inscription',
+            buttonName: 'cta_register',
+            faker: $faker,
+            appSession: $adherent2AppSession,
+        ));
+
         $manager->flush();
 
         // Align created_at (set to NOW by EntityTimestampableTrait) with appDate so the
