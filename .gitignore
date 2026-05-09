@@ -33,3 +33,4 @@ node_modules
 *.DS_Store
 .yarn
 ai-work/
+.gitnexus
