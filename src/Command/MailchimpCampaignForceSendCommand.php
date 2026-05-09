@@ -54,10 +54,9 @@ class MailchimpCampaignForceSendCommand extends Command
         }
 
         $io->note([
-            \sprintf('MailchimpCampaign  : #%d (status: %s, audience_check: %s, block_reason: %s)',
+            \sprintf('MailchimpCampaign  : #%d (status: %s, block_reason: %s)',
                 $campaign->getId(),
                 $campaign->getStatus()->value,
-                $campaign->getAudienceCheck()?->value ?? 'null',
                 $campaign->getBlockReason()?->value ?? 'null',
             ),
             \sprintf('AdherentMessage    : #%d (uuid: %s)', $message->getId(), $message->getUuid()->toString()),

@@ -230,13 +230,17 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         self::assertSame($expectedDelay, $capturedDelay, "Failed for retry index {$retryIndex}");
     }
 
-    public function testHandlerStopsAfterMaxRetries(): void
+    public function testHandlerLogsExhaustedAndThrowsAfterMaxRetries(): void
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 6);
 
-        $message = $this->createStub(AdherentMessageInterface::class);
+        $messageUuid = \Ramsey\Uuid\Uuid::uuid4();
+        $message = $this->createMock(AdherentMessageInterface::class);
+        $message->method('getUuid')->willReturn($messageUuid);
+
         $campaign = new MailchimpCampaign($message);
         $campaign->setExternalId('ext_123');
+        $campaign->setStaticSegmentId(555);
 
         $this->repository
             ->expects(self::once())
@@ -249,7 +253,11 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->expects(self::once())
             ->method('retrySendCampaign')
             ->with($campaign)
-            ->willReturn(false)
+            ->willReturnCallback(function (MailchimpCampaign $c): bool {
+                $c->markAsError('mailchimp 500 internal error');
+
+                return false;
+            })
         ;
 
         $this->entityManager
@@ -262,11 +270,21 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         $this->logger
             ->expects(self::once())
             ->method('error')
-            ->with('[Mailchimp] Campaign retry exhausted', [
-                'campaignId' => 123,
-                'externalId' => 'ext_123',
-            ])
+            ->with(
+                '[Mailchimp] Campaign retry exhausted',
+                self::callback(function (array $context) use ($messageUuid): bool {
+                    return 123 === $context['campaignId']
+                        && 'ext_123' === $context['externalId']
+                        && 555 === $context['staticSegmentId']
+                        && $messageUuid->toString() === $context['messageUuid']
+                        && 'mailchimp 500 internal error' === $context['lastError']
+                        && 1 === $context['retryCount'];
+                }),
+            )
         ;
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Mailchimp campaign 123 retry exhausted after 1 attempts \(external_id=ext_123\)/');
 
         ($this->handler)($command);
     }

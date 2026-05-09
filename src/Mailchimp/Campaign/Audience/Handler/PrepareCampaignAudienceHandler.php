@@ -28,7 +28,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 #[AsMessageHandler]
 class PrepareCampaignAudienceHandler
 {
-    private const int TOO_LARGE_THRESHOLD = 500_000;
     private const int PUSH_CHUNK_SIZE = 500;
     private const int MEMBER_INSERT_BATCH = 5_000;
 
@@ -57,11 +56,11 @@ class PrepareCampaignAudienceHandler
             return;
         }
 
-        // Skip when the segment is fresh and Ready, unless the user explicitly asked to send:
-        // a pending-send on a Ready+Mismatch state means "rebuild and retry".
+        // Skip when the segment is Ready and nobody asked for a (re-)send: the message is most
+        // likely a residual Messenger redelivery. A pending-send forces the rebuild path even on
+        // Ready state (e.g. a Ready segment that must be rebuilt after the user re-clicks Send).
         if (!$campaign->isPendingSend()
             && PreparationStatusEnum::Ready === $campaign->getPreparationStatus()
-            && $campaign->isAudienceFresh()
         ) {
             return;
         }
@@ -117,14 +116,6 @@ class PrepareCampaignAudienceHandler
             if (0 === $expected) {
                 $this->failPreparation($campaign, BlockReasonEnum::Empty);
                 $staticSegment->errorSummary = 'SQL audience returned 0 valid emails.';
-                $this->entityManager->flush();
-
-                return;
-            }
-
-            if ($expected > self::TOO_LARGE_THRESHOLD) {
-                $this->failPreparation($campaign, BlockReasonEnum::TooLarge);
-                $staticSegment->errorSummary = \sprintf('Audience %d > threshold %d.', $expected, self::TOO_LARGE_THRESHOLD);
                 $this->entityManager->flush();
 
                 return;

@@ -75,10 +75,17 @@ final class RetrySendMailchimpCampaignCommandHandler
                 'delayMs' => $delay,
             ]);
         } else {
-            $this->logger->error('[Mailchimp] Campaign retry exhausted', [
+            $context = [
                 'campaignId' => $command->campaignId,
                 'externalId' => $campaign->getExternalId(),
-            ]);
+                'staticSegmentId' => $campaign->getStaticSegmentId(),
+                'messageUuid' => $campaign->getMessage()->getUuid()->toString(),
+                'lastError' => $campaign->getDetail(),
+                'retryCount' => $campaign->getRetryCount(),
+            ];
+            $this->logger->error('[Mailchimp] Campaign retry exhausted', $context);
+
+            throw new \RuntimeException(\sprintf('Mailchimp campaign %d retry exhausted after %d attempts (external_id=%s)', $command->campaignId, $campaign->getRetryCount(), $campaign->getExternalId() ?? 'null'));
         }
     }
 }

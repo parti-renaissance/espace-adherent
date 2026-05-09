@@ -8,7 +8,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +19,6 @@ class MailchimpCampaignTest extends TestCase
         $campaign = $this->createCampaign();
 
         self::assertSame(PreparationStatusEnum::NotStarted, $campaign->getPreparationStatus());
-        self::assertNull($campaign->getAudienceCheck());
         self::assertNull($campaign->getBlockReason());
         self::assertNull($campaign->getPreparedAt());
         self::assertNull($campaign->getPreparationLockedBy());
@@ -32,50 +30,26 @@ class MailchimpCampaignTest extends TestCase
         $alice = $this->createUser();
         $campaign = $this->createCampaign();
         // Simulates a previous state by triggering a ready cycle then re-preparation
-        $campaign->markAsReady(AudienceCheckEnum::Drift);
+        $campaign->markAsReady();
 
         $campaign->markAsPreparing($alice);
 
         self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
         self::assertSame($alice, $campaign->getPreparationLockedBy());
         self::assertNull($campaign->getBlockReason());
-        self::assertNull($campaign->getAudienceCheck());
         self::assertNull($campaign->getPreparedAt());
     }
 
-    public function testMarkAsReadyWithMatchAudienceAllowsSendingWhenMessageNotSent(): void
+    public function testMarkAsReadyAllowsSendingWhenMessageNotSent(): void
     {
-        $campaign = $this->createCampaign($this->createStub(AdherentMessage::class));
+        $message = $this->createStub(AdherentMessage::class);
+        $message->method('isSent')->willReturn(false);
+        $campaign = $this->createCampaign($message);
 
-        $campaign->markAsReady(AudienceCheckEnum::Match);
+        $campaign->markAsReady();
 
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
-        self::assertSame(AudienceCheckEnum::Match, $campaign->getAudienceCheck());
         self::assertNotNull($campaign->getPreparedAt());
-        self::assertTrue($campaign->canSend());
-    }
-
-    public function testCanSendWithDriftAudienceReturnsTrue(): void
-    {
-        $message = $this->createStub(AdherentMessage::class);
-        $message->method('isSent')->willReturn(false);
-        $campaign = $this->createCampaign($message);
-
-        $campaign->markAsReady(AudienceCheckEnum::Drift);
-
-        self::assertTrue($campaign->canSend());
-    }
-
-    public function testCanSendWithMismatchAudienceReturnsTrue(): void
-    {
-        // Mismatch is informational only (Mailchimp member_count is unreliable);
-        // it must NOT block the send.
-        $message = $this->createStub(AdherentMessage::class);
-        $message->method('isSent')->willReturn(false);
-        $campaign = $this->createCampaign($message);
-
-        $campaign->markAsReady(AudienceCheckEnum::Mismatch);
-
         self::assertTrue($campaign->canSend());
     }
 
@@ -85,7 +59,7 @@ class MailchimpCampaignTest extends TestCase
         $message->method('isSent')->willReturn(true);
         $campaign = $this->createCampaign($message);
 
-        $campaign->markAsReady(AudienceCheckEnum::Match);
+        $campaign->markAsReady();
 
         self::assertFalse($campaign->canSend());
     }

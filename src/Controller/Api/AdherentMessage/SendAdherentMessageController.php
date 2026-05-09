@@ -9,11 +9,13 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
+use App\Mailchimp\Campaign\Audience\PrepareResult;
 use App\Mailchimp\Campaign\Audience\SendStatusFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class SendAdherentMessageController extends AbstractController
@@ -22,6 +24,7 @@ class SendAdherentMessageController extends AbstractController
         AdherentMessageManager $manager,
         AudienceMessagePreparer $preparer,
         SendStatusFactory $sendStatusFactory,
+        LockFactory $lockFactory,
         AdherentMessage $message,
         #[CurrentUser] Adherent $adherent,
     ): Response {
@@ -54,20 +57,29 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('No Mailchimp campaign attached to this message.');
         }
 
-        if ($campaign->canSend() && $campaign->isAudienceFresh()) {
-            $manager->send($message, $manager->getRecipients($message));
+        $lock = $lockFactory->createLock(\sprintf('adherent_message_send_%d', $campaign->getId()), 30.0);
+        if (!$lock->acquire()) {
+            return new JsonResponse(
+                PrepareResult::conflict($sendStatusFactory->build($campaign))->toApiPayload(),
+                Response::HTTP_CONFLICT,
+            );
+        }
+
+        try {
+            $result = $preparer->prepare($message, $adherent);
+
+            if ($result->isConflict()) {
+                return new JsonResponse($result->toApiPayload(), Response::HTTP_CONFLICT);
+            }
+
+            $manager->sendPublication($message);
 
             return new JsonResponse([
                 'status' => 'sent',
                 'send_status' => $sendStatusFactory->build($campaign),
             ]);
+        } finally {
+            $lock->release();
         }
-
-        $result = $preparer->prepare($message, $adherent);
-
-        return new JsonResponse(
-            $result->toApiPayload(),
-            $result->isConflict() ? Response::HTTP_CONFLICT : Response::HTTP_ACCEPTED,
-        );
     }
 }
