@@ -647,6 +647,17 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
         return $this->amount === $payment->amount && json_encode($paymentValues) === json_encode($inscriptionValues);
     }
 
+    public function hasConfirmedPaymentForCurrentPackage(): bool
+    {
+        foreach ($this->getSuccessPayments() as $payment) {
+            if (!$payment->toRefund && $this->isCurrentPayment($payment)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getImageName(): ?string
     {
         return $this->adherent?->getImageName();

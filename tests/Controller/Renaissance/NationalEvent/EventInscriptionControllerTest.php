@@ -1734,6 +1734,83 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertSame(PaymentStatusEnum::REFUNDED, $inscription->getPayments()[0]->status);
     }
 
+    public function testFailedRetryDoesNotDowngradeAlreadyConfirmedInscription(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $form = $crawler->selectButton('Je réserve ma place')->form();
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => $email = 'test-failed-retry-confirmed@example.com',
+                'civility' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+                'packageValues' => [
+                    'visitDay' => 'dimanche',
+                    'transport' => 'dimanche_train',
+                    'accommodation' => 'chambre_partagee',
+                ],
+            ],
+        ]);
+
+        /** @var EventInscription $inscription */
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement', $inscription->getUuid()), $this->client);
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s/paiement-process', $inscription->getPayments()[0]->getUuid()), $this->client);
+
+        $firstPayment = $inscription->getPayments()[0];
+
+        // 1. First payment is confirmed by the bank.
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPayment->getUuid()->toString(), 'STATUS' => '9']));
+
+        $this->em->clear();
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
+
+        // 2. The /paiement route must refuse to create a new payment for the same package.
+        $this->client->request(Request::METHOD_GET, \sprintf('/grand-rassemblement/campus/%s/paiement', $inscription->getUuid()));
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s', $inscription->getUuid()), $this->client);
+
+        $this->em->clear();
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+        self::assertCount(1, $inscription->getPayments(), 'No new payment must be created when a confirmed one already covers the current package.');
+
+        // 3. Simulate a stale-tab retry: a second payment that was started before the SUCCESS landed,
+        //    then cancelled by the user on the bank UI.
+        $eventInscriptionManager = static::getContainer()->get(\App\NationalEvent\EventInscriptionManager::class);
+        $secondPayment = $eventInscriptionManager->createPayment($inscription);
+        $this->em->flush();
+        $secondPaymentUuid = $secondPayment->getUuid()->toString();
+
+        // 3b. The /paiement-process route must also refuse to send the user to the bank
+        //     for a stale pending payment when the inscription is already paid.
+        $this->client->request(Request::METHOD_GET, \sprintf('/grand-rassemblement/campus/%s/paiement-process', $secondPaymentUuid));
+        $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s', $inscription->getUuid()), $this->client);
+
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $secondPaymentUuid, 'STATUS' => '4']));
+
+        $this->em->clear();
+        $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
+
+        self::assertSame(InscriptionStatusEnum::PENDING, $inscription->status);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus, 'A failed retry must not downgrade an already confirmed inscription.');
+
+        $payments = $inscription->getPayments();
+        self::assertCount(2, $payments);
+        self::assertSame(PaymentStatusEnum::CONFIRMED, $payments[0]->status);
+        self::assertFalse($payments[0]->toRefund);
+        self::assertSame(PaymentStatusEnum::ERROR, $payments[1]->status);
+    }
+
     public function testDuplicateWebhookPayloadIsIgnored(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/grand-rassemblement/campus');

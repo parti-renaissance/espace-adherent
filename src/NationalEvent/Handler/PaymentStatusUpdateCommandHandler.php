@@ -92,10 +92,16 @@ class PaymentStatusUpdateCommandHandler
         }
 
         if ($inscription->isCurrentPayment($payment) && ($isLastPayment || PaymentStatusEnum::PENDING === $inscription->paymentStatus)) {
-            $inscription->paymentStatus = match ($paymentStatus->getStatus()) {
+            $newPaymentStatus = match ($paymentStatus->getStatus()) {
                 PaymentStatusEnum::CONFIRMED, PaymentStatusEnum::REFUNDED => $paymentStatus->getStatus(),
                 default => PaymentStatusEnum::ERROR,
             };
+
+            // Don't downgrade an inscription that already has a confirmed/refunded payment for the current package.
+            $hasFinalizedSuccess = \in_array($inscription->paymentStatus, [PaymentStatusEnum::CONFIRMED, PaymentStatusEnum::REFUNDED], true);
+            if (PaymentStatusEnum::ERROR !== $newPaymentStatus || !$hasFinalizedSuccess) {
+                $inscription->paymentStatus = $newPaymentStatus;
+            }
         }
 
         $this->entityManager->flush();

@@ -8,7 +8,6 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
 use App\NationalEvent\EventInscriptionManager;
-use App\NationalEvent\PaymentStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +28,7 @@ class PaymentController extends AbstractController
         EntityManagerInterface $entityManager,
         RateLimiterFactory $paymentRetryLimiter,
     ): Response {
-        if (!$inscription->isPaymentRequired() || PaymentStatusEnum::CONFIRMED === $inscription->paymentStatus) {
+        if (!$inscription->isPaymentRequired() || $inscription->hasConfirmedPaymentForCurrentPackage()) {
             if ($event->isPackageEventType()) {
                 return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
             }
@@ -74,7 +73,7 @@ class PaymentController extends AbstractController
 
         $inscription = $payment->inscription;
 
-        if ($inscription->isRejectedState()) {
+        if ($inscription->isRejectedState() || $inscription->hasConfirmedPaymentForCurrentPackage()) {
             return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
         }
 
