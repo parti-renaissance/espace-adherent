@@ -17,7 +17,6 @@ class SendStatusFactory
 
         return [
             'preparation_status' => $campaign->getPreparationStatus()->value,
-            'audience_check' => $campaign->getAudienceCheck()?->value,
             'block_reason' => $campaign->getBlockReason()?->value,
             'can_send' => $campaign->canSend() && !$this->messageAlreadySent($campaign),
             'counts' => [

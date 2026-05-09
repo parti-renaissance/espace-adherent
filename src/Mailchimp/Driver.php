@@ -141,6 +141,19 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? ($response->toArray()['status'] ?? null) : null;
     }
 
+    public function getCampaignSavedSegmentId(string $campaignId): ?int
+    {
+        $response = $this->send('GET', \sprintf('/campaigns/%s?fields=recipients.segment_opts.saved_segment_id', $campaignId));
+
+        if (!$this->isSuccessfulResponse($response)) {
+            return null;
+        }
+
+        $segmentId = $response->toArray()['recipients']['segment_opts']['saved_segment_id'] ?? null;
+
+        return null === $segmentId ? null : (int) $segmentId;
+    }
+
     public function createCampaign(EditCampaignRequest $request): array
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());

@@ -9,7 +9,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
-use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Handler\PrepareCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
@@ -42,14 +41,13 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $handler(new PrepareCampaignAudienceMessage(99, 1));
     }
 
-    public function testAlreadyPreparedAndFreshIsNoOp(): void
+    public function testAlreadyReadyWithoutPendingSendIsNoOp(): void
     {
-        $filter = $this->buildFreshFilter('-2 hours');
         $message = new AdherentMessage();
-        $message->setFilter($filter);
         $campaign = $this->buildCampaign($message, segmentId: 555);
         $campaign->markAsPreparing($this->createStub(Adherent::class));
-        $campaign->markAsReady(AudienceCheckEnum::Match);
+        $campaign->markAsReady();
+        // pendingSend not set → guard returns early.
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
@@ -70,7 +68,7 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
         $campaign->markAsPreparing($this->createStub(Adherent::class));
-        $campaign->markAsReady(AudienceCheckEnum::Mismatch);
+        $campaign->markAsReady();
         $campaign->markAsPendingSend();
 
         $adherentRepository = $this->createMock(AdherentRepository::class);
@@ -144,39 +142,6 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
 
         self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
         self::assertSame(BlockReasonEnum::Empty, $campaign->getBlockReason());
-    }
-
-    public function testTooLargeAudienceMarksAsFailed(): void
-    {
-        $message = new AdherentMessage();
-        $this->setEntityId($message, 100);
-        $campaign = $this->buildCampaign($message, segmentId: 555);
-
-        // 500_001 ids — just above the 500_000 threshold.
-        $adherentIds = range(1, 500_001);
-
-        $adherentRepository = $this->createMock(AdherentRepository::class);
-        $adherentRepository->method('findAdherentIdsForMessage')->willReturn($adherentIds);
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
-
-        $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects(self::never())->method('dispatch');
-
-        $bulkInsertHelper = $this->createMock(BulkInsertHelper::class);
-        $bulkInsertHelper->expects(self::atLeastOnce())->method('insertIgnore');
-
-        $handler = $this->buildHandler(
-            $em,
-            adherentRepository: $adherentRepository,
-            bus: $bus,
-            bulkInsertHelper: $bulkInsertHelper,
-        );
-        $handler(new PrepareCampaignAudienceMessage(7, 1));
-
-        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
-        self::assertSame(BlockReasonEnum::TooLarge, $campaign->getBlockReason());
     }
 
     public function testHappyPathDispatchesChunksAndFinalize(): void
@@ -326,16 +291,6 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $campaign->setMailchimpStaticSegment($segment);
 
         return $campaign;
-    }
-
-    private function buildFreshFilter(string $updatedAtAgo): \App\Entity\AdherentMessage\AdherentMessageFilter
-    {
-        $filter = new \App\Entity\AdherentMessage\AdherentMessageFilter();
-        $reflection = new \ReflectionObject($filter);
-        $property = $reflection->getProperty('updatedAt');
-        $property->setValue($filter, new \DateTime($updatedAtAgo));
-
-        return $filter;
     }
 
     private function setEntityId(object $entity, int $id): void

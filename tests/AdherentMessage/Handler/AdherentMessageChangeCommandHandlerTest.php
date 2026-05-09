@@ -426,6 +426,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 $this->createMock(SmsOptOutRepository::class),
                 $this->createMock(SubscriptionTypeRepository::class),
                 $this->createMock(EventInscriptionRepository::class),
+                $this->createMock(ObjectManager::class),
             ),
             $this->createMock(ObjectManager::class)
         );

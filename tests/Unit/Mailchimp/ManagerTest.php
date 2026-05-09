@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp;
 
+use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\SubscriptionType;
+use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
@@ -22,8 +28,10 @@ use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\SmsOptOutRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Messenger\Envelope;
@@ -41,6 +49,7 @@ final class ManagerTest extends TestCase
     private SmsOptOutRepository&MockObject $smsOptOutRepository;
     private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
     private EventInscriptionRepository&MockObject $eventInscriptionRepository;
+    private EntityManagerInterface&MockObject $entityManager;
     private Manager $manager;
 
     protected function setUp(): void
@@ -53,6 +62,7 @@ final class ManagerTest extends TestCase
         $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
         $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
         $this->eventInscriptionRepository = $this->createMock(EventInscriptionRepository::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
@@ -71,7 +81,9 @@ final class ManagerTest extends TestCase
             $this->smsOptOutRepository,
             $this->subscriptionTypeRepository,
             $this->eventInscriptionRepository,
+            $this->entityManager,
         );
+        $this->manager->setLogger(new NullLogger());
     }
 
     public function testEditMemberSuccessNominal(): void
@@ -746,6 +758,123 @@ final class ManagerTest extends TestCase
         self::assertSame('Invalid Resource', $adherent->lastMailchimpFailedSyncResponse);
     }
 
+    public function testSendMailchimpCampaignSuccessMarksAsSendingAndDispatchesFollowups(): void
+    {
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $campaign->setExternalId('mc-abc');
+        $message->addMailchimpCampaign($campaign);
+
+        $callOrder = [];
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('flush')
+            ->willReturnCallback(function () use (&$callOrder, $campaign): void {
+                $callOrder[] = 'flush';
+                self::assertSame(MailchimpStatusEnum::Sending, $campaign->status, 'Sending must be staged before the flush that commits it.');
+            })
+        ;
+
+        $this->driver
+            ->expects(self::once())
+            ->method('sendCampaign')
+            ->with('mc-abc')
+            ->willReturnCallback(function () use (&$callOrder): bool {
+                $callOrder[] = 'post';
+
+                return true;
+            })
+        ;
+
+        $reachDispatched = false;
+        $reportDispatched = false;
+        $this->bus
+            ->expects(self::exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function (object $cmd, array $stamps = []) use (&$reachDispatched, &$reportDispatched, $message): Envelope {
+                if ($cmd instanceof CreatePublicationReachFromEmailCommand) {
+                    self::assertSame($message->getUuid()->toString(), $cmd->getUuid()->toString());
+                    self::assertCount(1, $stamps);
+                    self::assertInstanceOf(DelayStamp::class, $stamps[0]);
+                    self::assertSame(5_000, $stamps[0]->getDelay());
+                    $reachDispatched = true;
+                } elseif ($cmd instanceof SyncReportCommand) {
+                    // SyncReportCommand carries its delay internally (constructor argument),
+                    // not via a DelayStamp on the dispatch call.
+                    self::assertSame([], $stamps);
+                    $reportDispatched = true;
+                } else {
+                    self::fail('Unexpected dispatched command: '.$cmd::class);
+                }
+
+                return new Envelope($cmd);
+            })
+        ;
+
+        self::assertTrue($this->manager->sendMailchimpCampaign($campaign));
+        self::assertSame(MailchimpStatusEnum::Sending, $campaign->status);
+        self::assertSame(['flush', 'post'], $callOrder, 'Sending must be flushed BEFORE the Mailchimp POST.');
+        self::assertTrue($reachDispatched, 'CreatePublicationReachFromEmailCommand must be dispatched on success.');
+        self::assertTrue($reportDispatched, 'SyncReportCommand must be dispatched on success.');
+    }
+
+    public function testSendMailchimpCampaignFailureMarksErrorAndDispatchesRetry(): void
+    {
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $campaign->setExternalId('mc-abc');
+        $message->addMailchimpCampaign($campaign);
+
+        $callOrder = [];
+
+        $this->entityManager
+            ->expects(self::exactly(2))
+            ->method('flush')
+            ->willReturnCallback(function () use (&$callOrder, $campaign): void {
+                $callOrder[] = \sprintf('flush:%s', $campaign->status->value);
+            })
+        ;
+
+        $this->driver
+            ->expects(self::once())
+            ->method('sendCampaign')
+            ->with('mc-abc')
+            ->willReturnCallback(function () use (&$callOrder): bool {
+                $callOrder[] = 'post';
+
+                return false;
+            })
+        ;
+
+        $this->driver
+            ->expects(self::atLeastOnce())
+            ->method('getLastError')
+            ->willReturn('campaign in invalid state')
+        ;
+
+        $this->bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(
+                self::callback(fn (object $cmd): bool => $cmd instanceof RetrySendMailchimpCampaignCommand),
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps)
+                        && $stamps[0] instanceof DelayStamp
+                        && 30_000 === $stamps[0]->getDelay();
+                }),
+            )
+            ->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd))
+        ;
+
+        self::assertFalse($this->manager->sendMailchimpCampaign($campaign));
+        self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
+        self::assertSame('campaign in invalid state', $campaign->getDetail());
+        self::assertSame(['flush:sending', 'post', 'flush:error'], $callOrder, 'Sending must be flushed before POST; Error must be flushed after a failed POST.');
+    }
+
     private function createAdherent(): Adherent
     {
         $adherent = new Adherent();
@@ -761,5 +890,12 @@ final class ManagerTest extends TestCase
     private function createCommand(Adherent $adherent): AdherentChangeCommand
     {
         return new AdherentChangeCommand(Uuid::uuid4(), $adherent->getEmailAddress());
+    }
+
+    private function setEntityId(object $entity, int $id): void
+    {
+        $reflection = new \ReflectionObject($entity);
+        $property = $reflection->getProperty('id');
+        $property->setValue($entity, $id);
     }
 }

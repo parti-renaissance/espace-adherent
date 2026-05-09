@@ -7,6 +7,7 @@ namespace App\AdherentMessage;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\AdherentMessage\Sender\SenderInterface;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,6 +60,29 @@ class AdherentMessageManager
             }
 
             $sender->send($message, $recipients);
+        }
+
+        $message->markAsSent();
+        $this->em->flush();
+    }
+
+    /**
+     * Publication-only send path: dispatches the side-channel senders (push, etc.) and persists
+     * the SENT status immediately. The Mailchimp campaign send is NOT performed here — it is
+     * scheduled asynchronously by the audience preparation pipeline (see
+     * FinalizeCampaignAudienceHandler → SendMailchimpCampaignCommand).
+     *
+     * The flush triggers the Algolia postUpdate listener, which indexes the message into the
+     * Timeline synchronously.
+     */
+    public function sendPublication(AdherentMessage $message): void
+    {
+        foreach ($this->senders as $sender) {
+            if (!$sender->supports($message, false)) {
+                continue;
+            }
+
+            $sender->send($message);
         }
 
         $message->markAsSent();

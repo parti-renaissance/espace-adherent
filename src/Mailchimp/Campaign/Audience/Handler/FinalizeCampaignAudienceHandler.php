@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\Audience\Handler;
 
-use App\AdherentMessage\Command\SendAdherentMessageCommand;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Mailchimp\Campaign\Audience\AudienceCheckCalculator;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
-use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use App\Mailchimp\Driver;
+use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -27,9 +24,6 @@ class FinalizeCampaignAudienceHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
-        private readonly Driver $driver,
-        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
-        private readonly AudienceCheckCalculator $audienceCheckCalculator,
         private readonly MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
     ) {
@@ -82,14 +76,6 @@ class FinalizeCampaignAudienceHandler
             return;
         }
 
-        $listId = $this->mailchimpObjectIdMapping->getMainListId();
-
-        // member_count from Mailchimp is informational only: their indexation lags and the value
-        // can disagree with /campaigns/{id}.recipients.recipient_count. We compute audienceCheck
-        // for visibility but it does NOT block the send (see MailchimpCampaign::canSend).
-        $segmentData = $this->driver->getSegment($segmentId, $listId);
-        $prepared = (int) ($segmentData['member_count'] ?? 0);
-
         $counts = $this->memberRepository->aggregateStatusCounts($staticSegmentId);
         $staticSegment->preparedCount = $counts[SegmentMemberStatusEnum::Added->value] ?? 0;
         $staticSegment->refusedCount = $counts[SegmentMemberStatusEnum::Refused->value] ?? 0;
@@ -101,10 +87,7 @@ class FinalizeCampaignAudienceHandler
             $staticSegment->buildDurationMs = (int) (($builtAt->format('U.u') - $staticSegment->buildStartedAt->format('U.u')) * 1000);
         }
 
-        $expected = $staticSegment->expectedCount ?? 0;
-        $audienceCheck = $this->audienceCheckCalculator->compute($expected, $prepared);
-
-        $campaign->markAsReady($audienceCheck);
+        $campaign->markAsReady();
         $this->entityManager->flush();
 
         $this->dispatchAutoSendIfNeeded($campaign);
@@ -112,7 +95,7 @@ class FinalizeCampaignAudienceHandler
     }
 
     /**
-     * Dispatches the deferred SendAdherentMessageCommand if the campaign asked for it.
+     * Dispatches the deferred SendMailchimpCampaignCommand if the campaign asked for it.
      *
      * Order is intentional: dispatch first, then clearPendingSend. If the dispatch raises
      * (broker down, transport error), pendingSend stays true so the Messenger retry of
@@ -128,7 +111,6 @@ class FinalizeCampaignAudienceHandler
             $this->logger->error('[AudienceFinalize] Auto-send blocked: cannot send after preparation', [
                 'campaign_id' => $campaign->getId(),
                 'preparation_status' => $campaign->getPreparationStatus()->value,
-                'audience_check' => $campaign->getAudienceCheck()?->value,
                 'block_reason' => $campaign->getBlockReason()?->value,
             ]);
             $campaign->clearPendingSend();
@@ -136,23 +118,12 @@ class FinalizeCampaignAudienceHandler
             return;
         }
 
-        $message = $campaign->getMessage();
-        if (null === $message->getId()) {
-            $this->logger->error('[AudienceFinalize] Auto-send aborted: message has no ID', [
-                'campaign_id' => $campaign->getId(),
-            ]);
-            $campaign->clearPendingSend();
-
-            return;
-        }
-
         try {
-            $this->bus->dispatch(new SendAdherentMessageCommand($message->getId()));
+            $this->bus->dispatch(new SendMailchimpCampaignCommand($campaign->getId()));
             $campaign->clearPendingSend();
         } catch (\Throwable $e) {
             $this->logger->error('[AudienceFinalize] Auto-send dispatch failed', [
                 'campaign_id' => $campaign->getId(),
-                'message_id' => $message->getId(),
                 'exception' => $e,
             ]);
 

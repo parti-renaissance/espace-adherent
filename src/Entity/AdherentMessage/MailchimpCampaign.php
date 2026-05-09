@@ -9,7 +9,6 @@ use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
-use App\Mailchimp\Campaign\Audience\AudienceCheckEnum;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Repository\MailchimpCampaignRepository;
@@ -112,9 +111,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     #[ORM\Column(enumType: PreparationStatusEnum::class, options: ['default' => PreparationStatusEnum::NotStarted->value])]
     private PreparationStatusEnum $preparationStatus = PreparationStatusEnum::NotStarted;
-
-    #[ORM\Column(nullable: true, enumType: AudienceCheckEnum::class)]
-    private ?AudienceCheckEnum $audienceCheck = null;
 
     #[ORM\Column(nullable: true, enumType: BlockReasonEnum::class)]
     private ?BlockReasonEnum $blockReason = null;
@@ -314,11 +310,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         return $this->preparationStatus;
     }
 
-    public function getAudienceCheck(): ?AudienceCheckEnum
-    {
-        return $this->audienceCheck;
-    }
-
     public function getBlockReason(): ?BlockReasonEnum
     {
         return $this->blockReason;
@@ -359,26 +350,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
             return false;
         }
 
-        // audienceCheck is informational only (Mailchimp member_count lags and is unreliable).
-        // The send is gated by preparationStatus + blockReason + isSent, never by Mismatch.
         return !$this->message->isSent();
-    }
-
-    /**
-     * The static segment is considered fresh when it was prepared after the last filter update.
-     * A null filterUpdatedAt — happens when the filter is missing or didn't expose the timestamp —
-     * counts as fresh: nothing has invalidated the prepared audience.
-     */
-    public function isAudienceFresh(): bool
-    {
-        if (null === $this->preparedAt) {
-            return false;
-        }
-
-        $filter = $this->message instanceof AdherentMessage ? $this->message->getFilter() : null;
-        $filterUpdatedAt = $filter instanceof AdherentMessageFilter ? $filter->getUpdatedAt() : null;
-
-        return null === $filterUpdatedAt || $filterUpdatedAt < $this->preparedAt;
     }
 
     public function markAsPreparing(Adherent $lockedBy): void
@@ -386,15 +358,14 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
         $this->preparationStatus = PreparationStatusEnum::Preparing;
         $this->preparationLockedBy = $lockedBy;
         $this->blockReason = null;
-        $this->audienceCheck = null;
         $this->preparedAt = null;
     }
 
-    public function markAsReady(AudienceCheckEnum $audienceCheck): void
+    public function markAsReady(): void
     {
         $this->preparationStatus = PreparationStatusEnum::Ready;
-        $this->audienceCheck = $audienceCheck;
         $this->preparedAt = new \DateTime();
+        $this->blockReason = null;
     }
 
     public function markAsFailed(BlockReasonEnum $blockReason): void

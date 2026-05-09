@@ -44,6 +44,7 @@ use App\Repository\SmsOptOutRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -75,6 +76,7 @@ class Manager implements LoggerAwareInterface
         private readonly SmsOptOutRepository $smsOptOutRepository,
         private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
         private readonly EventInscriptionRepository $eventInscriptionRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -413,40 +415,40 @@ class Manager implements LoggerAwareInterface
         }
     }
 
-    public function sendCampaign(AdherentMessageInterface $message): bool
+    public function sendMailchimpCampaign(MailchimpCampaign $campaign): bool
     {
-        foreach ($message->getMailchimpCampaigns() as $campaign) {
-            $this->checkMessageExternalId($campaign);
+        $this->checkMessageExternalId($campaign);
+
+        $campaign->markAsSending();
+
+        $this->entityManager->flush();
+
+        $success = $this->driver->sendCampaign($campaign->getExternalId());
+
+        if ($success) {
+            $message = $campaign->getMessage();
+            $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
+            $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true, lowPriority: $message->isNational(), delay: 300_000));
+
+            return true;
         }
 
-        $globalStatus = false;
+        $lastError = $this->driver->getLastError();
+        $this->logger->error('[Mailchimp] sendCampaign refused — retry scheduled in 30s', [
+            'campaign_id' => $campaign->getId(),
+            'external_id' => $campaign->getExternalId(),
+            'last_error' => $lastError,
+        ]);
 
-        foreach ($message->getMailchimpCampaigns() as $campaign) {
-            $success = $this->driver->sendCampaign($campaign->getExternalId());
+        $campaign->markAsError($lastError);
+        $this->entityManager->flush();
 
-            $globalStatus |= $success;
+        $this->bus->dispatch(
+            new RetrySendMailchimpCampaignCommand($campaign->getId()),
+            [new DelayStamp(30_000)]
+        );
 
-            if ($success) {
-                $campaign->markAsSending();
-            } else {
-                $lastError = $this->driver->getLastError();
-                $this->logger->error('[Mailchimp] sendCampaign refused — retry scheduled in 30s', [
-                    'campaign_id' => $campaign->getId(),
-                    'external_id' => $campaign->getExternalId(),
-                    'last_error' => $lastError,
-                ]);
-                $campaign->markAsError($lastError);
-                $this->bus->dispatch(
-                    new RetrySendMailchimpCampaignCommand($campaign->getId()),
-                    [new DelayStamp(30_000)]
-                );
-            }
-        }
-
-        $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
-        $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true, lowPriority: $message->isNational(), delay: 300_000));
-
-        return (bool) $globalStatus;
+        return false;
     }
 
     public function sendTestCampaign(AdherentMessageInterface $message, array $emails): bool
@@ -654,10 +656,6 @@ class Manager implements LoggerAwareInterface
             }
         }
 
-        $success = $this->driver->sendCampaign($campaign->getExternalId());
-
-        $success ? $campaign->markAsSending() : $campaign->markAsError($this->driver->getLastError());
-
-        return $success;
+        return $this->sendMailchimpCampaign($campaign);
     }
 }
