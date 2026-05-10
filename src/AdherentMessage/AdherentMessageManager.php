@@ -54,13 +54,7 @@ class AdherentMessageManager
 
     public function send(AdherentMessageInterface $message, array $recipients = []): void
     {
-        foreach ($this->senders as $sender) {
-            if (!$sender->supports($message, false)) {
-                continue;
-            }
-
-            $sender->send($message, $recipients);
-        }
+        $this->dispatchSenders($message, $recipients);
 
         $message->markAsSent();
         $this->em->flush();
@@ -77,16 +71,21 @@ class AdherentMessageManager
      */
     public function sendPublication(AdherentMessage $message): void
     {
+        $this->dispatchSenders($message);
+
+        $message->markAsSent();
+        $this->em->flush();
+    }
+
+    private function dispatchSenders(AdherentMessageInterface $message, array $recipients = []): void
+    {
         foreach ($this->senders as $sender) {
             if (!$sender->supports($message, false)) {
                 continue;
             }
 
-            $sender->send($message);
+            $sender->send($message, $recipients);
         }
-
-        $message->markAsSent();
-        $this->em->flush();
     }
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool

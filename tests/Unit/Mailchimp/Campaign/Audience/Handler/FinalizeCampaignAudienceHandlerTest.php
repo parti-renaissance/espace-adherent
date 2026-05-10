@@ -25,6 +25,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
     {
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 99)->willReturn(null);
+        $em->expects(self::never())->method('refresh');
         $em->expects(self::never())->method('flush');
 
         $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
@@ -46,6 +47,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         // The Ready guard branch always flushes (no-op at SQL level when no UoW changes).
         $em->expects(self::once())->method('flush');
 
@@ -70,6 +72,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         $em->expects(self::once())->method('flush');
 
         $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
@@ -102,6 +105,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         $em->expects(self::never())->method('flush');
 
         $repo = $this->createStub(MailchimpStaticSegmentMemberRepository::class);
@@ -147,6 +151,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         $em->expects(self::never())->method('flush');
 
         $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
@@ -171,6 +176,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         // First flush after markAsReady, second flush after dispatchAutoSendIfNeeded (no-op here).
         $em->expects(self::exactly(2))->method('flush');
 
@@ -212,6 +218,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         $em->expects(self::exactly(2))->method('flush');
 
         $repo = $this->createStub(MailchimpStaticSegmentMemberRepository::class);
@@ -248,6 +255,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
         // Only the first flush (after markAsReady) happens; the second is unreached due to throw.
         $em->expects(self::once())->method('flush');
 

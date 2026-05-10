@@ -346,11 +346,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
             return false;
         }
 
-        if (null !== $this->blockReason) {
-            return false;
-        }
-
-        return !$this->message->isSent();
+        return null === $this->blockReason;
     }
 
     public function markAsPreparing(Adherent $lockedBy): void

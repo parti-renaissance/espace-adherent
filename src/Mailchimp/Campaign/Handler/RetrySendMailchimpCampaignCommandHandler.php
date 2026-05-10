@@ -69,7 +69,7 @@ final class RetrySendMailchimpCampaignCommandHandler
                 [new DelayStamp($delay)]
             );
 
-            $this->logger->error('[Mailchimp] Campaign retry scheduled', [
+            $this->logger->warning('[Mailchimp] Campaign retry scheduled', [
                 'campaignId' => $command->campaignId,
                 'retryCount' => $command->countRetry + 1,
                 'delayMs' => $delay,
