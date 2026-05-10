@@ -158,7 +158,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
         $this->logger
             ->expects(self::once())
-            ->method('error')
+            ->method('warning')
             ->with('[Mailchimp] Campaign retry scheduled', [
                 'campaignId' => 123,
                 'retryCount' => 1,
@@ -222,7 +222,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
         $this->logger
             ->expects(self::once())
-            ->method('error')
+            ->method('warning')
         ;
 
         ($this->handler)($command);
@@ -236,7 +236,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
         $messageUuid = \Ramsey\Uuid\Uuid::uuid4();
         $message = $this->createMock(AdherentMessageInterface::class);
-        $message->method('getUuid')->willReturn($messageUuid);
+        $message->expects(self::once())->method('getUuid')->willReturn($messageUuid);
 
         $campaign = new MailchimpCampaign($message);
         $campaign->setExternalId('ext_123');

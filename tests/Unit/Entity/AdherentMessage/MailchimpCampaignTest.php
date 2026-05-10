@@ -40,11 +40,9 @@ class MailchimpCampaignTest extends TestCase
         self::assertNull($campaign->getPreparedAt());
     }
 
-    public function testMarkAsReadyAllowsSendingWhenMessageNotSent(): void
+    public function testMarkAsReadyAllowsSending(): void
     {
-        $message = $this->createStub(AdherentMessage::class);
-        $message->method('isSent')->willReturn(false);
-        $campaign = $this->createCampaign($message);
+        $campaign = $this->createCampaign();
 
         $campaign->markAsReady();
 
@@ -53,15 +51,18 @@ class MailchimpCampaignTest extends TestCase
         self::assertTrue($campaign->canSend());
     }
 
-    public function testCanSendWhenMessageAlreadySentReturnsFalse(): void
+    public function testCanSendIgnoresParentMessageSentStatus(): void
     {
+        // Publication flow marks the parent AdherentMessage as SENT before the audience
+        // preparation pipeline dispatches the actual Mailchimp send. canSend() must remain
+        // true so FinalizeCampaignAudienceHandler can still trigger SendMailchimpCampaignCommand.
         $message = $this->createStub(AdherentMessage::class);
         $message->method('isSent')->willReturn(true);
         $campaign = $this->createCampaign($message);
 
         $campaign->markAsReady();
 
-        self::assertFalse($campaign->canSend());
+        self::assertTrue($campaign->canSend());
     }
 
     public function testCanSendWhenStillPreparingReturnsFalse(): void
