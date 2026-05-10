@@ -34,3 +34,12 @@ node_modules
 .yarn
 ai-work/
 .gitnexus
+
+# Claude Code — fichiers locaux (par dev, jamais commités)
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/socle/profile.local.yaml
+.claude/socle/install.log
+
+# Backups socle-migration (à supprimer une fois la migration validée)
+*.pre-socle-backup
