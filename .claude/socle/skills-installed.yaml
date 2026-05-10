@@ -31,7 +31,7 @@ external_skills:
 
 internal_renaissance_skills:
   - source: socle (interne)
-    version: "0.4.0"
+    version: "0.5.1"
     commit: "1fedbfb"
     skills:
       - renaissance-symfony-conventions
