@@ -44,6 +44,7 @@ Par défaut, l'IA tend à valider, embellir et combler les vides plutôt que de 
 | skill | déclencheur | auto_detection | gate_level |
 |---|---|---|---|
 | `brainstorming` | Création nouvelle feature ou refonte d'architecture (portée >50 lignes ou >2 fichiers) | Mots-clés utilisateur : 'implémente', 'ajoute fonctionnalité', 'refacto', 'redesigne' + scope >50 lignes estimé | HARD-GATE création |
+| `caveman-po` | Compression session-wide : caveman ultra (interne) + PO mode (interactions humaines, Décision/Raison/Bloquant) | Toujours active dès le début de session. Désactivation explicite : 'stop caveman' / 'mode normal' | session-wide |
 | `dispatching-parallel-agents` | Coordination d'agents parallèles, agent maître qui crée des sous-tâches | Multi-agent setup explicit, mention 'dispatch', 'sub-agent', plusieurs threads de travail | optionnel |
 | `executing-plans` | Un fichier docs/specs/<date>-<slug>-design.md existe et l'utilisateur dit 'on continue/exécute' | Présence d'un fichier docs/specs/* récent + mention de reprise | suit writing-plans |
 | `finishing-a-development-branch` | Finalisation d'une branche feature avant merge sur main | PR prête à merger, dernière étape avant deploy | optionnel |

@@ -35,3 +35,4 @@ internal_renaissance_skills:
     commit: "e111688"
     skills:
       - renaissance-symfony-conventions
+      - caveman-po
