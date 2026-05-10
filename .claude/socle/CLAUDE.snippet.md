@@ -95,6 +95,7 @@ Toute modification non triviale passe par PR avec review humaine. Voir `docs/run
 | Adresser comments PR | `receiving-code-review` → `gh-address-comments` (openai) | `code-review-protocol.md` |
 | Onboarding équipe | (lecture critique) | `agent-onboarding.md` |
 | Avant push | `verification-before-completion` + `/before-push` | `git-workflow.md` |
+| Mise à jour socle | `socle:socle-update` (`/socle update`) | — |
 | Exploration codebase | `gitnexus-exploring` | — |
 | Investigation bug | `gitnexus-debugging` (en plus de `systematic-debugging`) | — |
 | Refacto, rename, extract | `gitnexus-refactoring` | — |
