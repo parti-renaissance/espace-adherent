@@ -512,9 +512,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     private ?string $authAppVersion = null;
     public ?AppSession $currentAppSession = null;
 
-    #[ORM\Column(nullable: true)]
-    public ?string $emailStatusComment = null;
-
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $lastMailchimpFailedSyncResponse = null;
 
@@ -526,6 +523,9 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $mailchimpLastSyncedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $mailchimpLastFailedAt = null;
 
     /**
      * @var Registration[]|Collection
@@ -1580,7 +1580,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
             $this->mailchimpStatus = ContactStatusEnum::UNSUBSCRIBED;
         } else {
             $this->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
-            $this->emailStatusComment = null;
         }
     }
 
@@ -2218,7 +2217,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     public function clean(): void
     {
         $this->mailchimpStatus = ContactStatusEnum::CLEANED;
-        $this->emailStatusComment = ContactStatusEnum::CLEANED;
         $this->subscriptionTypes->clear();
     }
 

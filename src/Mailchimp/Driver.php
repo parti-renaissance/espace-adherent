@@ -57,7 +57,7 @@ class Driver implements LoggerAwareInterface
         }
 
         if ($throw) {
-            $this->throwSyncException($response->getContent(false));
+            $this->throwSyncException($this->readErrorBody($response));
         }
 
         return false;
@@ -76,7 +76,7 @@ class Driver implements LoggerAwareInterface
         }
 
         if ($throw) {
-            $this->throwContactSyncException($response->getContent(false), $request->getPhone());
+            $this->throwContactSyncException($this->readErrorBody($response), $request->getPhone());
         }
 
         return null;
@@ -95,7 +95,7 @@ class Driver implements LoggerAwareInterface
         }
 
         if ($throw) {
-            $this->throwContactSyncException($response->getContent(false), $request->getPhone());
+            $this->throwContactSyncException($this->readErrorBody($response), $request->getPhone());
         }
 
         return false;
@@ -354,10 +354,23 @@ class Driver implements LoggerAwareInterface
         }
 
         if (!$isSuccessful && $log) {
-            $this->logger->error(\sprintf('[API] Error: %s', $response ? $response->getContent(false) : 'unknown'));
+            $this->logger->error(\sprintf('[API] Error: %s', $this->readErrorBody($response) ?: 'unknown'));
         }
 
         return $isSuccessful;
+    }
+
+    private function readErrorBody(?ResponseInterface $response): string
+    {
+        if (!$response) {
+            return '';
+        }
+
+        try {
+            return $response->getContent(false);
+        } catch (TransportExceptionInterface $e) {
+            return '[transport error] '.$e->getMessage();
+        }
     }
 
     private function throwSyncException(string $responseContent): void
@@ -366,7 +379,7 @@ class Driver implements LoggerAwareInterface
             str_contains($responseContent, 'looks fake or invalid, please enter a real email address')
             || str_contains($responseContent, 'Please provide a valid email address')
         ) {
-            throw new InvalidContactEmailException();
+            throw new InvalidContactEmailException($responseContent);
         }
 
         if (str_contains($responseContent, 'contact must re-subscribe to get back on the list')) {
