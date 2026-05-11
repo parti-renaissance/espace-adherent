@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Mailchimp\Campaign\Handler;
 
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
@@ -56,6 +57,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->willReturn(null)
         ;
 
+        $this->entityManager->expects(self::never())->method('refresh');
         $this->manager->expects(self::never())->method('retrySendCampaign');
         $this->entityManager->expects(self::never())->method('flush');
         $this->bus->expects(self::never())->method('dispatch');
@@ -78,6 +80,12 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->method('find')
             ->with(123)
             ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
         ;
 
         $this->manager
@@ -126,6 +134,12 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->method('find')
             ->with(123)
             ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
         ;
 
         $this->manager
@@ -198,6 +212,12 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->willReturn($campaign)
         ;
 
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
+        ;
+
         $this->manager
             ->expects(self::once())
             ->method('retrySendCampaign')
@@ -230,7 +250,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         self::assertSame($expectedDelay, $capturedDelay, "Failed for retry index {$retryIndex}");
     }
 
-    public function testHandlerLogsExhaustedAndThrowsAfterMaxRetries(): void
+    public function testHandlerLogsExhaustedWithoutThrowingAfterMaxRetries(): void
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 6);
 
@@ -247,6 +267,12 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->method('find')
             ->with(123)
             ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
         ;
 
         $this->manager
@@ -283,10 +309,49 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Mailchimp campaign 123 retry exhausted after 1 attempts \(external_id=ext_123\)/');
+        // No throw: avoids Messenger replay which would inflate Sentry with duplicate errors.
+        ($this->handler)($command);
+    }
+
+    public static function provideSendingOrSentStatus(): iterable
+    {
+        yield 'Sent' => [MailchimpStatusEnum::Sent];
+        yield 'Sending' => [MailchimpStatusEnum::Sending];
+    }
+
+    #[DataProvider('provideSendingOrSentStatus')]
+    public function testHandlerSkipsWhenCampaignAlreadySentOrSending(MailchimpStatusEnum $status): void
+    {
+        $command = new RetrySendMailchimpCampaignCommand(123, 2);
+
+        $message = $this->createStub(AdherentMessageInterface::class);
+        $campaign = new MailchimpCampaign($message);
+        $campaign->status = $status;
+
+        $this->repository
+            ->expects(self::once())
+            ->method('find')
+            ->with(123)
+            ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
+        ;
+
+        $this->manager->expects(self::never())->method('retrySendCampaign');
+        $this->entityManager->expects(self::never())->method('flush');
+        $this->bus->expects(self::never())->method('dispatch');
+        $this->logger->expects(self::never())->method('info');
+        $this->logger->expects(self::never())->method('warning');
+        $this->logger->expects(self::never())->method('error');
 
         ($this->handler)($command);
+
+        self::assertSame(0, $campaign->getRetryCount(), 'Idempotence guard must NOT increment retry count.');
+        self::assertSame([], $campaign->getRetryHistory(), 'Idempotence guard must NOT append to retry history.');
     }
 
     public function testHandlerIncrementsRetryCountOnCampaign(): void
@@ -302,6 +367,12 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->expects(self::once())
             ->method('find')
             ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
         ;
 
         $this->manager

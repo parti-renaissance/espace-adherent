@@ -7,6 +7,7 @@ namespace Tests\App\Unit\Mailchimp\Campaign\Handler;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\Handler\SendMailchimpCampaignCommandHandler;
 use App\Mailchimp\Driver;
@@ -15,6 +16,9 @@ use App\Repository\MailchimpCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class SendMailchimpCampaignCommandHandlerTest extends TestCase
 {
@@ -33,6 +37,9 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
 
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())
             ->method('warning')
@@ -42,7 +49,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
         $handler(new SendMailchimpCampaignCommand(99));
     }
 
@@ -64,7 +71,10 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager);
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
@@ -86,7 +96,10 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager);
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
@@ -107,6 +120,9 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
 
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())
             ->method('error')
@@ -116,7 +132,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
@@ -141,6 +157,9 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
 
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())
             ->method('error')
@@ -155,7 +174,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Segment mismatch: local=555 remote=999/');
@@ -196,7 +215,55 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             ->willReturn(true)
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager);
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
+        $handler(new SendMailchimpCampaignCommand(7));
+    }
+
+    public function testInvokeDispatchesRetryWhenManagerReportsFailure(): void
+    {
+        $campaign = $this->buildCampaign(externalId: 'mc-abc', staticSegmentId: 555);
+
+        $repository = $this->createMock(MailchimpCampaignRepository::class);
+        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
+        $em->expects(self::never())->method('flush');
+
+        $driver = $this->createMock(Driver::class);
+        $driver->expects(self::once())
+            ->method('getCampaignSavedSegmentId')
+            ->with('mc-abc')
+            ->willReturn(555)
+        ;
+
+        $manager = $this->createMock(Manager::class);
+        $manager->expects(self::once())
+            ->method('sendMailchimpCampaign')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(false)
+        ;
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(
+                self::callback(function (RetrySendMailchimpCampaignCommand $cmd): bool {
+                    return 7 === $cmd->campaignId && 0 === $cmd->countRetry;
+                }),
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps)
+                        && $stamps[0] instanceof DelayStamp
+                        && 30_000 === $stamps[0]->getDelay();
+                }),
+            )
+            ->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd))
+        ;
+
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 

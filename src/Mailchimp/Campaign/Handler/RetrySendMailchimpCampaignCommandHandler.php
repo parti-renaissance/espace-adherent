@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\Handler;
 
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Manager;
@@ -44,6 +45,12 @@ final class RetrySendMailchimpCampaignCommandHandler
             return;
         }
 
+        $this->entityManager->refresh($campaign);
+
+        if (\in_array($campaign->status, [MailchimpStatusEnum::Sent, MailchimpStatusEnum::Sending], true)) {
+            return;
+        }
+
         $campaign->incrementRetryCount();
 
         $success = $this->manager->retrySendCampaign($campaign);
@@ -75,17 +82,14 @@ final class RetrySendMailchimpCampaignCommandHandler
                 'delayMs' => $delay,
             ]);
         } else {
-            $context = [
+            $this->logger->error('[Mailchimp] Campaign retry exhausted', [
                 'campaignId' => $command->campaignId,
                 'externalId' => $campaign->getExternalId(),
                 'staticSegmentId' => $campaign->getStaticSegmentId(),
                 'messageUuid' => $campaign->getMessage()->getUuid()->toString(),
                 'lastError' => $campaign->getDetail(),
                 'retryCount' => $campaign->getRetryCount(),
-            ];
-            $this->logger->error('[Mailchimp] Campaign retry exhausted', $context);
-
-            throw new \RuntimeException(\sprintf('Mailchimp campaign %d retry exhausted after %d attempts (external_id=%s)', $command->campaignId, $campaign->getRetryCount(), $campaign->getExternalId() ?? 'null'));
+            ]);
         }
     }
 }

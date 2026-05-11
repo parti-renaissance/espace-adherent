@@ -16,7 +16,6 @@ use App\Entity\MailchimpSegment;
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
-use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Contact\ContactStatusEnum;
@@ -433,20 +432,8 @@ class Manager implements LoggerAwareInterface
             return true;
         }
 
-        $lastError = $this->driver->getLastError();
-        $this->logger->error('[Mailchimp] sendCampaign refused — retry scheduled in 30s', [
-            'campaign_id' => $campaign->getId(),
-            'external_id' => $campaign->getExternalId(),
-            'last_error' => $lastError,
-        ]);
-
-        $campaign->markAsError($lastError);
+        $campaign->markAsError($this->driver->getLastError());
         $this->entityManager->flush();
-
-        $this->bus->dispatch(
-            new RetrySendMailchimpCampaignCommand($campaign->getId()),
-            [new DelayStamp(30_000)]
-        );
 
         return false;
     }
