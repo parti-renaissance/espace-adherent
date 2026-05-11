@@ -46,6 +46,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                         'User-Agent' => 'Renaissance',
                     ],
                     'timeout' => 60,
+                    'http_version' => '1.1',
                 ],
                 'ohme.client' => [
                     'base_uri' => 'https://api-ohme.oneheart.fr/api/v1/',
