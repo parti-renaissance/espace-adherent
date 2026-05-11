@@ -12,6 +12,7 @@ use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventVisibilityEnum;
+use App\Repository\Event\EventRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -22,6 +23,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
     public function __construct(
         private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeResolver,
+        private readonly EventRepository $eventRepository,
     ) {
     }
 
@@ -62,6 +64,13 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             $queryBuilder
                 ->andWhere("$alias.hidden = :hidden")
                 ->setParameter('hidden', false)
+            ;
+        }
+
+        if (isset($filters['upcomingOnly']) && filter_var($filters['upcomingOnly'], \FILTER_VALIDATE_BOOLEAN)) {
+            $queryBuilder
+                ->andWhere("$alias.finishAt >= :now")
+                ->setParameter('now', new \DateTime())
             ;
         }
 
@@ -112,6 +121,17 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             $queryBuilder
                 ->andWhere("$alias.visibility IN (:public_visibilities)")
                 ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
+            ;
+        }
+
+        if (isset($filters['lat'], $filters['lng']) && is_numeric($filters['lat']) && is_numeric($filters['lng'])) {
+            $queryBuilder
+                ->addSelect($this->eventRepository->getNearbyExpression($alias).' AS HIDDEN distance')
+                ->andWhere("$alias.postAddress.latitude IS NOT NULL")
+                ->andWhere("$alias.postAddress.longitude IS NOT NULL")
+                ->setParameter('latitude', (float) $filters['lat'])
+                ->setParameter('longitude', (float) $filters['lng'])
+                ->addOrderBy('distance', 'ASC')
             ;
         }
 

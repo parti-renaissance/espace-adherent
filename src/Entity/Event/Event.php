@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
+use App\Api\Filter\EventBoundingBoxFilter;
 use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
@@ -79,6 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: MySubscribedEventsFilter::class)]
 #[ApiFilter(filterClass: OrderEventsBySubscriptionsFilter::class)]
 #[ApiFilter(filterClass: EventsDepartmentFilter::class)]
+#[ApiFilter(filterClass: EventBoundingBoxFilter::class)]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['finishAt' => 'strictly_after'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'mode' => 'exact', 'beginAt' => 'start', 'status' => 'exact'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['pinned'])]
@@ -161,7 +163,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['event_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['event_write']],
-    order: ['beginAt' => 'ASC']
+    order: ['beginAt' => 'ASC'],
+    paginationMaximumItemsPerPage: 300,
 )]
 #[AssertValidEventCategory]
 #[DateRange(
@@ -176,6 +179,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['begin_at'])]
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['address_latitude', 'address_longitude'])]
 #[ORM\Table(name: '`events`')]
 class Event implements \Stringable, ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
 {
