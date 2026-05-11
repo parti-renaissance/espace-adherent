@@ -7,13 +7,14 @@ namespace App\Mailchimp\Campaign\Report\Command;
 use App\Mailchimp\CampaignMessageInterface;
 use App\Mailchimp\Synchronisation\QueuePriorityLevelEnum;
 use App\Messenger\Message\AbstractUuidMessage;
+use App\Messenger\Message\LockableMessageInterface;
 use Jwage\PhpAmqpLibMessengerBundle\Transport\AmqpStamp;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Message\DefaultStampsProviderInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
-class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageInterface, DefaultStampsProviderInterface
+class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageInterface, DefaultStampsProviderInterface, LockableMessageInterface
 {
     public function __construct(
         UuidInterface $uuid,
@@ -38,5 +39,20 @@ class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageIn
         }
 
         return $stamps;
+    }
+
+    public function getLockKey(): string
+    {
+        return 'mailchimp_report_sync_'.$this->getUuid()->toString();
+    }
+
+    public function getLockTtl(): int
+    {
+        return 1800;
+    }
+
+    public function isLockBlocking(): bool
+    {
+        return true;
     }
 }
