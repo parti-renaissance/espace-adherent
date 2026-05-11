@@ -10,6 +10,7 @@ use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
+use App\Repository\Event\EventRepository;
 use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManager;
@@ -29,7 +30,8 @@ class EventExtensionTest extends TestCase
     {
         $this->scopeResolver = $this->createMock(ScopeGeneratorResolver::class);
         $security = $this->createMock(Security::class);
-        $this->extension = new EventExtension($security, $this->scopeResolver);
+        $eventRepository = $this->createMock(EventRepository::class);
+        $this->extension = new EventExtension($security, $this->scopeResolver, $eventRepository);
     }
 
     public function testPrivateContextWithoutScopeBlocksResults(): void

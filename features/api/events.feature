@@ -104,6 +104,80 @@ Feature:
         And the JSON nodes should match:
             | metadata.total_items | 30 |
 
+    Scenario: As a non logged-in user I can filter events with a bounding box
+        # A box covering metropolitan France keeps only the events located inside it
+        # (events whose address falls outside, e.g. abroad, are excluded).
+        When I send a "GET" request to "/api/events?bbox[ne][lat]=51.1&bbox[ne][lng]=8.3&bbox[sw][lat]=42.3&bbox[sw][lng]=-5.2"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 26 |
+        # A bounding box that contains no event returns an empty list.
+        When I send a "GET" request to "/api/events?bbox[ne][lat]=10.1&bbox[ne][lng]=10.1&bbox[sw][lat]=10.0&bbox[sw][lng]=10.0"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 0 |
+        # An incomplete bbox (a missing corner component) is ignored, the full list is returned.
+        When I send a "GET" request to "/api/events?bbox[ne][lat]=51.1&bbox[sw][lat]=42.3&bbox[sw][lng]=-5.2"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 30 |
+
+    Scenario: As a non logged-in user I can exclude past events
+        When I send a "GET" request to "/api/events?upcomingOnly=true&page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 8 |
+        # Without the flag, past events are still returned (opt-in behaviour).
+        When I send a "GET" request to "/api/events?page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 30 |
+
+    Scenario: As a non logged-in user events are ordered by distance when my location is provided
+        # The Évry event has exactly these coordinates, so it comes first when ordering by
+        # distance to that point. All fixture events are geolocated, so the total is unchanged.
+        When I send a "GET" request to "/api/events?lat=48.624157&lng=2.4266&page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 30                                   |
+            | items[0].uuid        | 5f10be0f-184b-47b8-9e45-39b9ec46f079 |
+        # Ordering by distance to Marseille puts a Marseille event first instead.
+        When I send a "GET" request to "/api/events?lat=43.2984913&lng=5.3623771&page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items            | 30             |
+            | items[0].post_address.city_name | Marseille 2ème |
+        # Distance ordering combines with upcomingOnly without affecting the upcoming count.
+        When I send a "GET" request to "/api/events?lat=48.624157&lng=2.4266&upcomingOnly=true&page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 8 |
+
+    Scenario: As a non logged-in user I can request a page size above the default cap
+        # The Event collection allows up to 300 items per page; a higher value is capped to it.
+        When I send a "GET" request to "/api/events?page_size=500"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.items_per_page | 300 |
+            | metadata.total_items    | 30  |
+
+    Scenario: As a non logged-in user I can combine bbox, distance ordering and pagination
+        When I send a "GET" request to "/api/events?bbox[ne][lat]=51.1&bbox[ne][lng]=8.3&bbox[sw][lat]=42.3&bbox[sw][lng]=-5.2&lat=43.2984913&lng=5.3623771&page_size=5"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items            | 26             |
+            | metadata.items_per_page         | 5              |
+            | metadata.count                  | 5              |
+            | items[0].post_address.city_name | Marseille 2ème |
+
+    Scenario: As a logged-in Jemarche App user the geo filters apply to /api/v3/events
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        # lat/lng only reorders, so the count matches the plain ?zone=75 request (14 events).
+        And I send a "GET" request to "/api/v3/events?zone=75&lat=43.30&lng=5.36&page_size=100"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items | 14 |
+
     Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/events?scope=<scope>"
