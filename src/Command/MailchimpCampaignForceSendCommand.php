@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'mailchimp:campaign:force-send',
-    description: 'Force-send a MailchimpCampaign bypassing canSend(). The Mailchimp retry pipeline (30s → 30min, 5 attempts) stays active if Mailchimp refuses.',
+    description: 'Force-send a MailchimpCampaign bypassing canSend(). The Mailchimp retry pipeline (30s → 60min, 6 attempts) stays active if Mailchimp refuses.',
 )]
 class MailchimpCampaignForceSendCommand extends Command
 {
@@ -60,7 +60,7 @@ class MailchimpCampaignForceSendCommand extends Command
                 $campaign->getBlockReason()?->value ?? 'null',
             ),
             \sprintf('AdherentMessage    : #%d (uuid: %s)', $message->getId(), $message->getUuid()->toString()),
-            'Bypassing canSend(). If Mailchimp refuses, RetrySendMailchimpCampaignCommand will be dispatched with a 30s delay (then 1m, 5m, 10m, 30m).',
+            'Bypassing canSend(). If Mailchimp refuses, RetrySendMailchimpCampaignCommand is dispatched (30s, then 30s/1m/5m/10m/30m/60m); only the final exhausted retry is reported to Sentry.',
         ]);
 
         if (!$io->confirm('Proceed?', false)) {
@@ -72,7 +72,7 @@ class MailchimpCampaignForceSendCommand extends Command
         $this->manager->send($message, $this->manager->getRecipients($message));
 
         $io->success(\sprintf(
-            'Send pipeline triggered for MailchimpCampaign #%d. Watch Sentry for [Mailchimp] sendCampaign refused or [Mailchimp] Campaign retry alerts.',
+            'Send pipeline triggered for MailchimpCampaign #%d. Watch Sentry for the [Mailchimp] Campaign retry exhausted alert (raised only if every retry fails).',
             $campaignId,
         ));
 

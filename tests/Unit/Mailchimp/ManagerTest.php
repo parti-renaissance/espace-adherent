@@ -10,7 +10,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\SubscriptionType;
-use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Driver;
@@ -879,7 +878,7 @@ final class ManagerTest extends TestCase
         self::assertTrue($reportDispatched, 'SyncReportCommand must be dispatched on success.');
     }
 
-    public function testSendMailchimpCampaignFailureMarksErrorAndDispatchesRetry(): void
+    public function testSendMailchimpCampaignFailureMarksErrorWithoutDispatchingRetry(): void
     {
         $message = new AdherentMessage();
         $campaign = new MailchimpCampaign($message);
@@ -914,19 +913,9 @@ final class ManagerTest extends TestCase
             ->willReturn('campaign in invalid state')
         ;
 
-        $this->bus
-            ->expects(self::once())
-            ->method('dispatch')
-            ->with(
-                self::callback(fn (object $cmd): bool => $cmd instanceof RetrySendMailchimpCampaignCommand),
-                self::callback(function (array $stamps): bool {
-                    return 1 === \count($stamps)
-                        && $stamps[0] instanceof DelayStamp
-                        && 30_000 === $stamps[0]->getDelay();
-                }),
-            )
-            ->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd))
-        ;
+        // The retry dispatch responsibility lives in SendMailchimpCampaignCommandHandler now,
+        // so Manager::sendMailchimpCampaign must NOT dispatch anything on failure.
+        $this->bus->expects(self::never())->method('dispatch');
 
         self::assertFalse($this->manager->sendMailchimpCampaign($campaign));
         self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
