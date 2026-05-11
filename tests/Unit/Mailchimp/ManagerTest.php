@@ -134,7 +134,6 @@ final class ManagerTest extends TestCase
         $this->manager->editMember($adherent, $message);
 
         self::assertSame('new-contact-id', $adherent->mailchimpContactId);
-        self::assertNull($adherent->emailStatusComment);
     }
 
     public function testEditMemberFallbackOnInvalidPayloadException(): void
@@ -187,7 +186,8 @@ final class ManagerTest extends TestCase
 
         $this->manager->editMember($adherent, $message);
 
-        self::assertNull($adherent->emailStatusComment);
+        // Legacy fallback succeeded but the contact-endpoint rejection is kept for diagnosis.
+        self::assertSame('Invalid Resource', $adherent->lastMailchimpFailedSyncResponse);
     }
 
     public function testEditMemberRedispatchOnRemovedContactStatusException(): void
@@ -247,7 +247,6 @@ final class ManagerTest extends TestCase
         $this->manager->editMember($adherent, $message);
 
         self::assertFalse($adherent->isEmailSubscribed());
-        self::assertSame('Unsubscribed', $adherent->emailStatusComment);
     }
 
     public function testEditMemberHandlesInvalidContactEmailException(): void
@@ -279,12 +278,13 @@ final class ManagerTest extends TestCase
         $this->driver
             ->expects($this->once())
             ->method('addContact')
-            ->willThrowException(new InvalidContactEmailException())
+            ->willThrowException(new InvalidContactEmailException('looks fake or invalid'))
         ;
 
         $this->manager->editMember($adherent, $message);
 
-        self::assertSame('Email invalid', $adherent->emailStatusComment);
+        self::assertSame('looks fake or invalid', $adherent->lastMailchimpFailedSyncResponse);
+        self::assertNotNull($adherent->mailchimpLastFailedAt);
     }
 
     public function testEditMemberHandlesFailedSyncException(): void
@@ -322,6 +322,64 @@ final class ManagerTest extends TestCase
         $this->manager->editMember($adherent, $message);
 
         self::assertSame('Internal Server Error', $adherent->lastMailchimpFailedSyncResponse);
+    }
+
+    public function testEditMemberFailureRecordsFailedAtTimestamp(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping->method('getListIdFromSource')->willReturn('list-id');
+        $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
+        $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
+        $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
+        $this->driver->method('addContact')->willThrowException(new FailedSyncException('Internal Server Error'));
+
+        self::assertNull($adherent->mailchimpLastFailedAt);
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertNotNull($adherent->mailchimpLastFailedAt);
+    }
+
+    public function testEditMemberCleanContactSuccessClearsPreviousFailure(): void
+    {
+        $adherent = $this->createAdherent();
+        $adherent->lastMailchimpFailedSyncResponse = 'previous error';
+        $adherent->mailchimpLastFailedAt = new \DateTimeImmutable('-1 day');
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping->method('getListIdFromSource')->willReturn('list-id');
+        $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
+        $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
+        $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
+        $this->driver->method('addContact')->willReturn('new-contact-id');
+
+        $this->manager->editMember($adherent, $message);
+
+        // A clean /contact sync clears the failure state.
+        self::assertNull($adherent->lastMailchimpFailedSyncResponse);
+        self::assertNull($adherent->mailchimpLastFailedAt);
+    }
+
+    public function testEditMemberRecordsUnexpectedException(): void
+    {
+        $adherent = $this->createAdherent();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping->method('getListIdFromSource')->willReturn('list-id');
+        $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
+        $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
+        $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
+        $this->driver->method('addContact')->willThrowException(new \RuntimeException('unexpected boom'));
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame('unexpected boom', $adherent->lastMailchimpFailedSyncResponse);
+        self::assertNotNull($adherent->mailchimpLastFailedAt);
     }
 
     public function testEditMemberUpdateContactFallbackOnInvalidPayloadException(): void
@@ -376,7 +434,8 @@ final class ManagerTest extends TestCase
 
         $this->manager->editMember($adherent, $message);
 
-        self::assertNull($adherent->emailStatusComment);
+        // Legacy fallback succeeded but the contact-endpoint rejection is kept for diagnosis.
+        self::assertSame('Invalid phone', $adherent->lastMailchimpFailedSyncResponse);
     }
 
     public function testEditMemberOnSmsPhoneConflictRetriesWithoutSms(): void

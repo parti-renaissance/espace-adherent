@@ -13,6 +13,7 @@ use App\Mailchimp\Synchronisation\Request\ContactRequest;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -88,6 +89,19 @@ final class DriverTest extends TestCase
         $result = $this->driver->updateContact('contact-id', new ContactRequest('test@example.com'), 'list-id');
 
         self::assertTrue($result);
+    }
+
+    public function testUpdateContactConvertsTransportErrorToFailedSyncException(): void
+    {
+        $response = $this->createStub(ResponseInterface::class);
+        $response->method('getStatusCode')->willThrowException(new TransportException('Connection reset by peer'));
+        $response->method('getContent')->willThrowException(new TransportException('Connection reset by peer'));
+        $this->httpClient->method('request')->willReturn($response);
+
+        $this->expectException(FailedSyncException::class);
+        $this->expectExceptionMessageMatches('/\[transport error\]/');
+
+        $this->driver->updateContact('contact-id', new ContactRequest('test@example.com'), 'list-id', true);
     }
 
     public function testAddContactOnInvalidResourceErrorThrowsInvalidPayloadException(): void

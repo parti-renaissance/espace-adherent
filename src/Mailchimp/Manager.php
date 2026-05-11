@@ -152,45 +152,31 @@ class Manager implements LoggerAwareInterface
                 }
             }
 
-            $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
+            $adherent->lastMailchimpFailedSyncResponse = null;
+            $adherent->mailchimpLastFailedAt = null;
             $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
             $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
             // Reset unsubscription request date
             $adherent->unsubscribeRequestedAt = null;
         } catch (InvalidContactEmailException $e) {
-            $this->logger?->warning('[Mailchimp] invalid email', ['adherentUuid' => $adherentUuid]);
-            $adherent->emailStatusComment = 'Email invalid';
+            $this->recordSyncFailure($adherent, $e->getMessage());
         } catch (InvalidPayloadException $e) {
             // Fallback to legacy /members endpoint
-            $this->logger?->warning('[Mailchimp] BETA contact endpoint failed, falling back to member endpoint', [
-                'adherentUuid' => $adherentUuid,
-                'error' => $e->getMessage(),
-            ]);
             try {
                 $result = $this->driver->editMember(
                     $requestBuilder->buildMemberRequest($email),
                     $listId,
                     true
                 );
-                $adherent->emailStatusComment = null;
-                $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
+                $this->recordSyncFailure($adherent, $e->getMessage());
                 $adherent->mailchimpSyncEndpoint = self::API_MEMBER;
                 $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
-            } catch (InvalidContactEmailException) {
-                $adherent->emailStatusComment = 'Email invalid';
-            } catch (RemovedContactStatusException $fallbackException) {
+            } catch (InvalidContactEmailException|FailedSyncException $fallbackException) {
+                $this->recordSyncFailure($adherent, $fallbackException->getMessage());
+            } catch (RemovedContactStatusException) {
                 $adherent->setEmailUnsubscribed(true);
-                $adherent->emailStatusComment = $fallbackException->getMessage();
-            } catch (FailedSyncException $fallbackException) {
-                $this->logger?->error('[Mailchimp] legacy member sync failed', ['adherentUuid' => $adherentUuid, 'error' => $fallbackException->getMessage()]);
-                $adherent->lastMailchimpFailedSyncResponse = $fallbackException->getMessage();
             }
         } catch (SmsPhoneAlreadySubscribedException $e) {
-            $this->logger?->warning('[Mailchimp] SMS phone conflict, retrying without SMS', [
-                'adherentUuid' => $adherentUuid,
-                'error' => $e->getMessage(),
-            ]);
-
             try {
                 $contactRequestWithoutSms = $requestBuilder->buildContactRequestWithoutSms($email);
 
@@ -210,29 +196,24 @@ class Manager implements LoggerAwareInterface
                 }
 
                 if ($result) {
-                    $adherent->emailStatusComment = null;
-                    $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
+                    $this->recordSyncFailure($adherent, $e->getMessage());
                     $adherent->mailchimpSyncEndpoint = self::API_CONTACT;
                     $adherent->mailchimpLastSyncedAt = new \DateTimeImmutable();
                 }
             } catch (\Throwable $retryException) {
-                $this->logger?->error('[Mailchimp] retry without SMS failed', [
-                    'adherentUuid' => $adherentUuid,
-                    'error' => $retryException->getMessage(),
-                ]);
-                $adherent->lastMailchimpFailedSyncResponse = $retryException->getMessage();
+                $this->recordSyncFailure($adherent, $retryException->getMessage());
             }
-        } catch (RemovedContactStatusException $e) {
-            $this->logger?->warning('[Mailchimp] removed contact status, redispatching', ['adherentUuid' => $adherentUuid]);
+        } catch (RemovedContactStatusException) {
             $adherent->setEmailUnsubscribed(true);
-            $adherent->emailStatusComment = $e->getMessage();
             // Redispatch to re-sync after Mailchimp has processed the unsubscription
             $this->bus->dispatch($message, [new DelayStamp(5000)]);
 
             return;
         } catch (FailedSyncException $e) {
-            $this->logger?->error('[Mailchimp] sync failed', ['adherentUuid' => $adherentUuid, 'error' => $e->getMessage()]);
-            $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
+            $this->recordSyncFailure($adherent, $e->getMessage());
+        } catch (\Throwable $e) {
+            $this->logger?->error('[Mailchimp] sync failed unexpectedly', ['adherentUuid' => $adherentUuid, 'error' => $e->getMessage(), 'exception' => $e]);
+            $this->recordSyncFailure($adherent, $e->getMessage());
         }
 
         if ($result) {
@@ -242,6 +223,12 @@ class Manager implements LoggerAwareInterface
                 $requestBuilder
             );
         }
+    }
+
+    private function recordSyncFailure(Adherent $adherent, string $response): void
+    {
+        $adherent->lastMailchimpFailedSyncResponse = $response;
+        $adherent->mailchimpLastFailedAt = new \DateTimeImmutable();
     }
 
     public function editNewsletterMember(NewsletterValueObject $newsletter): void
