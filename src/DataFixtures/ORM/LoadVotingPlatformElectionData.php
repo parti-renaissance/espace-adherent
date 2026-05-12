@@ -46,6 +46,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID11 = '13814072-1dd2-11b2-9593-b97d988be702';
     public const ELECTION_UUID12 = 'f9f2894b-64a2-446f-b2fd-134015f0c0d2';
     public const ELECTION_UUID13 = '85f851dd-ea60-4c93-a505-fb51d41c7d70';
+    public const ELECTION_UUID14 = 'b1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f';
 
     /**
      * @var \Faker\Generator
@@ -230,6 +231,19 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         // -------------------------------------------
 
+        // Consultation (poll) without a target year: the voters list is curated explicitly,
+        // it may include adherents who are no longer up to date with their membership.
+        $election = new Election(
+            $this->getReference('designation-15', Designation::class),
+            Uuid::fromString(self::ELECTION_UUID14),
+            [new ElectionRound()]
+        );
+        $this->manager->persist($election);
+        $this->loadLocalPollCandidates($election);
+        $this->manager->persist($this->loadConsultationVoters($election, ['adherent-9', 'adherent-3']));
+
+        // -------------------------------------------
+
         $this->manager->flush();
     }
 
@@ -352,6 +366,21 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         }
 
         $this->manager->persist($list);
+
+        return $list;
+    }
+
+    /**
+     * @param string[] $adherentReferences
+     */
+    private function loadConsultationVoters(Election $election, array $adherentReferences): VotersList
+    {
+        $list = new VotersList($election);
+
+        foreach ($adherentReferences as $reference) {
+            $adherent = $this->getReference($reference, Adherent::class);
+            $list->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
+        }
 
         return $list;
     }
