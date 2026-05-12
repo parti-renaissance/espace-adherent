@@ -142,6 +142,10 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             || $designation->isVoteType()
             || $designation->isTerritorialAnimatorType()
         ) {
+            if ($designation->isConsultationType() && null === $designation->targetYear) {
+                return $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
+            }
+
             return $designation->targetYear || $adherent->hasActiveMembership() || self::POTENTIAL_PERMISSION === $attribute;
         }
 
