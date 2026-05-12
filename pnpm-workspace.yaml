@@ -1,0 +1,7 @@
+# Supply-chain guard: only install package versions published at least 24h ago (1440 min).
+minimumReleaseAge: 1440
+
+# Dependencies allowed to run install scripts (pnpm blocks them by default).
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: false

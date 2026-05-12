@@ -10,15 +10,6 @@ runs:
               path: vendor/
               key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
-        - name: Cache yarn dependencies
-          uses: actions/cache@v5
-          with:
-              path: |
-                  .yarn/cache
-                  .yarn/unplugged
-                  .yarn/install-state.gz
-              key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
-
         - name: Cache static assets
           uses: actions/cache@v5
           with:

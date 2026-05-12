@@ -14,7 +14,7 @@ env:
     HASH: ${{ github.sha }}
     TAG: ${{ github.ref_name }}
 
-    NODE_VERSION: 20.x
+    NODE_VERSION: 22.x
     PHP_VERSION: 8.5
 
     REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ vars.GCR_PROJECT_NAME }}
@@ -62,17 +62,11 @@ jobs:
         steps:
             - uses: actions/checkout@v6
 
-            - name: Cache yarn dependencies
-              uses: actions/cache@v5
-              with:
-                  path: node_modules/
-                  key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
-
-            - name: Setup yarn
-              uses: ./.github/actions/setup-yarn
+            - name: Setup pnpm
+              uses: ./.github/actions/setup-pnpm
 
             - name: Build static assets
-              run: yarn build-prod
+              run: pnpm build-prod
 
             - name: Cache static assets
               uses: actions/cache@v5
@@ -90,6 +84,7 @@ jobs:
         if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
         env:
             EXEC:
+            RUN_NODE:
         steps:
             - uses: actions/checkout@v6
 
@@ -102,12 +97,6 @@ jobs:
               with:
                   path: vendor/
                   key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
-
-            - name: Cache yarn dependencies
-              uses: actions/cache@v5
-              with:
-                  path: node_modules/
-                  key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
             - name: Cache PHP CS Fixer
               uses: actions/cache@v5
@@ -128,7 +117,7 @@ jobs:
             - uses: ./.github/actions/setup-composer
               with:
                   skip-install: ${{ steps.composer-cache.outputs.cache-hit }}
-            - uses: ./.github/actions/setup-yarn
+            - uses: ./.github/actions/setup-pnpm
 
             - name: PHP Coding Standards Fixer
               run: make phpcs
@@ -142,10 +131,10 @@ jobs:
             - name: Lint container
               run: make lc
 
-            - name: Yarn Eslint
+            - name: ESLint
               run: make lj
 
-            - name: Yarn Prettier
+            - name: Prettier
               run: make lp
 
             - name: PHPStan - PHP Static Analysis Tool

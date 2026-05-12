@@ -36,7 +36,7 @@ cd espace-adherent
 make start
 ```
 
-Cette unique commande effectue : build des images Docker, démarrage des conteneurs, installation des dépendances (Composer + Yarn), build des assets, initialisation de la base de données (migrations + fixtures) et génération des clés OAuth.
+Cette unique commande effectue : build des images Docker, démarrage des conteneurs, installation des dépendances (Composer + pnpm), build des assets, initialisation de la base de données (migrations + fixtures) et génération des clés OAuth.
 
 ### 3. Vérifier l'installation
 

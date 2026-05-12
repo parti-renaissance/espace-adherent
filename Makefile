@@ -16,7 +16,7 @@ DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt lintfix
+.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf lint ls ly lt lintfix
 .PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock assets
 
@@ -28,8 +28,6 @@ help:
 ##---------------------------------------------------------------------------
 
 start: build up assets db keys perm cc ## Install and start the project
-
-start-mac: build up web-built-mac db keys.key perm cc ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill || true
@@ -107,22 +105,19 @@ db-validate: vendor wait-for-db                                                 
 ##---------------------------------------------------------------------------
 
 watch: node_modules                                                                                    ## Watch the assets and build their development version on change
-	$(RUN_NODE) yarn watch
-
-watch-mac:
-	yarn watch
+	$(RUN_NODE) pnpm watch
 
 assets: node_modules                                                                                   ## Build the development version of the assets
-	$(RUN_NODE) yarn build-dev
+	$(RUN_NODE) pnpm build-dev
 
 assets-prod: node_modules                                                                              ## Build the production version of the assets
-	$(RUN_NODE) yarn build-prod
+	$(RUN_NODE) pnpm build-prod
 
 ##
 ## Tests
 ##---------------------------------------------------------------------------
 
-test: tu tf tj                                                                                         ## Run the PHP and the Javascript tests
+test: tu tf                                                                                            ## Run the PHP and the Javascript tests
 
 test-behat:                                                                                            ## Run behat tests
 	$(BEHAT) $(BEHAT_ARGS)
@@ -158,9 +153,6 @@ tfp-db-init: wait-for-db                                                        
 tfp-db: tfp-db-init
 	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
 
-tj: node_modules                                                                                       ## Run the Javascript tests
-	$(RUN_NODE) yarn test
-
 lint: ls lj phpcs                                                                                ## Run lint on Twig, YAML, PHP and Javascript files
 
 ls: ly lt lc phpstan                                                                                             ## Lint Symfony (Twig and YAML) files
@@ -179,16 +171,16 @@ lc:
 	$(CONSOLE) lint:container
 
 lj: node_modules                                                                                       ## Lint the Javascript to follow the convention
-	$(RUN_NODE) yarn lint
+	$(RUN_NODE) pnpm lint
 
 ljfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
-	$(RUN_NODE) yarn lint:fix
+	$(RUN_NODE) pnpm lint:fix
 
 lp: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
-	$(RUN_NODE) yarn prettier
+	$(RUN_NODE) pnpm prettier
 
 lpfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
-	$(RUN_NODE) yarn prettier:fix
+	$(RUN_NODE) pnpm prettier:fix
 
 lintfix: phpcsfix ljfix lpfix ltfix
 
@@ -240,15 +232,11 @@ vendor/composer/installed.php: composer.lock
 composer.lock: composer.json
 	@echo composer.lock is not up to date.
 
-node_modules: yarn.lock
-	$(RUN_NODE) yarn install
+node_modules: pnpm-lock.yaml
+	$(RUN_NODE) pnpm install
 
-yarn.lock: package.json
-	@echo yarn.lock is not up to date.
-
-web-built-mac:
-	yarn install
-	yarn build-dev
+pnpm-lock.yaml: package.json
+	@echo pnpm-lock.yaml is not up to date.
 
 ##
 ## Containers
