@@ -13,7 +13,7 @@ trait PublicIdTrait
     #[ORM\Column(length: 7, unique: true, nullable: true)]
     protected ?string $publicId = null;
 
-    #[Groups(['jemarche_user_profile', 'profile_read', 'adherent_autocomplete', 'referral_read_with_referrer', 'committee:list', 'committee:read', 'agora_read', 'agora_membership_read', 'hit:read'])]
+    #[Groups(['jemarche_user_profile', 'profile_read', 'adherent_autocomplete', 'referral_read_with_referrer', 'committee:list', 'committee:read', 'agora_read', 'agora_membership_read', 'hit:read', 'adherent_note_author:read'])]
     #[SerializedName('id')]
     public function getPublicId(): ?string
     {
