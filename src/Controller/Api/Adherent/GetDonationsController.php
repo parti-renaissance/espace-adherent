@@ -18,8 +18,6 @@ class GetDonationsController extends AbstractController
 
     public function __invoke(Adherent $adherent): JsonResponse
     {
-        $this->denyAccessUnlessGranted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', $adherent);
-
         return $this->json(
             $this->donationManager->getHistory($adherent, false),
             context: [AbstractNormalizer::GROUPS => ['donation_read']]
