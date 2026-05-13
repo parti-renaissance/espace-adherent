@@ -10,7 +10,8 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\Handler\SendMailchimpCampaignCommandHandler;
-use App\Mailchimp\Driver;
+use App\Mailchimp\Campaign\MailchimpCampaignSendGuard;
+use App\Mailchimp\Campaign\SendDecision;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,8 +32,8 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::never())->method('refresh');
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::never())->method('getCampaignSavedSegmentId');
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::never())->method('evaluate');
 
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
@@ -49,7 +50,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus, $logger);
         $handler(new SendMailchimpCampaignCommand(99));
     }
 
@@ -65,8 +66,8 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::never())->method('getCampaignSavedSegmentId');
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::never())->method('evaluate');
 
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
@@ -74,7 +75,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
@@ -90,8 +91,8 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::never())->method('getCampaignSavedSegmentId');
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::never())->method('evaluate');
 
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
@@ -99,7 +100,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
@@ -114,8 +115,8 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::never())->method('getCampaignSavedSegmentId');
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::never())->method('evaluate');
 
         $manager = $this->createMock(Manager::class);
         $manager->expects(self::never())->method('sendMailchimpCampaign');
@@ -132,11 +133,11 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus, $logger);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 
-    public function testInvokeWithSegmentMismatchLogsErrorMarksErrorAndThrows(): void
+    public function testInvokeWithGuardAbortMarksErrorAndStopsWithoutThrowOrRetry(): void
     {
         $campaign = $this->buildCampaign(externalId: 'mc-abc', staticSegmentId: 555);
 
@@ -147,11 +148,11 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
         $em->expects(self::once())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::once())
-            ->method('getCampaignSavedSegmentId')
-            ->with('mc-abc')
-            ->willReturn(999)
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::once())
+            ->method('evaluate')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(SendDecision::abort('Recipient overshoot: recipient_count=1200 expected=93 max=98', 1200))
         ;
 
         $manager = $this->createMock(Manager::class);
@@ -164,32 +165,24 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $logger->expects(self::once())
             ->method('error')
             ->with(
-                '[SendMailchimpCampaign] Segment mismatch — send aborted',
+                '[SendMailchimpCampaign] Send aborted by recipient guard',
                 self::callback(function (array $ctx): bool {
                     return 7 === $ctx['campaign_id']
                         && 'mc-abc' === $ctx['external_id']
-                        && 555 === $ctx['local_segment_id']
-                        && 999 === $ctx['remote_segment_id'];
+                        && str_contains((string) $ctx['reason'], 'overshoot')
+                        && 1200 === $ctx['recipient_count'];
                 }),
             )
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus, $logger);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus, $logger);
+        $handler(new SendMailchimpCampaignCommand(7));
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Segment mismatch: local=555 remote=999/');
-
-        try {
-            $handler(new SendMailchimpCampaignCommand(7));
-        } finally {
-            self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
-            self::assertNotNull($campaign->getDetail());
-            self::assertStringContainsString('local=555', $campaign->getDetail());
-            self::assertStringContainsString('remote=999', $campaign->getDetail());
-        }
+        self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
+        self::assertStringContainsString('overshoot', (string) $campaign->getDetail());
     }
 
-    public function testInvokeWithMatchingSegmentDelegatesToManager(): void
+    public function testInvokeWithGuardRetryDispatchesRetryWithoutSending(): void
     {
         $campaign = $this->buildCampaign(externalId: 'mc-abc', staticSegmentId: 555);
 
@@ -198,14 +191,64 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
-        // Manager::sendMailchimpCampaign now owns its own flushes; the handler does not flush on the happy path.
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::once())
-            ->method('getCampaignSavedSegmentId')
-            ->with('mc-abc')
-            ->willReturn(555)
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::once())
+            ->method('evaluate')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(SendDecision::retry('recipient_count not available yet on Mailchimp.'))
+        ;
+
+        $manager = $this->createMock(Manager::class);
+        $manager->expects(self::never())->method('sendMailchimpCampaign');
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(
+                self::callback(function (RetrySendMailchimpCampaignCommand $cmd): bool {
+                    return 7 === $cmd->campaignId && 0 === $cmd->countRetry;
+                }),
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps)
+                        && $stamps[0] instanceof DelayStamp
+                        && 30_000 === $stamps[0]->getDelay();
+                }),
+            )
+            ->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd))
+        ;
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('warning')
+            ->with(
+                '[SendMailchimpCampaign] Recipient count not ready, scheduling retry',
+                self::callback(fn (array $ctx): bool => 7 === $ctx['campaign_id']),
+            )
+        ;
+
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus, $logger);
+        $handler(new SendMailchimpCampaignCommand(7));
+    }
+
+    public function testInvokeWithGuardSendDelegatesToManagerAndWritesRecipientCount(): void
+    {
+        $campaign = $this->buildCampaign(externalId: 'mc-abc', staticSegmentId: 555);
+
+        $repository = $this->createMock(MailchimpCampaignRepository::class);
+        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
+        // Manager::sendMailchimpCampaign owns its own flushes; the handler does not flush on the happy path.
+        $em->expects(self::never())->method('flush');
+
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::once())
+            ->method('evaluate')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(SendDecision::send(93))
         ;
 
         $manager = $this->createMock(Manager::class);
@@ -218,11 +261,13 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
+
+        self::assertSame(93, $campaign->getRecipientCount());
     }
 
-    public function testInvokeDispatchesRetryWhenManagerReportsFailure(): void
+    public function testInvokeDispatchesRetryWhenManagerReportsFailureAfterGuardSend(): void
     {
         $campaign = $this->buildCampaign(externalId: 'mc-abc', staticSegmentId: 555);
 
@@ -233,11 +278,11 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $em->expects(self::once())->method('refresh')->with(self::identicalTo($campaign));
         $em->expects(self::never())->method('flush');
 
-        $driver = $this->createMock(Driver::class);
-        $driver->expects(self::once())
-            ->method('getCampaignSavedSegmentId')
-            ->with('mc-abc')
-            ->willReturn(555)
+        $sendGuard = $this->createMock(MailchimpCampaignSendGuard::class);
+        $sendGuard->expects(self::once())
+            ->method('evaluate')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(SendDecision::send(93))
         ;
 
         $manager = $this->createMock(Manager::class);
@@ -263,7 +308,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
             ->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd))
         ;
 
-        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $driver, $manager, $bus);
+        $handler = new SendMailchimpCampaignCommandHandler($repository, $em, $sendGuard, $manager, $bus);
         $handler(new SendMailchimpCampaignCommand(7));
     }
 

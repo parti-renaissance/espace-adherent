@@ -154,6 +154,19 @@ class Driver implements LoggerAwareInterface
         return null === $segmentId ? null : (int) $segmentId;
     }
 
+    public function getCampaignRecipientCount(string $campaignId): ?int
+    {
+        $response = $this->send('GET', \sprintf('/campaigns/%s?fields=recipients.recipient_count', $campaignId));
+
+        if (!$this->isSuccessfulResponse($response)) {
+            return null;
+        }
+
+        $count = $response->toArray()['recipients']['recipient_count'] ?? null;
+
+        return null === $count ? null : (int) $count;
+    }
+
     public function createCampaign(EditCampaignRequest $request): array
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());

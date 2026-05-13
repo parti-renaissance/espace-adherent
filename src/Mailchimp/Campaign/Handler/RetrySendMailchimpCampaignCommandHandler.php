@@ -7,6 +7,8 @@ namespace App\Mailchimp\Campaign\Handler;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
+use App\Mailchimp\Campaign\MailchimpCampaignSendGuard;
+use App\Mailchimp\Campaign\SendDecisionEnum;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,6 +34,7 @@ final class RetrySendMailchimpCampaignCommandHandler
         private readonly MailchimpCampaignRepository $repository,
         private readonly Manager $manager,
         private readonly EntityManagerInterface $entityManager,
+        private readonly MailchimpCampaignSendGuard $sendGuard,
         private readonly MessageBusInterface $bus,
         private readonly LoggerInterface $logger,
     ) {
@@ -51,11 +54,45 @@ final class RetrySendMailchimpCampaignCommandHandler
             return;
         }
 
+        $decision = $this->sendGuard->evaluate($campaign);
+
+        if (SendDecisionEnum::Abort === $decision->kind) {
+            $campaign->markAsError($decision->reason);
+            $campaign->addRetryAttempt(false, $decision->reason);
+
+            $this->entityManager->flush();
+
+            $this->logger->error('[Mailchimp] Campaign send aborted by recipient guard', [
+                'campaignId' => $command->campaignId,
+                'externalId' => $campaign->getExternalId(),
+                'reason' => $decision->reason,
+                'recipientCount' => $decision->recipientCount,
+                'messageUuid' => $campaign->getMessage()->getUuid()->toString(),
+            ]);
+
+            return;
+        }
+
         $campaign->incrementRetryCount();
 
-        $success = $this->manager->retrySendCampaign($campaign);
+        $isFinalAttempt = $command->countRetry >= self::MAX_RETRIES;
 
-        $campaign->addRetryAttempt($success, $success ? null : $campaign->getDetail());
+        if (SendDecisionEnum::Send === $decision->kind || $isFinalAttempt) {
+            if (SendDecisionEnum::Send === $decision->kind) {
+                $campaign->setRecipientCount($decision->recipientCount);
+            } else {
+                $this->logger->error('[Mailchimp] recipient_count never settled — sending anyway', [
+                    'campaignId' => $command->campaignId,
+                    'reason' => $decision->reason,
+                ]);
+            }
+
+            $success = $this->manager->retrySendCampaign($campaign);
+        } else {
+            $success = false;
+        }
+
+        $campaign->addRetryAttempt($success, $success ? null : ($decision->reason ?? $campaign->getDetail()));
 
         $this->entityManager->flush();
 
@@ -69,7 +106,7 @@ final class RetrySendMailchimpCampaignCommandHandler
         }
 
         if ($command->countRetry < self::MAX_RETRIES) {
-            $delay = self::DELAY_SCHEDULE_MS[$command->countRetry] ?? self::DELAY_SCHEDULE_MS[array_key_last(self::DELAY_SCHEDULE_MS)];
+            $delay = self::DELAY_SCHEDULE_MS[$command->countRetry];
 
             $this->bus->dispatch(
                 new RetrySendMailchimpCampaignCommand($command->campaignId, $command->countRetry + 1),

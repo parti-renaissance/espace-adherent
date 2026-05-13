@@ -128,7 +128,9 @@ class PrepareCampaignAudienceHandler
             $this->entityManager->flush();
 
             // Reset Mailchimp segment members (idempotent: PATCH with [] starts from a clean slate).
-            $this->staticSegmentService->update($segmentId, [], $listId);
+            if (!$this->staticSegmentService->update($segmentId, [], $listId)) {
+                throw new \RuntimeException(\sprintf('Failed to wipe Mailchimp static segment %d before refill (campaign %d).', $segmentId, $campaign->getId()));
+            }
 
             $campaignId = $campaign->getId();
             for ($n = 1; $n <= $chunksTotal; ++$n) {

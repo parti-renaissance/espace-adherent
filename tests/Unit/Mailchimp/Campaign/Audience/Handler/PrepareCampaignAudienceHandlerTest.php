@@ -202,6 +202,55 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
     }
 
+    public function testWipeFailureFailsPreparationAndRethrows(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+
+        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn(range(1, 93));
+
+        $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        // Local rows are cleared before the wipe (so the catch starts from a clean local state too).
+        $memberRepository->expects(self::once())->method('deleteBySegmentId');
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
+
+        $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $staticSegmentService
+            ->expects(self::once())
+            ->method('update')
+            ->with(555, [], 'main-list')
+            ->willReturn(false)
+        ;
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        // The wipe failure aborts before the dispatch loop — no chunk, no finalize.
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = $this->buildHandler(
+            $em,
+            adherentRepository: $adherentRepository,
+            memberRepository: $memberRepository,
+            staticSegmentService: $staticSegmentService,
+            bus: $bus,
+        );
+
+        try {
+            $handler(new PrepareCampaignAudienceMessage(7, 1));
+            self::fail('Expected RuntimeException not thrown');
+        } catch (\RuntimeException $e) {
+            self::assertStringContainsString('Failed to wipe Mailchimp static segment 555', $e->getMessage());
+        }
+
+        // The catch in __invoke ran failPreparation() + set errorSummary + flushed before re-throwing.
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::MailchimpUnavailable, $campaign->getBlockReason());
+        self::assertNotNull($campaign->getMailchimpStaticSegment()->errorSummary);
+    }
+
     public function testIdempotenceRetryRedispatchesOnlyPendingChunks(): void
     {
         $message = new AdherentMessage();

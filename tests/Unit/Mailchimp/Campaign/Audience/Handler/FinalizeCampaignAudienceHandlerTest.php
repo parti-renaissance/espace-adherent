@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class FinalizeCampaignAudienceHandlerTest extends TestCase
 {
@@ -82,9 +83,16 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::callback(function (object $cmd): bool {
-                return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
-            }))
+            ->with(
+                self::callback(function (object $cmd): bool {
+                    return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
+                }),
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps)
+                        && $stamps[0] instanceof DelayStamp
+                        && 60_000 === $stamps[0]->getDelay();
+                }),
+            )
             ->willReturn(new Envelope(new \stdClass()))
         ;
 
@@ -230,9 +238,16 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::callback(function (object $cmd): bool {
-                return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
-            }))
+            ->with(
+                self::callback(function (object $cmd): bool {
+                    return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
+                }),
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps)
+                        && $stamps[0] instanceof DelayStamp
+                        && 60_000 === $stamps[0]->getDelay();
+                }),
+            )
             ->willReturn(new Envelope(new \stdClass()))
         ;
 
