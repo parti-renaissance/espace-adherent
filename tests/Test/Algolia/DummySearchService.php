@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Test\Algolia;
 
-use Algolia\AlgoliaSearch\Response\NullResponse;
+use Algolia\SearchBundle\Responses\NullResponse;
 use Algolia\SearchBundle\SearchService;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use Doctrine\Persistence\ObjectManager;
@@ -83,6 +83,7 @@ class DummySearchService implements SearchService
 
     public function getSearchables()
     {
+        return [];
     }
 
     public function searchableAs($className)
@@ -126,5 +127,6 @@ class DummySearchService implements SearchService
 
     public function count($className, $query = '', $requestOptions = [])
     {
+        return 0;
     }
 }
