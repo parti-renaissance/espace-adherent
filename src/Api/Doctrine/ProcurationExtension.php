@@ -12,13 +12,11 @@ use App\Entity\Procuration\AbstractProcuration;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bundle\SecurityBundle\Security;
 
 class ProcurationExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeResolver,
-        private readonly Security $security,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
@@ -34,11 +32,9 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
             return;
         }
 
-        if (!$scopeGenerator = $this->scopeResolver->resolve()) {
+        if (!$scope = $this->scopeResolver->generate()) {
             return;
         }
-
-        $scope = $scopeGenerator->generate($this->security->getUser());
 
         if ($scope->isNational()) {
             return;

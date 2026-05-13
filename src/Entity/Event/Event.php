@@ -127,7 +127,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/events/{uuid}/image',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: UpdateImageController::class,
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'events') and is_granted('CAN_MANAGE_EVENT', request.attributes.get('data'))",
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'events') and is_granted('CAN_MANAGE_EVENT', object)",
             deserialize: false
         ),
         new HttpOperation(

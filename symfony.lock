@@ -14,18 +14,18 @@
             "ref": "fd172e8feabf6b1c0818e18de90c2a3f82ea0a60"
         }
     },
-    "api-platform/core": {
-        "version": "2.7",
+    "api-platform/symfony": {
+        "version": "4.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "2.5",
-            "ref": "05b57782a78c21a664a42055dc11cf1954ca36bb"
+            "version": "4.0",
+            "ref": "e9952e9f393c2d048f10a78f272cd35e807d972b"
         },
         "files": [
             "config/packages/api_platform.yaml",
             "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
+            "src/ApiResource/.gitignore"
         ]
     },
     "dama/doctrine-test-bundle": {
