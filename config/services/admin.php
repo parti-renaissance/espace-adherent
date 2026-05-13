@@ -183,10 +183,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\GeneralMeeting\GeneralMeetingReport::class, 'label' => 'Centre d\'archives JME', 'group' => 'Territoires'])
     ;
     $services
-        ->set('app.admin.hub_item', App\Admin\HubItemAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\HubItem::class, 'label' => 'Hub candidat', 'group' => 'Élections'])
-    ;
-    $services
         ->set('app.admin.report', App\Admin\ReportAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Report\Report::class, 'label' => 'Signalements', 'group' => 'Territoires'])
     ;
@@ -597,7 +593,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.consultation'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.chatbot_chatbot'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.procuration.election'])
-        ->tag('sonata.admin.extension', ['target' => 'app.admin.hub_item'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.transactional_email_template'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.jecoute.news'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.live_stream'])
