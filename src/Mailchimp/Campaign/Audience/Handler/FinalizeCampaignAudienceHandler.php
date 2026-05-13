@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 #[AsMessageHandler]
 class FinalizeCampaignAudienceHandler
@@ -119,7 +120,7 @@ class FinalizeCampaignAudienceHandler
         }
 
         try {
-            $this->bus->dispatch(new SendMailchimpCampaignCommand($campaign->getId()));
+            $this->bus->dispatch(new SendMailchimpCampaignCommand($campaign->getId()), [new DelayStamp(60_000)]);
             $campaign->clearPendingSend();
         } catch (\Throwable $e) {
             $this->logger->error('[AudienceFinalize] Auto-send dispatch failed', [

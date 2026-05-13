@@ -357,11 +357,7 @@ class Manager implements LoggerAwareInterface
 
             $campaign->setExternalId((string) $campaignData['id']);
         } else {
-            $campaignData = $this->driver->updateCampaign($campaignId, $editCampaignRequest);
-        }
-
-        if (isset($campaignData['recipients']['recipient_count'])) {
-            $campaign->setRecipientCount($campaignData['recipients']['recipient_count']);
+            $this->driver->updateCampaign($campaignId, $editCampaignRequest);
         }
 
         return true;

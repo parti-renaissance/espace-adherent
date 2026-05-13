@@ -8,7 +8,8 @@ use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\RetrySendMailchimpCampaignCommand;
 use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
-use App\Mailchimp\Driver;
+use App\Mailchimp\Campaign\MailchimpCampaignSendGuard;
+use App\Mailchimp\Campaign\SendDecisionEnum;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,7 @@ class SendMailchimpCampaignCommandHandler
     public function __construct(
         private readonly MailchimpCampaignRepository $repository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly Driver $driver,
+        private readonly MailchimpCampaignSendGuard $sendGuard,
         private readonly Manager $manager,
         private readonly MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
@@ -60,24 +61,37 @@ class SendMailchimpCampaignCommandHandler
             return;
         }
 
-        $localSegmentId = $campaign->getStaticSegmentId();
-        $remoteSegmentId = $this->driver->getCampaignSavedSegmentId($externalId);
+        $decision = $this->sendGuard->evaluate($campaign);
 
-        if ($remoteSegmentId !== $localSegmentId) {
-            $detail = \sprintf('Segment mismatch: local=%s remote=%s', $localSegmentId ?? 'null', $remoteSegmentId ?? 'null');
-
-            $this->logger->error('[SendMailchimpCampaign] Segment mismatch — send aborted', [
-                'campaign_id' => $campaign->getId(),
-                'external_id' => $externalId,
-                'local_segment_id' => $localSegmentId,
-                'remote_segment_id' => $remoteSegmentId,
-            ]);
-
-            $campaign->markAsError($detail);
+        if (SendDecisionEnum::Abort === $decision->kind) {
+            $campaign->markAsError($decision->reason);
             $this->entityManager->flush();
 
-            throw new \RuntimeException(\sprintf('Mailchimp campaign %d: %s (external_id=%s)', $campaign->getId(), $detail, $externalId));
+            $this->logger->error('[SendMailchimpCampaign] Send aborted by recipient guard', [
+                'campaign_id' => $campaign->getId(),
+                'external_id' => $externalId,
+                'reason' => $decision->reason,
+                'recipient_count' => $decision->recipientCount,
+            ]);
+
+            return;
         }
+
+        if (SendDecisionEnum::Retry === $decision->kind) {
+            $this->logger->warning('[SendMailchimpCampaign] Recipient count not ready, scheduling retry', [
+                'campaign_id' => $campaign->getId(),
+                'reason' => $decision->reason,
+            ]);
+
+            $this->bus->dispatch(
+                new RetrySendMailchimpCampaignCommand($campaign->getId()),
+                [new DelayStamp(30_000)]
+            );
+
+            return;
+        }
+
+        $campaign->setRecipientCount($decision->recipientCount);
 
         if (!$this->manager->sendMailchimpCampaign($campaign)) {
             $this->bus->dispatch(
