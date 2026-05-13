@@ -6,10 +6,13 @@ namespace Tests\App\Repository;
 
 use App\Adherent\MandateTypeEnum;
 use App\DataFixtures\ORM\LoadAudienceFilterTestData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Donation\DonatorStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
+use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Scope\ScopeEnum;
 use PHPUnit\Framework\Attributes\Group;
@@ -355,6 +358,156 @@ class AdherentRepositoryAudienceFilterTest extends AbstractKernelTestCase
         $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
     }
 
+    public function testCommitteeFilterIncludesOnlyMembersOfTargetCommittee(): void
+    {
+        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
+        $this->assertInstanceOf(Committee::class, $committee);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($committee): void {
+            $filter->setCommittee($committee);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_COMMITTEE_MEMBER), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+    }
+
+    public function testIsCommitteeMemberTrueIncludesAdherentsWithMembership(): void
+    {
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter): void {
+            $filter->setIsCommitteeMember(true);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_COMMITTEE_MEMBER), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+    }
+
+    public function testIsCommitteeMemberFalseExcludesAdherentsWithMembership(): void
+    {
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter): void {
+            $filter->setIsCommitteeMember(false);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_COMMITTEE_MEMBER), $ids);
+    }
+
+    public function testZoneFilterCantonIncludesAdherentDirectlyAttached(): void
+    {
+        $cantonZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_CANTON);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($cantonZone): void {
+            $filter->setZone($cantonZone);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_CANTON_DIRECT), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+    }
+
+    /**
+     * City-grouper zones (CANTON, DISTRICT) are assigned directly to adherents — a filter on
+     * a CANTON must not cascade to its child communes. Aligns with GeoZoneTrait semantics
+     * (DQL push path).
+     */
+    public function testZoneFilterCantonExcludesCommuneAdherentAttachedOnlyToChild(): void
+    {
+        $cantonZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_CANTON);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($cantonZone): void {
+            $filter->setZone($cantonZone);
+        });
+
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_COMMUNE_OF_CANTON), $ids);
+    }
+
+    public function testZoneFilterDistrictIncludesAdherentDirectlyAttached(): void
+    {
+        $districtZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_DISTRICT);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($districtZone): void {
+            $filter->setZone($districtZone);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_DISTRICT_DIRECT), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+    }
+
+    /**
+     * Same direct-assignment semantics for DISTRICT (also city-grouper).
+     */
+    public function testZoneFilterDistrictExcludesCommuneAdherentAttachedOnlyToChild(): void
+    {
+        $districtZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_DISTRICT);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($districtZone): void {
+            $filter->setZone($districtZone);
+        });
+
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_COMMUNE_OF_DISTRICT), $ids);
+    }
+
+    public function testZonesManagedFilterIncludesAdherentInDepartment(): void
+    {
+        $departmentZone = $this->getZoneByCode('92');
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($departmentZone): void {
+            $filter->getZones()->add($departmentZone);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_DEPARTMENT_92), $ids);
+    }
+
+    /**
+     * Managed-zones perimeter must respect the city-grouper exception: a CANTON in the
+     * managed list does not cascade to its children. Same semantics as the single-zone
+     * filter (testZoneFilterCantonExcludesCommuneAdherentAttachedOnlyToChild).
+     */
+    public function testZonesManagedFilterCantonExcludesCommuneAdherentAttachedOnlyToChild(): void
+    {
+        $cantonZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_CANTON);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($cantonZone): void {
+            $filter->getZones()->add($cantonZone);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_CANTON_DIRECT), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_COMMUNE_OF_CANTON), $ids);
+    }
+
+    /**
+     * Same managed-zones city-grouper semantics for DISTRICT.
+     */
+    public function testZonesManagedFilterDistrictExcludesCommuneAdherentAttachedOnlyToChild(): void
+    {
+        $districtZone = $this->getZoneByCode(LoadAudienceFilterTestData::ZONE_CODE_DISTRICT);
+
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter) use ($districtZone): void {
+            $filter->getZones()->add($districtZone);
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_DISTRICT_DIRECT), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_ZONE_COMMUNE_OF_DISTRICT), $ids);
+    }
+
+    public function testPostalCodeFilterIncludesAdherentsByPrefix(): void
+    {
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter): void {
+            $filter->postalCode = '75';
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_POSTAL_CODE_75001), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_POSTAL_CODE_69001), $ids);
+    }
+
+    public function testPostalCodeFilterMatchesExactCode(): void
+    {
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter): void {
+            $filter->postalCode = '69001';
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_POSTAL_CODE_69001), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_POSTAL_CODE_75001), $ids);
+    }
+
     /**
      * @return list<int>
      */
@@ -379,5 +532,13 @@ class AdherentRepositoryAudienceFilterTest extends AbstractKernelTestCase
         $this->assertInstanceOf(Adherent::class, $adherent, \sprintf('Fixture adherent "%s" not found.', $email));
 
         return $adherent->getId();
+    }
+
+    private function getZoneByCode(string $code): Zone
+    {
+        $zone = $this->manager->getRepository(Zone::class)->findOneBy(['code' => $code]);
+        $this->assertInstanceOf(Zone::class, $zone, \sprintf('Zone with code "%s" not found.', $code));
+
+        return $zone;
     }
 }

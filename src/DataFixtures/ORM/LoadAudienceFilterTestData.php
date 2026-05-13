@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace App\DataFixtures\ORM;
 
 use App\Adherent\MandateTypeEnum;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\Committee;
+use App\Entity\Geo\Zone;
+use App\Entity\PostAddress;
 use App\Membership\AdherentFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
@@ -18,7 +23,7 @@ use Doctrine\Persistence\ObjectManager;
  *
  * Looked up by email in tests/Repository/AdherentRepositoryAudienceFilterTest.php.
  */
-class LoadAudienceFilterTestData extends Fixture
+class LoadAudienceFilterTestData extends Fixture implements DependentFixtureInterface
 {
     public const EMAIL_DOMAIN = 'audience-filter-test.local';
     public const EMAIL_PREFIX_GLOB = 'audience-filter-';
@@ -44,15 +49,57 @@ class LoadAudienceFilterTestData extends Fixture
     public const EMAIL_FIRST_NAME_CHARLES = 'audience-filter-first-name-charles@audience-filter-test.local';
     public const EMAIL_LAST_NAME_SPECIAL = 'audience-filter-last-name-special@audience-filter-test.local';
 
+    public const EMAIL_COMMITTEE_MEMBER = 'audience-filter-committee-member@audience-filter-test.local';
+    public const EMAIL_ZONE_DEPARTMENT_92 = 'audience-filter-zone-department-92@audience-filter-test.local';
+    public const EMAIL_ZONE_CANTON_DIRECT = 'audience-filter-zone-canton-direct@audience-filter-test.local';
+    public const EMAIL_ZONE_COMMUNE_OF_CANTON = 'audience-filter-zone-commune-of-canton@audience-filter-test.local';
+    public const EMAIL_ZONE_DISTRICT_DIRECT = 'audience-filter-zone-district-direct@audience-filter-test.local';
+    public const EMAIL_ZONE_COMMUNE_OF_DISTRICT = 'audience-filter-zone-commune-of-district@audience-filter-test.local';
+    public const EMAIL_POSTAL_CODE_75001 = 'audience-filter-postal-75001@audience-filter-test.local';
+    public const EMAIL_POSTAL_CODE_69001 = 'audience-filter-postal-69001@audience-filter-test.local';
+
     public const FIRST_NAME_CHARLES = 'Charles-Audience-Filter';
     public const LAST_NAME_SPECIAL = 'Special-Audience-Filter';
+
+    // Dedicated zone codes (prefix audience-filter to avoid colliding with global counts in other tests).
+    public const ZONE_CODE_CANTON = 'AF-CANTON';
+    public const ZONE_CODE_DISTRICT = 'AF-DISTRICT';
+    public const ZONE_CODE_COMMUNE_OF_CANTON = 'AF-COMMUNE-CANTON';
+    public const ZONE_CODE_COMMUNE_OF_DISTRICT = 'AF-COMMUNE-DISTRICT';
 
     public function __construct(private readonly AdherentFactory $adherentFactory)
     {
     }
 
+    public function getDependencies(): array
+    {
+        return [
+            LoadGeoZoneData::class,
+            LoadCommitteeData::class,
+            LoadSubscriptionTypeData::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
+        // Dedicated zones for audience-filter tests (avoid collisions with global zone counts in other tests).
+        // - Canton + District (city-grouper types) for Phase 2 city-grouper bugfix tests.
+        // - Communes attached to canton/district as parents — used to capture the current buggy behavior
+        //   where a SQL filter on the parent canton/district incorrectly includes child commune adherents.
+        $cantonZone = new Zone(Zone::CANTON, self::ZONE_CODE_CANTON, 'Audience Filter Canton');
+        $manager->persist($cantonZone);
+
+        $districtZone = new Zone(Zone::DISTRICT, self::ZONE_CODE_DISTRICT, 'Audience Filter District');
+        $manager->persist($districtZone);
+
+        $communeOfCantonZone = new Zone(Zone::CITY, self::ZONE_CODE_COMMUNE_OF_CANTON, 'Audience Filter Commune of Canton');
+        $communeOfCantonZone->addParent($cantonZone);
+        $manager->persist($communeOfCantonZone);
+
+        $communeOfDistrictZone = new Zone(Zone::CITY, self::ZONE_CODE_COMMUNE_OF_DISTRICT, 'Audience Filter Commune of District');
+        $communeOfDistrictZone->addParent($districtZone);
+        $manager->persist($communeOfDistrictZone);
+
         // Adherents for the `gender` filter
         $maleYoung = $this->createAdherent($manager, [
             'email' => self::EMAIL_MALE_YOUNG,
@@ -269,6 +316,103 @@ class LoadAudienceFilterTestData extends Fixture
             'gender' => 'male',
             'birthdate' => '1985-01-01',
             'registered_at' => '2024-01-01 12:00:00',
+        ]);
+
+        // Adherent member of an existing committee (committee-v2-1 from LoadCommitteeData).
+        // Used by both the `committee` filter and the `isCommitteeMember` filter tests.
+        $committeeMember = $this->createAdherent($manager, [
+            'email' => self::EMAIL_COMMITTEE_MEMBER,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $committee = $this->getReference('committee-v2-1', Committee::class);
+        $manager->persist($committeeMember->followCommittee(
+            $committee,
+            new \DateTime('-2 months'),
+            CommitteeMembershipTriggerEnum::MANUAL,
+        ));
+
+        // Adherent attached to an existing department zone (zone_department_92).
+        // Used as a non-city-grouper baseline (parent lookup is expected to apply).
+        $departmentZoneAdherent = $this->createAdherent($manager, [
+            'email' => self::EMAIL_ZONE_DEPARTMENT_92,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $departmentZoneAdherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+
+        // Adherent attached directly to the dedicated canton zone (city-grouper).
+        $cantonDirectAdherent = $this->createAdherent($manager, [
+            'email' => self::EMAIL_ZONE_CANTON_DIRECT,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $cantonDirectAdherent->addZone($cantonZone);
+
+        // Adherent attached only to a commune that has the canton as parent.
+        // Captures the current buggy behavior: SQL email path incorrectly includes this adherent
+        // when filtering on the parent canton (Phase 2 will fix this).
+        $communeOfCantonAdherent = $this->createAdherent($manager, [
+            'email' => self::EMAIL_ZONE_COMMUNE_OF_CANTON,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $communeOfCantonAdherent->addZone($communeOfCantonZone);
+
+        // Adherent attached directly to the dedicated district zone (city-grouper).
+        $districtDirectAdherent = $this->createAdherent($manager, [
+            'email' => self::EMAIL_ZONE_DISTRICT_DIRECT,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $districtDirectAdherent->addZone($districtZone);
+
+        // Adherent attached only to a commune that has the district as parent.
+        // Same role as the commune-of-canton adherent for the district city-grouper case.
+        $communeOfDistrictAdherent = $this->createAdherent($manager, [
+            'email' => self::EMAIL_ZONE_COMMUNE_OF_DISTRICT,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $communeOfDistrictAdherent->addZone($communeOfDistrictZone);
+
+        // Adherents with a postal code, used to exercise the `postalCode` LIKE prefix filter.
+        $this->createAdherent($manager, [
+            'email' => self::EMAIL_POSTAL_CODE_75001,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+            'address' => PostAddress::createFrenchAddress('1 rue Example', '75001-75056', 'Paris'),
+        ]);
+
+        $this->createAdherent($manager, [
+            'email' => self::EMAIL_POSTAL_CODE_69001,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+            'address' => PostAddress::createFrenchAddress('2 rue Example', '69001-69123', 'Lyon'),
         ]);
 
         $manager->flush();

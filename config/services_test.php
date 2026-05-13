@@ -13,6 +13,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('ssl_private_key', '%env(SSL_PRIVATE_KEY)%');
 
+    // Shadow run disabled in tests by default — runs both implementations and adds overhead.
+    // Tests dedicated to the shadow run behavior can override this locally.
+    $parameters->set('audience_filter.shadow_run', false);
+
     $services = $containerConfigurator->services();
 
     $services->defaults()

@@ -12,6 +12,16 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'channels' => ['mailchimp_sync'],
                 'formatter' => 'monolog.formatter.json',
             ],
+            // Dedicated handler for the audience-filter shadow run (Phase 4 of audience-filter-unification).
+            // Bypasses fingers_crossed to ensure info-level divergence logs are emitted in production.
+            // Removed in Phase 5 once the new SQL implementation becomes canonical.
+            'audience_filter_shadow' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'level' => Monolog\Level::Info->value,
+                'channels' => ['audience_filter_shadow'],
+                'formatter' => 'monolog.formatter.json',
+            ],
             'main' => [
                 'type' => 'fingers_crossed',
                 'channels' => [
