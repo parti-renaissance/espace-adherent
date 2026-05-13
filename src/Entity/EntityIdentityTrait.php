@@ -77,7 +77,6 @@ trait EntityIdentityTrait
         'formation_read',
         'general_meeting_report_list_read',
         'general_meeting_report_read',
-        'hub_items_list',
         'jecoute_resource_links_read',
         'jemarche_data_survey_read',
         'message_read',
