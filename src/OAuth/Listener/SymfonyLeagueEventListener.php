@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 namespace App\OAuth\Listener;
 
-use League\Event\EventInterface;
-use League\Event\ListenerAcceptorInterface;
-use League\Event\ListenerProviderInterface;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\RequestEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class SymfonyLeagueEventListener implements ListenerProviderInterface
+class SymfonyLeagueEventListener
 {
+    private const FORWARDED_EVENTS = [
+        RequestEvent::CLIENT_AUTHENTICATION_FAILED,
+        RequestEvent::USER_AUTHENTICATION_FAILED,
+        RequestEvent::REFRESH_TOKEN_CLIENT_FAILED,
+        RequestEvent::REFRESH_TOKEN_ISSUED,
+        RequestEvent::ACCESS_TOKEN_ISSUED,
+    ];
+
     public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
     {
     }
 
-    public function provideListeners(ListenerAcceptorInterface $listenerAcceptor): void
+    public function register(AuthorizationServer $server): void
     {
-        $listenerAcceptor->addListener('*', $this->dispatchLeagueEventWithSymfonyEventDispatcher(...));
-    }
+        $registry = $server->getListenerRegistry();
 
-    private function dispatchLeagueEventWithSymfonyEventDispatcher(EventInterface $event): void
-    {
-        $this->eventDispatcher->dispatch($event, $event->getName());
+        foreach (self::FORWARDED_EVENTS as $eventName) {
+            $registry->subscribeTo($eventName, function (object $event) use ($eventName): void {
+                $this->eventDispatcher->dispatch($event, $eventName);
+            });
+        }
     }
 }

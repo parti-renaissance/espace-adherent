@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api\Pap;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadPapBuildingData;
 use App\DataFixtures\ORM\LoadPapCampaignData;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\Campaign;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
@@ -43,11 +41,8 @@ class BuildingEventControllerTest extends AbstractApiTestCase
         $building = $this->buildingRepository->findOneByUuid($buidingUuid);
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_10_UUID,
-            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMARCHE_APP,
-            'deputy@en-marche-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'deputy@en-marche-dev.fr'
         );
 
         $this->client->request(

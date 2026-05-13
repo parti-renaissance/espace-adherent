@@ -243,10 +243,14 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$keyPath', '%env(SSL_PUBLIC_KEY)%')
         ->arg('$keyPermissionsCheck', '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%');
 
-    $services->set(App\OAuth\Repository\OAuthUserRepository::class)
-        ->arg('$userProvider', service('security.user.provider.concrete.users_db'));
-
     $services->set(App\OAuth\AuthorizationServerFactory::class)
+        ->arg('$privateKey', service('app.ssl_private_key'))
+        ->arg('$encryptionKey', '%env(SSL_ENCRYPTION_KEY)%')
+        ->arg('$accessTokenTtlInterval', '%env(ACCESS_TOKEN_TTL_INTERVAL)%')
+        ->arg('$refreshTokenTtlInterval', '%env(REFRESH_TOKEN_TTL_INTERVAL)%');
+
+    $services->set(App\OAuth\DirectTokenIssuer::class)
+        ->public()
         ->arg('$privateKey', service('app.ssl_private_key'))
         ->arg('$encryptionKey', '%env(SSL_ENCRYPTION_KEY)%')
         ->arg('$accessTokenTtlInterval', '%env(ACCESS_TOKEN_TTL_INTERVAL)%')
@@ -355,8 +359,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->alias(League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface::class, App\OAuth\AuthorizationValidators\JsonWebTokenValidator::class);
 
     $services->alias(League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface::class, App\OAuth\Store\AccessTokenStore::class);
-
-    $services->alias(League\OAuth2\Server\Repositories\UserRepositoryInterface::class, App\OAuth\Repository\OAuthUserRepository::class);
 
     $services->alias(League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface::class, App\OAuth\Store\AuthorizationCodeStore::class);
 

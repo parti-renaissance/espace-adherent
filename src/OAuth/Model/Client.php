@@ -14,15 +14,19 @@ final class Client implements ClientEntityInterface
     use ClientTrait;
 
     /**
-     * @var array
+     * @param string[] $scopes
+     * @param string[] $allowedGrantTypes
      */
-    private $scopes;
-
-    public function __construct(string $identifier, array $scopes)
-    {
+    public function __construct(
+        string $identifier,
+        private array $scopes,
+        private array $allowedGrantTypes = [],
+    ) {
         $this->setIdentifier($identifier);
-        $this->scopes = $scopes;
-        $this->isConfidential = true;
+        // Non-confidential: secret is optional and validated grant-by-grant in ClientStore::validateClient()
+        // when the grant type requires it. league v9's AbstractGrant skips secret enforcement for non-confidential
+        // clients, which preserves the legacy behaviour of allowing empty secrets on authorization_code.
+        $this->isConfidential = false;
     }
 
     public function setName(string $name): void
@@ -48,5 +52,10 @@ final class Client implements ClientEntityInterface
     public function getScopes(): array
     {
         return $this->scopes;
+    }
+
+    public function supportsGrantType(string $grantType): bool
+    {
+        return [] === $this->allowedGrantTypes || \in_array($grantType, $this->allowedGrantTypes, true);
     }
 }

@@ -19,7 +19,7 @@ class JsonWebTokenValidator extends BearerTokenValidator
         $this->accessTokenRepository = $accessTokenRepository;
     }
 
-    public function validateAuthorization(ServerRequestInterface $request)
+    public function validateAuthorization(ServerRequestInterface $request): ServerRequestInterface
     {
         $request = parent::validateAuthorization($request);
 

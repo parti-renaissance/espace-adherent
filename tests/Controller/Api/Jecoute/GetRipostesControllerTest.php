@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Api\Jecoute;
 
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Jecoute\Riposte;
-use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +28,8 @@ class GetRipostesControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_10_UUID,
-            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            GrantTypeEnum::PASSWORD,
             Scope::JEMARCHE_APP,
-            'deputy@en-marche-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'deputy@en-marche-dev.fr'
         );
 
         $this->client->request(Request::METHOD_GET, self::URI, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
@@ -64,11 +59,8 @@ class GetRipostesControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_10_UUID,
-            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            GrantTypeEnum::PASSWORD,
             null,
-            'deputy@en-marche-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD
+            'deputy@en-marche-dev.fr'
         );
 
         $this->client->request(Request::METHOD_GET, self::URI.'?scope=national', [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);

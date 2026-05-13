@@ -59,7 +59,7 @@ class LoadClientData extends Fixture
             'En-Marche API !',
             'Plateforme Citoyenne de la République En-Marche !',
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
             ['https://en-marche.fr/callback']
         );
         $client3->addSupportedScope(Scope::READ_USERS);
@@ -122,7 +122,7 @@ class LoadClientData extends Fixture
             'J\'écoute',
             'J\'écoute',
             '4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client8->setAskUserForAuthorization(false);
@@ -146,7 +146,7 @@ class LoadClientData extends Fixture
             'JeMengage Mobile',
             'JeMengage Mobile 📱',
             'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            [GrantTypeEnum::PASSWORD, GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client10->setCode(AppCodeEnum::JEMENGAGE_MOBILE);
@@ -162,7 +162,7 @@ class LoadClientData extends Fixture
             'Coalition App',
             'Coalition App',
             'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client11->addSupportedScope(Scope::WRITE_EVENT);
@@ -176,7 +176,7 @@ class LoadClientData extends Fixture
             'JeMengage Web',
             'JeMengage Web 🇫🇷',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://localhost:3000/auth']
         );
         $client12->setCode(AppCodeEnum::JEMENGAGE_WEB);
@@ -193,7 +193,7 @@ class LoadClientData extends Fixture
             'VOX',
             'VOX 🇪🇺',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ15',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://localhost:8081']
         );
         $client13->setCode(AppCodeEnum::BESOIN_D_EUROPE);
@@ -211,7 +211,7 @@ class LoadClientData extends Fixture
             'Make App',
             'Make App',
             '$WbtqdOOsdf1iQCa1#79T6s^kCxqLc9sp',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client14->addSupportedScope(Scope::WRITE_GENERAL_CONVENTIONS);

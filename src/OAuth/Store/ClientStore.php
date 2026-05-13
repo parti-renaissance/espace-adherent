@@ -14,32 +14,28 @@ use Ramsey\Uuid\Uuid;
 
 class ClientStore implements OAuthClientRepositoryInterface
 {
-    private $clientRepository;
-
-    public function __construct(ClientRepository $clientRepository)
+    public function __construct(private readonly ClientRepository $clientRepository)
     {
-        $this->clientRepository = $clientRepository;
     }
 
-    /**
-     * @param string $clientIdentifier
-     *
-     * @return ClientEntityInterface|null
-     */
-    public function getClientEntity($clientIdentifier)
+    public function getClientEntity(string $clientIdentifier): ?ClientEntityInterface
     {
         if (!$client = $this->findClientEntity($clientIdentifier)) {
             return null;
         }
 
-        $oAuthClient = new InMemoryClient($client->getUuid()->toString(), $client->getSupportedScopes());
+        $oAuthClient = new InMemoryClient(
+            $client->getUuid()->toString(),
+            $client->getSupportedScopes(),
+            $client->getAllowedGrantTypes(),
+        );
         $oAuthClient->setName($client->getName());
         $oAuthClient->setRedirectUris($client->getRedirectUris());
 
         return $oAuthClient;
     }
 
-    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
         if (!$client = $this->findClientEntity($clientIdentifier)) {
             return false;
@@ -48,7 +44,7 @@ class ClientStore implements OAuthClientRepositoryInterface
         if (
             (
                 null !== $clientSecret
-                || !\in_array($grantType, [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN])
+                || !\in_array($grantType, [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN], true)
             )
             && !$client->verifySecret($clientSecret)) {
             return false;

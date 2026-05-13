@@ -5,43 +5,48 @@ declare(strict_types=1);
 namespace Tests\App\Controller;
 
 use App\Entity\OAuth\AccessToken as EntityAccessToken;
+use App\OAuth\DirectTokenIssuer;
 use App\OAuth\Model\AccessToken;
 use App\OAuth\Model\Client;
 use App\OAuth\Model\Scope;
+use App\Repository\AdherentRepository;
+use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\CryptKey;
 
 trait ApiControllerTestTrait
 {
     protected function getAccessToken(
         string $clientUuid,
-        string $clientSecret,
-        string $grantType,
         ?string $scope,
         ?string $username = null,
-        ?string $userPassword = null,
     ): ?string {
-        $params = [
-            'client_id' => $clientUuid,
-            'client_secret' => $clientSecret,
-            'grant_type' => $grantType,
-            'scope' => $scope,
-        ];
+        $container = $this->client->getContainer();
 
-        if (!empty($username)) {
-            $params['username'] = $username;
-            $params['password'] = $userPassword;
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = $container->get(ClientRepository::class);
+        $client = $clientRepository->findOneByUuid($clientUuid);
+        if (null === $client) {
+            throw new \RuntimeException(\sprintf('Unknown test OAuth client "%s"', $clientUuid));
         }
 
-        $this->client->request('POST', '/oauth/v2/token', $params);
-
-        $response = $this->client->getResponse();
-        $content = $response->getContent();
-
-        if (($code = $response->getStatusCode()) !== 200) {
-            throw new \RuntimeException('Failed to get access token (code '.$code.'): '.$content);
+        $user = null;
+        if (null !== $username) {
+            /** @var AdherentRepository $adherentRepository */
+            $adherentRepository = $container->get(AdherentRepository::class);
+            $user = $adherentRepository->findOneByEmail($username);
+            if (null === $user) {
+                throw new \RuntimeException(\sprintf('Unknown test adherent "%s"', $username));
+            }
         }
 
-        return json_decode($content, true, 512, \JSON_THROW_ON_ERROR)['access_token'] ?? null;
+        $scopes = null !== $scope ? [new Scope($scope)] : [];
+
+        /** @var DirectTokenIssuer $issuer */
+        $issuer = $container->get(DirectTokenIssuer::class);
+        $response = $issuer->issue($client, $user, $scopes);
+        $body = (string) $response->getBody();
+
+        return json_decode($body, true, 512, \JSON_THROW_ON_ERROR)['access_token'] ?? null;
     }
 
     protected function assertEachJsonItemContainsKey($key, $json, array $excluding = [])
@@ -72,13 +77,15 @@ trait ApiControllerTestTrait
         $token->setClient($client);
         $token->setIdentifier($identifier);
         $token->setExpiryDateTime($accessToken->getExpiryDateTime());
-        $token->setUserIdentifier($accessToken->getUserIdentifier());
+        if (null !== $userIdentifier = $accessToken->getUserIdentifier()) {
+            $token->setUserIdentifier($userIdentifier);
+        }
         $token->setPrivateKey($privateKey);
 
         foreach ($accessToken->getScopes() as $scope) {
             $token->addScope(new Scope($scope));
         }
 
-        return (string) $token;
+        return $token->toString();
     }
 }

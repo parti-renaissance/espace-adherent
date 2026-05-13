@@ -19,7 +19,7 @@ class RefreshTokenGrant extends BaseRefreshTokenGrant
     protected function issueAccessToken(
         \DateInterval $accessTokenTTL,
         ClientEntityInterface $client,
-        $userIdentifier,
+        ?string $userIdentifier,
         array $scopes = [],
     ): AccessTokenEntityInterface {
         $accessToken = parent::issueAccessToken(
@@ -34,7 +34,7 @@ class RefreshTokenGrant extends BaseRefreshTokenGrant
         return $accessToken;
     }
 
-    protected function validateOldRefreshToken(ServerRequestInterface $request, $clientId): array
+    protected function validateOldRefreshToken(ServerRequestInterface $request, string $clientId): array
     {
         $oldRefreshToken = parent::validateOldRefreshToken($request, $clientId);
 
