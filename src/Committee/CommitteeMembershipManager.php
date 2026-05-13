@@ -36,12 +36,15 @@ class CommitteeMembershipManager
             $this->unfollowCommittee($membership);
         }
 
-        if ($this->committeeMembershipRepository->findOneBy(['adherent' => $adherent, 'committee' => $committee])) {
+        if (!$this->committeeMembershipRepository->insertIfNotExists($adherent, $committee, $trigger)) {
             return;
         }
 
-        $this->entityManager->persist($membership = $adherent->followCommittee($committee));
-        $membership->setTrigger($trigger);
+        $membership = $this->committeeMembershipRepository->findOneBy([
+            'adherent' => $adherent,
+            'committee' => $committee,
+        ]);
+        $adherent->setCommitteeMembership($membership);
 
         $committee->updateMembersCount(
             true,

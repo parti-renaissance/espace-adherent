@@ -7,6 +7,7 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -31,6 +32,30 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommitteeMembership::class);
+    }
+
+    public function insertIfNotExists(
+        Adherent $adherent,
+        Committee $committee,
+        CommitteeMembershipTriggerEnum $trigger,
+    ): bool {
+        $membership = CommitteeMembership::createFollower($committee, $adherent, $trigger);
+
+        $sql = <<<'SQL'
+            INSERT IGNORE INTO committees_memberships (uuid, adherent_id, committee_id, privilege, joined_at, `trigger`)
+            VALUES (:uuid, :adherent_id, :committee_id, :privilege, :joined_at, :trigger)
+            SQL;
+
+        $rowsAffected = $this->getEntityManager()->getConnection()->executeStatement($sql, [
+            'uuid' => $membership->getUuid()->toString(),
+            'adherent_id' => $adherent->getId(),
+            'committee_id' => $committee->getId(),
+            'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
+            'joined_at' => $membership->getJoinedAt()->format('Y-m-d H:i:s'),
+            'trigger' => $trigger->value,
+        ]);
+
+        return 1 === $rowsAffected;
     }
 
     public function findActivityMemberships(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
