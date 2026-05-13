@@ -3469,16 +3469,16 @@
         },
         {
             "name": "fusonic/opengraph",
-            "version": "v3.0.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fusonic/opengraph.git",
-                "reference": "2daa6dce84f23b1bb6d66bf03b3e9371c39cd378"
+                "reference": "199fc2fb33a4b519e512fe33a0d2cb53455ae63c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/2daa6dce84f23b1bb6d66bf03b3e9371c39cd378",
-                "reference": "2daa6dce84f23b1bb6d66bf03b3e9371c39cd378",
+                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/199fc2fb33a4b519e512fe33a0d2cb53455ae63c",
+                "reference": "199fc2fb33a4b519e512fe33a0d2cb53455ae63c",
                 "shasum": ""
             },
             "require": {
@@ -3526,9 +3526,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fusonic/opengraph/issues",
-                "source": "https://github.com/fusonic/opengraph/tree/v3.0.0"
+                "source": "https://github.com/fusonic/opengraph/tree/v3.1.0"
             },
-            "time": "2025-01-13T07:23:24+00:00"
+            "time": "2026-05-11T17:33:04+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
