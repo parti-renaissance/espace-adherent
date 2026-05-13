@@ -47,19 +47,14 @@ class CommitteeManager
         return null;
     }
 
-    public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
-    {
-        return $this->getAdherentRepository()->countCommitteeHosts($committee, $withoutSupervisors);
-    }
-
     public function getCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
     {
         return $this->getAdherentRepository()->findCommitteeHosts($committee, $withoutSupervisors);
     }
 
-    public function getCommitteeCreator(Committee $committee): ?Adherent
+    public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
     {
-        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy()) : null;
+        return $this->getAdherentRepository()->countCommitteeHosts($committee, $withoutSupervisors);
     }
 
     /**
