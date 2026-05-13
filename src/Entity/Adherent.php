@@ -91,7 +91,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: "(is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)) or (is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and object === user)"
+            security: "(is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)) or (is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and object.getUuid().equals(user.getUuid()))"
         ),
         new Post(
             uriTemplate: '/adherents/{uuid}/send-resubscribe-email',
@@ -111,13 +111,14 @@ use Symfony\Component\Validator\Constraints as Assert;
             method: 'POST|DELETE',
             uriTemplate: '/profile/{uuid}/image',
             controller: UpdateImageController::class,
-            security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and object === user",
+            security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and object.getUuid().equals(user.getUuid())",
             deserialize: false,
         ),
         new Get(
             uriTemplate: '/adherents/{uuid}/sensitive-data',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetSensitiveDataController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
             serialize: false,
             name: 'api_adherents_sensitive_data',
         ),
@@ -125,6 +126,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherents/{uuid}/donations',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetDonationsController::class,
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
             serialize: false,
             name: 'api_adherents_donations',
         ),

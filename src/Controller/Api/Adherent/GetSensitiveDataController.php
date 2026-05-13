@@ -24,8 +24,6 @@ class GetSensitiveDataController extends AbstractController
 
     public function __invoke(#[CurrentUser] $user, Request $request, Adherent $adherent): JsonResponse
     {
-        $this->denyAccessUnlessGranted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', $adherent);
-
         $type = $this->validateAndExtractType($request);
         $value = $this->getSensitiveValue($adherent, $type);
 

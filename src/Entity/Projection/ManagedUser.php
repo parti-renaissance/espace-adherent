@@ -16,6 +16,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\ImageAwareInterface;
 use App\Entity\ImageExposeInterface;
 use App\Entity\ImageTrait;
+use App\Entity\ZoneableEntityInterface;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Projection\ManagedUserRepository;
@@ -41,6 +42,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 'enable_tag_translator' => true,
                 'groups' => ['managed_user_read', ImageExposeNormalizer::NORMALIZATION_GROUP],
             ],
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'contacts') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
         ),
         new GetCollection(
             uriTemplate: '/v3/adherents.{format}',
@@ -56,7 +58,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Index(fields: ['status'])]
 #[ORM\Index(fields: ['originalId'])]
 #[ORM\Table(name: 'projection_managed_users')]
-class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface
+class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface, ZoneableEntityInterface
 {
     use EntityZoneTrait;
     use ImageTrait;
