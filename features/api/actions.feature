@@ -198,3 +198,36 @@ Feature:
         Then the response status code should be 200
         And the JSON node "metadata.items_per_page" should be equal to "300"
         And the JSON node "metadata.total_items" should be equal to "25"
+
+    Scenario: As a logged-in VOX user I can list only the actions I have created
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/actions?only_mine"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "25"
+        And the JSON node "items[0].author.uuid" should be equal to "9fec3385-8cfb-46e8-8305-c9bae10e4517"
+        # MyCreatedActionsFilter mirrors MyCreatedEventsFilter: presence of the parameter
+        # is enough to activate the filter, regardless of the value (no boolean validation).
+        When I send a "GET" request to "/api/v3/actions?only_mine=0"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "25"
+
+    Scenario: subscribedOnly=0 must not activate the subscription filter
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333&subscribedOnly=0"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "50"
+
+    Scenario: bbox filters actions on the actions endpoint
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/actions?bbox[ne][lat]=49&bbox[ne][lng]=3&bbox[sw][lat]=48&bbox[sw][lng]=2"
+        Then the response status code should be 200
+        # Smoke test: verify the filter is wired (Action fixture coordinates are random,
+        # so the exact count can't be hardcoded).
+        And the JSON node "metadata.items_per_page" should be equal to "300"
+        And the JSON node "metadata.total_items" should match "@string@.matchRegex('/^[0-9]+$/')"
+
+    Scenario: InZoneOfScopeFilter applies on /v3/actions
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/actions?scope=president_departmental_assembly&latitude=48.866667&longitude=2.333333"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "50"

@@ -8,17 +8,17 @@ use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Action\Action;
-use App\Entity\Action\ActionParticipant;
-use Doctrine\ORM\Query\Expr\Join;
+use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
-final class MySubscribedActionsFilter extends AbstractFilter
+final class MyCreatedActionsFilter extends AbstractFilter
 {
-    private const PROPERTY_NAME = 'subscribedOnly';
+    private const string PROPERTY_NAME = 'only_mine';
 
     private Security $security;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     protected function filterProperty(
         string $property,
@@ -37,14 +37,13 @@ final class MySubscribedActionsFilter extends AbstractFilter
             return;
         }
 
-        if (!filter_var($value, \FILTER_VALIDATE_BOOLEAN)) {
-            return;
-        }
+        $scope = $this->scopeGeneratorResolver->generate();
+        $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $user;
 
+        $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
-            ->innerJoin(ActionParticipant::class, 'action_participant', Join::WITH, 'action_participant.action = '.$queryBuilder->getRootAliases()[0])
-            ->andWhere('action_participant.adherent = :adherent')
-            ->setParameter('adherent', $user)
+            ->andWhere(\sprintf('%s.author = :author', $alias))
+            ->setParameter('author', $user)
         ;
     }
 
@@ -53,7 +52,7 @@ final class MySubscribedActionsFilter extends AbstractFilter
         return [
             self::PROPERTY_NAME => [
                 'property' => null,
-                'type' => 'bool',
+                'type' => 'string',
                 'required' => false,
             ],
         ];
@@ -63,5 +62,11 @@ final class MySubscribedActionsFilter extends AbstractFilter
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    #[Required]
+    public function setScopeGeneratorResolver(ScopeGeneratorResolver $scopeGeneratorResolver): void
+    {
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 }
