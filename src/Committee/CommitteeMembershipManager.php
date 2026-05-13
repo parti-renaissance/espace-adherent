@@ -9,6 +9,7 @@ use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Membership\UserEvents;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,12 +37,15 @@ class CommitteeMembershipManager
             $this->unfollowCommittee($membership);
         }
 
-        if ($this->committeeMembershipRepository->findOneBy(['adherent' => $adherent, 'committee' => $committee])) {
+        if (!$this->committeeMembershipRepository->insertIfNotExists($adherent, $committee, $trigger)) {
             return;
         }
 
-        $this->entityManager->persist($membership = $adherent->followCommittee($committee));
-        $membership->setTrigger($trigger);
+        $membership = $this->committeeMembershipRepository->findOneBy([
+            'adherent' => $adherent,
+            'committee' => $committee,
+        ]);
+        $adherent->setCommitteeMembership($membership);
 
         $committee->updateMembersCount(
             true,
@@ -53,6 +57,90 @@ class CommitteeMembershipManager
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new FollowCommitteeEvent($membership), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
+    }
+
+    public function followCommitteesBulk(
+        Committee $committee,
+        array $adherents,
+        CommitteeMembershipTriggerEnum $trigger,
+    ): FollowCommitteesBulkResult {
+        if (!$adherents) {
+            return new FollowCommitteesBulkResult(0, [], []);
+        }
+
+        $committeeId = $committee->getId();
+
+        /** @var array<int, Adherent> $adherentsById */
+        $adherentsById = [];
+        foreach ($adherents as $adherent) {
+            $adherentsById[$adherent->getId()] = $adherent;
+        }
+
+        $existingByAdherent = $this->committeeMembershipRepository->findExistingMembershipsByAdherentIds(
+            array_keys($adherentsById),
+        );
+
+        $oldMembershipIds = [];
+        $leaveHistoryRows = [];
+        $newMembershipRows = [];
+        $joinHistoryRows = [];
+        $removedMemberships = [];
+        $newMemberships = [];
+
+        $now = new \DateTime()->format('Y-m-d H:i:s');
+
+        foreach ($adherentsById as $adherentId => $adherent) {
+            $existing = $existingByAdherent[$adherentId] ?? null;
+
+            if ($existing && $existing['committee_id'] === $committeeId) {
+                continue;
+            }
+
+            if ($existing) {
+                $oldMembershipIds[] = $existing['id'];
+                $leaveHistoryRows[] = [
+                    'committee_id' => $existing['committee_id'],
+                    'adherent_uuid' => $adherent->getUuid()->toString(),
+                    'action' => CommitteeMembershipAction::LEAVE,
+                    'privilege' => $existing['privilege'],
+                    'date' => $now,
+                ];
+                $removedMemberships[] = [
+                    'uuid' => $adherent->getUuid(),
+                    'committeeId' => $existing['committee_id'],
+                ];
+            }
+
+            $newMembership = CommitteeMembership::createFollower($committee, $adherent, $trigger);
+            $newMembershipRows[] = [
+                'uuid' => $newMembership->getUuid()->toString(),
+                'adherent_id' => $adherentId,
+                'committee_id' => $committeeId,
+                'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
+                'joined_at' => $newMembership->getJoinedAt()->format('Y-m-d H:i:s'),
+                '`trigger`' => $trigger->value,
+            ];
+            $joinHistoryRows[] = [
+                'committee_id' => $committeeId,
+                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'action' => CommitteeMembershipAction::JOIN,
+                'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
+                'date' => $now,
+            ];
+            $newMemberships[] = [
+                'uuid' => $adherent->getUuid(),
+                'committeeId' => $committeeId,
+            ];
+        }
+
+        $newMembershipCount = $this->committeeMembershipRepository->bulkApplyMembershipChanges(
+            $oldMembershipIds,
+            $leaveHistoryRows,
+            $newMembershipRows,
+            $joinHistoryRows,
+        );
+
+        return new FollowCommitteesBulkResult($newMembershipCount, $newMemberships, $removedMemberships);
     }
 
     /**

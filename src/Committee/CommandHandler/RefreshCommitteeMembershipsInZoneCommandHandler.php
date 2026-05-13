@@ -9,6 +9,8 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use App\Event\Command\InviteAdherentForAllFutureInvitationEventsCommand;
+use App\Event\Command\RemoveAdherentForAllFutureInvitationEventsCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
@@ -64,8 +66,25 @@ class RefreshCommitteeMembershipsInZoneCommandHandler
                     $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
                 }
 
-                foreach ($adherentsMembership as $adherent) {
-                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                $bulkResult = $this->committeeMembershipManager->followCommitteesBulk(
+                    $committee,
+                    $adherentsMembership,
+                    CommitteeMembershipTriggerEnum::COMMITTEE_EDITION
+                );
+
+                // Replay the side effect that UpdateCommitteeMemberEventInvitationsListener
+                // would have run if FollowCommitteeEvent/UnfollowCommitteeEvent had been dispatched.
+                foreach ($bulkResult->removedMemberships as $pair) {
+                    $this->bus->dispatch(new RemoveAdherentForAllFutureInvitationEventsCommand(
+                        $pair['uuid'],
+                        committeeId: $pair['committeeId'],
+                    ));
+                }
+                foreach ($bulkResult->newMemberships as $pair) {
+                    $this->bus->dispatch(new InviteAdherentForAllFutureInvitationEventsCommand(
+                        $pair['uuid'],
+                        committeeId: $pair['committeeId'],
+                    ));
                 }
             }
         }

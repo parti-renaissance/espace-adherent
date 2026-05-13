@@ -1199,12 +1199,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, lastMembershipDonation}')
             ->addSelect('committee_membership')
             ->addSelect('cl')
+            ->addSelect('CASE WHEN adherent.tags LIKE :adh_tag_pattern THEN 0 WHEN adherent.tags LIKE :sym_tag_pattern THEN 1 ELSE 2 END AS HIDDEN committee_member_priority')
             ->leftJoin('adherent.committeeMembership', 'committee_membership')
             ->leftJoin('committee_membership.committee', 'cl')
             ->andWhere('adherent.status = :enabled')
+            ->orderBy('committee_member_priority', 'ASC')
             ->setParameters([
                 'enabled' => Adherent::ENABLED,
                 'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
+                'adh_tag_pattern' => TagEnum::ADHERENT.'%',
+                'sym_tag_pattern' => TagEnum::SYMPATHISANT.'%',
             ])
         ;
 

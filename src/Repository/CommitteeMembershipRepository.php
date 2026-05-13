@@ -7,6 +7,8 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Doctrine\Utils\BulkInsertHelper;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -28,9 +30,127 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
 
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly BulkInsertHelper $bulkInsertHelper,
+    ) {
         parent::__construct($registry, CommitteeMembership::class);
+    }
+
+    /**
+     * @param int[] $adherentIds
+     *
+     * @return array<int, array{id: int, committee_id: int, privilege: string}> indexed by adherent_id
+     */
+    public function findExistingMembershipsByAdherentIds(array $adherentIds): array
+    {
+        if (!$adherentIds) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('cm')
+            ->select('cm.id, IDENTITY(cm.adherent) AS adherent_id, IDENTITY(cm.committee) AS committee_id, cm.privilege')
+            ->where('cm.adherent IN (:adherent_ids)')
+            ->setParameter('adherent_ids', $adherentIds)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        $indexed = [];
+        foreach ($rows as $row) {
+            $indexed[(int) $row['adherent_id']] = [
+                'id' => (int) $row['id'],
+                'committee_id' => (int) $row['committee_id'],
+                'privilege' => $row['privilege'],
+            ];
+        }
+
+        return $indexed;
+    }
+
+    /**
+     * Atomically applies a bulk membership refresh: DELETE old rows (DQL), write LEAVE
+     * history, INSERT IGNORE new rows, write JOIN history — all in a single DB transaction.
+     *
+     * INSERTs use raw SQL via BulkInsertHelper because DQL does not support INSERT and
+     * we need `INSERT IGNORE` semantics to absorb concurrent inserts on the unique
+     * `(adherent_id, committee_id)` constraint without closing the EM. The
+     * `CommitteeMembership` entity has no lifecycle callbacks; if any are added later,
+     * this path must be reconsidered.
+     *
+     * @param int[]                            $oldMembershipIds  membership IDs to delete (moved adherents)
+     * @param array<int, array<string, mixed>> $leaveHistoryRows  committees_membership_histories rows for the LEAVE action
+     * @param array<int, array<string, mixed>> $newMembershipRows committees_memberships rows to insert
+     * @param array<int, array<string, mixed>> $joinHistoryRows   committees_membership_histories rows for the JOIN action
+     *
+     * @return int number of new memberships actually inserted (excludes those that were
+     *             concurrently created and absorbed by INSERT IGNORE)
+     */
+    public function bulkApplyMembershipChanges(
+        array $oldMembershipIds,
+        array $leaveHistoryRows,
+        array $newMembershipRows,
+        array $joinHistoryRows,
+    ): int {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $connection->beginTransaction();
+        try {
+            if ($oldMembershipIds) {
+                $this->createQueryBuilder('cm')
+                    ->delete()
+                    ->where('cm.id IN (:ids)')
+                    ->setParameter('ids', $oldMembershipIds)
+                    ->getQuery()
+                    ->execute()
+                ;
+            }
+
+            if ($leaveHistoryRows) {
+                $this->bulkInsertHelper->insertIgnore('committees_membership_histories', $leaveHistoryRows);
+            }
+
+            $newMembershipCount = 0;
+            if ($newMembershipRows) {
+                $newMembershipCount = $this->bulkInsertHelper->insertIgnore('committees_memberships', $newMembershipRows);
+            }
+
+            if ($joinHistoryRows) {
+                $this->bulkInsertHelper->insertIgnore('committees_membership_histories', $joinHistoryRows);
+            }
+
+            $connection->commit();
+        } catch (\Throwable $e) {
+            $connection->rollBack();
+
+            throw $e;
+        }
+
+        return $newMembershipCount;
+    }
+
+    public function insertIfNotExists(
+        Adherent $adherent,
+        Committee $committee,
+        CommitteeMembershipTriggerEnum $trigger,
+    ): bool {
+        $membership = CommitteeMembership::createFollower($committee, $adherent, $trigger);
+
+        $sql = <<<'SQL'
+            INSERT IGNORE INTO committees_memberships (uuid, adherent_id, committee_id, privilege, joined_at, `trigger`)
+            VALUES (:uuid, :adherent_id, :committee_id, :privilege, :joined_at, :trigger)
+            SQL;
+
+        $rowsAffected = $this->getEntityManager()->getConnection()->executeStatement($sql, [
+            'uuid' => $membership->getUuid()->toString(),
+            'adherent_id' => $adherent->getId(),
+            'committee_id' => $committee->getId(),
+            'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
+            'joined_at' => $membership->getJoinedAt()->format('Y-m-d H:i:s'),
+            'trigger' => $trigger->value,
+        ]);
+
+        return 1 === $rowsAffected;
     }
 
     public function findActivityMemberships(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
