@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Action;
 
 use App\Entity\Action\Action;
+use App\Repository\GeoZoneTrait;
 use App\Repository\NearbyTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -12,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ActionRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
     use UuidEntityRepositoryTrait;
     use NearbyTrait;
 

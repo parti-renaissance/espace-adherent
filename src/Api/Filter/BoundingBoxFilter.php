@@ -7,12 +7,12 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\Event;
+use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\QueryBuilder;
 
-final class EventBoundingBoxFilter extends AbstractFilter
+final class BoundingBoxFilter extends AbstractFilter
 {
-    public const PROPERTY_NAME = 'bbox';
+    public const string PROPERTY_NAME = 'bbox';
 
     protected function filterProperty(
         string $property,
@@ -24,7 +24,7 @@ final class EventBoundingBoxFilter extends AbstractFilter
         array $context = [],
     ): void {
         if (
-            !is_a($resourceClass, Event::class, true)
+            !is_a($resourceClass, GeoPointInterface::class, true)
             || self::PROPERTY_NAME !== $property
             || !\is_array($value)
         ) {
@@ -66,7 +66,7 @@ final class EventBoundingBoxFilter extends AbstractFilter
 
     public function getDescription(string $resourceClass): array
     {
-        if (!is_a($resourceClass, Event::class, true)) {
+        if (!is_a($resourceClass, GeoPointInterface::class, true)) {
             return [];
         }
 

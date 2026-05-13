@@ -18,7 +18,7 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
-use App\Api\Filter\EventBoundingBoxFilter;
+use App\Api\Filter\BoundingBoxFilter;
 use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
@@ -80,7 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: MySubscribedEventsFilter::class)]
 #[ApiFilter(filterClass: OrderEventsBySubscriptionsFilter::class)]
 #[ApiFilter(filterClass: EventsDepartmentFilter::class)]
-#[ApiFilter(filterClass: EventBoundingBoxFilter::class)]
+#[ApiFilter(filterClass: BoundingBoxFilter::class)]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['finishAt' => 'strictly_after'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'mode' => 'exact', 'beginAt' => 'start', 'status' => 'exact'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['pinned'])]

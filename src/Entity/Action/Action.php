@@ -15,6 +15,8 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Action\ActionTypeEnum;
+use App\Api\Filter\BoundingBoxFilter;
+use App\Api\Filter\MyCreatedActionsFilter;
 use App\Api\Filter\MySubscribedActionsFilter;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Action\CancelActionController;
@@ -47,7 +49,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['date'])]
+#[ApiFilter(filterClass: MyCreatedActionsFilter::class)]
 #[ApiFilter(filterClass: MySubscribedActionsFilter::class)]
+#[ApiFilter(filterClass: BoundingBoxFilter::class)]
 #[ApiResource(
     operations: [
         new Get(
@@ -61,16 +65,16 @@ use Symfony\Component\Validator\Constraints as Assert;
         new HttpOperation(
             method: 'PUT',
             uriTemplate: '/v3/actions/{uuid}/cancel',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: CancelActionController::class
+            controller: CancelActionController::class,
+            deserialize: false,
         ),
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/actions/{uuid}/register',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: RegisterController::class
+            controller: RegisterController::class,
+            deserialize: false,
         ),
         new GetCollection(
             uriTemplate: '/v3/actions',

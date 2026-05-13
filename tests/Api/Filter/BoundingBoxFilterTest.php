@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Tests\App\Api\Filter;
 
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Api\Filter\EventBoundingBoxFilter;
+use App\Api\Filter\BoundingBoxFilter;
+use App\Entity\Action\Action;
 use App\Entity\Event\Event;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Attributes\Group;
@@ -13,13 +14,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]
-class EventBoundingBoxFilterTest extends TestCase
+class BoundingBoxFilterTest extends TestCase
 {
-    private EventBoundingBoxFilter $filter;
+    private BoundingBoxFilter $filter;
 
     protected function setUp(): void
     {
-        $this->filter = new EventBoundingBoxFilter();
+        $this->filter = new BoundingBoxFilter();
     }
 
     public function testFilterWithValidCornersAddsBetweenConstraint(): void
@@ -55,6 +56,24 @@ class EventBoundingBoxFilterTest extends TestCase
         self::assertSame(49.5, $setParameterCalls['bbox_max_lat']);
         self::assertSame(2.0, $setParameterCalls['bbox_min_lng']);
         self::assertSame(3.25, $setParameterCalls['bbox_max_lng']);
+    }
+
+    public function testFilterAppliesToActionAsWellAsEvent(): void
+    {
+        $andWhereCalls = [];
+        $setParameterCalls = [];
+        $qb = $this->createQueryBuilderMock($andWhereCalls, $setParameterCalls, 'a');
+
+        $this->filter->apply(
+            $qb,
+            $this->createMock(QueryNameGeneratorInterface::class),
+            Action::class,
+            null,
+            ['filters' => [BoundingBoxFilter::PROPERTY_NAME => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
+        );
+
+        self::assertCount(1, $andWhereCalls);
+        self::assertStringContainsString('a.postAddress.latitude BETWEEN', $andWhereCalls[0]);
     }
 
     public function testFilterWithIncompleteBoundingBoxIsIgnored(): void
@@ -114,7 +133,7 @@ class EventBoundingBoxFilterTest extends TestCase
             $this->createMock(QueryNameGeneratorInterface::class),
             \stdClass::class,
             null,
-            ['filters' => [EventBoundingBoxFilter::PROPERTY_NAME => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
+            ['filters' => [BoundingBoxFilter::PROPERTY_NAME => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
         );
 
         self::assertSame([], $andWhereCalls);
@@ -130,6 +149,13 @@ class EventBoundingBoxFilterTest extends TestCase
         self::assertFalse($description['bbox[ne][lat]']['required']);
     }
 
+    public function testGetDescriptionAlsoCoversAction(): void
+    {
+        $description = $this->filter->getDescription(Action::class);
+
+        self::assertSame(['bbox[ne][lat]', 'bbox[ne][lng]', 'bbox[sw][lat]', 'bbox[sw][lng]'], array_keys($description));
+    }
+
     public function testGetDescriptionForUnrelatedResourceClassReturnsEmpty(): void
     {
         self::assertSame([], $this->filter->getDescription(\stdClass::class));
@@ -142,14 +168,14 @@ class EventBoundingBoxFilterTest extends TestCase
             $this->createMock(QueryNameGeneratorInterface::class),
             Event::class,
             null,
-            ['filters' => [EventBoundingBoxFilter::PROPERTY_NAME => $value]]
+            ['filters' => [BoundingBoxFilter::PROPERTY_NAME => $value]]
         );
     }
 
-    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = []): QueryBuilder&MockObject
+    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = [], string $alias = 'e'): QueryBuilder&MockObject
     {
         $qb = $this->createMock(QueryBuilder::class);
-        $qb->method('getRootAliases')->willReturn(['e']);
+        $qb->method('getRootAliases')->willReturn([$alias]);
         $qb->method('andWhere')->willReturnCallback(function (string $condition) use (&$andWhereCalls, $qb) {
             $andWhereCalls[] = $condition;
 
