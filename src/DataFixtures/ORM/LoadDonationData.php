@@ -219,7 +219,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
             $uuid = Uuid::uuid4(),
             $type,
             (int) ($amount * 100),
-            $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
+            $donatedAt ? \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTime(),
             $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',
             $duration,
@@ -239,7 +239,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         string $resultCode = Transaction::PAYBOX_SUCCESS,
         ?string $dateModifier = null,
     ): Transaction {
-        /** @var \DateTimeImmutable $donatedAt */
+        /** @var \DateTime $donatedAt */
         $donatedAt = $donation->getDonatedAt();
 
         if ($dateModifier) {

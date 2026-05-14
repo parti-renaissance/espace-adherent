@@ -152,7 +152,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
         $thread = new Thread($adherent);
         for ($i = 1; $i <= 9; ++$i) {
-            $date = new \DateTimeImmutable('-'.(20 - $i).' minutes');
+            $date = new \DateTime('-'.(20 - $i).' minutes');
             $thread->addUserMessage("User question $i", $date);
             $thread->addAssistantMessage("Bot answer $i", $date->modify('+30 seconds'));
         }

@@ -78,7 +78,7 @@ class TimelineItemPrivateMessage implements \Stringable, IndexableEntityInterfac
 
     public function handleNotificationSent(SendNotificationCommandInterface $command): void
     {
-        $this->notificationSentAt = new \DateTimeImmutable();
+        $this->notificationSentAt = new \DateTime();
     }
 
     public function isNational(): bool

@@ -45,7 +45,7 @@ class LoadReferralData extends AbstractLoadPostAddressData implements DependentF
         $referral->lastName = 'Doe';
         $referral->civility = CivilityEnum::Monsieur;
         $referral->nationality = 'FR';
-        $referral->birthdate = new \DateTimeImmutable('1990-01-01');
+        $referral->birthdate = new \DateTime('1990-01-01');
         $referral->type = TypeEnum::PREREGISTRATION;
         $referral->setPostAddress($this->createNullablePostAddress('68 rue du Rocher', '75008-75108'));
 

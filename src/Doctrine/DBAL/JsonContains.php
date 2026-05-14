@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Doctrine\DBAL;
 
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\Exception\NotSupported;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 class JsonContains extends FunctionNode
 {
@@ -33,7 +33,7 @@ class JsonContains extends FunctionNode
     public $jsonPathExpr;
 
     /**
-     * @throws Exception
+     * @throws NotSupported
      */
     public function getSql(SqlWalker $sqlWalker): string
     {
@@ -48,7 +48,7 @@ class JsonContains extends FunctionNode
             return \sprintf('%s(%s, %s)', static::FUNCTION_NAME, $jsonDoc, $jsonVal.$jsonPath);
         }
 
-        throw Exception::notSupported(static::FUNCTION_NAME);
+        throw NotSupported::new(static::FUNCTION_NAME);
     }
 
     /**
@@ -56,16 +56,16 @@ class JsonContains extends FunctionNode
      */
     public function parse(Parser $parser): void
     {
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
         $this->jsonDocExpr = $parser->StringPrimary();
-        $parser->match(Lexer::T_COMMA);
+        $parser->match(TokenType::T_COMMA);
         $this->jsonValExpr = $parser->StringPrimary();
-        if ($parser->getLexer()->isNextToken(Lexer::T_COMMA)) {
-            $parser->match(Lexer::T_COMMA);
+        if ($parser->getLexer()->isNextToken(TokenType::T_COMMA)) {
+            $parser->match(TokenType::T_COMMA);
             $this->jsonPathExpr = $parser->StringPrimary();
         }
 
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 }

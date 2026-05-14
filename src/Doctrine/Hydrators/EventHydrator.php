@@ -19,7 +19,7 @@ class EventHydrator extends AbstractHydrator
     protected function hydrateAllData(): mixed
     {
         $result = [];
-        foreach ($this->_stmt->fetchAllAssociative() as $row) {
+        foreach ($this->statement()->fetchAllAssociative() as $row) {
             $this->hydrateRowData($row, $result);
         }
 

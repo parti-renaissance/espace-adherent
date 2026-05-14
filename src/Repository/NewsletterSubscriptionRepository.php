@@ -28,8 +28,8 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
 
     public function disableSoftDeleteableFilter(): self
     {
-        if ($this->_em->getFilters()->has('softdeleteable') && $this->_em->getFilters()->isEnabled('softdeleteable')) {
-            $this->_em->getFilters()->disable('softdeleteable');
+        if ($this->getEntityManager()->getFilters()->has('softdeleteable') && $this->getEntityManager()->getFilters()->isEnabled('softdeleteable')) {
+            $this->getEntityManager()->getFilters()->disable('softdeleteable');
         }
 
         return $this;

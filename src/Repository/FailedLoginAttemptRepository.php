@@ -17,7 +17,7 @@ class FailedLoginAttemptRepository extends ServiceEntityRepository
 
     public function save(FailedLoginAttempt $failedLoginAttempt): void
     {
-        $this->_em->persist($failedLoginAttempt);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($failedLoginAttempt);
+        $this->getEntityManager()->flush();
     }
 }

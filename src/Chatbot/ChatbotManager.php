@@ -48,7 +48,7 @@ class ChatbotManager
             return;
         }
 
-        $thread->addAssistantMessage($content, new \DateTimeImmutable());
+        $thread->addAssistantMessage($content, new \DateTime());
 
         $this->entityManager->flush();
     }

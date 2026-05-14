@@ -56,13 +56,13 @@ class UserAuthorizationRepository extends ServiceEntityRepository
 
     public function save(UserAuthorization $userAuthorization): void
     {
-        $this->_em->persist($userAuthorization);
-        $this->_em->flush($userAuthorization);
+        $this->getEntityManager()->persist($userAuthorization);
+        $this->getEntityManager()->flush($userAuthorization);
     }
 
     public function delete(UserAuthorization $userAuthorization): void
     {
-        $this->_em->remove($userAuthorization);
-        $this->_em->flush($userAuthorization);
+        $this->getEntityManager()->remove($userAuthorization);
+        $this->getEntityManager()->flush($userAuthorization);
     }
 }

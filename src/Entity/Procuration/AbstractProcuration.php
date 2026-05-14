@@ -134,7 +134,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
         $this->adherent = $adherent;
         $this->joinNewsletter = $joinNewsletter;
         $this->clientIp = $clientIp;
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt = $createdAt ?? new \DateTime();
         $this->actions = new ArrayCollection();
     }
 

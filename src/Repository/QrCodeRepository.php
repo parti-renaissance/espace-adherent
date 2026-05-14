@@ -25,7 +25,7 @@ class QrCodeRepository extends ServiceEntityRepository
 
     public function save(QrCode $qrCode): void
     {
-        $this->_em->persist($qrCode);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($qrCode);
+        $this->getEntityManager()->flush();
     }
 }

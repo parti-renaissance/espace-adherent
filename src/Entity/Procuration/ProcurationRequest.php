@@ -57,7 +57,7 @@ class ProcurationRequest implements \Stringable
 
     public function remind(): void
     {
-        $this->remindedAt = new \DateTimeImmutable();
+        $this->remindedAt = new \DateTime();
     }
 
     public function isReminded(): bool

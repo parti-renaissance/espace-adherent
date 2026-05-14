@@ -59,19 +59,19 @@ class PublicationStatistics
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueOpensApp = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueOpensAppRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueOpensEmail = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueOpensEmailRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueOpensNotification = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueOpensNotificationRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
@@ -86,31 +86,31 @@ class PublicationStatistics
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueOpens = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueOpensRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueClicksApp = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueClicksAppRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueClicksEmail = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueClicksEmailRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueClicks = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $uniqueClicksRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $unsubscribed = 0;
 
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     public float $unsubscribedRate = 0;
 
     public function __construct(AdherentMessage $message)

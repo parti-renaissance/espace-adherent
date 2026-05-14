@@ -20,8 +20,8 @@ class AccessTokenRepository extends ServiceEntityRepository
 
     public function save(AccessToken $token): void
     {
-        $this->_em->persist($token);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
     }
 
     public function findAccessTokenByIdentifier(string $identifier): ?AccessToken
@@ -70,7 +70,7 @@ class AccessTokenRepository extends ServiceEntityRepository
             $this->revokeToken($accessToken);
         }
 
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 
     public function revokeToken(AccessToken $token, bool $flush = false): void
@@ -78,7 +78,7 @@ class AccessTokenRepository extends ServiceEntityRepository
         if (!$token->isRevoked()) {
             $token->revoke();
             if ($flush) {
-                $this->_em->flush();
+                $this->getEntityManager()->flush();
             }
         }
     }

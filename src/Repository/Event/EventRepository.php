@@ -22,6 +22,7 @@ use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -367,10 +368,10 @@ class EventRepository extends ServiceEntityRepository
 
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
-        $query->setParameter('published', 1, \PDO::PARAM_INT);
+        $query->setParameter('published', 1, ParameterType::INTEGER);
         $query->setParameter('scheduled', Event::STATUS_SCHEDULED);
-        $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
-        $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
+        $query->setParameter('first_result', $search->getOffset(), ParameterType::INTEGER);
+        $query->setParameter('max_results', $search->getMaxResults(), ParameterType::INTEGER);
 
         return $query->getResult('EventHydrator');
     }

@@ -187,7 +187,7 @@ class Donation implements \Stringable, GeoPointInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
-        $this->setDonatedAt($donatedAt ?? new \DateTimeImmutable());
+        $this->setDonatedAt($donatedAt ?? new \DateTime());
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();
@@ -218,7 +218,9 @@ class Donation implements \Stringable, GeoPointInterface
 
             $transactionDateTime = $transaction->getPayboxDateTime();
             if ($transactionDateTime > $this->lastSuccessDate) {
-                $this->lastSuccessDate = $transactionDateTime;
+                $this->lastSuccessDate = $transactionDateTime instanceof \DateTimeImmutable
+                    ? \DateTime::createFromImmutable($transactionDateTime)
+                    : $transactionDateTime;
             }
 
             if ($this->hasSubscription()) {
@@ -235,7 +237,7 @@ class Donation implements \Stringable, GeoPointInterface
 
     public function stopSubscription(): void
     {
-        $this->subscriptionEndedAt = new \DateTimeImmutable();
+        $this->subscriptionEndedAt = new \DateTime();
         $this->status = self::STATUS_CANCELED;
     }
 
@@ -629,7 +631,7 @@ class Donation implements \Stringable, GeoPointInterface
         $this->id = null;
         $this->uuid = Uuid::uuid4();
         $this->payboxOrderRef = \sprintf('%s_%s', $this->uuid->toString(), explode('_', $this->payboxOrderRef)[1]);
-        $this->donatedAt = new \DateTimeImmutable();
+        $this->donatedAt = new \DateTime();
         $this->createdAt = new \DateTimeImmutable();
         $this->transactions = new ArrayCollection();
     }

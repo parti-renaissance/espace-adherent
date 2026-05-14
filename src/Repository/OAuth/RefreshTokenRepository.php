@@ -20,8 +20,8 @@ class RefreshTokenRepository extends ServiceEntityRepository
 
     public function save(RefreshToken $token): void
     {
-        $this->_em->persist($token);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
     }
 
     public function findRefreshTokenByIdentifier(string $identifier): ?RefreshToken
@@ -78,7 +78,7 @@ class RefreshTokenRepository extends ServiceEntityRepository
             $this->revokeToken($refreshToken);
         }
 
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 
     public function revokeTokensByUserAndClient(Adherent $user, Client $client): void
@@ -99,7 +99,7 @@ class RefreshTokenRepository extends ServiceEntityRepository
             $this->revokeToken($refreshToken);
         }
 
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 
     private function revokeToken(RefreshToken $token): void

@@ -27,7 +27,7 @@ class ReportRepository extends ServiceEntityRepository
             throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
         }
 
-        $ids = $this->_em->createQueryBuilder()
+        $ids = $this->getEntityManager()->createQueryBuilder()
             ->from($class, 'report')
             ->select('report.id')
             ->join('report.subject', 'subject')
@@ -75,7 +75,7 @@ class ReportRepository extends ServiceEntityRepository
             throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
         }
 
-        return $this->_em->createQueryBuilder('report')
+        return $this->getEntityManager()->createQueryBuilder('report')
             ->select('report')
             ->from($class, 'report')
             ->where('report.subject = :subject')

@@ -197,25 +197,25 @@ class DataSurveyRepository extends ServiceEntityRepository
     public function countSurveysForBuilding(Building $building, ?string $buildingBlock = null, ?int $floor = null): int
     {
         $conditions = '';
-        $params = [
-            'building' => $building,
-        ];
+        $qb = $this
+            ->createQueryBuilder('ds')
+            ->select('COUNT(1)')
+            ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
+            ->setParameter('building', $building)
+        ;
+
         if ($buildingBlock) {
             $conditions = ' AND campaignHistory.buildingBlock = :buildingBlock';
-            $params += ['buildingBlock' => $buildingBlock];
+            $qb->setParameter('buildingBlock', $buildingBlock);
         }
 
         if (null !== $floor) {
             $conditions .= ' AND campaignHistory.floor = :floor';
-            $params += ['floor' => $floor];
+            $qb->setParameter('floor', $floor);
         }
 
-        return (int) $this
-            ->createQueryBuilder('ds')
-            ->select('COUNT(1)')
-            ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
+        return (int) $qb
             ->where(\sprintf('campaignHistory.building = :building %s', $conditions))
-            ->setParameters($params)
             ->getQuery()
             ->getSingleScalarResult()
         ;

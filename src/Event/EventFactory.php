@@ -29,8 +29,8 @@ class EventFactory
         $event->setCategory($data['category']);
         $event->setDescription($data['description']);
         $event->setPostAddress($data['address']);
-        $event->setBeginAt(new \DateTimeImmutable($data['begin_at']));
-        $event->setFinishAt(new \DateTimeImmutable($data['finish_at']));
+        $event->setBeginAt(new \DateTime($data['begin_at']));
+        $event->setFinishAt(new \DateTime($data['finish_at']));
         $event->setCapacity($data['capacity']);
 
         if (!empty($data['time_zone'])) {

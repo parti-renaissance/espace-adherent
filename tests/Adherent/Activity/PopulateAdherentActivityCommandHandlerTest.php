@@ -128,7 +128,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
     public function testMapsHitFieldsToMetadata(): void
     {
         // Given
-        $date = new \DateTimeImmutable('2024-01-15 10:00:00');
+        $date = new \DateTime('2024-01-15 10:00:00');
         $hit = $this->createHit(
             eventType: EventTypeEnum::Open,
             appDate: $date,
@@ -205,8 +205,8 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
     public function testSkipsHitRowsCreatedWithinLastMinute(): void
     {
         // Given
-        $this->createHit(EventTypeEnum::Open, new \DateTimeImmutable('-30 seconds'));
-        $this->createHit(EventTypeEnum::Click, new \DateTimeImmutable('-2 minutes'));
+        $this->createHit(EventTypeEnum::Open, new \DateTime('-30 seconds'));
+        $this->createHit(EventTypeEnum::Click, new \DateTime('-2 minutes'));
 
         // When
         ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::Hit));
@@ -345,7 +345,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         $hit->eventType = $eventType;
         $hit->adherent = $this->adherent;
         $hit->activitySessionUuid = Uuid::uuid4();
-        $hit->appDate = $appDate ?? new \DateTimeImmutable('-5 minutes');
+        $hit->appDate = $appDate ?? new \DateTime('-5 minutes');
         $hit->objectType = $objectType;
         $hit->objectId = $objectId;
         $hit->source = $source;

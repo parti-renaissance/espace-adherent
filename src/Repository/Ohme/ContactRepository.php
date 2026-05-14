@@ -28,12 +28,12 @@ class ContactRepository extends ServiceEntityRepository
 
     public function refresh(Contact $contact): void
     {
-        $this->_em->refresh($contact);
+        $this->getEntityManager()->refresh($contact);
     }
 
     public function save(Contact $contact): void
     {
-        $this->_em->persist($contact);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($contact);
+        $this->getEntityManager()->flush();
     }
 }

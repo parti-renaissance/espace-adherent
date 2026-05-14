@@ -53,6 +53,6 @@ class MailchimpStaticSegmentMember
         $this->staticSegment = $staticSegment;
         $this->adherent = $adherent;
         $this->chunkNumber = $chunkNumber;
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt = $createdAt ?? new \DateTime();
     }
 }

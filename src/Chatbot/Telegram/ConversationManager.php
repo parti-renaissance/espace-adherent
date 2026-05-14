@@ -24,7 +24,7 @@ class ConversationManager
     {
         $thread = $this->getCurrentThread($chatbot, $telegramChatId);
 
-        $thread->addUserMessage($content, new \DateTimeImmutable());
+        $thread->addUserMessage($content, new \DateTime());
 
         $this->entityManager->flush();
 

@@ -33,8 +33,8 @@ class PaymentRepository extends ServiceEntityRepository
 
     public function save(Payment $payment): void
     {
-        $this->_em->persist($payment);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($payment);
+        $this->getEntityManager()->flush();
     }
 
     public function getTotalPaymentByYearForAdherent(Adherent $adherent): array
