@@ -89,7 +89,7 @@ class LoadProcurationElectionData extends Fixture
         $round = new Round($uuid);
         $round->name = $name;
         $round->description = $this->faker->text();
-        $round->date = new \DateTimeImmutable($date);
+        $round->date = new \DateTime($date);
 
         return $round;
     }

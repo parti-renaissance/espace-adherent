@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Form\DataTransformer;
 
 use App\Entity\UuidEntityInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\DataTransformerInterface;
 

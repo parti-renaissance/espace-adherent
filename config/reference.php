@@ -1669,16 +1669,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     rulesets?: list<scalar|Param|null>,
  * }
  * @psalm-type EndroidQrCodeConfig = array<string, mixed>
- * @psalm-type A2lixAutoFormConfig = array{
- *     excluded_fields?: string|list<scalar|Param|null>,
- * }
- * @psalm-type A2lixTranslationFormConfig = array{
- *     locale_provider?: scalar|Param|null, // Set your own LocaleProvider service identifier if required // Default: "default"
- *     default_locale?: scalar|Param|null, // Set your own default locale if different from the SymfonyFramework locale. eg: en // Default: null
- *     locales?: string|list<scalar|Param|null>,
- *     required_locales?: string|list<scalar|Param|null>,
- *     templating?: scalar|Param|null, // Set your own template path if required // Default: "@A2lixTranslationForm/bootstrap_4_layout.html.twig"
- * }
  * @psalm-type SonataExporterConfig = array{
  *     exporter?: array{
  *         default_writers?: list<scalar|Param|null>,
@@ -3149,8 +3139,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     bazinga_geocoder?: BazingaGeocoderConfig,
  *     cocur_slugify?: CocurSlugifyConfig,
  *     endroid_qr_code?: EndroidQrCodeConfig,
- *     a2lix_auto_form?: A2lixAutoFormConfig,
- *     a2lix_translation_form?: A2lixTranslationFormConfig,
  *     sonata_exporter?: SonataExporterConfig,
  *     sonata_block?: SonataBlockConfig,
  *     sonata_doctrine_orm_admin?: SonataDoctrineOrmAdminConfig,
@@ -3189,8 +3177,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         bazinga_geocoder?: BazingaGeocoderConfig,
  *         cocur_slugify?: CocurSlugifyConfig,
  *         endroid_qr_code?: EndroidQrCodeConfig,
- *         a2lix_auto_form?: A2lixAutoFormConfig,
- *         a2lix_translation_form?: A2lixTranslationFormConfig,
  *         sonata_exporter?: SonataExporterConfig,
  *         sonata_block?: SonataBlockConfig,
  *         sonata_doctrine_orm_admin?: SonataDoctrineOrmAdminConfig,
@@ -3232,8 +3218,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         bazinga_geocoder?: BazingaGeocoderConfig,
  *         cocur_slugify?: CocurSlugifyConfig,
  *         endroid_qr_code?: EndroidQrCodeConfig,
- *         a2lix_auto_form?: A2lixAutoFormConfig,
- *         a2lix_translation_form?: A2lixTranslationFormConfig,
  *         sonata_exporter?: SonataExporterConfig,
  *         sonata_block?: SonataBlockConfig,
  *         sonata_doctrine_orm_admin?: SonataDoctrineOrmAdminConfig,
@@ -3274,8 +3258,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         bazinga_geocoder?: BazingaGeocoderConfig,
  *         cocur_slugify?: CocurSlugifyConfig,
  *         endroid_qr_code?: EndroidQrCodeConfig,
- *         a2lix_auto_form?: A2lixAutoFormConfig,
- *         a2lix_translation_form?: A2lixTranslationFormConfig,
  *         sonata_exporter?: SonataExporterConfig,
  *         sonata_block?: SonataBlockConfig,
  *         sonata_doctrine_orm_admin?: SonataDoctrineOrmAdminConfig,

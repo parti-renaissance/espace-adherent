@@ -15,8 +15,8 @@ use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Driver;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -257,7 +257,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
 
     private function expectIncrementChunksDoneQuery(EntityManagerInterface $em): void
     {
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->createMock(Query::class);
         $query->method('setParameter')->willReturnSelf();
         $query->method('execute')->willReturn(1);
         $em->method('createQuery')->willReturn($query);

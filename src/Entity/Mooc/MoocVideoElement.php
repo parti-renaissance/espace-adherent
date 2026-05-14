@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Mooc;
 
-use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,7 +31,7 @@ class MoocVideoElement extends BaseMoocElement
     ) {
         parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->youtubeId = $youtubeId;
-        $this->duration = $duration ?? Chronos::create();
+        $this->duration = $duration ?? new \DateTime();
     }
 
     public function getYoutubeId(): ?string

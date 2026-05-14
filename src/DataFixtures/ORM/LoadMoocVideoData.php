@@ -6,7 +6,6 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Mooc\AttachmentLink;
 use App\Entity\Mooc\MoocVideoElement;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -22,7 +21,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            Chronos::createFromTime(0, 2, 10)
+            \DateTime::createFromFormat('!H:i:s', '00:02:10')
         );
 
         $video1->addLink(
@@ -43,7 +42,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            Chronos::createFromTime(1, 30, 0)
+            \DateTime::createFromFormat('!H:i:s', '01:30:00')
         );
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
@@ -56,7 +55,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            Chronos::createFromTime(0, 30, 15)
+            \DateTime::createFromFormat('!H:i:s', '00:30:15')
         );
 
         $manager->persist($video3);
