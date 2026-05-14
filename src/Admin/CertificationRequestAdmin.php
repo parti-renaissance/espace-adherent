@@ -242,9 +242,7 @@ class CertificationRequestAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $certificationRequest) {
-            /** @var CertificationRequest $certificationRequest */
-            $certificationRequest = $certificationRequest[0];
+        return [IteratorCallbackDataSource::CALLBACK => static function (CertificationRequest $certificationRequest) {
             $adherent = $certificationRequest->getAdherent();
 
             $phone = PhoneNumberUtils::format($adherent->getPhone());

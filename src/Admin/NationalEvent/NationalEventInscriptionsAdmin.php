@@ -432,9 +432,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
 
         $departments = $this->zoneRepository->findAllDepartmentsIndexByCode();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $inscription) use ($translator, $departments) {
-            /** @var EventInscription $inscription */
-            $inscription = $inscription[0];
+        return [IteratorCallbackDataSource::CALLBACK => function (EventInscription $inscription) use ($translator, $departments) {
             $nationalEvent = $inscription->event;
             $adherent = $inscription->adherent;
 

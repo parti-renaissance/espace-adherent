@@ -83,9 +83,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
 
         $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
-            /** @var ProcurationRequest $procurationRequest */
-            $procurationRequest = $procuration[0];
+        return [IteratorCallbackDataSource::CALLBACK => static function (ProcurationRequest $procurationRequest) use ($translator) {
             $adherent = $procurationRequest->adherent;
 
             return [

@@ -71,13 +71,11 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
             ->andWhere('committee.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->getQuery()
-            ->iterate()
+            ->toIterable()
         ;
 
         foreach ($iterator as $committee) {
             /** @var Committee $committee */
-            $committee = current($committee);
-
             foreach ($segments as $tag) {
                 if ($tag['name'] === $committee->getUuid()->toString()) {
                     $committee->setMailchimpId($tag['id']);

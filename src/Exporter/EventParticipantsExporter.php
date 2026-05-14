@@ -37,9 +37,7 @@ class EventParticipantsExporter
             ),
             new IteratorCallbackSourceIterator(
                 $this->eventRegistrationRepository->iterateByEvent($event),
-                function (array $data) use ($isInvitation) {
-                    /** @var EventRegistration $registration */
-                    $registration = array_shift($data);
+                function (EventRegistration $registration) use ($isInvitation) {
                     $row = [];
 
                     $row['Prénom'] = $registration->getFirstName();

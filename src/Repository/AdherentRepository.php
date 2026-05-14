@@ -1237,7 +1237,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameters(new ArrayCollection(array_merge($qb->getParameters()->toArray(), $excludedAdherentQueryBuilder->getParameters()->toArray())))
         ;
 
-        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function findAllWithActifLocalMandates(): array

@@ -203,9 +203,9 @@ class EventRegistrationRepository extends ServiceEntityRepository
         );
     }
 
-    public function iterateByEvent(Event $event): \Iterator
+    public function iterateByEvent(Event $event): iterable
     {
-        return $this->createQueryBuilderByEvent($event)->getQuery()->iterate();
+        return $this->createQueryBuilderByEvent($event)->getQuery()->toIterable();
     }
 
     private function createQueryBuilderByEvent(Event $event): QueryBuilder

@@ -29,8 +29,8 @@ class AdherentMessageRepository extends ServiceEntityRepository
 
         $this->withAuthor($queryBuilder, $author);
 
-        foreach ($queryBuilder->getQuery()->iterate() as $message) {
-            $this->getEntityManager()->remove($message[0]);
+        foreach ($queryBuilder->getQuery()->toIterable() as $message) {
+            $this->getEntityManager()->remove($message);
         }
 
         $this->getEntityManager()->flush();

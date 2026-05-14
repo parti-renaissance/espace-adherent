@@ -199,10 +199,7 @@ class PetitionSignatureAdmin extends AbstractAdmin
 
     protected function configureExportFields(): array
     {
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $signature) {
-            /** @var PetitionSignature $signature */
-            $signature = $signature[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => static function (PetitionSignature $signature) {
             $adherentType = 'Citoyen';
             if ($signature->adherent) {
                 $adherentType = $signature->adherent->isRenaissanceAdherent() ? 'Adhérent' : 'Sympathisant';

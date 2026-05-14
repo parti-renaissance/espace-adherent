@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Exporter;
 
 use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Entity\Phoning\Campaign;
 use App\Repository\Jecoute\DataSurveyRepository;
@@ -46,9 +47,7 @@ class PhoningCampaignSurveyRepliesExporter
             ),
             new IteratorCallbackSourceIterator(
                 $this->dataSurveyRepository->iterateForPhoningCampaignDataSurveys($campaign),
-                function (array $data) use ($questions) {
-                    $dataSurvey = $data[0];
-
+                function (DataSurvey $dataSurvey) use ($questions) {
                     $row = [];
                     $row['ID'] = ++$this->i;
                     $row['Nom Prénom de l\'auteur'] = (string) $dataSurvey->getAuthor();

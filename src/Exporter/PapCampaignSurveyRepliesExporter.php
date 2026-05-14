@@ -47,9 +47,7 @@ class PapCampaignSurveyRepliesExporter
             ),
             new IteratorCallbackSourceIterator(
                 $this->dataSurveyRepository->iterateForPapCampaignDataSurveys($campaign, $zones),
-                function (array $data) use ($questions) {
-                    /** @var DataSurvey $dataSurvey */
-                    $dataSurvey = $data[0];
+                function (DataSurvey $dataSurvey) use ($questions) {
                     $papCampaignHistory = $dataSurvey->getPapCampaignHistory();
 
                     $row = [];
