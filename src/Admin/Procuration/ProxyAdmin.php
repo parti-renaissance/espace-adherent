@@ -114,10 +114,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
 
         $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
-            /** @var Proxy $proxy */
-            $proxy = $procuration[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => static function (Proxy $proxy) use ($translator) {
             try {
                 return array_merge(
                     static::getExportCommonFields($proxy, $translator),
@@ -135,7 +132,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                         }, $proxy->proxySlots->toArray())),
                     ]
                 );
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return static::getExportErrorFields($proxy);
             }
         }];

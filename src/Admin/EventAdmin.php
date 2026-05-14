@@ -470,10 +470,7 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $event) {
-            /** @var Event $event */
-            $event = $event[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => function (Event $event) {
             $organizer = $event->getOrganizer();
 
             try {
@@ -501,7 +498,7 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                     'Date de création' => $event->getCreatedAt()?->format('d/m/Y H:i:s'),
                     'Date de dernière modification' => $event->getUpdatedAt()?->format('d/m/Y H:i:s'),
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->error(
                     \sprintf('Error exporting Event with UUID: %s. (%s)', $event->getUuid()->toString(), $e->getMessage()),
                     ['exception' => $e]

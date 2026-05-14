@@ -17,7 +17,6 @@ use App\Entity\Phoning\Campaign as PhoningCampaign;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -60,7 +59,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    public function iterateForPhoningCampaignDataSurveys(PhoningCampaign $campaign): IterableResult
+    public function iterateForPhoningCampaignDataSurveys(PhoningCampaign $campaign): iterable
     {
         return $this->createQueryBuilder('ds')
             ->addSelect('survey', 'campaignHistory', 'author', 'adherent', 'campaign')
@@ -74,7 +73,7 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->setParameter('campaign', $campaign)
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->iterate()
+            ->toIterable()
         ;
     }
 
@@ -125,7 +124,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    public function iterateForPapCampaignDataSurveys(PapCampaign $campaign, array $zones = []): IterableResult
+    public function iterateForPapCampaignDataSurveys(PapCampaign $campaign, array $zones = []): iterable
     {
         $qb = $this->createQueryBuilder('ds')
             ->addSelect('survey', 'campaignHistory', 'author', 'campaign')
@@ -163,16 +162,16 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->orderBy('campaignHistory.createdAt', 'DESC')
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->iterate()
+            ->toIterable()
         ;
     }
 
-    public function iterateForSurvey(Survey $survey, array $zones = [], array $departmentCodes = []): IterableResult
+    public function iterateForSurvey(Survey $survey, array $zones = [], array $departmentCodes = []): iterable
     {
         return $this->createSurveyQueryBuilder($survey, $zones, $departmentCodes)
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->iterate()
+            ->toIterable()
         ;
     }
 

@@ -1020,9 +1020,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
 
         $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) use ($translator) {
-            /** @var Adherent $adherent */
-            $adherent = $adherent[0];
+        return [IteratorCallbackDataSource::CALLBACK => function (Adherent $adherent) use ($translator) {
             $genderTransKey = array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true);
 
             try {
@@ -1039,7 +1037,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                     'Code postal' => $adherent->getPostalCode(),
                     'Code INSEE' => $adherent->getInseeCode(),
                     'Ville' => $adherent->getCityName(),
-                    'Pays' => Countries::getName($adherent->getCountry()),
+                    'Pays' => $adherent->getCountry() ? Countries::getName($adherent->getCountry()) : null,
                     'Comité' => (string) $adherent->getCommitteeMembership()?->getCommittee(),
                     'Agora' => implode(', ', array_map(function (AgoraMembership $agoraMembership): string {
                         return $agoraMembership->agora->getName();
@@ -1123,7 +1121,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                     'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
                     'Date de dernière connexion' => $adherent->getLastLoggedAt()?->format('d/m/Y H:i:s'),
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->error(
                     \sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
                     ['exception' => $e]

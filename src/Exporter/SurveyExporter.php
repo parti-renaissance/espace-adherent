@@ -57,9 +57,7 @@ class SurveyExporter
                 new \DateTime()->format('YmdHis'),
                 $format
             ),
-            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones, $departmentCodes), function (array $data) use ($fromAdmin, $questions) {
-                /** @var DataSurvey $dataSurvey */
-                $dataSurvey = $data[0];
+            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones, $departmentCodes), function (DataSurvey $dataSurvey) use ($fromAdmin, $questions) {
                 $jemarcheDataSurvey = $dataSurvey->getJemarcheDataSurvey();
                 $phoningCampaignHistory = $dataSurvey->getPhoningCampaignHistory();
                 $papCampaignHistory = $dataSurvey->getPapCampaignHistory();

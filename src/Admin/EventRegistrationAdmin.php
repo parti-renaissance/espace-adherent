@@ -199,10 +199,7 @@ class EventRegistrationAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $eventRegistration) {
-            /** @var EventRegistration $eventRegistration */
-            $eventRegistration = $eventRegistration[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => function (EventRegistration $eventRegistration) {
             $adherent = $eventRegistration->getAdherent();
             $event = $eventRegistration->getEvent();
 
@@ -289,7 +286,7 @@ class EventRegistrationAdmin extends AbstractAdmin
                         ? \sprintf('%s (%s)', $assemblyZone->getName(), $assemblyZone->getCode())
                         : null,
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->error(
                     \sprintf('Error exporting EventRegistration with UUID: %s. (%s)', $eventRegistration->getUuid()->toString(), $e->getMessage()),
                     ['exception' => $e]

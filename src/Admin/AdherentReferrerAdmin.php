@@ -196,10 +196,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
 
         $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) use ($translator) {
-            /** @var Adherent $adherent */
-            $adherent = $adherent[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => function (Adherent $adherent) use ($translator) {
             try {
                 return [
                     'Région' => implode(', ', array_map(function (Zone $zone): string {
@@ -218,7 +215,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
                     'Nombre d\'invitations' => $this->referralRepository->countForReferrer($adherent, [], [TypeEnum::INVITATION, TypeEnum::PREREGISTRATION]),
                     'Nombre de signalements' => $this->referralRepository->countForReferrer($adherent, [StatusEnum::REPORTED]),
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->error(
                     \sprintf('Error exporting Adherent Referrer with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
                     ['exception' => $e]

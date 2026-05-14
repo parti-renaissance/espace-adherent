@@ -115,10 +115,7 @@ class RequestAdmin extends AbstractProcurationAdmin
 
         $translator = $this->getTranslator();
 
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
-            /** @var Request $request */
-            $request = $procuration[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => static function (Request $request) use ($translator) {
             try {
                 return array_merge(
                     static::getExportCommonFields($request, $translator),
@@ -135,7 +132,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                         }, $request->requestSlots->toArray())),
                     ]
                 );
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return static::getExportErrorFields($request);
             }
         }];

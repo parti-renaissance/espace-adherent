@@ -8,8 +8,6 @@ use App\Entity\Device;
 use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,7 +37,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
+    public function iterateForSurvey(Survey $survey, array $zones = []): iterable
     {
         $qb = $this->createQueryBuilder('jds')
             ->addSelect('ds', 'adherent')
@@ -59,7 +57,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
             ;
         }
 
-        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
+        return $qb->getQuery()->toIterable();
     }
 
     public function countByDevice(Device $device, ?\DateTimeInterface $minPostedAt = null): int

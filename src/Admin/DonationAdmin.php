@@ -534,9 +534,7 @@ class DonationAdmin extends AbstractAdmin
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => static function (array $donation) {
-            /** @var Donation $donation */
-            $donation = $donation[0];
+        return [IteratorCallbackDataSource::CALLBACK => static function (Donation $donation) {
             $donator = $donation->getDonator();
             $referenceDonation = $donator->getReferenceDonation();
             $adherent = $donator->getAdherent();

@@ -456,10 +456,7 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return [IteratorCallbackDataSource::CALLBACK => function (array $committee) {
-            /** @var Committee $committee */
-            $committee = $committee[0];
-
+        return [IteratorCallbackDataSource::CALLBACK => function (Committee $committee) {
             $animator = $committee->animator;
 
             try {
@@ -501,7 +498,7 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                         : null,
                     'UUID' => $committee->getUUID()->toString(),
                 ];
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->error(
                     \sprintf('Error exporting Committee with UUID: %s. (%s)', $committee->getUuid()->toString(), $e->getMessage()),
                     ['exception' => $e]

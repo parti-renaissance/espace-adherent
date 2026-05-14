@@ -37,7 +37,7 @@ class IteratorCallbackDataSource implements DataSourceInterface
         $query->setMaxResults(null);
 
         return new IteratorCallbackSourceIterator(
-            $query->getQuery()->iterate(),
+            $query->getQuery()->toIterable(),
             $fields[self::CALLBACK]
         );
     }
