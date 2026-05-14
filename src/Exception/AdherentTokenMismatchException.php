@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Entity\AdherentExpirableTokenInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class AdherentTokenMismatchException extends AdherentTokenException
 {
@@ -13,7 +13,7 @@ final class AdherentTokenMismatchException extends AdherentTokenException
 
     public function __construct(
         AdherentExpirableTokenInterface $token,
-        UuidInterface $unexpectedAdherentUuid,
+        Uuid $unexpectedAdherentUuid,
         ?\Exception $previous = null,
     ) {
         $message = \sprintf(
@@ -29,7 +29,7 @@ final class AdherentTokenMismatchException extends AdherentTokenException
         $this->unexpectedAdherentUuid = $unexpectedAdherentUuid;
     }
 
-    public function getUnexpectedAdherentUuid(): UuidInterface
+    public function getUnexpectedAdherentUuid(): Uuid
     {
         return $this->unexpectedAdherentUuid;
     }

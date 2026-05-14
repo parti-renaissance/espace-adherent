@@ -7,9 +7,8 @@ namespace App\Entity\ElectedRepresentative;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'elected_representative_payment')]
@@ -41,9 +40,9 @@ class Payment
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'payments')]
     public ?ElectedRepresentative $electedRepresentative = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function fromArray(ElectedRepresentative $electedRepresentative, array $data): self

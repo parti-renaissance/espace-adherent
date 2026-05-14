@@ -18,10 +18,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Uid\Uuid;
 
 class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 {
@@ -282,7 +282,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 6);
 
-        $messageUuid = Uuid::uuid4();
+        $messageUuid = Uuid::v4();
         $message = $this->createMock(AdherentMessageInterface::class);
         $message->expects(self::atLeastOnce())->method('getUuid')->willReturn($messageUuid);
 
@@ -337,7 +337,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
                     return 123 === $context['campaignId']
                         && 'ext_123' === $context['externalId']
                         && 555 === $context['staticSegmentId']
-                        && $messageUuid->toString() === $context['messageUuid']
+                        && $messageUuid->toRfc4122() === $context['messageUuid']
                         && 'mailchimp 500 internal error' === $context['lastError']
                         && 1 === $context['retryCount'];
                 }),
@@ -445,7 +445,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 2);
 
-        $messageUuid = Uuid::uuid4();
+        $messageUuid = Uuid::v4();
         $message = $this->createMock(AdherentMessageInterface::class);
         $message->expects(self::atLeastOnce())->method('getUuid')->willReturn($messageUuid);
 
@@ -491,7 +491,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
                         && 'ext_123' === $ctx['externalId']
                         && str_contains((string) $ctx['reason'], 'overshoot')
                         && 1200 === $ctx['recipientCount']
-                        && $messageUuid->toString() === $ctx['messageUuid'];
+                        && $messageUuid->toRfc4122() === $ctx['messageUuid'];
                 }),
             )
         ;

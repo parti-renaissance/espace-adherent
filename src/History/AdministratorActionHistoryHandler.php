@@ -40,7 +40,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::IMPERSONATION_START,
             [
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
             ]
         );
     }
@@ -51,7 +51,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::IMPERSONATION_END,
             [
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
             ]
         );
     }
@@ -74,7 +74,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::ADHERENT_PROFILE_UPDATE,
             [
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
                 'properties' => $properties,
             ]
         );
@@ -87,7 +87,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::ADHERENT_ROLE_ADD,
             [
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
                 'role' => $role,
                 'zones' => $this->getZoneNames($zones),
             ]
@@ -101,7 +101,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::ADHERENT_ROLE_REMOVE,
             [
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
                 'role' => $role,
                 'zones' => $this->getZoneNames($zones),
             ]
@@ -114,7 +114,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::COMMITTEE_UPDATE,
             [
-                'committee_uuid' => $committee->getUuid()->toString(),
+                'committee_uuid' => $committee->getUuid()->toRfc4122(),
                 'before' => $beforeUpdate,
                 'after' => $afterUpdate,
             ]
@@ -127,7 +127,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::COMMITTEE_CREATE,
             [
-                'committee_uuid' => $committee->getUuid()->toString(),
+                'committee_uuid' => $committee->getUuid()->toRfc4122(),
                 'committee_name' => $committee->getName(),
             ]
         );
@@ -139,7 +139,7 @@ class AdministratorActionHistoryHandler
             $administrator,
             AdministratorActionHistoryTypeEnum::COMMITTEE_DELETE,
             [
-                'committee_uuid' => $committee->getUuid()->toString(),
+                'committee_uuid' => $committee->getUuid()->toRfc4122(),
                 'committee_name' => $committee->getName(),
             ]
         );

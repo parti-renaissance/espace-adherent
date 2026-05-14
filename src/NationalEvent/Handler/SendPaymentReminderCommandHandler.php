@@ -28,7 +28,7 @@ class SendPaymentReminderCommandHandler
 
     public function __invoke(SendPaymentReminderCommand $command): void
     {
-        $eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString());
+        $eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toRfc4122());
         if (!$eventInscription instanceof EventInscription) {
             return;
         }

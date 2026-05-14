@@ -6,14 +6,14 @@ namespace App\Mailer\Message\Renaissance\AdherentRequest;
 
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAdherentRequestReminderMessage extends AbstractRenaissanceMessage
 {
     public static function create(AdherentRequest $adherentRequest, string $adhesionLink): self
     {
         return new static(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherentRequest->email,
             $adherentRequest->email,
             static::getReminderSubject(),

@@ -32,7 +32,7 @@ class RemoveAdherentTokensHandler implements UnregistrationAdherentHandlerInterf
 
     public function handle(Adherent $adherent): void
     {
-        $uuid = $adherent->getUuid()->toString();
+        $uuid = $adherent->getUuid()->toRfc4122();
 
         $this->remove($this->activationTokenRepository->findBy(['adherentUuid' => $uuid]));
         $this->remove($this->resetPasswordTokenRepository->findBy(['adherentUuid' => $uuid]));

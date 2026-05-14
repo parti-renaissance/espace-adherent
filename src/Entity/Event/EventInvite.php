@@ -8,7 +8,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPersonNameTrait;
 use App\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'events_invitations')]
@@ -50,7 +50,7 @@ class EventInvite implements \Stringable
 
     public function __construct(Event $event)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->event = $event;
         $this->createdAt = new \DateTime();
     }

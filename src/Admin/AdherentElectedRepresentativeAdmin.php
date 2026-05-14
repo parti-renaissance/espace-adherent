@@ -8,7 +8,7 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -31,7 +31,7 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
             ->innerJoin(
                 ElectedRepresentativeAdherentMandate::class,
                 'er_adherent_mandate',
-                Expr\Join::WITH,
+                Join::WITH,
                 \sprintf('%s.id = er_adherent_mandate.adherent', $rootAlias)
             )
             ->andWhere('er_adherent_mandate.finishAt IS NULL')

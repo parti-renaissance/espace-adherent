@@ -8,7 +8,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Index(columns: ['adherent_uuid'], name: 'committees_membership_histories_adherent_uuid_idx')]
@@ -36,7 +36,7 @@ class CommitteeMembershipHistory
      * Only UUID is used instead of the Entity because we cannot lose this data if one un-subscribes.
      * Otherwise stats would be broken.
      *
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid')]
     private $adherentUuid;
@@ -85,7 +85,7 @@ class CommitteeMembershipHistory
         return $this->committee;
     }
 
-    public function getAdherentUuid(): UuidInterface
+    public function getAdherentUuid(): Uuid
     {
         return $this->adherentUuid;
     }

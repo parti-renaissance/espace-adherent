@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Pap\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UpdateCampaignAddressInfoCommand implements AsynchronousMessageInterface
 {
-    private UuidInterface $campaignUuid;
+    private Uuid $campaignUuid;
 
-    public function __construct(UuidInterface $campaignUuid)
+    public function __construct(Uuid $campaignUuid)
     {
         $this->campaignUuid = $campaignUuid;
     }
 
-    public function getCampaignUuid(): UuidInterface
+    public function getCampaignUuid(): Uuid
     {
         return $this->campaignUuid;
     }

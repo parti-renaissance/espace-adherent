@@ -8,10 +8,14 @@ use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
-use App\Mailer\Message;
+use App\Mailer\Message\Renaissance\AdherentMembershipReminderMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadySympathizerMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
+use App\Mailer\Message\Renaissance\RenaissanceMembershipAnniversaryMessage;
+use App\Mailer\Message\Renaissance\RenaissanceReAdhesionConfirmationMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
 use App\Utils\UtmParams;
@@ -42,7 +46,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendMembershipAnniversaryReminder(Adherent $adherent): void
     {
-        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceMembershipAnniversaryMessage::create(
+        $this->transactionalMailer->sendMessage(RenaissanceMembershipAnniversaryMessage::create(
             $adherent,
             $this->createMagicLink($adherent, self::UTM_SOURCE_EMAIL, self::UTM_CAMPAIGN_ANNIVERSARY)
         ));
@@ -50,7 +54,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create(
+        return $this->transactionalMailer->sendMessage(AdherentMembershipReminderMessage::create(
             $adherent,
             $this->createMagicLink($adherent, self::UTM_SOURCE_EMAIL, self::UTM_CAMPAIGN_PAYMENT_REMINDER)
         ));
@@ -59,15 +63,15 @@ class MembershipNotifier implements LoggerAwareInterface
     public function sendConfirmationJoinMessage(Adherent $adherent, bool $renew): void
     {
         if ($renew) {
-            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent($adherent));
+            $this->transactionalMailer->sendMessage(RenaissanceReAdhesionConfirmationMessage::createFromAdherent($adherent));
         } else {
-            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
+            $this->transactionalMailer->sendMessage(RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
         }
     }
 
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
-        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent));
+        $this->transactionalMailer->sendMessage(RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
     public function sendAccountCreatedEmail(Adherent $adherent): void

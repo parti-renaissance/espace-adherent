@@ -54,7 +54,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
                 'instance' => $subject->getAuthorInstance(),
                 'zones' => $subject->getZones()->toArray(),
                 'committee_uuid' => $subject->getCommitteeUuid(),
-                'agora_uuid' => $subject->agora?->getUuid()->toString(),
+                'agora_uuid' => $subject->agora?->getUuid()->toRfc4122(),
                 'is_national' => $subject->isNational(),
             ]);
         }
@@ -80,7 +80,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
         }
 
         if ($subject->agora) {
-            return \in_array($subject->agora->getUuid()->toString(), $scope->getAgoraUuids());
+            return \in_array($subject->agora->getUuid()->toRfc4122(), $scope->getAgoraUuids());
         }
 
         return $this->zoneRepository->isInZones($subject->getZones()->toArray(), $scope->getZones());

@@ -7,8 +7,7 @@ namespace Tests\App\Entity;
 use App\Entity\Committee;
 use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 class CommitteeTest extends AbstractKernelTestCase
@@ -17,7 +16,7 @@ class CommitteeTest extends AbstractKernelTestCase
     {
         $committee = $this->createCommittee();
 
-        $this->assertInstanceOf(UuidInterface::class, $committee->getUuid());
+        $this->assertInstanceOf(Uuid::class, $committee->getUuid());
         $this->assertSame('En Marche ! - Lyon 1', $committee->getName());
         $this->assertSame('69003-en-marche-lyon', $committee->getSlug());
         $this->assertSame('Le comité En Marche ! de Lyon village', $committee->getDescription());

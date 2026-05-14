@@ -8,8 +8,7 @@ use App\Repository\VotingPlatform\ElectionRoundRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
 #[ORM\Table(name: 'voting_platform_election_round')]
@@ -24,7 +23,7 @@ class ElectionRound
     private $id;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
@@ -51,7 +50,7 @@ class ElectionRound
     public function __construct(bool $isActive = true)
     {
         $this->isActive = $isActive;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function getId(): ?int
@@ -59,7 +58,7 @@ class ElectionRound
         return $this->id;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

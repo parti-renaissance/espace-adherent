@@ -11,7 +11,7 @@ class RefreshThreadCommand extends AbstractUuidMessage implements LockableMessag
 {
     public function getLockKey(): string
     {
-        return 'chatbot_thread_'.$this->getUuid()->toString();
+        return 'chatbot_thread_'.$this->getUuid()->toRfc4122();
     }
 
     public function getLockTtl(): int

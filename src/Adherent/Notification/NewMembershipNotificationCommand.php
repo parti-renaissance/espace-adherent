@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Adherent\Notification;
 
 use App\Messenger\Message\UuidDefaultAsyncMessage;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class NewMembershipNotificationCommand extends UuidDefaultAsyncMessage
 {
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         private readonly \DateTimeInterface $from,
         private readonly \DateTimeInterface $to,
     ) {

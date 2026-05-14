@@ -11,7 +11,7 @@ use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadCommitteeData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {

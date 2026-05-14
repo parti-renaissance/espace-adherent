@@ -18,7 +18,7 @@ class CheckStatusController extends AbstractController
     public function __invoke(Request $request, Donation $donation): Response
     {
         $isSuccess = false;
-        if ($request->getSession()->get(StatusController::SESSION_KEY) === $donation->getUuid()->toString() && $donation->isSuccess()) {
+        if ($request->getSession()->get(StatusController::SESSION_KEY) === $donation->getUuid()->toRfc4122() && $donation->isSuccess()) {
             $isSuccess = true;
             $params = UtmParams::mergeParams([], $donation->utmSource, $donation->utmCampaign);
 

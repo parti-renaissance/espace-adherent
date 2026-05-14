@@ -10,9 +10,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Ohme\PaymentStatusEnum;
 use App\Repository\Contribution\PaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ORM\Table(name: 'contribution_payment')]
@@ -43,9 +42,9 @@ class Payment
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'payments')]
     public ?Adherent $adherent = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function fromArray(Adherent $adherent, array $data): self

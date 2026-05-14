@@ -7,7 +7,7 @@ namespace App\Repository;
 use App\Entity\AdherentExpirableTokenInterface;
 use App\ValueObject\SHA1;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAdherentTokenRepository extends ServiceEntityRepository
 {
@@ -22,7 +22,7 @@ abstract class AbstractAdherentTokenRepository extends ServiceEntityRepository
             ->createQueryBuilder('t')
             ->where('t.adherentUuid = :uuid')
             ->orderBy('t.createdAt', 'DESC')
-            ->setParameter('uuid', $adherent->toString())
+            ->setParameter('uuid', $adherent->toRfc4122())
             ->getQuery()
         ;
 

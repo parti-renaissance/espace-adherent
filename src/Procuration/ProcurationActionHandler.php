@@ -15,8 +15,8 @@ use App\Entity\Procuration\RequestSlot;
 use App\Entity\Procuration\RequestSlotAction;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Uid\Uuid;
 
 class ProcurationActionHandler
 {
@@ -161,7 +161,7 @@ class ProcurationActionHandler
         array $context = [],
     ): RequestAction {
         $action = new RequestAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $request
@@ -182,7 +182,7 @@ class ProcurationActionHandler
         array $context = [],
     ): ProxyAction {
         $action = new ProxyAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $proxy
@@ -203,7 +203,7 @@ class ProcurationActionHandler
         array $context = [],
     ): RequestSlotAction {
         $action = new RequestSlotAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $requestSlot
@@ -224,7 +224,7 @@ class ProcurationActionHandler
         array $context = [],
     ): ProxySlotAction {
         $action = new ProxySlotAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $proxySlot

@@ -7,7 +7,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformCandidacyInvitationCreatedMessage extends AbstractVotingPlatformMessage
 {
@@ -21,7 +21,7 @@ final class VotingPlatformCandidacyInvitationCreatedMessage extends AbstractVoti
         $emailTitle = self::getMailSubjectPrefix($designation);
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $invited->getEmailAddress(),
             $invited->getFullName(),
             \sprintf('[%s] %s', $emailTitle, self::createSubject($designation, $candidate)),

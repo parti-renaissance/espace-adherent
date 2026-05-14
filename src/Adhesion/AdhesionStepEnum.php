@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace App\Adhesion;
 
-use App\Controller\Renaissance\Adhesion;
+use App\Controller\Renaissance\Adhesion\ActivateEmailController;
+use App\Controller\Renaissance\Adhesion\AdhesionController;
+use App\Controller\Renaissance\Adhesion\CommitteeController;
+use App\Controller\Renaissance\Adhesion\CommunicationReminderController;
+use App\Controller\Renaissance\Adhesion\CreatePasswordController;
+use App\Controller\Renaissance\Adhesion\FurtherInformationController;
+use App\Controller\Renaissance\Adhesion\MemberCardController;
 
 final class AdhesionStepEnum
 {
@@ -30,22 +36,22 @@ final class AdhesionStepEnum
     {
         if ($isAdherent) {
             return [
-                Adhesion\AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
-                Adhesion\ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
-                Adhesion\CreatePasswordController::ROUTE_NAME => self::PASSWORD,
-                Adhesion\FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
-                Adhesion\MemberCardController::ROUTE_NAME => self::MEMBER_CARD,
-                Adhesion\CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
-                Adhesion\CommitteeController::ROUTE_NAME => self::COMMITTEE,
+                AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
+                ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
+                CreatePasswordController::ROUTE_NAME => self::PASSWORD,
+                FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
+                MemberCardController::ROUTE_NAME => self::MEMBER_CARD,
+                CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
+                CommitteeController::ROUTE_NAME => self::COMMITTEE,
             ];
         }
 
         return [
-            Adhesion\AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
-            Adhesion\ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
-            Adhesion\CreatePasswordController::ROUTE_NAME => self::PASSWORD,
-            Adhesion\FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
-            Adhesion\CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
+            AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
+            ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
+            CreatePasswordController::ROUTE_NAME => self::PASSWORD,
+            FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
+            CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
         ];
     }
 

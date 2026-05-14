@@ -8,10 +8,10 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractAction
@@ -41,7 +41,7 @@ abstract class AbstractAction
     public ?Administrator $authorAdministrator = null;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         \DateTimeInterface $date,
     ) {
         $this->uuid = $uuid;

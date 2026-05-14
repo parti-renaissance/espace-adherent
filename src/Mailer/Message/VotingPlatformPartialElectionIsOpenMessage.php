@@ -6,7 +6,7 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPlatformMessage
 {
@@ -32,7 +32,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPla
         ];
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $first->getEmailAddress(),
             $first->getFullName(),
             \sprintf(

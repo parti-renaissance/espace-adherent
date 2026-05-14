@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailer\Message\Renaissance;
 
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceM
         }
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             reset($recipients),
             null,
             'Nouvelles déclarations de mandats',

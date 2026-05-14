@@ -31,7 +31,7 @@ class CreatePublicationReachFromEmailCommandHandler
 
     public function __invoke(CreatePublicationReachFromEmailCommand $command): void
     {
-        if (!$adherentMessage = $this->adherentMessageRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$adherentMessage = $this->adherentMessageRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

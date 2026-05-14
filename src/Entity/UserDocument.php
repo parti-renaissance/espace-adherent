@@ -10,10 +10,9 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact', 'originalName' => 'partial'])]
@@ -88,7 +87,7 @@ class UserDocument implements \Stringable, InstanceOwnerInterface
 
     private function __construct(string $type, string $name, string $extension, int $size)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->originalName = $name;
         $this->extension = $extension;
         $this->size = $size;
@@ -159,7 +158,7 @@ class UserDocument implements \Stringable, InstanceOwnerInterface
 
     public function getPath(): string
     {
-        return \sprintf('user_documents/%ss/%s.%s', $this->type, $this->getUuid()->toString(), $this->getExtension());
+        return \sprintf('user_documents/%ss/%s.%s', $this->type, $this->getUuid()->toRfc4122(), $this->getExtension());
     }
 
     public static function allTypes(): array
@@ -178,7 +177,7 @@ class UserDocument implements \Stringable, InstanceOwnerInterface
     }
 
     public static function create(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $type,
         string $mimeType,
         string $name,

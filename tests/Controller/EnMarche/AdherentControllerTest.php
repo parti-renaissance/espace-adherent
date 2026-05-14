@@ -7,8 +7,6 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Repository\CommitteeRepository;
-use App\Repository\Email\EmailLogRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;

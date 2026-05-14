@@ -10,8 +10,7 @@ use App\Entity\Agora;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -66,7 +65,7 @@ class LoadAgoraData extends AbstractLoadPostAddressData implements DependentFixt
     }
 
     private function createAgora(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $name,
         string $description,
         int $maxMembersCount,

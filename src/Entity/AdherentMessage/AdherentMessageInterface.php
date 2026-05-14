@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\IndexableEntityInterface;
 use App\Scope\Scope;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEntityInterface
 {
@@ -18,7 +18,7 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function getLabel(): ?string;
 
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getInstanceScope(): ?string;
 
@@ -65,7 +65,7 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function markAsSent(): void;
 
-    public static function createFromAdherent(Adherent $adherent, ?UuidInterface $uuid = null): self;
+    public static function createFromAdherent(Adherent $adherent, ?Uuid $uuid = null): self;
 
     public function getSource(): string;
 

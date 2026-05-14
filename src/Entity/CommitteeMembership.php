@@ -8,9 +8,8 @@ use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * This entity represents a committee membership.
@@ -87,7 +86,7 @@ class CommitteeMembership implements UuidEntityInterface
     private ?CommitteeMembershipTriggerEnum $trigger;
 
     private function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
@@ -104,7 +103,7 @@ class CommitteeMembership implements UuidEntityInterface
     }
 
     #[Groups(['api_candidacy_read'])]
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }
@@ -196,12 +195,12 @@ class CommitteeMembership implements UuidEntityInterface
         return $this->committee;
     }
 
-    public function getAdherentUuid(): UuidInterface
+    public function getAdherentUuid(): Uuid
     {
         return $this->adherent->getUuid();
     }
 
-    public function getCommitteeUuid(): UuidInterface
+    public function getCommitteeUuid(): Uuid
     {
         return $this->committee->getUuid();
     }
@@ -288,11 +287,11 @@ class CommitteeMembership implements UuidEntityInterface
         return $adherent->equals($this->getAdherent()) && $this->committee->getUuid()->equals($committee->getUuid());
     }
 
-    private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
+    private static function createUuid(Uuid $adherentUuid, Uuid $committeeUuid): Uuid
     {
-        $key = sha1(\sprintf('%s|%s', $adherentUuid->toString(), $committeeUuid->toString()));
+        $key = sha1(\sprintf('%s|%s', $adherentUuid->toRfc4122(), $committeeUuid->toRfc4122()));
 
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
+        return Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $key);
     }
 
     public function hasActiveCommitteeCandidacy(?bool $confirmed = null): bool

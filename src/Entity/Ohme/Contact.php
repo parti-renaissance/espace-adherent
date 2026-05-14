@@ -11,9 +11,8 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Ohme\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Index(columns: ['ohme_identifier'])]
@@ -80,9 +79,9 @@ class Contact implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString(): string

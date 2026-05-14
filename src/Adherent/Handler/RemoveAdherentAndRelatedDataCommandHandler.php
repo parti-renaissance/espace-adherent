@@ -40,7 +40,7 @@ class RemoveAdherentAndRelatedDataCommandHandler implements LoggerAwareInterface
 
     public function __invoke(RemoveAdherentAndRelatedDataCommand $command): void
     {
-        if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

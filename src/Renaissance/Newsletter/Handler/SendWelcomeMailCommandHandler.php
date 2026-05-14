@@ -35,8 +35,8 @@ class SendWelcomeMailCommandHandler
         return RenaissanceNewsletterSubscriptionConfirmationMessage::create(
             $subscription->email,
             $this->urlGenerator->generate('app_renaissance_newsletter_confirm', [
-                'uuid' => $subscription->getUuid()->toString(),
-                'confirm_token' => $subscription->token->toString(),
+                'uuid' => $subscription->getUuid()->toRfc4122(),
+                'confirm_token' => $subscription->token->toRfc4122(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         );
     }

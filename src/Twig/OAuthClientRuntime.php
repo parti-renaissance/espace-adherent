@@ -36,6 +36,6 @@ class OAuthClientRuntime implements RuntimeExtensionInterface
 
         $clients = $this->clientRepository->findBy(['code' => $code]);
 
-        return $this->clientIds[$code] = (\count($clients) >= 1 ? $clients[0]->getUuid()->toString() : '');
+        return $this->clientIds[$code] = (\count($clients) >= 1 ? $clients[0]->getUuid()->toRfc4122() : '');
     }
 }

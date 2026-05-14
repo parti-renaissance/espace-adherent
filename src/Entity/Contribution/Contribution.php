@@ -12,9 +12,8 @@ use App\GoCardless\Subscription;
 use App\Repository\Contribution\ContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use GoCardlessPro\Resources\Subscription as GoCardlessSubscription;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContributionRepository::class)]
 #[ORM\Table(name: 'contribution')]
@@ -59,9 +58,9 @@ class Contribution
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'contributions')]
     public ?Adherent $adherent = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function isActive(): bool

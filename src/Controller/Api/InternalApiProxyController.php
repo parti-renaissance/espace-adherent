@@ -46,7 +46,7 @@ class InternalApiProxyController extends AbstractController
 
         $subRequestOption = [
             'headers' => array_merge($this->getFilteredRequestHeaders($request), [
-                'X-User-UUID' => $user->getUuid()->toString(),
+                'X-User-UUID' => $user->getUuid()->toRfc4122(),
             ]),
             'query' => $request->query->all(),
         ];

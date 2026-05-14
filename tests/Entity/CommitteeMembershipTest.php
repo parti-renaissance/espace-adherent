@@ -7,8 +7,7 @@ namespace Tests\App\Entity;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 class CommitteeMembershipTest extends AbstractKernelTestCase
@@ -21,10 +20,10 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
         $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createNewAdherent(), new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
-        $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
+        $this->assertInstanceOf(Uuid::class, $membership->getUuid());
         $this->assertSame($adherent, $membership->getAdherent());
         $this->assertSame(self::ADHERENT_UUID, (string) $membership->getAdherentUuid());
-        $this->assertSame(self::COMMITTEE_UUID, $membership->getCommitteeUuid()->toString());
+        $this->assertSame(self::COMMITTEE_UUID, $membership->getCommitteeUuid()->toRfc4122());
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
@@ -35,10 +34,10 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
         $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createNewAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
-        $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
+        $this->assertInstanceOf(Uuid::class, $membership->getUuid());
         $this->assertSame($adherent, $membership->getAdherent());
         $this->assertSame(self::ADHERENT_UUID, (string) $membership->getAdherentUuid());
-        $this->assertSame(self::COMMITTEE_UUID, $membership->getCommitteeUuid()->toString());
+        $this->assertSame(self::COMMITTEE_UUID, $membership->getCommitteeUuid()->toRfc4122());
         $this->assertFalse($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
         $this->assertTrue($membership->isFollower());

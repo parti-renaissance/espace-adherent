@@ -476,7 +476,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
@@ -698,7 +698,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -851,7 +851,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -1044,7 +1044,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -1177,7 +1177,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -1323,7 +1323,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -1389,7 +1389,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame([
             'accommodation' => [
@@ -1417,7 +1417,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertTrue($payments[1]->isConfirmed());
         self::assertFalse($payments[1]->toRefund);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toString(), 'STATUS' => '8']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toRfc4122(), 'STATUS' => '8']));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1536,7 +1536,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         $this->em->clear();
         self::assertSame([
@@ -1658,7 +1658,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '4']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '4']));
 
         $this->em->clear();
 
@@ -1713,7 +1713,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
 
@@ -1723,7 +1723,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toString(), 'STATUS' => '8']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '8']));
 
         $this->em->clear();
 
@@ -1771,7 +1771,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $firstPayment = $inscription->getPayments()[0];
 
         // 1. First payment is confirmed by the bank.
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPayment->getUuid()->toString(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPayment->getUuid()->toRfc4122(), 'STATUS' => '9']));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1790,7 +1790,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $eventInscriptionManager = static::getContainer()->get(EventInscriptionManager::class);
         $secondPayment = $eventInscriptionManager->createPayment($inscription);
         $this->em->flush();
-        $secondPaymentUuid = $secondPayment->getUuid()->toString();
+        $secondPaymentUuid = $secondPayment->getUuid()->toRfc4122();
 
         // 3b. The /paiement-process route must also refuse to send the user to the bank
         //     for a stale pending payment when the inscription is already paid.
@@ -1851,7 +1851,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $inscription->getPayments()[0];
 
-        $payload = ['orderID' => $payment->getUuid()->toString(), 'STATUS' => '9'];
+        $payload = ['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9'];
 
         $this->bus->dispatch(new PaymentStatusUpdateCommand($payload));
 

@@ -18,9 +18,8 @@ use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -230,9 +229,9 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $requiredAccessibility = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function isComplete(?string $source = null): bool

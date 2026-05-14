@@ -7,7 +7,7 @@ namespace App\Entity\OAuth;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractGrantToken extends AbstractToken
@@ -34,7 +34,7 @@ abstract class AbstractGrantToken extends AbstractToken
     private $device;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         ?Adherent $user,
         string $identifier,
         \DateTimeImmutable $expiryDateTime,

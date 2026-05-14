@@ -6,7 +6,7 @@ namespace App\LocalElection;
 
 use App\Entity\LocalElection\CandidaciesGroup;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class Manager
 {
@@ -21,7 +21,7 @@ class Manager
         }
 
         if (!$candidaciesGroup->hasFaithStatementFile()) {
-            $candidaciesGroup->faithStatementFileName = \sprintf('%s.pdf', Uuid::uuid4());
+            $candidaciesGroup->faithStatementFileName = \sprintf('%s.pdf', Uuid::v4());
         }
 
         $this->defaultStorage->write($candidaciesGroup->getFaithStatementFilePath(), file_get_contents($candidaciesGroup->file->getPathname()));

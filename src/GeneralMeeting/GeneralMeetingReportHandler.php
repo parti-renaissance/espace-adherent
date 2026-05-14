@@ -6,7 +6,7 @@ namespace App\GeneralMeeting;
 
 use App\Entity\GeneralMeeting\GeneralMeetingReport;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class GeneralMeetingReportHandler
 {
@@ -25,7 +25,7 @@ class GeneralMeetingReportHandler
         $generalMeetingReport->setFilePath($path = \sprintf(
             '%s/%s.%s',
             'files/general_meeting_reports',
-            Uuid::uuid4()->toString(),
+            Uuid::v4()->toRfc4122(),
             $file->getClientOriginalExtension()
         ));
 

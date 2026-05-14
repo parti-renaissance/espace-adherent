@@ -11,11 +11,10 @@ use App\Entity\Geo\Zone;
 use App\Jecoute\RegionColorEnum;
 use App\Repository\Jecoute\RegionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
@@ -37,7 +36,7 @@ class Region implements \Stringable
     private $id;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
@@ -124,7 +123,7 @@ class Region implements \Stringable
     private $author;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?Zone $zone = null,
         ?string $subtitle = null,
         ?string $description = null,
@@ -134,7 +133,7 @@ class Region implements \Stringable
         ?string $externalLink = null,
         bool $enabled = true,
     ) {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->zone = $zone;
         $this->subtitle = $subtitle;
         $this->description = $description;
@@ -151,7 +150,7 @@ class Region implements \Stringable
             return \sprintf('%s (%s)', $this->zone->getName(), $this->zone->getCode());
         }
 
-        return $this->uuid->toString();
+        return $this->uuid->toRfc4122();
     }
 
     public function getId(): ?int
@@ -159,7 +158,7 @@ class Region implements \Stringable
         return $this->id;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

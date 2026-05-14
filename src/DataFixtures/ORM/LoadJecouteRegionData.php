@@ -9,7 +9,7 @@ use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadJecouteRegionData extends AbstractFixtures implements DependentFixtureInterface
 {

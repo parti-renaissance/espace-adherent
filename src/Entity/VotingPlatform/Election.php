@@ -15,8 +15,7 @@ use App\VotingPlatform\Election\Enum\ElectionCancelReasonEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
 #[ORM\Table(name: 'voting_platform_election')]
@@ -104,12 +103,12 @@ class Election
 
     public function __construct(
         Designation $designation,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         array $rounds = [],
         ?ElectionEntity $entity = null,
     ) {
         $this->designation = $designation;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
 
         $this->electionRounds = new ArrayCollection();
         $this->electionPools = new ArrayCollection();

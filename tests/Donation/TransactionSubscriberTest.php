@@ -67,7 +67,7 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebTestCase
         $donation = $this->donationRepository->findAllSubscribedDonationByEmail('jacques.picard@en-marche.fr')[0];
 
         $params = [
-            'id' => $donation->getUuid()->toString().'_test',
+            'id' => $donation->getUuid()->toRfc4122().'_test',
             'authorization' => 'XXXXXX',
             'result' => '00000',
             'transaction' => $transactionId,

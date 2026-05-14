@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Utils\PhoneNumberUtils;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
         $event = $eventInscription->event;
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             'Votre inscription - '.$event->getName(),
@@ -32,7 +32,7 @@ class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMes
                 'department' => self::escape((string) $department),
                 'birthdate' => self::escape($eventInscription->birthdate?->format('d/m/Y')),
                 'birth_place' => self::escape((string) $eventInscription->birthPlace),
-                'inscription_uuid' => $eventInscription->getUuid()->toString(),
+                'inscription_uuid' => $eventInscription->getUuid()->toRfc4122(),
                 'roommate_identifier' => $eventInscription->roommateIdentifier,
                 'public_id' => $eventInscription->getPublicId(),
                 'event_url' => $eventUrl,

@@ -14,7 +14,6 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Uid\Uuid;
 
 #[AsCommand(
     name: 'app:donations:import',
@@ -281,7 +281,7 @@ class ImportDonationsCommand extends Command
             }
 
             $donation = new Donation(
-                Uuid::uuid4(),
+                Uuid::v4(),
                 self::TYPES_MAP[$type],
                 $amount * 100,
                 $donatedAt,

@@ -18,7 +18,7 @@ class MajorityVoteChoiceType extends AbstractType
     {
         /** @var CandidateGroup $candidateGroup */
         foreach ($options['candidate_groups'] as $candidateGroup) {
-            $builder->add($candidateGroup->getUuid()->toString(), ChoiceType::class, [
+            $builder->add($candidateGroup->getUuid()->toRfc4122(), ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => false,
                 'label' => false,

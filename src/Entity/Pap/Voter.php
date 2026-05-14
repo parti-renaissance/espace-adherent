@@ -10,9 +10,8 @@ use ApiPlatform\Metadata\Link;
 use App\Entity\EntityIdentityTrait;
 use App\Repository\Pap\VoterRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     uriTemplate: '/v3/pap/address/{uuid}/voters',
@@ -56,7 +55,7 @@ class Voter
     private ?Address $address;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $firstName = null,
         ?string $lastName = null,
         ?string $gender = null,
@@ -64,7 +63,7 @@ class Voter
         ?string $votePlace = null,
         ?string $source = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;

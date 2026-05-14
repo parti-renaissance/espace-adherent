@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Event\EventRegistration;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ class EventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
         $firstName = $registration->getFirstName();
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $registration->getEmailAddress(),
             $firstName,
             'Inscription confirmée',

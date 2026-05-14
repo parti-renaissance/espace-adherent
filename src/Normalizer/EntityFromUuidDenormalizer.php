@@ -6,8 +6,8 @@ namespace App\Normalizer;
 
 use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class EntityFromUuidDenormalizer implements DenormalizerInterface
 {

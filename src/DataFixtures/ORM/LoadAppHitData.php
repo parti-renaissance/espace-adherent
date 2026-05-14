@@ -15,8 +15,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -108,7 +107,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                 $maybeRef = $adherents[array_rand($adherents)];
                 $referrer = $maybeRef !== $adherent ? $maybeRef : null;
 
-                $activityUuid = Uuid::uuid4();
+                $activityUuid = Uuid::v4();
                 $sessionStart = $now
                     ->sub(new \DateInterval('P'.$faker->numberBetween(2, 14).'D'))
                     ->setTime($faker->numberBetween(8, 22), $faker->numberBetween(0, 59))
@@ -211,7 +210,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
                         adherent: $adherent,
                         referrer: $referrer,
                         objectType: $otherType,
-                        objectId: (string) Uuid::uuid4(),
+                        objectId: (string) Uuid::v4(),
                         source: 'page_publication_edition',
                         activitySessionUuid: $activityUuid,
                         appSystem: $appSystem,
@@ -230,7 +229,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
         $adherent2 = $this->getReference('adherent-2', Adherent::class);
         $event2 = $events[0];
         $event2Uuid = (string) $event2->getUuid();
-        $adherent2SessionUuid = Uuid::uuid4();
+        $adherent2SessionUuid = Uuid::v4();
         $adherent2SessionStart = $now->sub(new \DateInterval('P3D'))->setTime(10, 30);
         $adherent2AppSession = $pickAppSession($adherent2, $adherent2SessionStart);
 
@@ -302,7 +301,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
         ?TargetTypeEnum $objectType,
         ?string $objectId,
         ?string $source,
-        UuidInterface $activitySessionUuid,
+        Uuid $activitySessionUuid,
         ?SystemEnum $appSystem,
         string $appVersion,
         \DateTimeInterface $appDate,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class JEMNationalEventTicketMessage extends AbstractJEMMessage
 {
@@ -14,12 +14,12 @@ class JEMNationalEventTicketMessage extends AbstractJEMMessage
         $event = $eventInscription->event;
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             $event->subjectTicketEmail,
             [
-                'uuid' => $eventInscription->getUuid()->toString(),
+                'uuid' => $eventInscription->getUuid()->toRfc4122(),
                 'first_name' => $eventInscription->firstName,
                 'last_name' => $eventInscription->lastName,
                 'qr_code_img' => $eventInscription->isTicketReady() ? $eventInscription->ticketQRCodeFile : null,

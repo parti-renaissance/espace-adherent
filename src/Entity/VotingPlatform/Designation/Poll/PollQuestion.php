@@ -8,9 +8,9 @@ use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Assert\Expression('this.isSeparator or this.countChoices() >= 2')]
@@ -45,7 +45,7 @@ class PollQuestion
     public function __construct(?string $content = null)
     {
         $this->content = $content;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->choices = new ArrayCollection();
     }
 

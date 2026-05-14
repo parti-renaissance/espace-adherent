@@ -6,7 +6,7 @@ namespace App\Entity\OAuth;
 
 use App\Repository\OAuth\RefreshTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: RefreshTokenRepository::class)]
 #[ORM\Table(name: 'oauth_refresh_tokens')]
@@ -17,7 +17,7 @@ class RefreshToken extends AbstractToken
     private $accessToken;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         AccessToken $accessToken,
         string $identifier,
         \DateTimeImmutable $expiryDateTime,

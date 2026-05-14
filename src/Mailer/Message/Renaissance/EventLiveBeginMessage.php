@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class EventLiveBeginMessage extends AbstractRenaissanceMessage
 {
@@ -20,7 +20,7 @@ final class EventLiveBeginMessage extends AbstractRenaissanceMessage
         $recipient = array_shift($recipients);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             'Début de live',

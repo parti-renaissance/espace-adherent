@@ -41,7 +41,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         return array_reduce(
             $this->committeeRepository->findInZones($scope->getZones()),
             static function ($carry, Committee $item) {
-                $carry[$item->getUuid()->toString()] = $item->getName();
+                $carry[$item->getUuid()->toRfc4122()] = $item->getName();
 
                 return $carry;
             },

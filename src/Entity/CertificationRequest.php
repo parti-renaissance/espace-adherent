@@ -7,9 +7,9 @@ namespace App\Entity;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CertificationRequestRepository::class)]
@@ -167,7 +167,7 @@ class CertificationRequest implements \Stringable
     {
         $this->createdAt = new \DateTime();
         $this->adherent = $adherent;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function __toString()

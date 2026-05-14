@@ -22,9 +22,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
@@ -94,7 +94,7 @@ class Proxy extends AbstractProcuration
     public Collection $actions;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         array $rounds,
         string $email,
         string $gender,

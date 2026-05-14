@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message;
 
 use App\Entity\Phoning\CampaignHistory;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class PhoningCampaignAdherentActionSummaryMessage extends Message
 {
@@ -16,7 +16,7 @@ class PhoningCampaignAdherentActionSummaryMessage extends Message
         ?string $editProfilUrl,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $campaignHistory->getAdherent()->getEmailAddress(),
             $campaignHistory->getAdherent()->getFullName(),
             'Suite à notre appel',

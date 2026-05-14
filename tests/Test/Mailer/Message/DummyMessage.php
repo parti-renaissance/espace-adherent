@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Test\Mailer\Message;
 
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class DummyMessage extends Message
 {

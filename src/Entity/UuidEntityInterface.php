@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface UuidEntityInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 }

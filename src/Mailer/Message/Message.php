@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message;
 
 use App\Entity\Email\TransactionalEmailTemplate;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class Message
 {
@@ -32,7 +32,7 @@ class Message
     /**
      * Message constructor.
      *
-     * @param UuidInterface              $uuid            The unique identifier of this message
+     * @param Uuid                       $uuid            The unique identifier of this message
      * @param string                     $template        The Message template ID
      * @param string                     $recipientEmail  The first recipient email address
      * @param string|null                $recipientName   The first recipient name
@@ -45,7 +45,7 @@ class Message
      * @param TransactionalEmailTemplate $templateObject  The email template object
      */
     final public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $recipientEmail,
         $recipientName,
         string $subject,
@@ -67,7 +67,7 @@ class Message
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
 
-    final public function getUuid(): UuidInterface
+    final public function getUuid(): Uuid
     {
         return $this->uuid;
     }

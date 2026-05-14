@@ -33,11 +33,10 @@ use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['title' => 'partial', 'visibility' => 'exact'])]
@@ -160,9 +159,9 @@ class Formation implements \Stringable, EntityScopeVisibilityWithZoneInterface, 
     #[ORM\ManyToMany(targetEntity: Adherent::class, fetch: 'EXTRA_LAZY')]
     private Collection $printByAdherents;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->printByAdherents = new ArrayCollection();
     }
 

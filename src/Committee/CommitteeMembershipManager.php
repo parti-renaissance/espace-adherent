@@ -100,7 +100,7 @@ class CommitteeMembershipManager
                 $oldMembershipIds[] = $existing['id'];
                 $leaveHistoryRows[] = [
                     'committee_id' => $existing['committee_id'],
-                    'adherent_uuid' => $adherent->getUuid()->toString(),
+                    'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
                     'action' => CommitteeMembershipAction::LEAVE,
                     'privilege' => $existing['privilege'],
                     'date' => $now,
@@ -113,7 +113,7 @@ class CommitteeMembershipManager
 
             $newMembership = CommitteeMembership::createFollower($committee, $adherent, $trigger);
             $newMembershipRows[] = [
-                'uuid' => $newMembership->getUuid()->toString(),
+                'uuid' => $newMembership->getUuid()->toRfc4122(),
                 'adherent_id' => $adherentId,
                 'committee_id' => $committeeId,
                 'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
@@ -122,7 +122,7 @@ class CommitteeMembershipManager
             ];
             $joinHistoryRows[] = [
                 'committee_id' => $committeeId,
-                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'adherent_uuid' => $adherent->getUuid()->toRfc4122(),
                 'action' => CommitteeMembershipAction::JOIN,
                 'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
                 'date' => $now,

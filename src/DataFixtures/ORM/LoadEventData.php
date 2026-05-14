@@ -15,7 +15,7 @@ use App\FranceCities\FranceCities;
 use App\Scope\ScopeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoadEventData extends AbstractLoadEventData implements DependentFixtureInterface

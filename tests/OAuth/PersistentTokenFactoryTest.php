@@ -19,7 +19,7 @@ use App\Repository\OAuth\AccessTokenRepository;
 use App\Repository\OAuth\ClientRepository;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[Group('time-sensitive')]
 class PersistentTokenFactoryTest extends TestCase
@@ -66,7 +66,7 @@ class PersistentTokenFactoryTest extends TestCase
         $authCode = $this->tokenFactory->createAuthorizationCode($token);
 
         $this->assertEquals(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, self::AUTHORIZATION_CODE_IDENTIFIER),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), self::AUTHORIZATION_CODE_IDENTIFIER),
             $authCode->getUuid()
         );
         $this->assertSame(self::AUTHORIZATION_CODE_IDENTIFIER, $authCode->getIdentifier());
@@ -159,7 +159,7 @@ class PersistentTokenFactoryTest extends TestCase
         $accessToken = $this->tokenFactory->createAccessToken($token);
 
         $this->assertEquals(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, self::ACCESS_TOKEN_IDENTIFIER),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), self::ACCESS_TOKEN_IDENTIFIER),
             $accessToken->getUuid()
         );
         $this->assertSame(self::ACCESS_TOKEN_IDENTIFIER, $accessToken->getIdentifier());
@@ -230,7 +230,7 @@ class PersistentTokenFactoryTest extends TestCase
         $refreshToken = $this->tokenFactory->createRefreshToken($token);
 
         $this->assertEquals(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, self::REFRESH_TOKEN_IDENTIFIER),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), self::REFRESH_TOKEN_IDENTIFIER),
             $refreshToken->getUuid()
         );
         $this->assertSame(self::REFRESH_TOKEN_IDENTIFIER, $refreshToken->getIdentifier());

@@ -7,7 +7,7 @@ namespace App\Entity;
 use App\Adherent\Unregistration\TypeEnum;
 use App\Repository\UnregistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UnregistrationRepository::class)]
@@ -51,13 +51,13 @@ class Unregistration
     private $id;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid')]
     private $uuid;
 
     #[ORM\Column(type: 'uuid')]
-    public ?UuidInterface $emailHash = null;
+    public ?Uuid $emailHash = null;
 
     /**
      * @var string|null
@@ -101,8 +101,8 @@ class Unregistration
     private $excludedBy;
 
     public function __construct(
-        UuidInterface $uuid,
-        UuidInterface $emailHash,
+        Uuid $uuid,
+        Uuid $emailHash,
         array $reasons,
         ?string $comment,
         \DateTime $registeredAt,
@@ -132,7 +132,7 @@ class Unregistration
         return $this->id;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

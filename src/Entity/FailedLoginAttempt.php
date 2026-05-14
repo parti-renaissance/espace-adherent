@@ -7,8 +7,8 @@ namespace App\Entity;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\LoginAttemptSignature;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: FailedLoginAttemptRepository::class)]
 class FailedLoginAttempt
@@ -35,7 +35,7 @@ class FailedLoginAttempt
 
     private function __construct(string $signature, array $extra)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->signature = $signature;
         $this->at = \DateTime::createFromFormat('U', (string) time());
         $this->extra = $extra;

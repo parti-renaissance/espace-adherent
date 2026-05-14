@@ -15,7 +15,7 @@ class EventNormalizer implements NormalizerInterface
     {
         $eventData = [
             'VEVENT' => [
-                'UID' => $object->getUuid()->toString(),
+                'UID' => $object->getUuid()->toRfc4122(),
                 'SUMMARY' => $object->getName(),
                 'DESCRIPTION' => $object->getDescription(),
                 'DTSTART' => $object->getLocalBeginAt(),

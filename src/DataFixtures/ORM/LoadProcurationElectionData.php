@@ -10,8 +10,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadProcurationElectionData extends Fixture
 {
@@ -84,7 +83,7 @@ class LoadProcurationElectionData extends Fixture
     private function createRound(
         string $name,
         string $date,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ): Round {
         $round = new Round($uuid);
         $round->name = $name;

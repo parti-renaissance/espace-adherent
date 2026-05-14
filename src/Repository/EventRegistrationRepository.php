@@ -16,7 +16,7 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class EventRegistrationRepository extends ServiceEntityRepository
 {
@@ -28,7 +28,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, EventRegistration::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?EventRegistration
+    public function findOneByUuid(Uuid|string $uuid): ?EventRegistration
     {
         if (\is_string($uuid)) {
             self::validUuid($uuid);
@@ -79,7 +79,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]
      */
-    public function findUpcomingAdherentRegistrations(UuidInterface|string $adherentUuid): array
+    public function findUpcomingAdherentRegistrations(Uuid|string $adherentUuid): array
     {
         if (\is_string($adherentUuid)) {
             self::validUuid($adherentUuid);
@@ -120,7 +120,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     /**
      * @return EventRegistration[]
      */
-    public function findPastAdherentRegistrations(UuidInterface|string $adherentUuid): array
+    public function findPastAdherentRegistrations(Uuid|string $adherentUuid): array
     {
         if (\is_string($adherentUuid)) {
             self::validUuid($adherentUuid);

@@ -16,8 +16,7 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\TokenInterface;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class PersistentTokenFactory
 {
@@ -86,9 +85,9 @@ class PersistentTokenFactory
         return $authCode;
     }
 
-    private function createTokenUuid(string $identifier): UuidInterface
+    private function createTokenUuid(string $identifier): Uuid
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier);
+        return Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier);
     }
 
     private function getUser(string $identifier): Adherent

@@ -20,11 +20,11 @@ use App\Security\Voter\ManageZoneableItemVoter;
 use App\Security\Voter\PublicationVoter;
 use App\Security\Voter\ScopeFeatureVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/v3/stats/{type}/{uuid}', requirements: ['type' => '[^/]+', 'uuid' => '%pattern_uuid%'], methods: 'GET')]
 class GetHitStatsController extends AbstractController

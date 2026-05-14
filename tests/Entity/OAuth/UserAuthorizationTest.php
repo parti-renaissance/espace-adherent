@@ -8,8 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\UserAuthorization;
 use App\OAuth\Model\Scope;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 class UserAuthorizationTest extends AbstractKernelTestCase
@@ -17,7 +16,7 @@ class UserAuthorizationTest extends AbstractKernelTestCase
     public function testConstructor(): void
     {
         $authorization = $this->createUserAuthorization();
-        self::assertInstanceOf(UuidInterface::class, $authorization->getUuid());
+        self::assertInstanceOf(Uuid::class, $authorization->getUuid());
         self::assertNull($authorization->getId());
         self::assertSame('test_name', $authorization->getClientName());
         self::assertTrue($authorization->doesClientNeedUserAuthorization());
@@ -59,7 +58,7 @@ class UserAuthorizationTest extends AbstractKernelTestCase
     public function createUser(): Adherent
     {
         return Adherent::create(
-            Uuid::uuid4(),
+            Uuid::v4(),
             'ABC-234',
             'fake@example.org',
             '',

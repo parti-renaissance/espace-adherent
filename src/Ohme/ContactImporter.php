@@ -138,7 +138,7 @@ class ContactImporter
             !empty($data['uuid_adherent'])
             && (
                 !$contact->adherent
-                || $contact->adherent->getUuid()->toString() !== $data['uuid_adherent']
+                || $contact->adherent->getUuid()->toRfc4122() !== $data['uuid_adherent']
             )
         ) {
             $contact->adherent = $this->adherentRepository->findOneByUuid($data['uuid_adherent']);

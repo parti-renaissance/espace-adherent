@@ -6,8 +6,7 @@ namespace App\Entity\Procuration;
 
 use App\Procuration\SlotActionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'procuration_request_slot_action')]
@@ -17,7 +16,7 @@ class RequestSlotAction extends AbstractSlotAction
     #[ORM\ManyToOne(targetEntity: RequestSlot::class, inversedBy: 'actions')]
     public RequestSlot $requestSlot;
 
-    public function __construct(UuidInterface $uuid, \DateTimeInterface $date, SlotActionStatusEnum $status, RequestSlot $requestSlot)
+    public function __construct(Uuid $uuid, \DateTimeInterface $date, SlotActionStatusEnum $status, RequestSlot $requestSlot)
     {
         parent::__construct($uuid, $date, $status);
 
@@ -27,7 +26,7 @@ class RequestSlotAction extends AbstractSlotAction
     private static function create(SlotActionStatusEnum $status, RequestSlot $requestSlot): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $requestSlot

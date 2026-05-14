@@ -33,7 +33,7 @@ use libphonenumber\PhoneNumberFormat;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RequestBuilder implements LoggerAwareInterface
@@ -85,7 +85,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?string $eventSlug = null;
     private ?bool $isTransportNeeds = null;
     private ?bool $isWithDiscount = null;
-    private ?UuidInterface $participantUuid = null;
+    private ?Uuid $participantUuid = null;
     private ?string $status = null;
 
     private ?string $utmSource = null;
@@ -287,9 +287,9 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setCommitteeUuid(?UuidInterface $committeeUuid): self
+    public function setCommitteeUuid(?Uuid $committeeUuid): self
     {
-        $this->committeeUuid = $committeeUuid ? $committeeUuid->toString() : '';
+        $this->committeeUuid = $committeeUuid ? $committeeUuid->toRfc4122() : '';
 
         return $this;
     }
@@ -754,7 +754,7 @@ class RequestBuilder implements LoggerAwareInterface
         $mergeFields[MemberRequest::MERGE_FIELD_IS_WITH_DISCOUNT] = $this->isWithDiscount ? 'oui' : 'non';
 
         if ($this->participantUuid) {
-            $mergeFields[MemberRequest::MERGE_FIELD_PARTICIPANT_UUID] = $this->participantUuid->toString();
+            $mergeFields[MemberRequest::MERGE_FIELD_PARTICIPANT_UUID] = $this->participantUuid->toRfc4122();
         }
 
         if ($this->eventSlug) {
@@ -949,7 +949,7 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setParticipantUuid(?UuidInterface $participantUuid = null): self
+    public function setParticipantUuid(?Uuid $participantUuid = null): self
     {
         $this->participantUuid = $participantUuid;
 

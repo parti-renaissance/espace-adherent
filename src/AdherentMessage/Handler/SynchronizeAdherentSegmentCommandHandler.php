@@ -42,7 +42,7 @@ class SynchronizeAdherentSegmentCommandHandler
         }
 
         if (!$segment->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(\sprintf('AdherentSegment "%s" does not have Mailchimp static segment id', $segment->getUuid()->toString()));
+            throw new StaticSegmentIdMissingException(\sprintf('AdherentSegment "%s" does not have Mailchimp static segment id', $segment->getUuid()->toRfc4122()));
         }
 
         $memberEmails = $this->findMemberEmailsForSegment($segment);

@@ -37,7 +37,7 @@ class ElectedRepresentativeChangeCommandHandler implements LoggerAwareInterface
     public function __invoke(ElectedRepresentativeChangeCommandInterface $message): void
     {
         /** @var ElectedRepresentative $electedRepresentative */
-        if (!$electedRepresentative = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {
+        if (!$electedRepresentative = $this->repository->findOneByUuid($uuid = $message->getUuid()->toRfc4122())) {
             $this->logger->warning(\sprintf('ElectedRepresentative with UUID "%s" not found, message skipped', $uuid));
 
             return;

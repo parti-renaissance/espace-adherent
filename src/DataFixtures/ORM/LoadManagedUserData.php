@@ -48,7 +48,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $adherent = $this->getReference('adherent-13', Adherent::class);
         $managedUser2 = $this->createManagedUser($adherent, [
             'committees' => $committee10->getName(),
-            'committee_uuids' => [$committee10->getUuid()->toString()],
+            'committee_uuids' => [$committee10->getUuid()->toRfc4122()],
             'is_committee_member' => true,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribed_tags' => 'ch',
@@ -60,7 +60,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $adherent = $this->getReference('adherent-5', Adherent::class);
         $managedUser3 = $this->createManagedUser($adherent, [
             'committees' => $committee1->getName(),
-            'committee_uuids' => [$committee1->getUuid()->toString()],
+            'committee_uuids' => [$committee1->getUuid()->toRfc4122()],
             'is_committee_member' => true,
             'is_committee_host' => true,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
@@ -106,7 +106,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
             'committee_postal_code' => '91',
             'committees' => implode('|', [$committee3->getName(), $committee4->getName(), $committee5->getName()]),
-            'committee_uuids' => [$committee3->getUuid()->toString(), $committee4->getUuid()->toString(), $committee5->getUuid()->toString()],
+            'committee_uuids' => [$committee3->getUuid()->toRfc4122(), $committee4->getUuid()->toRfc4122(), $committee5->getUuid()->toRfc4122()],
             'vote_committee_id' => $committee3->getId(),
             'is_committee_member' => true,
             'is_committee_supervisor' => true,
@@ -197,14 +197,14 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         // Note: No zones assigned - these users are filtered by committee UUID only (for animator scope)
         $committeeV2_1 = $this->getReference('committee-v2-1', Committee::class);
         $committeeV2_1Instances = [
-            ['type' => 'committee', 'name' => $committeeV2_1->getName(), 'uuid' => $committeeV2_1->getUuid()->toString()],
+            ['type' => 'committee', 'name' => $committeeV2_1->getName(), 'uuid' => $committeeV2_1->getUuid()->toRfc4122()],
         ];
         $adherent55 = $this->getReference('adherent-55', Adherent::class);
         $managedUser8 = $this->createManagedUser($adherent55, [
             'source' => MembershipSourceEnum::RENAISSANCE,
             'committee' => $committeeV2_1->getName(),
             'committee_uuid' => $committeeV2_1->getUuid(),
-            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'committee_uuids' => [$committeeV2_1->getUuid()->toRfc4122()],
             'is_committee_member' => true,
             'instances' => $committeeV2_1Instances,
             'public_id' => '555-001',
@@ -217,7 +217,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'source' => MembershipSourceEnum::RENAISSANCE,
             'committee' => $committeeV2_1->getName(),
             'committee_uuid' => $committeeV2_1->getUuid(),
-            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'committee_uuids' => [$committeeV2_1->getUuid()->toRfc4122()],
             'is_committee_member' => true,
             'instances' => $committeeV2_1Instances,
             'public_id' => '553-001',
@@ -230,7 +230,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'source' => MembershipSourceEnum::RENAISSANCE,
             'committee' => $committeeV2_1->getName(),
             'committee_uuid' => $committeeV2_1->getUuid(),
-            'committee_uuids' => [$committeeV2_1->getUuid()->toString()],
+            'committee_uuids' => [$committeeV2_1->getUuid()->toRfc4122()],
             'is_committee_member' => true,
             'instances' => $committeeV2_1Instances,
             'public_id' => '557-001',

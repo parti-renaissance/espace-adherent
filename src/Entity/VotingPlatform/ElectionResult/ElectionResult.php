@@ -12,9 +12,8 @@ use App\Entity\VotingPlatform\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'voting_platform_election_result')]
@@ -43,10 +42,10 @@ class ElectionResult
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $participated = 0;
 
-    public function __construct(Election $election, ?UuidInterface $uuid = null)
+    public function __construct(Election $election, ?Uuid $uuid = null)
     {
         $this->election = $election;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
 
         $this->electionRoundResults = new ArrayCollection();
     }

@@ -26,7 +26,7 @@ class QrCodeControllerTest extends AbstractEnMarcheWebTestCase
         self::assertEquals(10, $qrCode->getCount());
         self::assertEquals('https://pourunecause.fr/creer-une-cause', $qrCode->getRedirectUrl());
 
-        $this->client->request('GET', \sprintf('/qr-code/%s', $qrCode->getUuid()->toString()));
+        $this->client->request('GET', \sprintf('/qr-code/%s', $qrCode->getUuid()->toRfc4122()));
 
         self::assertClientIsRedirectedTo('https://pourunecause.fr/creer-une-cause', $this->client);
 

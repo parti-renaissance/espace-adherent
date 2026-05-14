@@ -7,9 +7,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -26,7 +25,7 @@ class Image implements Timestampable
     private $id;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
@@ -47,9 +46,9 @@ class Image implements Timestampable
 
     private $deleted = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
 
         $now = new \DateTime();
         $this
@@ -63,12 +62,12 @@ class Image implements Timestampable
         return $this->id;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }
 
-    public function setUuid(UuidInterface $uuid): void
+    public function setUuid(Uuid $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -113,7 +112,7 @@ class Image implements Timestampable
 
     public function __clone()
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function isDeleted(): bool

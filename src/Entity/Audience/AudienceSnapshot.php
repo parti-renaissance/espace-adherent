@@ -7,14 +7,14 @@ namespace App\Entity\Audience;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityZoneTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 class AudienceSnapshot extends AbstractAudience
 {
     use EntityZoneTrait;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
         parent::__construct($uuid);
 

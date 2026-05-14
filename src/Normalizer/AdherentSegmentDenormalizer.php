@@ -6,10 +6,10 @@ namespace App\Normalizer;
 
 use App\Entity\AdherentSegment;
 use App\Repository\AdherentRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AdherentSegmentDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {

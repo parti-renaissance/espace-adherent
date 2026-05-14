@@ -7,7 +7,7 @@ namespace App\Repository\OAuth;
 use App\Entity\OAuth\AuthorizationCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AuthorizationCodeRepository extends ServiceEntityRepository
 {
@@ -27,8 +27,8 @@ class AuthorizationCodeRepository extends ServiceEntityRepository
         return $this->findOneBy(['identifier' => $identifier]);
     }
 
-    public function findAuthorizationCodeByUuid(UuidInterface $uuid): ?AuthorizationCode
+    public function findAuthorizationCodeByUuid(Uuid $uuid): ?AuthorizationCode
     {
-        return $this->findOneBy(['uuid' => $uuid->toString()]);
+        return $this->findOneBy(['uuid' => $uuid->toRfc4122()]);
     }
 }

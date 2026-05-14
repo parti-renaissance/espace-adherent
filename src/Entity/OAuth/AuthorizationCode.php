@@ -7,7 +7,7 @@ namespace App\Entity\OAuth;
 use App\Entity\Adherent;
 use App\Repository\OAuth\AuthorizationCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AuthorizationCodeRepository::class)]
 #[ORM\Table(name: 'oauth_auth_codes')]
@@ -17,7 +17,7 @@ class AuthorizationCode extends AbstractGrantToken
     private $redirectUri;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         Adherent $user,
         string $identifier,
         \DateTimeImmutable $expiryDateTime,

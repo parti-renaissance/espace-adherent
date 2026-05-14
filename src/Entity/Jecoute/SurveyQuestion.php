@@ -13,9 +13,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\Uuid;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SurveyQuestionRepository::class)]
@@ -53,7 +53,7 @@ class SurveyQuestion implements AuthoredInterface
 
     public function __construct(?Survey $survey = null, ?Question $question = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->survey = $survey;
         $this->question = $question;
         $this->dataAnswers = new ArrayCollection();
@@ -66,7 +66,7 @@ class SurveyQuestion implements AuthoredInterface
 
     public function refreshUuid(): void
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function getAuthor(): ?Adherent

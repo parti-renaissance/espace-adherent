@@ -27,7 +27,7 @@ class VotersListManager
 
         $voter = $this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent);
 
-        if (!$this->voterRepository->existsForElection($adherent, $election->getUuid()->toString())) {
+        if (!$this->voterRepository->existsForElection($adherent, $election->getUuid()->toRfc4122())) {
             $list->addVoter($voter);
 
             $this->entityManager->persist($voter);

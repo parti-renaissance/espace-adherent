@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 class InvalidEmailAddress
@@ -17,9 +16,9 @@ class InvalidEmailAddress
     #[ORM\Column]
     private string $emailHash;
 
-    public function __construct(string $emailHash, ?UuidInterface $uuid = null)
+    public function __construct(string $emailHash, ?Uuid $uuid = null)
     {
         $this->emailHash = $emailHash;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 }

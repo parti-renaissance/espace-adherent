@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Report;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface ReportableInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getReportType(): string;
 }

@@ -37,7 +37,7 @@ class CreateStaticSegmentCommandHandler
             return;
         }
 
-        if ($id = $this->staticSegmentService->create($object->getUuid()->toString())) {
+        if ($id = $this->staticSegmentService->create($object->getUuid()->toRfc4122())) {
             $object->setMailchimpId($id);
             $this->entityManager->flush();
         }

@@ -9,7 +9,7 @@ use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AccessTokenRepository extends ServiceEntityRepository
 {
@@ -29,9 +29,9 @@ class AccessTokenRepository extends ServiceEntityRepository
         return $this->findOneBy(['identifier' => $identifier]);
     }
 
-    public function findAccessTokenByUuid(UuidInterface $uuid): ?AccessToken
+    public function findAccessTokenByUuid(Uuid $uuid): ?AccessToken
     {
-        return $this->findOneBy(['uuid' => $uuid->toString()]);
+        return $this->findOneBy(['uuid' => $uuid->toRfc4122()]);
     }
 
     /**

@@ -15,7 +15,6 @@ use App\Mandrill\EmailTemplate;
 use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -23,6 +22,7 @@ use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\App\Test\Mailer\DummyEmailClient;
 
@@ -77,7 +77,7 @@ class MessengerTransportTest extends TestCase
 
     private function createDummyEmail(): array
     {
-        $message = new Message(Uuid::uuid4(), 'recipient@test.com', 'FirstName', 'Votre donation !', [], [], 'contact@en-marche.fr', 'En Marche !');
+        $message = new Message(Uuid::v4(), 'recipient@test.com', 'FirstName', 'Votre donation !', [], [], 'contact@en-marche.fr', 'En Marche !');
         $message->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $emailTemplateFactory = new EmailTemplateFactory(

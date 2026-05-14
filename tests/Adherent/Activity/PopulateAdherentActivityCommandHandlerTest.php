@@ -23,9 +23,9 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
@@ -344,7 +344,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         $hit = new AppHit();
         $hit->eventType = $eventType;
         $hit->adherent = $this->adherent;
-        $hit->activitySessionUuid = Uuid::uuid4();
+        $hit->activitySessionUuid = Uuid::v4();
         $hit->appDate = $appDate ?? new \DateTime('-5 minutes');
         $hit->objectType = $objectType;
         $hit->objectId = $objectId;

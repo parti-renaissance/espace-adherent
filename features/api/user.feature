@@ -181,7 +181,7 @@ Feature:
             """
 
     Scenario: As a non logged-in user I can not create my password if not correct user uuid
-        When I send a "POST" request to "/api/profile/mot-de-passe/113bd28f-8ab7-57c9-efc8-2106c8be9690/1364d60349e31e06ec62598c7c82b7ca7acba7d0" with body:
+        When I send a "POST" request to "/api/profile/mot-de-passe/113bd28f-8ab7-57c9-8fc8-2106c8be9690/1364d60349e31e06ec62598c7c82b7ca7acba7d0" with body:
             """
             {
                 "password": "testtest"
@@ -190,7 +190,7 @@ Feature:
         Then the response status code should be 404
 
     Scenario: As a non logged-in user I can not create my password if not correct token
-        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/2364d60349e31e06ec62598c7c82b7ca7acba7d0" with body:
+        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-8fc8-2106c8be9690/2364d60349e31e06ec62598c7c82b7ca7acba7d0" with body:
             """
             {
                 "password": "testtest"
@@ -199,7 +199,7 @@ Feature:
         Then the response status code should be 404
 
     Scenario: As a non logged-in user I can not create my password if no password
-        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
+        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-8fc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
             """
             {}
             """
@@ -220,7 +220,7 @@ Feature:
             """
 
     Scenario: As a non logged-in user I can not create my password if it's short
-        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
+        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-8fc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
             """
             {
                 "password": "test"
@@ -242,7 +242,7 @@ Feature:
             """
 
     Scenario: As a non logged-in user I can create my password
-        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
+        When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-8fc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
             """
             {
                 "password": "testtest"

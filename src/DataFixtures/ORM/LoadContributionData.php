@@ -11,7 +11,7 @@ use App\Entity\Contribution\Contribution;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadContributionData extends Fixture implements DependentFixtureInterface
 {

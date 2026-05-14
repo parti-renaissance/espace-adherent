@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventUpdateMessage extends AbstractRenaissanceMessage
 {
@@ -19,7 +19,7 @@ class EventUpdateMessage extends AbstractRenaissanceMessage
         $recipient = array_shift($recipients);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
             'Un événement a été modifié',

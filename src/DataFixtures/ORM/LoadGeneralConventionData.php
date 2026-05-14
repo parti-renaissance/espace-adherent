@@ -16,8 +16,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadGeneralConventionData extends Fixture implements DependentFixtureInterface
 {
@@ -102,7 +101,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
 
         for ($i = 0; $i < 10; ++$i) {
             $manager->persist($this->createGeneralConvention(
-                Uuid::uuid4(),
+                Uuid::v4(),
                 $dpt,
                 0 === $i % 2 ? OrganizerEnum::ASSEMBLY : OrganizerEnum::DISTRICT,
                 0 === $i % 2 ? MeetingTypeEnum::REMOTE : MeetingTypeEnum::ON_SITE,
@@ -134,7 +133,7 @@ class LoadGeneralConventionData extends Fixture implements DependentFixtureInter
     }
 
     private function createGeneralConvention(
-        UuidInterface $uuid,
+        Uuid $uuid,
         Zone $departmentZone,
         OrganizerEnum $organizer,
         MeetingTypeEnum $meetingType,

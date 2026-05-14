@@ -53,7 +53,7 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
     private function getUrl(GeneralMeetingReport $generalMeetingReport): string
     {
         $parameters = [
-            'uuid' => $generalMeetingReport->getUuid()->toString(),
+            'uuid' => $generalMeetingReport->getUuid()->toRfc4122(),
         ];
 
         if ($scope = $this->getCurrentScope()) {

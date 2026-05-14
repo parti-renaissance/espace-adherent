@@ -6,14 +6,14 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\Donation;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class DonationUnsubscriptionConfirmationMessage extends Message
 {
     public static function create(Adherent $adherent, Donation $donation): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre don mensuel a bien été annulé.',

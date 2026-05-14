@@ -32,7 +32,7 @@ class Logger implements LoggerAwareInterface
         $this->log(
             \sprintf(
                 '[Thread:%s] %s',
-                $thread->getUuid()->toString(),
+                $thread->getUuid()->toRfc4122(),
                 $message
             ),
             $context

@@ -13,9 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [],
@@ -54,9 +53,9 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
     #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: BuildingBlockStatistics::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $statistics;
 
-    public function __construct(string $name, Building $building, ?UuidInterface $uuid = null)
+    public function __construct(string $name, Building $building, ?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->name = $name;
         $this->building = $building;
         $this->floors = new ArrayCollection();

@@ -35,7 +35,7 @@ class AgoraPresidentScopeGenerator extends AbstractScopeGenerator
             array_map(
                 fn (Agora $agora) => [
                     'name' => $agora->getName(),
-                    'uuid' => $agora->getUuid()->toString(),
+                    'uuid' => $agora->getUuid()->toRfc4122(),
                 ],
                 $adherent->presidentOfAgoras->toArray()
             )

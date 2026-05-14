@@ -54,7 +54,8 @@ use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -651,7 +652,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                         ->innerJoin(
                             ElectedRepresentativeAdherentMandate::class,
                             'eam',
-                            Expr\Join::WITH,
+                            Join::WITH,
                             \sprintf('%s.id = eam.adherent', $alias)
                         )
                         ->andWhere('eam.finishAt IS NULL')
@@ -673,7 +674,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                         return false;
                     }
 
-                    $where = new Expr\Orx();
+                    $where = new Orx();
 
                     foreach ($value->getValue() as $mandate) {
                         $where->add("FIND_IN_SET(:mandate_$mandate, $alias.mandates) > 0");
@@ -699,7 +700,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                                 ->innerJoin(
                                     ElectedRepresentativeAdherentMandate::class,
                                     'er_adherent_mandate_ongoing',
-                                    Expr\Join::WITH,
+                                    Join::WITH,
                                     \sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
                                 )
                                 ->andWhere('er_adherent_mandate_ongoing.finishAt IS NULL')
@@ -711,7 +712,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                                 ->innerJoin(
                                     ElectedRepresentativeAdherentMandate::class,
                                     'er_adherent_mandate_ongoing',
-                                    Expr\Join::WITH,
+                                    Join::WITH,
                                     \sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
                                 )
                                 ->andWhere('er_adherent_mandate_ongoing.finishAt IS NOT NULL')
@@ -1129,7 +1130,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
 
                 return [
                     'ID' => $adherent->getId(),
-                    'UUID' => $adherent->getUuid()->toString(),
+                    'UUID' => $adherent->getUuid()->toRfc4122(),
                     'Email' => $adherent->getEmailAddress(),
                 ];
             }

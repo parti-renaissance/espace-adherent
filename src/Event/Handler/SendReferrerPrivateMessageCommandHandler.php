@@ -24,7 +24,7 @@ class SendReferrerPrivateMessageCommandHandler
 
     public function __invoke(SendReferrerPrivateMessageCommand $command): void
     {
-        if (!$eventRegistration = $this->registrationRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$eventRegistration = $this->registrationRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

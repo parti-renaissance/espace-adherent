@@ -9,7 +9,7 @@ use App\Entity\SubscriptionType;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EmailSubscriptionHistoryRepository::class)]
 #[ORM\Index(columns: ['adherent_uuid'], name: 'adherent_email_subscription_histories_adherent_uuid_idx')]
@@ -30,7 +30,7 @@ class EmailSubscriptionHistory
      * Only UUID is used instead of the Entity because we cannot lose this data if one unsubscribes.
      * Otherwise stats would be broken.
      *
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid')]
     private $adherentUuid;
@@ -71,7 +71,7 @@ class EmailSubscriptionHistory
         return $this->id;
     }
 
-    public function getAdherentUuid(): UuidInterface
+    public function getAdherentUuid(): Uuid
     {
         return $this->adherentUuid;
     }

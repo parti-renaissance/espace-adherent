@@ -8,8 +8,8 @@ use App\Entity\Jecoute\ResourceLink;
 use App\Image\ImageManagerInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 class LoadJecouteResourceLinkData extends Fixture
 {

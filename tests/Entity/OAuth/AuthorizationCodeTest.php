@@ -8,7 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\OAuth\AuthorizationCode;
 use App\Entity\OAuth\Client;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class AuthorizationCodeTest extends TestCase
 {

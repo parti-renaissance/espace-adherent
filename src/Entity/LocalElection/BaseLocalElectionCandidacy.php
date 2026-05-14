@@ -9,8 +9,8 @@ use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
@@ -37,7 +37,7 @@ abstract class BaseLocalElectionCandidacy extends BaseCandidacy
     #[ORM\Column]
     private ?string $email = null;
 
-    public function __construct(?LocalElection $election = null, ?string $gender = null, ?UuidInterface $uuid = null)
+    public function __construct(?LocalElection $election = null, ?string $gender = null, ?Uuid $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

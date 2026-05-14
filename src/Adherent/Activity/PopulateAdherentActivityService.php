@@ -7,7 +7,7 @@ namespace App\Adherent\Activity;
 use App\JeMengage\Hit\TargetTypeEnum;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class PopulateAdherentActivityService
 {
@@ -179,7 +179,7 @@ class PopulateAdherentActivityService
             ?? throw new \LogicException(\sprintf('event_type without label: "%s" (label registry out of sync with allowed types)', $eventType));
 
         return [
-            'uuid' => Uuid::uuid4()->toString(),
+            'uuid' => Uuid::v4()->toRfc4122(),
             'adherent_id' => (int) $row['adherent_id'],
             'source_type' => $sourceType->value,
             'source_id' => (int) $row['source_id'],

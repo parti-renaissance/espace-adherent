@@ -7,7 +7,7 @@ namespace App\Repository;
 use App\Entity\QrCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class QrCodeRepository extends ServiceEntityRepository
 {
@@ -18,7 +18,7 @@ class QrCodeRepository extends ServiceEntityRepository
         parent::__construct($registry, QrCode::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?QrCode
+    public function findOneByUuid(Uuid|string $uuid): ?QrCode
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

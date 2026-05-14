@@ -16,8 +16,8 @@ use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 #[ORM\Index(columns: ['email_address'])]
@@ -70,7 +70,7 @@ class EventRegistration implements TranslatedTagInterface, ImageAwareInterface, 
     public ?string $referrerCode = null;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         Event $event,
         string $firstName,
         string $lastName,

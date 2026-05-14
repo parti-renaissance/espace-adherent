@@ -13,9 +13,8 @@ use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Repository\CommitteeCandidaciesGroupRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(operations: [
@@ -43,7 +42,7 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
     #[ApiProperty(identifier: true, openapiContext: ['type' => 'string', 'format' => 'uuid', 'example' => 'b4219d47-3138-5efd-9762-2ef9f9495084'])]
     #[Groups(['committee_election:read', 'committee_candidacies_group:read', 'committee_candidacy:read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
-    protected UuidInterface $uuid;
+    protected Uuid $uuid;
 
     #[Assert\NotBlank]
     #[Groups(['committee_candidacies_group:write', 'committee_candidacies_group:read'])]
@@ -59,14 +58,14 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
     #[ORM\OrderBy(['createdAt' => 'ASC'])]
     protected $candidacies;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
         parent::__construct();
 
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

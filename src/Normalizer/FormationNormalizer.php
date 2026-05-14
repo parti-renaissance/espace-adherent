@@ -53,7 +53,7 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
     private function getUrl(Formation $formation): string
     {
         $parameters = [
-            'uuid' => $formation->getUuid()->toString(),
+            'uuid' => $formation->getUuid()->toRfc4122(),
         ];
 
         if ($scope = $this->getCurrentScope()) {

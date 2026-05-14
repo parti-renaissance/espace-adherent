@@ -11,9 +11,8 @@ use App\AdherentSegment\AdherentSegmentTypeEnum;
 use App\EntityListener\AdherentSegmentListener;
 use App\Repository\AdherentSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -74,9 +73,9 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $synchronized = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function getLabel(): ?string

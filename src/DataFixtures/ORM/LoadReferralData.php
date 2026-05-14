@@ -12,8 +12,7 @@ use App\Entity\Referral;
 use App\Enum\CivilityEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadReferralData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -89,7 +88,7 @@ class LoadReferralData extends AbstractLoadPostAddressData implements DependentF
     }
 
     private function createReferral(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $emailAddress,
         string $firstName,
         Adherent $referrer,

@@ -139,8 +139,8 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
             Request::METHOD_GET,
             \sprintf(
                 '/newsletter/confirmation/%s/%s',
-                $subscription->getUuid()->toString(),
-                $subscription->token->toString()
+                $subscription->getUuid()->toRfc4122(),
+                $subscription->token->toRfc4122()
             )
         );
     }

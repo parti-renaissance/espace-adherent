@@ -6,10 +6,9 @@ namespace App\Entity;
 
 use App\Repository\AgoraMembershipRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AgoraMembershipRepository::class)]
@@ -32,9 +31,9 @@ class AgoraMembership implements \Stringable, EntityAdministratorBlameableInterf
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'agoraMemberships')]
     public ?Adherent $adherent = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString(): string

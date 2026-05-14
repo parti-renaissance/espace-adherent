@@ -7,7 +7,7 @@ namespace App\Repository\Chatbot;
 use App\Entity\Chatbot\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class MessageRepository extends ServiceEntityRepository
 {
@@ -16,7 +16,7 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?Message
+    public function findOneByUuid(Uuid|string $uuid): ?Message
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

@@ -14,7 +14,7 @@ use App\Security\Voter\VotingPlatformAbleToVoteVoter;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class VotingPlatformAbleToVoteVoterTest extends AbstractAdherentVoterTestCase
 {

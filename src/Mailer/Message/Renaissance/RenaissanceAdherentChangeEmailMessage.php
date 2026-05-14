@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class RenaissanceAdherentChangeEmailMessage extends AbstractRenaissanceMessage
 {
     public static function createFromAdherent(Adherent $adherent, string $newEmail, string $confirmationLink): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $newEmail,
             $adherent->getFullName(),
             'Validez votre nouvelle adresse email',

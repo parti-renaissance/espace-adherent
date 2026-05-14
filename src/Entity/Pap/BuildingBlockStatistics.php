@@ -8,7 +8,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'pap_building_block_statistics')]
@@ -31,7 +31,7 @@ class BuildingBlockStatistics implements CampaignStatisticsInterface
         $this->buildingBlock = $buildingBlock;
         $this->campaign = $campaign;
 
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->status = $status ?? BuildingStatusEnum::ONGOING;
     }
 

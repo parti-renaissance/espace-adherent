@@ -7,8 +7,8 @@ namespace App\Chatbot\Telegram;
 use App\Controller\Webhook\Telegram\ChatbotController;
 use App\Entity\Chatbot\Chatbot;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 
 class WebhookHandler
 {
@@ -65,6 +65,6 @@ class WebhookHandler
 
     private function generateSecret(): string
     {
-        return Uuid::uuid4()->toString();
+        return Uuid::v4()->toRfc4122();
     }
 }

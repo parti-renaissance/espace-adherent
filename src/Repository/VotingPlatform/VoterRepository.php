@@ -15,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VoterRepository extends ServiceEntityRepository
@@ -49,8 +50,8 @@ class VoterRepository extends ServiceEntityRepository
             ->innerJoin('list.election', 'election')
             ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('adherent', $adherent),
-                new Query\Parameter('election_uuid', $electionUuid),
+                new Parameter('adherent', $adherent),
+                new Parameter('election_uuid', $electionUuid),
             ]))
             ->getQuery()
             ->getSingleScalarResult()
@@ -158,8 +159,8 @@ class VoterRepository extends ServiceEntityRepository
                 ->innerJoin('election_entity.committee', 'committee')
                 ->where('voter.adherent = :adherent')
                 ->setParameters(new ArrayCollection([
-                    new Query\Parameter('adherent', $adherent),
-                    new Query\Parameter('designation_type', DesignationTypeEnum::COMMITTEE_SUPERVISOR),
+                    new Parameter('adherent', $adherent),
+                    new Parameter('designation_type', DesignationTypeEnum::COMMITTEE_SUPERVISOR),
                 ]))
         ;
 

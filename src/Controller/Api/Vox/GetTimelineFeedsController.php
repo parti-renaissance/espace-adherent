@@ -11,13 +11,13 @@ use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\Geo\ZoneRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 #[IsGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')]
 #[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
@@ -83,7 +83,7 @@ class GetTimelineFeedsController extends AbstractController
         }
 
         if ($membership = $user->getCommitteeMembership()) {
-            $committeeUuid = $membership->getCommittee()->getUuid()->toString();
+            $committeeUuid = $membership->getCommittee()->getUuid()->toRfc4122();
             $committeeClause = '(NOT type:publication OR audience.committee:false OR audience.include:"committee:'.$committeeUuid.'")';
         } else {
             $committeeClause = '(NOT type:publication OR audience.committee:false)';
@@ -152,7 +152,7 @@ class GetTimelineFeedsController extends AbstractController
                     ? $user->getZonesOfType(Zone::FOREIGN_DISTRICT)
                     : $user->getZonesOfType(Zone::DISTRICT))[0]?->getTypeCode(),
                 'assembly' => $user->getAssemblyZone()?->getTypeCode(),
-                'agora' => ($user->agoraMemberships->first() ?: null)?->agora->getUuid()->toString(),
+                'agora' => ($user->agoraMemberships->first() ?: null)?->agora->getUuid()->toRfc4122(),
                 default => null,
             };
 

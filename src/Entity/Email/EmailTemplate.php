@@ -21,9 +21,8 @@ use App\Entity\Geo\Zone;
 use App\Entity\UnlayerJsonContentTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -101,9 +100,9 @@ class EmailTemplate implements \Stringable, EntityAdherentBlameableInterface, En
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isStatutory = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->zones = new ZoneCollection();
     }
 

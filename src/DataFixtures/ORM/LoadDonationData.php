@@ -16,8 +16,8 @@ use Cocur\Slugify\SlugifyInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadDonationData extends Fixture implements DependentFixtureInterface
 {
@@ -52,7 +52,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
                 );
                 $this->createTransaction($donation);
 
-                $donator->addTaxReceipt(new TaxReceipt($donator, $year.'.pdf', Uuid::uuid4().'.pdf'));
+                $donator->addTaxReceipt(new TaxReceipt($donator, $year.'.pdf', Uuid::v4().'.pdf'));
                 $donation->setMembership(true);
                 $donator->setMembershipDonation($donation);
 
@@ -216,14 +216,14 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         ?string $code = null,
     ): Donation {
         $donation = new Donation(
-            $uuid = Uuid::uuid4(),
+            $uuid = Uuid::v4(),
             $type,
             (int) ($amount * 100),
             $donatedAt ? \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTime(),
             $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',
             $duration,
-            $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
+            $uuid->toRfc4122().'_'.$this->slugify->slugify($donator->getFullName()),
             AddressInterface::FRANCE,
             $code,
             $donator
@@ -249,8 +249,8 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         return $donation->processPayload([
             'result' => $resultCode,
             'authorization' => 'test',
-            'subscription' => $donation->getDuration() ? Uuid::uuid1()->toString() : null,
-            'transaction' => Uuid::uuid4()->toString(),
+            'subscription' => $donation->getDuration() ? Uuid::v1()->toRfc4122() : null,
+            'transaction' => Uuid::v4()->toRfc4122(),
             'date' => $donatedAt->format('dmY'),
             'time' => $donatedAt->format('H:i:s'),
         ]);

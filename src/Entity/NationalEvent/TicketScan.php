@@ -8,7 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table('national_event_inscription_scan')]
@@ -30,7 +30,7 @@ class TicketScan
 
     public function __construct(Adherent $scannedBy, string $inscriptionStatus)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->scannedBy = $scannedBy;
         $this->inscriptionStatus = $inscriptionStatus;
         $this->createdAt = new \DateTime();

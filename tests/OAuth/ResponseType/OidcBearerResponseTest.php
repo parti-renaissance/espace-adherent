@@ -23,7 +23,7 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use OpenIDConnectServer\ClaimExtractor;
 use OpenIDConnectServer\Repositories\IdentityProviderInterface;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class OidcBearerResponseTest extends TestCase
 {
@@ -63,7 +63,7 @@ class OidcBearerResponseTest extends TestCase
     public function testReturnsSessionUuidInBothLegacyAndCleanFieldsWhenNoOpenidScope(): void
     {
         $accessToken = $this->createAccessToken([Scope::WRITE_PROFILE]);
-        $accessToken->currentSessionUuid = Uuid::uuid4();
+        $accessToken->currentSessionUuid = Uuid::v4();
 
         $response = $this->createResponse($this->identityProviderNeverCalled());
 
@@ -85,7 +85,7 @@ class OidcBearerResponseTest extends TestCase
     public function testOpenidScopeWithSessionUuidEmitsJwtAndSessionIdWithoutOverwritingJwt(): void
     {
         $accessToken = $this->createAccessToken([Scope::OPENID]);
-        $accessToken->currentSessionUuid = Uuid::uuid4();
+        $accessToken->currentSessionUuid = Uuid::v4();
 
         $response = $this->createResponse($this->identityProviderReturning($this->createAdherent()));
 
@@ -168,13 +168,13 @@ class OidcBearerResponseTest extends TestCase
     private function createAccessToken(array $scopeIdentifiers): AccessToken
     {
         $accessToken = new AccessToken();
-        $accessToken->setIdentifier(Uuid::uuid4()->toString());
+        $accessToken->setIdentifier(Uuid::v4()->toRfc4122());
 
         $client = $this->createStub(ClientEntityInterface::class);
-        $client->method('getIdentifier')->willReturn(Uuid::uuid4()->toString());
+        $client->method('getIdentifier')->willReturn(Uuid::v4()->toRfc4122());
         $accessToken->setClient($client);
 
-        $accessToken->setUserIdentifier(Uuid::uuid4()->toString());
+        $accessToken->setUserIdentifier(Uuid::v4()->toRfc4122());
         $accessToken->setExpiryDateTime(new \DateTimeImmutable('+1 hour'));
 
         foreach ($scopeIdentifiers as $identifier) {
@@ -190,7 +190,7 @@ class OidcBearerResponseTest extends TestCase
     {
         $adherent = new Adherent();
         $reflection = new \ReflectionClass($adherent);
-        $reflection->getProperty('uuid')->setValue($adherent, Uuid::uuid4());
+        $reflection->getProperty('uuid')->setValue($adherent, Uuid::v4());
         $reflection->getProperty('emailAddress')->setValue($adherent, 'john.doe@example.com');
         $reflection->getProperty('firstName')->setValue($adherent, 'John');
         $reflection->getProperty('lastName')->setValue($adherent, 'Doe');

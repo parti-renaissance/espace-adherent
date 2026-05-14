@@ -9,8 +9,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Renaissance\Adhesion\AdherentRequestReminderRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AdherentRequestReminderRepository::class)]
 class AdherentRequestReminder
@@ -26,7 +25,7 @@ class AdherentRequestReminder
     public AdherentRequest $adherentRequest;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         AdherentRequest $adherentRequest,
         AdherentRequestReminderTypeEnum $type,
     ) {
@@ -37,6 +36,6 @@ class AdherentRequestReminder
 
     public static function createForAdherentRequest(AdherentRequest $adherentRequest, AdherentRequestReminderTypeEnum $type): self
     {
-        return new self(Uuid::uuid4(), $adherentRequest, $type);
+        return new self(Uuid::v4(), $adherentRequest, $type);
     }
 }

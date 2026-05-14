@@ -16,9 +16,9 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\PublicId\AdherentPublicIdGenerator;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AdherentFactory
 {
@@ -48,7 +48,7 @@ class AdherentFactory
             Adherent::createUuid($request->getEmailAddress()),
             $this->generatePublicId(),
             $request->getEmailAddress(),
-            $this->hashPassword(Uuid::uuid4()->toString()),
+            $this->hashPassword(Uuid::v4()->toRfc4122()),
             null,
             $request->firstName,
             $request->lastName,
@@ -69,7 +69,7 @@ class AdherentFactory
             Adherent::createUuid($request->getEmailAddress()),
             $this->generatePublicId(),
             $request->getEmailAddress(),
-            $this->hashPassword(Uuid::uuid4()->toString()),
+            $this->hashPassword(Uuid::v4()->toRfc4122()),
             $request->gender,
             $request->firstName,
             $request->lastName,
@@ -88,7 +88,7 @@ class AdherentFactory
     public function createFromRenaissanceMembershipRequest(MembershipRequest $membershipRequest): Adherent
     {
         $adherent = Adherent::create(
-            uuid: Uuid::uuid4(),
+            uuid: Uuid::v4(),
             publicId: $this->generatePublicId(),
             emailAddress: mb_strtolower($membershipRequest->email),
             password: null,

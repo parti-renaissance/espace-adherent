@@ -56,7 +56,7 @@ class AudienceMessagePreparer
     {
         $campaign = $this->findCampaign($message);
         if (null === $campaign) {
-            throw new \LogicException(\sprintf('AdherentMessage "%s" has no MailchimpCampaign — cannot prepare audience.', $message->getUuid()->toString()));
+            throw new \LogicException(\sprintf('AdherentMessage "%s" has no MailchimpCampaign — cannot prepare audience.', $message->getUuid()->toRfc4122()));
         }
 
         return $campaign;

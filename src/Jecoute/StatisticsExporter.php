@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jecoute;
 
 use App\Repository\Jecoute\DataAnswerRepository;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class StatisticsExporter
 {

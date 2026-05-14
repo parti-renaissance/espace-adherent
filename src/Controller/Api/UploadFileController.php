@@ -6,7 +6,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Adherent;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['messages', 'publications'])"))]
 #[Route('/v3/upload-file', methods: ['POST'])]
@@ -32,7 +32,7 @@ class UploadFileController extends AbstractController
             return $this->json(['error' => 'Le fichier est trop volumineux. Taille max : 25 Mo.'], Response::HTTP_BAD_REQUEST);
         }
 
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = Uuid::v4()->toRfc4122();
 
         $filePath = hash('sha256', $user->getUuid().$secret).'/'.$uuid.'.'.($file->guessClientExtension() ?? $file->getClientOriginalExtension());
 

@@ -7,8 +7,7 @@ namespace App\Entity\Audience;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[MappedSuperclass]
 abstract class AbstractAudience implements AudienceInterface
@@ -17,8 +16,8 @@ abstract class AbstractAudience implements AudienceInterface
     use EntityTimestampableTrait;
     use AudienceFieldsTrait;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 }

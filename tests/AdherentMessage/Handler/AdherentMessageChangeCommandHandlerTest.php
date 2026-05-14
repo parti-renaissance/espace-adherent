@@ -11,6 +11,7 @@ use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandle
 use App\AdherentMessage\Variable\ContextBuilder;
 use App\AdherentMessage\Variable\Parser;
 use App\AdherentMessage\Variable\Renderer;
+use App\AdherentMessage\Variable\Renderer\MailchimpVariableRenderer;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
@@ -49,12 +50,12 @@ use App\Repository\SubscriptionTypeRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Container\ContainerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\Service\ServiceProviderInterface;
@@ -311,7 +312,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         $this->clientMock = $this->createMock(HttpClientInterface::class);
         $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
-        $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
+        $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::v4());
     }
 
     protected function tearDown(): void
@@ -325,7 +326,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     private function preparedMessage(string $instanceScope): AdherentMessageInterface
     {
-        $message = new AdherentMessage(Uuid::uuid4(), $this->adherentDummy);
+        $message = new AdherentMessage(Uuid::v4(), $this->adherentDummy);
         $message->setSender($this->adherentDummy);
         $message->setSubject('Subject');
         $message->setContent('Content');
@@ -460,7 +461,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             new Parser(),
             $this->createMock(ContextBuilder::class),
             new SimpleContainer([
-                'mailchimp' => new Renderer\MailchimpVariableRenderer(),
+                'mailchimp' => new MailchimpVariableRenderer(),
             ])
         );
     }

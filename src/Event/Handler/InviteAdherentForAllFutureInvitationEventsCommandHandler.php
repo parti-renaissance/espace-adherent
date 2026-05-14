@@ -34,7 +34,7 @@ class InviteAdherentForAllFutureInvitationEventsCommandHandler
 
     public function __invoke(InviteAdherentForAllFutureInvitationEventsCommand $command): void
     {
-        if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance\Certification;
 
 use App\Entity\CertificationRequest;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class RenaissanceCertificationRequestApprovedMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ final class RenaissanceCertificationRequestApprovedMessage extends AbstractRenai
         $adherent = $certificationRequest->getAdherent();
 
         return new static(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Vous êtes certifié(e)',

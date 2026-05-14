@@ -19,7 +19,7 @@ class ContactHandler
         $adherent = $contact->adherent;
 
         $this->client->updateContact($contact->ohmeIdentifier, [
-            'uuid_adherent' => $adherent?->getUuid()->toString(),
+            'uuid_adherent' => $adherent?->getUuid()->toRfc4122(),
         ]);
 
         if (!$adherent) {

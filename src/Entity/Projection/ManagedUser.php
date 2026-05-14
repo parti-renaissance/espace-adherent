@@ -25,8 +25,8 @@ use App\ValueObject\Genders;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * This entity is a projection: do not insert, update or delete objects using this class.
@@ -105,7 +105,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     private $originalId;
 
     /**
-     * @var UuidInterface|null
+     * @var Uuid|null
      */
     #[ApiProperty(identifier: true)]
     #[Groups(['managed_users_list', 'managed_user_read'])]
@@ -312,7 +312,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?UuidInterface $committeeUuid;
+    private ?Uuid $committeeUuid;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(nullable: true)]
@@ -320,7 +320,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?UuidInterface $agoraUuid;
+    private ?Uuid $agoraUuid;
 
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
@@ -426,15 +426,15 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?\DateTime $createdAt = null,
         ?string $gender = null,
         array $supervisorTags = [],
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?int $voteCommitteeId = null,
         ?\DateTime $certifiedAt = null,
         ?\DateTime $lastMembershipDonation = null,
         ?\DateTime $firstMembershipDonation = null,
         ?string $committee = null,
-        ?UuidInterface $committeeUuid = null,
+        ?Uuid $committeeUuid = null,
         ?string $agora = null,
-        ?UuidInterface $agoraUuid = null,
+        ?Uuid $agoraUuid = null,
         array $interests = [],
         ?array $declaredMandates = null,
         ?array $electMandates = null,
@@ -505,7 +505,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->originalId;
     }
 
-    public function getAdherentUuid(): ?UuidInterface
+    public function getAdherentUuid(): ?Uuid
     {
         return $this->adherentUuid;
     }
@@ -693,7 +693,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->committee;
     }
 
-    public function getCommitteeUuid(): ?UuidInterface
+    public function getCommitteeUuid(): ?Uuid
     {
         return $this->committeeUuid;
     }
@@ -703,7 +703,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return $this->agora;
     }
 
-    public function getAgoraUuid(): ?UuidInterface
+    public function getAgoraUuid(): ?Uuid
     {
         return $this->agoraUuid;
     }
@@ -736,7 +736,7 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[Groups(['managed_user_vox'])]
     public function getUuid(): ?string
     {
-        return $this->adherentUuid?->toString();
+        return $this->adherentUuid?->toRfc4122();
     }
 
     #[Groups(['managed_user_vox'])]

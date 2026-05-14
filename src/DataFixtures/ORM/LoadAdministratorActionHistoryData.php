@@ -24,10 +24,10 @@ class LoadAdministratorActionHistoryData extends Fixture implements DependentFix
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTime('-10 minutes')));
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-9 minutes')));
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_START, new \DateTime('-8 minutes'), [
-            'adherent_uuid' => $adherent1->getUuid()->toString(),
+            'adherent_uuid' => $adherent1->getUuid()->toRfc4122(),
         ]));
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-7 minutes'), [
-            'adherent_uuid' => $adherent1->getUuid()->toString(),
+            'adherent_uuid' => $adherent1->getUuid()->toRfc4122(),
         ]));
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::EXPORT, new \DateTime('-6 minutes'), [
             'route' => 'admin_app_adherent_export',

@@ -7,9 +7,8 @@ namespace App\Entity;
 use App\QrCode\QrCodeHostEnum;
 use App\Repository\QrCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: QrCodeRepository::class)]
@@ -42,13 +41,13 @@ class QrCode implements \Stringable
     private ?Administrator $createdBy = null;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $name = null,
         ?string $redirectUrl = null,
         ?string $host = null,
         int $count = 0,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->name = $name;
         $this->redirectUrl = $redirectUrl;
         $this->host = $host;

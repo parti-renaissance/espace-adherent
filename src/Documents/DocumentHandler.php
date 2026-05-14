@@ -6,7 +6,7 @@ namespace App\Documents;
 
 use App\Entity\Document;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class DocumentHandler
 {
@@ -25,7 +25,7 @@ class DocumentHandler
         $document->filePath = \sprintf(
             '%s/%s.%s',
             'files/documents',
-            Uuid::uuid4()->toString(),
+            Uuid::v4()->toRfc4122(),
             $file->getClientOriginalExtension()
         );
 

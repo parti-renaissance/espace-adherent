@@ -21,7 +21,7 @@ use Kreait\Firebase\Messaging\MessageTarget;
 use Kreait\Firebase\Messaging\MulticastSendReport;
 use Kreait\Firebase\Messaging\SendReport;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
@@ -136,7 +136,7 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
         $event = $this->createMock(Event::class);
         $event->method('getName')->willReturn('Test Live Event');
 
-        $command = new EventLiveBeginNotificationCommand(Uuid::uuid4());
+        $command = new EventLiveBeginNotificationCommand(Uuid::v4());
         $notification = $factory->create($event, $command);
 
         self::assertInstanceOf(EventLiveBeginNotification::class, $notification);
@@ -218,7 +218,7 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
 
     private function createAndPersistToken(string $identifier): PushToken
     {
-        $token = new PushToken(Uuid::uuid4(), $identifier);
+        $token = new PushToken(Uuid::v4(), $identifier);
         $this->manager->persist($token);
         $this->manager->flush();
 

@@ -6,7 +6,7 @@ namespace Tests\App\Mailer\Transport;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\Test\Mailer\DummyEmailTemplate;
 use Tests\App\Test\Mailer\Transport\NullTransport;
 
@@ -21,7 +21,7 @@ class NullTransportTest extends TestCase
             ->with('[mailer] sending email.')
         ;
 
-        $email = new DummyEmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new DummyEmailTemplate(Uuid::v4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $transport = new NullTransport($logger);

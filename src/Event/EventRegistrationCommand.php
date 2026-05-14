@@ -7,11 +7,10 @@ namespace App\Event;
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Event\RegistrationStatusEnum;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventRegistrationCommand
@@ -69,7 +68,7 @@ class EventRegistrationCommand
     public function __construct(Event $event, ?Adherent $adherent = null, public readonly RegistrationStatusEnum $status = RegistrationStatusEnum::CONFIRMED)
     {
         $this->event = $event;
-        $this->registrationUuid = Uuid::uuid4();
+        $this->registrationUuid = Uuid::v4();
 
         if ($adherent) {
             $this->updateFromAdherent($adherent);
@@ -135,7 +134,7 @@ class EventRegistrationCommand
         $this->joinNewsletter = $joinNewsletter;
     }
 
-    public function getRegistrationUuid(): UuidInterface
+    public function getRegistrationUuid(): Uuid
     {
         return $this->registrationUuid;
     }

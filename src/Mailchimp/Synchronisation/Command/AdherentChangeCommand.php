@@ -6,9 +6,9 @@ namespace App\Mailchimp\Synchronisation\Command;
 
 use App\Mailchimp\Synchronisation\QueuePriorityLevelEnum;
 use Jwage\PhpAmqpLibMessengerBundle\Transport\AmqpStamp;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Message\DefaultStampsProviderInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
+use Symfony\Component\Uid\Uuid;
 
 class AdherentChangeCommand implements AdherentChangeCommandInterface, DefaultStampsProviderInterface
 {
@@ -17,7 +17,7 @@ class AdherentChangeCommand implements AdherentChangeCommandInterface, DefaultSt
     private $removedTags;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $emailAddress,
         array $removedTags = [],
         private readonly bool $batch = false,
@@ -27,7 +27,7 @@ class AdherentChangeCommand implements AdherentChangeCommandInterface, DefaultSt
         $this->removedTags = $removedTags;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

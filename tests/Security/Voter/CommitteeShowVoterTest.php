@@ -11,8 +11,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CommitteeShowVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
 {
@@ -61,7 +60,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
         if ($getUuidIsCalled) {
             $adherent->expects($this->once())
                 ->method('getUuid')
-                ->willReturn(Uuid::uuid4())
+                ->willReturn(Uuid::v4())
             ;
         } else {
             $adherent->expects($this->never())
@@ -91,7 +90,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
         } elseif (null !== $withCreator) {
             $group->expects($this->once())
                 ->method('isCreatedBy')
-                ->with($this->isInstanceOf(UuidInterface::class))
+                ->with($this->isInstanceOf(Uuid::class))
                 ->willReturn($withCreator)
             ;
         }

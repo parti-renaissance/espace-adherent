@@ -7,7 +7,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\Adherent;
 use App\Entity\Agora;
 use App\Entity\Event\Event;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class AgoraEventInvitationMessage extends AbstractRenaissanceMessage
 {
@@ -19,7 +19,7 @@ class AgoraEventInvitationMessage extends AbstractRenaissanceMessage
         $first = current($adherents);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $first->getEmailAddress(),
             $first->getFullName(),
             'Invitation à un événement',

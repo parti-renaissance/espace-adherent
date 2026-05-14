@@ -13,7 +13,7 @@ use App\Entity\PushToken;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadPushNotificationData extends Fixture implements DependentFixtureInterface
 {
@@ -21,10 +21,10 @@ class LoadPushNotificationData extends Fixture implements DependentFixtureInterf
     {
         $client = $this->getReference('client-vox', Client::class);
 
-        $tokenA1 = new PushToken(Uuid::uuid4(), 'token-pn-adherent-1');
-        $tokenA2 = new PushToken(Uuid::uuid4(), 'token-pn-adherent-2');
-        $tokenA3 = new PushToken(Uuid::uuid4(), 'token-pn-adherent-3');
-        $tokenA4 = new PushToken(Uuid::uuid4(), 'token-pn-adherent-4');
+        $tokenA1 = new PushToken(Uuid::v4(), 'token-pn-adherent-1');
+        $tokenA2 = new PushToken(Uuid::v4(), 'token-pn-adherent-2');
+        $tokenA3 = new PushToken(Uuid::v4(), 'token-pn-adherent-3');
+        $tokenA4 = new PushToken(Uuid::v4(), 'token-pn-adherent-4');
 
         $manager->persist($tokenA1);
         $manager->persist($tokenA2);

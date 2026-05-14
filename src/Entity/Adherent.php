@@ -28,6 +28,7 @@ use App\Controller\Api\Adherent\GetDonationsController;
 use App\Controller\Api\Adherent\GetSensitiveDataController;
 use App\Controller\Api\Mailchimp\SendResubscribeEmailController;
 use App\Controller\Api\UpdateImageController;
+use App\Entity\AdherentCharter\AbstractAdherentCharter;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
@@ -76,14 +77,13 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use OpenIDConnectServer\Entities\ClaimSetInterface;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -432,7 +432,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     /**
      * @var Collection|AdherentCharterInterface[]
      */
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentCharter\AbstractAdherentCharter::class, cascade: ['all'])]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AbstractAdherentCharter::class, cascade: ['all'])]
     private $charters;
 
     /**
@@ -630,7 +630,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     ): self {
         $adherent = new self();
 
-        $adherent->uuid = Uuid::uuid4();
+        $adherent->uuid = Uuid::v4();
         $adherent->publicId = $publicId;
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;
@@ -643,13 +643,13 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
         $adherent->partyMembership = $partyMembership ?? MembershipTypeEnum::EXCLUSIVE;
         $adherent->registeredAt = $registeredAt ?? new \DateTime('now');
 
-        $adherent->password = Uuid::uuid4();
+        $adherent->password = Uuid::v4();
 
         return $adherent;
     }
 
     public static function create(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $publicId,
         string $emailAddress,
         ?string $password,
@@ -720,14 +720,14 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
         return $claims;
     }
 
-    public static function createUuid(string $email): UuidInterface
+    public static function createUuid(string $email): Uuid
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, mb_strtolower($email));
+        return Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), mb_strtolower($email));
     }
 
     public function getUuidAsString(): string
     {
-        return $this->getUuid()->toString();
+        return $this->getUuid()->toRfc4122();
     }
 
     public function getSubscriptionExternalIds(): array
@@ -1498,7 +1498,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     public function getOAuthUser(): InMemoryOAuthUser
     {
         if (!$this->oAuthUser) {
-            $this->oAuthUser = new InMemoryOAuthUser($this->uuid->toString());
+            $this->oAuthUser = new InMemoryOAuthUser($this->uuid->toRfc4122());
         }
 
         return $this->oAuthUser;
@@ -1738,7 +1738,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
 
         /** @var DelegatedAccess $delegatedAccess */
         foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
-            if ($delegatedAccess->getUuid()->toString() === $delegatedAccessUuid) {
+            if ($delegatedAccess->getUuid()->toRfc4122() === $delegatedAccessUuid) {
                 return $delegatedAccess;
             }
         }

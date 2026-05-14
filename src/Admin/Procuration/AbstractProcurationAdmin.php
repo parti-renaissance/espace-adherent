@@ -302,7 +302,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
 
         return [
             'ID' => $procuration->getId(),
-            'UUID' => $procuration->getUuid()->toString(),
+            'UUID' => $procuration->getUuid()->toRfc4122(),
             'Élections' => $procuration->rounds->first()->election->name,
             'Tours' => implode(', ', array_map(function (Round $round) {
                 return \sprintf('%s (%s)', $round->name, $round->date->format('d/m/Y'));
@@ -330,7 +330,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
     ): array {
         return [
             'ID' => $procuration->getId(),
-            'UUID' => $procuration->getUuid()->toString(),
+            'UUID' => $procuration->getUuid()->toRfc4122(),
             'Adresse email' => $procuration->email,
             'Nom' => $procuration->lastName,
             'Prénom(s)' => $procuration->firstNames,

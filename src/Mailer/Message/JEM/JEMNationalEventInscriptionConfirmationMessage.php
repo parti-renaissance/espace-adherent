@@ -6,7 +6,7 @@ namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Utils\PhoneNumberUtils;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class JEMNationalEventInscriptionConfirmationMessage extends AbstractJEMMessage
 {
@@ -15,7 +15,7 @@ class JEMNationalEventInscriptionConfirmationMessage extends AbstractJEMMessage
         $event = $eventInscription->event;
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             'Votre inscription - '.$event->getName(),
@@ -31,7 +31,7 @@ class JEMNationalEventInscriptionConfirmationMessage extends AbstractJEMMessage
                 'region' => self::escape((string) $region),
                 'department' => self::escape((string) $department),
                 'birthdate' => self::escape($eventInscription->birthdate?->format('d/m/Y')),
-                'inscription_uuid' => $eventInscription->getUuid()->toString(),
+                'inscription_uuid' => $eventInscription->getUuid()->toRfc4122(),
                 'public_id' => $eventInscription->getPublicId(),
                 'event_url' => $eventUrl,
                 'share_url' => $shareUrl,

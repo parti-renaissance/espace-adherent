@@ -37,7 +37,7 @@ class SignatureManager
 
         if (
             !($uuidFromToken = JWT::decode($token, new Key($this->secret, 'HS256'))?->uuid)
-            || $uuidFromToken !== $signature->getUuid()->toString()
+            || $uuidFromToken !== $signature->getUuid()->toRfc4122()
         ) {
             throw new \InvalidArgumentException('Le token de confirmation est invalide');
         }

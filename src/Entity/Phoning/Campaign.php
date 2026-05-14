@@ -37,9 +37,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
@@ -178,7 +177,7 @@ class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityA
     private int $participantsCount = 0;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $title = null,
         ?string $brief = null,
         ?Team $team = null,
@@ -188,7 +187,7 @@ class Campaign implements \Stringable, EntityAdherentBlameableInterface, EntityA
         ?\DateTime $finishAt = null,
         ?Zone $zone = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->title = $title;
         $this->brief = $brief;
         $this->team = $team;

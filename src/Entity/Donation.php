@@ -15,9 +15,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
@@ -171,7 +170,7 @@ class Donation implements \Stringable, GeoPointInterface
     private bool $reAdhesion = false;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $type = null,
         ?int $amount = null,
         ?\DateTimeInterface $donatedAt = null,
@@ -184,7 +183,7 @@ class Donation implements \Stringable, GeoPointInterface
         ?Donator $donator = null,
         ?\DateTimeImmutable $createdAt = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->type = $type;
         $this->amount = $amount;
         $this->setDonatedAt($donatedAt ?? new \DateTime());
@@ -629,8 +628,8 @@ class Donation implements \Stringable, GeoPointInterface
     public function __clone(): void
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
-        $this->payboxOrderRef = \sprintf('%s_%s', $this->uuid->toString(), explode('_', $this->payboxOrderRef)[1]);
+        $this->uuid = Uuid::v4();
+        $this->payboxOrderRef = \sprintf('%s_%s', $this->uuid->toRfc4122(), explode('_', $this->payboxOrderRef)[1]);
         $this->donatedAt = new \DateTime();
         $this->createdAt = new \DateTimeImmutable();
         $this->transactions = new ArrayCollection();

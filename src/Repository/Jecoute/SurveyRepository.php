@@ -7,7 +7,7 @@ namespace App\Repository\Jecoute;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SurveyRepository extends ServiceEntityRepository
 {
@@ -16,7 +16,7 @@ class SurveyRepository extends ServiceEntityRepository
         parent::__construct($registry, Survey::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?Survey
+    public function findOneByUuid(Uuid|string $uuid): ?Survey
     {
         return $this
             ->createQueryBuilder('survey')

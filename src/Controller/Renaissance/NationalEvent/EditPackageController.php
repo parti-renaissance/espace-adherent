@@ -61,13 +61,13 @@ class EditPackageController extends AbstractController
             if ($payment) {
                 return $this->redirectToRoute('app_national_event_payment', [
                     'slug' => $event->getSlug(),
-                    'uuid' => $payment->getUuid()->toString(),
+                    'uuid' => $payment->getUuid()->toRfc4122(),
                 ]);
             }
 
             $this->addFlash('success', 'Votre inscription a bien été mise à jour.');
 
-            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $request->attributes->get('app_domain')]);
         }
 
         return $this->render('renaissance/national_event/edit_transport.html.twig', [

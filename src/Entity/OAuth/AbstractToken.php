@@ -6,7 +6,7 @@ namespace App\Entity\OAuth;
 
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractToken implements TokenInterface
@@ -37,7 +37,7 @@ abstract class AbstractToken implements TokenInterface
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    public function __construct(UuidInterface $uuid, string $identifier, \DateTimeImmutable $expiryDateTime)
+    public function __construct(Uuid $uuid, string $identifier, \DateTimeImmutable $expiryDateTime)
     {
         $this->uuid = $uuid;
         $this->identifier = $identifier;

@@ -15,8 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DataSurveyRepository::class)]
@@ -69,7 +69,7 @@ class DataSurvey implements AuthorInterface
     public function __construct(?Survey $survey = null)
     {
         $this->survey = $survey;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->answers = new ArrayCollection();
     }
 

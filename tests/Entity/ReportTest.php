@@ -10,7 +10,7 @@ use App\Entity\Event\Event;
 use App\Entity\Report\Report;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ReportTest extends TestCase
 {
@@ -29,7 +29,7 @@ class ReportTest extends TestCase
         $this->assertSame('One comment', $report->getComment());
         $this->assertSame('unresolved', $report->getStatus());
         $this->assertNull($report->getId());
-        $this->assertInstanceOf(UuidInterface::class, $report->getUuid());
+        $this->assertInstanceOf(Uuid::class, $report->getUuid());
         $this->assertFalse($report->isResolved(), 'Report should not be resolved.');
         $this->assertInstanceOf(Adherent::class, $report->getAuthor());
     }

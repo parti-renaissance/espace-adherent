@@ -9,7 +9,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Mailer\Message\Message;
 use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EmailLogRepository::class)]
 #[ORM\Table(name: 'emails')]
@@ -52,7 +52,7 @@ class EmailLog implements \Stringable
     public bool $useTemplateEndpoint = true;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $messageClass,
         string $sender,
         array $recipients,

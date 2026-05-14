@@ -11,7 +11,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class DonationFactory
 {
@@ -28,7 +28,7 @@ class DonationFactory
         bool $forReAdhesion = false,
     ): Donation {
         $donation = new Donation(
-            $uuid = Uuid::uuid4(),
+            $uuid = Uuid::v4(),
             $request->getType(),
             (int) $request->getAmount() * 100,
             new \DateTime(),

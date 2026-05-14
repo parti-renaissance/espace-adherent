@@ -14,7 +14,7 @@ use App\Repository\Moodle\MoodleUserRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class UserManager
 {

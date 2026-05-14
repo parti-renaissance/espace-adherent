@@ -6,11 +6,11 @@ namespace App\Adhesion\Command;
 
 use App\Messenger\Message\AbstractUuidMessage;
 use App\Notifier\AsyncNotificationInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SendNewPrimoCotisationNotificationCommand extends AbstractUuidMessage implements AsyncNotificationInterface
 {
-    public function __construct(UuidInterface $uuid, public readonly float $amount)
+    public function __construct(Uuid $uuid, public readonly float $amount)
     {
         parent::__construct($uuid);
     }

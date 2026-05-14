@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Donation;
 
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 final readonly class DonationHistoryItem
 {
@@ -15,7 +15,7 @@ final readonly class DonationHistoryItem
         private string $transactionType,
         private DonationSemanticType $type,
         private DonationGlobalStatus $status,
-        private UuidInterface $uuid,
+        private Uuid $uuid,
         private ?int $donatorId = null,
         private ?string $donatorFullName = null,
         private ?string $donatorIdentifier = null,
@@ -55,7 +55,7 @@ final readonly class DonationHistoryItem
     #[Groups(['donation_read'])]
     public function getUuid(): string
     {
-        return $this->uuid->toString();
+        return $this->uuid->toRfc4122();
     }
 
     public function getTypeEnum(): DonationSemanticType

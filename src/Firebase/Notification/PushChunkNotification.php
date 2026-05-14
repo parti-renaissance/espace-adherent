@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Firebase\Notification;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class PushChunkNotification extends AbstractMulticastNotification
 {
@@ -14,7 +14,7 @@ class PushChunkNotification extends AbstractMulticastNotification
         string $scope,
         array $data,
         public readonly string $originalClassName,
-        public readonly ?UuidInterface $pushNotificationUuid = null,
+        public readonly ?Uuid $pushNotificationUuid = null,
     ) {
         parent::__construct($title, $body, $scope, $data);
     }

@@ -7,8 +7,8 @@ namespace App\Form\DataTransformer;
 use App\Entity\UuidEntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UuidToObjectTransformer implements DataTransformerInterface
 {
@@ -29,7 +29,7 @@ class UuidToObjectTransformer implements DataTransformerInterface
     public function transform($value): mixed
     {
         if ($value instanceof UuidEntityInterface) {
-            return $value->getUuid()->toString();
+            return $value->getUuid()->toRfc4122();
         }
 
         return $value;

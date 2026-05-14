@@ -9,8 +9,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Team\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
@@ -36,9 +35,9 @@ class Member implements \Stringable
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
     private $adherent;
 
-    public function __construct(?UuidInterface $uuid = null, ?Adherent $adherent = null, ?Team $team = null)
+    public function __construct(?Uuid $uuid = null, ?Adherent $adherent = null, ?Team $team = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->team = $team;
         $this->adherent = $adherent;
     }

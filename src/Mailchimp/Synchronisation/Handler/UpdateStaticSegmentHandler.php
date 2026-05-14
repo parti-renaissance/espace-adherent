@@ -35,12 +35,12 @@ class UpdateStaticSegmentHandler
     public function __invoke(UpdateStaticSegmentCommandInterface $command): void
     {
         /** @var Adherent $adherent */
-        $adherent = $this->adherentRepository->findOneByUuid($command->getAdherentUuid()->toString());
+        $adherent = $this->adherentRepository->findOneByUuid($command->getAdherentUuid()->toRfc4122());
 
         /** @var StaticSegmentInterface $object */
         $object = $this->entityManager
             ->getRepository($command->getEntityClass())
-            ->findOneByUuid($command->getObjectUuid()->toString())
+            ->findOneByUuid($command->getObjectUuid()->toRfc4122())
         ;
 
         if (!$adherent || !$object) {
@@ -51,7 +51,7 @@ class UpdateStaticSegmentHandler
         $this->entityManager->refresh($object);
 
         if (!$object->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(\sprintf('%s "%s" does not have Mailchimp static segment id', $object->getUuid()->toString(), basename(str_replace('\\', '/', $object::class))));
+            throw new StaticSegmentIdMissingException(\sprintf('%s "%s" does not have Mailchimp static segment id', $object->getUuid()->toRfc4122(), basename(str_replace('\\', '/', $object::class))));
         }
 
         if ($command instanceof RemoveAdherentFromStaticSegmentCommand) {

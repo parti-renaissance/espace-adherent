@@ -8,9 +8,8 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'voting_platform_candidate_group_result')]
@@ -51,10 +50,10 @@ class CandidateGroupResult
     #[ORM\Column(nullable: true)]
     private $majorityMention;
 
-    public function __construct(CandidateGroup $candidateGroup, ?UuidInterface $uuid = null)
+    public function __construct(CandidateGroup $candidateGroup, ?Uuid $uuid = null)
     {
         $this->candidateGroup = $candidateGroup;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function increment(): void

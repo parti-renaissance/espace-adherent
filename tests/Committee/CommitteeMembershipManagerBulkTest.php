@@ -51,10 +51,10 @@ class CommitteeMembershipManagerBulkTest extends AbstractKernelTestCase
         self::assertCount(2, $created->newMemberships);
         self::assertCount(1, $created->removedMemberships);
         self::assertSame($committee2->getId(), $created->newMemberships[0]['committeeId']);
-        self::assertSame($adherent1->getUuid()->toString(), $created->newMemberships[0]['uuid']->toString());
-        self::assertSame($adherent3->getUuid()->toString(), $created->newMemberships[1]['uuid']->toString());
+        self::assertSame($adherent1->getUuid()->toRfc4122(), $created->newMemberships[0]['uuid']->toRfc4122());
+        self::assertSame($adherent3->getUuid()->toRfc4122(), $created->newMemberships[1]['uuid']->toRfc4122());
         self::assertNotSame($committee2->getId(), $created->removedMemberships[0]['committeeId']);
-        self::assertSame($adherent3->getUuid()->toString(), $created->removedMemberships[0]['uuid']->toString());
+        self::assertSame($adherent3->getUuid()->toRfc4122(), $created->removedMemberships[0]['uuid']->toRfc4122());
 
         // Each adherent now has exactly one membership, in committee_2.
         foreach ([$adherent1, $adherent3] as $adherent) {
@@ -69,19 +69,19 @@ class CommitteeMembershipManagerBulkTest extends AbstractKernelTestCase
         // History rows were written: adherent_1 → 1 JOIN ; adherent_3 → 1 LEAVE + 1 JOIN.
         $adh1JoinCount = (int) $connection->fetchOne(
             "SELECT COUNT(*) FROM committees_membership_histories WHERE adherent_uuid = ? AND action = 'join' AND committee_id = ?",
-            [$adherent1->getUuid()->toString(), $committee2->getId()],
+            [$adherent1->getUuid()->toRfc4122(), $committee2->getId()],
         );
         self::assertSame(1, $adh1JoinCount);
 
         $adh3JoinCount = (int) $connection->fetchOne(
             "SELECT COUNT(*) FROM committees_membership_histories WHERE adherent_uuid = ? AND action = 'join' AND committee_id = ?",
-            [$adherent3->getUuid()->toString(), $committee2->getId()],
+            [$adherent3->getUuid()->toRfc4122(), $committee2->getId()],
         );
         self::assertSame(1, $adh3JoinCount);
 
         $adh3LeaveCount = (int) $connection->fetchOne(
             "SELECT COUNT(*) FROM committees_membership_histories WHERE adherent_uuid = ? AND action = 'leave'",
-            [$adherent3->getUuid()->toString()],
+            [$adherent3->getUuid()->toRfc4122()],
         );
         self::assertGreaterThanOrEqual(1, $adh3LeaveCount);
 

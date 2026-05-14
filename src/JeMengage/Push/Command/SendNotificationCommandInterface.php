@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\JeMengage\Push\Command;
 
 use App\Entity\NotificationObjectInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface SendNotificationCommandInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getClass(): string;
 

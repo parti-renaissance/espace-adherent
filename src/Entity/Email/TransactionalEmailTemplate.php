@@ -12,9 +12,8 @@ use App\Entity\UnlayerJsonContentTrait;
 use App\Mailer\Command\UpdateTransactionalEmailTemplateCommand;
 use App\Repository\Email\TransactionalEmailTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransactionalEmailTemplateRepository::class)]
@@ -45,9 +44,9 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isSync = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString(): string
@@ -58,7 +57,7 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
     public function __clone()
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->identifier .= '-copy';
     }
 

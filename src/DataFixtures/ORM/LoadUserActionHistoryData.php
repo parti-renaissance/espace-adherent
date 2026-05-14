@@ -47,7 +47,7 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'event_id' => $liveEvent1->getId(),
         ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTime('-15 minutes'), [
-            'delegator_uuid' => $adherent2->getUuid()->toString(),
+            'delegator_uuid' => $adherent2->getUuid()->toRfc4122(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS, FeatureEnum::ELECTED_REPRESENTATIVE],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
@@ -55,15 +55,15 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'actor_name' => 'Damien Schmidt',
         ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_EDIT, new \DateTime('-14 minutes'), [
-            'delegator_uuid' => $adherent2->getUuid()->toString(),
-            'author_uuid' => $adherent3->getUuid()->toString(),
+            'delegator_uuid' => $adherent2->getUuid()->toRfc4122(),
+            'author_uuid' => $adherent3->getUuid()->toRfc4122(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
             'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
         ]));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::DELEGATED_ACCESS_REMOVE, new \DateTime('-13 minutes'), [
-            'delegator_uuid' => $adherent2->getUuid()->toString(),
+            'delegator_uuid' => $adherent2->getUuid()->toRfc4122(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],
@@ -101,7 +101,7 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
             'modified_field_labels' => ['Date de naissance'],
         ]));
         $manager->persist($this->create($adherent2, UserActionHistoryTypeEnum::DELEGATED_ACCESS_ADD, new \DateTime('-20 minutes'), [
-            'delegator_uuid' => $adherent1->getUuid()->toString(),
+            'delegator_uuid' => $adherent1->getUuid()->toRfc4122(),
             'scope' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             'features' => [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS],
             'role' => RoleEnum::LABELS[RoleEnum::MOBILIZATION_MANAGER],

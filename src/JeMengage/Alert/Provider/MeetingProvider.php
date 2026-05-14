@@ -55,7 +55,7 @@ class MeetingProvider implements AlertProviderInterface
 
                 if ($event->isPackageEventType()) {
                     $ctaLabel = 'Suivre mon inscription';
-                    $ctaUrl = $this->generateUrl('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscriptions[0]->getUuid()->toString()]);
+                    $ctaUrl = $this->generateUrl('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscriptions[0]->getUuid()->toRfc4122()]);
                 } else {
                     $ctaLabel = 'Billet bientôt disponible';
                     $ctaUrl = null;

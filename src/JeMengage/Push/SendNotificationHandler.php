@@ -7,6 +7,8 @@ namespace App\JeMengage\Push;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\PushNotification;
 use App\Firebase\JeMarcheMessaging;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Command\SendPushChunkCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,7 +24,7 @@ class SendNotificationHandler
     ) {
     }
 
-    public function __invoke(Command\SendNotificationCommandInterface $command): void
+    public function __invoke(SendNotificationCommandInterface $command): void
     {
         if (!$object = $this->getObjectFromCommand($command)) {
             return;
@@ -59,14 +61,14 @@ class SendNotificationHandler
         $this->entityManager->flush();
 
         foreach ($chunks as $index => $chunk) {
-            $this->bus->dispatch(new Command\SendPushChunkCommand(
+            $this->bus->dispatch(new SendPushChunkCommand(
                 $notificationClassName,
                 $notification->getTitle(),
                 $notification->getBody(),
                 $notification->getScope(),
                 $notification->getData(),
                 $chunk,
-                \sprintf('%s:%s:%s:push:%d', $command->getClass(), $command->getUuid()->toString(), $notificationClassName, $index),
+                \sprintf('%s:%s:%s:push:%d', $command->getClass(), $command->getUuid()->toRfc4122(), $notificationClassName, $index),
                 $pushNotification->getUuid(),
             ));
         }
@@ -76,7 +78,7 @@ class SendNotificationHandler
         $this->entityManager->flush();
     }
 
-    private function getObjectFromCommand(Command\SendNotificationCommandInterface $command): ?NotificationObjectInterface
+    private function getObjectFromCommand(SendNotificationCommandInterface $command): ?NotificationObjectInterface
     {
         $object = $this->entityManager
             ->getRepository($command->getClass())

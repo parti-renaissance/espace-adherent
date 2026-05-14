@@ -9,7 +9,7 @@ use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[Group('time-sensitive')]
 class AccessTokenTest extends TestCase

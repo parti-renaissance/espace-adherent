@@ -9,9 +9,8 @@ use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * An abstract temporary token for Adherent.
@@ -51,13 +50,13 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $usedAt;
 
-    public function __construct(UuidInterface $adherentUuid, \DateTime $createdAt, \DateTime $expiration, SHA1 $value)
+    public function __construct(Uuid $adherentUuid, \DateTime $createdAt, \DateTime $expiration, SHA1 $value)
     {
         if ($expiration <= new \DateTime('now')) {
             throw new \InvalidArgumentException('Expiration date must be in the future.');
         }
 
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->value = $value;
         $this->adherentUuid = $adherentUuid;
         $this->createdAt = $createdAt;
@@ -73,7 +72,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
             $adherentUuid,
             $timestamp,
             new \DateTime($lifetime),
-            SHA1::hash($adherentUuid->toString().$timestamp->format('U.u'))
+            SHA1::hash($adherentUuid->toRfc4122().$timestamp->format('U.u'))
         );
     }
 
@@ -101,7 +100,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         return $this->value;
     }
 
-    public function getAdherentUuid(): UuidInterface
+    public function getAdherentUuid(): Uuid
     {
         return $this->adherentUuid;
     }

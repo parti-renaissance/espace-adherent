@@ -68,11 +68,10 @@ use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
@@ -207,7 +206,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     ];
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ApiProperty(identifier: true, builtinTypes: [new Type(Type::BUILTIN_TYPE_STRING)])]
     #[Groups(['event_read', 'event_list_read'])]
@@ -423,9 +422,9 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $pinned = false;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->zones = new ZoneCollection();
     }
 
@@ -683,7 +682,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
 
     public function getUuidAsString(): string
     {
-        return $this->getUuid()->toString();
+        return $this->getUuid()->toRfc4122();
     }
 
     public function getMode(): ?string

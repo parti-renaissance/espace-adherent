@@ -14,10 +14,9 @@ use App\Entity\ImageTrait;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Jecoute\ResourceLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -54,9 +53,9 @@ class ResourceLink implements \Stringable, ImageManageableInterface, ImageExpose
     #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '5M')]
     protected $image;
 
-    public function __construct(?UuidInterface $uuid = null, ?string $label = null, ?string $url = null)
+    public function __construct(?Uuid $uuid = null, ?string $label = null, ?string $url = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->label = $label;
         $this->url = $url;
     }

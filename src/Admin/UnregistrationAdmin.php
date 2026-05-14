@@ -116,7 +116,7 @@ class UnregistrationAdmin extends AbstractAdmin
 
                     $uuid = Adherent::createUuid($value->getValue());
                     $qb->andWhere(\sprintf('%s.emailHash = :email_hash', $alias));
-                    $qb->setParameter('email_hash', $uuid->toString());
+                    $qb->setParameter('email_hash', $uuid->toRfc4122());
 
                     return true;
                 },

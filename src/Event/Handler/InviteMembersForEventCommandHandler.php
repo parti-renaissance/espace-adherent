@@ -32,7 +32,7 @@ class InviteMembersForEventCommandHandler
 
     public function __invoke(InviteMembersForEventCommand $command): void
     {
-        if (!$event = $this->eventRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$event = $this->eventRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

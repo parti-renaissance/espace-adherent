@@ -16,9 +16,8 @@ use App\Entity\Geo\Zone;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use App\Validator\MandateZoneType;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['adherent.uuid' => 'exact'])]
@@ -63,7 +62,7 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
     public ?Zone $zone = null;
 
     public static function create(
-        ?UuidInterface $uuid,
+        ?Uuid $uuid,
         Adherent $adherent,
         string $mandateType,
         ?\DateTime $beginAt = null,
@@ -72,7 +71,7 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
         ?Zone $zone = null,
     ): self {
         $mandate = new self($adherent, null, $beginAt, $finishAt);
-        $mandate->uuid = $uuid ?? Uuid::uuid4();
+        $mandate->uuid = $uuid ?? Uuid::v4();
         $mandate->mandateType = $mandateType;
         $mandate->delegation = $delegation;
         $mandate->zone = $zone;

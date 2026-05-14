@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\NationalEvent\EventInscription;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class NationalEventInscriptionDuplicateMessage extends AbstractRenaissanceMessage
 {
@@ -14,7 +14,7 @@ class NationalEventInscriptionDuplicateMessage extends AbstractRenaissanceMessag
         $event = $eventInscription->event;
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             'Votre inscription à l’événement '.$event->getName(),

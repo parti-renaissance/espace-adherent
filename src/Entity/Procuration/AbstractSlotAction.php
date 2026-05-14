@@ -6,8 +6,8 @@ namespace App\Entity\Procuration;
 
 use App\Procuration\SlotActionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractSlotAction extends AbstractAction
@@ -16,7 +16,7 @@ abstract class AbstractSlotAction extends AbstractAction
     #[ORM\Column(enumType: SlotActionStatusEnum::class)]
     public SlotActionStatusEnum $status;
 
-    public function __construct(UuidInterface $uuid, \DateTimeInterface $date, SlotActionStatusEnum $status)
+    public function __construct(Uuid $uuid, \DateTimeInterface $date, SlotActionStatusEnum $status)
     {
         parent::__construct($uuid, $date);
 

@@ -27,7 +27,7 @@ class SendEmailReminderHandler
     public function __invoke(SendEmailReminderCommand $command): void
     {
         /** @var EventRegistration $eventRegistration */
-        if (!$eventRegistration = $this->eventRegistrationRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$eventRegistration = $this->eventRegistrationRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

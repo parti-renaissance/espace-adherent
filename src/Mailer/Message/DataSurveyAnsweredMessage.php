@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Mailer\Message;
 
 use App\Entity\Jecoute\JemarcheDataSurvey;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class DataSurveyAnsweredMessage extends Message
 {
     public static function create(JemarcheDataSurvey $dataSurvey): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $dataSurvey->getEmailAddress(),
             null,
             'Votre adhésion à La République En Marche !',

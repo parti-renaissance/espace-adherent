@@ -29,11 +29,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'visibility' => 'exact'])]
@@ -93,9 +92,9 @@ class Team implements \Stringable, EntityAdherentBlameableInterface, EntityAdmin
     #[Groups(['team_list_read'])]
     public ?bool $isDeletable = null;
 
-    public function __construct(?UuidInterface $uuid = null, ?string $name = null, array $members = [], ?Zone $zone = null)
+    public function __construct(?Uuid $uuid = null, ?string $name = null, array $members = [], ?Zone $zone = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->name = $name;
 
         $this->members = new ArrayCollection();

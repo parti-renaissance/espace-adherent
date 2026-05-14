@@ -37,7 +37,7 @@ class VoteCommand
 
     public function __construct(Election $election)
     {
-        $this->electionUuid = $election->getUuid()->toString();
+        $this->electionUuid = $election->getUuid()->toRfc4122();
         $this->isMajorityVote = $election->getDesignation()->isMajorityType();
     }
 

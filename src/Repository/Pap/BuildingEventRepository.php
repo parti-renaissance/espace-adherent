@@ -10,7 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class BuildingEventRepository extends ServiceEntityRepository
 {
@@ -23,8 +23,8 @@ class BuildingEventRepository extends ServiceEntityRepository
 
     public function findLastByType(
         string $type,
-        UuidInterface $buildingUuid,
-        UuidInterface $campaignUuid,
+        Uuid $buildingUuid,
+        Uuid $campaignUuid,
     ): ?BuildingEvent {
         return $this->createQueryBuilder('event')
             ->innerJoin('event.building', 'building')

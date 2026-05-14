@@ -6,7 +6,7 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformCandidacyInvitationRemovedMessage extends AbstractVotingPlatformMessage
 {
@@ -15,7 +15,7 @@ final class VotingPlatformCandidacyInvitationRemovedMessage extends AbstractVoti
         $emailTitle = self::getMailSubjectPrefix($designation);
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $invited->getEmailAddress(),
             $invited->getFullName(),
             \sprintf('[%s] %s a annulé son invitation', $emailTitle, $candidate->getFirstName()),

@@ -19,9 +19,8 @@ use App\GeneralConvention\MeetingTypeEnum;
 use App\GeneralConvention\OrganizerEnum;
 use App\GeneralConvention\ParticipantQuality;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -154,9 +153,9 @@ class GeneralConvention implements \Stringable, EntityAdministratorBlameableInte
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $additionalComments = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString(): string

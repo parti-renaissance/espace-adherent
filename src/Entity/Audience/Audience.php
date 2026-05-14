@@ -16,8 +16,8 @@ use App\Entity\EntityZoneTrait;
 use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -69,7 +69,7 @@ class Audience extends AbstractAudience
     #[ORM\Column]
     private $name;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
         parent::__construct($uuid);
 

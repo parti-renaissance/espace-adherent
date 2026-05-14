@@ -10,7 +10,6 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\Geo\Zone;
 use App\Form\Admin\AdherentAutocompleteType;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;

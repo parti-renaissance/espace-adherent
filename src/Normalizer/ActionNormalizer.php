@@ -37,7 +37,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
             if ($user = $this->getUser()) {
-                $adherentUuid = $user->getUuid()->toString();
+                $adherentUuid = $user->getUuid()->toRfc4122();
                 $registrationDate = $this->getRegistrationDate($object->getId(), $adherentUuid);
                 $action['user_registered_at'] = $registrationDate?->format(\DateTimeInterface::RFC3339);
             }

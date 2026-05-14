@@ -377,7 +377,7 @@ class Manager implements LoggerAwareInterface
 
         if (!$this->driver->isSuccessfulResponse($response)) {
             $this->logger->error(
-                \sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toString()),
+                \sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toRfc4122()),
                 [
                     'message' => $response->getContent(false),
                     'code' => $response->getStatusCode(false),
@@ -591,7 +591,7 @@ class Manager implements LoggerAwareInterface
     private function checkMessageExternalId(MailchimpCampaign $campaign): void
     {
         if (!$campaign->getExternalId()) {
-            throw new InvalidCampaignIdException(\sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString()));
+            throw new InvalidCampaignIdException(\sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toRfc4122()));
         }
     }
 

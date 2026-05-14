@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\AdherentMessage\Command;
 
 use App\Mailchimp\SynchronizeMessageInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SynchronizeDynamicSegmentCommand implements SynchronizeMessageInterface
 {
     private $uuid;
     private $entityClass;
 
-    public function __construct(UuidInterface $uuid, string $entityClass)
+    public function __construct(Uuid $uuid, string $entityClass)
     {
         $this->uuid = $uuid;
         $this->entityClass = $entityClass;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

@@ -24,7 +24,7 @@ class AdherentChangeCommandHandler
     public function __invoke(AdherentChangeCommandInterface $message): void
     {
         /** @var Adherent $adherent */
-        if (!$adherent = $this->repository->findOneByUuid($message->getUuid()->toString())) {
+        if (!$adherent = $this->repository->findOneByUuid($message->getUuid()->toRfc4122())) {
             return;
         }
 

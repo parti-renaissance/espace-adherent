@@ -18,8 +18,8 @@ use App\Validator\CommitteeMembershipZoneInScopeZones as AssertCommitteeMembersh
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -86,7 +86,7 @@ class CommitteeCandidacy extends BaseCandidacy
     #[ORM\ManyToOne(targetEntity: CommitteeCandidaciesGroup::class, cascade: ['persist'], inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 
-    public function __construct(CommitteeElection $election, ?string $gender = null, ?UuidInterface $uuid = null)
+    public function __construct(CommitteeElection $election, ?string $gender = null, ?Uuid $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

@@ -8,9 +8,8 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'voting_platform_candidate')]
@@ -88,14 +87,14 @@ class Candidate
         string $lastName,
         string $gender,
         ?Adherent $adherent = null,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         bool $isSubstitute = false,
     ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;
         $this->adherent = $adherent;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->isSubstitute = $isSubstitute;
     }
 

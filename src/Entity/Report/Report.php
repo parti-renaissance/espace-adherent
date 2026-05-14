@@ -9,7 +9,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['committee' => CommitteeReport::class, 'community_event' => CommunityEventReport::class])]
@@ -77,7 +77,7 @@ abstract class Report implements \Stringable
             throw new \InvalidArgumentException(\sprintf('$comment is filed but %s::REASON_OTHER is not provided in $reasons', ReportReasonEnum::class));
         }
 
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->subject = $subject;
         $this->author = $author;
         $this->reasons = $reasons;

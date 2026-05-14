@@ -143,13 +143,13 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             || $designation->isTerritorialAnimatorType()
         ) {
             if ($designation->isConsultationType() && null === $designation->targetYear) {
-                return $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
+                return $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toRfc4122());
             }
 
             return $designation->targetYear || $adherent->hasActiveMembership() || self::POTENTIAL_PERMISSION === $attribute;
         }
 
-        return $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
+        return $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toRfc4122());
     }
 
     protected function supports(string $attribute, $subject): bool

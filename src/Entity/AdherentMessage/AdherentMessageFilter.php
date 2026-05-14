@@ -22,8 +22,8 @@ use App\Validator\ValidMessageFilterSegment;
 use App\Validator\ValidScope;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -257,7 +257,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
 
     public function __construct(array $zones = [])
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->zones = new ZoneCollection($zones);
     }
 
@@ -613,7 +613,7 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     public function __clone(): void
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->synchronized = false;
         $this->message = null;
         $this->createdAt = $this->updatedAt = new \DateTime();

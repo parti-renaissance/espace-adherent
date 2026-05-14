@@ -10,12 +10,12 @@ use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Geo\ZoneRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {

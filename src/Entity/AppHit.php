@@ -10,9 +10,8 @@ use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AppHitRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AppHitRepository::class)]
 #[ORM\Index(fields: ['eventType'])]
@@ -52,7 +51,7 @@ class AppHit
 
     #[Groups(['hit:write'])]
     #[ORM\Column(type: 'uuid')]
-    public ?UuidInterface $activitySessionUuid = null;
+    public ?Uuid $activitySessionUuid = null;
 
     #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
@@ -108,7 +107,7 @@ class AppHit
 
     public function __construct()
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function isImpression(): bool
@@ -120,7 +119,7 @@ class AppHit
     {
         $this->fingerprint = hash('sha256', implode('|', array_filter([
             $this->adherent?->getId(),
-            $this->activitySessionUuid->toString(),
+            $this->activitySessionUuid->toRfc4122(),
             $this->eventType->value,
             $this->objectType?->value,
             $this->objectId,

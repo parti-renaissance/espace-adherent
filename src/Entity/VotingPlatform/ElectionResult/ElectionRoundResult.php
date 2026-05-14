@@ -11,8 +11,7 @@ use App\Entity\VotingPlatform\VoteResult;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'voting_platform_election_round_result')]
@@ -39,10 +38,10 @@ class ElectionRoundResult
     #[ORM\OneToMany(mappedBy: 'electionRoundResult', targetEntity: ElectionPoolResult::class, cascade: ['all'])]
     private $electionPoolResults;
 
-    public function __construct(ElectionRound $electionRound, ?UuidInterface $uuid = null)
+    public function __construct(ElectionRound $electionRound, ?Uuid $uuid = null)
     {
         $this->electionRound = $electionRound;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->electionPoolResults = new ArrayCollection();
     }
 

@@ -33,10 +33,9 @@ use App\Validator\Jecoute\SurveyScopeTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
@@ -119,9 +118,9 @@ abstract class Survey implements \Stringable, IndexableEntityInterface, EntityAd
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $published;
 
-    public function __construct(?UuidInterface $uuid = null, ?string $name = null, bool $published = false)
+    public function __construct(?Uuid $uuid = null, ?string $name = null, bool $published = false)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->name = $name;
         $this->published = $published;
         $this->questions = new ArrayCollection();
@@ -134,7 +133,7 @@ abstract class Survey implements \Stringable, IndexableEntityInterface, EntityAd
 
     public function refreshUuid(): void
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function getName(): ?string

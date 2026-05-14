@@ -20,7 +20,7 @@ class SendTelegramMessageCommandHandler
 
     public function __invoke(SendTelegramMessageCommand $command): void
     {
-        $message = $this->messageRepository->findOneByUuid($command->getUuid()->toString());
+        $message = $this->messageRepository->findOneByUuid($command->getUuid()->toRfc4122());
 
         if (!$message || $message->isUserMessage()) {
             return;

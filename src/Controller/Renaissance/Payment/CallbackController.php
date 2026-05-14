@@ -6,11 +6,11 @@ namespace App\Controller\Renaissance\Payment;
 
 use App\Donation\Handler\TransactionCallbackHandler;
 use App\Repository\DonationRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/paiement/callback/{_callback_token}', name: 'app_payment_callback', requirements: ['_callback_token' => '.+'], methods: ['GET'])]
 class CallbackController extends AbstractController

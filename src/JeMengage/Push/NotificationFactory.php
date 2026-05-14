@@ -6,6 +6,26 @@ namespace App\JeMengage\Push;
 
 use App\Entity\NotificationObjectInterface;
 use App\Firebase\Notification\NotificationInterface;
+use App\JeMengage\Push\Command\AdherentMessageSentNotificationCommand;
+use App\JeMengage\Push\Command\EventCreationNotificationCommand;
+use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
+use App\JeMengage\Push\Command\EventReminderNotificationCommand;
+use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
+use App\JeMengage\Push\Command\NewsCreatedNotificationCommand;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\PrivateMessageNotificationCommand;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Notification\ActionBeginNotification;
+use App\JeMengage\Push\Notification\ActionCancelledNotification;
+use App\JeMengage\Push\Notification\ActionCreatedNotification;
+use App\JeMengage\Push\Notification\ActionUpdatedNotification;
+use App\JeMengage\Push\Notification\AdherentMessageSentNotification;
+use App\JeMengage\Push\Notification\EventCreatedNotification;
+use App\JeMengage\Push\Notification\EventLiveBeginNotification;
+use App\JeMengage\Push\Notification\EventReminderNotification;
+use App\JeMengage\Push\Notification\NationalEventTicketNotification;
+use App\JeMengage\Push\Notification\NewsCreatedNotification;
+use App\JeMengage\Push\Notification\PrivateMessageNotification;
 use App\JeMengage\Router;
 
 class NotificationFactory
@@ -14,7 +34,7 @@ class NotificationFactory
     {
     }
 
-    public function create(NotificationObjectInterface $object, Command\SendNotificationCommandInterface $command): NotificationInterface
+    public function create(NotificationObjectInterface $object, SendNotificationCommandInterface $command): NotificationInterface
     {
         $notification = $this->initiateNotification($object, $command);
         $notification->addData('link', $this->router->generateLink($object));
@@ -22,48 +42,48 @@ class NotificationFactory
         return $notification;
     }
 
-    private function initiateNotification(NotificationObjectInterface $object, Command\SendNotificationCommandInterface $command): NotificationInterface
+    private function initiateNotification(NotificationObjectInterface $object, SendNotificationCommandInterface $command): NotificationInterface
     {
-        if ($command instanceof Command\NotifyForActionCommand) {
+        if ($command instanceof NotifyForActionCommand) {
             switch ($command->event) {
-                case Command\NotifyForActionCommand::EVENT_CREATE:
-                    return Notification\ActionCreatedNotification::create($object);
-                case Command\NotifyForActionCommand::EVENT_UPDATE:
-                    return Notification\ActionUpdatedNotification::create($object);
-                case Command\NotifyForActionCommand::EVENT_CANCEL:
-                    return Notification\ActionCancelledNotification::create($object);
-                case Command\NotifyForActionCommand::EVENT_FIRST_NOTIFICATION:
-                case Command\NotifyForActionCommand::EVENT_SECOND_NOTIFICATION:
-                    return Notification\ActionBeginNotification::create($object, Command\NotifyForActionCommand::EVENT_FIRST_NOTIFICATION === $command->event);
+                case NotifyForActionCommand::EVENT_CREATE:
+                    return ActionCreatedNotification::create($object);
+                case NotifyForActionCommand::EVENT_UPDATE:
+                    return ActionUpdatedNotification::create($object);
+                case NotifyForActionCommand::EVENT_CANCEL:
+                    return ActionCancelledNotification::create($object);
+                case NotifyForActionCommand::EVENT_FIRST_NOTIFICATION:
+                case NotifyForActionCommand::EVENT_SECOND_NOTIFICATION:
+                    return ActionBeginNotification::create($object, NotifyForActionCommand::EVENT_FIRST_NOTIFICATION === $command->event);
             }
         }
 
-        if ($command instanceof Command\EventLiveBeginNotificationCommand) {
-            return Notification\EventLiveBeginNotification::create($object);
+        if ($command instanceof EventLiveBeginNotificationCommand) {
+            return EventLiveBeginNotification::create($object);
         }
 
-        if ($command instanceof Command\EventCreationNotificationCommand) {
-            return Notification\EventCreatedNotification::create($object);
+        if ($command instanceof EventCreationNotificationCommand) {
+            return EventCreatedNotification::create($object);
         }
 
-        if ($command instanceof Command\EventReminderNotificationCommand) {
-            return Notification\EventReminderNotification::create($object);
+        if ($command instanceof EventReminderNotificationCommand) {
+            return EventReminderNotification::create($object);
         }
 
-        if ($command instanceof Command\NewsCreatedNotificationCommand) {
-            return Notification\NewsCreatedNotification::create($object);
+        if ($command instanceof NewsCreatedNotificationCommand) {
+            return NewsCreatedNotification::create($object);
         }
 
-        if ($command instanceof Command\NationalEventTicketAvailableNotificationCommand) {
-            return Notification\NationalEventTicketNotification::create($object);
+        if ($command instanceof NationalEventTicketAvailableNotificationCommand) {
+            return NationalEventTicketNotification::create($object);
         }
 
-        if ($command instanceof Command\AdherentMessageSentNotificationCommand) {
-            return Notification\AdherentMessageSentNotification::create($object);
+        if ($command instanceof AdherentMessageSentNotificationCommand) {
+            return AdherentMessageSentNotification::create($object);
         }
 
-        if ($command instanceof Command\PrivateMessageNotificationCommand) {
-            return Notification\PrivateMessageNotification::create($object);
+        if ($command instanceof PrivateMessageNotificationCommand) {
+            return PrivateMessageNotification::create($object);
         }
 
         throw new \RuntimeException('[Notification] Command not supported');

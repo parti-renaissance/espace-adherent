@@ -13,8 +13,7 @@ use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class InitiateStaticSegmentSubscriberTest extends TestCase
 {
@@ -31,13 +30,13 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
 
     public function testCreatesEmptySegmentAndBindsItToCampaignWhenStaticSegmentIdIsNull(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
         $campaign = $this->createCampaign($uuid);
 
         $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
         $segmentService->expects(self::once())
             ->method('create')
-            ->with(\sprintf('PROD_%s', $uuid->toString()), [], self::MAIN_LIST_ID)
+            ->with(\sprintf('PROD_%s', $uuid->toRfc4122()), [], self::MAIN_LIST_ID)
             ->willReturn(4242);
 
         $em = $this->createMock(EntityManagerInterface::class);
@@ -52,7 +51,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         $subscriber->onCampaignFiltersPreBuild(new CampaignEvent($campaign));
 
         self::assertSame(4242, $campaign->getStaticSegmentId());
-        self::assertSame(\sprintf('PROD_%s', $uuid->toString()), $campaign->getMailchimpStaticSegment()->name);
+        self::assertSame(\sprintf('PROD_%s', $uuid->toRfc4122()), $campaign->getMailchimpStaticSegment()->name);
     }
 
     public function testNoOpWhenStaticSegmentIdAlreadySet(): void
@@ -109,10 +108,10 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         self::assertNull($campaign->getMailchimpStaticSegment());
     }
 
-    private function createCampaign(?UuidInterface $uuid = null): MailchimpCampaign
+    private function createCampaign(?Uuid $uuid = null): MailchimpCampaign
     {
         $message = $this->createStub(AdherentMessageInterface::class);
-        $message->method('getUuid')->willReturn($uuid ?? Uuid::uuid4());
+        $message->method('getUuid')->willReturn($uuid ?? Uuid::v4());
 
         return new MailchimpCampaign($message);
     }

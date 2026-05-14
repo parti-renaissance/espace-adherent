@@ -12,8 +12,8 @@ use App\Validator\Procuration\ManualSlot;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
@@ -52,7 +52,7 @@ class RequestSlot extends AbstractSlot
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $matchRemindedAt = null;
 
-    public function __construct(Round $round, Request $request, ?UuidInterface $uuid = null)
+    public function __construct(Round $round, Request $request, ?Uuid $uuid = null)
     {
         parent::__construct($round, $uuid);
 

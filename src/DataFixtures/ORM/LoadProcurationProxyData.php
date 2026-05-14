@@ -17,8 +17,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadProcurationProxyData extends Fixture implements DependentFixtureInterface
 {
@@ -175,7 +174,7 @@ class LoadProcurationProxyData extends Fixture implements DependentFixtureInterf
     }
 
     private function createProxy(
-        ?UuidInterface $uuid,
+        ?Uuid $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -197,7 +196,7 @@ class LoadProcurationProxyData extends Fixture implements DependentFixtureInterf
         array $slotsUuidMapping = [],
     ): Proxy {
         $proxy = new Proxy(
-            $uuid ?? Uuid::uuid4(),
+            $uuid ?? Uuid::v4(),
             $rounds,
             $email,
             $gender,

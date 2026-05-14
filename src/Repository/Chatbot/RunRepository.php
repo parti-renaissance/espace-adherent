@@ -7,7 +7,7 @@ namespace App\Repository\Chatbot;
 use App\Entity\Chatbot\Run;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class RunRepository extends ServiceEntityRepository
 {
@@ -16,7 +16,7 @@ class RunRepository extends ServiceEntityRepository
         parent::__construct($registry, Run::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?Run
+    public function findOneByUuid(Uuid|string $uuid): ?Run
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

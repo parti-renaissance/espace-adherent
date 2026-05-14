@@ -7,7 +7,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class CommitteeRemovedCandidacyNotificationMessage extends Message
 {
@@ -19,7 +19,7 @@ final class CommitteeRemovedCandidacyNotificationMessage extends Message
         string $committeeUrl,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $supervisor->getEmailAddress(),
             $supervisor->getFullName(),
             '[Désignations] Une candidature a été retirée',

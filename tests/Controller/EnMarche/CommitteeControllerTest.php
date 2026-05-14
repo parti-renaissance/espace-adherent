@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Entity\Committee;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;

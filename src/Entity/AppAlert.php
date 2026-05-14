@@ -7,7 +7,7 @@ namespace App\Entity;
 use App\JeMengage\Alert\AlertTypeEnum;
 use App\Repository\AppAlertRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -67,7 +67,7 @@ class AppAlert implements \Stringable, EntityAdministratorBlameableInterface
 
     public function __construct()
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function __toString(): string

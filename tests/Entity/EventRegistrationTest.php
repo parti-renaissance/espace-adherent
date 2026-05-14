@@ -8,7 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventRegistrationTest extends TestCase
 {

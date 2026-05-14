@@ -6,7 +6,7 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformElectionSecondRoundNotificationMessage extends AbstractVotingPlatformMessage
 {
@@ -20,7 +20,7 @@ final class VotingPlatformElectionSecondRoundNotificationMessage extends Abstrac
         $daysLeft = $election->getDesignation()->getAdditionalRoundDuration();
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $first->getEmailAddress(),
             $first->getFullName(),
             \sprintf('[%s] Vous avez %d jours pour voter à nouveau.', self::getMailSubjectPrefix($election->getDesignation()), $daysLeft),

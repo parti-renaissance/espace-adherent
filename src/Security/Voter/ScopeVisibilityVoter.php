@@ -51,7 +51,7 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
             ($committeeUuids = $scope->getCommitteeUuids())
             && $subject instanceof News
         ) {
-            return \in_array($subject->committee->getUuid()->toString(), $committeeUuids, true);
+            return \in_array($subject->committee->getUuid()->toRfc4122(), $committeeUuids, true);
         }
 
         // Local scope & Local subject

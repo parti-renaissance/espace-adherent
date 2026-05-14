@@ -7,10 +7,10 @@ namespace App\Donation\Request;
 use App\Entity\Transaction;
 use App\Exception\InvalidDonationCallbackException;
 use Cocur\Slugify\SlugifyInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class DonationRequestUtils
 {
@@ -80,7 +80,7 @@ class DonationRequestUtils
         ];
     }
 
-    public function buildDonationReference(UuidInterface $uuid, string $fullName): string
+    public function buildDonationReference(Uuid $uuid, string $fullName): string
     {
         return \sprintf(
             '%s_%s',

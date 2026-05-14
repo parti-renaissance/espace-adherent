@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Pap\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CreateBuildingPartsCommand implements AsynchronousMessageInterface
 {
-    private UuidInterface $campaignHistoryUuid;
+    private Uuid $campaignHistoryUuid;
 
-    public function __construct(UuidInterface $campaignHistoryUuid)
+    public function __construct(Uuid $campaignHistoryUuid)
     {
         $this->campaignHistoryUuid = $campaignHistoryUuid;
     }
 
-    public function getCampaignHistoryUuid(): UuidInterface
+    public function getCampaignHistoryUuid(): Uuid
     {
         return $this->campaignHistoryUuid;
     }

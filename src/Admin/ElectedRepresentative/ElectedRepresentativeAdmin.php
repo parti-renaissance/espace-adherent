@@ -19,7 +19,7 @@ use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Form\TelNumberType;
 use App\ValueObject\Genders;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Orx;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -311,7 +311,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $where = new Expr\Orx();
+                    $where = new Orx();
 
                     foreach ($value->getValue() as $mandate) {
                         $where->add("mandate.type = :mandate_$mandate");
@@ -359,7 +359,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $where = new Expr\Orx();
+                    $where = new Orx();
 
                     foreach ($value->getValue() as $politicalFunctions) {
                         $where->add("politicalFunction.name = :function_$politicalFunctions");

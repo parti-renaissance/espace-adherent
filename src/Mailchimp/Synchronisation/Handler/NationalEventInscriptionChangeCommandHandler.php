@@ -30,7 +30,7 @@ class NationalEventInscriptionChangeCommandHandler implements LoggerAwareInterfa
     public function __invoke(NationalEventInscriptionChangeCommand $message): void
     {
         /** @var EventInscription $eventInscription */
-        if (!$eventInscription = $this->repository->findOneByUuid($uuid = $message->uuid->toString())) {
+        if (!$eventInscription = $this->repository->findOneByUuid($uuid = $message->uuid->toRfc4122())) {
             $this->logger->warning(\sprintf('EventInscription with UUID "%s" not found, message skipped', $uuid));
 
             return;

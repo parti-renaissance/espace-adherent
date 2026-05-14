@@ -25,11 +25,10 @@ use App\Entity\EntityTimestampableTrait;
 use App\Repository\GeneralMeeting\GeneralMeetingReportRepository;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['title' => 'partial', 'visibility' => 'exact'])]
@@ -108,9 +107,9 @@ class GeneralMeetingReport implements \Stringable, EntityScopeVisibilityWithZone
     #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString()

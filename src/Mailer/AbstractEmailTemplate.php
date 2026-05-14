@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplateInterface
 {
@@ -27,7 +27,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
     private $httpResponsePayload;
 
     final public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $template,
         string $subject,
         string $senderEmail,
@@ -50,7 +50,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         $this->templateContent = $templateContent;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

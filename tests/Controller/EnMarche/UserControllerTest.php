@@ -63,7 +63,7 @@ class UserControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame('adherent.change_email.success', current($flash));
 
         $this->manager->clear(Adherent::class);
-        $adherent = $this->getAdherentRepository()->findOneByUuid($token->getAdherentUuid()->toString());
+        $adherent = $this->getAdherentRepository()->findOneByUuid($token->getAdherentUuid()->toRfc4122());
         self::assertSame('new.mail@test.com', $adherent->getEmailAddress());
     }
 }

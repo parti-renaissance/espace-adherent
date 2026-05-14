@@ -11,7 +11,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class OidcAuthCodeGrantTest extends TestCase
 {
@@ -72,7 +72,7 @@ class OidcAuthCodeGrantTest extends TestCase
 
     public function testPkceRequiredClientRejectsWhenCodeChallengeMissing(): void
     {
-        $client = new Client(Uuid::uuid4());
+        $client = new Client(Uuid::v4());
         $client->setPkceRequired(true);
 
         $this->clientRepository->method('findOneByUuid')->willReturn($client);

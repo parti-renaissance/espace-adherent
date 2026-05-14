@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Api\DTO;
 
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ImageContent
@@ -70,7 +70,7 @@ class ImageContent
 
         $this->file = new UploadedFile(
             $tmpFile,
-            Uuid::uuid4().'.'.$this->getExtension(),
+            Uuid::v4().'.'.$this->getExtension(),
             $this->getMimeType(),
             null,
             true

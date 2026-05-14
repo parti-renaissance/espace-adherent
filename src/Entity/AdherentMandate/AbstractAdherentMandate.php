@@ -15,8 +15,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
@@ -93,7 +93,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface, Enti
         ?string $quality = null,
         bool $isProvisional = false,
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->adherent = $adherent;
         $this->gender = $gender ?? $adherent?->getGender();
         $this->beginAt = $beginAt ?? new \DateTime();

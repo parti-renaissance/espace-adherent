@@ -13,7 +13,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AppHitRepository extends ServiceEntityRepository
 {
@@ -24,7 +24,7 @@ class AppHitRepository extends ServiceEntityRepository
         parent::__construct($registry, AppHit::class);
     }
 
-    public function countImpressionAndOpenStats(TargetTypeEnum $type, UuidInterface $objectUuid): array
+    public function countImpressionAndOpenStats(TargetTypeEnum $type, Uuid $objectUuid): array
     {
         $qb = $this->createQueryBuilder('h')
             // Impressions
@@ -90,7 +90,7 @@ class AppHitRepository extends ServiceEntityRepository
         ], 0), $qb->getQuery()->getOneOrNullResult() ?? []);
     }
 
-    public function getPaginatedStats(EventTypeEnum $eventType, TargetTypeEnum $targetType, UuidInterface $targetUuid, int $page, int $limit): PaginatorInterface
+    public function getPaginatedStats(EventTypeEnum $eventType, TargetTypeEnum $targetType, Uuid $targetUuid, int $page, int $limit): PaginatorInterface
     {
         $queryBuilder = $this->createQueryBuilder('h')
             ->where('h.eventType = :event_type')

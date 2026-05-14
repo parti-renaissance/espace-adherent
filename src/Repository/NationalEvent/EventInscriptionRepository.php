@@ -29,7 +29,7 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class EventInscriptionRepository extends ServiceEntityRepository implements PublicIdRepositoryInterface, UpdateAdherentLinkRepositoryInterface
 {
@@ -501,7 +501,7 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
     /**
      * @return EventInscription[]
      */
-    public function findAllForExport(UuidInterface $eventUuid, array $zones, array $committeeUuids, ?bool $withAdherent, ?string $search): array
+    public function findAllForExport(Uuid $eventUuid, array $zones, array $committeeUuids, ?bool $withAdherent, ?string $search): array
     {
         $eventId = $this->getEntityManager()->createQueryBuilder()
             ->select('e.id')

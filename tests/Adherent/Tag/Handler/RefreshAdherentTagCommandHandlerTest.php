@@ -14,9 +14,9 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class RefreshAdherentTagCommandHandlerTest extends TestCase
 {
@@ -43,13 +43,13 @@ class RefreshAdherentTagCommandHandlerTest extends TestCase
 
     public function testHandlerDoesNothingWhenAdherentNotFound(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
         $command = new RefreshAdherentTagCommand($uuid);
 
         $this->adherentRepository
             ->expects(self::once())
             ->method('findOneByUuid')
-            ->with($uuid->toString())
+            ->with($uuid->toRfc4122())
             ->willReturn(null)
         ;
 
@@ -63,7 +63,7 @@ class RefreshAdherentTagCommandHandlerTest extends TestCase
 
     public function testHandlerDispatchesMessagesInCorrectOrder(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
         $email = 'test@example.org';
         $command = new RefreshAdherentTagCommand($uuid);
 
@@ -80,7 +80,7 @@ class RefreshAdherentTagCommandHandlerTest extends TestCase
         $this->adherentRepository
             ->expects(self::once())
             ->method('findOneByUuid')
-            ->with($uuid->toString())
+            ->with($uuid->toRfc4122())
             ->willReturn($adherent)
         ;
 

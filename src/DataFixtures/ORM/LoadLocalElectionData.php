@@ -16,8 +16,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
 {
@@ -36,7 +36,7 @@ class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
         $this->setReference('local-election-1', $object);
 
         foreach (['06', '77', '93'] as $department) {
-            $manager->persist($election = new LocalElection($this->getReference("designation-local-dpt-$department", Designation::class), Uuid::uuid4()));
+            $manager->persist($election = new LocalElection($this->getReference("designation-local-dpt-$department", Designation::class), Uuid::v4()));
             $this->fillLists($election, 5, 12);
 
             $this->setReference("local-election-dpt-$department", $object);

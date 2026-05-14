@@ -13,9 +13,8 @@ use App\Repository\Pap\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -48,9 +47,9 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
     #[ORM\OneToMany(mappedBy: 'floor', targetEntity: FloorStatistics::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $statistics;
 
-    public function __construct(int $number, BuildingBlock $buildingBlock, ?UuidInterface $uuid = null)
+    public function __construct(int $number, BuildingBlock $buildingBlock, ?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->number = $number;
         $this->buildingBlock = $buildingBlock;
         $this->statistics = new ArrayCollection();

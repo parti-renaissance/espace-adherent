@@ -42,7 +42,7 @@ class UploadDocumentController extends AbstractController
         $message = 'Le document a été téléchargé avec succès.';
         try {
             $document = $manager->createAndSave($file, $type, $scopeGeneratorResolver->generate());
-            $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toRfc4122(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
         } catch (\Exception $e) {
             $url = '';
             $message = $e->getMessage();

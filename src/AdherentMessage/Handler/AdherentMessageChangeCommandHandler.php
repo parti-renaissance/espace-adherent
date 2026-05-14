@@ -9,8 +9,8 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Uuid;
 
 #[AsMessageHandler]
 class AdherentMessageChangeCommandHandler
@@ -51,10 +51,10 @@ class AdherentMessageChangeCommandHandler
         $this->entityManager->clear();
     }
 
-    private function getMessage(UuidInterface $uuid): ?AdherentMessageInterface
+    private function getMessage(Uuid $uuid): ?AdherentMessageInterface
     {
         /** @var AdherentMessageInterface $message */
-        $message = $this->repository->findOneByUuid($uuid->toString());
+        $message = $this->repository->findOneByUuid($uuid->toRfc4122());
 
         if (!$message) {
             return null;

@@ -32,9 +32,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
@@ -198,8 +197,8 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     public ?Adherent $animator = null;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
-        ?UuidInterface $creator = null,
+        ?Uuid $uuid = null,
+        ?Uuid $creator = null,
         ?string $name = null,
         ?string $description = null,
         ?AddressInterface $address = null,
@@ -217,7 +216,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
             $createdAt = new \DateTime($createdAt);
         }
 
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->createdBy = $creator;
         if ($name) {
             $this->setName($name);
@@ -258,7 +257,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     }
 
     public static function createSimple(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $creatorUuid,
         string $name,
         string $description,
@@ -456,9 +455,9 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
         return $this->name ?? '';
     }
 
-    public static function createUuid(string $name): UuidInterface
+    public static function createUuid(string $name): Uuid
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
+        return Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), static::canonicalize($name));
     }
 
     public function setPhone(?PhoneNumber $phone = null): void
@@ -605,10 +604,10 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
 
     public function getCreatedBy(): ?string
     {
-        return $this->createdBy?->toString();
+        return $this->createdBy?->toRfc4122();
     }
 
-    public function isCreatedBy(UuidInterface $uuid): bool
+    public function isCreatedBy(Uuid $uuid): bool
     {
         return $this->createdBy && $this->createdBy->equals($uuid);
     }
@@ -625,7 +624,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
 
     public function getUuidAsString(): string
     {
-        return $this->getUuid()->toString();
+        return $this->getUuid()->toRfc4122();
     }
 
     public function getStatus(): string

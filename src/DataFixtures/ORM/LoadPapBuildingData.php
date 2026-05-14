@@ -22,7 +22,7 @@ use App\Pap\BuildingTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
 {

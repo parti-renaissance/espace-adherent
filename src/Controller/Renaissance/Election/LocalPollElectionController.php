@@ -22,7 +22,7 @@ class LocalPollElectionController extends AbstractController
         $designations = $electionManager->findActiveDesignations($this->getUser(), [DesignationTypeEnum::LOCAL_POLL]);
 
         if ($designationUuid = $request->query->get('uuid')) {
-            $designations = array_filter($designations, fn (Designation $designation) => $designation->getUuid()->toString() === $designationUuid);
+            $designations = array_filter($designations, fn (Designation $designation) => $designation->getUuid()->toRfc4122() === $designationUuid);
         }
 
         if (!$designations) {

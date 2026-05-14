@@ -12,8 +12,7 @@ use App\OAuth\Model\Scope;
 use App\OAuth\SecretGenerator;
 use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -71,14 +70,14 @@ class Client implements \Stringable
     private ?array $postLogoutRedirectUris = null;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         string $name = '',
         string $description = '',
         string $secret = '',
         array $allowedGrantTypes = [],
         array $redirectUris = [],
     ) {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->name = $name;
         $this->description = $description;
         $this->secret = $secret ?: SecretGenerator::generate();

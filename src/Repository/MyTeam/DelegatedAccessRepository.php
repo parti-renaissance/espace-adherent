@@ -9,7 +9,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class DelegatedAccessRepository extends ServiceEntityRepository
 {
@@ -20,7 +20,7 @@ class DelegatedAccessRepository extends ServiceEntityRepository
         parent::__construct($registry, DelegatedAccess::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?DelegatedAccess
+    public function findOneByUuid(Uuid|string $uuid): ?DelegatedAccess
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

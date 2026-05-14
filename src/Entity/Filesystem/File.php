@@ -13,10 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FileRepository::class)]
@@ -137,7 +137,7 @@ class File implements \Stringable, Timestampable
 
     public function __construct()
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->permissions = new ArrayCollection();
     }
 
@@ -309,7 +309,7 @@ class File implements \Stringable, Timestampable
 
     public function getPath(): string
     {
-        return \sprintf('files/filesystem/%s', $this->getUuid()->toString());
+        return \sprintf('files/filesystem/%s', $this->getUuid()->toRfc4122());
     }
 
     public function getNameWithExtension(): ?string

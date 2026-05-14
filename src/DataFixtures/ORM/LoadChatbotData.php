@@ -10,7 +10,7 @@ use App\Entity\Chatbot\Thread;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadChatbotData extends Fixture implements DependentFixtureInterface
 {

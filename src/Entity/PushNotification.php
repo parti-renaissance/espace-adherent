@@ -8,7 +8,7 @@ use App\Firebase\PushNotificationStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 class PushNotification
@@ -60,7 +60,7 @@ class PushNotification
         ?array $data,
         int $chunksTotal,
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->notificationClass = $notificationClass;
         $this->title = $title;
         $this->body = $body;
