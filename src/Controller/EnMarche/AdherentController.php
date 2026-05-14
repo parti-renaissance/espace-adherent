@@ -9,13 +9,10 @@ use App\Entity\Adherent;
 use App\Event\EventRegistrationManager;
 use App\Exception\EventRegistrationException;
 use App\Form\AdherentInterestsFormType;
-use App\Geocoder\Exception\GeocodingException;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
-use App\Search\SearchParametersFilter;
-use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,32 +29,15 @@ class AdherentController extends AbstractController
     public function homeAction(
         Request $request,
         AdherentRepository $adherentRepository,
-        SearchResultsProvidersManager $searchResultsProvidersManager,
-        SearchParametersFilter $searchParametersFilter,
-        #[CurrentUser] Adherent $user,
     ): Response {
-        $searchParametersFilter->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
-        $searchParametersFilter->setMaxResults(3);
-        $searchParametersFilter->setRadius(SearchParametersFilter::RADIUS_150);
-        $params = [];
-        $searchParams = [SearchParametersFilter::TYPE_EVENTS, SearchParametersFilter::TYPE_COMMITTEES];
-
-        foreach ($searchParams as $type) {
-            try {
-                $searchParametersFilter->setType($type);
-                $params[$type] = $searchResultsProvidersManager->find($searchParametersFilter);
-            } catch (GeocodingException $exception) {
-            }
-        }
-
         if ($request->query->getBoolean('from_activation')) {
             $this->addFlash('info', 'adherent.activation.success');
         }
 
-        return $this->render('adherent/home.html.twig', array_merge([
+        return $this->render('adherent/home.html.twig', [
             'nb_adherent' => $adherentRepository->countAdherents(),
             'from_activation' => $request->query->getBoolean('from_activation'),
-        ], $params));
+        ]);
     }
 
     /**

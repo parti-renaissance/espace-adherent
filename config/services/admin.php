@@ -563,10 +563,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.proposal'])
     ;
     $services
-        ->set('app.admin.softdeleteable_filter_configuration_extension', App\Admin\Extension\DoctrineSoftdeleteableFilterConfigurationAdminExtension::class)
-        ->tag('sonata.admin.extension', ['target' => 'app.admin.report'])
-    ;
-    $services
         ->set('app.admin.filter_by_zone_extension', App\Admin\Extension\FilterByZonesAdminExtension::class)
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent_elected_representative'])

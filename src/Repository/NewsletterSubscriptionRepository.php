@@ -18,7 +18,7 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
 
     public function findById(int $id): ?NewsletterSubscription
     {
-        return $this->disableSoftDeleteableFilter()->find($id);
+        return $this->find($id);
     }
 
     public function findOneByEmail(string $email): ?NewsletterSubscription
@@ -26,17 +26,8 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
-    public function disableSoftDeleteableFilter(): self
-    {
-        if ($this->getEntityManager()->getFilters()->has('softdeleteable') && $this->getEntityManager()->getFilters()->isEnabled('softdeleteable')) {
-            $this->getEntityManager()->getFilters()->disable('softdeleteable');
-        }
-
-        return $this;
-    }
-
     public function createQueryBuilderForSynchronization(): QueryBuilder
     {
-        return $this->disableSoftDeleteableFilter()->createQueryBuilder('newsletter');
+        return $this->createQueryBuilder('newsletter');
     }
 }

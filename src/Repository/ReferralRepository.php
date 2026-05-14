@@ -173,7 +173,7 @@ class ReferralRepository extends ServiceEntityRepository
                 {$joins}
                 WHERE referral.status = :status
                 {$filter}
-                GROUP BY adherent.id, zone_assembly.code
+                GROUP BY adherent.id, adherent.first_name, adherent.image_name, adherent.last_name, zone_assembly.name, zone_assembly.code
                 ORDER BY referrals_count DESC
                 LIMIT {$limit}
             SQL;

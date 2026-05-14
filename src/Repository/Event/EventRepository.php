@@ -18,13 +18,9 @@ use App\Geocoder\Coordinates;
 use App\Repository\GeoZoneTrait;
 use App\Repository\NearbyTrait;
 use App\Repository\UuidEntityRepositoryTrait;
-use App\Search\SearchParametersFilter;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -273,110 +269,7 @@ class EventRepository extends ServiceEntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    public function searchAllEvents(SearchParametersFilter $search): array
-    {
-        $sql = <<<'SQL'
-            SELECT events.uuid AS event_uuid, events.author_id AS event_organizer_id, events.committee_id AS event_committee_id,
-            events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description,
-            events.begin_at AS event_begin_at, events.finish_at AS event_finish_at,
-            events.capacity AS event_capacity,
-            events.created_at AS event_created_at, events.participants_count AS event_participants_count, events.slug AS event_slug,
-            events.address_address AS event_address_address,
-            events.address_country AS event_address_country, events.address_city_name AS event_address_city_name,
-            events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code,
-            events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, events.time_zone AS timeZone,
-            event_category.name AS event_category_name,
-            committees.uuid AS committee_uuid, committees.name AS committee_name, committees.slug AS committee_slug,
-            committees.description AS committee_description, committees.created_by AS committee_created_by,
-            committees.address_address AS committee_address_address, committees.address_country AS committee_address_country,
-            committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee,
-            committees.address_postal_code AS committee_address_postal_code, committees.address_latitude AS committee_address_latitude,
-            committees.address_longitude AS committee_address_longitude,
-            adherents.uuid AS adherent_uuid,
-            adherents.public_id AS adherent_public_id,
-            adherents.email_address AS adherent_email_address,
-            adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name,
-            adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate,
-            adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country,
-            adherents.address_city_name AS adherent_address_city_name, adherents.address_city_insee AS adherent_address_city_insee,
-            adherents.address_postal_code AS adherent_address_postal_code, adherents.address_latitude AS adherent_address_latitude,
-            adherents.address_longitude AS adherent_address_longitude, adherents.position AS adherent_position,
-            (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance
-            FROM events
-            LEFT JOIN adherents ON adherents.id = events.author_id
-            LEFT JOIN committees ON committees.id = events.committee_id
-            LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id
-            WHERE (events.address_latitude IS NOT NULL
-                AND events.address_longitude IS NOT NULL
-                AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max
-                AND events.begin_at > :today
-                AND events.published = :published
-                AND events.hidden = 0
-                AND events.status = :scheduled
-                AND event_category.id IS NOT NULL
-                )
-                __filter_query__
-                __filter_category__
-                __filter_referent_events__
-                __filter_private__
-            ORDER BY events.begin_at ASC, distance ASC
-            LIMIT :max_results
-            OFFSET :first_result
-            SQL;
-
-        if (!empty($searchQuery = $search->getQuery())) {
-            $filterQuery = 'AND events.name like :query';
-        }
-
-        if ($category = $search->getEventCategory()) {
-            $filterCategory = 'AND events.category_id = :category';
-        }
-
-        if ($search->getReferentEvents()) {
-            $filterReferentEvents = 'AND events.committee_id IS NULL';
-        }
-
-        if (!$search->getWithPrivate()) {
-            $filterPrivate = 'AND events.visibility != :private_visibility';
-        }
-
-        $sql = preg_replace(
-            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/', '/__filter_private__/'],
-            [$filterQuery ?? '', $filterCategory ?? '', $filterReferentEvents ?? '', $filterPrivate ?? ''],
-            $sql
-        );
-
-        $rsm = new ResultSetMapping();
-        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
-
-        if ($search->getCityCoordinates()) {
-            $query->setParameter('distance_max', $search->getRadius());
-            $query->setParameter('today', new Chronos('now - 1 hour'));
-        }
-
-        if (!$search->getWithPrivate()) {
-            $query->setParameter('private_visibility', EventVisibilityEnum::PRIVATE);
-        }
-
-        if (!empty($searchQuery)) {
-            $query->setParameter('query', '%'.$searchQuery.'%');
-        }
-
-        if ($category) {
-            $query->setParameter('category', $category);
-        }
-
-        $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
-        $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
-        $query->setParameter('published', 1, ParameterType::INTEGER);
-        $query->setParameter('scheduled', Event::STATUS_SCHEDULED);
-        $query->setParameter('first_result', $search->getOffset(), ParameterType::INTEGER);
-        $query->setParameter('max_results', $search->getMaxResults(), ParameterType::INTEGER);
-
-        return $query->getResult('EventHydrator');
-    }
-
-    public function paginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
+    public function paginate(int $offset = 0, int $limit = 30): Paginator
     {
         $query = $this->createQueryBuilder('e')
             ->getQuery()
@@ -392,7 +285,7 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findNearbyOf(
         Event $event,
-        int $radius = SearchParametersFilter::RADIUS_10,
+        int $radius = 10,
         int $max = 3,
     ): array {
         return $this

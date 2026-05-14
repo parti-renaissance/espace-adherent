@@ -19,7 +19,6 @@ class ClientTest extends TestCase
         self::assertEmpty($client->getDescription());
         self::assertEmpty($client->getRedirectUris());
         self::assertSame(44, mb_strlen($client->getSecret()));
-        self::assertEmpty($client->getDeletedAt());
         self::assertInstanceOf(UuidInterface::class, $client->getUuid());
         self::assertTrue($client->isAskUserForAuthorization());
     }

@@ -6,7 +6,6 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
-use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Renaissance\NewsletterSubscription;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -192,28 +191,6 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStringContainsString($needle, $link);
 
         Chronos::setTestNow();
-    }
-
-    public function testSearchCategoryForm(): void
-    {
-        $crawler = $this->client->request('GET', '/evenements');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $options = $crawler->filter('.search__bar__options__types option');
-        $optgroup = $crawler->filter('.search__bar__options__types optgroup');
-        $array = $options->getIterator();
-        $labels = [];
-        foreach ($array as $element) {
-            /* @var \DOMElement $element */
-            $labels[] = $element->textContent;
-        }
-
-        $countCategories = \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES);
-        $countCategories += \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES_GROUPED);
-
-        $this->assertNotContains('Catégorie masquée', $labels);
-        self::assertSame($countCategories, $options->count());
-        self::assertSame(4, $optgroup->count());
     }
 
     public function testAdherentCanUnregisterToEvent(): void

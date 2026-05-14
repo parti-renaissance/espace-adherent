@@ -561,24 +561,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->set(League\CommonMark\CommonMarkConverter::class);
 
-    $services->set(App\Search\SearchParametersFilter::class)
-        ->share(false)
-        ->args([
-            service(App\Geocoder\Geocoder::class),
-            service('cache.app'),
-        ])
-        ->call('setMaxResults', [
-            '%search_max_results%',
-        ]);
-
-    $services->set(App\Search\SearchResultsProvidersManager::class)
-        ->call('addProvider', [
-            service(App\Search\CommitteeSearchResultsProvider::class),
-        ])
-        ->call('addProvider', [
-            service(App\Search\EventSearchResultsProvider::class),
-        ]);
-
     $services->set(App\Api\Doctrine\JecouteNewsExtension::class)
         ->tag('api_platform.doctrine.orm.query_extension.collection', [
             'priority' => 9,

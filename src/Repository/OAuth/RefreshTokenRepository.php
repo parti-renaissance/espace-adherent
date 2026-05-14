@@ -70,6 +70,8 @@ class RefreshTokenRepository extends ServiceEntityRepository
         foreach ($this->findAllRefreshTokensByClient($client) as $refreshToken) {
             $this->revokeToken($refreshToken);
         }
+
+        $this->getEntityManager()->flush();
     }
 
     public function revokeUserTokens(Adherent $user): void

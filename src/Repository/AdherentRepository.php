@@ -693,8 +693,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             )
             ->where('campaign = :campaign')
             ->groupBy('adherent.id')
+            ->addGroupBy('adherent.firstName')
             ->orderBy('nb_surveys', 'DESC')
-            ->addOrderBy('campaignHistory.beginAt', 'DESC')
+            ->addOrderBy('MAX(campaignHistory.beginAt)', 'DESC')
             ->addOrderBy('adherent.id', 'ASC')
             ->setParameters(new ArrayCollection([
                 new Query\Parameter('campaign', $campaign),
@@ -786,8 +787,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             )
             ->where('campaign = :campaign')
             ->groupBy('adherent.id')
+            ->addGroupBy('adherent.firstName')
+            ->addGroupBy('adherent.lastName')
             ->orderBy('nb_surveys', 'DESC')
-            ->addOrderBy('campaignHistory.beginAt', 'DESC')
+            ->addOrderBy('MAX(campaignHistory.beginAt)', 'DESC')
             ->setParameters(new ArrayCollection([
                 new Query\Parameter('campaign', $campaign),
                 new Query\Parameter('send', CampaignHistoryStatusEnum::SEND),

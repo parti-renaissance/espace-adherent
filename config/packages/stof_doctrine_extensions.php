@@ -9,7 +9,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'default' => [
                 'tree' => true,
                 'sluggable' => true,
-                'softdeleteable' => true,
                 'timestampable' => true,
                 'blameable' => true,
                 'sortable' => true,

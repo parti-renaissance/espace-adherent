@@ -12,10 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
 #[ORM\Table(name: 'proposals')]
-class Proposal implements \Stringable, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
+class Proposal implements \Stringable, EntityContentInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
     use EntityContentTrait;
 
     /**
@@ -146,6 +145,6 @@ class Proposal implements \Stringable, EntityContentInterface, EntitySoftDeleted
 
     public function isIndexable(): bool
     {
-        return $this->isPublished() && $this->isNotDeleted();
+        return $this->isPublished();
     }
 }

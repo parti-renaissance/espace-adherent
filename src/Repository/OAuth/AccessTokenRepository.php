@@ -62,6 +62,8 @@ class AccessTokenRepository extends ServiceEntityRepository
         foreach ($this->findAllAccessTokensByClient($client) as $accessToken) {
             $this->revokeToken($accessToken);
         }
+
+        $this->getEntityManager()->flush();
     }
 
     public function revokeUserTokens(Adherent $user): void

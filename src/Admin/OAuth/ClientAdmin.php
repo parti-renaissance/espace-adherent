@@ -6,12 +6,14 @@ namespace App\Admin\OAuth;
 
 use App\Admin\AbstractAdmin;
 use App\AppCodeEnum;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\AuthorizationCode;
+use App\Entity\OAuth\UserAuthorization;
 use App\OAuth\Form\GrantTypesType;
 use App\OAuth\Form\ScopesType;
-use App\OAuth\TokenRevocationAuthority;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ClientAdmin extends AbstractAdmin
 {
-    public function __construct(private readonly TokenRevocationAuthority $tokenRevocationAuthority)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();
     }
@@ -29,15 +31,6 @@ class ClientAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter->add('name', null, ['label' => 'Nom']);
-    }
-
-    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
-    {
-        $query->andWhere(
-            $query->expr()->isNull($query->getRootAliases()[0].'.deletedAt')
-        );
-
-        return $query;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -165,8 +158,15 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    protected function postRemove(object $object): void
+    protected function preRemove(object $object): void
     {
-        $this->tokenRevocationAuthority->revokeClientTokens($object);
+        // Remove dependent records through the UoW so they are deleted in the same flush as the Client.
+        // Refresh tokens cascade automatically via FK ON DELETE CASCADE on access_token_id.
+        $dependentRepositories = [AccessToken::class, AuthorizationCode::class, UserAuthorization::class];
+        foreach ($dependentRepositories as $class) {
+            foreach ($this->entityManager->getRepository($class)->findBy(['client' => $object]) as $entity) {
+                $this->entityManager->remove($entity);
+            }
+        }
     }
 }
