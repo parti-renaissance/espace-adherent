@@ -82,7 +82,6 @@ class NewsletterValueObject
         $object->email = $newsletter->getEmail();
         $object->zipCode = $newsletter->getPostalCode();
         $object->countryName = $newsletter->getCountryName();
-        $object->subscribed = $newsletter->isNotDeleted();
 
         $object->type = $newsletter->isFromEvent() ?
             NewsletterTypeEnum::MAIN_SITE_FROM_EVENT

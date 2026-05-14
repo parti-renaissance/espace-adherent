@@ -6,26 +6,21 @@ namespace App\Entity\OAuth;
 
 use App\AppCodeEnum;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntitySoftDeletableTrait;
-use App\Entity\EntitySoftDeletedInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\OAuth\SecretGenerator;
 use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'oauth_clients')]
-class Client implements \Stringable, EntitySoftDeletedInterface
+class Client implements \Stringable
 {
     use EntityIdentityTrait;
-    use EntitySoftDeletableTrait;
     use EntityTimestampableTrait;
 
     #[Assert\Length(max: 32, maxMessage: 'client.name.constraint.length.max')]

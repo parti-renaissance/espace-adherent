@@ -45,8 +45,8 @@
         "beberlei/doctrineextensions": "^1.2",
         "cakephp/chronos": "^3.1",
         "cocur/slugify": "^4.0",
-        "doctrine/doctrine-bundle": "^2.8",
-        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
         "egulias/email-validator": "^4.0",
         "endroid/qr-code-bundle": "^6.0",
         "enmarche/majority-judgment": "^0.0.3",
@@ -213,8 +213,46 @@
     "conflict": {
         "symfony/symfony": "*"
     },
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git"
-    }]
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "runroom-packages/sortable-behavior-bundle",
+                "version": "0.21.0.1",
+                "type": "symfony-bundle",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/runroom/RunroomSortableBehaviorBundle/zipball/0.21.0",
+                    "reference": "0.21.0"
+                },
+                "require": {
+                    "php": "^8.1",
+                    "doctrine/dbal": "^3.6 || ^4.0",
+                    "doctrine/doctrine-bundle": "^2.10 || ^3.0",
+                    "doctrine/orm": "^2.19 || ^3.2",
+                    "doctrine/persistence": "^3.1 || ^4.0",
+                    "symfony/config": "^6.4 || ^7.1",
+                    "symfony/dependency-injection": "^6.4 || ^7.1",
+                    "symfony/http-foundation": "^6.4 || ^7.1",
+                    "symfony/http-kernel": "^6.4 || ^7.1",
+                    "symfony/property-access": "^6.4 || ^7.1",
+                    "symfony/translation": "^6.4 || ^7.1",
+                    "twig/twig": "^3.14"
+                },
+                "conflict": {
+                    "gedmo/doctrine-extensions": "<3.11",
+                    "sonata-project/admin-bundle": "<4.25"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Runroom\\SortableBehaviorBundle\\": "src/"
+                    }
+                }
+            }
+        }
+    ]
 }

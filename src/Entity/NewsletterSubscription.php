@@ -9,7 +9,6 @@ use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,15 +17,13 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['Subscription'])]
-#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
 #[ORM\Table(name: 'newsletter_subscriptions')]
 #[UniqueEntity(fields: ['email'], message: 'newsletter.already_registered')]
-class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
+class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInterface, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
     use RecaptchaChallengeTrait;
 
     /**
@@ -70,6 +67,9 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
      */
     #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
     private $token;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $deletedAt = null;
 
     /**
      * @var bool

@@ -57,24 +57,20 @@ class ClientRenaissanceControllerCaseTest extends AbstractAdminWebTestCase
         $this->isSuccessful($this->client->getResponse());
     }
 
-    public function testRevokedTokensAfterDelete(): void
+    public function testTokensRemovedAfterClientDelete(): void
     {
         $oauthClient = $this->findClient(LoadClientData::CLIENT_01_UUID);
+        $clientId = $oauthClient->getId();
 
-        $crawler = $this->client->request('GET', \sprintf('/app/oauth-client/%s/delete', $oauthClient->getId()));
+        $crawler = $this->client->request('GET', \sprintf('/app/oauth-client/%s/delete', $clientId));
         $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
 
-        $accessTokens = $this->findAccessTokensByClient($oauthClient);
+        $this->getEntityManager()->clear();
 
-        foreach ($accessTokens as $accessToken) {
-            $this->assertTrue($accessToken->isRevoked(), 'All the AccessTokens of this Client should be revoked.');
-        }
-
-        $refreshTokens = $this->findRefreshTokensByClient($oauthClient);
-
-        foreach ($refreshTokens as $refreshToken) {
-            $this->assertTrue($refreshToken->isRevoked(), 'All the RefreshTokens of this AccessToken should be revoked.');
-        }
+        // The Client should be physically deleted along with its access/refresh tokens.
+        self::assertNull($this->getEntityManager()->getRepository(Client::class)->find($clientId));
+        self::assertSame(0, $this->countAccessTokensForClientId($clientId));
+        self::assertSame(0, $this->countRefreshTokensForClientId($clientId));
 
         $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
@@ -96,26 +92,32 @@ class ClientRenaissanceControllerCaseTest extends AbstractAdminWebTestCase
         ;
     }
 
-    private function findAccessTokensByClient(Client $client): ?array
+    private function countAccessTokensForClientId(int $clientId): int
     {
-        return $this
+        return (int) $this
             ->getEntityManager()
             ->getRepository(AccessToken::class)
-            ->findAllAccessTokensByClient($client)
+            ->createQueryBuilder('at')
+            ->select('COUNT(at.id)')
+            ->where('IDENTITY(at.client) = :clientId')
+            ->setParameter('clientId', $clientId)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 
-    private function findRefreshTokensByClient(Client $client): ?array
+    private function countRefreshTokensForClientId(int $clientId): int
     {
-        return $this
+        return (int) $this
             ->getEntityManager()
             ->getRepository(RefreshToken::class)
             ->createQueryBuilder('rt')
+            ->select('COUNT(rt.id)')
             ->join('rt.accessToken', 'at')
-            ->where('at.client = :client')
-            ->setParameter('client', $client)
+            ->where('IDENTITY(at.client) = :clientId')
+            ->setParameter('clientId', $clientId)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
 }

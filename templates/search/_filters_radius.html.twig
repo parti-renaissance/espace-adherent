@@ -1,9 +1,0 @@
-<div>
-    dans un rayon de
-    {# this widget will be embedded in the ribbon text #}
-    <select name="{{ constant('PARAMETER_RADIUS', search) }}">
-        {% for option in constant('RADII', search)|filter(item => item != -1) %}
-            <option value="{{ option }}" {% if constant('DEFAULT_RADIUS', search) == option %}selected="selected"{% endif %}>{{ option }} Km</option>
-        {% endfor %}
-    </select>
-</div>

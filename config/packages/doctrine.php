@@ -18,11 +18,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'password' => '%env(DATABASE_PASSWORD)%',
             'unix_socket' => '%env(DATABASE_SOCKET)%',
             'server_version' => '8.0',
-            'use_savepoints' => true,
-            'options' => [
-                1002 => 'SET sql_mode=(SELECT REPLACE(@@sql_mode,\'ONLY_FULL_GROUP_BY\',\'\'))',
-                'utf8mb4' => 'SET NAMES utf8mb4',
-            ],
             'types' => [
                 'uuid' => Ramsey\Uuid\Doctrine\UuidType::class,
                 'phone_number' => Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType::class,
@@ -33,7 +28,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
         ],
         'orm' => [
-            'auto_generate_proxy_classes' => '%kernel.debug%',
             'naming_strategy' => 'doctrine.orm.naming_strategy.underscore',
             'auto_mapping' => false,
             'mappings' => [
@@ -42,13 +36,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'type' => 'attribute',
                     'dir' => '%kernel.project_dir%/src/Entity',
                     'prefix' => 'App\Entity',
-                    'alias' => 'App',
-                ],
-            ],
-            'filters' => [
-                'softdeleteable' => [
-                    'class' => Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter::class,
-                    'enabled' => true,
                 ],
             ],
             'dql' => [
@@ -84,9 +71,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'if' => DoctrineExtensions\Query\Mysql\IfElse::class,
                     'cast' => DoctrineExtensions\Query\Mysql\Cast::class,
                 ],
-            ],
-            'hydrators' => [
-                'EventHydrator' => App\Doctrine\Hydrators\EventHydrator::class,
             ],
         ],
     ]);

@@ -16,7 +16,6 @@ use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Intl\FranceCitiesBundle;
-use App\Search\SearchParametersFilter;
 use App\Utils\GeometryUtils;
 use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -114,41 +113,9 @@ class CommitteeRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * @return Committee[]
-     */
-    public function searchCommittees(SearchParametersFilter $search): array
-    {
-        $alias = 'n';
-
-        if ($coordinates = $search->getCityCoordinates()) {
-            $qb = $this
-                ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->getNearbyExpression($alias).' < :distance_max')
-                ->setParameter('distance_max', $search->getRadius())
-            ;
-        } else {
-            $qb = $this->createQueryBuilder($alias);
-        }
-
-        if (!empty($query = $search->getQuery())) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
-
-        return $qb
-            ->andWhere('n.status = :status')
-            ->setParameter('status', Committee::APPROVED)
-            ->setFirstResult($search->getOffset())
-            ->setMaxResults($search->getMaxResults())
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function paginateAllApprovedCommittees(
         int $offset = 0,
-        int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS,
+        int $limit = 30,
     ): Paginator {
         $query = $this->createQueryBuilder('c')
             ->andWhere('c.status = :approved')

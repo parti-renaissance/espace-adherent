@@ -17,6 +17,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ],
         'cache' => [
             'app' => 'cache.adapter.apcu',
+            'pools' => [
+                'doctrine.metadata_cache_pool' => ['adapter' => 'cache.adapter.array'],
+                'doctrine.query_cache_pool' => ['adapter' => 'cache.adapter.array'],
+                'doctrine.result_cache_pool' => ['adapter' => 'cache.adapter.array'],
+            ],
         ],
     ]);
 };
