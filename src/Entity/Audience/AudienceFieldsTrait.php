@@ -270,7 +270,7 @@ trait AudienceFieldsTrait
             'scope' => $this->scope,
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getUuid()->toString();
-            }, $this->zones->toArray()),
+            }, $this->getZones()->toArray()),
             'roles' => implode(',', $this->roles),
         ]);
     }

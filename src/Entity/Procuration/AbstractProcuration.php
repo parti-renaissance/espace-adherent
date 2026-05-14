@@ -91,9 +91,6 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent;
 
-    #[ORM\ManyToMany(targetEntity: Round::class)]
-    public Collection $rounds;
-
     #[ORM\Column(nullable: true)]
     public ?string $statusDetail = null;
 
@@ -106,7 +103,6 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
 
     public function __construct(
         UuidInterface $uuid,
-        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -124,7 +120,6 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
         ?\DateTimeInterface $createdAt = null,
     ) {
         $this->uuid = $uuid;
-        $this->rounds = new ArrayCollection($rounds);
         $this->email = $email;
         $this->gender = $gender;
         $this->firstNames = $firstNames;

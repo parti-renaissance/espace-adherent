@@ -41,7 +41,7 @@ abstract class AbstractHubFetcher
 
         $queryBuilder
             ->select(\sprintf('COUNT(DISTINCT %s.id)', $alias))
-            ->resetDQLPart('orderBy')
+            ->resetDQLParts(['orderBy'])
         ;
 
         $dql = $queryBuilder->getDQL();

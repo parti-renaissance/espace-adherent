@@ -84,6 +84,9 @@ class Proxy extends AbstractProcuration
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public Collection $proxySlots;
 
+    #[ORM\ManyToMany(targetEntity: Round::class)]
+    public Collection $rounds;
+
     /**
      * @var ProxyAction[]|Collection
      */
@@ -111,7 +114,6 @@ class Proxy extends AbstractProcuration
     ) {
         parent::__construct(
             $uuid,
-            $rounds,
             $email,
             $gender,
             $firstNames,
@@ -129,6 +131,7 @@ class Proxy extends AbstractProcuration
             $createdAt
         );
 
+        $this->rounds = new ArrayCollection($rounds);
         $this->proxySlots = new ArrayCollection();
         $this->actions = new ArrayCollection();
     }
