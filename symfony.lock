@@ -1,10 +1,4 @@
 {
-    "a2lix/auto-form-bundle": {
-        "version": "0.3.3"
-    },
-    "a2lix/translation-form-bundle": {
-        "version": "3.0.7"
-    },
     "algolia/search-bundle": {
         "version": "5.2",
         "recipe": {

@@ -8,7 +8,6 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\Image;
 use App\Repository\MoocRepository;
 use App\Validator\ImageObject as AssertImageObject;
-use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -136,7 +135,7 @@ class Mooc implements \Stringable
         $this->chapters = new ArrayCollection();
         $this->content = $content;
         $this->youtubeId = $youtubeId;
-        $this->youtubeDuration = $youtubeDuration ?? Chronos::create();
+        $this->youtubeDuration = $youtubeDuration ?? new \DateTime();
         $this->shareTwitterText = $shareTwitterText;
         $this->shareFacebookText = $shareFacebookText;
         $this->shareEmailSubject = $shareEmailSubject;
