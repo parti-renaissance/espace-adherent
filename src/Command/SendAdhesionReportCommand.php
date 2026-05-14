@@ -11,6 +11,8 @@ use App\Mailer\Message\AdhesionReportMessage;
 use App\Repository\AdherentRepository;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -101,11 +103,11 @@ class SendAdhesionReportCommand extends Command
             ->leftJoin('a.zoneBasedRoles', 'zoneBasedRole')
             ->where('a.status = :status')
             ->andWhere('zoneBasedRole.type = :deputy')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'deputy' => ScopeEnum::DEPUTY,
-                'true' => true,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Adherent::ENABLED),
+                new Parameter('deputy', ScopeEnum::DEPUTY),
+                new Parameter('true', true),
+            ]))
             ->getQuery()
             ->getResult()
         ;
@@ -158,11 +160,11 @@ class SendAdhesionReportCommand extends Command
             ->select('COUNT(DISTINCT a.id)')
             ->where('a.status = :status')
             ->andWhere('a.activatedAt >= :start_date AND a.activatedAt <= :end_date')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'start_date' => $startDate->format('Y-m-d 00:00:00'),
-                'end_date' => $endDate->format('Y-m-d 23:59:59'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Adherent::ENABLED),
+                new Parameter('start_date', $startDate->format('Y-m-d 00:00:00')),
+                new Parameter('end_date', $endDate->format('Y-m-d 23:59:59')),
+            ]))
         ;
     }
 

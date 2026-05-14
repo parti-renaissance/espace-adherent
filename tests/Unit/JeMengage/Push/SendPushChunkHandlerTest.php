@@ -11,6 +11,7 @@ use App\JeMengage\Push\SendPushChunkHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
+use Ramsey\Uuid\Uuid;
 
 final class SendPushChunkHandlerTest extends TestCase
 {
@@ -142,7 +143,7 @@ final class SendPushChunkHandlerTest extends TestCase
 
     public function testInvokeWithPushNotificationUuidPropagatesIt(): void
     {
-        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+        $uuid = Uuid::uuid4();
         $command = new SendPushChunkCommand(
             'TestNotification',
             'Title',

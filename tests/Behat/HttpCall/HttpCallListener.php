@@ -7,11 +7,13 @@ namespace Tests\App\Behat\HttpCall;
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Behat\Tester\Result\ExecutedStepResult;
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Mink;
 use Behatch\HttpCall\ContextSupportedVoter;
 use Behatch\HttpCall\HttpCallResult;
 use Behatch\HttpCall\HttpCallResultPool;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use WebDriver\Exception;
 
 class HttpCallListener implements EventSubscriberInterface
 {
@@ -57,7 +59,7 @@ class HttpCallListener implements EventSubscriberInterface
                     new HttpCallResult($this->mink->getSession()->getPage()->getContent())
                 );
             }
-        } catch (\LogicException|\Behat\Mink\Exception\DriverException|\WebDriver\Exception $e) {
+        } catch (\LogicException|DriverException|Exception $e) {
         }
     }
 }

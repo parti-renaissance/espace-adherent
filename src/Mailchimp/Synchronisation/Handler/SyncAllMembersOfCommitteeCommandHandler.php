@@ -24,7 +24,7 @@ class SyncAllMembersOfCommitteeCommandHandler
 
     public function __invoke(SyncAllMembersOfCommitteeCommand $command): void
     {
-        $adherents = $this->repository->findMembers($this->entityManager->getPartialReference(Committee::class, $command->getCommitteeId()));
+        $adherents = $this->repository->findMembers($this->entityManager->getReference(Committee::class, $command->getCommitteeId()));
 
         foreach ($adherents as $adherent) {
             $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress(), batch: true));

@@ -10,6 +10,7 @@ use App\Entity\NationalEvent\Payment;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\Mailer\Message\Renaissance\NationalEventInscriptionDuplicateMessage;
 use App\NationalEvent\Command\PaymentStatusUpdateCommand;
+use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -1786,7 +1787,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         // 3. Simulate a stale-tab retry: a second payment that was started before the SUCCESS landed,
         //    then cancelled by the user on the bank UI.
-        $eventInscriptionManager = static::getContainer()->get(\App\NationalEvent\EventInscriptionManager::class);
+        $eventInscriptionManager = static::getContainer()->get(EventInscriptionManager::class);
         $secondPayment = $eventInscriptionManager->createPayment($inscription);
         $this->em->flush();
         $secondPaymentUuid = $secondPayment->getUuid()->toString();

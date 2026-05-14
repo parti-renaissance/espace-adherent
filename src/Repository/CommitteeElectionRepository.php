@@ -16,7 +16,9 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Vote;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,10 +42,10 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->innerJoin('ce.committee', 'c')
             ->where('ce.designation = :designation')
             ->andWhere('c.status = :approved')
-            ->setParameters([
-                'designation' => $designation,
-                'approved' => Committee::APPROVED,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('designation', $designation),
+                new Parameter('approved', Committee::APPROVED),
+            ]))
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()
@@ -62,10 +64,10 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->innerJoin('ce.candidacies', 'candidacy')
             ->where('ce.designation = :designation')
             ->andWhere('ce.adherentNotified = :false')
-            ->setParameters([
-                'designation' => $designation,
-                'false' => false,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('designation', $designation),
+                new Parameter('false', false),
+            ]))
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()
@@ -148,14 +150,14 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->innerJoin('committee_election.committee', 'committee')
             ->innerJoin('committee_election.designation', 'designation')
             ->where('committee.status = :approved')
-            ->setParameters([
-                'approved' => Committee::APPROVED,
-                'male' => Genders::MALE,
-                'female' => Genders::FEMALE,
-                'confirmed' => CandidacyInterface::STATUS_CONFIRMED,
-                'draft' => CandidacyInterface::STATUS_DRAFT,
-                'true' => true,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('approved', Committee::APPROVED),
+                new Parameter('male', Genders::MALE),
+                new Parameter('female', Genders::FEMALE),
+                new Parameter('confirmed', CandidacyInterface::STATUS_CONFIRMED),
+                new Parameter('draft', CandidacyInterface::STATUS_DRAFT),
+                new Parameter('true', true),
+            ]))
             ->orderBy('designation.voteStartDate', 'DESC')
         ;
 

@@ -11,8 +11,10 @@ use App\History\UserActionHistoryHandler;
 use App\History\UserActionHistoryTypeEnum;
 use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -130,13 +132,13 @@ class SendMembershipAnniversaryCommand extends Command
             ->andWhere('DATE(a.lastMembershipDonation) = :last_membership_date')
             ->andWhere('a.status = :status_enabled')
             ->andWhere('a.tags NOT LIKE :excluded_tag')
-            ->setParameters([
-                'last_membership_date' => $targetDate->format('Y-m-d'),
-                'status_enabled' => Adherent::ENABLED,
-                'excluded_tag' => '%'.$upToDateTag.'%',
-                'history_type' => UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED,
-                'current_year' => $currentYear,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('last_membership_date', $targetDate->format('Y-m-d')),
+                new Parameter('status_enabled', Adherent::ENABLED),
+                new Parameter('excluded_tag', '%'.$upToDateTag.'%'),
+                new Parameter('history_type', UserActionHistoryTypeEnum::MEMBERSHIP_ANNIVERSARY_REMINDED),
+                new Parameter('current_year', $currentYear),
+            ]))
         ;
 
         return new Paginator($qb->getQuery());

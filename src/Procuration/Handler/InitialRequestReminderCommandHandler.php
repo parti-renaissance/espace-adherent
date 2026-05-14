@@ -10,7 +10,9 @@ use App\Procuration\ProcurationNotifier;
 use App\Repository\Procuration\ProcurationRequestRepository;
 use App\Repository\Procuration\ProxyRepository;
 use App\Repository\Procuration\RequestRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -64,10 +66,10 @@ class InitialRequestReminderCommandHandler
             ->select('COUNT(DISTINCT p)')
             ->where('p.email = :email')
             ->andWhere('p.createdAt > :created_after')
-            ->setParameters([
-                'email' => $email,
-                'created_after' => $createdAfter,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('email', $email),
+                new Parameter('created_after', $createdAfter),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -80,10 +82,10 @@ class InitialRequestReminderCommandHandler
             ->select('COUNT(DISTINCT r)')
             ->where('r.email = :email')
             ->andWhere('r.createdAt > :created_after')
-            ->setParameters([
-                'email' => $email,
-                'created_after' => $createdAfter,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('email', $email),
+                new Parameter('created_after', $createdAfter),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

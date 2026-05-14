@@ -14,9 +14,11 @@ use App\Entity\Geo\ZoneTagEnum;
 use App\Geo\Http\ZoneAutocompleteFilter;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -62,9 +64,7 @@ class ZoneRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('zone')
             ->where('zone.type IN (:types)')
-            ->setParameters([
-                'types' => $types,
-            ])
+            ->setParameter('types', $types)
         ;
     }
 
@@ -331,11 +331,11 @@ class ZoneRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('zone')
             ->where('zone.postalCode LIKE :postal_code_1 or zone.postalCode LIKE :postal_code_2')
             ->andWhere('zone.type IN (:zone_types)')
-            ->setParameters([
-                'postal_code_1' => $postalCode.'%',
-                'postal_code_2' => '%,'.$postalCode.'%',
-                'zone_types' => [Zone::CITY, Zone::BOROUGH],
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('postal_code_1', $postalCode.'%'),
+                new Parameter('postal_code_2', '%,'.$postalCode.'%'),
+                new Parameter('zone_types', [Zone::CITY, Zone::BOROUGH]),
+            ]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -351,12 +351,12 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter('dpt_zone_type', Zone::DEPARTMENT)
             ->setParameter('city_zone_type', [Zone::CITY, Zone::BOROUGH])
             ->andWhere('city_zone.postalCode LIKE :postal_code_1 or city_zone.postalCode LIKE :postal_code_2')
-            ->setParameters([
-                'postal_code_1' => $postalCode.'%',
-                'postal_code_2' => '%,'.$postalCode.'%',
-                'dpt_zone_type' => Zone::DEPARTMENT,
-                'city_zone_type' => [Zone::CITY, Zone::BOROUGH],
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('postal_code_1', $postalCode.'%'),
+                new Parameter('postal_code_2', '%,'.$postalCode.'%'),
+                new Parameter('dpt_zone_type', Zone::DEPARTMENT),
+                new Parameter('city_zone_type', [Zone::CITY, Zone::BOROUGH]),
+            ]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -368,10 +368,10 @@ class ZoneRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('zone')
             ->innerJoin(Region::class, 'region', Join::WITH, 'zone.code = region.code')
             ->where('region.code = :code AND zone.type = :type')
-            ->setParameters([
-                'code' => $region->getCode(),
-                'type' => Zone::REGION,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('code', $region->getCode()),
+                new Parameter('type', Zone::REGION),
+            ]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -398,11 +398,11 @@ class ZoneRepository extends ServiceEntityRepository
             ->where('child_zone.type = :child_zone_type')
             ->andWhere('child_zone.code = :child_zone_code')
             ->andWhere('parent_zone.type = :parent_zone_type')
-            ->setParameters([
-                'child_zone_type' => $childType,
-                'child_zone_code' => $childCode,
-                'parent_zone_type' => $parentType,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('child_zone_type', $childType),
+                new Parameter('child_zone_code', $childCode),
+                new Parameter('parent_zone_type', $parentType),
+            ]))
             ->getQuery()
             ->getResult()
         ;
@@ -468,9 +468,7 @@ class ZoneRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('zone')
             ->where('zone.tags LIKE :assembly')
-            ->setParameters([
-                'assembly' => '%'.ZoneTagEnum::ASSEMBLY.'%',
-            ])
+            ->setParameter('assembly', '%'.ZoneTagEnum::ASSEMBLY.'%')
             ->getQuery()
             ->getResult()
         ;

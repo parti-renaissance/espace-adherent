@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Repository;
 
+use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\Event\Event;
 use App\Entity\PushNotification;
 use App\Entity\PushToken;
@@ -203,8 +205,8 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
 
     public function testFindAllForAdherentMessageRunsWithoutError(): void
     {
-        $message = $this->createMock(\App\Entity\AdherentMessage\AdherentMessage::class);
-        $filter = new \App\Entity\AdherentMessage\AdherentMessageFilter();
+        $message = $this->createMock(AdherentMessage::class);
+        $filter = new AdherentMessageFilter();
         $message->method('getFilter')->willReturn($filter);
 
         $result = $this->pushTokenRepository->findAllForAdherentMessage($message);

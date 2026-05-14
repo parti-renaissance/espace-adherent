@@ -14,6 +14,7 @@ use App\Repository\Event\EventRepository;
 use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -222,7 +223,7 @@ class EventExtensionTest extends TestCase
         $em = $this->createMock(EntityManager::class);
         $em->method('createQueryBuilder')->willReturn($subQb);
 
-        $expr = $this->createMock(\Doctrine\ORM\Query\Expr::class);
+        $expr = $this->createMock(Expr::class);
         $expr->method('exists')->willReturnCallback(fn (string $dql) => "EXISTS($dql)");
 
         $qb = $this->createMock(QueryBuilder::class);

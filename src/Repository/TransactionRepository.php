@@ -8,6 +8,8 @@ use App\Entity\Adherent;
 use App\Entity\Transaction;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TransactionRepository extends ServiceEntityRepository
@@ -69,12 +71,12 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('donator.emailAddress = :email')
             ->andWhere('transaction.payboxResultCode = :success_code')
             ->andWhere('transaction.payboxDateTime BETWEEN :first_day_of_year AND :last_day_of_year')
-            ->setParameters([
-                'email' => $email,
-                'success_code' => Transaction::PAYBOX_SUCCESS,
-                'first_day_of_year' => $now->format('Y/01/01 00:00:00'),
-                'last_day_of_year' => $now->format('Y/12/31 23:59:59'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('email', $email),
+                new Parameter('success_code', Transaction::PAYBOX_SUCCESS),
+                new Parameter('first_day_of_year', $now->format('Y/01/01 00:00:00')),
+                new Parameter('last_day_of_year', $now->format('Y/12/31 23:59:59')),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

@@ -9,6 +9,8 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VoteRepository extends ServiceEntityRepository
@@ -24,10 +26,10 @@ class VoteRepository extends ServiceEntityRepository
             ->select('COUNT(1)')
             ->innerJoin('vote.voter', 'voter')
             ->where('voter.adherent = :adherent AND vote.electionRound = :election_round')
-            ->setParameters([
-                'adherent' => $adherent,
-                'election_round' => $electionRound,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('election_round', $electionRound),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -38,10 +40,10 @@ class VoteRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('vote')
             ->innerJoin('vote.voter', 'voter')
             ->where('voter.adherent = :adherent AND vote.electionRound = :election_round')
-            ->setParameters([
-                'adherent' => $adherent,
-                'election_round' => $electionRound,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('election_round', $electionRound),
+            ]))
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -58,10 +60,10 @@ class VoteRepository extends ServiceEntityRepository
             ->innerJoin('round.election', 'election')
             ->where('voter.adherent = :adherent')
             ->andWhere('election.designation = :designation')
-            ->setParameters([
-                'adherent' => $adherent,
-                'designation' => $designation,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('designation', $designation),
+            ]))
             ->getQuery()
             ->getResult()
         ;

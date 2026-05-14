@@ -7,6 +7,8 @@ namespace App\Repository\LocalElection;
 use App\Entity\LocalElection\CandidaciesGroup;
 use App\Entity\LocalElection\Candidacy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CandidacyRepository extends ServiceEntityRepository
@@ -21,10 +23,10 @@ class CandidacyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('candidacy')
             ->innerJoin('candidacy.candidaciesGroup', 'candidacies_group')
             ->where('candidacy.email = :email AND candidacies_group = :candidacies_group')
-            ->setParameters([
-                'email' => $email,
-                'candidacies_group' => $candidaciesGroup,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('email', $email),
+                new Parameter('candidacies_group', $candidaciesGroup),
+            ]))
             ->getQuery()
             ->getOneOrNullResult()
         ;

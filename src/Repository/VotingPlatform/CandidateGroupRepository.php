@@ -48,9 +48,7 @@ class CandidateGroupRepository extends ServiceEntityRepository
                 )
             )
             ->where('candidate_group.electionPool = :election_pool')
-            ->setParameters([
-                'election_pool' => $electionPool,
-            ])
+            ->setParameter('election_pool', $electionPool)
             ->getQuery()
             ->getArrayResult()
         ;

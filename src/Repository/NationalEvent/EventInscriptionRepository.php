@@ -23,8 +23,10 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UpdateAdherentLinkRepositoryInterface;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
@@ -54,21 +56,21 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
             ->andWhere('((e.endDate <= :now AND ei.firstTicketScannedAt IS NOT NULL) OR e.endDate > :now)')
             ->orderBy('e.startDate', 'DESC')
-            ->setParameters([
-                'now' => new \DateTime(),
-                'adherent' => $adherent,
-                'start_date' => new \DateTime(EventTagGenerator::PERIOD),
-                'excluded_statuses' => [
+            ->setParameters(new ArrayCollection([
+                new Parameter('now', new \DateTime()),
+                new Parameter('adherent', $adherent),
+                new Parameter('start_date', new \DateTime(EventTagGenerator::PERIOD)),
+                new Parameter('excluded_statuses', [
                     InscriptionStatusEnum::CANCELED,
                     InscriptionStatusEnum::DUPLICATE,
                     InscriptionStatusEnum::REFUSED,
-                ],
-                'types' => [
+                ]),
+                new Parameter('types', [
                     NationalEventTypeEnum::DEFAULT,
                     NationalEventTypeEnum::CAMPUS,
                     NationalEventTypeEnum::NRP,
-                ],
-            ])
+                ]),
+            ]))
             ->getQuery()
             ->getResult()
         ;
@@ -86,13 +88,13 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->where('ei.adherent = :adherent')
             ->andWhere('ei.event = :event')
             ->andWhere('ei.status NOT IN (:excluded_statuses)')
-            ->setParameters([
-                'adherent' => $adherent,
-                'event' => $event,
-                'excluded_statuses' => [InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE],
-                'status_accepted' => InscriptionStatusEnum::ACCEPTED,
-                'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('event', $event),
+                new Parameter('excluded_statuses', [InscriptionStatusEnum::CANCELED, InscriptionStatusEnum::DUPLICATE]),
+                new Parameter('status_accepted', InscriptionStatusEnum::ACCEPTED),
+                new Parameter('status_inconclusive', InscriptionStatusEnum::INCONCLUSIVE),
+            ]))
             ->orderBy('score', 'ASC')
             ->addOrderBy('ei.createdAt', 'ASC')
             ->getQuery()
@@ -134,15 +136,15 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
                 ->where('ei.addressEmail = :email')
                 ->andWhere('e.mailchimpSync = :true')
                 ->andWhere('ei.status NOT IN (:excluded_statuses)')
-                ->setParameters([
-                    'email' => $email,
-                    'true' => true,
-                    'excluded_statuses' => [
+                ->setParameters(new ArrayCollection([
+                    new Parameter('email', $email),
+                    new Parameter('true', true),
+                    new Parameter('excluded_statuses', [
                         InscriptionStatusEnum::CANCELED,
                         InscriptionStatusEnum::DUPLICATE,
                         InscriptionStatusEnum::REFUSED,
-                    ],
-                ])
+                    ]),
+                ]))
                 ->getQuery()
                 ->getScalarResult(),
             'slug'
@@ -303,19 +305,19 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->andWhere('ei.status != :status')
             ->orderBy('priority', 'ASC')
             ->addOrderBy('ei.createdAt', 'ASC')
-            ->setParameters([
-                'event_inscription_id' => $eventInscription->getId(),
-                'event' => $eventInscription->event,
-                'email' => $eventInscription->addressEmail,
-                'first_name' => $eventInscription->firstName,
-                'last_name' => $eventInscription->lastName,
-                'status' => InscriptionStatusEnum::DUPLICATE,
-                'status_accepted' => InscriptionStatusEnum::ACCEPTED,
-                'status_inconclusive' => InscriptionStatusEnum::INCONCLUSIVE,
-                'status_refused' => InscriptionStatusEnum::REFUSED,
-                'status_waiting_payment' => InscriptionStatusEnum::WAITING_PAYMENT,
-                'status_pending' => InscriptionStatusEnum::PENDING,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('event_inscription_id', $eventInscription->getId()),
+                new Parameter('event', $eventInscription->event),
+                new Parameter('email', $eventInscription->addressEmail),
+                new Parameter('first_name', $eventInscription->firstName),
+                new Parameter('last_name', $eventInscription->lastName),
+                new Parameter('status', InscriptionStatusEnum::DUPLICATE),
+                new Parameter('status_accepted', InscriptionStatusEnum::ACCEPTED),
+                new Parameter('status_inconclusive', InscriptionStatusEnum::INCONCLUSIVE),
+                new Parameter('status_refused', InscriptionStatusEnum::REFUSED),
+                new Parameter('status_waiting_payment', InscriptionStatusEnum::WAITING_PAYMENT),
+                new Parameter('status_pending', InscriptionStatusEnum::PENDING),
+            ]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -513,10 +515,10 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->where('e.uuid = :uuid')
             ->orderBy('score', 'ASC')
             ->setMaxResults(1)
-            ->setParameters([
-                'uuid' => $eventUuid,
-                'now' => new \DateTime(),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('uuid', $eventUuid),
+                new Parameter('now', new \DateTime()),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -602,11 +604,11 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             ->where('ei.adherent IS NULL')
             ->andWhere('ei.addressEmail = :email')
             ->andWhere('ei.createdAt > :created_after')
-            ->setParameters([
-                'adherent' => $adherent,
-                'email' => $adherent->getEmailAddress(),
-                'created_after' => new \DateTime('-6 months'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('email', $adherent->getEmailAddress()),
+                new Parameter('created_after', new \DateTime('-6 months')),
+            ]))
             ->getQuery()
             ->execute()
         ;

@@ -29,6 +29,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 use Ramsey\Uuid\Uuid;
 
 class LoadVotingPlatformElectionData extends Fixture implements DependentFixtureInterface
@@ -49,7 +50,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID14 = 'b1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f';
 
     /**
-     * @var \Faker\Generator
+     * @var Generator
      */
     private $faker;
 

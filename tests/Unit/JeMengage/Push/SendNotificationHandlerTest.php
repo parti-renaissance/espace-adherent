@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\JeMengage\Push;
 
 use App\Entity\NotificationObjectInterface;
+use App\Entity\PushNotification;
 use App\Firebase\Notification\PushChunkNotification;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\JeMengage\Push\Command\SendPushChunkCommand;
@@ -114,7 +115,7 @@ final class SendNotificationHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('persist')
-            ->with(self::isInstanceOf(\App\Entity\PushNotification::class))
+            ->with(self::isInstanceOf(PushNotification::class))
         ;
 
         ($this->handler)($command);

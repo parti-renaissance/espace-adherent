@@ -12,6 +12,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -92,7 +93,7 @@ class AdherentRepositoryFindEmailsTest extends TestCase
         $classMetadata = new ClassMetadata(Adherent::class);
         $em->method('getClassMetadata')->willReturn($classMetadata);
 
-        $registry = $this->createStub(\Doctrine\Persistence\ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $registry->method('getManagerForClass')->willReturn($em);
 
         return new AdherentRepository($registry);

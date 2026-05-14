@@ -14,6 +14,7 @@ use App\Mailchimp\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class InitiateStaticSegmentSubscriberTest extends TestCase
 {
@@ -108,7 +109,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
         self::assertNull($campaign->getMailchimpStaticSegment());
     }
 
-    private function createCampaign(?\Ramsey\Uuid\UuidInterface $uuid = null): MailchimpCampaign
+    private function createCampaign(?UuidInterface $uuid = null): MailchimpCampaign
     {
         $message = $this->createStub(AdherentMessageInterface::class);
         $message->method('getUuid')->willReturn($uuid ?? Uuid::uuid4());
