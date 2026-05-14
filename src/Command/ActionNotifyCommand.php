@@ -7,7 +7,9 @@ namespace App\Command;
 use App\Entity\Action\Action;
 use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\Repository\Action\ActionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,11 +64,11 @@ class ActionNotifyCommand extends Command
         $queryBuilder = $this->actionRepository->createQueryBuilder('a')
             ->where('a.status = :status')
             ->andWhere('a.date >= :from_date AND a.date <= :to_date')
-            ->setParameters([
-                'status' => Action::STATUS_SCHEDULED,
-                'from_date' => new \DateTime('-15 min'),
-                'to_date' => new \DateTime(),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Action::STATUS_SCHEDULED),
+                new Parameter('from_date', new \DateTime('-15 min')),
+                new Parameter('to_date', new \DateTime()),
+            ]))
         ;
 
         if ($firstNotification) {

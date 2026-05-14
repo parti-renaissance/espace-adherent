@@ -9,6 +9,8 @@ use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
@@ -40,11 +42,11 @@ class DonationRepository extends ServiceEntityRepository
             ->andWhere('donation.duration != :duration')
             ->andWhere('donation.status = :status')
             ->andWhere('donation.subscriptionEndedAt IS NULL')
-            ->setParameters([
-                'status' => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
-                'email' => $email,
-                'duration' => PayboxPaymentSubscription::NONE,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Donation::STATUS_SUBSCRIPTION_IN_PROGRESS),
+                new Parameter('email', $email),
+                new Parameter('duration', PayboxPaymentSubscription::NONE),
+            ]))
             ->orderBy('donation.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -72,10 +74,10 @@ class DonationRepository extends ServiceEntityRepository
             ->innerJoin('donation.donator', 'donator')
             ->where('donator.adherent = :adherent')
             ->andWhere('donation.membership = 0 AND donation.status = :donation_status')
-            ->setParameters([
-                'adherent' => $adherent,
-                'donation_status' => Donation::STATUS_FINISHED,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('donation_status', Donation::STATUS_FINISHED),
+            ]))
             ->orderBy('donation.donatedAt')
             ->getQuery()
             ->getSingleColumnResult()
@@ -117,10 +119,10 @@ class DonationRepository extends ServiceEntityRepository
             ->where('donator.adherent = :adherent')
             ->andWhere('donation.membership = 1')
             ->andWhere('donation.status = :status')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => Donation::STATUS_FINISHED,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('status', Donation::STATUS_FINISHED),
+            ]))
             ->groupBy('year')
             ->orderBy('year', 'DESC')
             ->getQuery()
@@ -137,11 +139,11 @@ class DonationRepository extends ServiceEntityRepository
             ->andWhere('donation.membership = 1')
             ->andWhere('donation.status = :status')
             ->andWhere('donation.donatedAt < :before')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => Donation::STATUS_FINISHED,
-                'before' => $before,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('status', Donation::STATUS_FINISHED),
+                new Parameter('before', $before),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

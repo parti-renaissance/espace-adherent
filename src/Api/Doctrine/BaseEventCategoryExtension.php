@@ -25,9 +25,7 @@ class BaseEventCategoryExtension implements QueryCollectionExtensionInterface
                 ->join("$alias.eventGroupCategory", 'egc')
                 ->andWhere("$alias.status = :status")
                 ->andWhere('egc.status = :status')
-                ->setParameters([
-                    'status' => BaseEventCategory::ENABLED,
-                ])
+                ->setParameter('status', BaseEventCategory::ENABLED)
             ;
         }
     }

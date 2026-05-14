@@ -7,8 +7,10 @@ namespace App\Doctrine\DBAL;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 
 class JsonContains extends FunctionNode
@@ -16,17 +18,17 @@ class JsonContains extends FunctionNode
     public const FUNCTION_NAME = 'JSON_CONTAINS';
 
     /**
-     * @var \Doctrine\ORM\Query\AST\Node
+     * @var Node
      */
     public $jsonDocExpr;
 
     /**
-     * @var \Doctrine\ORM\Query\AST\Node
+     * @var Node
      */
     public $jsonValExpr;
 
     /**
-     * @var \Doctrine\ORM\Query\AST\Node
+     * @var Node
      */
     public $jsonPathExpr;
 
@@ -50,7 +52,7 @@ class JsonContains extends FunctionNode
     }
 
     /**
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function parse(Parser $parser): void
     {

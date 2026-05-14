@@ -21,6 +21,8 @@ use App\Repository\UuidEntityRepositoryTrait;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -73,10 +75,10 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('event.author', 'organizer')
             ->where('event.slug = :slug')
             ->andWhere('event.published = :published')
-            ->setParameters([
-                'published' => true,
-                'slug' => $slug,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('published', true),
+                new Parameter('slug', $slug),
+            ]))
         ;
     }
 
@@ -90,11 +92,11 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')
             ->andWhere('event.reminded = :false')
-            ->setParameters([
-                'start_after' => $startAfter,
-                'start_before' => $startBefore,
-                'false' => false,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('start_after', $startAfter),
+                new Parameter('start_before', $startBefore),
+                new Parameter('false', false),
+            ]))
         ;
 
         if ($mode) {
@@ -122,14 +124,14 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('event.beginAt < :start_before')
             ->andWhere('event.emailReminded = :email_reminded')
             ->andWhere('event.hidden = :hidden')
-            ->setParameters([
-                'published' => true,
-                'event_status' => Event::STATUS_SCHEDULED,
-                'start_after' => $startAfter,
-                'start_before' => $startBefore,
-                'email_reminded' => false,
-                'hidden' => false,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('published', true),
+                new Parameter('event_status', Event::STATUS_SCHEDULED),
+                new Parameter('start_after', $startAfter),
+                new Parameter('start_before', $startBefore),
+                new Parameter('email_reminded', false),
+                new Parameter('hidden', false),
+            ]))
             ->getQuery()
             ->getResult()
         ;
@@ -208,12 +210,12 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.status = :status')
             ->andWhere('e.mode = :mode')
             ->andWhere('e.hidden = :hidden')
-            ->setParameters([
-                'mode' => Event::MODE_MEETING,
-                'status' => Event::STATUS_SCHEDULED,
-                'visibilities' => [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE],
-                'hidden' => false,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('mode', Event::MODE_MEETING),
+                new Parameter('status', Event::STATUS_SCHEDULED),
+                new Parameter('visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE]),
+                new Parameter('hidden', false),
+            ]))
         ;
 
         if ($categorySlug) {
@@ -425,12 +427,12 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.national = 1')
             ->andWhere('e.liveUrl LIKE :live_url')
             ->andWhere('DATE(e.beginAt) = :today AND e.finishAt >= :now')
-            ->setParameters([
-                'status' => Event::STATUS_SCHEDULED,
-                'live_url' => 'https://vimeo.com/%',
-                'now' => $now = new \DateTime('now'),
-                'today' => $now->format('Y-m-d'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Event::STATUS_SCHEDULED),
+                new Parameter('live_url', 'https://vimeo.com/%'),
+                new Parameter('now', $now = new \DateTime('now')),
+                new Parameter('today', $now->format('Y-m-d')),
+            ]))
             ->getQuery()
             ->getResult()
         ;
@@ -447,11 +449,11 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.liveUrl LIKE :live_url')
             ->andWhere('e.pushSentAt IS NULL')
             ->andWhere('e.beginAt < :now AND e.finishAt >= :now')
-            ->setParameters([
-                'status' => Event::STATUS_SCHEDULED,
-                'live_url' => 'https://vimeo.com/%',
-                'now' => new \DateTime('now'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Event::STATUS_SCHEDULED),
+                new Parameter('live_url', 'https://vimeo.com/%'),
+                new Parameter('now', new \DateTime('now')),
+            ]))
             ->getQuery()
             ->getResult()
         ;

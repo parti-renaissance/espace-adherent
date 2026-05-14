@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
@@ -281,7 +282,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 6);
 
-        $messageUuid = \Ramsey\Uuid\Uuid::uuid4();
+        $messageUuid = Uuid::uuid4();
         $message = $this->createMock(AdherentMessageInterface::class);
         $message->expects(self::atLeastOnce())->method('getUuid')->willReturn($messageUuid);
 
@@ -444,7 +445,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
     {
         $command = new RetrySendMailchimpCampaignCommand(123, 2);
 
-        $messageUuid = \Ramsey\Uuid\Uuid::uuid4();
+        $messageUuid = Uuid::uuid4();
         $message = $this->createMock(AdherentMessageInterface::class);
         $message->expects(self::atLeastOnce())->method('getUuid')->willReturn($messageUuid);
 

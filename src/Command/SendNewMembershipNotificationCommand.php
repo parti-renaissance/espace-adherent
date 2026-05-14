@@ -11,9 +11,11 @@ use App\Entity\CommandHistoryTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\CommandHistoryRepository;
 use App\Scope\ScopeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -85,13 +87,13 @@ class SendNewMembershipNotificationCommand extends Command
                 ->add('animator_committee.id IS NOT NULL')
                 ->add('zone_based_role.id IS NOT NULL')
             )
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'zone_based_role_types' => [
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', Adherent::ENABLED),
+                new Parameter('zone_based_role_types', [
                     ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
                     ScopeEnum::DEPUTY,
-                ],
-            ])
+                ]),
+            ]))
             ->getQuery()
             ->getResult()
         ;

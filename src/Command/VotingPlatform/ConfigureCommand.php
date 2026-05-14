@@ -669,7 +669,7 @@ class ConfigureCommand extends Command
     private function createNewElection(Designation $designation, ?ElectionEntity $electionEntity = null): Election
     {
         return new Election(
-            $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
+            $this->entityManager->getReference(Designation::class, $designation->getId()),
             null,
             [new ElectionRound()],
             $electionEntity

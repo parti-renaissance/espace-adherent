@@ -7,6 +7,8 @@ namespace App\Api\Filter;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\MyTeam;
 use App\Scope\Generator\ScopeGeneratorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
 final class MyTeamScopeFilter extends AbstractScopeFilter
@@ -27,10 +29,10 @@ final class MyTeamScopeFilter extends AbstractScopeFilter
         $scope = $scopeGenerator->generate($currentUser);
         $queryBuilder
             ->andWhere("$alias.owner = :user AND $alias.scope = :scope")
-            ->setParameters([
-                'user' => $scope->getDelegator() ?? $currentUser,
-                'scope' => $scope->getMainCode(),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('user', $scope->getDelegator() ?? $currentUser),
+                new Parameter('scope', $scope->getMainCode()),
+            ]))
         ;
     }
 }

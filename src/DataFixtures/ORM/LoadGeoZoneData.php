@@ -39,7 +39,7 @@ class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
     {
         static::initZoneCache();
 
-        return isset(static::$zoneCache[$reference]) ? $manager->getPartialReference(Zone::class, static::$zoneCache[$reference]) : null;
+        return isset(static::$zoneCache[$reference]) ? $manager->getReference(Zone::class, static::$zoneCache[$reference]) : null;
     }
 
     public static function getZone(EntityManagerInterface $manager, string $reference): ?Zone

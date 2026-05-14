@@ -10,6 +10,8 @@ use App\Entity\Procuration\RequestSlot;
 use App\Entity\Procuration\Round;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,11 +32,11 @@ class RequestSlotRepository extends ServiceEntityRepository
             ->innerJoin('request_slot.proxySlot', 'proxy_slot')
             ->andWhere('proxy_slot.proxy = :proxy')
             ->andWhere('request_slot.round = :round')
-            ->setParameters([
-                'request' => $request,
-                'proxy' => $proxy,
-                'round' => $round,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('request', $request),
+                new Parameter('proxy', $proxy),
+                new Parameter('round', $round),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

@@ -9,6 +9,8 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CommitteeCandidacyInvitationRepository extends ServiceEntityRepository
@@ -28,11 +30,11 @@ class CommitteeCandidacyInvitationRepository extends ServiceEntityRepository
             ->where('invitation.membership = :membership')
             ->andWhere('candidacy.committeeElection = :election')
             ->andWhere('invitation.status = :pending')
-            ->setParameters([
-                'membership' => $membership,
-                'election' => $election,
-                'pending' => CandidacyInvitationInterface::STATUS_PENDING,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('membership', $membership),
+                new Parameter('election', $election),
+                new Parameter('pending', CandidacyInvitationInterface::STATUS_PENDING),
+            ]))
             ->getQuery()
             ->getResult()
         ;

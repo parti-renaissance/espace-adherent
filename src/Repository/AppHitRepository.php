@@ -10,6 +10,8 @@ use App\JeMengage\Hit\EventTypeEnum;
 use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
@@ -49,22 +51,22 @@ class AppHitRepository extends ServiceEntityRepository
             ->addSelect('CAST(COALESCE(ROUND(COUNT(DISTINCT IF(h.eventType = :event_type_click AND h.sourceGroup = :source_group_app, h.adherent, null)) * 100.0 / NULLIF(COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.sourceGroup = :source_group_app, h.adherent, null)), 0), 2), 0.0) AS DOUBLE) AS unique_clicks__app_rate')
 
             ->where('h.objectId = :object_id')
-            ->setParameters([
-                'object_id' => $objectUuid,
-                'event_type_impression' => EventTypeEnum::Impression,
-                'event_type_open' => EventTypeEnum::Open,
-                'event_type_click' => EventTypeEnum::Click,
-                'source_group_app' => SourceGroupEnum::App,
-                'source_timeline' => 'page_timeline',
-                'source_push' => 'push_notification',
-                'source_direct_link' => 'direct_link',
-                'source_email' => 'email',
-                'source_list' => match ($type) {
+            ->setParameters(new ArrayCollection([
+                new Parameter('object_id', $objectUuid),
+                new Parameter('event_type_impression', EventTypeEnum::Impression),
+                new Parameter('event_type_open', EventTypeEnum::Open),
+                new Parameter('event_type_click', EventTypeEnum::Click),
+                new Parameter('source_group_app', SourceGroupEnum::App),
+                new Parameter('source_timeline', 'page_timeline'),
+                new Parameter('source_push', 'push_notification'),
+                new Parameter('source_direct_link', 'direct_link'),
+                new Parameter('source_email', 'email'),
+                new Parameter('source_list', match ($type) {
                     TargetTypeEnum::Event => 'page_events',
                     TargetTypeEnum::Action => 'page_actions',
                     default => null,
-                },
-            ])
+                }),
+            ]))
         ;
 
         return array_merge(array_fill_keys([
@@ -94,11 +96,11 @@ class AppHitRepository extends ServiceEntityRepository
             ->where('h.eventType = :event_type')
             ->andWhere('h.objectType = :object_type')
             ->andWhere('h.objectId = :object_id')
-            ->setParameters([
-                'event_type' => $eventType,
-                'object_type' => $targetType,
-                'object_id' => $targetUuid,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('event_type', $eventType),
+                new Parameter('object_type', $targetType),
+                new Parameter('object_id', $targetUuid),
+            ]))
             ->orderBy('h.createdAt', 'DESC')
         ;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience\Handler;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
@@ -249,7 +250,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $this->setEntityId($segment, 4242);
         $segment->mailchimpSegmentId = $segmentId;
         $campaign->setMailchimpStaticSegment($segment);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
 
         return $campaign;
     }

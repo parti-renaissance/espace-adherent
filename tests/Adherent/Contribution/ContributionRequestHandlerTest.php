@@ -16,6 +16,7 @@ use GoCardlessPro\Resources\Subscription as GoCardlessSubscription;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -186,7 +187,7 @@ class ContributionRequestHandlerTest extends TestCase
         self::assertNull($this->handler->handleAmountChange($adherent, 50));
     }
 
-    private function createAdherentWithUuid(\Ramsey\Uuid\UuidInterface $uuid): Adherent
+    private function createAdherentWithUuid(UuidInterface $uuid): Adherent
     {
         $adherent = new Adherent();
         $reflection = new \ReflectionProperty(Adherent::class, 'uuid');

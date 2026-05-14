@@ -12,6 +12,6 @@ abstract class AbstractFixtures extends Fixture
 {
     protected function getZoneEntity(EntityManagerInterface $manager, int $id): Zone
     {
-        return $manager->getPartialReference(Zone::class, $id);
+        return $manager->getReference(Zone::class, $id);
     }
 }

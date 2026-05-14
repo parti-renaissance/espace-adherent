@@ -9,6 +9,8 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CommitteeAdherentMandateRepository extends ServiceEntityRepository
@@ -76,10 +78,10 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ->innerJoin('m.committee', 'committee')
             ->where('m.adherent = :adherent AND m.finishAt IS NULL')
             ->andWhere('m.quality = :quality')
-            ->setParameters([
-                'adherent' => $adherent,
-                'quality' => $quality,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('quality', $quality),
+            ]))
         ;
 
         return $qb
@@ -131,11 +133,11 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ->andWhere('m.finishAt IS NULL')
             ->set('m.finishAt', ':finish_at')
             ->set('m.reason', ':reason')
-            ->setParameters([
-                'committee' => $committee,
-                'finish_at' => $finishAt ?? new \DateTime(),
-                'reason' => $reason,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('committee', $committee),
+                new Parameter('finish_at', $finishAt ?? new \DateTime()),
+                new Parameter('reason', $reason),
+            ]))
         ;
 
         if ($quality) {

@@ -31,9 +31,7 @@ class CleanInitialRequestListener implements EventSubscriberInterface
             ->createQueryBuilder('pr')
             ->delete()
             ->where('pr.email = :email')
-            ->setParameters([
-                'email' => $procuration->email,
-            ])
+            ->setParameter('email', $procuration->email)
             ->getQuery()
             ->execute()
         ;

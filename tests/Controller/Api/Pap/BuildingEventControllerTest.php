@@ -16,6 +16,8 @@ use App\OAuth\Model\Scope;
 use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,10 +99,10 @@ class BuildingEventControllerTest extends AbstractApiTestCase
     {
         return $this->buildingEventRepository->createQueryBuilder('event')
             ->where('event.campaign = :campaign AND event.building = :building')
-            ->setParameters([
-                'campaign' => $campaign,
-                'building' => $building,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('campaign', $campaign),
+                new Parameter('building', $building),
+            ]))
             ->orderBy('event.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()

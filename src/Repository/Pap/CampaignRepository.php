@@ -9,7 +9,9 @@ use App\Repository\GeoZoneTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,10 +41,10 @@ class CampaignRepository extends ServiceEntityRepository
                 'campaignHistory.door IS NOT NULL'
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
-            ->setParameters([
-                'now' => new \DateTime(),
-                'last_30d' => new \DateTime('-30 days'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('now', new \DateTime()),
+                new Parameter('last_30d', new \DateTime('-30 days')),
+            ]))
         ;
 
         $this->applyKpiScopeVisibility($queryBuilder, $zones);
@@ -99,10 +101,10 @@ class CampaignRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('campaign')
             ->where('campaign.associated = :false')
             ->andWhere('campaign.beginAt <= :date AND campaign.finishAt > :date')
-            ->setParameters([
-                'date' => $startDate,
-                'false' => false,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('date', $startDate),
+                new Parameter('false', false),
+            ]))
             ->getQuery()
             ->getResult()
         ;

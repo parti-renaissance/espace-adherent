@@ -8,6 +8,7 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
+use App\Entity\CommitteeMembership;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -39,7 +40,7 @@ class CommitteeMembershipManagerInsertIfNotExistsTest extends AbstractKernelTest
         // and must NOT create a duplicate row.
         $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
 
-        $rows = $this->getEntityManager(\App\Entity\CommitteeMembership::class)
+        $rows = $this->getEntityManager(CommitteeMembership::class)
             ->getConnection()
             ->fetchAllAssociative(
                 'SELECT id FROM committees_memberships WHERE adherent_id = :a AND committee_id = :c',

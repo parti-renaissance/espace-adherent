@@ -9,6 +9,8 @@ use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CampaignHistoryRepository extends ServiceEntityRepository
@@ -22,10 +24,10 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->where('campaignHistory.adherent = :adherent AND campaignHistory.status != :send')
-            ->setParameters([
-                'adherent' => $adherent,
-                'send' => CampaignHistoryStatusEnum::SEND,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('send', CampaignHistoryStatusEnum::SEND),
+            ]))
             ->orderBy('campaignHistory.beginAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -38,10 +40,10 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         return (int) $this->createQueryBuilder('campaignHistory')
             ->select('ABS(AVG(TIMESTAMPDIFF(SECOND, campaignHistory.finishAt, campaignHistory.beginAt))) AS average_calling_time')
             ->where('campaignHistory.campaign = :campaign AND campaignHistory.status != :send')
-            ->setParameters([
-                'campaign' => $campaign,
-                'send' => CampaignHistoryStatusEnum::SEND,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('campaign', $campaign),
+                new Parameter('send', CampaignHistoryStatusEnum::SEND),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -52,10 +54,10 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         return (int) $this->createQueryBuilder('campaignHistory')
             ->select('COUNT(DISTINCT campaignHistory.adherent)')
             ->where('campaignHistory.campaign = :campaign AND campaignHistory.status != :send')
-            ->setParameters([
-                'campaign' => $campaign,
-                'send' => CampaignHistoryStatusEnum::SEND,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('campaign', $campaign),
+                new Parameter('send', CampaignHistoryStatusEnum::SEND),
+            ]))
             ->getQuery()
             ->getSingleScalarResult()
         ;

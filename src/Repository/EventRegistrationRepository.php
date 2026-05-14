@@ -217,7 +217,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->where('er.event = :event')
             ->andWhere('er.emailAddress IS NOT NULL')
             ->orderBy('er.createdAt', 'ASC')
-            ->setParameters(['event' => $event])
+            ->setParameter('event', $event)
         ;
     }
 

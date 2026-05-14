@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Repository\Poll\LocalPollRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -80,10 +82,10 @@ class UnpublishLocalPollCommand extends Command
             ->localPollRepository
             ->createQueryBuilder('poll')
             ->where('poll.published = :true AND poll.finishAt < :now')
-            ->setParameters([
-                'true' => true,
-                'now' => new \DateTime('now'),
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('true', true),
+                new Parameter('now', new \DateTime('now')),
+            ]))
         ;
     }
 }

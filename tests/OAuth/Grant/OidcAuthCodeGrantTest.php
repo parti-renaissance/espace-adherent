@@ -9,12 +9,13 @@ use App\OAuth\Grant\OidcAuthCodeGrant;
 use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 class OidcAuthCodeGrantTest extends TestCase
 {
-    private ClientRepository&\PHPUnit\Framework\MockObject\Stub $clientRepository;
+    private ClientRepository&Stub $clientRepository;
     private OidcAuthCodeGrant $grant;
 
     protected function setUp(): void

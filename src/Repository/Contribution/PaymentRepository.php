@@ -8,6 +8,8 @@ use App\Entity\Adherent;
 use App\Entity\Contribution\Payment;
 use App\Ohme\PaymentStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PaymentRepository extends ServiceEntityRepository
@@ -42,10 +44,10 @@ class PaymentRepository extends ServiceEntityRepository
             ->addSelect('SUM(payment.amount) AS total')
             ->where('payment.adherent = :adherent')
             ->andWhere('payment.status IN (:status)')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => PaymentStatusEnum::CONFIRMED_PAYMENT_STATUSES,
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('adherent', $adherent),
+                new Parameter('status', PaymentStatusEnum::CONFIRMED_PAYMENT_STATUSES),
+            ]))
             ->groupBy('year')
             ->orderBy('year', 'DESC')
             ->getQuery()

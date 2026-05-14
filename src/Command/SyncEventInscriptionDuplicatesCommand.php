@@ -6,8 +6,10 @@ namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,12 +69,12 @@ class SyncEventInscriptionDuplicatesCommand extends Command
                     ->andWhere('e.addressEmail = :email')
                     ->andWhere('e.firstName = :firstName')
                     ->andWhere('e.lastName = :lastName')
-                    ->setParameters([
-                        'eventId' => $q['event_id'],
-                        'email' => $q['address_email'],
-                        'firstName' => $q['first_name'],
-                        'lastName' => $q['last_name'],
-                    ])
+                    ->setParameters(new ArrayCollection([
+                        new Parameter('eventId', $q['event_id']),
+                        new Parameter('email', $q['address_email']),
+                        new Parameter('firstName', $q['first_name']),
+                        new Parameter('lastName', $q['last_name']),
+                    ]))
                     ->getQuery()
                     ->getResult()
                 ;

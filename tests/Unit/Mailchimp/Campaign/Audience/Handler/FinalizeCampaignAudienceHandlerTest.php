@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience\Handler;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
@@ -155,7 +156,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
@@ -178,7 +179,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
         $segment = $campaign->getMailchimpStaticSegment();
         $segment->expectedCount = 1_000;
 
@@ -219,7 +220,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
         $campaign->markAsPendingSend();
         $segment = $campaign->getMailchimpStaticSegment();
         $segment->expectedCount = 1;
@@ -263,7 +264,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
-        $campaign->markAsPreparing($this->createStub(\App\Entity\Adherent::class));
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
         $campaign->markAsPendingSend();
         $segment = $campaign->getMailchimpStaticSegment();
         $segment->expectedCount = 1;
