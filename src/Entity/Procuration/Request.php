@@ -111,6 +111,9 @@ class Request extends AbstractProcuration
     #[ORM\OrderBy(['createdAt' => 'ASC'])]
     public Collection $matchingHistories;
 
+    #[ORM\ManyToMany(targetEntity: Round::class)]
+    public Collection $rounds;
+
     /**
      * @var RequestAction[]|Collection
      */
@@ -140,7 +143,6 @@ class Request extends AbstractProcuration
     ) {
         parent::__construct(
             $uuid,
-            $rounds,
             $email,
             $gender,
             $firstNames,
@@ -158,6 +160,7 @@ class Request extends AbstractProcuration
             $createdAt
         );
 
+        $this->rounds = new ArrayCollection($rounds);
         $this->fromFrance = $fromFrance;
         $this->matchingHistories = new ArrayCollection();
         $this->requestSlots = new ArrayCollection();

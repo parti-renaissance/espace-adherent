@@ -10,10 +10,13 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Collection\ZoneCollection;
 use App\Controller\Api\Audience\RetrieveAudiencesController;
+use App\Entity\EntityZoneTrait;
 use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,6 +59,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AudienceRepository::class)]
 class Audience extends AbstractAudience
 {
+    use EntityZoneTrait;
+
     /**
      * @var string
      */
@@ -63,6 +68,13 @@ class Audience extends AbstractAudience
     #[Groups(['audience_read', 'audience_write', 'audience_list_read'])]
     #[ORM\Column]
     private $name;
+
+    public function __construct(?UuidInterface $uuid = null)
+    {
+        parent::__construct($uuid);
+
+        $this->zones = new ZoneCollection();
+    }
 
     public function getName(): ?string
     {

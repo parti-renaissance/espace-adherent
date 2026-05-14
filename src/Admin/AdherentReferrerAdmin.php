@@ -92,7 +92,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
             $sortOrder = $filter['_sort_order'] ?? 'ASC';
 
             if (\in_array($sortBy, self::SORTABLE_VIRTUAL_FIELDS, true)) {
-                $query->getQueryBuilder()->resetDQLPart('orderBy');
+                $query->getQueryBuilder()->resetDQLParts(['orderBy']);
 
                 $query->orderBy($sortBy, $sortOrder);
             }
