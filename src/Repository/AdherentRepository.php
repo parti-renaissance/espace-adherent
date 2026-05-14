@@ -159,7 +159,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function find($id, $lockMode = null, $lockVersion = null): ?Adherent
     {
-        return $this->createQueryBuilderForAdherentWithRoles('a')
+        $qb = $this->createQueryBuilderForAdherentWithRoles('a')
             ->addSelect('st')
             ->addSelect('sl')
             ->addSelect('tm')
@@ -171,10 +171,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin('a.teamMemberships', 'tm')
             ->leftJoin('a.animatorCommittees', 'ac')
             ->andWhere('a.id = :id')
-            ->setParameters(\is_array($id) ? $id : ['id' => $id])
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        foreach (\is_array($id) ? $id : ['id' => $id] as $key => $value) {
+            $qb->setParameter($key, $value);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     public function loadUserByIdentifier(string $identifier): UserInterface
@@ -274,8 +277,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function save(Adherent $adherent): void
     {
-        $this->_em->persist($adherent);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($adherent);
+        $this->getEntityManager()->flush();
     }
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Adherent

@@ -11,7 +11,6 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\ValueObject\Genders;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -209,7 +208,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     ): Campaign {
         $objet = new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, null, $zone);
 
-        $objet->setFinishAt(new Chronos($finishAt));
+        $objet->setFinishAt(new \DateTime($finishAt));
 
         return $objet;
     }

@@ -6,7 +6,7 @@ namespace App\Adherent\Merge;
 
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Log\LoggerInterface;
 
 class DynamicRelationMerger
@@ -42,7 +42,7 @@ class DynamicRelationMerger
                     continue;
                 }
 
-                if (ClassMetadataInfo::MANY_TO_MANY === $mapping['type']) {
+                if (ClassMetadata::MANY_TO_MANY === $mapping['type']) {
                     continue;
                 }
 

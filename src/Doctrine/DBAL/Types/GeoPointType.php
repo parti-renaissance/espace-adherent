@@ -24,8 +24,8 @@ final class GeoPointType extends Type
         return 'geo_point';
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform): true
+    public function getMappedDatabaseTypes(AbstractPlatform $platform): array
     {
-        return true;
+        return ['float'];
     }
 }

@@ -203,7 +203,7 @@ class LoadProcurationProxyData extends Fixture implements DependentFixtureInterf
             $gender,
             $firstNames,
             $lastName,
-            new \DateTimeImmutable($birthdate),
+            new \DateTime($birthdate),
             $phone ? PhoneNumberUtils::create($phone) : null,
             $this->addressFactory->createFlexible($country, $postalCode, $city, $address),
             $distantVotePlace,

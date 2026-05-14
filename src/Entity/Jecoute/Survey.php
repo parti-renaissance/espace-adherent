@@ -83,7 +83,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['survey_list']],
     filters: [JeMengageSurveyScopeFilter::class],
-    order: ['createdAt' => 'DESC']
+    order: ['createdAt' => 'DESC', 'id' => 'ASC']
 )]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]

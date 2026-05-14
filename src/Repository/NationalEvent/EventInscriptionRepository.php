@@ -25,6 +25,7 @@ use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
@@ -384,13 +385,13 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
         ];
 
         $types = [
-            'eventId' => \PDO::PARAM_INT,
+            'eventId' => ParameterType::INTEGER,
             'inscriptionStatuses' => ArrayParameterType::STRING,
-            'paymentStatus' => \PDO::PARAM_STR,
+            'paymentStatus' => ParameterType::STRING,
             'targetKeys' => ArrayParameterType::STRING,
-            'filterKeys' => \PDO::PARAM_INT,
-            'excludeId' => \PDO::PARAM_INT,
-            'filterExclude' => \PDO::PARAM_INT,
+            'filterKeys' => ParameterType::INTEGER,
+            'excludeId' => ParameterType::INTEGER,
+            'filterExclude' => ParameterType::INTEGER,
         ];
 
         $connection = $this->getEntityManager()->getConnection();

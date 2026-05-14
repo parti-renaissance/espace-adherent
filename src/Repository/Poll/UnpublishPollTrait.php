@@ -15,10 +15,8 @@ trait UnpublishPollTrait
             ->update()
             ->set('poll.published', ':false')
             ->where('poll != :poll')
-            ->setParameters([
-                'poll' => $poll,
-                'false' => 0,
-            ])
+            ->setParameter('poll', $poll)
+            ->setParameter('false', 0)
         ;
 
         if ($poll instanceof LocalPoll) {

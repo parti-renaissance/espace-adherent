@@ -8,6 +8,7 @@ use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,13 +52,11 @@ class VotePlaceRepository extends ServiceEntityRepository
             ->prepare($sql)
         ;
 
-        $stmt->bindParam('latitude', $latitude);
-        $stmt->bindParam('longitude', $longitude);
-        $stmt->bindParam('limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue('latitude', $latitude);
+        $stmt->bindValue('longitude', $longitude);
+        $stmt->bindValue('limit', $limit, ParameterType::INTEGER);
 
-        $result = $stmt->executeQuery();
-
-        return $result->fetchAllAssociative();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     public function withZones(QueryBuilder $queryBuilder, array $zones, string $alias): void

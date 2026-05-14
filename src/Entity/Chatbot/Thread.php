@@ -96,7 +96,7 @@ class Thread
         $message->thread = $this;
         $message->role = $role;
         $message->content = $content;
-        $message->date = $date ?? new \DateTimeImmutable('now');
+        $message->date = $date ?? new \DateTime('now');
         $message->externalId = $externalId;
 
         $this->messages->add($message);

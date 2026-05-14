@@ -24,7 +24,7 @@ class DeviceRepository extends ServiceEntityRepository
 
     public function save(Device $device): void
     {
-        $this->_em->persist($device);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($device);
+        $this->getEntityManager()->flush();
     }
 }

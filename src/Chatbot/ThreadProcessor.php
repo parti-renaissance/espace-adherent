@@ -177,7 +177,11 @@ class ThreadProcessor
         \DateTimeInterface $date,
         string $externalId,
     ): void {
-        $message = $thread->addAssistantMessage($content, $date, $externalId);
+        $message = $thread->addAssistantMessage(
+            $content,
+            $date instanceof \DateTimeImmutable ? \DateTime::createFromImmutable($date) : $date,
+            $externalId
+        );
 
         $this->entityManager->flush();
 

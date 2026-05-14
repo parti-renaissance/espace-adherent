@@ -115,7 +115,7 @@ class SurveyExporter
                         $row['Accepte que ses données soient traitées'] = null;
                     }
 
-                    $row['Profession'] = $papCampaignHistory->getProfession() ? ProfessionEnum::choices()[$papCampaignHistory->getProfession()] : null;
+                    $row['Profession'] = $papCampaignHistory->getProfession() ? (ProfessionEnum::choices()[$papCampaignHistory->getProfession()] ?? null) : null;
                     $row['Code postal de l\'immeuble'] = $papCampaignHistory->getBuilding()->getAddress()->getPostalCodesAsString();
                     $row['Longitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLongitude();
                     $row['Latitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLatitude();

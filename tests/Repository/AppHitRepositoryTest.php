@@ -79,7 +79,7 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
         $appHit->source = $source;
         $appHit->objectType = TargetTypeEnum::Publication;
         $appHit->objectId = $objectId;
-        $appHit->appDate = new \DateTimeImmutable();
+        $appHit->appDate = new \DateTime();
         $appHit->activitySessionUuid = Uuid::uuid4();
         $appHit->suspicious = $suspicious;
 

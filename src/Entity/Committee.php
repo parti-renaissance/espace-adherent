@@ -210,11 +210,11 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
         int $membersCount = 0,
     ) {
         if ($approvedAt) {
-            $approvedAt = new \DateTimeImmutable($approvedAt);
+            $approvedAt = new \DateTime($approvedAt);
         }
 
         if ($createdAt) {
-            $createdAt = new \DateTimeImmutable($createdAt);
+            $createdAt = new \DateTime($createdAt);
         }
 
         $this->uuid = $uuid ?? Uuid::uuid4();

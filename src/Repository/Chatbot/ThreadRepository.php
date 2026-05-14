@@ -37,6 +37,6 @@ class ThreadRepository extends ServiceEntityRepository
 
     public function refresh(Thread $thread): void
     {
-        $this->_em->refresh($thread);
+        $this->getEntityManager()->refresh($thread);
     }
 }

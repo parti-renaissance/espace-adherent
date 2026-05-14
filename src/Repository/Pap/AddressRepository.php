@@ -10,6 +10,7 @@ use App\Entity\Pap\VotePlace;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
@@ -71,10 +72,10 @@ class AddressRepository extends ServiceEntityRepository
         $stmt->bindValue('offset_x_2', $offsetX2);
         $stmt->bindValue('offset_y_1', $offsetY1);
         $stmt->bindValue('offset_y_2', $offsetY2);
-        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue('limit', $limit, ParameterType::INTEGER);
 
         foreach ($activeCampaigns as $key => $value) {
-            $stmt->bindValue('active_campaign_'.$key, $value, \PDO::PARAM_INT);
+            $stmt->bindValue('active_campaign_'.$key, $value, ParameterType::INTEGER);
         }
 
         $result = $stmt->executeQuery();

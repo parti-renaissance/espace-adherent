@@ -59,8 +59,8 @@ class DonatorRepository extends ServiceEntityRepository
 
     public function updateDonatorEmail(Adherent $adherent): void
     {
-        $this->_em->createQueryBuilder()
-            ->update($this->_entityName, 'donator')
+        $this->getEntityManager()->createQueryBuilder()
+            ->update($this->getEntityName(), 'donator')
             ->where('donator.adherent = :adherent')
             ->set('donator.emailAddress', ':email')
             ->setParameter('adherent', $adherent)

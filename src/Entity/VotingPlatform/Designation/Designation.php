@@ -191,7 +191,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
      * @var float
      */
     #[Assert\GreaterThanOrEqual(0)]
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
+    #[ORM\Column(type: 'float', options: ['default' => '0'])]
     private $resultScheduleDelay = 0;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

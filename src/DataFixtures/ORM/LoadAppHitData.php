@@ -79,7 +79,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
             'reload',
         ];
 
-        $now = new \DateTimeImmutable('-5 minutes');
+        $now = new \DateTime('-5 minutes');
 
         foreach ($events as $event) {
             $copyAdherents = $adherents;

@@ -82,7 +82,7 @@ abstract class Report implements \Stringable
         $this->author = $author;
         $this->reasons = $reasons;
         $this->comment = $comment;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
     }
 
     final public function __toString(): string
@@ -120,7 +120,7 @@ abstract class Report implements \Stringable
         }
 
         $this->status = ReportStatusEnum::STATUS_RESOLVED;
-        $this->resolvedAt = new \DateTimeImmutable();
+        $this->resolvedAt = new \DateTime();
     }
 
     final public function isResolved(): bool

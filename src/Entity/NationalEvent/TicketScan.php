@@ -33,6 +33,6 @@ class TicketScan
         $this->uuid = Uuid::uuid4();
         $this->scannedBy = $scannedBy;
         $this->inscriptionStatus = $inscriptionStatus;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
     }
 }

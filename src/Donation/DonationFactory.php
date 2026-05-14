@@ -31,7 +31,7 @@ class DonationFactory
             $uuid = Uuid::uuid4(),
             $request->getType(),
             (int) $request->getAmount() * 100,
-            new \DateTimeImmutable(),
+            new \DateTime(),
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getClientIp(),
             $request->getDuration(),

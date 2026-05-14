@@ -37,7 +37,7 @@ class AdherentMessageReach
         $this->message = $message;
         $this->adherent = $adherent;
         $this->source = $source;
-        $this->date = $date ?? new \DateTimeImmutable();
+        $this->date = $date ?? new \DateTime();
     }
 
     public static function createPush(AdherentMessage $adherentMessage, Adherent $adherent, \DateTimeInterface $date, ?SystemEnum $system): self

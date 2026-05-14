@@ -27,7 +27,7 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
         $thread1 = new Thread($adherent1, 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
         $thread1->chatbot = $chatbot;
 
-        $base = new \DateTimeImmutable('2026-03-01 10:00:00');
+        $base = new \DateTime('2026-03-01 10:00:00');
         for ($i = 1; $i <= 25; ++$i) {
             $date = $base->modify("+{$i} minutes");
             if (1 === $i % 2) {
@@ -43,8 +43,8 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
         $adherent2 = $this->getReference('adherent-5', Adherent::class);
         $thread2 = new Thread($adherent2, 'Thread autre utilisateur', Uuid::fromString(self::THREAD_2_UUID));
         $thread2->chatbot = $chatbot;
-        $thread2->addUserMessage('Question privée', new \DateTimeImmutable('2026-03-01 11:00:00'));
-        $thread2->addAssistantMessage('Réponse privée', new \DateTimeImmutable('2026-03-01 11:01:00'));
+        $thread2->addUserMessage('Question privée', new \DateTime('2026-03-01 11:00:00'));
+        $thread2->addAssistantMessage('Réponse privée', new \DateTime('2026-03-01 11:01:00'));
 
         $manager->persist($thread2);
 

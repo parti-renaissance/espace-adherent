@@ -59,7 +59,7 @@ class MatchingHistory
         $this->proxy = $proxy;
         $this->round = $round;
         $this->emailCopy = $emailCopy;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
     }
 
     public static function createMatch(Request $request, Proxy $proxy, Round $round, bool $emailCopy): self

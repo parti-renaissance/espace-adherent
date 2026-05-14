@@ -47,19 +47,24 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /**
          * Local Surveys
          */
+        $now = new \DateTime();
+
         $localSurvey1 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_1), 'Questionnaire numéro 1', true);
         $localSurvey1->setCreatedByAdherent($referent1);
-        $localSurvey1->setCreatedAt(new \DateTime());
+        $localSurvey1->setCreatedAt($now);
 
         $localSurvey2 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_2), 'Un deuxième questionnaire', true);
         $localSurvey2->setCreatedByAdherent($referent2);
+        $localSurvey2->setCreatedAt($now);
 
         $localSurvey3 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_3), 'Un questionnaire de la Région', true);
         $localSurvey3->setCreatedByAdherent($headedRegionalCandidate);
+        $localSurvey3->setCreatedAt($now);
 
         $localSurvey4 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_4), 'Un questionnaire avec modification bloquée', true);
         $localSurvey4->setCreatedByAdherent($referent1);
         $localSurvey4->setBlockedChanges(true);
+        $localSurvey4->setCreatedAt($now);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1', Question::class);

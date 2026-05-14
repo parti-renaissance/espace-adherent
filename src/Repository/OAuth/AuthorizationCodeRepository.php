@@ -18,8 +18,8 @@ class AuthorizationCodeRepository extends ServiceEntityRepository
 
     public function save(AuthorizationCode $token): void
     {
-        $this->_em->persist($token);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
     }
 
     public function findAuthorizationCodeByIdentifier(string $identifier): ?AuthorizationCode
