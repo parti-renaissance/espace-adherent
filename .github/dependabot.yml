@@ -12,6 +12,8 @@ updates:
       schedule:
           interval: 'daily'
       versioning-strategy: increase-if-necessary
+      cooldown:
+          default-days: 2
       ignore:
           - dependency-name: '*'
             update-types: ['version-update:semver-major']
@@ -50,6 +52,8 @@ updates:
       schedule:
           interval: 'daily'
       versioning-strategy: increase-if-necessary
+      cooldown:
+          default-days: 2
       ignore:
           - dependency-name: '*'
             update-types: ['version-update:semver-major']
