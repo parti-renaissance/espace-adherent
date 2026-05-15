@@ -10,11 +10,15 @@ class MultiColumnsSearchHelper
 {
     public static function updateQueryBuilderForMultiColumnsSearch(
         QueryBuilder $queryBuilder,
-        string $searchTerm,
+        ?string $searchTerm,
         array $mainColumns,
         array $additionalColumns = [],
         array $columnStrictSearch = [],
     ): void {
+        if (null === $searchTerm || '' === trim($searchTerm)) {
+            return;
+        }
+
         $conditions = $queryBuilder->expr()->orX();
         $uniqueKey = uniqid();
 

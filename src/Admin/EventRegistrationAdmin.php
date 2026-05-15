@@ -98,13 +98,14 @@ class EventRegistrationAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
+                    $searchTerm = $value->hasValue() ? $value->getValue() : null;
+                    if (!\is_string($searchTerm) || '' === trim($searchTerm)) {
                         return false;
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
-                        $value->getValue(),
+                        $searchTerm,
                         [
                             ['adherent.firstName', 'adherent.lastName'],
                             ['adherent.lastName', 'adherent.firstName'],

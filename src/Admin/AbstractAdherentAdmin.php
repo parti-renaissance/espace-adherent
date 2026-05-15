@@ -543,13 +543,14 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                 'label' => 'Recherche',
                 'show_filter' => true,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
+                    $searchTerm = $value->hasValue() ? $value->getValue() : null;
+                    if (!\is_string($searchTerm) || '' === trim($searchTerm)) {
                         return false;
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
-                        $value->getValue(),
+                        $searchTerm,
                         [
                             ["$alias.firstName", "$alias.lastName"],
                             ["$alias.lastName", "$alias.firstName"],

@@ -299,13 +299,14 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
+                    $searchTerm = $value->hasValue() ? $value->getValue() : null;
+                    if (!\is_string($searchTerm) || '' === trim($searchTerm)) {
                         return false;
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
-                        $value->getValue(),
+                        $searchTerm,
                         [
                             ['_animator.firstName', '_animator.lastName'],
                             ['_animator.lastName', '_animator.firstName'],
@@ -344,13 +345,14 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 'label' => 'Créé par',
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
+                    $searchTerm = $value->hasValue() ? $value->getValue() : null;
+                    if (!\is_string($searchTerm) || '' === trim($searchTerm)) {
                         return false;
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
-                        $value->getValue(),
+                        $searchTerm,
                         [
                             ['_created_by_adherent.firstName', '_created_by_adherent.lastName'],
                             ['_created_by_adherent.lastName', '_created_by_adherent.firstName'],
@@ -373,13 +375,14 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 'label' => 'Modifié par',
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
+                    $searchTerm = $value->hasValue() ? $value->getValue() : null;
+                    if (!\is_string($searchTerm) || '' === trim($searchTerm)) {
                         return false;
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
                         $qb->getQueryBuilder(),
-                        $value->getValue(),
+                        $searchTerm,
                         [
                             ['_updated_by_adherent.firstName', '_updated_by_adherent.lastName'],
                             ['_updated_by_adherent.lastName', '_updated_by_adherent.firstName'],
