@@ -1,0 +1,19 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.mediaPath %}
+        {% set hls = video_hls_url(object) %}
+        {% set preview = video_preview_url(object) %}
+        {% set thumbnail = video_thumbnail_url(object) %}
+        <dl class="dl-horizontal" style="margin: 0;">
+            <dt>HLS</dt>
+            <dd><a href="{{ hls }}" target="_blank" rel="noopener"><code>{{ hls }}</code></a></dd>
+            <dt>Preview</dt>
+            <dd><a href="{{ preview }}" target="_blank" rel="noopener"><code>{{ preview }}</code></a></dd>
+            <dt>Thumbnail</dt>
+            <dd><a href="{{ thumbnail }}" target="_blank" rel="noopener"><code>{{ thumbnail }}</code></a></dd>
+        </dl>
+    {% else %}
+        <em class="text-muted">Aucun chemin média défini.</em>
+    {% endif %}
+{% endblock %}

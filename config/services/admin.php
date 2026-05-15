@@ -179,6 +179,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Document::class, 'label' => 'Documents JME', 'group' => 'Territoires'])
     ;
     $services
+        ->set('app.admin.video', App\Admin\VideoAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Video::class, 'label' => 'Vidéos', 'group' => 'Communication'])
+    ;
+    $services
         ->set('app.admin.general_meeting_report', App\Admin\GeneralMeetingReportAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\GeneralMeeting\GeneralMeetingReport::class, 'label' => 'Centre d\'archives JME', 'group' => 'Territoires'])
     ;
@@ -597,6 +601,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.alert'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.private_message'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.tally_form'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.video'])
     ;
 
     $services

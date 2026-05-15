@@ -1,0 +1,8 @@
+{% set status = value.value|default(value) %}
+{% set classes = {
+    PENDING: 'label-default',
+    PROCESSING: 'label-info',
+    READY: 'label-success',
+    FAILED: 'label-danger',
+} %}
+<span class="label {{ classes[status]|default('label-default') }}">{{ ('video.status.' ~ status|lower)|trans }}</span>

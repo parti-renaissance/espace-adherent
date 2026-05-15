@@ -51,6 +51,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'ROLE_ADMIN_COMMUNICATION_CHATBOTS' => [
                 'ROLE_APP_ADMIN_CHATBOT_CHATBOT_ALL',
             ],
+            'ROLE_ADMIN_COMMUNICATION_VIDEOS' => [
+                'ROLE_APP_ADMIN_VIDEO_ALL',
+            ],
             'ROLE_ADMIN_ADHERENT_ADHERENTS' => [
                 'ROLE_APP_ADMIN_ADHERENT_LIST',
                 'ROLE_APP_ADMIN_ADHERENT_VIEW',

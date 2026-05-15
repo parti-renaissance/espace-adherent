@@ -1,0 +1,6 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% set api_url = path('_api_/videos/{uuid}_get', {uuid: object.uuid}) %}
+    <a href="{{ api_url }}" target="_blank" rel="noopener"><code>{{ api_url }}</code></a>
+{% endblock %}

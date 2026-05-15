@@ -1617,3 +1617,8 @@ my_team_member.role.head_of_relations_and_training_of_elected_officials: Respons
 my_team_member.role.new_members_manager: Responsable nouveaux adhérents
 my_team_member.role.training_manager: Responsable formation
 my_team_member.role.manager: Responsable
+
+video.status.pending: En attente
+video.status.processing: Transcodage en cours
+video.status.ready: Disponible
+video.status.failed: Erreur

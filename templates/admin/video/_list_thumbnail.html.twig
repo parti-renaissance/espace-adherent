@@ -1,0 +1,10 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set url = video_thumbnail_url(object) %}
+    {% if url %}
+        <img src="{{ url }}" alt="" style="max-height: 60px; max-width: 100px; border-radius: 4px;" loading="lazy" />
+    {% else %}
+        <em class="text-muted">—</em>
+    {% endif %}
+{% endblock %}

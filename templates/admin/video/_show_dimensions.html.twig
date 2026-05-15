@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.width and object.height %}
+        {{ object.width }} × {{ object.height }} px
+    {% else %}
+        <em class="text-muted">—</em>
+    {% endif %}
+{% endblock %}
