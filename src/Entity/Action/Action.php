@@ -16,12 +16,13 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Action\ActionTypeEnum;
 use App\Api\Filter\BoundingBoxFilter;
-use App\Api\Filter\MyCreatedActionsFilter;
 use App\Api\Filter\MySubscribedActionsFilter;
+use App\Api\Filter\OnlyMineFilter;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Action\CancelActionController;
 use App\Controller\Api\Action\RegisterController;
 use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
@@ -49,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['date'])]
-#[ApiFilter(filterClass: MyCreatedActionsFilter::class)]
+#[ApiFilter(filterClass: OnlyMineFilter::class)]
 #[ApiFilter(filterClass: MySubscribedActionsFilter::class)]
 #[ApiFilter(filterClass: BoundingBoxFilter::class)]
 #[ApiResource(
@@ -91,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'vox_action')]
-class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface, NotificationObjectInterface, HitTargetInterface
+class Action implements AuthoredInterface, AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface, NotificationObjectInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;

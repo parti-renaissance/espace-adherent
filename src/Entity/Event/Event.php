@@ -21,8 +21,8 @@ use App\Address\AddressInterface;
 use App\Api\Filter\BoundingBoxFilter;
 use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
-use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
+use App\Api\Filter\OnlyMineFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Api\Provider\EventProvider;
 use App\Api\Provider\EventsFallbackProvider;
@@ -36,6 +36,7 @@ use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdvancedImageTrait;
 use App\Entity\Agora;
+use App\Entity\AuthoredInterface;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\Committee;
@@ -75,7 +76,7 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
-#[ApiFilter(filterClass: MyCreatedEventsFilter::class)]
+#[ApiFilter(filterClass: OnlyMineFilter::class)]
 #[ApiFilter(filterClass: MySubscribedEventsFilter::class)]
 #[ApiFilter(filterClass: OrderEventsBySubscriptionsFilter::class)]
 #[ApiFilter(filterClass: EventsDepartmentFilter::class)]
@@ -180,7 +181,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['address_latitude', 'address_longitude'])]
 #[ORM\Table(name: '`events`')]
-class Event implements \Stringable, ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
+class Event implements \Stringable, ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthoredInterface, AuthorInstanceInterface, ImageExposeInterface, ImageFullManageableInterface, IndexableEntityInterface, NotificationObjectInterface, AlertOwnerInterface, HitTargetInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;

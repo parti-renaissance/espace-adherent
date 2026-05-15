@@ -50,15 +50,15 @@ class HubItemViewNormalizerTest extends TestCase
 
         $output = $this->normalizer->normalize(new HubItemView('action', $action));
 
-        // Top-level name carries the human label, not the raw enum code.
-        self::assertSame('porte à porte', $output['name']);
+        // Top-level name carries the human label (ucfirst), not the raw enum code.
+        self::assertSame('Porte à porte', $output['name']);
 
         // category.name carries the same label; category.slug carries the raw enum code.
         self::assertSame(
             [
                 'event_group_category' => null,
                 'description' => null,
-                'name' => 'porte à porte',
+                'name' => 'Porte à porte',
                 'slug' => 'pap',
             ],
             $output['category']

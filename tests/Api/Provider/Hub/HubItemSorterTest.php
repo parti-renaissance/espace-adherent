@@ -69,6 +69,9 @@ final class HubItemSorterTest extends TestCase
         ?float $distance = null,
         string $beginAt = '2026-06-01 10:00:00',
         ?Uuid $uuid = null,
+        ?string $createdAt = null,
+        ?string $finishAt = null,
+        int $participantsCount = 0,
     ): HubItemRow {
         $uuid ??= Uuid::v4();
         $entity = $this->createStub(Event::class);
@@ -81,6 +84,9 @@ final class HubItemSorterTest extends TestCase
             timeToBegin: $timeToBegin,
             distance: $distance,
             beginAt: new \DateTimeImmutable($beginAt),
+            createdAt: new \DateTimeImmutable($createdAt ?? $beginAt),
+            finishAt: $finishAt ? new \DateTimeImmutable($finishAt) : null,
+            participantsCount: $participantsCount,
         );
     }
 }

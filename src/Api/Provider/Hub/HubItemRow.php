@@ -19,6 +19,9 @@ final class HubItemRow
         public int $timeToBegin,
         public ?float $distance,
         public \DateTimeInterface $beginAt,
+        public \DateTimeInterface $createdAt,
+        public ?\DateTimeInterface $finishAt,
+        public int $participantsCount,
     ) {
     }
 }

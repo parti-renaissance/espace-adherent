@@ -52,6 +52,13 @@ class ActionExtension implements QueryCollectionExtensionInterface
             ->addOrderBy($alias.'.date', 'DESC')
         ;
 
+        if (isset($filters['upcomingOnly']) && filter_var($filters['upcomingOnly'], \FILTER_VALIDATE_BOOLEAN)) {
+            $queryBuilder
+                ->andWhere("$alias.date >= :now")
+                ->setParameter('now', new \DateTime())
+            ;
+        }
+
         if ($latitude && $longitude) {
             $subQuery = $queryBuilder->getEntityManager()->createQueryBuilder()
                 ->from(Action::class, 'a2')
@@ -74,9 +81,7 @@ class ActionExtension implements QueryCollectionExtensionInterface
         }
 
         $queryBuilder
-            ->andWhere("$alias.date >= :date")
             ->andWhere("$alias.status = :status")
-            ->setParameter('date', new \DateTime('-1 hour'))
             ->setParameter('status', Action::STATUS_SCHEDULED)
         ;
     }
