@@ -9,6 +9,8 @@ use ApiPlatform\Metadata\Operation;
 use App\Api\Doctrine\ActionExtension;
 use App\Api\Filter\BoundingBoxFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Api\Filter\MySubscribedActionsFilter;
+use App\Api\Filter\OnlyMineFilter;
 use App\Entity\Action\Action;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
@@ -23,6 +25,8 @@ class ActionHubFetcher extends AbstractHubFetcher
         private readonly ZoneRepository $zoneRepository,
         private readonly BoundingBoxFilter $boundingBoxFilter,
         private readonly InZoneOfScopeFilter $scopeFilter,
+        private readonly OnlyMineFilter $onlyMineFilter,
+        private readonly MySubscribedActionsFilter $mySubscribedActionsFilter,
         private readonly ActionExtension $actionExtension,
     ) {
     }
@@ -39,6 +43,20 @@ class ActionHubFetcher extends AbstractHubFetcher
         return $entity->date;
     }
 
+    protected function extractFinishAt(Event|Action $entity): ?\DateTimeInterface
+    {
+        \assert($entity instanceof Action);
+
+        return $entity->date;
+    }
+
+    protected function extractParticipantsCount(Event|Action $entity): int
+    {
+        \assert($entity instanceof Action);
+
+        return $entity->getParticipantsCount();
+    }
+
     protected function buildQuery(array $filters, array $apiContext, ?Operation $operation): QueryBuilder
     {
         $queryBuilder = $this->actionRepository->createQueryBuilder('a');
@@ -50,8 +68,11 @@ class ActionHubFetcher extends AbstractHubFetcher
         $this->boundingBoxFilter->apply($queryBuilder, $queryNameGenerator, Action::class, $operation, $filterContext);
         $this->applyZoneFilter($queryBuilder, $filters);
         $this->scopeFilter->apply($queryBuilder, $queryNameGenerator, Action::class, $operation, $filterContext);
+        $this->onlyMineFilter->apply($queryBuilder, $queryNameGenerator, Action::class, $operation, $filterContext);
+        $this->mySubscribedActionsFilter->apply($queryBuilder, $queryNameGenerator, Action::class, $operation, $filterContext);
 
-        $this->applyHubDateFilter($queryBuilder, $filters, 'a.date');
+        $this->applyHubDateFilter($queryBuilder, $filters, 'a.date', 'beginAt');
+        $this->applyHubFinishAtFilter($queryBuilder, $filters);
 
         $this->actionExtension->applyToCollection($queryBuilder, $queryNameGenerator, Action::class, $operation, $filterContext);
 
@@ -99,5 +120,15 @@ class ActionHubFetcher extends AbstractHubFetcher
         );
 
         $queryBuilder->andWhere(\sprintf('EXISTS (%s)', $zoneSubQueryBuilder->getDQL()));
+    }
+
+    /**
+     * Action has no real finishAt. We treat `Action.finishAt` as aligned on `Action.date` (zero duration)
+     * so the filter stays predictable and explainable; clients that need an "in-flight" semantics should
+     * combine `beginAt[*]` themselves.
+     */
+    private function applyHubFinishAtFilter(QueryBuilder $queryBuilder, array $filters): void
+    {
+        $this->applyHubDateFilter($queryBuilder, $filters, 'a.date', 'finishAt');
     }
 }

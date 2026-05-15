@@ -54,11 +54,11 @@ Feature:
         Then the response status code should be 200
         And the JSON node "metadata.total_items" should be equal to "0"
 
-    Scenario: beginAt[after] in the past keeps every upcoming item
+    Scenario: beginAt[after] in the past keeps every item in zone 92
         Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/hub-item?zone=92&beginAt[after]=2000-01-01&page_size=300"
         Then the response status code should be 200
-        And the JSON node "metadata.total_items" should be equal to "55"
+        And the JSON node "metadata.total_items" should be equal to "58"
 
     Scenario: As a logged-in user I get hub items sorted with distance when lat/lng provided
         Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
@@ -90,11 +90,11 @@ Feature:
             """
             {
                 "metadata": {
-                    "total_items": 55,
+                    "total_items": 58,
                     "items_per_page": 2,
                     "count": 2,
                     "current_page": 1,
-                    "last_page": 28
+                    "last_page": 29
                 },
                 "items": [
                     {

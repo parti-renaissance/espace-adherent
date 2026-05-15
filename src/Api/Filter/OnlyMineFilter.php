@@ -7,15 +7,15 @@ namespace App\Api\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\Event\Event;
+use App\Entity\AuthoredInterface;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
-final class MyCreatedEventsFilter extends AbstractFilter
+final class OnlyMineFilter extends AbstractFilter
 {
-    private const PROPERTY_NAME = 'only_mine';
+    public const string PROPERTY_NAME = 'only_mine';
 
     private Security $security;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
@@ -30,7 +30,7 @@ final class MyCreatedEventsFilter extends AbstractFilter
         array $context = [],
     ): void {
         if (
-            Event::class !== $resourceClass
+            !is_a($resourceClass, AuthoredInterface::class, true)
             || self::PROPERTY_NAME !== $property
             || !$user = $this->security->getUser()
         ) {
@@ -42,17 +42,21 @@ final class MyCreatedEventsFilter extends AbstractFilter
 
         $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
-            ->andWhere(\sprintf('%s.author = :organizer', $alias))
-            ->setParameter('organizer', $user)
+            ->andWhere(\sprintf('%s.author = :only_mine_author', $alias))
+            ->setParameter('only_mine_author', $user)
         ;
     }
 
     public function getDescription(string $resourceClass): array
     {
+        if (!is_a($resourceClass, AuthoredInterface::class, true)) {
+            return [];
+        }
+
         return [
             self::PROPERTY_NAME => [
                 'property' => null,
-                'type' => 'string',
+                'type' => 'bool',
                 'required' => false,
             ],
         ];

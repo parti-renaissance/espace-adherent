@@ -39,6 +39,21 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
             $this->addReference('action-'.$i, $action);
         }
 
+        foreach ([1, 7, 30] as $i => $daysAgo) {
+            $action = new Action();
+            $action->type = $types[$i % \count($types)];
+            $coordinate = $coordinates[array_rand($coordinates)];
+            $action->setPostAddress($this->createPostAddress('68 rue du Rocher', '75008-75108', latitude: $coordinate['latitude'], longitude: $coordinate['longitude']));
+            $action->setAuthor($author = (0 === $i % 2 ? $adherents[0] : $adherents[1]));
+            $action->addNewParticipant($author);
+            $action->setZones([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]);
+            $action->date = new \DateTime('-'.$daysAgo.' days');
+            $action->description = '<p>description</p>';
+
+            $manager->persist($action);
+            $this->addReference('action-past-'.$daysAgo, $action);
+        }
+
         $manager->flush();
     }
 

@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Action\Action;
 use App\Entity\Event\Event;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 abstract class AbstractHubFetcher
 {
@@ -17,6 +18,10 @@ abstract class AbstractHubFetcher
 
     abstract protected function extractBeginAt(Event|Action $entity): ?\DateTimeInterface;
 
+    abstract protected function extractFinishAt(Event|Action $entity): ?\DateTimeInterface;
+
+    abstract protected function extractParticipantsCount(Event|Action $entity): int;
+
     /**
      * @return HubItemRow[]
      */
@@ -25,8 +30,13 @@ abstract class AbstractHubFetcher
         $queryBuilder = $this->buildQuery($filters, $apiContext, $operation);
         $queryBuilder->setMaxResults($limit);
 
+        // Use Doctrine's Paginator with fetchJoinCollection: it bounds DISTINCT entities,
+        // not raw SQL rows multiplied by left-joined collections (participants, zones, …).
+        $paginator = new Paginator($queryBuilder->getQuery(), true);
+        $paginator->setUseOutputWalkers(false);
+
         /** @var array<Event|Action> $entities */
-        $entities = $queryBuilder->getQuery()->getResult();
+        $entities = iterator_to_array($paginator);
 
         $userCoords = $this->extractUserCoords($filters);
         $now = new \DateTimeImmutable();
@@ -52,39 +62,51 @@ abstract class AbstractHubFetcher
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    protected function applyHubDateFilter(QueryBuilder $queryBuilder, array $filters, string $dateField): void
+    protected function applyHubDateFilter(QueryBuilder $queryBuilder, array $filters, string $dateField, string $filterKey = 'beginAt'): void
     {
-        $beginAt = $filters['beginAt'] ?? null;
+        $value = $filters[$filterKey] ?? null;
 
-        if (!\is_array($beginAt)) {
+        if (\is_string($value) && '' !== $value) {
+            $paramName = 'hub_'.$filterKey.'_start';
+            $queryBuilder
+                ->andWhere(\sprintf('%s LIKE :%s', $dateField, $paramName))
+                ->setParameter($paramName, $value.'%')
+            ;
+
             return;
         }
 
-        if (isset($beginAt['strictly_after'])) {
+        if (!\is_array($value)) {
+            return;
+        }
+
+        $prefix = 'hub_'.$filterKey.'_';
+
+        if (isset($value['strictly_after'])) {
             $queryBuilder
-                ->andWhere(\sprintf('%s > :hub_date_strictly_after', $dateField))
-                ->setParameter('hub_date_strictly_after', new \DateTimeImmutable($beginAt['strictly_after']))
+                ->andWhere(\sprintf('%s > :%sstrictly_after', $dateField, $prefix))
+                ->setParameter($prefix.'strictly_after', new \DateTimeImmutable($value['strictly_after']))
             ;
         }
 
-        if (isset($beginAt['after'])) {
+        if (isset($value['after'])) {
             $queryBuilder
-                ->andWhere(\sprintf('%s >= :hub_date_after', $dateField))
-                ->setParameter('hub_date_after', new \DateTimeImmutable($beginAt['after']))
+                ->andWhere(\sprintf('%s >= :%safter', $dateField, $prefix))
+                ->setParameter($prefix.'after', new \DateTimeImmutable($value['after']))
             ;
         }
 
-        if (isset($beginAt['strictly_before'])) {
+        if (isset($value['strictly_before'])) {
             $queryBuilder
-                ->andWhere(\sprintf('%s < :hub_date_strictly_before', $dateField))
-                ->setParameter('hub_date_strictly_before', new \DateTimeImmutable($beginAt['strictly_before']))
+                ->andWhere(\sprintf('%s < :%sstrictly_before', $dateField, $prefix))
+                ->setParameter($prefix.'strictly_before', new \DateTimeImmutable($value['strictly_before']))
             ;
         }
 
-        if (isset($beginAt['before'])) {
+        if (isset($value['before'])) {
             $queryBuilder
-                ->andWhere(\sprintf('%s <= :hub_date_before', $dateField))
-                ->setParameter('hub_date_before', new \DateTimeImmutable($beginAt['before']))
+                ->andWhere(\sprintf('%s <= :%sbefore', $dateField, $prefix))
+                ->setParameter($prefix.'before', new \DateTimeImmutable($value['before']))
             ;
         }
     }
@@ -135,6 +157,9 @@ abstract class AbstractHubFetcher
             timeToBegin: $timeToBegin,
             distance: $distance,
             beginAt: $beginAt,
+            createdAt: $entity->getCreatedAt() ?? $now,
+            finishAt: $this->extractFinishAt($entity),
+            participantsCount: $this->extractParticipantsCount($entity),
         );
     }
 }

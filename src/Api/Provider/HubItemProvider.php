@@ -33,6 +33,7 @@ class HubItemProvider implements ProviderInterface
         $page = max(1, (int) ($filters['page'] ?? 1));
         $pageSize = $this->resolvePageSize($filters);
         $hasUserCoords = $this->hasUserCoords($filters);
+        [$orderKey, $orderDirection] = $this->resolveOrder($filters);
 
         $fetchLimit = min($page * $pageSize, self::MAX_HUB_PAGE_FETCH);
 
@@ -41,7 +42,7 @@ class HubItemProvider implements ProviderInterface
             ...$this->actionFetcher->fetch($filters, $context, $operation, $fetchLimit),
         ];
 
-        usort($rows, fn (HubItemRow $a, HubItemRow $b) => $this->sorter->compare($a, $b, $hasUserCoords));
+        usort($rows, fn (HubItemRow $a, HubItemRow $b) => $this->sorter->compare($a, $b, $hasUserCoords, $orderKey, $orderDirection));
 
         $slice = \array_slice($rows, ($page - 1) * $pageSize, $pageSize);
 
@@ -54,6 +55,28 @@ class HubItemProvider implements ProviderInterface
             + $this->actionFetcher->count($filters, $context, $operation);
 
         return new TraversablePaginator(new \ArrayIterator($views), $page, $pageSize, $totalItems);
+    }
+
+    /**
+     * @return array{0: ?string, 1: string}
+     */
+    private function resolveOrder(array $filters): array
+    {
+        $order = $filters['order'] ?? null;
+
+        if (!\is_array($order) || [] === $order) {
+            return [null, 'asc'];
+        }
+
+        $key = (string) array_key_first($order);
+
+        if (!\in_array($key, HubItemSorter::SUPPORTED_ORDERS, true)) {
+            return [null, 'asc'];
+        }
+
+        $direction = 'desc' === strtolower((string) $order[$key]) ? 'desc' : 'asc';
+
+        return [$key, $direction];
     }
 
     private function resolvePageSize(array $filters): int

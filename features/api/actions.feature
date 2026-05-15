@@ -193,29 +193,29 @@ Feature:
         And I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"
         Then the response status code should be 200
         And the JSON node "metadata.items_per_page" should be equal to "300"
-        And the JSON node "metadata.total_items" should be equal to "50"
+        And the JSON node "metadata.total_items" should be equal to "53"
         When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333&subscribedOnly=1"
         Then the response status code should be 200
         And the JSON node "metadata.items_per_page" should be equal to "300"
-        And the JSON node "metadata.total_items" should be equal to "25"
+        And the JSON node "metadata.total_items" should be equal to "26"
 
     Scenario: As a logged-in VOX user I can list only the actions I have created
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/actions?only_mine"
         Then the response status code should be 200
-        And the JSON node "metadata.total_items" should be equal to "25"
+        And the JSON node "metadata.total_items" should be equal to "26"
         And the JSON node "items[0].author.uuid" should be equal to "9fec3385-8cfb-46e8-8305-c9bae10e4517"
-        # MyCreatedActionsFilter mirrors MyCreatedEventsFilter: presence of the parameter
-        # is enough to activate the filter, regardless of the value (no boolean validation).
+        # OnlyMineFilter activates on parameter presence regardless of the value
+        # (no boolean validation), as confirmed by the only_mine=0 case below.
         When I send a "GET" request to "/api/v3/actions?only_mine=0"
         Then the response status code should be 200
-        And the JSON node "metadata.total_items" should be equal to "25"
+        And the JSON node "metadata.total_items" should be equal to "26"
 
     Scenario: subscribedOnly=0 must not activate the subscription filter
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333&subscribedOnly=0"
         Then the response status code should be 200
-        And the JSON node "metadata.total_items" should be equal to "50"
+        And the JSON node "metadata.total_items" should be equal to "53"
 
     Scenario: bbox filters actions on the actions endpoint
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
@@ -230,4 +230,4 @@ Feature:
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/actions?scope=president_departmental_assembly&latitude=48.866667&longitude=2.333333"
         Then the response status code should be 200
-        And the JSON node "metadata.total_items" should be equal to "50"
+        And the JSON node "metadata.total_items" should be equal to "53"

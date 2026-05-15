@@ -46,7 +46,8 @@ class HubItemViewNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     private function shapeAction(Action $action, array $raw): array
     {
-        $label = ActionTypeEnum::LABELS[$action->type] ?? null;
+        $rawLabel = ActionTypeEnum::LABELS[$action->type] ?? null;
+        $label = null === $rawLabel ? null : mb_ucfirst($rawLabel);
 
         return [
             'type' => 'action',
