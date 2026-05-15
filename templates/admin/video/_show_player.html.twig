@@ -1,0 +1,47 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% set max_w = (object.width and object.width < object.height) ? 360 : 720 %}
+    {% set status = object.status.value %}
+    {% set hls_url = video_hls_url(object) %}
+    {% set thumbnail_url = video_thumbnail_url(object) %}
+
+    <div style="max-width: {{ max_w }}px; margin: 0 auto;">
+        {% if status == 'READY' and hls_url %}
+            <video
+                id="video-player-{{ object.uuid }}"
+                controls
+                playsinline
+                poster="{{ thumbnail_url|default('') }}"
+                style="width: 100%; background: #000; border-radius: 6px;"
+            ></video>
+            <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+            <script>
+                (function () {
+                    var video = document.getElementById('video-player-{{ object.uuid }}');
+                    var src = {{ hls_url|json_encode|raw }};
+                    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = src;
+                    } else if (window.Hls && Hls.isSupported()) {
+                        var hls = new Hls();
+                        hls.loadSource(src);
+                        hls.attachMedia(video);
+                    } else {
+                        video.outerHTML = '<em>Lecteur HLS non supporté par ce navigateur.</em>';
+                    }
+                })();
+            </script>
+        {% else %}
+            <div style="position: relative; background: #000; border-radius: 6px; overflow: hidden;">
+                {% if thumbnail_url %}
+                    <img src="{{ thumbnail_url }}" alt="" style="width: 100%; display: block; opacity: 0.5;" />
+                {% else %}
+                    <div style="aspect-ratio: 16/9; background: #222;"></div>
+                {% endif %}
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1em; text-shadow: 0 1px 2px rgba(0,0,0,.6);">
+                    {{ ('video.status.' ~ status|lower)|trans }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

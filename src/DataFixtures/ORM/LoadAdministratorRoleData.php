@@ -109,6 +109,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des Chatbots',
             AdministratorRoleGroupEnum::COMMUNICATION
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_COMMUNICATION_VIDEOS',
+            'Administrateur des Vidéos',
+            AdministratorRoleGroupEnum::COMMUNICATION
+        );
         // Adhérents
         yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_ADHERENTS',

@@ -99,6 +99,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$goCardlessEnvironment', '%env(GOCARDLESS_ENV)%')
         ->bind('$openAIApiKey', '%env(OPENAI_API_KEY)%')
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
+        ->bind('$mediaCdnBaseUrl', '%env(MEDIA_CDN_BASE_URL)%')
         ->bind('$friendlyCaptchaNewsletterSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%')
         ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
         ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
@@ -570,6 +571,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('api_platform.doctrine.orm.query_extension.collection', [
             'priority' => 9,
         ]);
+
+    $services->set(App\Api\Doctrine\VideoReadyExtension::class)
+        ->tag('api_platform.doctrine.orm.query_extension.collection', ['priority' => 9])
+        ->tag('api_platform.doctrine.orm.query_extension.item', ['priority' => 9]);
 
     $services->set(App\Api\Doctrine\EventOrderExtension::class)
         ->tag('api_platform.doctrine.orm.query_extension.collection', [
