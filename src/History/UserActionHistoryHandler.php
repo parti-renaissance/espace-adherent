@@ -196,7 +196,7 @@ class UserActionHistoryHandler
         $author = $this->getCurrentUser();
 
         $data = [
-            'delegator_uuid' => $delegator->getUuid()->toString(),
+            'delegator_uuid' => $delegator->getUuid()->toRfc4122(),
             'scope' => $delegatedAccess->getType(),
             'features' => $delegatedAccess->getScopeFeatures(),
             'role' => $delegatedAccess->getRole(),
@@ -206,7 +206,7 @@ class UserActionHistoryHandler
         ];
 
         if ($author && !$author->equals($delegator)) {
-            $data['author_uuid'] = $author->getUuid()->toString();
+            $data['author_uuid'] = $author->getUuid()->toRfc4122();
         }
 
         $this->dispatch($delegatedAccess->getDelegated(), $type, $data);
@@ -312,7 +312,7 @@ class UserActionHistoryHandler
             $requester,
             UserActionHistoryTypeEnum::SENSITIVE_DATA_ACCESS,
             [
-                'adherent_uuid' => $target->getUuid()->toString(),
+                'adherent_uuid' => $target->getUuid()->toRfc4122(),
                 'data_type' => $dataType,
             ],
             $this->getImpersonator()

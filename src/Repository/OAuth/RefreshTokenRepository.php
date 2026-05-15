@@ -9,7 +9,7 @@ use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class RefreshTokenRepository extends ServiceEntityRepository
 {
@@ -29,9 +29,9 @@ class RefreshTokenRepository extends ServiceEntityRepository
         return $this->findOneBy(['identifier' => $identifier]);
     }
 
-    public function findRefreshTokenByUuid(UuidInterface $uuid): ?RefreshToken
+    public function findRefreshTokenByUuid(Uuid $uuid): ?RefreshToken
     {
-        return $this->findOneBy(['uuid' => $uuid->toString()]);
+        return $this->findOneBy(['uuid' => $uuid->toRfc4122()]);
     }
 
     /**

@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Procuration\AbstractProcuration;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class ProcurationZoneFilter extends AbstractFilter

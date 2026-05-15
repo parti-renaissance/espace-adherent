@@ -12,9 +12,9 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class AdherentEventSubscriber implements EventSubscriberInterface
 {
@@ -77,7 +77,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
     }
 
-    private function dispatchAdherentChangeCommand(UuidInterface $uuid, string $identifier): void
+    private function dispatchAdherentChangeCommand(Uuid $uuid, string $identifier): void
     {
         $this->dispatch(new AdherentChangeCommand($uuid, $identifier));
     }

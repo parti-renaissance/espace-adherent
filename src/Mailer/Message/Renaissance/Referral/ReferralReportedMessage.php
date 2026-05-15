@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance\Referral;
 
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class ReferralReportedMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ class ReferralReportedMessage extends AbstractRenaissanceMessage
         string $referredFirstName,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $referrerEmail,
             $referrerFirstName,
             'Parrainage signalé',

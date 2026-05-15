@@ -11,8 +11,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Pap\BuildingStatusEnum;
 use App\Repository\Pap\BuildingStatisticsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [],
@@ -68,7 +68,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->building = $building;
         $this->campaign = $campaign;
 
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->status = $status ?? BuildingStatusEnum::TODO;
     }
 

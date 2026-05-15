@@ -10,8 +10,7 @@ use App\Entity\NewsletterSubscriptionInterface;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use App\Repository\Renaissance\NewsletterSubscriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
 #[ORM\Table(name: 'renaissance_newsletter_subscription')]
@@ -39,12 +38,12 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     public ?\DateTime $confirmedAt = null;
 
     #[ORM\Column(type: 'uuid')]
-    public UuidInterface $token;
+    public Uuid $token;
 
     private function __construct()
     {
-        $this->uuid = Uuid::uuid4();
-        $this->token = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
+        $this->token = Uuid::v4();
     }
 
     public static function create(SubscriptionRequest $request): self
@@ -65,7 +64,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
         return $this->email;
     }
 
-    public function getToken(): ?UuidInterface
+    public function getToken(): ?Uuid
     {
         return $this->token;
     }

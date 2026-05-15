@@ -9,15 +9,15 @@ use App\Mailchimp\Synchronisation\QueuePriorityLevelEnum;
 use App\Messenger\Message\AbstractUuidMessage;
 use App\Messenger\Message\LockableMessageInterface;
 use Jwage\PhpAmqpLibMessengerBundle\Transport\AmqpStamp;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Message\DefaultStampsProviderInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
+use Symfony\Component\Uid\Uuid;
 
 class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageInterface, DefaultStampsProviderInterface, LockableMessageInterface
 {
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         public readonly bool $firstRun = false,
         public readonly bool $autoReschedule = true,
         public int $step = 1,
@@ -43,7 +43,7 @@ class SyncReportCommand extends AbstractUuidMessage implements CampaignMessageIn
 
     public function getLockKey(): string
     {
-        return 'mailchimp_report_sync_'.$this->getUuid()->toString();
+        return 'mailchimp_report_sync_'.$this->getUuid()->toRfc4122();
     }
 
     public function getLockTtl(): int

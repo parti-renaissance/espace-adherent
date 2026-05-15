@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Event\Request;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CountInvitationsRequest
 {
-    public ?UuidInterface $agora = null;
-    public ?UuidInterface $committee = null;
+    public ?Uuid $agora = null;
+    public ?Uuid $committee = null;
     public array $roles = [];
 
     public function __construct(

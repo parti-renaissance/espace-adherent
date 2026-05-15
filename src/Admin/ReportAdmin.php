@@ -8,7 +8,6 @@ use App\Entity\Report\ReportReasonEnum;
 use App\Entity\Report\ReportStatusEnum;
 use App\Report\ReportType;
 use App\Repository\ReportRepository;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

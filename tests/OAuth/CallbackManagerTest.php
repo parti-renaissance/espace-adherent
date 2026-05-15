@@ -11,10 +11,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CallbackManagerTest extends TestCase
 {
@@ -54,8 +54,8 @@ class CallbackManagerTest extends TestCase
         $this->clientRepository = $this->createMock(ClientRepository::class);
         $this->clientRepository
             ->method('findOneByUuid')
-            ->willReturnCallback(function (UuidInterface $uuid) {
-                return self::KNOWN_CLIENT_UUID === $uuid->toString() ? $this->createClient() : null;
+            ->willReturnCallback(function (Uuid $uuid) {
+                return self::KNOWN_CLIENT_UUID === $uuid->toRfc4122() ? $this->createClient() : null;
             })
         ;
 

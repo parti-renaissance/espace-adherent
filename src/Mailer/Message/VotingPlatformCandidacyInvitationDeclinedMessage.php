@@ -6,7 +6,7 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVotingPlatformMessage
 {
@@ -19,7 +19,7 @@ final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVot
         $emailTitle = self::getMailSubjectPrefix($designation);
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $candidate->getEmailAddress(),
             $candidate->getFullName(),
             \sprintf('[%s] %s a décliné votre invitation', $emailTitle, $invited->getFirstName()),

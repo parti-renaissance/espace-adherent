@@ -6,14 +6,14 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Event\Event;
 use App\Entity\Event\EventInvite;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class RenaissanceEventInvitationMessage extends AbstractRenaissanceMessage
 {
     public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
     {
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $invite->getEmail(),
             self::escape($invite->getFullName()),
             $invite->getFullName().' vous invite à un événement Renaissance',

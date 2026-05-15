@@ -9,9 +9,8 @@ use App\Entity\EntityIdentityTrait;
 use App\OAuth\Model\Scope;
 use App\Repository\OAuth\UserAuthorizationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserAuthorizationRepository::class)]
 #[ORM\Table(name: 'user_authorizations')]
@@ -46,9 +45,9 @@ class UserAuthorization
      *
      * @throws \LogicException $scopes does not contain the right object
      */
-    public function __construct(?UuidInterface $uuid, Adherent $user, Client $client, array $scopes = [])
+    public function __construct(?Uuid $uuid, Adherent $user, Client $client, array $scopes = [])
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->user = $user;
         $this->client = $client;
 
@@ -97,7 +96,7 @@ class UserAuthorization
         return $this->client->getName();
     }
 
-    public function getClientUuid(): UuidInterface
+    public function getClientUuid(): Uuid
     {
         return $this->client->getUuid();
     }
@@ -109,6 +108,6 @@ class UserAuthorization
 
     public function belongsTo(Adherent $user): bool
     {
-        return $this->user->getUuid()->toString() === $user->getUuid()->toString();
+        return $this->user->getUuid()->toRfc4122() === $user->getUuid()->toRfc4122();
     }
 }

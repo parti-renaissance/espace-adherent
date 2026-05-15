@@ -12,7 +12,7 @@ use App\Repository\AdherentRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\FollowerCommitteeVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
 class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
@@ -213,7 +213,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
 
         $committee
             ->method('getUuid')
-            ->willReturn(Uuid::uuid4())
+            ->willReturn(Uuid::v4())
         ;
 
         return $committee;

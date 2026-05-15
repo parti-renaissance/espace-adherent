@@ -13,7 +13,6 @@ use App\Jecoute\ProfessionEnum;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
-use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -23,7 +22,7 @@ class SurveyExporter
 {
     private DataSurveyRepository $dataSurveyRepository;
     private SurveyQuestionRepository $surveyQuestionRepository;
-    private Exporter $exporter;
+    private SonataExporter $exporter;
     private TranslatorInterface $translator;
     private $i = 0;
 

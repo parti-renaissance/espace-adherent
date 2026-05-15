@@ -13,11 +13,11 @@ use App\Jecoute\RegionManager;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\RegionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractPersonalizationController extends AbstractController
 {
@@ -112,7 +112,7 @@ abstract class AbstractPersonalizationController extends AbstractController
 
     private function createPersonnalization(Zone $zone, Adherent $adherent): Region
     {
-        $personalization = new Region(Uuid::uuid4(), $zone);
+        $personalization = new Region(Uuid::v4(), $zone);
         $personalization->setAuthor($adherent);
 
         return $personalization;

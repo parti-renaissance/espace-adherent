@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class ResultsReadyMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ class ResultsReadyMessage extends AbstractRenaissanceMessage
         $adherent = array_shift($adherents);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Les résultats sont disponibles',

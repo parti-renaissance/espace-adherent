@@ -88,7 +88,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
 
             return [
                 'ID' => $procurationRequest->getId(),
-                'UUID' => $procurationRequest->getUuid()->toString(),
+                'UUID' => $procurationRequest->getUuid()->toRfc4122(),
                 'Adresse email' => $procurationRequest->email,
                 'Type' => $translator->trans('procuration.initial_request.type.'.$procurationRequest->type->value),
                 'Adhérent' => $adherent instanceof Adherent ? 'oui' : 'non',

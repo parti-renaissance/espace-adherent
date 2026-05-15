@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Mailer\Command;
 
 use App\Messenger\Message\AbstractUuidMessage;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractSendMessageCommand extends AbstractUuidMessage implements SendMessageCommandInterface
 {
-    public function __construct(UuidInterface $uuid, private readonly bool $resend = false)
+    public function __construct(Uuid $uuid, private readonly bool $resend = false)
     {
         parent::__construct($uuid);
     }

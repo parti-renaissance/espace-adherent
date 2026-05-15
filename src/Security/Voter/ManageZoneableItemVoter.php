@@ -49,25 +49,25 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         }
 
         if (!empty($agoraUuids) && $subject instanceof Event && $subject->agora) {
-            return \in_array($subject->agora->getUuid()->toString(), $agoraUuids);
+            return \in_array($subject->agora->getUuid()->toRfc4122(), $agoraUuids);
         }
 
         // Committee-based access for Committee entities
         if (!empty($committeeUuids) && $subject instanceof Committee) {
-            return \in_array($subject->getUuid()->toString(), $committeeUuids);
+            return \in_array($subject->getUuid()->toRfc4122(), $committeeUuids);
         }
 
         // Committee/Agora-based access for Adherents (via membership)
         if ($subject instanceof Adherent && $subject !== $adherent) {
             if (!empty($committeeUuids) && ($membership = $subject->getCommitteeMembership())) {
-                if (\in_array($membership->getCommittee()->getUuid()->toString(), $committeeUuids)) {
+                if (\in_array($membership->getCommittee()->getUuid()->toRfc4122(), $committeeUuids)) {
                     return true;
                 }
             }
 
             if (!empty($agoraUuids)) {
                 foreach ($subject->agoraMemberships as $agoraMembership) {
-                    if (\in_array($agoraMembership->agora->getUuid()->toString(), $agoraUuids)) {
+                    if (\in_array($agoraMembership->agora->getUuid()->toRfc4122(), $agoraUuids)) {
                         return true;
                     }
                 }

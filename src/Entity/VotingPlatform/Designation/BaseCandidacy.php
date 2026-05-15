@@ -12,9 +12,8 @@ use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
@@ -75,9 +74,9 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      */
     protected $candidaciesGroup;
 
-    public function __construct(?string $gender = null, ?UuidInterface $uuid = null)
+    public function __construct(?string $gender = null, ?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->gender = $gender;
 
         $this->invitations = new ArrayCollection();

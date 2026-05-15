@@ -11,9 +11,8 @@ use App\Controller\Api\PushToken\UnsubscribeController;
 use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -59,9 +58,9 @@ class PushToken
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $lastNotificationSuccess = null;
 
-    public function __construct(?UuidInterface $uuid = null, ?string $identifier = null)
+    public function __construct(?Uuid $uuid = null, ?string $identifier = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->identifier = $identifier;
     }
 }

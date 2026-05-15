@@ -6,7 +6,7 @@ namespace App\Event;
 
 use App\Entity\Event\Event;
 use App\Geo\ZoneMatcher;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventFactory
 {

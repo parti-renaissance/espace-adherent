@@ -7,7 +7,7 @@ namespace Tests\App\Entity;
 use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
@@ -51,8 +51,8 @@ abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
         $token = $this->generateToken($adherent);
 
         $this->assertInstanceOf($this->tokenClass, $token);
-        $this->assertInstanceOf(UuidInterface::class, $token->getUuid());
-        $this->assertInstanceOf(UuidInterface::class, $token->getAdherentUuid());
+        $this->assertInstanceOf(Uuid::class, $token->getUuid());
+        $this->assertInstanceOf(Uuid::class, $token->getAdherentUuid());
         $this->assertInstanceOf(SHA1::class, $token->getValue());
         $this->assertNotEquals($adherent->getUuid(), $token->getUuid());
         $this->assertEquals($adherent->getUuid(), $token->getAdherentUuid());

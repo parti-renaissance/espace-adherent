@@ -9,10 +9,10 @@ use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 class OAuthTokenGenerator
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\JEM;
 
 use App\Entity\NationalEvent\EventInscription;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractJEMMessage
 {
@@ -14,7 +14,7 @@ class JEMNationalEventInscriptionPaymentReminderMessage extends AbstractJEMMessa
         $event = $eventInscription->event;
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             'Votre inscription à l’événement '.$event->getName().' - Rappel de paiement',

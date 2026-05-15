@@ -18,9 +18,8 @@ use App\Entity\DynamicSegmentTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Repository\AdherentMessage\Segment\AudienceSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -73,9 +72,9 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function getFilter(): ?AdherentMessageFilter

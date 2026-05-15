@@ -58,7 +58,7 @@ class ScanTicketController extends AbstractController
                     'door' => $inscription->ticketCustomDetail,
                 ],
                 'alert' => $lastScanDate?->format('d/m/Y') === date('d/m/Y') ? 'Déjà scannée aujourd’hui' : null,
-                'uuid' => $inscription->getUuid()->toString(),
+                'uuid' => $inscription->getUuid()->toRfc4122(),
                 'user' => $normalizer->normalize($inscription, context: [
                     TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
                     'groups' => ['event_inscription_scan', ImageExposeNormalizer::NORMALIZATION_GROUP],

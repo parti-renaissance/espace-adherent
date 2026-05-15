@@ -11,7 +11,7 @@ use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ORM\Table('national_event_inscription_payment')]
@@ -67,7 +67,7 @@ class Payment
     public ?array $packageValues = null;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         EventInscription $inscription,
         int $amount,
         array $packageValues,

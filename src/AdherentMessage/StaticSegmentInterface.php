@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\AdherentMessage;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface StaticSegmentInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getMailchimpId(): ?int;
 

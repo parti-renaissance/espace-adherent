@@ -6,7 +6,7 @@ namespace App\Utils;
 
 use App\Entity\Adherent;
 use App\Exception\AdherentCollectionException;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class GroupUtils
 {

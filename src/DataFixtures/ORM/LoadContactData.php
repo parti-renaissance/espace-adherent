@@ -8,7 +8,7 @@ use App\Entity\Contact;
 use App\Membership\Contact\SourceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadContactData extends Fixture
 {

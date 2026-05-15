@@ -269,7 +269,7 @@ trait AudienceFieldsTrait
             'is_certified' => $this->isCertified,
             'scope' => $this->scope,
             'zones' => array_map(function (Zone $zone): string {
-                return $zone->getUuid()->toString();
+                return $zone->getUuid()->toRfc4122();
             }, $this->getZones()->toArray()),
             'roles' => implode(',', $this->roles),
         ]);

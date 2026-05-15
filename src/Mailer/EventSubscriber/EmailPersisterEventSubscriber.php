@@ -51,7 +51,7 @@ class EmailPersisterEventSubscriber implements EventSubscriberInterface
         }
 
         $message = $event->getMessage();
-        if (!$email = $this->repository->findOneByUuid($message->getUuid()->toString())) {
+        if (!$email = $this->repository->findOneByUuid($message->getUuid()->toRfc4122())) {
             return;
         }
 

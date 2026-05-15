@@ -9,7 +9,7 @@ use App\Entity\Contribution\Payment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadContributionPaymentData extends Fixture implements DependentFixtureInterface
 {

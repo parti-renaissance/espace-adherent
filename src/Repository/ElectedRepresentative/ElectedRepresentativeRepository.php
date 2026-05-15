@@ -22,6 +22,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -303,9 +304,9 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 ->andWhere('m.type IN (:types)')
                 ->andWhere('e.adherent = :adherent')
                 ->setParameters(new ArrayCollection([
-                    new Query\Parameter('true', true),
-                    new Query\Parameter('adherent', $adherent),
-                    new Query\Parameter('types', [
+                    new Parameter('true', true),
+                    new Parameter('adherent', $adherent),
+                    new Parameter('types', [
                         MandateTypeEnum::SENATOR,
                         MandateTypeEnum::DEPUTY,
                         MandateTypeEnum::EURO_DEPUTY,

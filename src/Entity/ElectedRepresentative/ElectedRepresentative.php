@@ -28,10 +28,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\QueryBuilder;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -208,9 +207,9 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $revenueDeclarations;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
 
         $this->socialNetworkLinks = new ArrayCollection();
         $this->mandates = new ArrayCollection();
@@ -227,11 +226,11 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
         string $lastName,
         \DateTime $birthDate,
         ?string $gender = null,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ): self {
         $electedRepresentative = new self();
 
-        $electedRepresentative->uuid = $uuid ?: Uuid::uuid4();
+        $electedRepresentative->uuid = $uuid ?: Uuid::v4();
         $electedRepresentative->firstName = $firstName;
         $electedRepresentative->lastName = $lastName;
         $electedRepresentative->gender = $gender;

@@ -40,10 +40,9 @@ use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\UnicodeString;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['uuid' => 'exact', 'title' => 'partial'])]
@@ -154,7 +153,7 @@ class News implements \Stringable, AuthorInstanceInterface, UserDocumentInterfac
     public ?Committee $committee = null;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $title = null,
         ?string $content = null,
         ?string $externalLink = null,
@@ -163,7 +162,7 @@ class News implements \Stringable, AuthorInstanceInterface, UserDocumentInterfac
         bool $notification = true,
         bool $published = true,
     ) {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->title = $title;
         $this->content = $content;
         $this->externalLink = $externalLink;

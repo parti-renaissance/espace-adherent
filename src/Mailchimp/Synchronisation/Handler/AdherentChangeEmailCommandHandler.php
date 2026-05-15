@@ -39,7 +39,7 @@ class AdherentChangeEmailCommandHandler implements LoggerAwareInterface
     public function __invoke(AdherentChangeCommandInterface $message): void
     {
         /** @var Adherent $adherent */
-        if (!$adherent = $this->adherentRepository->findOneByUuid($uuid = $message->getUuid()->toString())) {
+        if (!$adherent = $this->adherentRepository->findOneByUuid($uuid = $message->getUuid()->toRfc4122())) {
             $this->logger->warning(\sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
 
             return;

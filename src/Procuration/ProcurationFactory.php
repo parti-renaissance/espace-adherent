@@ -11,7 +11,7 @@ use App\Entity\Procuration\Request;
 use App\Entity\Procuration\RequestSlot;
 use App\Procuration\Command\ProxyCommand;
 use App\Procuration\Command\RequestCommand;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class ProcurationFactory
 {
@@ -23,7 +23,7 @@ class ProcurationFactory
     public function createRequestFromCommand(RequestCommand $command): Request
     {
         $request = new Request(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $command->rounds->toArray(),
             $command->email,
             $command->gender,
@@ -52,7 +52,7 @@ class ProcurationFactory
     public function createProxyFromCommand(ProxyCommand $command): Proxy
     {
         $proxy = new Proxy(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $command->rounds->toArray(),
             $command->email,
             $command->gender,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Index(fields: ['unsubscribedAt'])]
@@ -30,7 +30,7 @@ class AppSessionPushTokenLink
 
     public function __construct(AppSession $appSession, PushToken $pushToken)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->appSession = $appSession;
         $this->pushToken = $pushToken;
         $this->lastActivityDate = $this->createdAt = new \DateTime();

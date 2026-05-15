@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class DonationRepository extends ServiceEntityRepository
 {
@@ -26,7 +26,7 @@ class DonationRepository extends ServiceEntityRepository
         parent::__construct($registry, Donation::class);
     }
 
-    public function findOneByUuid(UuidInterface|string $uuid): ?Donation
+    public function findOneByUuid(Uuid|string $uuid): ?Donation
     {
         return $this->findOneByValidUuid($uuid);
     }

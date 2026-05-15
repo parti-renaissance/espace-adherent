@@ -7,7 +7,7 @@ namespace App\Committee;
 use App\Entity\Committee;
 use App\Geo\ZoneMatcher;
 use App\Utils\PhoneNumberUtils;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class CommitteeFactory
 {

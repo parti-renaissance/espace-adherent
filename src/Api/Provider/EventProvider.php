@@ -7,7 +7,7 @@ namespace App\Api\Provider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Repository\Event\EventRepository;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventProvider implements ProviderInterface
 {

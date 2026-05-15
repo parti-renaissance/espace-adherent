@@ -22,7 +22,7 @@ class ReportRuntime implements RuntimeExtensionInterface
     {
         return $this->urlGenerator->generate('app_report', [
             'type' => ReportType::getEntityUriType($subject),
-            'uuid' => $subject->getUuid()->toString(),
+            'uuid' => $subject->getUuid()->toRfc4122(),
             'redirectUrl' => $redirectUrl,
         ]);
     }

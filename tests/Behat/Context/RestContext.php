@@ -25,7 +25,7 @@ use Behatch\HttpCall\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\CryptKey;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class RestContext extends BehatchRestContext
 {
@@ -81,12 +81,12 @@ class RestContext extends BehatchRestContext
         $clientRepository = $this->entityManager->getRepository(Client::class);
 
         if (!$device = $deviceRepository->findOneByDeviceUuid($deviceUuid)) {
-            $device = new Device(Uuid::uuid4(), $deviceUuid);
+            $device = new Device(Uuid::v4(), $deviceUuid);
             $this->entityManager->persist($device);
         }
 
         $accessToken = new AccessToken(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier),
             null,
             $identifier,
             new \DateTimeImmutable('+30 minutes'),
@@ -117,7 +117,7 @@ class RestContext extends BehatchRestContext
         $clientRepository = $this->entityManager->getRepository(Client::class);
 
         $accessToken = new AccessToken(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier),
             $adherentRepository->findOneByEmail($email),
             $identifier,
             new \DateTimeImmutable('+30 minutes'),
@@ -295,7 +295,7 @@ class RestContext extends BehatchRestContext
 
     private function getJwtFromAccessToken(AccessToken $accessToken): string
     {
-        $client = new ClientModel($accessToken->getClient()->getUuid()->toString(), []);
+        $client = new ClientModel($accessToken->getClient()->getUuid()->toRfc4122(), []);
 
         $token = new AccessTokenModel();
         $token->setClient($client);

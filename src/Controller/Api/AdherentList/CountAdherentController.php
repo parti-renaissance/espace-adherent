@@ -8,7 +8,6 @@ use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +19,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'committee', 'designation'])"))]
 #[Route(path: '/v3/adherents/count', name: 'app_adherents_count_get', methods: ['GET', 'POST'])]

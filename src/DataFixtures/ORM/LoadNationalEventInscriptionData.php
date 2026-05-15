@@ -17,7 +17,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadNationalEventInscriptionData extends Fixture implements DependentFixtureInterface
 {
@@ -40,7 +40,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toRfc4122().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
@@ -57,7 +57,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toRfc4122().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
@@ -74,28 +74,28 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->addZone($zone92);
 
             $eventInscription->addPayment($payment = new Payment(
-                $uuid = Uuid::uuid4(),
+                $uuid = Uuid::v4(),
                 $eventInscription,
                 $eventInscription->amount,
                 $eventInscription->packageValues,
                 $eventInscription->withDiscount,
-                ['orderID' => $uuid->toString()]
+                ['orderID' => $uuid->toRfc4122()]
             ));
 
             if (0 === $i % 2) {
                 $eventInscription->addPayment($payment = new Payment(
-                    $uuid = Uuid::uuid4(),
+                    $uuid = Uuid::v4(),
                     $eventInscription,
                     $eventInscription->amount,
                     $eventInscription->packageValues,
                     $eventInscription->withDiscount,
-                    ['orderID' => $uuid->toString()]
+                    ['orderID' => $uuid->toRfc4122()]
                 ));
-                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
+                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toRfc4122(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
                 $eventInscription->status = InscriptionStatusEnum::PENDING;
                 $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
             } else {
-                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 5, 'AMOUNT' => $eventInscription->amount]));
+                $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toRfc4122(), 'STATUS' => 5, 'AMOUNT' => $eventInscription->amount]));
             }
         }
 
@@ -109,7 +109,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toRfc4122().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
@@ -141,7 +141,7 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
-            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toString().'.png' : null;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->ticketUuid->toRfc4122().'.png' : null;
             $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = '92110';
@@ -158,14 +158,14 @@ class LoadNationalEventInscriptionData extends Fixture implements DependentFixtu
             $eventInscription->addZone($zone92);
 
             $eventInscription->addPayment($payment = new Payment(
-                $uuid = Uuid::uuid4(),
+                $uuid = Uuid::v4(),
                 $eventInscription,
                 $eventInscription->amount,
                 $eventInscription->packageValues,
                 $eventInscription->withDiscount,
-                ['orderID' => $uuid->toString()]
+                ['orderID' => $uuid->toRfc4122()]
             ));
-            $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toString(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
+            $payment->addStatus(new PaymentStatus($payment, ['orderID' => $uuid->toRfc4122(), 'STATUS' => 9, 'AMOUNT' => $eventInscription->amount]));
             $eventInscription->status = InscriptionStatusEnum::PENDING;
             $eventInscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
         }

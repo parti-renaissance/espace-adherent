@@ -9,7 +9,7 @@ use App\Renaissance\Petition\SignatureRequest;
 use App\Repository\PetitionSignatureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PetitionSignatureRepository::class)]
 class PetitionSignature implements \Stringable
@@ -57,7 +57,7 @@ class PetitionSignature implements \Stringable
 
     public function __construct()
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public static function createFromRequest(SignatureRequest $request): self

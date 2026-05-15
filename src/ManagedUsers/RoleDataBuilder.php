@@ -105,7 +105,7 @@ class RoleDataBuilder
         }
 
         $names = array_map(fn (Committee $c) => $c->getName(), $committees);
-        $codes = array_map(fn (Committee $c) => $c->getUuid()->toString(), $committees);
+        $codes = array_map(fn (Committee $c) => $c->getUuid()->toRfc4122(), $committees);
         sort($names);
         sort($codes);
 
@@ -127,7 +127,7 @@ class RoleDataBuilder
         }
 
         $names = array_map(fn (Agora $a) => $a->getName(), $agoras);
-        $codes = array_map(fn (Agora $a) => $a->getUuid()->toString(), $agoras);
+        $codes = array_map(fn (Agora $a) => $a->getUuid()->toRfc4122(), $agoras);
         sort($names);
         sort($codes);
 

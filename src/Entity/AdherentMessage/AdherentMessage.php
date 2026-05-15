@@ -47,9 +47,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: AdherentMessageScopeFilter::class)]
@@ -264,16 +263,16 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     #[ORM\OneToOne(mappedBy: 'message', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?PublicationStatistics $statistics = null;
 
-    public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
+    public function __construct(?Uuid $uuid = null, ?Adherent $author = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->author = $this->sender = $author;
         $this->mailchimpCampaigns = new ArrayCollection();
     }
 
-    public static function createFromAdherent(Adherent $adherent, ?UuidInterface $uuid = null): AdherentMessageInterface
+    public static function createFromAdherent(Adherent $adherent, ?Uuid $uuid = null): AdherentMessageInterface
     {
-        return new self($uuid ?? Uuid::uuid4(), $adherent);
+        return new self($uuid ?? Uuid::v4(), $adherent);
     }
 
     public function getId(): ?int
@@ -507,7 +506,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function __clone(): void
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->mailchimpCampaigns = new ArrayCollection();
         $this->status = AdherentMessageStatusEnum::DRAFT;
         $this->recipientCount = 0;

@@ -16,9 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class SendNotificationHandlerTest extends TestCase
 {
@@ -189,7 +189,7 @@ final class SendNotificationHandlerTest extends TestCase
     private function createCommand(): SendNotificationCommandInterface&MockObject
     {
         $command = $this->createMock(SendNotificationCommandInterface::class);
-        $command->method('getUuid')->willReturn(Uuid::uuid4());
+        $command->method('getUuid')->willReturn(Uuid::v4());
         $command->method('getClass')->willReturn('App\Entity\Event\Event');
 
         return $command;

@@ -14,9 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'voting_platform_election_pool_result')]
@@ -64,10 +63,10 @@ class ElectionPoolResult
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $blank = 0;
 
-    public function __construct(ElectionPool $pool, ?UuidInterface $uuid = null)
+    public function __construct(ElectionPool $pool, ?Uuid $uuid = null)
     {
         $this->electionPool = $pool;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->candidateGroupResults = new ArrayCollection();
     }
 

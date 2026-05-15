@@ -42,7 +42,7 @@ class EditInscriptionController extends AbstractController
             $this->addFlash('error', 'L\'édition de votre inscription n\'est plus autorisée.');
 
             if ($event->isPackageEventType()) {
-                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $request->attributes->get('app_domain')]);
             }
 
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $request->attributes->get('app_domain')]);
@@ -68,7 +68,7 @@ class EditInscriptionController extends AbstractController
             $this->addFlash('success', 'Votre inscription a bien été mise à jour.');
 
             if ($event->isPackageEventType()) {
-                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $request->attributes->get('app_domain')]);
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $request->attributes->get('app_domain')]);
             }
 
             return $this->redirectToRoute('app_national_event_edit_inscription', ['uuid' => $inscription->getUuid(), 'slug' => $event->getSlug(), 'app_domain' => $request->attributes->get('app_domain')]);

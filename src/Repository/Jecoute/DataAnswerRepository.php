@@ -7,7 +7,7 @@ namespace App\Repository\Jecoute;
 use App\Entity\Jecoute\DataAnswer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class DataAnswerRepository extends ServiceEntityRepository
 {
@@ -16,7 +16,7 @@ class DataAnswerRepository extends ServiceEntityRepository
         parent::__construct($registry, DataAnswer::class);
     }
 
-    public function findAllBySurveyQuestion(UuidInterface $surveyQuestionUuid): array
+    public function findAllBySurveyQuestion(Uuid $surveyQuestionUuid): array
     {
         return $this
             ->createQueryBuilder('dataAnswer')

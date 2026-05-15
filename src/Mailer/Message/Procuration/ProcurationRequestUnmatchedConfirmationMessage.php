@@ -9,14 +9,14 @@ use App\Entity\Procuration\Proxy;
 use App\Entity\Procuration\Request;
 use App\Entity\Procuration\Round;
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class ProcurationRequestUnmatchedConfirmationMessage extends AbstractProcurationMessage
 {
     public static function create(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): Message
     {
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $request->email,
             null,
             'Mise en relation annulée',

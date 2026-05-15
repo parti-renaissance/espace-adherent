@@ -12,8 +12,8 @@ use App\Pap\BuildingEventTypeEnum;
 use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingEventRepository::class)]
@@ -68,7 +68,7 @@ class BuildingEvent implements AuthorInterface
         ?string $type = null,
         ?string $identifier = null,
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->building = $building;
         $this->campaign = $campaign;
         $this->action = $action;

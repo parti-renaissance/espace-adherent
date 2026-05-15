@@ -9,7 +9,6 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Scope\ScopeGeneratorResolver;
 use App\Utils\PhoneNumberUtils;
-use Ramsey\Uuid\Uuid;
 use Sonata\Exporter\ExporterInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 #[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'national_event')"))]
 #[Route(path: '/v3/national_event_inscriptions.xlsx', name: 'api_national_event_inscriptions_get_inscriptions', methods: ['GET'])]

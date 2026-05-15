@@ -6,14 +6,14 @@ namespace App\Mailer\Message\Procuration;
 
 use App\Entity\Procuration\Proxy;
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class ProcurationProxyConfirmationMessage extends AbstractProcurationMessage
 {
     public static function create(Proxy $proxy): Message
     {
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $proxy->email,
             null,
             '[Procuration] Demande prise en compte'

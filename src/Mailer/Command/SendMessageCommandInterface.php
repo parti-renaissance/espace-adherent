@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Mailer\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface SendMessageCommandInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function isResend(): bool;
 }

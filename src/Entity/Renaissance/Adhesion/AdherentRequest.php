@@ -10,8 +10,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
 use App\Repository\Renaissance\Adhesion\AdherentRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdherentRequestRepository::class)]
@@ -26,7 +25,7 @@ class AdherentRequest
     public ?string $email = null;
 
     #[ORM\Column(type: 'uuid', nullable: true)]
-    public ?UuidInterface $emailHash = null;
+    public ?Uuid $emailHash = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -35,9 +34,9 @@ class AdherentRequest
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $accountCreatedAt = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function createForEmail(string $email): self

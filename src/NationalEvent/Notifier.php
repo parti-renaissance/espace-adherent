@@ -33,7 +33,7 @@ class Notifier
     {
         $url = $this->urlGenerator->generate('app_national_event_my_inscription', [
             'slug' => $originalInscription->event->getSlug(),
-            'uuid' => $originalInscription->getUuid()->toString(),
+            'uuid' => $originalInscription->getUuid()->toRfc4122(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         if ($originalInscription->event->isJEM()) {
@@ -49,7 +49,7 @@ class Notifier
     {
         $url = $this->urlGenerator->generate('app_national_event_new_payment', [
             'slug' => $eventInscription->event->getSlug(),
-            'uuid' => $eventInscription->getUuid()->toString(),
+            'uuid' => $eventInscription->getUuid()->toRfc4122(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         if ($eventInscription->event->isJEM()) {
@@ -76,7 +76,7 @@ class Notifier
 
     public function sendInscriptionConfirmation(EventInscription $eventInscription, array $zone): void
     {
-        $editUrl = $this->urlGenerator->generate('app_national_event_my_inscription', ['uuid' => $eventInscription->getUuid()->toString(), 'slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $editUrl = $this->urlGenerator->generate('app_national_event_my_inscription', ['uuid' => $eventInscription->getUuid()->toRfc4122(), 'slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
         $eventUrl = $this->urlGenerator->generate('app_national_event_by_slug', ['slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
         $shareUrl = $eventInscription->adherent ? $this->urlGenerator->generate('app_national_event_by_slug_with_referrer', ['slug' => $eventInscription->event->getSlug(), 'pid' => $eventInscription->adherent->getPublicId()], UrlGeneratorInterface::ABSOLUTE_URL) : null;
         $civility = $eventInscription->gender ? $this->translator->trans(array_search($eventInscription->gender, Genders::CIVILITY_CHOICES, true)) : null;

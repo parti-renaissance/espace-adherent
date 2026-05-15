@@ -7,7 +7,7 @@ namespace App\JeMengage\Hit\Stats;
 use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\Stats\Provider\ProviderInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class Aggregator implements AggregatorInterface
 {
@@ -15,7 +15,7 @@ class Aggregator implements AggregatorInterface
     {
     }
 
-    public function getStats(TargetTypeEnum $type, UuidInterface $objectUuid, bool $wait = false): StatsOutput
+    public function getStats(TargetTypeEnum $type, Uuid $objectUuid, bool $wait = false): StatsOutput
     {
         $output = new StatsOutput();
 

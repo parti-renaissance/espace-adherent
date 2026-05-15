@@ -11,7 +11,7 @@ use App\OAuth\Model\Scope;
 use App\Security\Voter\DataCornerVoter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadClientData extends Fixture
 {

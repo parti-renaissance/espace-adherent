@@ -12,9 +12,8 @@ use App\Repository\Procuration\ElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
@@ -76,9 +75,9 @@ class Election implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\OneToMany(mappedBy: 'election', targetEntity: Round::class, cascade: ['all'], orphanRemoval: true)]
     public Collection $rounds;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->rounds = new ArrayCollection();
     }
 

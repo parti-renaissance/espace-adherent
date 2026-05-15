@@ -8,7 +8,7 @@ use App\Repository\DonatorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonatorRepository::class)]
@@ -106,7 +106,7 @@ class Donator implements \Stringable
         ?string $emailAddress = null,
         ?string $gender = null,
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->lastName = $lastName;
         $this->firstName = $firstName;
         $this->city = $city;

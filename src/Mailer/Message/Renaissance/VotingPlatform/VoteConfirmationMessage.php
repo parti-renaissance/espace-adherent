@@ -7,14 +7,14 @@ namespace App\Mailer\Message\Renaissance\VotingPlatform;
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class VoteConfirmationMessage extends AbstractRenaissanceMessage
 {
     public static function create(Election $election, Adherent $adherent, string $voterKey, string $url): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Félicitations, votre bulletin est dans l\'urne',

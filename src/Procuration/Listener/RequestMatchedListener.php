@@ -38,7 +38,7 @@ class RequestMatchedListener implements EventSubscriberInterface
         }
 
         foreach ($request->requestSlots as $requestSlot) {
-            $this->proxiesBeforeUpdate[$requestSlot->round->getUuid()->toString()] = [
+            $this->proxiesBeforeUpdate[$requestSlot->round->getUuid()->toRfc4122()] = [
                 'proxy' => $requestSlot->proxySlot?->proxy,
                 'round' => $requestSlot->round,
             ];
@@ -55,7 +55,7 @@ class RequestMatchedListener implements EventSubscriberInterface
 
         $proxiesAfterUpdate = [];
         foreach ($request->requestSlots as $requestSlot) {
-            $proxiesAfterUpdate[$requestSlot->round->getUuid()->toString()] = [
+            $proxiesAfterUpdate[$requestSlot->round->getUuid()->toRfc4122()] = [
                 'proxy' => $requestSlot->proxySlot?->proxy,
                 'round' => $requestSlot->round,
             ];
@@ -78,7 +78,7 @@ class RequestMatchedListener implements EventSubscriberInterface
         }
 
         foreach ($request->requestSlots as $requestSlot) {
-            $roundUuid = $requestSlot->round->getUuid()->toString();
+            $roundUuid = $requestSlot->round->getUuid()->toRfc4122();
             $proxy = $requestSlot->proxySlot?->proxy;
 
             if (

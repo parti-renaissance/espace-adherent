@@ -8,7 +8,7 @@ use App\Adherent\AdherentRoleEnum;
 use App\Adherent\AdherentRoles;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Scope\ScopeEnum;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -45,7 +45,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 $value = $value->getValue();
 
                 /** @var QueryBuilder $qb */
-                $where = new Expr\Orx();
+                $where = new Orx();
 
                 // Committee animator
                 if (\in_array(ScopeEnum::ANIMATOR, $value, true)) {

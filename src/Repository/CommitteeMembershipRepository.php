@@ -23,9 +23,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
@@ -143,7 +144,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             SQL;
 
         $rowsAffected = $this->getEntityManager()->getConnection()->executeStatement($sql, [
-            'uuid' => $membership->getUuid()->toString(),
+            'uuid' => $membership->getUuid()->toRfc4122(),
             'adherent_id' => $adherent->getId(),
             'committee_id' => $committee->getId(),
             'privilege' => CommitteeMembership::COMMITTEE_FOLLOWER,
@@ -185,8 +186,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->where('cm.committee = :committee')
             ->andWhere('cm.enableVote = :true')
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('committee', $committee),
-                new Query\Parameter('true', true),
+                new Parameter('committee', $committee),
+                new Parameter('true', true),
             ]))
             ->getQuery()
             ->getResult()
@@ -336,8 +337,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 ->add('am.quality = :supervisor AND am.finishAt IS NULL')
             )
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('host', CommitteeMembership::COMMITTEE_HOST),
-                new Query\Parameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR),
+                new Parameter('host', CommitteeMembership::COMMITTEE_HOST),
+                new Parameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR),
             ]))
         ;
 
@@ -362,8 +363,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ;
         }
 
-        return array_map(function (UuidInterface $uuid) {
-            return $uuid->toString();
+        return array_map(function (Uuid $uuid) {
+            return $uuid->toRfc4122();
         }, array_column($qb->getQuery()->getArrayResult(), 'uuid'));
     }
 
@@ -431,15 +432,15 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
             ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('query', \sprintf('%s%%', $query)),
-                new Query\Parameter('candidacy_draft_status', CandidacyInterface::STATUS_DRAFT),
-                new Query\Parameter('election', $candidacy->getElection()),
-                new Query\Parameter('committee', $membership->getCommittee()),
-                new Query\Parameter('membership_id', $membership->getId()),
-                new Query\Parameter('gender', $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE),
-                new Query\Parameter('adherent_status', Adherent::ENABLED),
-                new Query\Parameter('registration_limit_date', (clone $refDate)->modify('-3 months')),
-                new Query\Parameter('limit_date', (clone $refDate)->modify('-30 days')),
+                new Parameter('query', \sprintf('%s%%', $query)),
+                new Parameter('candidacy_draft_status', CandidacyInterface::STATUS_DRAFT),
+                new Parameter('election', $candidacy->getElection()),
+                new Parameter('committee', $membership->getCommittee()),
+                new Parameter('membership_id', $membership->getId()),
+                new Parameter('gender', $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE),
+                new Parameter('adherent_status', Adherent::ENABLED),
+                new Parameter('registration_limit_date', (clone $refDate)->modify('-3 months')),
+                new Parameter('limit_date', (clone $refDate)->modify('-30 days')),
             ]))
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')
@@ -458,9 +459,9 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('membership.joinedAt <= :joined_at_min')
             ->andWhere('adherent.tags LIKE :adherent_tag')
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('committee', $committee),
-                new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%'),
-                new Query\Parameter('joined_at_min', $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days')),
+                new Parameter('committee', $committee),
+                new Parameter('adherent_tag', TagEnum::ADHERENT.'%'),
+                new Parameter('joined_at_min', $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days')),
             ]))
         ;
 
@@ -480,9 +481,9 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 ->andWhere('candidacy.status = :status')
                 ->andWhere('election.committee != :committee')
                 ->setParameters(new ArrayCollection([
-                    new Query\Parameter('committee', $committee),
-                    new Query\Parameter('status', CandidacyInterface::STATUS_CONFIRMED),
-                    new Query\Parameter('designation', $designation),
+                    new Parameter('committee', $committee),
+                    new Parameter('status', CandidacyInterface::STATUS_CONFIRMED),
+                    new Parameter('designation', $designation),
                 ]))
                 ->getQuery()
                 ->getArrayResult(), 'adherent_id'
@@ -500,7 +501,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     }
 
     public function findMembershipFromAdherentUuidAndCommittee(
-        UuidInterface $adherentUuid,
+        Uuid $adherentUuid,
         Committee $committee,
     ): ?CommitteeMembership {
         return $this
@@ -510,9 +511,9 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('a.uuid = :adherent_uuid')
             ->andWhere('a.tags LIKE :adherent_tag')
             ->setParameters(new ArrayCollection([
-                new Query\Parameter('adherent_uuid', $adherentUuid),
-                new Query\Parameter('committee', $committee),
-                new Query\Parameter('adherent_tag', TagEnum::ADHERENT.'%'),
+                new Parameter('adherent_uuid', $adherentUuid),
+                new Parameter('committee', $committee),
+                new Parameter('adherent_tag', TagEnum::ADHERENT.'%'),
             ]))
             ->getQuery()
             ->getOneOrNullResult()

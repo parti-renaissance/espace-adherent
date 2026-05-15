@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Pap\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class BuildingEventCommand implements BuildingEventCommandInterface
 {
-    private UuidInterface $buildingUuid;
-    private UuidInterface $campaignUuid;
+    private Uuid $buildingUuid;
+    private Uuid $campaignUuid;
 
-    public function __construct(UuidInterface $buildingUuid, UuidInterface $campaignUuid)
+    public function __construct(Uuid $buildingUuid, Uuid $campaignUuid)
     {
         $this->buildingUuid = $buildingUuid;
         $this->campaignUuid = $campaignUuid;
     }
 
-    public function getBuildingUuid(): UuidInterface
+    public function getBuildingUuid(): Uuid
     {
         return $this->buildingUuid;
     }
 
-    public function getCampaignUuid(): UuidInterface
+    public function getCampaignUuid(): Uuid
     {
         return $this->campaignUuid;
     }

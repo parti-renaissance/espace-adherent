@@ -8,7 +8,7 @@ use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Template\Manager;
 use App\Mandrill\EmailTemplate;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
@@ -18,13 +18,13 @@ class EmailTemplateTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The email requires at least one recipient.');
 
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
+        $email = new EmailTemplate(Uuid::v4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
         $email->getBody();
     }
 
     public function testCreateEmailTemplate(): void
     {
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
+        $email = new EmailTemplate(Uuid::v4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
         $email->addRecipient('vincent777h@example.tld', 'Vincent Durand', ['name' => 'Vincent Durand']);
 
@@ -76,7 +76,7 @@ class EmailTemplateTest extends TestCase
 
     public function testCreateEmailTemplateWithReplyTo(): void
     {
-        $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
+        $email = new EmailTemplate(Uuid::v4(), '12345', 'Votre donation !', 'contact@en-marche.fr', 'En Marche !', 'reply@to.me');
         $email->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
         $body = [
@@ -156,7 +156,7 @@ class EmailTemplateTest extends TestCase
     public function testCreateEmailTemplateWithCc(): void
     {
         $email = new EmailTemplate(
-            Uuid::uuid4(),
+            Uuid::v4(),
             '12345',
             'Votre donation !',
             'contact@en-marche.fr',

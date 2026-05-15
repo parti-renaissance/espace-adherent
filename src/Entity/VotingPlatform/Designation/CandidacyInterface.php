@@ -6,7 +6,7 @@ namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\Adherent;
 use App\Entity\ImageManageableInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface CandidacyInterface extends ImageManageableInterface
 {
@@ -15,7 +15,7 @@ interface CandidacyInterface extends ImageManageableInterface
 
     public function getId(): ?int;
 
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getGender(): ?string;
 

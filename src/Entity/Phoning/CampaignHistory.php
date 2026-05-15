@@ -23,9 +23,8 @@ use App\Phoning\CampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryTypeEnum;
 use App\Repository\Phoning\CampaignHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['campaign.uuid' => 'exact', 'campaign.title' => 'partial', 'status' => 'exact'])]
@@ -172,17 +171,17 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[ORM\OneToOne(inversedBy: 'phoningCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
-    public function __construct(Campaign $campaign, ?UuidInterface $uuid = null)
+    public function __construct(Campaign $campaign, ?Uuid $uuid = null)
     {
         $this->campaign = $campaign;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function createForCampaign(
         Campaign $campaign,
         Adherent $caller,
         ?Adherent $adherent,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ): self {
         $history = new self($campaign, $uuid);
         $history->caller = $caller;

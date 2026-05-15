@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Mailchimp\Synchronisation\Command;
 
 use App\Mailchimp\SynchronizeMessageInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface AdherentChangeCommandInterface extends SynchronizeMessageInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getEmailAddress(): string;
 

@@ -475,7 +475,7 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
 
             try {
                 return [
-                    'UUID' => $event->getUUID()->toString(),
+                    'UUID' => $event->getUUID()->toRfc4122(),
                     'Région' => implode(', ', array_map(function (Zone $zone): string {
                         return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
                     }, $event->getParentZonesOfType(Zone::REGION))),
@@ -500,12 +500,12 @@ class EventAdmin extends AbstractAdmin implements ZoneableAdminInterface
                 ];
             } catch (\Throwable $e) {
                 $this->logger->error(
-                    \sprintf('Error exporting Event with UUID: %s. (%s)', $event->getUuid()->toString(), $e->getMessage()),
+                    \sprintf('Error exporting Event with UUID: %s. (%s)', $event->getUuid()->toRfc4122(), $e->getMessage()),
                     ['exception' => $e]
                 );
 
                 return [
-                    'UUID' => $event->getUuid()->toString(),
+                    'UUID' => $event->getUuid()->toRfc4122(),
                     'Nom' => $event->getName(),
                 ];
             }

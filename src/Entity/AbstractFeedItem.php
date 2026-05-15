@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
@@ -39,7 +39,7 @@ abstract class AbstractFeedItem
 
     public function __construct(Adherent $author, string $content, string $createdAt = 'now')
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->author = $author;
         $this->content = $content;
         $this->createdAt = new \DateTime($createdAt);

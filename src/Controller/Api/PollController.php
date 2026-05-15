@@ -6,7 +6,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Adherent;
 use App\Entity\Device;
-use App\Entity\Poll\Choice;
 use App\Entity\Poll\Vote;
 use App\Poll\PollManager;
 use App\Repository\Poll\ChoiceRepository;

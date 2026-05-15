@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\MyTeam\DelegatedAccess;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class DelegatedAccessCreatedMessage extends AbstractRenaissanceMessage
 {
@@ -19,7 +19,7 @@ class DelegatedAccessCreatedMessage extends AbstractRenaissanceMessage
         $delegated = $delegatedAccess->getDelegated();
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $delegated->getEmailAddress(),
             $delegated->getFullName(),
             'Nouvel accès délégué',

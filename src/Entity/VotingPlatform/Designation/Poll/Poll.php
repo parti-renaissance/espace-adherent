@@ -9,7 +9,7 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -33,7 +33,7 @@ class Poll implements \Stringable
     public function __construct(?string $label = null)
     {
         $this->label = $label;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->questions = new ArrayCollection();
     }
 

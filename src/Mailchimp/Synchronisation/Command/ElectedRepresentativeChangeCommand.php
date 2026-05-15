@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Synchronisation\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ElectedRepresentativeChangeCommand implements ElectedRepresentativeChangeCommandInterface
 {
     private $uuid;
     private $oldEmailAddress;
 
-    public function __construct(UuidInterface $uuid, ?string $oldEmailAddress = null)
+    public function __construct(Uuid $uuid, ?string $oldEmailAddress = null)
     {
         $this->uuid = $uuid;
         $this->oldEmailAddress = $oldEmailAddress;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

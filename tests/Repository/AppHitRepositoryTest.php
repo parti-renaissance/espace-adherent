@@ -10,7 +10,7 @@ use App\JeMengage\Hit\EventTypeEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AppHitRepository;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
@@ -20,7 +20,7 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
 
     public function testCountImpressionAndOpenStatsExcludesSuspiciousEmailClicks(): void
     {
-        $objectUuid = Uuid::uuid4();
+        $objectUuid = Uuid::v4();
 
         // Get adherents from fixtures
         $adherent1 = $this->getAdherentRepository()->findOneByEmail('luciole1989@spambox.fr');
@@ -32,13 +32,13 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
         self::assertNotNull($adherent3, 'Fixture adherent 3 should exist');
 
         // 2 reliable email clicks
-        $this->createAppHit($adherent1, EventTypeEnum::Click, 'email', $objectUuid->toString(), false);
-        $this->createAppHit($adherent2, EventTypeEnum::Click, 'email', $objectUuid->toString(), false);
+        $this->createAppHit($adherent1, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), false);
+        $this->createAppHit($adherent2, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), false);
         // 1 suspicious email click (should be excluded)
-        $this->createAppHit($adherent3, EventTypeEnum::Click, 'email', $objectUuid->toString(), true);
+        $this->createAppHit($adherent3, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), true);
         // 2 email opens (not affected by suspicious filter)
-        $this->createAppHit($adherent1, EventTypeEnum::Open, 'email', $objectUuid->toString(), false);
-        $this->createAppHit($adherent2, EventTypeEnum::Open, 'email', $objectUuid->toString(), false);
+        $this->createAppHit($adherent1, EventTypeEnum::Open, 'email', $objectUuid->toRfc4122(), false);
+        $this->createAppHit($adherent2, EventTypeEnum::Open, 'email', $objectUuid->toRfc4122(), false);
 
         $this->manager->flush();
 
@@ -50,14 +50,14 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
 
     public function testCountImpressionAndOpenStatsAllSuspiciousClicksReturnsZero(): void
     {
-        $objectUuid = Uuid::uuid4();
+        $objectUuid = Uuid::v4();
 
         $adherent1 = $this->getAdherentRepository()->findOneByEmail('luciole1989@spambox.fr');
         $adherent2 = $this->getAdherentRepository()->findOneByEmail('gisele-berthoux@caramail.com');
 
         // All email clicks are suspicious
-        $this->createAppHit($adherent1, EventTypeEnum::Click, 'email', $objectUuid->toString(), true);
-        $this->createAppHit($adherent2, EventTypeEnum::Click, 'email', $objectUuid->toString(), true);
+        $this->createAppHit($adherent1, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), true);
+        $this->createAppHit($adherent2, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), true);
 
         $this->manager->flush();
 
@@ -80,7 +80,7 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
         $appHit->objectType = TargetTypeEnum::Publication;
         $appHit->objectId = $objectId;
         $appHit->appDate = new \DateTime();
-        $appHit->activitySessionUuid = Uuid::uuid4();
+        $appHit->activitySessionUuid = Uuid::v4();
         $appHit->suspicious = $suspicious;
 
         $this->manager->persist($appHit);

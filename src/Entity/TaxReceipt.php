@@ -6,8 +6,8 @@ namespace App\Entity;
 
 use App\Repository\TaxReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TaxReceiptRepository::class)]
 class TaxReceipt
@@ -28,7 +28,7 @@ class TaxReceipt
 
     public function __construct(Donator $donator, string $label, string $filePath)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->label = $label;
         $this->donator = $donator;
         $this->fileName = $filePath;

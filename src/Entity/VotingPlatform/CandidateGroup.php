@@ -8,10 +8,9 @@ use App\Entity\EntityIdentityTrait;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CandidateGroupRepository::class)]
 #[ORM\Table(name: 'voting_platform_candidate_group')]
@@ -48,9 +47,9 @@ class CandidateGroup
     #[ORM\Column(nullable: true)]
     public ?string $mediaFilePath = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->candidates = new ArrayCollection();
     }
 

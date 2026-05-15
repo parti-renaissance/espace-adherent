@@ -16,13 +16,13 @@ use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Utils\UtmParams;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/{slug}', name: 'app_national_event_by_slug', requirements: ['slug' => '[^/]+'], methods: ['GET', 'POST'])]
 #[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
@@ -53,7 +53,7 @@ class InscriptionController extends AbstractController
         $session = $request->getSession();
 
         if (!$sessionId = (string) $session->get(self::SESSION_ID)) {
-            $session->set(self::SESSION_ID, $sessionId = Uuid::uuid4()->toString());
+            $session->set(self::SESSION_ID, $sessionId = Uuid::v4()->toRfc4122());
         }
 
         $inscriptionRequest = new InscriptionRequest($event->getId(), $sessionId, $request->getClientIp(), $event->packageConfig);
@@ -61,7 +61,7 @@ class InscriptionController extends AbstractController
         if ($user) {
             if ($existingInscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($user, $event)) {
                 if ($event->isPackageEventType()) {
-                    return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscriptions[0]->getUuid()->toString(), 'app_domain' => $app_domain]);
+                    return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $existingInscriptions[0]->getUuid()->toRfc4122(), 'app_domain' => $app_domain]);
                 }
 
                 return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain, 'already-registered' => true]);
@@ -108,7 +108,7 @@ class InscriptionController extends AbstractController
             }
 
             if ($event->isPackageEventType()) {
-                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain, 'confirmation' => true]);
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $app_domain, 'confirmation' => true]);
             }
 
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);

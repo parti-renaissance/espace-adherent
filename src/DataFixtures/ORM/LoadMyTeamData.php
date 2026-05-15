@@ -13,7 +13,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadMyTeamData extends Fixture implements DependentFixtureInterface
 {
@@ -108,18 +108,18 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $this->setReference('my_team_lc_member_1', $member_lc_1);
         $team_lc_1->addMember($member_lc_1);
 
-        $teamPad = $this->createMyTeam(Uuid::uuid4()->toString(), $this->getReference('president-ad-1', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $teamPad = $this->createMyTeam(Uuid::v4()->toRfc4122(), $this->getReference('president-ad-1', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $teamPad->addMember($padMember1 = $this->createMember(
             $this->getReference('adherent-12', Adherent::class),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS],
-            Uuid::uuid4()->toString()
+            Uuid::v4()->toRfc4122()
         ));
         $teamPad->addMember($padMember2 = $this->createMember(
             $this->getReference('adherent-13', Adherent::class),
             RoleEnum::MOBILIZATION_MANAGER,
             [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::PUBLICATIONS],
-            Uuid::uuid4()->toString()
+            Uuid::v4()->toRfc4122()
         ));
         $this->setReference('my_team_pad_member_1', $padMember1);
         $this->setReference('my_team_pad_member_2', $padMember2);

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class AdherentAlreadyEnabledException extends AdherentException
 {
-    public function __construct(UuidInterface $adherentUuid, ?\Exception $previous = null)
+    public function __construct(Uuid $adherentUuid, ?\Exception $previous = null)
     {
         parent::__construct(
             $adherentUuid,

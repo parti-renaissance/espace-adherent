@@ -21,9 +21,8 @@ use App\Entity\IndexableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -160,9 +159,9 @@ class Riposte implements \Stringable, AuthorInterface, IndexableEntityInterface
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $nbRipostes = 0;
 
-    public function __construct(?UuidInterface $uuid = null, $withNotification = true, $enabled = true)
+    public function __construct(?Uuid $uuid = null, $withNotification = true, $enabled = true)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->withNotification = $withNotification;
         $this->enabled = $enabled;
     }

@@ -9,7 +9,7 @@ use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -62,7 +62,7 @@ class TimelineItemPrivateMessage implements \Stringable, IndexableEntityInterfac
 
     public function __construct(array $adherents = [])
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->adherents = new ArrayCollection($adherents);
     }
 

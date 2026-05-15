@@ -117,7 +117,7 @@ class RemindProcurationMatchedSlotCommand extends Command
 
         do {
             foreach ($paginator as $requestSlot) {
-                $this->io->text($requestSlot->getUuid()->toString());
+                $this->io->text($requestSlot->getUuid()->toRfc4122());
                 $this->bus->dispatch(new MatchedRequestSlotReminderCommand($requestSlot->getUuid()));
 
                 $this->io->progressAdvance();

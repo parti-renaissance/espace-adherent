@@ -8,8 +8,8 @@ use App\Entity\Adherent;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use App\Repository\AdherentRepository;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -75,7 +75,7 @@ class UniqueMembershipValidator extends ConstraintValidator
         return $user;
     }
 
-    private function findAdherentIdentifiers(string $emailAddress): ?UuidInterface
+    private function findAdherentIdentifiers(string $emailAddress): ?Uuid
     {
         if ($identifiers = $this->adherentRepository->findIdentifiersByEmail($emailAddress)) {
             return $identifiers['uuid'];

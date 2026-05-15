@@ -17,7 +17,7 @@ use App\Repository\NationalEvent\PaymentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PaymentStatusUpdateCommandHandlerTest extends TestCase
@@ -31,14 +31,14 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $inscription->paymentStatus = PaymentStatusEnum::CONFIRMED;
 
         // P1 already CONFIRMED.
-        $firstPayment = new Payment(Uuid::uuid4(), $inscription, 9900, $packageValues, false);
+        $firstPayment = new Payment(Uuid::v4(), $inscription, 9900, $packageValues, false);
         $firstPayment->setCreatedAt(new \DateTime('2026-01-01 10:00:00'));
         $firstPayment->setUpdatedAt(new \DateTime('2026-01-01 10:00:00'));
         $firstPayment->addStatus(new PaymentStatus($firstPayment, ['STATUS' => '9']));
         $inscription->addPayment($firstPayment);
 
         // P2 is a fresh retry, still PENDING when the cancellation webhook arrives.
-        $secondPayment = new Payment($secondUuid = Uuid::uuid4(), $inscription, 9900, $packageValues, false);
+        $secondPayment = new Payment($secondUuid = Uuid::v4(), $inscription, 9900, $packageValues, false);
         $secondPayment->setCreatedAt(new \DateTime('2026-01-02 10:00:00'));
         $secondPayment->setUpdatedAt(new \DateTime('2026-01-02 10:00:00'));
         $inscription->addPayment($secondPayment);
@@ -47,7 +47,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $paymentRepository
             ->expects(self::once())
             ->method('findOneByUuid')
-            ->with($secondUuid->toString())
+            ->with($secondUuid->toRfc4122())
             ->willReturn($secondPayment)
         ;
 
@@ -65,7 +65,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         );
 
         // STATUS '4' → not 8/9 → ERROR
-        $handler(new PaymentStatusUpdateCommand(['orderID' => $secondUuid->toString(), 'STATUS' => '4']));
+        $handler(new PaymentStatusUpdateCommand(['orderID' => $secondUuid->toRfc4122(), 'STATUS' => '4']));
 
         self::assertSame(PaymentStatusEnum::ERROR, $secondPayment->status, 'Failed payment itself must be marked as ERROR');
         self::assertSame(PaymentStatusEnum::CONFIRMED, $firstPayment->status, 'First confirmed payment must remain CONFIRMED');
@@ -82,7 +82,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $inscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
         $inscription->paymentStatus = PaymentStatusEnum::PENDING;
 
-        $payment = new Payment($paymentUuid = Uuid::uuid4(), $inscription, 9900, $packageValues, false);
+        $payment = new Payment($paymentUuid = Uuid::v4(), $inscription, 9900, $packageValues, false);
         $payment->setCreatedAt(new \DateTime('2026-01-01 10:00:00'));
         $payment->setUpdatedAt(new \DateTime('2026-01-01 10:00:00'));
         $inscription->addPayment($payment);
@@ -91,7 +91,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $paymentRepository
             ->expects(self::once())
             ->method('findOneByUuid')
-            ->with($paymentUuid->toString())
+            ->with($paymentUuid->toRfc4122())
             ->willReturn($payment)
         ;
 
@@ -112,7 +112,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
             $this->createStub(LoggerInterface::class),
         );
 
-        $handler(new PaymentStatusUpdateCommand(['orderID' => $paymentUuid->toString(), 'STATUS' => '9']));
+        $handler(new PaymentStatusUpdateCommand(['orderID' => $paymentUuid->toRfc4122(), 'STATUS' => '9']));
 
         self::assertSame(PaymentStatusEnum::CONFIRMED, $payment->status);
         self::assertSame(PaymentStatusEnum::CONFIRMED, $inscription->paymentStatus);
@@ -127,7 +127,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $inscription->status = InscriptionStatusEnum::WAITING_PAYMENT;
         $inscription->paymentStatus = PaymentStatusEnum::PENDING;
 
-        $payment = new Payment($paymentUuid = Uuid::uuid4(), $inscription, 9900, $packageValues, false);
+        $payment = new Payment($paymentUuid = Uuid::v4(), $inscription, 9900, $packageValues, false);
         $payment->setCreatedAt(new \DateTime('2026-01-01 10:00:00'));
         $payment->setUpdatedAt(new \DateTime('2026-01-01 10:00:00'));
         $inscription->addPayment($payment);
@@ -136,7 +136,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
         $paymentRepository
             ->expects(self::once())
             ->method('findOneByUuid')
-            ->with($paymentUuid->toString())
+            ->with($paymentUuid->toRfc4122())
             ->willReturn($payment)
         ;
 
@@ -153,7 +153,7 @@ class PaymentStatusUpdateCommandHandlerTest extends TestCase
             $this->createStub(LoggerInterface::class),
         );
 
-        $handler(new PaymentStatusUpdateCommand(['orderID' => $paymentUuid->toString(), 'STATUS' => '4']));
+        $handler(new PaymentStatusUpdateCommand(['orderID' => $paymentUuid->toRfc4122(), 'STATUS' => '4']));
 
         self::assertSame(PaymentStatusEnum::ERROR, $payment->status);
         self::assertSame(PaymentStatusEnum::ERROR, $inscription->paymentStatus);

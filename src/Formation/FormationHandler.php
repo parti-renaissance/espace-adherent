@@ -6,7 +6,7 @@ namespace App\Formation;
 
 use App\Entity\AdherentFormation\Formation;
 use League\Flysystem\FilesystemOperator;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class FormationHandler
 {
@@ -29,7 +29,7 @@ class FormationHandler
         $formation->setFilePath($path = \sprintf(
             '%s/%s.%s',
             'files/adherent_formations',
-            Uuid::uuid4()->toString(),
+            Uuid::v4()->toRfc4122(),
             $file->getClientOriginalExtension()
         ));
 

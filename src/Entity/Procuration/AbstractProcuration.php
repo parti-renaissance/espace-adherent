@@ -20,9 +20,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
@@ -102,7 +102,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     private ?array $zoneIds = null;
 
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $email,
         string $gender,
         string $firstNames,
@@ -159,7 +159,7 @@ abstract class AbstractProcuration implements \Stringable, TranslatedTagInterfac
     #[SerializedName('id')]
     public function getPublicId(): string
     {
-        return substr($this->uuid->toString(), 0, 6 - \strlen((string) $this->id)).$this->id;
+        return substr($this->uuid->toRfc4122(), 0, 6 - \strlen((string) $this->id)).$this->id;
     }
 
     public function getZones(): Collection

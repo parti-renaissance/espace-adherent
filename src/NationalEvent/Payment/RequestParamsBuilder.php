@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\NationalEvent\Payment;
 
 use App\Entity\NationalEvent\EventInscription;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\String\UnicodeString;
+use Symfony\Component\Uid\Uuid;
 
 class RequestParamsBuilder
 {
@@ -16,13 +16,13 @@ class RequestParamsBuilder
     ) {
     }
 
-    public function build(UuidInterface $orderId, int $amount, EventInscription $inscription, string $backUrl): array
+    public function build(Uuid $orderId, int $amount, EventInscription $inscription, string $backUrl): array
     {
         $params = [
             'PSPID' => $this->ogonePspId,
-            'ORDERID' => $orderId->toString(),
+            'ORDERID' => $orderId->toRfc4122(),
             'COM' => $inscription->event->getSlug(),
-            'COMPLUS' => $inscription->getUuid()->toString(),
+            'COMPLUS' => $inscription->getUuid()->toRfc4122(),
             'AMOUNT' => $amount, // en cents
             'CURRENCY' => 'EUR',
             'LANGUAGE' => 'fr_FR',

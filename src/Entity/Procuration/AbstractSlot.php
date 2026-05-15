@@ -12,9 +12,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Procuration\SlotActionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Index(columns: ['manual'])]
 #[ORM\MappedSuperclass]
@@ -36,10 +35,10 @@ abstract class AbstractSlot implements EntityAdministratorBlameableInterface
 
     public function __construct(
         Round $round,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ) {
         $this->round = $round;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->actions = new ArrayCollection();
     }
 

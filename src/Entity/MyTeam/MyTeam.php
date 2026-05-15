@@ -17,9 +17,8 @@ use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -63,9 +62,9 @@ class MyTeam
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $members;
 
-    public function __construct(Adherent $owner, string $scope, ?UuidInterface $uuid = null)
+    public function __construct(Adherent $owner, string $scope, ?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->owner = $owner;
         $this->scope = $scope;
         $this->members = new ArrayCollection();

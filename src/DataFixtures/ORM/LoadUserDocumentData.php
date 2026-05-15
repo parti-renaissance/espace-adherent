@@ -7,7 +7,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\UserDocument;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadUserDocumentData extends Fixture
 {

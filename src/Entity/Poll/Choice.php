@@ -10,9 +10,8 @@ use App\Repository\Poll\ChoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
@@ -47,9 +46,9 @@ class Choice implements \Stringable
     #[ORM\OneToMany(mappedBy: 'choice', targetEntity: Vote::class, cascade: ['all'])]
     private $votes;
 
-    public function __construct(?string $value = null, ?UuidInterface $uuid = null)
+    public function __construct(?string $value = null, ?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->value = $value;
         $this->votes = new ArrayCollection();
     }

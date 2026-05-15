@@ -12,8 +12,8 @@ use ApiPlatform\Metadata\UrlGeneratorInterface;
 use App\Api\Exception\InvalidIdentifierException;
 use App\Api\Exception\ItemNotFoundException;
 use App\Entity\Event\BaseEventCategory;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Uid\Uuid;
 
 class IriConverterDecorator implements IriConverterInterface
 {

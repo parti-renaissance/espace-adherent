@@ -50,7 +50,7 @@ class AdherentRequestAdmin extends AbstractAdmin
                             ->add("$alias.emailHash = :email_hash")
                             ->add("$alias.email = :email")
                     );
-                    $qb->setParameter('email_hash', $uuid->toString());
+                    $qb->setParameter('email_hash', $uuid->toRfc4122());
                     $qb->setParameter('email', $value->getValue());
 
                     return true;

@@ -10,8 +10,8 @@ use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -45,7 +45,7 @@ class Candidacy extends BaseCandidacy
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isSubstitute = false;
 
-    public function __construct(?CandidacyPool $election = null, ?string $gender = null, ?UuidInterface $uuid = null)
+    public function __construct(?CandidacyPool $election = null, ?string $gender = null, ?Uuid $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

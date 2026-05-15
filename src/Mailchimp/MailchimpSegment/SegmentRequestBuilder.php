@@ -22,7 +22,7 @@ class SegmentRequestBuilder
         $name = \sprintf(
             '%s_%s',
             strtolower(new \ReflectionClass($segment)->getShortName()),
-            $segment->getUuid()->toString()
+            $segment->getUuid()->toRfc4122()
         );
 
         return new EditSegmentRequest($name)

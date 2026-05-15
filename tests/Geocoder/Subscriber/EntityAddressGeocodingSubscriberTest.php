@@ -14,7 +14,7 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\Event\UserEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 

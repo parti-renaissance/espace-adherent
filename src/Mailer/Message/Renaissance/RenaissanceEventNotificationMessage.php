@@ -6,7 +6,7 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessage
 {
@@ -41,7 +41,7 @@ final class RenaissanceEventNotificationMessage extends AbstractRenaissanceMessa
         ];
 
         $message = new static(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             \sprintf(

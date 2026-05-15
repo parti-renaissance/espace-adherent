@@ -149,6 +149,6 @@ class ElectionAuthorisationChecker
             return false;
         }
 
-        return $this->voterRepository->existsForElection($adherent, $election->getUuid()->toString());
+        return $this->voterRepository->existsForElection($adherent, $election->getUuid()->toRfc4122());
     }
 }

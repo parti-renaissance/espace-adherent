@@ -6,14 +6,14 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\PetitionSignature;
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class PetitionConfirmationMessage extends AbstractRenaissanceMessage
 {
     public static function create(PetitionSignature $signature, string $url): Message
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $signature->emailAddress,
             $signature->getFullName(),
             'Confirmez votre signature à la pétition',

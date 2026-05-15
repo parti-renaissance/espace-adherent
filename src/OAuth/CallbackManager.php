@@ -6,11 +6,10 @@ namespace App\OAuth;
 
 use App\Repository\OAuth\ClientRepository;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CallbackManager
 {
@@ -69,7 +68,7 @@ class CallbackManager
 
         try {
             $clientUuid = Uuid::fromString($clientId);
-        } catch (InvalidUuidStringException $e) {
+        } catch (\InvalidArgumentException $e) {
             $this->logger->warning("Client provides an invalid UUID \"$clientId\"", ['exception' => $e, $callbackParameters]);
 
             return [];

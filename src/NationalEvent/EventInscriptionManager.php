@@ -15,8 +15,8 @@ use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventInscriptionManager
@@ -113,10 +113,10 @@ class EventInscriptionManager
     {
         $amount = $newAmount ?? $eventInscription->amount;
         $paymentParams = $this->requestParamsBuilder->build(
-            $uuid = Uuid::uuid4(),
+            $uuid = Uuid::v4(),
             $amount,
             $eventInscription,
-            $this->urlGenerator->generate('app_national_event_payment_status', ['slug' => $eventInscription->event->getSlug(), 'uuid' => $eventInscription->getUuid()->toString()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->urlGenerator->generate('app_national_event_payment_status', ['slug' => $eventInscription->event->getSlug(), 'uuid' => $eventInscription->getUuid()->toRfc4122()], UrlGeneratorInterface::ABSOLUTE_URL),
         );
 
         $eventInscription->addPayment($payment = new Payment(

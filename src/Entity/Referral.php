@@ -29,10 +29,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\QueryBuilder;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(InZoneOfScopeFilter::class)]
@@ -148,13 +147,13 @@ class Referral implements \Stringable, ZoneableEntityInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $forSympathizer = false;
 
-    public function __construct(?string $emailAddress, ?UuidInterface $uuid = null)
+    public function __construct(?string $emailAddress, ?Uuid $uuid = null)
     {
         if ($emailAddress) {
             $this->emailAddress = mb_strtolower($emailAddress);
             $this->emailHash = self::createHash($this->emailAddress);
         }
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function createForReferred(Adherent $adherent): self
@@ -168,7 +167,7 @@ class Referral implements \Stringable, ZoneableEntityInterface
 
     public static function createHash(string $email): string
     {
-        return Adherent::createUuid($email)->toString();
+        return Adherent::createUuid($email)->toRfc4122();
     }
 
     public function __toString(): string

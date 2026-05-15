@@ -24,7 +24,7 @@ class SendTicketCommandHandler
     public function __invoke(SendTicketCommand $command): void
     {
         /** @var EventInscription $eventInscription */
-        if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {
+        if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }
 

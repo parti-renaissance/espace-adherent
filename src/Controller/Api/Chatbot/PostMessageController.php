@@ -102,7 +102,7 @@ class PostMessageController extends AbstractController
             'X-Accel-Buffering' => 'no',
             'x-vercel-ai-ui-message-stream' => 'v1',
             'Connection' => 'keep-alive',
-            'X-Chatbot-Thread-UUID' => $thread->getUuid()->toString(),
+            'X-Chatbot-Thread-UUID' => $thread->getUuid()->toRfc4122(),
         ]);
     }
 }

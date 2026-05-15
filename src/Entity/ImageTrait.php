@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 trait ImageTrait
 {
@@ -27,7 +27,7 @@ trait ImageTrait
                 md5(
                     \sprintf(
                         '%s@%s',
-                        method_exists($this, 'getUuid') ? $this->getUuid()->toString() : ($this->getId() ?? Uuid::uuid4()),
+                        method_exists($this, 'getUuid') ? $this->getUuid()->toRfc4122() : ($this->getId() ?? Uuid::v4()),
                         $image->getClientOriginalName()
                     )
                 ),

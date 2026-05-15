@@ -48,7 +48,7 @@ class MailchimpCampaignForceSendCommand extends Command
 
         $message = $campaign->getMessage();
         if ($message->isSent()) {
-            $io->warning(\sprintf('AdherentMessage #%d (uuid %s) already marked as sent. Aborting.', $message->getId(), $message->getUuid()->toString()));
+            $io->warning(\sprintf('AdherentMessage #%d (uuid %s) already marked as sent. Aborting.', $message->getId(), $message->getUuid()->toRfc4122()));
 
             return Command::SUCCESS;
         }
@@ -59,7 +59,7 @@ class MailchimpCampaignForceSendCommand extends Command
                 $campaign->getStatus()->value,
                 $campaign->getBlockReason()?->value ?? 'null',
             ),
-            \sprintf('AdherentMessage    : #%d (uuid: %s)', $message->getId(), $message->getUuid()->toString()),
+            \sprintf('AdherentMessage    : #%d (uuid: %s)', $message->getId(), $message->getUuid()->toRfc4122()),
             'Bypassing canSend(). If Mailchimp refuses, RetrySendMailchimpCampaignCommand is dispatched (30s, then 30s/1m/5m/10m/30m/60m); only the final exhausted retry is reported to Sentry.',
         ]);
 

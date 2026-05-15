@@ -35,7 +35,7 @@ class DonationContext extends RawMinkContext
 
         /** @var PayboxProvider $payboxProvider */
         $payboxProvider = $this->getService(PayboxProvider::class);
-        $data = $payboxProvider->prepareCallbackParameters($donation->getUuid()->toString(), $status);
+        $data = $payboxProvider->prepareCallbackParameters($donation->getUuid()->toRfc4122(), $status);
 
         $this->bus->dispatch(new ReceivePayboxIpnResponseCommand($data));
 
@@ -55,7 +55,7 @@ class DonationContext extends RawMinkContext
         }
 
         $this->getMink()->setDefaultSessionName($sessionName);
-        $this->visitPath('/paiement?result='.$donation->getTransactions()->first()->getPayboxResultCode().'&uuid='.$donation->getUuid()->toString());
+        $this->visitPath('/paiement?result='.$donation->getTransactions()->first()->getPayboxResultCode().'&uuid='.$donation->getUuid()->toRfc4122());
     }
 
     private function getService(string $name)

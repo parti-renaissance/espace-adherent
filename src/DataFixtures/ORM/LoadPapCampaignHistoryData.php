@@ -18,7 +18,7 @@ use App\Pap\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInterface
 {
@@ -201,7 +201,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         ?\DateTime $finishAt = null,
         ?string $uuid = null,
     ): CampaignHistory {
-        $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
+        $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::v4());
         $campaignHistory->setCampaign($campaign);
         $campaignHistory->setBuilding($building);
         $campaignHistory->setStatus($status);

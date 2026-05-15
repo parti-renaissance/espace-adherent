@@ -11,7 +11,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
 {
@@ -69,7 +69,7 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
         $emailTemplate5->setCreatedByAdministrator($this->getReference('administrator-2', Administrator::class));
 
         $manager->persist($emailTemplate = $this->createEmailTemplate(
-            Uuid::uuid4()->toString(),
+            Uuid::v4()->toRfc4122(),
             'Template email statutaire',
             file_get_contents(__DIR__.'/../unlayer/content.md'),
             file_get_contents(__DIR__.'/../unlayer/json_content.json'),

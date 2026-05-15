@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,6 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Uid\Uuid;
 
 class CroppedImageType extends AbstractType
 {
@@ -45,7 +45,7 @@ class CroppedImageType extends AbstractType
 
                     $data['image'] = new UploadedFile(
                         $tmpFile,
-                        Uuid::uuid4()->toString().'.png',
+                        Uuid::v4()->toRfc4122().'.png',
                         str_replace([';', 'data:'], '', $imageData[0]),
                         null,
                         true

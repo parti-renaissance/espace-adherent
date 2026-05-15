@@ -15,10 +15,9 @@ use GoCardlessPro\Core\Exception\ApiException;
 use GoCardlessPro\Resources\Subscription as GoCardlessSubscription;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ContributionRequestHandlerTest extends TestCase
 {
@@ -46,7 +45,7 @@ class ContributionRequestHandlerTest extends TestCase
 
     public function testHandleAmountChangeUpdatesExistingSubscription(): void
     {
-        $adherentUuid = Uuid::uuid4();
+        $adherentUuid = Uuid::v4();
         $adherent = $this->createAdherentWithUuid($adherentUuid);
 
         $lastContribution = $this->createExistingContribution('SB_existing');
@@ -84,7 +83,7 @@ class ContributionRequestHandlerTest extends TestCase
 
     public function testHandleAmountChangeReturnsNullWhenNoExistingContribution(): void
     {
-        $adherent = $this->createAdherentWithUuid(Uuid::uuid4());
+        $adherent = $this->createAdherentWithUuid(Uuid::v4());
 
         $this->contributionRepository
             ->expects(self::once())
@@ -100,7 +99,7 @@ class ContributionRequestHandlerTest extends TestCase
 
     public function testHandleAmountChangeFallsBackToCancelAndRecreateWhenAmendmentsLimitReached(): void
     {
-        $adherentUuid = Uuid::uuid4();
+        $adherentUuid = Uuid::v4();
         $adherent = $this->createAdherentWithUuid($adherentUuid);
 
         $lastContribution = $this->createExistingContribution('SB_existing');
@@ -144,7 +143,7 @@ class ContributionRequestHandlerTest extends TestCase
 
     public function testHandleAmountChangeRethrowsUnrelatedApiExceptions(): void
     {
-        $adherent = $this->createAdherentWithUuid(Uuid::uuid4());
+        $adherent = $this->createAdherentWithUuid(Uuid::v4());
         $lastContribution = $this->createExistingContribution('SB_existing');
 
         $this->contributionRepository
@@ -170,7 +169,7 @@ class ContributionRequestHandlerTest extends TestCase
 
     public function testHandleAmountChangeReturnsNullWhenContributionHasNoSubscriptionId(): void
     {
-        $adherent = $this->createAdherentWithUuid(Uuid::uuid4());
+        $adherent = $this->createAdherentWithUuid(Uuid::v4());
 
         $orphanContribution = new Contribution();
         $orphanContribution->gocardlessSubscriptionId = null;
@@ -187,7 +186,7 @@ class ContributionRequestHandlerTest extends TestCase
         self::assertNull($this->handler->handleAmountChange($adherent, 50));
     }
 
-    private function createAdherentWithUuid(UuidInterface $uuid): Adherent
+    private function createAdherentWithUuid(Uuid $uuid): Adherent
     {
         $adherent = new Adherent();
         $reflection = new \ReflectionProperty(Adherent::class, 'uuid');

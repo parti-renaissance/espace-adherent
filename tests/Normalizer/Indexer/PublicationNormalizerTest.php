@@ -10,8 +10,8 @@ use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Normalizer\Indexer\PublicationNormalizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class PublicationNormalizerTest extends TestCase
 {
@@ -26,7 +26,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithoutScopeTargetsReturnsScopeTargetFalse(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = null;
@@ -58,7 +58,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithEmptyScopeTargetsReturnsScopeTargetFalse(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [];
@@ -90,7 +90,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsReturnsScopeTargetTrueAndIncludeKeys(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -120,7 +120,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsMissingRoleSkipsEntry(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -156,7 +156,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithoutFilterReturnsScopeTargetFalse(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $message = $this->createMock(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
@@ -177,7 +177,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsIncludeTeamAddsTeamKeys(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -213,7 +213,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsOnlyTeamNoDirectRole(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [
@@ -246,7 +246,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testGetAudienceWithScopeTargetsIncludeAllTeamAddsWildcard(): void
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
 
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [

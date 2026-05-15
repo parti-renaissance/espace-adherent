@@ -216,7 +216,7 @@ class PetitionSignatureAdmin extends AbstractAdmin
                 'Tél' => PhoneNumberUtils::format($signature->phone),
                 'Créée le' => $signature->getCreatedAt()?->format('d/m/Y H:i:s'),
                 'Validée le' => $signature->validatedAt?->format('d/m/Y H:i:s'),
-                'Uuid' => $signature->getUuid()->toString(),
+                'Uuid' => $signature->getUuid()->toRfc4122(),
                 'UTM Source' => $signature->utmSource,
                 'UTM Campagne' => $signature->utmCampaign,
             ];

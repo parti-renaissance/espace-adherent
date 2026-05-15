@@ -38,6 +38,6 @@ class HubItemSorter
 
     private function compareStable(HubItemRow $a, HubItemRow $b): int
     {
-        return $a->entity->getUuid()->toString() <=> $b->entity->getUuid()->toString();
+        return $a->entity->getUuid()->toRfc4122() <=> $b->entity->getUuid()->toRfc4122();
     }
 }

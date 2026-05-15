@@ -9,7 +9,7 @@ use App\Entity\OAuth\Client;
 use App\Entity\OAuth\UserAuthorization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserAuthorizationRepository extends ServiceEntityRepository
 {
@@ -29,7 +29,7 @@ class UserAuthorizationRepository extends ServiceEntityRepository
     /**
      * @return UserAuthorization[]
      */
-    public function findByUserUuid(UuidInterface $userUuid): array
+    public function findByUserUuid(Uuid $userUuid): array
     {
         return $this
             ->createQueryBuilder('ua')
@@ -38,7 +38,7 @@ class UserAuthorizationRepository extends ServiceEntityRepository
             ->leftJoin('ua.user', 'u')
             ->where('u.uuid = :uuid')
             ->orderBy('ua.id', 'DESC')
-            ->setParameter('uuid', $userUuid->toString())
+            ->setParameter('uuid', $userUuid->toRfc4122())
             ->getQuery()
             ->getResult()
         ;
@@ -49,7 +49,7 @@ class UserAuthorizationRepository extends ServiceEntityRepository
         return $this->findOneBy(['user' => $user, 'client' => $client]);
     }
 
-    public function findByUuid(UuidInterface $uuid): ?UserAuthorization
+    public function findByUuid(Uuid $uuid): ?UserAuthorization
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }

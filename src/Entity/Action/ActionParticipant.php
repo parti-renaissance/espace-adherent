@@ -9,8 +9,8 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Action\ActionParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ActionParticipantRepository::class)]
 #[ORM\Table(name: 'vox_action_participant')]
@@ -33,7 +33,7 @@ class ActionParticipant
 
     public function __construct(Action $action, Adherent $adherent)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->action = $action;
         $this->adherent = $adherent;
     }

@@ -8,8 +8,8 @@ use Algolia\SearchBundle\Entity\Aggregator;
 use App\Entity\IndexableEntityInterface;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @internal
@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
 class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntityInterface
 {
     /**
-     * @var UuidInterface|null
+     * @var Uuid|null
      */
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
@@ -30,7 +30,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
     {
         parent::__construct($entity, $entityIdentifierValues);
 
-        $this->objectID = $entity->getUuid()->toString();
+        $this->objectID = $entity->getUuid()->toRfc4122();
     }
 
     public static function getEntities(): array

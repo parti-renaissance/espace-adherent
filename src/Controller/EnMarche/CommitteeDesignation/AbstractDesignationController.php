@@ -178,7 +178,7 @@ abstract class AbstractDesignationController extends AbstractController
     ): Response {
         return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_{$subName}", array_merge([
             'committee_slug' => $committee->getSlug(),
-            'uuid' => $election->getUuid()->toString(),
+            'uuid' => $election->getUuid()->toRfc4122(),
         ], $parameters));
     }
 

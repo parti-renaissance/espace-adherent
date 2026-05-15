@@ -23,10 +23,10 @@ class RefreshThreadCommandHandler
 
     public function __invoke(RefreshThreadCommand $command): void
     {
-        $thread = $this->threadRepository->findOneByUuid($command->getUuid()->toString());
+        $thread = $this->threadRepository->findOneByUuid($command->getUuid()->toRfc4122());
 
         if (!$thread) {
-            $this->logger->log(\sprintf('Did not find Thread with uuid: "%s"', $command->getUuid()->toString()));
+            $this->logger->log(\sprintf('Did not find Thread with uuid: "%s"', $command->getUuid()->toRfc4122()));
 
             return;
         }

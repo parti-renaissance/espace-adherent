@@ -77,7 +77,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertSame(0, $this->unregistrationRepository->count([]));
         $this->assertCountMails(0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
-        $adherentUuid = $adherent->getUuid()->toString();
+        $adherentUuid = $adherent->getUuid()->toRfc4122();
 
         $this->client->request(Request::METHOD_GET, \sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

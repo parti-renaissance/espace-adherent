@@ -23,7 +23,7 @@ class InitiatePublicationReachFromPushCommandHandler
     public function __invoke(InitiatePublicationReachFromPushCommand $command): void
     {
         /** @var Notification|null $notification */
-        $notification = $this->notificationRepository->findOneByUuid($command->getUuid()->toString());
+        $notification = $this->notificationRepository->findOneByUuid($command->getUuid()->toRfc4122());
         if (!$notification) {
             return;
         }

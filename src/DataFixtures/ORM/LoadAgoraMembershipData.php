@@ -9,8 +9,7 @@ use App\Entity\Agora;
 use App\Entity\AgoraMembership;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadAgoraMembershipData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -46,7 +45,7 @@ class LoadAgoraMembershipData extends AbstractLoadPostAddressData implements Dep
         ));
 
         $manager->persist($this->createAgoraMembership(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $agora2,
             $adherent6
         ));
@@ -55,7 +54,7 @@ class LoadAgoraMembershipData extends AbstractLoadPostAddressData implements Dep
     }
 
     private function createAgoraMembership(
-        UuidInterface $uuid,
+        Uuid $uuid,
         Agora $agora,
         Adherent $adherent,
     ): AgoraMembership {

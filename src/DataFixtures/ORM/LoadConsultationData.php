@@ -7,8 +7,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Consultation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadConsultationData extends Fixture
 {
@@ -54,7 +53,7 @@ class LoadConsultationData extends Fixture
     }
 
     private function createConsultation(
-        UuidInterface $uuid,
+        Uuid $uuid,
         string $title,
         string $content,
         string $url,

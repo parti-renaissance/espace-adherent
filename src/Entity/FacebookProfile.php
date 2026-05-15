@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'facebook_profiles')]
@@ -62,9 +61,9 @@ class FacebookProfile implements \Stringable
         return 'Profil de '.$this->emailAddress;
     }
 
-    public static function createUuid(string $facebookId): UuidInterface
+    public static function createUuid(string $facebookId): Uuid
     {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $facebookId);
+        return Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $facebookId);
     }
 
     public function getFacebookId(): string

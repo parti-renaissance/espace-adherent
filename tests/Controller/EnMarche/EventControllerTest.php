@@ -131,7 +131,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadCommitteeEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, \sprintf('/evenements/%s/confirmation', $event->getSlug()), [
-            'registration' => $registration->getUuid()->toString(),
+            'registration' => $registration->getUuid()->toRfc4122(),
         ]);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -145,7 +145,7 @@ class EventControllerTest extends AbstractEnMarcheWebTestCase
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadCommitteeEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, \sprintf('/evenements/%s/confirmation', $event->getSlug()), [
-            'registration' => $registration->getUuid()->toString(),
+            'registration' => $registration->getUuid()->toRfc4122(),
         ]);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

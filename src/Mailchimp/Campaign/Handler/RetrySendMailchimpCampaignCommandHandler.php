@@ -67,7 +67,7 @@ final class RetrySendMailchimpCampaignCommandHandler
                 'externalId' => $campaign->getExternalId(),
                 'reason' => $decision->reason,
                 'recipientCount' => $decision->recipientCount,
-                'messageUuid' => $campaign->getMessage()->getUuid()->toString(),
+                'messageUuid' => $campaign->getMessage()->getUuid()->toRfc4122(),
             ]);
 
             return;
@@ -123,7 +123,7 @@ final class RetrySendMailchimpCampaignCommandHandler
                 'campaignId' => $command->campaignId,
                 'externalId' => $campaign->getExternalId(),
                 'staticSegmentId' => $campaign->getStaticSegmentId(),
-                'messageUuid' => $campaign->getMessage()->getUuid()->toString(),
+                'messageUuid' => $campaign->getMessage()->getUuid()->toRfc4122(),
                 'lastError' => $campaign->getDetail(),
                 'retryCount' => $campaign->getRetryCount(),
             ]);

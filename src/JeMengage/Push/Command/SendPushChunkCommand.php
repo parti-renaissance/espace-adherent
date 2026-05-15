@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\JeMengage\Push\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SendPushChunkCommand implements AsynchronousMessageInterface
 {
@@ -17,7 +17,7 @@ class SendPushChunkCommand implements AsynchronousMessageInterface
         public array $data,
         public array $tokens,
         public string $chunkKey,
-        public ?UuidInterface $pushNotificationUuid = null,
+        public ?Uuid $pushNotificationUuid = null,
     ) {
     }
 }

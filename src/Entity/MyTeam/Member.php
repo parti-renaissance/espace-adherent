@@ -17,10 +17,9 @@ use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
 use App\Validator\MyTeamMemberScopeFeatures as AssertScopeFeaturesValid;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -84,9 +83,9 @@ class Member implements \Stringable
         ?Adherent $adherent = null,
         ?string $role = null,
         array $scopeFeatures = [],
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->adherent = $adherent;
         $this->role = $role;
         $this->scopeFeatures = $scopeFeatures;

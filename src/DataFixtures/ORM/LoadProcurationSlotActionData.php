@@ -16,7 +16,7 @@ use App\Procuration\SlotActionStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadProcurationSlotActionData extends Fixture implements DependentFixtureInterface
 {
@@ -108,7 +108,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         array $context = [],
     ): ProxyAction {
         $action = new ProxyAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $date ?? new \DateTime(),
             $status,
             $proxy
@@ -130,7 +130,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         array $context = [],
     ): RequestSlotAction {
         $action = new RequestSlotAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $date ?? new \DateTime(),
             $status,
             $requestSlot
@@ -152,7 +152,7 @@ class LoadProcurationSlotActionData extends Fixture implements DependentFixtureI
         array $context = [],
     ): ProxySlotAction {
         $action = new ProxySlotAction(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $date ?? new \DateTime(),
             $status,
             $proxySlot

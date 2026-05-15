@@ -12,8 +12,8 @@ use App\Repository\CommitteeElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
@@ -57,7 +57,7 @@ class CommitteeElection extends AbstractElectionEntity
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $adherentNotified = false;
 
-    public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)
+    public function __construct(?Designation $designation = null, ?Uuid $uuid = null)
     {
         parent::__construct($designation, $uuid);
 

@@ -31,11 +31,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ManagerTest extends TestCase
@@ -853,7 +853,7 @@ final class ManagerTest extends TestCase
             ->method('dispatch')
             ->willReturnCallback(function (object $cmd, array $stamps = []) use (&$reachDispatched, &$reportDispatched, $message): Envelope {
                 if ($cmd instanceof CreatePublicationReachFromEmailCommand) {
-                    self::assertSame($message->getUuid()->toString(), $cmd->getUuid()->toString());
+                    self::assertSame($message->getUuid()->toRfc4122(), $cmd->getUuid()->toRfc4122());
                     self::assertCount(1, $stamps);
                     self::assertInstanceOf(DelayStamp::class, $stamps[0]);
                     self::assertSame(5_000, $stamps[0]->getDelay());
@@ -930,14 +930,14 @@ final class ManagerTest extends TestCase
         // Set UUID via reflection (required for getUuid())
         $reflection = new \ReflectionClass($adherent);
         $property = $reflection->getProperty('uuid');
-        $property->setValue($adherent, Uuid::uuid4());
+        $property->setValue($adherent, Uuid::v4());
 
         return $adherent;
     }
 
     private function createCommand(Adherent $adherent): AdherentChangeCommand
     {
-        return new AdherentChangeCommand(Uuid::uuid4(), $adherent->getEmailAddress());
+        return new AdherentChangeCommand(Uuid::v4(), $adherent->getEmailAddress());
     }
 
     private function setEntityId(object $entity, int $id): void

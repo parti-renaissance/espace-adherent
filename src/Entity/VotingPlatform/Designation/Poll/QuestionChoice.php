@@ -6,8 +6,8 @@ namespace App\Entity\VotingPlatform\Designation\Poll;
 
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -29,6 +29,6 @@ class QuestionChoice
     public function __construct(?string $label = null)
     {
         $this->label = $label;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 }

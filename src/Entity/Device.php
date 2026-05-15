@@ -11,8 +11,8 @@ use ApiPlatform\Metadata\Put;
 use App\Collection\ZoneCollection;
 use App\Repository\DeviceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -40,7 +40,7 @@ class Device
     use EntityZoneTrait;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ApiProperty(identifier: false)]
     #[Groups(['user_profile'])]
@@ -69,7 +69,7 @@ class Device
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastLoggedAt;
 
-    public function __construct(UuidInterface $uuid, string $deviceUuid, ?string $postalCode = null)
+    public function __construct(Uuid $uuid, string $deviceUuid, ?string $postalCode = null)
     {
         $this->uuid = $uuid;
         $this->deviceUuid = $deviceUuid;

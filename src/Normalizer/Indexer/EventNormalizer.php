@@ -152,7 +152,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
     protected function getAgoraUuid(object $object): ?string
     {
-        return $object->agora?->getUuid()->toString();
+        return $object->agora?->getUuid()->toRfc4122();
     }
 
     /** @param Event $object */

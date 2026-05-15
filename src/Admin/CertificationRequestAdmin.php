@@ -10,7 +10,7 @@ use App\Entity\CertificationRequest;
 use App\Entity\Geo\Region;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Orx;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -119,7 +119,7 @@ class CertificationRequestAdmin extends AbstractAdmin
                     $region = $value->getValue();
                     $qb->innerJoin("$alias.adherent", 'adherent');
 
-                    $postalCodeCondition = new Expr\Orx();
+                    $postalCodeCondition = new Orx();
                     foreach ($region->getDepartments() as $key => $department) {
                         $postalCodeCondition->add("adherent.postAddress.postalCode LIKE :postal_code_$key");
                         $qb->setParameter("postal_code_$key", $department->getCode().'%');

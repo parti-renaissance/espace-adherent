@@ -10,7 +10,7 @@ use App\Repository\LocalElection\LocalElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: LocalElectionRepository::class)]
 class LocalElection extends AbstractElectionEntity implements \Stringable
@@ -21,7 +21,7 @@ class LocalElection extends AbstractElectionEntity implements \Stringable
     #[ORM\OneToMany(mappedBy: 'election', targetEntity: CandidaciesGroup::class, cascade: ['persist'])]
     private $candidaciesGroups;
 
-    public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)
+    public function __construct(?Designation $designation = null, ?Uuid $uuid = null)
     {
         parent::__construct($designation, $uuid);
 

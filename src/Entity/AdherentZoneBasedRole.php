@@ -15,8 +15,8 @@ use App\Entity\Geo\Zone;
 use App\Repository\AdherentZoneBasedRoleRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -65,7 +65,7 @@ class AdherentZoneBasedRole
 
     public function __construct(?string $type = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->type = $type;
         $this->zones = new ZoneCollection();
     }

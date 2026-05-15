@@ -15,10 +15,9 @@ use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -71,22 +70,22 @@ class LegislativeNewsletterSubscription implements \Stringable, RecaptchaChallen
     private bool $personalDataCollection = false;
 
     #[ORM\Column(type: 'uuid', unique: true)]
-    private UuidInterface $token;
+    private Uuid $token;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $confirmedAt = null;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $emailAddress = null,
         ?string $postalCode = null,
         ?bool $personalDataCollection = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->emailAddress = $emailAddress;
         $this->postalCode = $postalCode;
         $this->personalDataCollection = (bool) $personalDataCollection;
-        $this->token = Uuid::uuid4();
+        $this->token = Uuid::v4();
         $this->fromZones = new ArrayCollection();
     }
 
@@ -160,12 +159,12 @@ class LegislativeNewsletterSubscription implements \Stringable, RecaptchaChallen
         $this->personalDataCollection = $personalDataCollection;
     }
 
-    public function getToken(): UuidInterface
+    public function getToken(): Uuid
     {
         return $this->token;
     }
 
-    public function setToken(?UuidInterface $token = null): void
+    public function setToken(?Uuid $token = null): void
     {
         $this->token = $token;
     }

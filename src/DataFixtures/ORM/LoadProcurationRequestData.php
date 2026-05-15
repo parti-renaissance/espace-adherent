@@ -16,8 +16,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LoadProcurationRequestData extends Fixture implements DependentFixtureInterface
 {
@@ -175,7 +174,7 @@ class LoadProcurationRequestData extends Fixture implements DependentFixtureInte
     }
 
     private function createRequest(
-        ?UuidInterface $uuid,
+        ?Uuid $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -196,7 +195,7 @@ class LoadProcurationRequestData extends Fixture implements DependentFixtureInte
         array $slotsUuidMapping = [],
     ): Request {
         $request = new Request(
-            $uuid ?? Uuid::uuid4(),
+            $uuid ?? Uuid::v4(),
             $rounds,
             $email,
             $gender,

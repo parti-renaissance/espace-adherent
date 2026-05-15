@@ -27,7 +27,7 @@ class SynchronizeDynamicSegmentCommandHandler
         /** @var DynamicSegmentInterface $object */
         $object = $this->entityManager
             ->getRepository($command->getEntityClass())
-            ->findOneByUuid($command->getUuid()->toString())
+            ->findOneByUuid($command->getUuid()->toRfc4122())
         ;
 
         if (!$object) {

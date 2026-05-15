@@ -9,8 +9,8 @@ use App\Entity\Contribution\Payment;
 use App\Repository\Contribution\PaymentRepository;
 use App\Repository\Ohme\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class PaymentImporter
 {
@@ -84,7 +84,7 @@ class PaymentImporter
                 $this->contactRepository->save($contact);
             }
 
-            $adherentUuid = $contact->adherent->getUuid()->toString();
+            $adherentUuid = $contact->adherent->getUuid()->toRfc4122();
             if (!\in_array($adherentUuid, $adherentsUuidToRefresh)) {
                 $adherentsUuidToRefresh[] = $adherentUuid;
             }

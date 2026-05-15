@@ -39,14 +39,14 @@ class EventRegistrationManager
 
     public function searchGuestRegistration(Event $event, string $emailAddress): ?EventRegistration
     {
-        return $this->repository->findGuestRegistration($event->getUuid()->toString(), $emailAddress);
+        return $this->repository->findGuestRegistration($event->getUuid()->toRfc4122(), $emailAddress);
     }
 
     public function searchAdherentRegistration(Event $event, Adherent $adherent): ?EventRegistration
     {
         return $this->repository->findAdherentRegistration(
-            $event->getUuid()->toString(),
-            $adherent->getUuid()->toString(),
+            $event->getUuid()->toRfc4122(),
+            $adherent->getUuid()->toRfc4122(),
             null
         );
     }

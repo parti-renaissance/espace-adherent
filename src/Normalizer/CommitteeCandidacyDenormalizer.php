@@ -8,9 +8,9 @@ use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Entity\CommitteeCandidacy;
 use App\Repository\CommitteeCandidaciesGroupRepository;
 use App\Repository\CommitteeMembershipRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class CommitteeCandidacyDenormalizer implements DenormalizerInterface
 {

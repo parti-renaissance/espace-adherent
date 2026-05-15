@@ -10,7 +10,7 @@ use App\Repository\NotificationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
@@ -86,7 +86,7 @@ class Notification
         ?string $topic = null,
         ?array $tokens = null,
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->notificationClass = $notificationClass;
         $this->title = $title;
         $this->body = $body;
@@ -208,7 +208,7 @@ class Notification
     public function __clone()
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->pushTokens = new ArrayCollection();
     }
 }

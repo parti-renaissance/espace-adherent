@@ -6,8 +6,8 @@ namespace App\Entity\Poll;
 
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 class NationalPoll extends Poll
@@ -18,7 +18,7 @@ class NationalPoll extends Poll
 
     public function __construct(
         ?Administrator $administrator = null,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $question = null,
         ?\DateTimeInterface $finishAt = null,
     ) {

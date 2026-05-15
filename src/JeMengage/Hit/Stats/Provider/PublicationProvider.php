@@ -9,7 +9,7 @@ use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class PublicationProvider extends AbstractProvider
 {
@@ -21,7 +21,7 @@ class PublicationProvider extends AbstractProvider
     ) {
     }
 
-    public function provide(TargetTypeEnum $type, UuidInterface $objectUuid, StatsOutput $output, bool $wait = false): array
+    public function provide(TargetTypeEnum $type, Uuid $objectUuid, StatsOutput $output, bool $wait = false): array
     {
         /** @var AdherentMessage $message */
         $message = $this->adherentMessageRepository->findOneByUuid($objectUuid);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Event\EventRegistration;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventReminderMessage extends AbstractRenaissanceMessage
 {
@@ -14,7 +14,7 @@ class EventReminderMessage extends AbstractRenaissanceMessage
         $event = $eventRegistration->getEvent();
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventRegistration->getEmailAddress(),
             $eventRegistration->getFullName(),
             '[Rappel] Participation à un événement',

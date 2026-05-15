@@ -11,10 +11,10 @@ use App\History\UserActionHistoryHandler;
 use App\History\UserActionHistoryTypeEnum;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserActionHistoryHandlerTest extends TestCase
 {
@@ -142,7 +142,7 @@ class UserActionHistoryHandlerTest extends TestCase
         $adherent = $this->createMock(Adherent::class);
         $adherent->method('getFirstName')->willReturn($firstName);
         $adherent->method('getLastName')->willReturn($lastName);
-        $adherent->method('getUuid')->willReturn(Uuid::uuid4());
+        $adherent->method('getUuid')->willReturn(Uuid::v4());
         $adherent->method('findZoneBasedRole')->willReturn(null);
         $adherent->method('equals')->willReturn(false);
 

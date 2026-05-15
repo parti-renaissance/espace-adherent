@@ -10,8 +10,7 @@ use App\Repository\InviteRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha]
@@ -67,9 +66,9 @@ class Invite implements \Stringable, RecaptchaChallengeInterface
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
         $this->createdAt = new \DateTime();
     }
 
@@ -93,7 +92,7 @@ class Invite implements \Stringable, RecaptchaChallengeInterface
         string $message,
         string $clientIp,
     ): self {
-        $invite = new self(Uuid::uuid4());
+        $invite = new self(Uuid::v4());
         $invite->firstName = $firstName;
         $invite->lastName = $lastName;
         $invite->email = $email;

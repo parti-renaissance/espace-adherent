@@ -7,7 +7,7 @@ namespace App\Mailer\Message\AdherentMessage;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAdherentMessage extends Message
 {
@@ -17,7 +17,7 @@ abstract class AbstractAdherentMessage extends Message
         $first = array_shift($adherents);
 
         $message = new static(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $first ? $first->getEmailAddress() : '',
             $first ? $first->getFullName() : '',
             $adherentMessage->getSubject(),

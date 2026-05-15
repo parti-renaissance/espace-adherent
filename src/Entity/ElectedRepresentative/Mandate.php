@@ -16,9 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -149,7 +148,7 @@ class Mandate implements \Stringable
     private ?GeoZone $attachedZone;
 
     public function __construct(
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $type = null,
         bool $isElected = false,
         ?string $politicalAffiliation = null,
@@ -161,7 +160,7 @@ class Mandate implements \Stringable
         ?\DateTime $finishAt = null,
         ?GeoZone $attachedZone = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->type = $type;
         $this->isElected = $isElected;
         $this->geoZone = $geoZone;

@@ -14,7 +14,7 @@ use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixtureInterface
 {
@@ -281,7 +281,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         ?\DateTime $beganAt = null,
         ?string $uuid = null,
     ): CampaignHistory {
-        $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
+        $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::v4());
 
         $campaignHistory->setStatus($status);
         $campaignHistory->setBeginAt($beganAt ?? new \DateTime('-10 minutes'));

@@ -13,9 +13,8 @@ use App\Repository\Chatbot\ThreadRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
@@ -59,11 +58,11 @@ class Thread
     #[ORM\OneToOne(targetEntity: Run::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public ?Run $currentRun = null;
 
-    public function __construct(Adherent $adherent, ?string $title = null, ?UuidInterface $uuid = null)
+    public function __construct(Adherent $adherent, ?string $title = null, ?Uuid $uuid = null)
     {
         $this->adherent = $adherent;
         $this->title = $title;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->messages = new ArrayCollection();
     }
 

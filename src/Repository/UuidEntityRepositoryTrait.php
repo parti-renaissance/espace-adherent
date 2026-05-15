@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Exception\InvalidUuidException;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 trait UuidEntityRepositoryTrait
 {
@@ -16,7 +15,7 @@ trait UuidEntityRepositoryTrait
      *
      * @throws InvalidUuidException
      */
-    public function findOneByUuid(UuidInterface|string $uuid): ?object
+    public function findOneByUuid(Uuid|string $uuid): ?object
     {
         if (\is_string($uuid)) {
             static::validUuid($uuid);

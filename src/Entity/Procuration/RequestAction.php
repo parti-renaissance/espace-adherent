@@ -6,8 +6,7 @@ namespace App\Entity\Procuration;
 
 use App\Procuration\ProcurationActionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'procuration_request_action')]
@@ -17,7 +16,7 @@ class RequestAction extends AbstractProcurationAction
     #[ORM\ManyToOne(targetEntity: Request::class, inversedBy: 'actions')]
     public Request $request;
 
-    public function __construct(UuidInterface $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status, Request $request)
+    public function __construct(Uuid $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status, Request $request)
     {
         parent::__construct($uuid, $date, $status);
 
@@ -27,7 +26,7 @@ class RequestAction extends AbstractProcurationAction
     public static function create(ProcurationActionStatusEnum $status, Request $request): self
     {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             new \DateTime(),
             $status,
             $request

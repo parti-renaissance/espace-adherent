@@ -36,7 +36,7 @@ class AnimatorScopeGenerator extends AbstractScopeGenerator
             array_map(
                 fn (Committee $committee) => [
                     'name' => $committee->getName(),
-                    'uuid' => $committee->getUuid()->toString(),
+                    'uuid' => $committee->getUuid()->toRfc4122(),
                 ],
                 $adherent->getAnimatorCommittees()
             )

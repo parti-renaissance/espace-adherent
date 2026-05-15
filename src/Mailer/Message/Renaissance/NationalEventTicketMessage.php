@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\NationalEvent\EventInscription;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class NationalEventTicketMessage extends AbstractRenaissanceMessage
 {
@@ -14,12 +14,12 @@ class NationalEventTicketMessage extends AbstractRenaissanceMessage
         $event = $eventInscription->event;
 
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $eventInscription->addressEmail,
             $eventInscription->getFullName(),
             $event->subjectTicketEmail,
             [
-                'uuid' => $eventInscription->getUuid()->toString(),
+                'uuid' => $eventInscription->getUuid()->toRfc4122(),
                 'first_name' => $eventInscription->firstName,
                 'last_name' => $eventInscription->lastName,
                 'qr_code_img' => $eventInscription->isTicketReady() ? $eventInscription->ticketQRCodeFile : null,

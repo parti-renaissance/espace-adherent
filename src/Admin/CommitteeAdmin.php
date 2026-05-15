@@ -496,17 +496,17 @@ class CommitteeAdmin extends AbstractAdmin implements ZoneableAdminInterface
                     'Modifié par' => ($updatedBy = $committee->getUpdatedByAdherent())
                         ? \sprintf('%s (%s)', $updatedBy->getFullName(), $updatedBy->getPublicId())
                         : null,
-                    'UUID' => $committee->getUUID()->toString(),
+                    'UUID' => $committee->getUUID()->toRfc4122(),
                 ];
             } catch (\Throwable $e) {
                 $this->logger->error(
-                    \sprintf('Error exporting Committee with UUID: %s. (%s)', $committee->getUuid()->toString(), $e->getMessage()),
+                    \sprintf('Error exporting Committee with UUID: %s. (%s)', $committee->getUuid()->toRfc4122(), $e->getMessage()),
                     ['exception' => $e]
                 );
 
                 return [
                     'Nom' => $committee->getName(),
-                    'UUID' => $committee->getUuid()->toString(),
+                    'UUID' => $committee->getUuid()->toRfc4122(),
                 ];
             }
         }];

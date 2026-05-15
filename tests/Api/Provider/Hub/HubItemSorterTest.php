@@ -8,8 +8,7 @@ use App\Api\Provider\Hub\HubItemRow;
 use App\Api\Provider\Hub\HubItemSorter;
 use App\Entity\Event\Event;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class HubItemSorterTest extends TestCase
 {
@@ -69,9 +68,9 @@ final class HubItemSorterTest extends TestCase
         int $timeToBegin = 1000,
         ?float $distance = null,
         string $beginAt = '2026-06-01 10:00:00',
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ): HubItemRow {
-        $uuid ??= Uuid::uuid4();
+        $uuid ??= Uuid::v4();
         $entity = $this->createStub(Event::class);
         $entity->method('getUuid')->willReturn($uuid);
 

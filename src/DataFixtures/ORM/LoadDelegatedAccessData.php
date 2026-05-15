@@ -13,7 +13,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterface
 {
@@ -161,7 +161,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         ]);
         $manager->persist($delegatedAccess8);
 
-        $delegatedAccess10 = new DelegatedAccess(Uuid::uuid4());
+        $delegatedAccess10 = new DelegatedAccess(Uuid::v4());
         $delegatedAccess10->setDelegated($this->getReference('deputy-75-1', Adherent::class));
         $delegatedAccess10->setDelegator($this->getReference('president-ad-1', Adherent::class));
         $delegatedAccess10->setRole('Responsable communication');

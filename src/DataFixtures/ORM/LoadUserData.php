@@ -16,7 +16,7 @@ class LoadUserData extends Fixture
 {
     public const USER_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9699';
     public const USER_2_UUID = '413bd28f-57c9-efc8-8ab7-2106c8be9690';
-    public const USER_3_UUID = '513bd28f-8ab7-57c9-efc8-2106c8be9690';
+    public const USER_3_UUID = '513bd28f-8ab7-57c9-8fc8-2106c8be9690';
     public const USER_4_UUID = '94173303-dea2-4d97-bc15-86e785d85a0d';
 
     public const USER_3_TOKEN = 'c997dd323ef4b53b3d31881fa495bddb3d0c3b55';

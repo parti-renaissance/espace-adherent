@@ -9,11 +9,10 @@ use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Exception\MissingResourceException;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha(groups: ['Subscription'])]
@@ -63,7 +62,7 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
     private $confirmedAt;
 
     /**
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
     private $token;
@@ -81,13 +80,13 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
         ?string $postalCode = null,
         ?string $country = null,
         bool $fromEvent = false,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ) {
         $this->email = $email;
         $this->postalCode = $postalCode;
         $this->country = $country;
         $this->fromEvent = $fromEvent;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function __toString()
@@ -160,12 +159,12 @@ class NewsletterSubscription implements \Stringable, NewsletterSubscriptionInter
         return null !== $this->confirmedAt;
     }
 
-    public function getToken(): ?UuidInterface
+    public function getToken(): ?Uuid
     {
         return $this->token;
     }
 
-    public function setToken(?UuidInterface $token = null): void
+    public function setToken(?Uuid $token = null): void
     {
         $this->token = $token;
     }

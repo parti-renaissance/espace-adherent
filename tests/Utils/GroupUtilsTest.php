@@ -7,7 +7,7 @@ namespace Tests\App\Utils;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Utils\GroupUtils;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]

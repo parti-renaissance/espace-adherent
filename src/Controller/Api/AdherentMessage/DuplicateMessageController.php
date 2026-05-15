@@ -16,6 +16,6 @@ class DuplicateMessageController extends AbstractController
     {
         $clone = $manager->duplicate($data);
 
-        return new JsonResponse(['uuid' => $clone->getUuid()->toString()], Response::HTTP_CREATED);
+        return new JsonResponse(['uuid' => $clone->getUuid()->toRfc4122()], Response::HTTP_CREATED);
     }
 }

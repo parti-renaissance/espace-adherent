@@ -13,9 +13,8 @@ use App\Repository\Pap\VotePlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     shortName: 'PapVotePlace',
@@ -66,10 +65,10 @@ class VotePlace implements \Stringable
         ?string $code = null,
         int $nbAddresses = 0,
         int $nbVoters = 0,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?Zone $zone = null,
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->code = $code;

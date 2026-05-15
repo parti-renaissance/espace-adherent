@@ -9,8 +9,8 @@ use App\Entity\AuthoredInterface;
 use App\Entity\Geo\Zone;
 use App\Repository\Poll\LocalPollRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LocalPollRepository::class)]
@@ -30,7 +30,7 @@ class LocalPoll extends Poll implements AuthoredInterface
 
     public function __construct(
         Adherent $author,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
         ?string $question = null,
         ?\DateTimeInterface $finishAt = null,
         ?Zone $zone = null,

@@ -11,8 +11,7 @@ use App\Entity\EntityUTMTrait;
 use App\Procuration\InitialRequestTypeEnum;
 use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProcurationRequestRepository::class)]
@@ -41,9 +40,9 @@ class ProcurationRequest implements \Stringable
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public static function createForEmail(string $email): self

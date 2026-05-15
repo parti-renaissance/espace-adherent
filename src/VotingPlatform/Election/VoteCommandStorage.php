@@ -21,7 +21,7 @@ class VoteCommandStorage
     {
         $command = $this->requestStack->getSession()->get(self::SESSION_KEY_COMMAND);
 
-        return $command instanceof VoteCommand && $command->getElectionUuid() === $election->getUuid()->toString() ?
+        return $command instanceof VoteCommand && $command->getElectionUuid() === $election->getUuid()->toRfc4122() ?
             $command : $this->createVoteCommand($election);
     }
 

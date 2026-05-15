@@ -28,9 +28,8 @@ use App\Pap\CampaignHistoryStatusEnum;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact', 'campaign.uuid' => 'exact'])]
@@ -167,9 +166,9 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[ORM\OneToOne(inversedBy: 'papCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
     }
 
     public function getQuestioner(): ?Adherent

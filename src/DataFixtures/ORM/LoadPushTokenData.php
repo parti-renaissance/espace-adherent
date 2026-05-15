@@ -8,7 +8,7 @@ use App\Entity\PushToken;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadPushTokenData extends Fixture implements DependentFixtureInterface
 {
@@ -56,7 +56,7 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
 
     public function createPushToken(string $identifier): PushToken
     {
-        return new PushToken(Uuid::uuid4(), $identifier);
+        return new PushToken(Uuid::v4(), $identifier);
     }
 
     public function getDependencies(): array

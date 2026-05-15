@@ -6,14 +6,14 @@ namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
 use App\Mailer\Message\Message;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class RenaissanceAdherentAccountConfirmationMessage extends AbstractRenaissanceMessage
 {
     public static function createFromAdherent(Adherent $adherent): Message
     {
         return self::updateSenderInfo(new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Bienvenue chez Renaissance !',

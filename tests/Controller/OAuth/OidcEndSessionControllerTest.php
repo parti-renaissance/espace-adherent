@@ -94,7 +94,7 @@ class OidcEndSessionControllerTest extends AbstractRenaissanceWebTestCase
 
         return new Builder(new JoseEncoder(), ChainedFormatter::withUnixTimestampDates())
             ->issuedBy($this->getParameter('oidc.issuer'))
-            ->permittedFor($client->getUuid()->toString())
+            ->permittedFor($client->getUuid()->toRfc4122())
             ->relatedTo($adherent->getUuidAsString())
             ->issuedAt(new \DateTimeImmutable('now'))
             ->expiresAt(new \DateTimeImmutable('+1 hour'))

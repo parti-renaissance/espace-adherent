@@ -74,7 +74,7 @@ class MoodleResyncAdherentJobsCommand extends Command
         $io->progressStart(\count($moodleUsers));
 
         foreach ($moodleUsers as $moodleUser) {
-            $this->userManager->updateUser($moodleUser->adherent->getUuid()->toString());
+            $this->userManager->updateUser($moodleUser->adherent->getUuid()->toRfc4122());
             $io->progressAdvance();
 
             $this->entityManager->clear();

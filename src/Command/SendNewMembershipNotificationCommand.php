@@ -13,7 +13,7 @@ use App\Repository\CommandHistoryRepository;
 use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\Parameter;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -79,7 +79,7 @@ class SendNewMembershipNotificationCommand extends Command
             ->leftJoin(
                 'adherent.zoneBasedRoles',
                 'zone_based_role',
-                Expr\Join::WITH,
+                Join::WITH,
                 'zone_based_role.adherent = adherent AND zone_based_role.type IN (:zone_based_role_types)'
             )
             ->andWhere('adherent.status = :status')

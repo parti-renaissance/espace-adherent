@@ -43,7 +43,7 @@ class NationalEventUpdatePaymentCommand extends Command
     private function refreshPaymentStatus(): void
     {
         foreach ($this->paymentRepository->findToCheck() as $payment) {
-            $response = $this->direct->getStatus($payment->getUuid()->toString());
+            $response = $this->direct->getStatus($payment->getUuid()->toRfc4122());
             sleep(1);
 
             if ($payment->isExpired()) {

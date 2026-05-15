@@ -10,7 +10,7 @@ use App\OAuth\Model\GrantTypeEnum;
 use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface as OAuthClientRepositoryInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class ClientStore implements OAuthClientRepositoryInterface
 {
@@ -32,7 +32,7 @@ class ClientStore implements OAuthClientRepositoryInterface
             return null;
         }
 
-        $oAuthClient = new InMemoryClient($client->getUuid()->toString(), $client->getSupportedScopes());
+        $oAuthClient = new InMemoryClient($client->getUuid()->toRfc4122(), $client->getSupportedScopes());
         $oAuthClient->setName($client->getName());
         $oAuthClient->setRedirectUris($client->getRedirectUris());
 

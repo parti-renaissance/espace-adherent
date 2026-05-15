@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Synchronisation\Command;
 
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractUpdateStaticSegmentCommand implements UpdateStaticSegmentCommandInterface
 {
@@ -12,19 +12,19 @@ abstract class AbstractUpdateStaticSegmentCommand implements UpdateStaticSegment
     private $objectUuid;
     private $entityClass;
 
-    public function __construct(UuidInterface $adherentUuid, UuidInterface $objectUuid, string $entityClass)
+    public function __construct(Uuid $adherentUuid, Uuid $objectUuid, string $entityClass)
     {
         $this->adherentUuid = $adherentUuid;
         $this->objectUuid = $objectUuid;
         $this->entityClass = $entityClass;
     }
 
-    public function getAdherentUuid(): UuidInterface
+    public function getAdherentUuid(): Uuid
     {
         return $this->adherentUuid;
     }
 
-    public function getObjectUuid(): UuidInterface
+    public function getObjectUuid(): Uuid
     {
         return $this->objectUuid;
     }

@@ -12,7 +12,7 @@ use App\Repository\AppSessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AppSessionRepository::class)]
 #[ORM\Index(fields: ['status'])]
@@ -62,7 +62,7 @@ class AppSession implements \Stringable
 
     public function __construct(Adherent $adherent, Client $client)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
         $this->adherent = $adherent;
         $this->client = $client;
         $this->lastActivityDate = new \DateTime();

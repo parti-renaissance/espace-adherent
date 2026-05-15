@@ -6,7 +6,6 @@ namespace App\Admin\Filter;
 
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 

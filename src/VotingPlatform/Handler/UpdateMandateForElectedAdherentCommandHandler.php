@@ -34,7 +34,7 @@ class UpdateMandateForElectedAdherentCommandHandler
 
     public function __invoke(UpdateMandateForElectedAdherentCommand $command): void
     {
-        $election = $this->electionRepository->findOneByUuid($command->getElectionUuid()->toString());
+        $election = $this->electionRepository->findOneByUuid($command->getElectionUuid()->toRfc4122());
 
         if (!$election) {
             return;

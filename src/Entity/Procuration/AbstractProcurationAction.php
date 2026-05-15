@@ -6,8 +6,8 @@ namespace App\Entity\Procuration;
 
 use App\Procuration\ProcurationActionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractProcurationAction extends AbstractAction
@@ -16,7 +16,7 @@ abstract class AbstractProcurationAction extends AbstractAction
     #[ORM\Column(enumType: ProcurationActionStatusEnum::class)]
     public ProcurationActionStatusEnum $status;
 
-    public function __construct(UuidInterface $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status)
+    public function __construct(Uuid $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status)
     {
         parent::__construct($uuid, $date);
 

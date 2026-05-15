@@ -19,7 +19,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'unix_socket' => '%env(DATABASE_SOCKET)%',
             'server_version' => '8.0',
             'types' => [
-                'uuid' => Ramsey\Uuid\Doctrine\UuidType::class,
+                'uuid' => App\Doctrine\DBAL\Types\UuidType::class,
                 'phone_number' => Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType::class,
                 'geo_point' => App\Doctrine\DBAL\Types\GeoPointType::class,
                 'geometry' => LongitudeOne\Spatial\DBAL\Types\GeometryType::class,

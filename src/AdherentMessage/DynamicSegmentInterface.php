@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\AdherentMessage;
 
 use App\Entity\AdherentMessage\SegmentFilterInterface;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 interface DynamicSegmentInterface
 {
-    public function getUuid(): UuidInterface;
+    public function getUuid(): Uuid;
 
     public function getMailchimpId(): ?int;
 

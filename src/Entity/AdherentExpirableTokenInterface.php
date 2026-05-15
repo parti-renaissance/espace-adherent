@@ -8,7 +8,7 @@ use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * An interface for adherents' temporary actionable token.
@@ -28,7 +28,7 @@ interface AdherentExpirableTokenInterface
     /**
      * Returns the adherent uuid tied to the token.
      */
-    public function getAdherentUuid(): UuidInterface;
+    public function getAdherentUuid(): Uuid;
 
     /**
      * Returns the date the token was used is any.

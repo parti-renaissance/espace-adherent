@@ -9,10 +9,10 @@ use App\Procuration\ProcurationHandler;
 use App\Repository\Procuration\ProxyRepository;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Repository\Procuration\RoundRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 
 class MatchRequestWithProxyController extends AbstractController
 {

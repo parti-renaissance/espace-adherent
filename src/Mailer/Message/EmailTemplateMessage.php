@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message;
 
 use App\Entity\Email\TransactionalEmailTemplate;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EmailTemplateMessage extends Message
 {
@@ -14,7 +14,7 @@ class EmailTemplateMessage extends Message
         $email = array_shift($recipientEmails);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $email,
             $email,
             $template->subject ?? '',

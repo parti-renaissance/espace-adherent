@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class DepartmentalElectionFdeVoteInvitationMessage extends AbstractRenaissanceMessage
 {
@@ -15,7 +15,7 @@ final class DepartmentalElectionFdeVoteInvitationMessage extends AbstractRenaiss
         $adherent = array_shift($adherents);
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Convocation au vote des adhérents Renaissance établis hors de France pour l’élection du bureau de l’Assemblée des Français de l’étranger'

@@ -6,7 +6,7 @@ namespace Tests\App\Entity\OAuth;
 
 use App\Entity\OAuth\Client;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class ClientTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ClientTest extends TestCase
         self::assertEmpty($client->getDescription());
         self::assertEmpty($client->getRedirectUris());
         self::assertSame(44, mb_strlen($client->getSecret()));
-        self::assertInstanceOf(UuidInterface::class, $client->getUuid());
+        self::assertInstanceOf(Uuid::class, $client->getUuid());
         self::assertTrue($client->isAskUserForAuthorization());
     }
 

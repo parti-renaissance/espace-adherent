@@ -38,7 +38,7 @@ class ThreadProcessor
 
             $this->startNewRun($thread);
         } elseif ($currentRun = $thread->currentRun) {
-            $this->logger->logThread($thread, \sprintf('Processing current Run (uuid: "%s")', $currentRun->getUuid()->toString()));
+            $this->logger->logThread($thread, \sprintf('Processing current Run (uuid: "%s")', $currentRun->getUuid()->toRfc4122()));
 
             if ($currentRun->needRefresh()) {
                 $this->refreshRunStatus($currentRun);
@@ -75,7 +75,7 @@ class ThreadProcessor
             return;
         }
 
-        $this->logger->logThread($message->thread, \sprintf('Initializing remote Message (uuid: "%s")', $message->getUuid()->toString()));
+        $this->logger->logThread($message->thread, \sprintf('Initializing remote Message (uuid: "%s")', $message->getUuid()->toRfc4122()));
 
         $message->externalId = $this->client->createMessage($message);
 
@@ -88,7 +88,7 @@ class ThreadProcessor
             return;
         }
 
-        $this->logger->logThread($run->thread, \sprintf('Initializing remote Run (uuid: "%s")', $run->getUuid()->toString()));
+        $this->logger->logThread($run->thread, \sprintf('Initializing remote Run (uuid: "%s")', $run->getUuid()->toRfc4122()));
 
         $run->externalId = $this->client->createRun($run);
 
@@ -97,10 +97,10 @@ class ThreadProcessor
 
     private function cancelRun(Run $run): void
     {
-        $this->logger->logThread($run->thread, \sprintf('Cancelling Run (uuid: "%s")', $run->getUuid()->toString()));
+        $this->logger->logThread($run->thread, \sprintf('Cancelling Run (uuid: "%s")', $run->getUuid()->toRfc4122()));
 
         if ($run->isInitialized() && $run->isInProgress()) {
-            $this->logger->logThread($run->thread, \sprintf('Cancelling remote Run (uuid: "%s")', $run->getUuid()->toString()));
+            $this->logger->logThread($run->thread, \sprintf('Cancelling remote Run (uuid: "%s")', $run->getUuid()->toRfc4122()));
 
             $this->client->cancelRun($run);
         }
@@ -112,7 +112,7 @@ class ThreadProcessor
 
     private function refreshRunStatus(Run $run): void
     {
-        $this->logger->logThread($run->thread, \sprintf('Refreshing Run status (uuid: "%s")', $run->getUuid()->toString()));
+        $this->logger->logThread($run->thread, \sprintf('Refreshing Run status (uuid: "%s")', $run->getUuid()->toRfc4122()));
 
         $run->status = $this->client->getRunStatus($run);
 

@@ -12,7 +12,6 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Geo\ZoneMatcher;
 use App\Repository\CommitteeRepository;
 use PHPUnit\Framework\Attributes\Group;
@@ -57,7 +56,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
         /* @var CommitteeMembershipHistory $membershipHistory */
         $this->assertSame($committee, $membershipHistory->getCommittee());
-        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
+        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toRfc4122());
         $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
         $this->assertSame('join', $membershipHistory->getAction());
 
@@ -68,7 +67,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
         /* @var CommitteeMembershipHistory $membershipHistory */
         $this->assertSame($committee, $membershipHistory->getCommittee());
-        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
+        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toRfc4122());
         $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
         $this->assertSame('leave', $membershipHistory->getAction());
     }

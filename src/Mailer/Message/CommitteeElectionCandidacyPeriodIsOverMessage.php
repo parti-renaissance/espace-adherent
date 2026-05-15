@@ -7,7 +7,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Designation\Designation;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
 {
@@ -18,7 +18,7 @@ final class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
         string $committeeUrl,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             '[Désignations] Les candidatures sont closes',

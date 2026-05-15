@@ -32,7 +32,7 @@ class ConfirmInscriptionController extends AbstractController
 
             return $this->redirectToRoute('app_national_event_my_inscription', [
                 'slug' => $inscription->event->getSlug(),
-                'uuid' => $inscription->getUuid()->toString(),
+                'uuid' => $inscription->getUuid()->toRfc4122(),
             ]);
         }
 

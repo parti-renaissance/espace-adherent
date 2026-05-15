@@ -6,8 +6,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 trait EntityIdentityTrait
 {
@@ -26,7 +26,7 @@ trait EntityIdentityTrait
     /**
      * The internal primary identity key.
      *
-     * @var UuidInterface
+     * @var Uuid
      */
     #[ApiProperty(identifier: true)]
     #[Groups([
@@ -163,7 +163,7 @@ trait EntityIdentityTrait
     /**
      * Returns the internal unique UUID instance.
      */
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

@@ -9,7 +9,7 @@ use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
 use App\Entity\NationalEvent\PaymentStatus;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventInscriptionTest extends TestCase
 {
@@ -74,7 +74,7 @@ class EventInscriptionTest extends TestCase
 
     private function createConfirmedPayment(EventInscription $inscription, int $amount, array $packageValues): Payment
     {
-        $payment = new Payment(Uuid::uuid4(), $inscription, $amount, $packageValues, false);
+        $payment = new Payment(Uuid::v4(), $inscription, $amount, $packageValues, false);
         $payment->setCreatedAt(new \DateTime());
         $payment->setUpdatedAt(new \DateTime());
         $payment->addStatus(new PaymentStatus($payment, ['STATUS' => '9']));

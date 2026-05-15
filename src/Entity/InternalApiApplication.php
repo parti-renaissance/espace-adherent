@@ -6,8 +6,7 @@ namespace App\Entity;
 
 use App\Repository\InternalApiApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InternalApiApplicationRepository::class)]
@@ -40,12 +39,12 @@ class InternalApiApplication
         string $applicationName,
         string $hostname,
         bool $scopeRequired = false,
-        ?UuidInterface $uuid = null,
+        ?Uuid $uuid = null,
     ) {
         $this->applicationName = $applicationName;
         $this->hostname = $hostname;
         $this->scopeRequired = $scopeRequired;
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::v4();
     }
 
     public function getApplicationName(): string

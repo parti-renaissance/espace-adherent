@@ -43,7 +43,7 @@ class VotePoolCollectionType extends AbstractType
     private function getFilteredCandidates(Designation $designation, array $candidateGroups): array
     {
         $choices = array_map(static function (CandidateGroup $group) {
-            return $group->getUuid()->toString();
+            return $group->getUuid()->toRfc4122();
         }, $candidateGroups);
 
         if (!empty($choices) && $designation->isBlankVoteEnabled()) {

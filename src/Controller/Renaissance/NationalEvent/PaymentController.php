@@ -30,18 +30,18 @@ class PaymentController extends AbstractController
     ): Response {
         if (!$inscription->isPaymentRequired() || $inscription->hasConfirmedPaymentForCurrentPackage()) {
             if ($event->isPackageEventType()) {
-                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+                return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $app_domain]);
             }
 
             return $this->redirectToRoute('app_national_event_by_slug', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
         }
 
-        $limiter = $paymentRetryLimiter->create('meeting.inscription.'.$inscription->getUuid()->toString());
+        $limiter = $paymentRetryLimiter->create('meeting.inscription.'.$inscription->getUuid()->toRfc4122());
 
         if (!$limiter->consume()->isAccepted()) {
             return $this->redirectToRoute('app_national_event_payment_status', [
                 'slug' => $event->getSlug(),
-                'uuid' => $inscription->getUuid()->toString(),
+                'uuid' => $inscription->getUuid()->toRfc4122(),
                 'app_domain' => $app_domain,
                 'status' => 'limit',
             ]);
@@ -53,7 +53,7 @@ class PaymentController extends AbstractController
 
         return $this->redirectToRoute('app_national_event_payment', [
             'slug' => $event->getSlug(),
-            'uuid' => $payment->getUuid()->toString(),
+            'uuid' => $payment->getUuid()->toRfc4122(),
             'app_domain' => $app_domain,
         ]);
     }
@@ -68,13 +68,13 @@ class PaymentController extends AbstractController
         if (!$payment->isPending()) {
             $this->addFlash('error', 'Ce paiement n\'est pas valide ou a déjà été traité.');
 
-            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $payment->inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $payment->inscription->getUuid()->toRfc4122(), 'app_domain' => $app_domain]);
         }
 
         $inscription = $payment->inscription;
 
         if ($inscription->isRejectedState() || $inscription->hasConfirmedPaymentForCurrentPackage()) {
-            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toString(), 'app_domain' => $app_domain]);
+            return $this->redirectToRoute('app_national_event_my_inscription', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid()->toRfc4122(), 'app_domain' => $app_domain]);
         }
 
         $form = $this->createFormBuilder()

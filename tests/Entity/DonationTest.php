@@ -10,7 +10,7 @@ use App\Entity\PostAddress;
 use App\Entity\Transaction;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class DonationTest extends TestCase
 {
@@ -60,7 +60,7 @@ class DonationTest extends TestCase
         int $duration = PayboxPaymentSubscription::UNLIMITED,
     ): Donation {
         return new Donation(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $type,
             10,
             $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
@@ -73,7 +73,7 @@ class DonationTest extends TestCase
 
     public static function processPayloadProvider(): iterable
     {
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::v4();
         yield 'success_without_subscription' => [
             new Donation(
                 $uuid,

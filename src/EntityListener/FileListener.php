@@ -8,8 +8,8 @@ use App\Entity\EntityFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 class FileListener
 {
@@ -40,7 +40,7 @@ class FileListener
             $entityFile->setPath($path = \sprintf(
                 '%s/%s.%s',
                 $entityFile->getPrefixPath(),
-                Uuid::uuid4()->toString(),
+                Uuid::v4()->toRfc4122(),
                 $extension
             ));
 

@@ -9,8 +9,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
-use App\Repository\AdherentRepository;
-use App\Repository\Email\EmailLogRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;

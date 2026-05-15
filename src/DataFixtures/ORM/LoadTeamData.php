@@ -11,7 +11,7 @@ use App\Entity\Team\Team;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadTeamData extends Fixture implements DependentFixtureInterface
 {
@@ -87,7 +87,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
             'Équipe à supprimer',
         ));
         $team->setCreatedAt(new \DateTime('-8 hours'));
-        $team->addMember($this->createMember(Uuid::uuid4()->toString(), $this->getReference('adherent-1', Adherent::class)));
+        $team->addMember($this->createMember(Uuid::v4()->toRfc4122(), $this->getReference('adherent-1', Adherent::class)));
 
         $manager->persist($team1);
         $manager->persist($team2);

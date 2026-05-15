@@ -8,7 +8,7 @@ use App\Committee\DTO\CommitteeCommand;
 use App\Entity\Committee;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('committee')]

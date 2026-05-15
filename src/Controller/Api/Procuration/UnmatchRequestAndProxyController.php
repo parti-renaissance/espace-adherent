@@ -7,10 +7,10 @@ namespace App\Controller\Api\Procuration;
 use App\Entity\Procuration\Request;
 use App\Procuration\ProcurationHandler;
 use App\Repository\Procuration\RoundRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 
 class UnmatchRequestAndProxyController extends AbstractController
 {

@@ -17,10 +17,9 @@ use App\Repository\AgoraRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
@@ -91,9 +90,9 @@ class Agora implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\OneToMany(mappedBy: 'agora', targetEntity: AgoraMembership::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     public Collection $memberships;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->generalSecretaries = new ArrayCollection();
         $this->memberships = new ArrayCollection();
     }

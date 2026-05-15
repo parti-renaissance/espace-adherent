@@ -165,7 +165,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
-            'thread_id' => $thread->getUuid()->toString(),
+            'thread_id' => $thread->getUuid()->toRfc4122(),
             'message' => 'Final question',
         ]));
 

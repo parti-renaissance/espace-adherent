@@ -7,7 +7,7 @@ namespace App\Mailer\Message\Renaissance\VotingPlatform;
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
 use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
 {
@@ -19,7 +19,7 @@ abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
         $first = array_shift($adherents);
 
         $message = new static(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $first->getEmailAddress(),
             $first->getFullName(),
             static::generateSubject(),

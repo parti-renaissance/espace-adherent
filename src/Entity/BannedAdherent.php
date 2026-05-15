@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Repository\BannedAdherentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: BannedAdherentRepository::class)]
 class BannedAdherent
@@ -16,7 +16,7 @@ class BannedAdherent
     #[ORM\Column(type: 'datetime')]
     private $date;
 
-    public function __construct(UuidInterface $uuid)
+    public function __construct(Uuid $uuid)
     {
         $this->uuid = $uuid;
         $this->date = new \DateTime();
@@ -32,7 +32,7 @@ class BannedAdherent
         $this->date = $date;
     }
 
-    public function setUuid(UuidInterface $uuid): void
+    public function setUuid(Uuid $uuid): void
     {
         $this->uuid = $uuid;
     }

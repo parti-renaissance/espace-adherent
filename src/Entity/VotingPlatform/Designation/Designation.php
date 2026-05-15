@@ -38,9 +38,8 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
@@ -284,7 +283,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     #[Assert\Expression('!this.isCommitteeSupervisorType() or value', message: 'Un identifiant est requis pour ce champs.', groups: ['api_designation_write'])]
     #[Groups(['designation_read', 'designation_write'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?UuidInterface $electionEntityIdentifier = null;
+    private ?Uuid $electionEntityIdentifier = null;
 
     #[Groups(['designation_read', 'designation_list'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -305,10 +304,10 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $enableVoteQuestionsPreview = true;
 
-    public function __construct(?string $label = null, ?UuidInterface $uuid = null)
+    public function __construct(?string $label = null, ?Uuid $uuid = null)
     {
         $this->label = $label;
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
 
         $this->zones = new ZoneCollection();
         $this->candidacyPools = new ArrayCollection();
@@ -585,7 +584,7 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     public function __clone()
     {
         $this->id = null;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = Uuid::v4();
     }
 
     public function isCommitteeTypes(): bool
@@ -809,12 +808,12 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
         return !$this->isLocalElectionTypes() && !$this->isCongressCNType();
     }
 
-    public function getElectionEntityIdentifier(): ?UuidInterface
+    public function getElectionEntityIdentifier(): ?Uuid
     {
         return $this->electionEntityIdentifier;
     }
 
-    public function setElectionEntityIdentifier(?UuidInterface $electionEntityIdentifier): void
+    public function setElectionEntityIdentifier(?Uuid $electionEntityIdentifier): void
     {
         $this->electionEntityIdentifier = $electionEntityIdentifier;
     }

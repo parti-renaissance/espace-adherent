@@ -27,7 +27,7 @@ class CommitteeTransformer implements DataTransformerInterface
         /** @var Committee $committee */
         foreach ($collection as $committee) {
             $uuids[] = [
-                'uuid' => $committee->getUuid()->toString(),
+                'uuid' => $committee->getUuid()->toRfc4122(),
                 'name' => $committee->getName(),
             ];
         }

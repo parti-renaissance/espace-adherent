@@ -205,7 +205,7 @@ class EventRegistrationAdmin extends AbstractAdmin
 
             try {
                 return [
-                    'UUID de participant' => $eventRegistration->getUuid()->toString(),
+                    'UUID de participant' => $eventRegistration->getUuid()->toRfc4122(),
                     'Date d\'inscription' => $eventRegistration->getCreatedAt()?->format('d/m/Y H:i:s'),
                     'Numéro adhérent' => $adherent?->getPublicId(),
                     'Civilité' => $adherent ?
@@ -272,7 +272,7 @@ class EventRegistrationAdmin extends AbstractAdmin
                         )
                     ),
                     'Code postal' => $eventRegistration->getPostalCode(),
-                    'UUID événement' => $event->getUuid()->toString(),
+                    'UUID événement' => $event->getUuid()->toRfc4122(),
                     'Nom de l\'événement' => $event->getName(),
                     'Instance liée' => $event->getAuthorInstance(),
                     'Date de début' => $event->getBeginAt()?->format('d/m/Y H:i:s'),
@@ -288,12 +288,12 @@ class EventRegistrationAdmin extends AbstractAdmin
                 ];
             } catch (\Throwable $e) {
                 $this->logger->error(
-                    \sprintf('Error exporting EventRegistration with UUID: %s. (%s)', $eventRegistration->getUuid()->toString(), $e->getMessage()),
+                    \sprintf('Error exporting EventRegistration with UUID: %s. (%s)', $eventRegistration->getUuid()->toRfc4122(), $e->getMessage()),
                     ['exception' => $e]
                 );
 
                 return [
-                    'UUID de participant' => $eventRegistration->getUuid()->toString(),
+                    'UUID de participant' => $eventRegistration->getUuid()->toRfc4122(),
                 ];
             }
         }];

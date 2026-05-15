@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Adherent\Referral\Command;
 
 use App\Messenger\Message\UuidDefaultAsyncMessage;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Uuid;
 
 class LinkReferrerWithNewAdherentCommand extends UuidDefaultAsyncMessage
 {
     public function __construct(
-        UuidInterface $uuid,
+        Uuid $uuid,
         public readonly bool $fromCotisation,
         public readonly ?string $referrerPublicId = null,
         public readonly ?string $referralIdentifier = null,

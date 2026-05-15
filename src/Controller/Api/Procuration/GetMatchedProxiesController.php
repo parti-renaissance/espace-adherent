@@ -9,9 +9,9 @@ use App\Entity\Procuration\Request;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Procuration\ProxyRepository;
 use App\Repository\Procuration\RoundRepository;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Uid\Uuid;
 
 class GetMatchedProxiesController
 {

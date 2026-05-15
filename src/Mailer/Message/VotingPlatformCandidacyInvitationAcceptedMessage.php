@@ -8,7 +8,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVotingPlatformMessage
 {
@@ -24,7 +24,7 @@ final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVot
         $candidateAdherent = $candidate->getAdherent();
 
         $message = new self(
-            Uuid::uuid4(),
+            Uuid::v4(),
             $candidateAdherent->getEmailAddress(),
             $candidateAdherent->getFullName(),
             \sprintf('[%s] %s', $emailTitle, $emailSubTitle = self::createSubject($designation, $invitedCandidacy)),

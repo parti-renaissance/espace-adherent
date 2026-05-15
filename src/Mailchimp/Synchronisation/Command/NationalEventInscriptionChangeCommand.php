@@ -7,14 +7,14 @@ namespace App\Mailchimp\Synchronisation\Command;
 use App\Mailchimp\Synchronisation\QueuePriorityLevelEnum;
 use App\Mailchimp\SynchronizeMessageInterface;
 use Jwage\PhpAmqpLibMessengerBundle\Transport\AmqpStamp;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Message\DefaultStampsProviderInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
+use Symfony\Component\Uid\Uuid;
 
 class NationalEventInscriptionChangeCommand implements SynchronizeMessageInterface, DefaultStampsProviderInterface
 {
     public function __construct(
-        public readonly UuidInterface $uuid,
+        public readonly Uuid $uuid,
         public readonly ?string $oldEmailAddress = null,
         private readonly bool $batch = false,
     ) {

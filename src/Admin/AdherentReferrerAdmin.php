@@ -18,7 +18,7 @@ use App\Repository\ReferralRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -69,7 +69,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
             ->innerJoin(
                 Referral::class,
                 'referral',
-                Expr\Join::WITH,
+                Join::WITH,
                 \sprintf('%s.id = referral.referrer', $rootAlias)
             )
         ;
@@ -223,7 +223,7 @@ class AdherentReferrerAdmin extends AbstractAdmin
 
                 return [
                     'ID' => $adherent->getId(),
-                    'UUID' => $adherent->getUuid()->toString(),
+                    'UUID' => $adherent->getUuid()->toRfc4122(),
                     'Email' => $adherent->getEmailAddress(),
                 ];
             }

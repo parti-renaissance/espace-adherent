@@ -12,7 +12,7 @@ use App\Entity\NullablePostAddress;
 use App\Event\EventVisibilityEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class EventTest extends TestCase
 {
@@ -21,7 +21,7 @@ class EventTest extends TestCase
     {
         $address = $this->createStub(NullablePostAddress::class);
 
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
@@ -50,7 +50,7 @@ class EventTest extends TestCase
         $address = $this->createStub(NullablePostAddress::class);
         $address->method('getCountry')->willReturn($country);
 
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCategory($this->createStub(EventCategory::class));
         $event->setCapacity(2);
@@ -76,7 +76,7 @@ class EventTest extends TestCase
 
     public function testIsFull(): void
     {
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->setAuthor($this->createStub(Adherent::class));
         $event->setCapacity(2);
 
@@ -91,7 +91,7 @@ class EventTest extends TestCase
 
     public function testApplyPinnedDefaultsForNationalEvent(): void
     {
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->setNational(true);
 
         $this->assertFalse($event->pinned);
@@ -103,7 +103,7 @@ class EventTest extends TestCase
 
     public function testApplyPinnedDefaultsForAgoraEvent(): void
     {
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->agora = new Agora();
         $event->visibility = EventVisibilityEnum::PUBLIC;
 
@@ -116,7 +116,7 @@ class EventTest extends TestCase
 
     public function testApplyPinnedDefaultsForAgoraInvitationEventDoesNotPin(): void
     {
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
         $event->agora = new Agora();
         $event->visibility = EventVisibilityEnum::INVITATION;
 
@@ -127,7 +127,7 @@ class EventTest extends TestCase
 
     public function testApplyPinnedDefaultsWithoutAgoraOrNationalDoesNothing(): void
     {
-        $event = new Event(Uuid::uuid4());
+        $event = new Event(Uuid::v4());
 
         $event->applyPinnedDefaults();
 

@@ -6,9 +6,8 @@ namespace App\Entity;
 
 use App\Repository\TallyFormRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TallyFormRepository::class)]
@@ -40,9 +39,9 @@ class TallyForm implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $published = true;
 
-    public function __construct(?UuidInterface $uuid = null)
+    public function __construct(?Uuid $uuid = null)
     {
-        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::v4();
         $this->utmSource = 'consultation';
     }
 

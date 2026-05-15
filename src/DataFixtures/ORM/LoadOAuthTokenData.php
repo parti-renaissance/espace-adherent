@@ -14,7 +14,7 @@ use App\Repository\OAuth\ClientRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
 {
@@ -123,7 +123,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         string $expiryDateTime,
     ): AuthorizationCode {
         return new AuthorizationCode(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier),
             $this->adherentRepository->findOneByUuid(Uuid::fromString($userUuid)),
             $identifier,
             new \DateTimeImmutable($expiryDateTime),
@@ -139,7 +139,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         string $expiryDateTime,
     ): AccessToken {
         return new AccessToken(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier),
             $this->adherentRepository->findOneByUuid(Uuid::fromString($userUuid)),
             $identifier,
             new \DateTimeImmutable($expiryDateTime),
@@ -153,7 +153,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         string $expiryDateTime,
     ): RefreshToken {
         return new RefreshToken(
-            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            Uuid::v5(new Uuid(Uuid::NAMESPACE_OID), $identifier),
             $accessToken,
             $identifier,
             new \DateTimeImmutable($expiryDateTime)

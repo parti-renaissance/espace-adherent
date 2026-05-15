@@ -36,7 +36,7 @@ class TeamMemberManagementHandler
 
         /** @var AdherentUuid $adherentUuid */
         foreach ($newTeamMembersAdherentUuids as $adherentUuid) {
-            $adherent = $this->adherentRepository->findOneByUuid($adherentUuid->adherentUuid->toString());
+            $adherent = $this->adherentRepository->findOneByUuid($adherentUuid->adherentUuid->toRfc4122());
             if ($adherent && !$team->hasAdherent($adherent)) {
                 $newMember = new Member(null, $adherent);
                 $team->addMember($newMember);
