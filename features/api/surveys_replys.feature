@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
 
     Scenario: As a logged-in user I can reply to a national survey for phoning campaign (new body structure)

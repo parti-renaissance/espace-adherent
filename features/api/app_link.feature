@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     As a logged-in user
     I should be able to retrieve magic link with redirections

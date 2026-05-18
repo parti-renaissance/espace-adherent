@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to complete PAP campaigns
     I should be able to retrieve vote places for a given position

@@ -1,4 +1,5 @@
 @api
+@renaissance_api
 Feature:
     In order to display referrals informations
     As an logged in user

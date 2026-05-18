@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to complete PAP campaigns
     I should be able to retrieve addresses for a given position and additional data

@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to view chatbot thread messages
     As a logged-in user with canary tester role

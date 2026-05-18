@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to see and join Agoras
     I should be able to access API of Agoras

@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to see, create, edit and delete adherent messages
     As a logged-in user

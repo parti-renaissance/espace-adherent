@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to display a national events selector in Espace Cadre
     As a logged-in user with the national_event scope feature

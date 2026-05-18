@@ -72,7 +72,8 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
         ->host('{app_domain}');
 
     $routingConfigurator->import('.', 'api_platform')
-        ->prefix('%api_path_prefix%');
+        ->prefix('%api_path_prefix%')
+        ->host('%api_renaissance_host%');
 
     $routingConfigurator->import('../src/Controller/OAuth', 'attribute')
         ->prefix('/oauth/v2')

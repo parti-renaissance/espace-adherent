@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to ensure push notifications reach the correct audience
     As a platform administrator
