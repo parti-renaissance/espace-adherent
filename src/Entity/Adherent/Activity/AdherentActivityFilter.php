@@ -24,9 +24,6 @@ final readonly class AdherentActivityFilter
 {
     public function __construct(
         #[Groups(['adherent_activity_filter:read'])]
-        public array $sourceTypes,
-
-        #[Groups(['adherent_activity_filter:read'])]
         public array $eventTypes,
     ) {
     }
