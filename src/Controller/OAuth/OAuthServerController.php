@@ -12,6 +12,7 @@ use App\Security\Voter\OAuthClientVoter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\RegisteredClaims;
+use Lcobucci\JWT\UnencryptedToken;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -109,6 +110,7 @@ class OAuthServerController extends AbstractController
         }
 
         $accessTokenObject = new Parser(new JoseEncoder())->parse($accessToken);
+        \assert($accessTokenObject instanceof UnencryptedToken);
         $client = $repository->findOneByUuid(current($accessTokenObject->claims()->get(RegisteredClaims::AUDIENCE)));
 
         return new JsonResponse([

@@ -7,7 +7,6 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -17,9 +16,8 @@ class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        /** @var Connection $conn */
-        $conn = $manager->getConnection();
-        $conn->executeStatement(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
+        \assert($manager instanceof EntityManagerInterface);
+        $manager->getConnection()->executeStatement(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
 
         $votePlace = new Zone(Zone::VOTE_PLACE, 'BDV-TEST-1', 'Bureau de vote NICE 1');
         $votePlace->addParent(self::getZone($manager, 'zone_city_06088'));

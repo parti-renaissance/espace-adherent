@@ -284,7 +284,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     protected $timeZone = AddressInterface::DEFAULT_TIME_ZONE;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTime|null
      */
     #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
@@ -292,7 +292,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     protected $beginAt;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTime|null
      */
     #[Assert\Expression('!value or value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     #[Assert\NotBlank]
@@ -509,34 +509,34 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
         $this->description = $description;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
+    public function getBeginAt(): ?\DateTime
     {
         return $this->beginAt;
     }
 
-    public function setBeginAt(?\DateTimeInterface $beginAt): void
+    public function setBeginAt(?\DateTime $beginAt): void
     {
         $this->beginAt = $beginAt;
     }
 
     #[Groups(['event_read', 'event_list_read'])]
-    public function getLocalBeginAt(): \DateTimeInterface
+    public function getLocalBeginAt(): \DateTime
     {
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }
 
-    public function getFinishAt(): ?\DateTimeInterface
+    public function getFinishAt(): ?\DateTime
     {
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTimeInterface $finishAt): void
+    public function setFinishAt(?\DateTime $finishAt): void
     {
         $this->finishAt = $finishAt;
     }
 
     #[Groups(['event_read', 'event_list_read'])]
-    public function getLocalFinishAt(): \DateTimeInterface
+    public function getLocalFinishAt(): \DateTime
     {
         return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }

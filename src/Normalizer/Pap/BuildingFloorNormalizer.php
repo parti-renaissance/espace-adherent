@@ -39,8 +39,7 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
             }
         }
 
-        /** @var FloorStatistics $stats */
-        if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
+        if ($campaign && $campaignUuid && ($stats = $object->findStatisticsForCampaign($campaign)) instanceof FloorStatistics) {
             $data['campaign_statistics'] = [
                 'visited_doors' => $stats->getVisitedDoors(),
                 'nb_surveys' => $stats->getNbSurveys(),

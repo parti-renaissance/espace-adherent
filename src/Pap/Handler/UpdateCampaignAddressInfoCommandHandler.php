@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Pap\Handler;
 
-use App\Entity\Pap\Campaign;
 use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use App\Repository\Pap\AddressRepository;
 use App\Repository\Pap\CampaignRepository;
@@ -30,7 +29,6 @@ class UpdateCampaignAddressInfoCommandHandler
 
     public function __invoke(UpdateCampaignAddressInfoCommand $command): void
     {
-        /** @var Campaign $campaign */
         if (!$campaign = $this->campaignRepository->findOneByUuid($command->getCampaignUuid())) {
             return;
         }

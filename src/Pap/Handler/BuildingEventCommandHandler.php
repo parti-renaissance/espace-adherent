@@ -80,8 +80,8 @@ class BuildingEventCommandHandler
     ): void {
         $status = BuildingEventActionEnum::CLOSE === $buildingEvent->getAction() ? BuildingStatusEnum::COMPLETED : BuildingStatusEnum::ONGOING;
         $campaign = $buildingEvent->getCampaign();
-        /** @var CampaignStatisticsInterface $stats */
-        if (!$stats = $object->findStatisticsForCampaign($campaign)) {
+        $stats = $object->findStatisticsForCampaign($campaign);
+        if (!$stats instanceof CampaignStatisticsInterface) {
             if ($isAsync && $object instanceof Building) {
                 $stats = $this->buildingStatisticsManager->updateStats($object, $campaign);
             } else {

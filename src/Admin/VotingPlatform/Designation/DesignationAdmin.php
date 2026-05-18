@@ -29,9 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-/**
- * @param Designation
- */
 class DesignationAdmin extends AbstractAdmin
 {
     public const FORM_TYPE_LOCAL_ELECTION = 'form_type_local_election';

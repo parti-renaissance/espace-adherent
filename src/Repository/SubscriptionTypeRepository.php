@@ -16,7 +16,7 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string[]
+     * @param string[] $codes
      *
      * @return SubscriptionType[]
      */

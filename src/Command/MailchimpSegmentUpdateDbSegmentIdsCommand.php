@@ -75,7 +75,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         ;
 
         foreach ($iterator as $committee) {
-            /** @var Committee $committee */
+            \assert($committee instanceof Committee);
             foreach ($segments as $tag) {
                 if ($tag['name'] === $committee->getUuid()->toRfc4122()) {
                     $committee->setMailchimpId($tag['id']);

@@ -7,7 +7,6 @@ namespace App\Donation\Handler;
 use App\Csv\CsvResponseFactory;
 use App\Donation\Command\DonatorExtractCommand;
 use App\Entity\Donation;
-use App\Entity\Donator;
 use App\Extract\AbstractEmailExtractCommandHandler;
 use App\Repository\DonatorRepository;
 use App\Utils\PhoneNumberUtils;
@@ -29,7 +28,6 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
 
     protected function computeRow(array $row, string $email, array $fields): array
     {
-        /** @var Donator $donator */
         if (!$donator = $this->donatorRepository->findOneBy(['emailAddress' => $email])) {
             return $row;
         }

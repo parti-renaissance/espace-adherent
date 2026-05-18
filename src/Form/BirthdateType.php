@@ -38,7 +38,7 @@ class BirthdateType extends AbstractType
 
         $resolver->setAllowedTypes('min_age', 'int');
         $resolver->setAllowedTypes('max_age', 'int');
-        $resolver->setAllowedTypes('reference_date', \DateTimeInterface::class);
+        $resolver->setAllowedTypes('reference_date', \DateTime::class);
 
         $resolver->setNormalizer('years', function (Options $options, $value) {
             if ($value) {
@@ -60,7 +60,7 @@ class BirthdateType extends AbstractType
                 $constraints = [$constraints];
             }
 
-            /** @var \DateTimeInterface $refDate */
+            /** @var \DateTime $refDate */
             $refDate = $options['reference_date'];
 
             if ($options['min_age'] > 0) {

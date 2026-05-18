@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
@@ -77,7 +78,7 @@ class CommitteeMembership implements UuidEntityInterface
     private $enableVote;
 
     /**
-     * @var CommitteeCandidacy[]
+     * @var Collection<int, CommitteeCandidacy>
      */
     #[ORM\OneToMany(mappedBy: 'committeeMembership', targetEntity: CommitteeCandidacy::class, cascade: ['all'], orphanRemoval: true)]
     private $committeeCandidacies;

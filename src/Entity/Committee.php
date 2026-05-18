@@ -168,7 +168,7 @@ class Committee implements \Stringable, StaticSegmentInterface, AddressHolderInt
     private $nameLocked = false;
 
     /**
-     * @var CommitteeElection[]
+     * @var Collection<int, CommitteeElection>
      */
     #[ORM\OneToMany(mappedBy: 'committee', targetEntity: CommitteeElection::class, cascade: ['all'], orphanRemoval: true)]
     private $committeeElections;

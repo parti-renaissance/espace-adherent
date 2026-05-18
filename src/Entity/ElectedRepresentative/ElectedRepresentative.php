@@ -451,7 +451,7 @@ class ElectedRepresentative implements \Stringable, EntityAdherentBlameableInter
 
     public function exportMandates(): string
     {
-        return implode(', ', $this->getCurrentMandates()->toArray());
+        return implode(', ', $this->getCurrentMandates());
     }
 
     public function exportPoliticalFunctions(): string

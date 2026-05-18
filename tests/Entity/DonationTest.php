@@ -63,7 +63,7 @@ class DonationTest extends TestCase
             Uuid::v4(),
             $type,
             10,
-            $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
+            $donatedAt ? \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTime(),
             $this->createMock(PostAddress::class),
             '127.0.0.1',
             $duration,
@@ -79,7 +79,7 @@ class DonationTest extends TestCase
                 $uuid,
                 'cb',
                 10,
-                \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
+                \DateTime::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 PostAddress::createEmptyAddress(),
                 '127.0.0.1',
                 PayboxPaymentSubscription::NONE,
@@ -104,7 +104,7 @@ class DonationTest extends TestCase
                 $uuid,
                 'cb',
                 10,
-                \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
+                \DateTime::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 PostAddress::createEmptyAddress(),
                 '127.0.0.1',
                 PayboxPaymentSubscription::UNLIMITED,
@@ -239,7 +239,7 @@ class DonationTest extends TestCase
         self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
         self::assertSame('2020/01/12 12:30:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
 
-        $donation->setDonatedAt(\DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2020/01/02 09:30:00'));
+        $donation->setDonatedAt(\DateTime::createFromFormat('Y/m/d H:i:s', '2020/01/02 09:30:00'));
 
         self::assertSame('2020/01/02 09:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
         self::assertSame('2020/01/02 09:30:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));

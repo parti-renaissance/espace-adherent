@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command\VotingPlatform;
 
-use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\CommitteeRepository;
@@ -67,8 +66,7 @@ class InitializeElectionsCommand extends Command
                 $this->io->progressAdvance();
             }
 
-            $this->entityManager->clear(Committee::class);
-            $this->entityManager->clear(CommitteeElection::class);
+            $this->entityManager->clear();
         }
     }
 }

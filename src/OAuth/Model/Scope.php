@@ -54,11 +54,6 @@ final class Scope extends Enum implements \Stringable, ScopeEntityInterface
         return 'ROLE_OAUTH_SCOPE_'.mb_strtoupper($scope);
     }
 
-    public function __toString()
-    {
-        return (string) $this->getIdentifier();
-    }
-
     public function jsonSerialize(): mixed
     {
         return $this->getIdentifier();

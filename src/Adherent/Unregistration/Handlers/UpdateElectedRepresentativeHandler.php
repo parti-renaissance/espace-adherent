@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Adherent\Unregistration\Handlers;
 
 use App\Entity\Adherent;
-use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -35,7 +34,6 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
 
     public function handle(Adherent $adherent): void
     {
-        /** @var ElectedRepresentative $electedRepresentative */
         if (!$electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent])) {
             return;
         }

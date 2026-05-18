@@ -19,7 +19,7 @@ class RedirectionsSubscriber implements EventSubscriberInterface
     private $handlers;
 
     /**
-     * @param RedirectToInterface[]
+     * @param iterable<RedirectToInterface> $handlers
      */
     public function __construct(iterable $handlers)
     {

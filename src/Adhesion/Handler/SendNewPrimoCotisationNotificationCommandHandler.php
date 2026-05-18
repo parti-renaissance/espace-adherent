@@ -7,7 +7,6 @@ namespace App\Adhesion\Handler;
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\SendNewPrimoCotisationNotificationCommand;
-use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
@@ -33,7 +32,6 @@ class SendNewPrimoCotisationNotificationCommandHandler
 
     public function __invoke(SendNewPrimoCotisationNotificationCommand $command): void
     {
-        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid())) {
             return;
         }

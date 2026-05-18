@@ -155,7 +155,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[Assert\NotBlank]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $beginAt = null;
+    private ?\DateTime $beginAt = null;
 
     #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -352,12 +352,12 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->toJoin = $toJoin;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
+    public function getBeginAt(): ?\DateTime
     {
         return $this->beginAt;
     }
 
-    public function setBeginAt(\DateTimeInterface $beginAt): void
+    public function setBeginAt(\DateTime $beginAt): void
     {
         $this->beginAt = $beginAt;
     }

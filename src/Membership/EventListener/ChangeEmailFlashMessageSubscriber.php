@@ -8,6 +8,8 @@ use App\Entity\Adherent;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -43,7 +45,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         }
 
         if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()?->getUser())) {
-            $this->requestStack->getSession()->getFlashBag()->add('info', $this->message = $this->translator->trans(
+            $this->getFlashBag()->add('info', $this->message = $this->translator->trans(
                 self::MESSAGE,
                 ['email' => $token->getEmail()]
             ));
@@ -53,8 +55,8 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
     public function removeMessageOnRedirection(ResponseEvent $event): void
     {
         if ($event->getResponse()->isRedirection()) {
-            $messages = $this->requestStack->getSession()->getFlashBag()->peek('info');
-            $this->requestStack->getSession()->getFlashBag()->set('info', array_filter($messages, function (string $message) {
+            $flashBag = $this->getFlashBag();
+            $flashBag->set('info', array_filter($flashBag->peek('info'), function (string $message) {
                 return $this->message !== $message;
             }));
         }
@@ -87,10 +89,18 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (\in_array($this->message, $this->requestStack->getSession()->getFlashBag()->peek('info'), true)) {
+        if (\in_array($this->message, $this->getFlashBag()->peek('info'), true)) {
             return false;
         }
 
         return true;
+    }
+
+    private function getFlashBag(): FlashBagInterface
+    {
+        $session = $this->requestStack->getSession();
+        \assert($session instanceof FlashBagAwareSessionInterface);
+
+        return $session->getFlashBag();
     }
 }

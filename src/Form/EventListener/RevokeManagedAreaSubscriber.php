@@ -20,8 +20,8 @@ class RevokeManagedAreaSubscriber implements EventSubscriberInterface
 
     public function removeEmptyManagedArea(FormEvent $event): void
     {
-        /** @var Adherent $adherent */
-        if (!$adherent = $event->getData()) {
+        $adherent = $event->getData();
+        if (!$adherent instanceof Adherent) {
             return;
         }
 

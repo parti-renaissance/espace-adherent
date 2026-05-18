@@ -23,9 +23,10 @@ class MoocNormalizer implements NormalizerInterface
 
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
+        \assert($object instanceof Mooc);
+
         $elements = [];
 
-        /** @var Mooc $object */
         foreach ($object->getChapters() as $chapter) {
             $elements[] = $this->normalizeChapter($chapter);
 

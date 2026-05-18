@@ -7,11 +7,16 @@ namespace App\Repository;
 use App\Exception\InvalidUuidException;
 use Symfony\Component\Uid\Uuid;
 
+/**
+ * @template T of object
+ */
 trait UuidEntityRepositoryTrait
 {
     /**
      * Finds an entity by its unique UUID even if the object has 'enabled' property set to 'true'
      * due to deactivation of 'enabled' Doctrine filter.
+     *
+     * @return T|null
      *
      * @throws InvalidUuidException
      */
@@ -24,6 +29,9 @@ trait UuidEntityRepositoryTrait
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
+    /**
+     * @return list<T>
+     */
     public function findByUuid(array $uuids): array
     {
         self::validUuids($uuids);
