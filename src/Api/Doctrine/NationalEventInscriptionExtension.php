@@ -24,6 +24,10 @@ class NationalEventInscriptionExtension implements QueryCollectionExtensionInter
             return;
         }
 
+        if (isset($context['filters']['status'])) {
+            return;
+        }
+
         $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
