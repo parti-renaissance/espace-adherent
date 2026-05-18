@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\NationalEvent\Handler;
 
-use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
 use App\QrCode\QrCodeResponseFactory;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -25,7 +24,6 @@ class GenerateTicketQRCodeCommandHandler
 
     public function __invoke(GenerateTicketQRCodeCommand $command): void
     {
-        /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }

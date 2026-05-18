@@ -17,7 +17,6 @@ class SurveyQuestionFromIdDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
-        /** @var SurveyQuestion $surveyQuestion */
         if ($surveyQuestion = $this->repository->find((int) $data)) {
             return $surveyQuestion;
         }

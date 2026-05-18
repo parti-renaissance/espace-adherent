@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Pap\Handler;
 
-use App\Entity\Pap\CampaignHistory;
 use App\Pap\CampaignHistoryManager;
 use App\Pap\Command\CreateBuildingPartsCommand;
 use App\Pap\Command\UpdateStatsCommand;
@@ -31,7 +30,6 @@ class CreateBuildingPartsCommandHandler
 
     public function __invoke(CreateBuildingPartsCommand $command): void
     {
-        /** @var CampaignHistory $campaignHistory */
         if (!$campaignHistory = $this->repository->findOneByUuid($command->getCampaignHistoryUuid())) {
             return;
         }

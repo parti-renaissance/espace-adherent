@@ -42,7 +42,6 @@ class PersistProcurationEmailCommandHandler
         return $initialRequest->email;
     }
 
-    /** @return ProcurationRequest[]|array */
     private function findInitialRequest(string $email): ?ProcurationRequest
     {
         return $this->procurationRequestRepository

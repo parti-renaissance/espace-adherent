@@ -12,6 +12,7 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\RegisteredClaims;
+use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
@@ -34,6 +35,8 @@ class IdTokenHintValidator
         } catch (\Throwable $e) {
             throw new InvalidIdTokenHintException('Unable to parse id_token_hint', 0, $e);
         }
+
+        \assert($token instanceof UnencryptedToken);
 
         $audience = $token->claims()->get(RegisteredClaims::AUDIENCE);
 

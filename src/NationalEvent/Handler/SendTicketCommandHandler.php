@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\NationalEvent\Handler;
 
-use App\Entity\NationalEvent\EventInscription;
 use App\NationalEvent\Command\SendTicketCommand;
 use App\NationalEvent\Notifier;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -23,7 +22,6 @@ class SendTicketCommandHandler
 
     public function __invoke(SendTicketCommand $command): void
     {
-        /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toRfc4122())) {
             return;
         }

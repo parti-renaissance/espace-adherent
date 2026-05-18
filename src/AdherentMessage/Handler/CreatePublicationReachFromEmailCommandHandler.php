@@ -35,7 +35,6 @@ class CreatePublicationReachFromEmailCommandHandler
             return;
         }
 
-        /** @var AdherentMessage $adherentMessage */
         foreach ($adherentMessage->getMailchimpCampaigns() as $campaign) {
             if (MailchimpStatusEnum::Sent !== $campaign->status && ($status = $this->manager->getCampaignStatus($campaign)) && $campaign->status !== $status) {
                 $campaign->status = $status;

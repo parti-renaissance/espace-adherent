@@ -36,7 +36,6 @@ class DonationListener
     public function preUpdate(Donation $donation, PreUpdateEventArgs $event): void
     {
         if ($event->hasChangedField('donator')) {
-            /** @var Donator */
             $this->previousDonator = $event->getOldValue('donator');
         }
 

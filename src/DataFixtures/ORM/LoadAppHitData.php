@@ -12,6 +12,7 @@ use App\Entity\Event\Event;
 use App\JeMengage\Hit\EventTypeEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
@@ -21,6 +22,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
 {
     public function load(ObjectManager $manager): void
     {
+        \assert($manager instanceof EntityManagerInterface);
         $faker = Factory::create('fr_FR');
 
         $adherentRepo = $manager->getRepository(Adherent::class);

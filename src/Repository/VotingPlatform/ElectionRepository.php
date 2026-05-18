@@ -159,7 +159,7 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
-    public function getElectionsToClose(\DateTimeInterface $date, int $notification): array
+    public function getElectionsToClose(\DateTime $date, int $notification): array
     {
         return $this->createQueryBuilder('election')
             ->addSelect('designation')
@@ -211,7 +211,7 @@ class ElectionRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
-    public function findIncomingElections(\DateTimeInterface $date)
+    public function findIncomingElections(\DateTime $date)
     {
         return $this->createQueryBuilder('election')
             ->addSelect('designation')

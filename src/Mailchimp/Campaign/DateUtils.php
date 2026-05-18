@@ -6,8 +6,8 @@ namespace App\Mailchimp\Campaign;
 
 class DateUtils
 {
-    public static function adjustDate(\DateTimeInterface $date, bool $up): \DateTimeInterface
+    public static function adjustDate(\DateTimeImmutable $date, bool $up): \DateTimeImmutable
     {
-        return (clone $date)->modify(($up ? '+' : '-').'1 day');
+        return $date->modify(($up ? '+' : '-').'1 day');
     }
 }

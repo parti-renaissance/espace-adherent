@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Pap\Handler;
 
-use App\Entity\Pap\Building;
-use App\Entity\Pap\Campaign;
 use App\Pap\BuildingStatisticsManager;
 use App\Pap\Command\UpdateStatsCommand;
 use App\Repository\Pap\BuildingRepository;
@@ -31,12 +29,10 @@ class UpdateStatsCommandHandler
 
     public function __invoke(UpdateStatsCommand $command): void
     {
-        /** @var Campaign $campaign */
         if (!$campaign = $this->campaignRepository->find($command->getCampaignId())) {
             return;
         }
 
-        /** @var Building $building */
         if (!$building = $this->buildingRepository->find($command->getBuildingId())) {
             return;
         }

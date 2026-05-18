@@ -80,9 +80,6 @@ class Address
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $votersCount = 0;
 
-    /**
-     * @var Building[]|Collection
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
     #[ORM\OneToOne(mappedBy: 'address', targetEntity: Building::class, cascade: ['all'], orphanRemoval: true)]
     private ?Building $building = null;

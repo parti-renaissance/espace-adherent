@@ -45,7 +45,6 @@ class UpdateTransactionalEmailTemplateController extends AbstractController
             $command->parentObject = $parent;
         }
 
-        /** @var TransactionalEmailTemplate $existingTemplate */
         if (!$template = $repository->findOneBy(['identifier' => $command->identifier])) {
             $em->persist($template = new TransactionalEmailTemplate());
         }

@@ -53,7 +53,7 @@ class Donation implements \Stringable, GeoPointInterface
     private $amount;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTime|null
      */
     #[ORM\Column(type: 'datetime')]
     private $donatedAt;
@@ -151,7 +151,7 @@ class Donation implements \Stringable, GeoPointInterface
     private $donator;
 
     /**
-     * @var Transaction[]
+     * @var Collection<int, Transaction>
      */
     #[ORM\OneToMany(mappedBy: 'donation', targetEntity: Transaction::class, cascade: ['all'])]
     #[ORM\OrderBy(['payboxDateTime' => 'DESC'])]
@@ -285,7 +285,7 @@ class Donation implements \Stringable, GeoPointInterface
         $this->amount = $amountInEuros * 100;
     }
 
-    public function getDonatedAt(): ?\DateTimeInterface
+    public function getDonatedAt(): ?\DateTime
     {
         return $this->donatedAt;
     }
