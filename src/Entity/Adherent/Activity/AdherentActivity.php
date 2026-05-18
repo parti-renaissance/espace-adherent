@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiFilter(filterClass: SearchFilter::class,
     properties: [
-        'sourceType' => 'exact',
         'eventType' => 'exact',
     ]
 )]

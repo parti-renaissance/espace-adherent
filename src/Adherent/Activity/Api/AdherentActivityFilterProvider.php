@@ -14,7 +14,6 @@ class AdherentActivityFilterProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdherentActivityFilter
     {
         return new AdherentActivityFilter(
-            sourceTypes: AdherentActivityLabels::asOptions(AdherentActivityLabels::SOURCE_TYPES),
             eventTypes: [
                 'hit' => AdherentActivityLabels::asOptions(AdherentActivityLabels::HIT_EVENTS),
                 'action_history' => AdherentActivityLabels::asOptions(AdherentActivityLabels::ACTION_HISTORY_EVENTS),

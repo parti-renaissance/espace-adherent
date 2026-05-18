@@ -18,16 +18,6 @@ class AdherentActivityFilterProviderTest extends TestCase
         self::assertInstanceOf(AdherentActivityFilter::class, $result);
     }
 
-    public function testProvideExposesExactSourceTypes(): void
-    {
-        $result = new AdherentActivityFilterProvider()->provide(new Get());
-
-        self::assertSame([
-            ['value' => 'hit', 'label' => 'Activité in-app'],
-            ['value' => 'action_history', 'label' => "Action de l'utilisateur"],
-        ], $result->sourceTypes);
-    }
-
     public function testProvideExposesExactHitEvents(): void
     {
         $result = new AdherentActivityFilterProvider()->provide(new Get());

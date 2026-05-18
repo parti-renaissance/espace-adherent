@@ -10,11 +10,6 @@ use App\JeMengage\Hit\TargetTypeEnum;
 
 class AdherentActivityLabels
 {
-    public const array SOURCE_TYPES = [
-        SourceTypeEnum::Hit->value => 'Activité in-app',
-        SourceTypeEnum::ActionHistory->value => "Action de l'utilisateur",
-    ];
-
     public const array OBJECT_TYPES = [
         TargetTypeEnum::Event->value => ['article' => 'un', 'label' => 'événement'],
         TargetTypeEnum::Publication->value => ['article' => 'une', 'label' => 'publication'],

@@ -37,29 +37,9 @@ class AdherentActivityControllerTest extends AbstractApiTestCase
         }
     }
 
-    public function testGetActivityFilteredByHitSourceType(): void
-    {
-        $payload = $this->requestActivity(['source_type' => 'hit']);
-
-        self::assertGreaterThan(0, $payload['metadata']['total_items']);
-        foreach ($payload['items'] as $item) {
-            self::assertSame('hit', $item['source_type']);
-        }
-    }
-
-    public function testGetActivityFilteredByActionHistorySourceType(): void
-    {
-        $payload = $this->requestActivity(['source_type' => 'action_history']);
-
-        self::assertGreaterThan(0, $payload['metadata']['total_items']);
-        foreach ($payload['items'] as $item) {
-            self::assertSame('action_history', $item['source_type']);
-        }
-    }
-
     public function testGetActivityFilteredByHitEventType(): void
     {
-        $payload = $this->requestActivity(['source_type' => 'hit', 'event_type' => 'open']);
+        $payload = $this->requestActivity(['event_type' => 'open']);
 
         self::assertGreaterThan(0, $payload['metadata']['total_items']);
         foreach ($payload['items'] as $item) {
@@ -71,7 +51,7 @@ class AdherentActivityControllerTest extends AbstractApiTestCase
 
     public function testGetActivityForDelegatedAccessAddIncludesDescriptionWithActorAndRole(): void
     {
-        $payload = $this->requestActivity(['source_type' => 'action_history', 'event_type' => 'delegated_access_add']);
+        $payload = $this->requestActivity(['event_type' => 'delegated_access_add']);
 
         self::assertGreaterThan(0, $payload['metadata']['total_items']);
         foreach ($payload['items'] as $item) {
