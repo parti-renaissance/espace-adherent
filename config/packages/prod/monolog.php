@@ -24,6 +24,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     403,
                     404,
                     405,
+                    406,
                 ],
             ],
             'sentry_logs' => [
