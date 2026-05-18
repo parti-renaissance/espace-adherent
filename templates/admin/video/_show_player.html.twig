@@ -9,28 +9,12 @@
     <div style="max-width: {{ max_w }}px; margin: 0 auto;">
         {% if status == 'READY' and hls_url %}
             <video
-                id="video-player-{{ object.uuid }}"
                 controls
                 playsinline
                 poster="{{ thumbnail_url|default('') }}"
                 style="width: 100%; background: #000; border-radius: 6px;"
+                data-hls-src="{{ hls_url }}"
             ></video>
-            <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-            <script>
-                (function () {
-                    var video = document.getElementById('video-player-{{ object.uuid }}');
-                    var src = {{ hls_url|json_encode|raw }};
-                    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = src;
-                    } else if (window.Hls && Hls.isSupported()) {
-                        var hls = new Hls();
-                        hls.loadSource(src);
-                        hls.attachMedia(video);
-                    } else {
-                        video.outerHTML = '<em>Lecteur HLS non supporté par ce navigateur.</em>';
-                    }
-                })();
-            </script>
         {% else %}
             <div style="position: relative; background: #000; border-radius: 6px; overflow: hidden;">
                 {% if thumbnail_url %}
