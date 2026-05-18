@@ -47,26 +47,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstName' => 'lastName', 'lastName' => 'firstName', 'addressEmail' => 'addressEmail'])]
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['event.uuid' => 'exact'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['event.uuid' => 'exact', 'status' => 'exact'])]
 #[ApiFilter(filterClass: ExistsFilter::class, properties: ['adherent'])]
 #[ApiResource(
     shortName: 'NationalEventInscription',
     operations: [
         new GetCollection(
             order: ['createdAt' => 'DESC'],
-            security: "is_granted('ROLE_CANARY_TESTER')",
+            forceEager: false,
         ),
         new Put(
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => []],
-            security: "is_granted('ROLE_CANARY_TESTER')",
             output: RemainingStatsOutput::class,
             processor: UpdateStatusPutProcessor::class,
         ),
         new Post(
             uriTemplate: '/national_event_inscriptions/next-to-validate',
             controller: GetNextInscriptionForValidationController::class,
-            security: "is_granted('ROLE_CANARY_TESTER')",
             deserialize: false,
         ),
         new Post(
@@ -84,10 +82,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     denormalizationContext: ['groups' => ['event_inscription_update']],
     paginationItemsPerPage: 50,
-    security: "is_granted('REQUEST_SCOPE_GRANTED', 'national_event')"
+    security: "is_granted('ROLE_CANARY_TESTER')",
 )]
 #[NationalEventPackage(groups: ['Admin'])]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
+#[ORM\Index(columns: ['event_id', 'created_at'])]
 #[ORM\Table('national_event_inscription')]
 class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface
 {
