@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to get adherents information on Vox app
     As a Vox user with role

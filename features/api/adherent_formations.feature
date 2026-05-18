@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to manage adherent formations
     As a logged-in user

@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to see report resources
     As a user

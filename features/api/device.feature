@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to track device informations
     As a logged-in device

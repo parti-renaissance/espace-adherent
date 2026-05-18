@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to manage department sites
     As a logged-in user

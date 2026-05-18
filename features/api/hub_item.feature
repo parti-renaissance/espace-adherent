@@ -1,5 +1,5 @@
 @api
-@renaissance
+@renaissance_api
 Feature:
     In order to display a unified feed of events and actions
     As a client of the mobile/web apps

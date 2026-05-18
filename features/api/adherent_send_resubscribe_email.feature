@@ -1,4 +1,5 @@
 @api
+@renaissance_api
 Feature:
     In order to invite an unsubscribed militant to resubscribe to emails
     As a manager with the contacts feature

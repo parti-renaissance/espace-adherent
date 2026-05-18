@@ -1,4 +1,5 @@
 @api
+@renaissance_api
 Feature:
     In order to manage adherent mandates
     As a logged-in user

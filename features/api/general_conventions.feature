@@ -1,4 +1,5 @@
 @api
+@renaissance_api
 Feature:
     In order to display general conventions informations
     As an adherent

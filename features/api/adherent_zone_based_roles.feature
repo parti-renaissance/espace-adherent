@@ -1,4 +1,5 @@
 @api
+@renaissance_api
 Feature:
     In order to manage adherent zone based roles
     As a logged-in user granted with a specific feature
