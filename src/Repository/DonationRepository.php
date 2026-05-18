@@ -78,7 +78,7 @@ class DonationRepository extends ServiceEntityRepository
                 new Parameter('adherent', $adherent),
                 new Parameter('donation_status', Donation::STATUS_FINISHED),
             ]))
-            ->orderBy('donation.donatedAt')
+            ->orderBy('year')
             ->getQuery()
             ->getSingleColumnResult()
         ;
