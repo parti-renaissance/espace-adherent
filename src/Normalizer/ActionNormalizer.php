@@ -43,7 +43,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
             }
         }
 
-        $action['editable'] = $this->authorizationChecker->isGranted(CanManageActionVoter::PERMISSION, $object);
+        $action['editable'] = $this->authorizationChecker->isGranted(CanManageActionVoter::CAN_MANAGE_ACTION, $object);
 
         return $action;
     }

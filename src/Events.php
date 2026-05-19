@@ -12,6 +12,10 @@ final class Events
     public const EVENT_CANCELLED = 'event.cancelled';
     public const EVENT_REGISTRATION_CREATED = 'event_registration_created';
 
+    public const ACTION_CREATED = 'action.created';
+    public const ACTION_UPDATED = 'action.updated';
+    public const ACTION_CANCELLED = 'action.cancelled';
+
     private function __construct()
     {
     }

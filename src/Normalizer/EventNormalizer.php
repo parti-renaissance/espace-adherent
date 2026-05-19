@@ -14,7 +14,6 @@ use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\Event\CanManageEventVoter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -28,7 +27,6 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly EventCleaner $eventCleaner,
-        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
@@ -48,10 +46,6 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             }
 
             $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object);
-
-            if ($event['editable']) {
-                $event['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$object->getUuidAsString().'?scope='.$object->getAuthorScope()))->getUrl();
-            }
         }
 
         if ($object instanceof Event && $object->isNational()) {

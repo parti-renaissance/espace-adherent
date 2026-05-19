@@ -188,6 +188,29 @@ Feature:
         Then the response status code should be 400
         And the JSON node "message" should be equal to "Vous ne pouvez pas vous désinscrire d'une action que vous avez créé."
 
+    Scenario: editable falls back to "all my scopes with ACTIONS feature" when no ?scope= is passed
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/actions" with body:
+            """
+            {
+                "type": "pap",
+                "date": "2024-06-01 10:00:00",
+                "description": "<p>desc</p>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city_name": "Clichy",
+                    "country": "FR"
+                }
+            }
+            """
+        Then the response status code should be 201
+        And the JSON node "editable" should be equal to "true"
+        When I save this response
+        And I send a "GET" request to "/api/v3/actions/:last_response.uuid:"
+        Then the response status code should be 200
+        And the JSON node "editable" should be equal to "true"
+
     Scenario: As a logged-in VOX user I can get actions around me
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"

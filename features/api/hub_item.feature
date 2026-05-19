@@ -79,6 +79,29 @@ Feature:
         Then the response status code should be 200
         And the JSON node "metadata.items_per_page" should be equal to "100"
 
+    Scenario: editable falls back to "all my scopes with ACTIONS feature" on action items when no ?scope= is passed
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/actions" with body:
+            """
+            {
+                "type": "pap",
+                "date": "2099-06-01 10:00:00",
+                "description": "<p>desc</p>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city_name": "Clichy",
+                    "country": "FR"
+                }
+            }
+            """
+        Then the response status code should be 201
+        When I send a "GET" request to "/api/v3/hub-item?beginAt[after]=2099-01-01"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "1"
+        And the JSON node "items[0].type" should be equal to "action"
+        And the JSON node "items[0].editable" should be equal to "true"
+
     # Full payload validation for the Event branch of the polymorphic response.
     # The Action branch is validated by HubItemViewNormalizerTest (unit) because Action
     # fixtures use random UUIDs/coordinates which would make a hardcoded Behat payload flaky.
@@ -150,7 +173,6 @@ Feature:
                         "image": null,
                         "editable": true,
                         "user_registered_at": null,
-                        "edit_link": "@string@.isUrl()",
                         "object_state": "full"
                     },
                     {
@@ -215,7 +237,6 @@ Feature:
                         "image": null,
                         "editable": true,
                         "user_registered_at": null,
-                        "edit_link": "@string@.isUrl()",
                         "object_state": "full"
                     }
                 ]
