@@ -72,4 +72,12 @@ class ChatbotManager
 
         return $bag;
     }
+
+    public function buildHistoryMessageBag(Thread $thread): MessageBag
+    {
+        $messages = $this->buildContextMessageBag($thread)->getMessages();
+        array_pop($messages);
+
+        return new MessageBag(...$messages);
+    }
 }

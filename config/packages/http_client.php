@@ -63,6 +63,14 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ogone.client' => [
                     'base_uri' => '%env(OGONE_DIRECT_URL)%',
                 ],
+                'antiseche.client' => [
+                    'base_uri' => '%env(ANTISECHE_BASE_URL)%',
+                    'headers' => [
+                        'X-Api-Key' => '%env(ANTISECHE_API_KEY)%',
+                        'Accept' => 'application/json',
+                    ],
+                    'timeout' => 90,
+                ],
             ],
         ],
     ]);

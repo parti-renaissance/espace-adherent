@@ -25,6 +25,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'limit' => 90,
                 'interval' => '1 minute',
             ],
+            'bot_antiseche' => [
+                'policy' => 'sliding_window',
+                'limit' => 20,
+                'interval' => '1 minute',
+            ],
         ],
     ]);
 };
