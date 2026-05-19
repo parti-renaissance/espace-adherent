@@ -6,8 +6,8 @@ namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\NationalEvent\NationalEvent;
+use App\Form\Admin\TipTapHtmlType;
 use App\Form\Admin\UploadableFileType;
-use App\Form\CkEditorType;
 use App\Form\ColorType;
 use App\Form\JsonType;
 use App\NationalEvent\NationalEventTypeEnum;
@@ -98,21 +98,21 @@ class NationalEventAdmin extends AbstractAdmin
             ->end()
             ->tab('Wording 📝')
                 ->with('Introduction', ['class' => 'col-md-6', 'description' => 'Texte d\'introduction et le text de contact affichés en haut de la page d\'inscription'])
-                    ->add('textIntro', CkEditorType::class, ['label' => false])
-                    ->add('textIntroContact', CkEditorType::class, ['label' => 'Information de contact', 'required' => false])
+                    ->add('textIntro', TipTapHtmlType::class, ['label' => false])
+                    ->add('textIntroContact', TipTapHtmlType::class, ['label' => 'Information de contact', 'required' => false])
                 ->end()
                 ->with('Message d\'aide', ['class' => 'col-md-6', 'description' => 'Texte d\'aide affiché en bas de la page d\'inscription, avant le bouton de Légalités'])
-                    ->add('textHelp', CkEditorType::class, ['label' => false])
+                    ->add('textHelp', TipTapHtmlType::class, ['label' => false])
                 ->end()
                 ->with('Message de confirmation', ['class' => 'col-md-6', 'description' => 'Texte affiché sur la page de confirmation et dans le mail de confirmation'])
-                    ->add('textConfirmation', CkEditorType::class, ['label' => false])
+                    ->add('textConfirmation', TipTapHtmlType::class, ['label' => false])
                 ->end()
                 ->with('Réduction', ['class' => 'col-md-6'])
                     ->add('discountLabel', null, ['label' => 'Libellé de la case à cocher de la réduction', 'required' => false])
-                    ->add('discountHelp', CkEditorType::class, ['label' => 'Le text descriptif de la réduction', 'required' => false])
+                    ->add('discountHelp', TipTapHtmlType::class, ['label' => 'Le text descriptif de la réduction', 'required' => false])
                 ->end()
                 ->with('Formulaire', ['class' => 'col-md-6'])
-                    ->add('textHelpBirthdateField', CkEditorType::class, ['label' => 'Text d\'aide du champ date de naissance', 'required' => false])
+                    ->add('textHelpBirthdateField', TipTapHtmlType::class, ['label' => 'Text d\'aide du champ date de naissance', 'required' => false])
                     ->add('textHelpPhoneField', TextType::class, ['label' => 'Text d\'aide du champ téléphone', 'required' => false])
                 ->end()
             ->end()
@@ -132,7 +132,7 @@ class NationalEventAdmin extends AbstractAdmin
                 ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
                     ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
                     ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
-                    ->add('textTicketEmail', CkEditorType::class, ['label' => 'Détail', 'required' => true])
+                    ->add('textTicketEmail', TipTapHtmlType::class, ['label' => 'Détail', 'required' => true])
                 ->end()
                 ->with('Options pour les inscriptions', ['class' => 'col-md-6', 'description' => 'Options appliquées par défaut aux nouvelles inscriptions.'])
                     ->add('defaultAccess', null, ['label' => 'Porte par défaut', 'required' => false])

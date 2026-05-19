@@ -51,7 +51,6 @@
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^5.0",
         "firebase/php-jwt": "^7.0",
-        "friendsofsymfony/ckeditor-bundle": "^2.5",
         "fusonic/opengraph": "^3.0",
         "gedmo/doctrine-extensions": "^3.14",
         "geocoder-php/google-maps-provider": "^4.5",
@@ -181,7 +180,6 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "ckeditor:install --tag=4.22.1": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },

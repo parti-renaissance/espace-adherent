@@ -12,7 +12,7 @@ class ActionTypeEnum extends Enum
     public const string BOITAGE = 'boitage';
     public const string TRACTAGE = 'tractage';
     public const string COLLAGE = 'collage';
-    public const string QUESTIONNAIRE_TERRAIN = 'questionnaire_terrain';
+    public const string QUESTIONNAIRE_TERRAIN = 'questionnaire';
 
     public const array LABELS = [
         self::PAP => 'porte à porte',

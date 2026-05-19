@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3be6c367dcabc2af79cd5f776f4155e7",
+    "content-hash": "8f566a0d7fcad8b093c9741e9e79d597",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4118,87 +4118,6 @@
                 "source": "https://github.com/googleapis/php-jwt/tree/v7.0.5"
             },
             "time": "2026-04-01T20:38:03+00:00"
-        },
-        {
-            "name": "friendsofsymfony/ckeditor-bundle",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle.git",
-                "reference": "bf855d74d6aed0132d97c8f89c5ea8d81c4892a5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCKEditorBundle/zipball/bf855d74d6aed0132d97c8f89c5ea8d81c4892a5",
-                "reference": "bf855d74d6aed0132d97c8f89c5ea8d81c4892a5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-zip": "*",
-                "php": "^8.2",
-                "symfony/asset": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/config": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/expression-language": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/form": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/http-foundation": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/http-kernel": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/options-resolver": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/property-access": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/routing": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/twig-bundle": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "twig/twig": "^2.4 || ^3.0"
-            },
-            "conflict": {
-                "sebastian/environment": "<1.3.4",
-                "sebastian/exporter": "<2.0.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.41",
-                "matthiasnoback/symfony-dependency-injection-test": "^4.0 || ^5.0 || ^6.0",
-                "phpunit/phpunit": "^9.6 || ^10.5",
-                "symfony/console": "^5.4 || ^6.4 || ^7.4 || ^8.0",
-                "symfony/yaml": "^5.4 || ^6.4 || ^7.4 || ^8.0"
-            },
-            "suggest": {
-                "egeloen/form-extra-bundle": "Allows to load CKEditor asynchronously"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "FOS\\CKEditorBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eric GELOEN",
-                    "email": "geloen.eric@gmail.com"
-                },
-                {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/graphs/contributors"
-                }
-            ],
-            "description": "Provides a CKEditor integration for your Symfony project.",
-            "keywords": [
-                "CKEditor"
-            ],
-            "support": {
-                "issues": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/issues",
-                "source": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/tree/2.8.0"
-            },
-            "time": "2025-12-19T15:18:37+00:00"
         },
         {
             "name": "fusonic/opengraph",

@@ -49,7 +49,7 @@ class LoadNationalEventData extends Fixture
         $event->showVolunteer = true;
         $event->showIsJAM = true;
         $event->showAllowNotifications = true;
-        $event->startDate = new \DateTime('+1.1 month');
+        $event->startDate = new \DateTime('+25 days');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
@@ -244,7 +244,7 @@ class LoadNationalEventData extends Fixture
         $event->showEmergencyContact = true;
         $event->phoneRequired = true;
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1.5 hour');
+        $event->startDate = new \DateTime('-90 minutes');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');
@@ -435,7 +435,7 @@ class LoadNationalEventData extends Fixture
         $event->showAllowNotifications = true;
         $event->alertTitle = 'Venez nombreux !';
         $event->inscriptionEditDeadline = new \DateTime('+1 month');
-        $event->startDate = new \DateTime('-1.6 hour');
+        $event->startDate = new \DateTime('-30 minutes');
         $event->endDate = new \DateTime()->add(new \DateInterval('P1M2D'));
         $event->ticketStartDate = new \DateTime('-1 day');
         $event->ticketEndDate = new \DateTime('+1 month');

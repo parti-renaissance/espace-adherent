@@ -15,6 +15,11 @@ const setupTipTap = () => {
             image: () => Images.italic,
         },
         {
+            onPress: (editor) => () => editor.chain().focus().toggleUnderline().run(),
+            disabled: (editor) => !editor.can().toggleUnderline(),
+            image: () => Images.underline,
+        },
+        {
             onPress: (editor) => () => editor.chain().focus().toggleOrderedList().run(),
             disabled: (editor) => !editor.can().toggleOrderedList(),
             image: () => Images.orderedList,
@@ -48,21 +53,49 @@ const setupTipTap = () => {
         },
     ];
 
-    document.querySelectorAll('.tiptap-editor').forEach((element) => {
-        const container = element.parentElement;
-        const inputJson = container.querySelector('input[name*="json"]');
-        const inputHtml = document.querySelector('.tiptap-html-content');
+    document.querySelectorAll('.tiptap-container').forEach((container) => {
+        const editorElement = container.querySelector('.tiptap-editor');
         const menuContainer = container.querySelector('.tiptap-menu .btn-group');
 
+        if (!editorElement || !menuContainer) {
+            return;
+        }
+
+        const isHtmlMode = 'html' === container.dataset.tiptapMode;
+
+        let initialContent;
+        let onUpdate;
+
+        if (isHtmlMode) {
+            // HTML-only mode: the direct-child hidden input is the single source/destination.
+            const inputHtml = container.querySelector(':scope > input[type="hidden"]');
+            if (!inputHtml) {
+                return;
+            }
+            initialContent = inputHtml.value;
+            onUpdate = ({ editor }) => {
+                inputHtml.value = editor.getHTML();
+            };
+        } else {
+            // Legacy JSON+HTML mode: the JSON input is in the container, the HTML sibling lives elsewhere in the form.
+            const inputJson = container.querySelector('input[name*="json"]');
+            const inputHtml = document.querySelector('.tiptap-html-content');
+            initialContent = inputJson.value ? JSON.parse(inputJson.value) : inputHtml.value;
+            onUpdate = ({ editor }) => {
+                inputJson.value = JSON.stringify(editor.getJSON());
+                inputHtml.value = editor.getHTML();
+            };
+        }
+
         const editor = new Editor({
-            element: element.parentElement,
-            content: inputJson.value ? JSON.parse(inputJson.value) : inputHtml.value,
+            element: editorElement.parentElement,
+            content: initialContent,
             extensions: [
                 StarterKit.configure({
                     link: {
                         openOnClick: false,
                         defaultProtocol: 'https',
-                        protocols: ['http', 'https'],
+                        protocols: ['http', 'https', 'mailto', 'tel'],
                         isAllowedUri: (url, ctx) => {
                             try {
                                 const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`);
@@ -82,10 +115,7 @@ const setupTipTap = () => {
                     },
                 }),
             ],
-            onUpdate: (props) => {
-                inputJson.value = JSON.stringify(props.editor.getJSON());
-                inputHtml.value = props.editor.getHTML();
-            },
+            onUpdate,
         });
 
         TOOLS.forEach((tool) => {
