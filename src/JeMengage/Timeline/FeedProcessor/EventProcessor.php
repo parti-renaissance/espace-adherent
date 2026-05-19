@@ -12,7 +12,6 @@ use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\Event\CanManageEventVoter;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class EventProcessor extends AbstractFeedProcessor
 {
@@ -20,7 +19,6 @@ class EventProcessor extends AbstractFeedProcessor
         private readonly EventCleaner $eventCleaner,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
@@ -93,10 +91,6 @@ class EventProcessor extends AbstractFeedProcessor
             'agora_uuid' => $item['agora_uuid'] ?? null,
             'is_national' => $item['is_national'] ?? false,
         ]);
-
-        if ($item['editable']) {
-            $item['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$item['objectID'].'?scope='.($item['author']['scope'] ?? null)))->getUrl();
-        }
 
         return $item;
     }

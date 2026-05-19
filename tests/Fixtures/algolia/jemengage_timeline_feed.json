@@ -185,9 +185,55 @@
         "include": ["scope_targets:president_departmental_assembly", "scope_targets:president_departmental_assembly:custom"]
       },
       "objectID": "550e8400-e29b-41d4-a716-446655440004"
+    },
+    {
+      "type": "action",
+      "identifier": "550e8400-e29b-41d4-a716-446655440005",
+      "title": "Test action terrain",
+      "description": "<p>Action description</p>",
+      "category": null,
+      "address": null,
+      "post_address": null,
+      "image": null,
+      "url": null,
+      "live_url": null,
+      "media_type": null,
+      "begin_at": "2026-03-01T10:00:00+01:00",
+      "finish_at": null,
+      "date": "2026-03-01T10:00:00+01:00",
+      "time_zone": "Europe/Paris",
+      "author": {
+        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+        "first_name": "Damien",
+        "last_name": "Durock",
+        "role": "Président",
+        "instance": "Assemblée départementale",
+        "instance_key": "president_departmental_assembly:92",
+        "zone": "Hauts-de-Seine",
+        "scope": "president_departmental_assembly",
+        "image_url": null,
+        "theme": null
+      },
+      "is_national": false,
+      "zone_codes": ["department_92"],
+      "mode": null,
+      "participants_count": 1,
+      "visibility": null,
+      "cta_label": null,
+      "cta_link": null,
+      "committee_uuid": null,
+      "agora_uuid": null,
+      "access": {
+        "author_id": null,
+        "team_owner_id": null
+      },
+      "audience": {
+        "scope_targets": false
+      },
+      "objectID": "550e8400-e29b-41d4-a716-446655440005"
     }
   ],
-  "nbHits": 4,
+  "nbHits": 5,
   "page": 0,
   "nbPages": 1,
   "hitsPerPage": 20

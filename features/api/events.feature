@@ -653,8 +653,7 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": true
                     }
                 ]
             }
@@ -951,8 +950,7 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": true
                     },
                     {
                         "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -1438,7 +1436,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": false
             }
@@ -1642,7 +1639,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": false
             }
@@ -1957,7 +1953,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": true
             }
@@ -2366,7 +2361,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": false
             }
@@ -2462,7 +2456,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": false
             }
@@ -2678,7 +2671,6 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
-                "edit_link": "@string@.isUrl()",
                 "hidden": false,
                 "pinned": false,
                 "object_state": "full"
