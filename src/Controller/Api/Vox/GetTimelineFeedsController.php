@@ -11,6 +11,7 @@ use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\Geo\ZoneRepository;
+use App\Scope\ScopeEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -248,6 +249,20 @@ class GetTimelineFeedsController extends AbstractController
             if ($type = $zoneBasedRole->getType()) {
                 $keys[] = $type;
             }
+        }
+
+        // Direct roles outside ZoneBasedRole
+        if ($user->isAnimator()) {
+            $keys[] = ScopeEnum::ANIMATOR;
+        }
+        if ($user->isPresidentOfAgora()) {
+            $keys[] = ScopeEnum::AGORA_PRESIDENT;
+        }
+        if ($user->isGeneralSecretaryOfAgora()) {
+            $keys[] = ScopeEnum::AGORA_GENERAL_SECRETARY;
+        }
+        if ($user->hasNationalRole()) {
+            $keys[] = ScopeEnum::NATIONAL;
         }
 
         // Team memberships via delegated accesses
