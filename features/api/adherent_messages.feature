@@ -3880,6 +3880,47 @@ Feature:
         Then the response status code should be 400
         And the JSON node "detail" should be equal to "The message is not yet ready to send."
 
+    Scenario Outline: National message with scopeTargets — non-zone-based roles
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=national_tech_division" with body:
+            """
+            {
+                "label": "Message national ciblé <role>",
+                "subject": "Objet du message",
+                "content": "<table>Contenu du message</table>",
+                "json_content": "{\"blocks\": []}"
+            }
+            """
+        Then the response status code should be 201
+        When I save this response
+        And I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=national_tech_division" with body:
+            """
+            {
+                "scope_targets": [
+                    {
+                        "role": "<role>",
+                        "include_role": true,
+                        "include_team": false,
+                        "team_roles": null
+                    }
+                ]
+            }
+            """
+        Then the response status code should be 200
+        When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:/count-recipients?scope=national_tech_division"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | total    | <expected_count> |
+            | contacts | <expected_count> |
+
+        Examples:
+            | role                    | expected_count |
+            | animator                | 2              |
+            | agora_president         | 2              |
+            | agora_general_secretary | 2              |
+            | national                | 1              |
+
     Scenario: Non-national scope ignores scopeTargets filter
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "POST" request to "/api/v3/adherent_messages?scope=president_departmental_assembly" with body:

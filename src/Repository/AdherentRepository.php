@@ -2134,17 +2134,46 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 continue;
             }
 
-            // include_role: adherents with this zone-based role
-            if ($includeRole && \in_array($role, ZoneBasedRoleTypeEnum::ALL, true)) {
-                $roleParam = "role_{$paramIndex}";
-                $unions[] = "
-                    SELECT DISTINCT {$selectField}
-                    FROM adherents a
-                    JOIN adherent_zone_based_role zbr ON zbr.adherent_id = a.id
-                    WHERE zbr.type = :{$roleParam} AND a.status = 'ENABLED'
-                ";
-                $params[$roleParam] = $role;
-                ++$paramIndex;
+            // include_role: adherents with this role (direct source depends on the role)
+            if ($includeRole) {
+                if (\in_array($role, ZoneBasedRoleTypeEnum::ALL, true)) {
+                    $roleParam = "role_{$paramIndex}";
+                    $unions[] = "
+                        SELECT DISTINCT {$selectField}
+                        FROM adherents a
+                        JOIN adherent_zone_based_role zbr ON zbr.adherent_id = a.id
+                        WHERE zbr.type = :{$roleParam} AND a.status = 'ENABLED'
+                    ";
+                    $params[$roleParam] = $role;
+                    ++$paramIndex;
+                } elseif (ScopeEnum::ANIMATOR === $role) {
+                    $unions[] = "
+                        SELECT DISTINCT {$selectField}
+                        FROM adherents a
+                        JOIN committees c ON c.animator_id = a.id
+                        WHERE a.status = 'ENABLED'
+                    ";
+                } elseif (ScopeEnum::AGORA_PRESIDENT === $role) {
+                    $unions[] = "
+                        SELECT DISTINCT {$selectField}
+                        FROM adherents a
+                        JOIN agora ag ON ag.president_id = a.id
+                        WHERE a.status = 'ENABLED'
+                    ";
+                } elseif (ScopeEnum::AGORA_GENERAL_SECRETARY === $role) {
+                    $unions[] = "
+                        SELECT DISTINCT {$selectField}
+                        FROM adherents a
+                        JOIN agora_general_secretaries ags ON ags.adherent_id = a.id
+                        WHERE a.status = 'ENABLED'
+                    ";
+                } elseif (ScopeEnum::NATIONAL === $role) {
+                    $unions[] = "
+                        SELECT DISTINCT {$selectField}
+                        FROM adherents a
+                        WHERE a.national_role = 1 AND a.status = 'ENABLED'
+                    ";
+                }
             }
 
             // include_team: adherents who are delegated by someone with this role
