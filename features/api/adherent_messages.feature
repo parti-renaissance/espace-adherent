@@ -912,6 +912,7 @@ Feature:
                                     "national_event:meeting-nrp": "Meeting NRP",
                                     "national_event:event-national-1": "Event national 1",
                                     "national_event:event-national-2": "Event national 2",
+                                    "national_event:present:meeting-nrp": "Présent Meeting NRP",
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
                                 },
@@ -1153,6 +1154,7 @@ Feature:
                                     "national_event:event-national-1": "Event national 1",
                                     "national_event:event-national-2": "Event national 2",
                                     "national_event:meeting-nrp": "Meeting NRP",
+                                    "national_event:present:meeting-nrp": "Présent Meeting NRP",
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
                                 },
@@ -2243,6 +2245,7 @@ Feature:
                                     "national_event:meeting-nrp": "Meeting NRP",
                                     "national_event:event-national-1": "Event national 1",
                                     "national_event:event-national-2": "Event national 2",
+                                    "national_event:present:meeting-nrp": "Présent Meeting NRP",
                                     "national_event:present:campus": "Présent Campus",
                                     "national_event:present:event-passe": "Présent Event passé"
                                 },

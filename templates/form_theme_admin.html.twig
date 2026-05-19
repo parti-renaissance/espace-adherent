@@ -987,6 +987,19 @@
     </div>
 {% endblock %}
 
+{% block tip_tap_html_content_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        <div class="sonata-ba-field tiptap-container" data-tiptap-mode="html">
+            <div class="tiptap-menu">
+                <div class="btn-group"></div>
+            </div>
+            <div class="tiptap-editor"></div>
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block form_errors -%}
     {% if errors|length > 0 %}
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}

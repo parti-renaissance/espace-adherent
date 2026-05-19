@@ -38,7 +38,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         'form_themes' => [
             'form_theme.html.twig',
             '@SonataForm/Form/datepicker.html.twig',
-            '@FOSCKEditor/Form/ckeditor_widget.html.twig',
         ],
     ]);
 };
