@@ -75,6 +75,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
 
         $list
             ->add('parent', null, ['label' => 'Parent', 'route' => ['name' => 'content']])
+            ->add('sender', null, ['label' => 'Expéditeur'])
             ->add('updatedAt', null, ['label' => 'Modifié le'])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -110,6 +111,11 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
 
                     return $qb;
                 },
+            ])
+            ->add('sender', null, [
+                'label' => 'Expéditeur',
+                'required' => false,
+                'help' => 'Laisser vide pour hériter du parent, puis du sender système. Sur un template parent, s\'applique aux enfants sans sender propre. Non synchronisé staging→prod.',
             ])
         ;
         $form->getFormBuilder()->get('identifier')->resetViewTransformers();

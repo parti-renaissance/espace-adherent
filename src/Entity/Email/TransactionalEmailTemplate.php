@@ -41,6 +41,10 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $parent = null;
 
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: EmailSender::class)]
+    public ?EmailSender $sender = null;
+
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isSync = false;
 
@@ -66,6 +70,15 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
         $parts = explode('\\', $this->identifier);
 
         return end($parts);
+    }
+
+    /**
+     * Resolves the sender to use for this template: its own sender if set,
+     * otherwise the parent's sender (inheritance), otherwise null (system fallback).
+     */
+    public function getEffectiveSender(): ?EmailSender
+    {
+        return $this->sender ?? $this->parent?->sender;
     }
 
     public function updateFrom(UpdateTransactionalEmailTemplateCommand $command): void
