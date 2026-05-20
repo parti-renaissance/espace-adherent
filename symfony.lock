@@ -328,6 +328,18 @@
             "config/packages/ai_gemini_platform.yaml"
         ]
     },
+    "symfony/ai-generic-platform": {
+        "version": "0.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "f38913b87380322d4c40c302b41626e811516bc4"
+        },
+        "files": [
+            "config/packages/ai_generic_platform.yaml"
+        ]
+    },
     "symfony/ai-vertex-ai-platform": {
         "version": "0.2",
         "recipe": {

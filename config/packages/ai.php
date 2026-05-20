@@ -9,12 +9,29 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'project_id' => '%env(VERTEX_AI_PROJECT_ID)%',
                 'location' => '%env(VERTEX_AI_LOCATION)%',
             ],
+            'generic' => [
+                'antiseche' => [
+                    'base_url' => '%env(ANTISECHE_BASE_URL)%',
+                    'api_key' => '%env(ANTISECHE_API_KEY)%',
+                    'model_catalog' => 'app.chatbot.antiseche.model_catalog',
+                    'supports_embeddings' => false,
+                ],
+            ],
         ],
         'agent' => [
-            'default' => [
+            'gemini' => [
                 'platform' => 'ai.platform.vertexai',
                 'model' => [
                     'name' => 'gemini-2.5-flash-lite',
+                    'options' => [
+                        'stream' => true,
+                    ],
+                ],
+            ],
+            'antiseche' => [
+                'platform' => 'ai.platform.generic.antiseche',
+                'model' => [
+                    'name' => 'antiseche-rag',
                     'options' => [
                         'stream' => true,
                     ],

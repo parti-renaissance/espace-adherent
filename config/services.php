@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
@@ -185,6 +186,24 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->load('App\Controller\\', __DIR__.'/../src/Controller/')
         ->tag('controller.service_arguments');
+
+    $services->set('app.chatbot.antiseche.model_catalog', Symfony\AI\Platform\Bridge\Generic\ModelCatalog::class)
+        ->args([[
+            'antiseche-rag' => [
+                'class' => Symfony\AI\Platform\Bridge\Generic\CompletionsModel::class,
+                'capabilities' => [
+                    Symfony\AI\Platform\Capability::INPUT_MESSAGES,
+                    Symfony\AI\Platform\Capability::OUTPUT_TEXT,
+                    Symfony\AI\Platform\Capability::OUTPUT_STREAMING,
+                ],
+            ],
+        ]]);
+
+    $services->set(App\Chatbot\Agent\ChatbotAgentRegistry::class)
+        ->args([service_locator([
+            'gemini' => service('ai.agent.gemini'),
+            'antiseche' => service('ai.agent.antiseche'),
+        ])]);
 
     $services->load('App\Controller\Admin\\', __DIR__.'/../src/Controller/Admin')
         ->public()

@@ -86,6 +86,7 @@
         "stof/doctrine-extensions-bundle": "^1.9",
         "symfony/ai-agent": "^0.2.0",
         "symfony/ai-bundle": "^0.2.0",
+        "symfony/ai-generic-platform": "*",
         "symfony/ai-vertex-ai-platform": "^0.2.0",
         "symfony/asset": "^7.4",
         "symfony/cache": "^7.4",
