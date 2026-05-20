@@ -21,13 +21,14 @@ class EmailTemplateFactory
     public function createFromMessage(Message $message): AbstractEmailTemplate
     {
         $templateObject = $this->templateManager->findTemplateForMessage($message);
+        $sender = $templateObject?->getEffectiveSender();
 
         $email = new EmailTemplate(
             $message->getUuid(),
             $templateObject ? '' : ($message->getTemplate() ?? $message->generateTemplateName()),
             $templateObject && $templateObject->subject ? $templateObject->subject : $message->getSubject(),
-            $message->getSenderEmail() ?: $this->senderEmail,
-            $message->getSenderName() ?: $this->senderName,
+            $sender?->email ?: $message->getSenderEmail() ?: $this->senderEmail,
+            $sender?->name ?: $message->getSenderName() ?: $this->senderName,
             $message->getReplyTo(),
             $message->getCC(),
             $message->getBCC(),

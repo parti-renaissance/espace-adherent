@@ -417,6 +417,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Email\TransactionalEmailTemplate::class, 'controller' => App\Controller\Admin\AdminEmailCRUDController::class, 'label' => 'Templates Email', 'group' => 'Tech'])
     ;
     $services
+        ->set('app.admin.email_sender', App\Admin\Email\EmailSenderAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Email\EmailSender::class, 'label' => 'Expéditeurs email', 'group' => 'Tech'])
+    ;
+    $services
         ->set('app.admin.subscription_type', App\Admin\SubscriptionTypeAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\SubscriptionType::class, 'label' => 'Préférence de notifications', 'group' => 'Tech'])
     ;
@@ -594,6 +598,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.chatbot_chatbot'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.procuration.election'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.transactional_email_template'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.email_sender'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.jecoute.news'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.live_stream'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.agora'])
