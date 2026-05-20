@@ -28,10 +28,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->alias(App\Ohme\ClientInterface::class, Tests\App\Ohme\DummyClient::class);
 
-    $services->set(Tests\App\Chatbot\Provider\DummyProvider::class);
-
-    $services->alias(App\Chatbot\Provider\ProviderInterface::class, Tests\App\Chatbot\Provider\DummyProvider::class);
-
     $services->set(App\Mandrill\EmailClient::class, Tests\App\Test\Mailer\NullEmailClient::class);
 
     $services->set(Tests\App\Test\Recaptcha\DummyRecaptchaApiClient::class);
