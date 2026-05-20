@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -77,6 +78,12 @@ class NewsletterSourceAdmin extends AbstractAdmin
                     'required' => false,
                     'default_protocol' => 'https',
                     'help' => 'HTTPS uniquement. Si vide, redirection par défaut vers la page adhérent.',
+                ])
+                ->add('confirmationEmailTemplate', ModelType::class, [
+                    'label' => 'Template email de confirmation',
+                    'required' => false,
+                    'btn_add' => false,
+                    'help' => 'Template transactionnel utilisé pour l\'email de confirmation d\'inscription de cette source. Si vide, le template par défaut est utilisé.',
                 ])
             ->end()
         ;

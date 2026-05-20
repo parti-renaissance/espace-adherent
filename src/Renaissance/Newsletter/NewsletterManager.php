@@ -21,12 +21,18 @@ class NewsletterManager
 
     public function saveSubscription(SubscriptionRequest $subscriptionRequest): void
     {
-        if ($this->newsletterRepository->findOneByEmail($subscriptionRequest->email)) {
-            return;
-        }
+        if ($newsletter = $this->newsletterRepository->findOneByEmail($subscriptionRequest->email)) {
+            if ($newsletter->isConfirmed()) {
+                return;
+            }
 
-        $this->entityManager->persist($newsletter = NewsletterSubscription::create($subscriptionRequest));
-        $this->entityManager->flush();
+            $newsletter->updateFromRequest($subscriptionRequest);
+
+            $this->entityManager->flush();
+        } else {
+            $this->entityManager->persist($newsletter = NewsletterSubscription::create($subscriptionRequest));
+            $this->entityManager->flush();
+        }
 
         $this->bus->dispatch(new SendWelcomeMailCommand($newsletter));
     }

@@ -55,6 +55,11 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         return $this->uuid;
     }
 
+    public function getSenderName(): ?string
+    {
+        return $this->senderName;
+    }
+
     public function delivered(string $httpResponsePayload, ?string $httpRequestPayload = null): void
     {
         if ($httpRequestPayload) {

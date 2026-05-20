@@ -72,7 +72,7 @@ class EmailLog implements \Stringable
         return $this->messageClass.' de '.$this->sender.' à '.\count($this->recipients).' destinataires';
     }
 
-    public static function createFromMessage(Message $message, string $requestPayload, bool $fromTemplate = true): self
+    public static function createFromMessage(Message $message, string $requestPayload, bool $fromTemplate = true, ?string $senderName = null): self
     {
         $recipients = [];
 
@@ -82,7 +82,7 @@ class EmailLog implements \Stringable
 
         $parts = explode('\\', $message::class);
 
-        $senderName = $message->getSenderName() ?? 'Renaissance';
+        $senderName ??= $message->getSenderName() ?? 'Renaissance';
 
         return new self(
             $message->getUuid(),

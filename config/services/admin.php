@@ -446,7 +446,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     ;
     $services
         ->set('app.admin.renaissance_newsletter_source', App\Admin\Renaissance\NewsletterSourceAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Renaissance\NewsletterSource::class, 'label' => 'Sources newsletter Renaissance', 'group' => 'Tech'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Renaissance\NewsletterSource::class, 'label' => 'Sources Newsletter', 'group' => 'Tech'])
     ;
     $services
         ->set('app.admin.geo.zone', App\Admin\Geo\ZoneAdmin::class)
