@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\Chatbot\Chatbot;
 use App\Entity\Chatbot\Thread;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -19,13 +18,9 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $chatbot = $this->createChatbot('conformite-eu', 'asst_123');
-        $manager->persist($chatbot);
-
         // Thread 1: owned by canary tester (president-ad-1), 25 messages for pagination testing
         $adherent1 = $this->getReference('president-ad-1', Adherent::class);
         $thread1 = new Thread($adherent1, 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
-        $thread1->chatbot = $chatbot;
 
         $base = new \DateTime('2026-03-01 10:00:00');
         for ($i = 1; $i <= 25; ++$i) {
@@ -42,26 +37,12 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
         // Thread 2: owned by another adherent (adherent-5), 2 messages for security isolation testing
         $adherent2 = $this->getReference('adherent-5', Adherent::class);
         $thread2 = new Thread($adherent2, 'Thread autre utilisateur', Uuid::fromString(self::THREAD_2_UUID));
-        $thread2->chatbot = $chatbot;
         $thread2->addUserMessage('Question privée', new \DateTime('2026-03-01 11:00:00'));
         $thread2->addAssistantMessage('Réponse privée', new \DateTime('2026-03-01 11:01:00'));
 
         $manager->persist($thread2);
 
         $manager->flush();
-    }
-
-    private function createChatbot(
-        string $code,
-        string $assistantId,
-        bool $enabled = true,
-    ): Chatbot {
-        $chatbot = new Chatbot();
-        $chatbot->code = $code;
-        $chatbot->assistantId = $assistantId;
-        $chatbot->enabled = $enabled;
-
-        return $chatbot;
     }
 
     public function getDependencies(): array

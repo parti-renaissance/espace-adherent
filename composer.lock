@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f566a0d7fcad8b093c9741e9e79d597",
+    "content-hash": "be64b2d20e1a198280ce06317fb0d7c2",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -8769,97 +8769,6 @@
             "time": "2025-01-09T10:56:51+00:00"
         },
         {
-            "name": "openai-php/client",
-            "version": "v0.19.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openai-php/client.git",
-                "reference": "12e3513527e22d5657f4f9809796f8fe254fd0a9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/12e3513527e22d5657f4f9809796f8fe254fd0a9",
-                "reference": "12e3513527e22d5657f4f9809796f8fe254fd0a9",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2.0",
-                "php-http/discovery": "^1.20.0",
-                "php-http/multipart-stream-builder": "^1.4.2",
-                "psr/http-client": "^1.0.3",
-                "psr/http-client-implementation": "^1.0.1",
-                "psr/http-factory-implementation": "*",
-                "psr/http-message": "^1.1.0|^2.0.0"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "^7.10.0",
-                "guzzlehttp/psr7": "^2.8.0",
-                "laravel/pint": "^1.25.1",
-                "mockery/mockery": "^1.6.12",
-                "nunomaduro/collision": "^8.8.3",
-                "pestphp/pest": "^3.8.2|^4.1.4",
-                "pestphp/pest-plugin-arch": "^3.1.1|^4.0.0",
-                "pestphp/pest-plugin-type-coverage": "^3.5.1|^4.0.0",
-                "phpstan/phpstan": "^1.12.32",
-                "symfony/var-dumper": "^7.3.5"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/OpenAI.php"
-                ],
-                "psr-4": {
-                    "OpenAI\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nuno Maduro",
-                    "email": "enunomaduro@gmail.com"
-                },
-                {
-                    "name": "Sandro Gehri"
-                }
-            ],
-            "description": "OpenAI PHP is a supercharged PHP API client that allows you to interact with the Open AI API",
-            "keywords": [
-                "GPT-3",
-                "api",
-                "client",
-                "codex",
-                "dall-e",
-                "language",
-                "natural",
-                "openai",
-                "php",
-                "processing",
-                "sdk"
-            ],
-            "support": {
-                "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.19.2"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/paypalme/enunomaduro",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/gehrisandro",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nunomaduro",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-04-19T20:35:01+00:00"
-        },
-        {
             "name": "oskarstark/enum-helper",
             "version": "1.8.4",
             "source": {
@@ -9380,62 +9289,6 @@
                 "source": "https://github.com/php-http/message/tree/1.16.2"
             },
             "time": "2024-10-02T11:34:13+00:00"
-        },
-        {
-            "name": "php-http/multipart-stream-builder",
-            "version": "1.4.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/multipart-stream-builder.git",
-                "reference": "10086e6de6f53489cca5ecc45b6f468604d3460e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/multipart-stream-builder/zipball/10086e6de6f53489cca5ecc45b6f468604d3460e",
-                "reference": "10086e6de6f53489cca5ecc45b6f468604d3460e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0",
-                "php-http/discovery": "^1.15",
-                "psr/http-factory-implementation": "^1.0"
-            },
-            "require-dev": {
-                "nyholm/psr7": "^1.0",
-                "php-http/message": "^1.5",
-                "php-http/message-factory": "^1.0.2",
-                "phpunit/phpunit": "^7.5.15 || ^8.5 || ^9.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Http\\Message\\MultipartStream\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tobias Nyholm",
-                    "email": "tobias.nyholm@gmail.com"
-                }
-            ],
-            "description": "A builder class that help you create a multipart stream",
-            "homepage": "http://php-http.org",
-            "keywords": [
-                "factory",
-                "http",
-                "message",
-                "multipart stream",
-                "stream"
-            ],
-            "support": {
-                "issues": "https://github.com/php-http/multipart-stream-builder/issues",
-                "source": "https://github.com/php-http/multipart-stream-builder/tree/1.4.2"
-            },
-            "time": "2024-09-04T13:22:54+00:00"
         },
         {
             "name": "php-http/promise",

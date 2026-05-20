@@ -90,10 +90,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\QrCode::class, 'label' => 'QR Codes', 'group' => 'Communication'])
     ;
     $services
-        ->set('app.admin.chatbot_chatbot', App\Admin\Chatbot\ChatbotAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Chatbot\Chatbot::class, 'label' => 'Chatbots', 'group' => 'Communication'])
-    ;
-    $services
         ->set('app.admin.email_template', App\Admin\Email\EmailTemplateAdmin::class)
         ->args(['%env(int:EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%'])
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Email\EmailTemplate::class, 'label' => 'Modèle d\'email JME', 'group' => 'Communication'])
@@ -595,7 +591,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.general_meeting_report'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.email_template'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.consultation'])
-        ->tag('sonata.admin.extension', ['target' => 'app.admin.chatbot_chatbot'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.procuration.election'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.transactional_email_template'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.email_sender'])

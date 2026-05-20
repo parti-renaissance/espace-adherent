@@ -163,28 +163,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                         ],
                     ],
                 ],
-                'chatbot' => [
-                    'dsn' => '%env(RABBITMQ_DSN)%',
-                    'retry_strategy' => [
-                        'max_retries' => 20,
-                        'delay' => 3000,
-                        'multiplier' => 1,
-                    ],
-                    'options' => [
-                        'exchange' => [
-                            'name' => 'messenger-topic',
-                            'type' => 'topic',
-                            'default_publish_routing_key' => 'async.chatbot',
-                        ],
-                        'queues' => [
-                            'chatbot' => [
-                                'binding_keys' => [
-                                    'async.chatbot',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
                 'event' => [
                     'dsn' => '%env(RABBITMQ_DSN)%',
                     'retry_strategy' => [
@@ -247,7 +225,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 ],
             ],
             'routing' => [
-                App\Chatbot\Command\RefreshThreadCommand::class => 'chatbot',
                 App\Event\Command\EventNotificationCommandInterface::class => 'event',
                 App\Mailchimp\CampaignMessageInterface::class => 'mailchimp_campaign',
                 App\Mailchimp\SynchronizeMessageInterface::class => 'mailchimp_sync',

@@ -30,18 +30,10 @@ class Thread
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ExternalResourceTrait;
-
-    #[ORM\Column(nullable: true)]
-    public ?string $telegramChatId = null;
 
     #[Groups(['chatbot:thread_read'])]
     #[ORM\Column(nullable: true)]
     public ?string $title = null;
-
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Chatbot::class)]
-    public ?Chatbot $chatbot = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
@@ -50,13 +42,9 @@ class Thread
     /**
      * @var Message[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'thread', targetEntity: Message::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'thread', cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['date' => 'ASC'])]
     public Collection $messages;
-
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\OneToOne(targetEntity: Run::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
-    public ?Run $currentRun = null;
 
     public function __construct(Adherent $adherent, ?string $title = null, ?Uuid $uuid = null)
     {
@@ -66,22 +54,9 @@ class Thread
         $this->messages = new ArrayCollection();
     }
 
-    public function startNewRun(): void
+    public function addAssistantMessage(string $content, \DateTimeInterface $date): Message
     {
-        $run = new Run();
-        $run->thread = $this;
-
-        $this->currentRun = $run;
-    }
-
-    public function endCurrentRun(): void
-    {
-        $this->currentRun = null;
-    }
-
-    public function addAssistantMessage(string $content, \DateTimeInterface $date, ?string $externalId = null): Message
-    {
-        return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
+        return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date);
     }
 
     public function addUserMessage(string $content, ?\DateTimeInterface $date = null): Message
@@ -89,41 +64,16 @@ class Thread
         return $this->addMessage(Message::ROLE_USER, $content, $date);
     }
 
-    private function addMessage(string $role, string $content, ?\DateTimeInterface $date = null, ?string $externalId = null): Message
+    private function addMessage(string $role, string $content, ?\DateTimeInterface $date = null): Message
     {
         $message = new Message();
         $message->thread = $this;
         $message->role = $role;
         $message->content = $content;
         $message->date = $date ?? new \DateTime('now');
-        $message->externalId = $externalId;
 
         $this->messages->add($message);
 
         return $message;
-    }
-
-    public function hasMessageWithExternalId(string $externalId): bool
-    {
-        return null !== $this->messages->findFirst(
-            static function (int $key, Message $message) use ($externalId): bool {
-                return $externalId === $message->externalId;
-            }
-        );
-    }
-
-    public function getMessagesToInitialize(): Collection
-    {
-        return $this->messages->filter(
-            static function (Message $message): bool {
-                return $message->isUserMessage() && !$message->isInitialized();
-            }
-        );
-    }
-
-    #[Groups(['chatbot:read'])]
-    public function getNeedRefresh(): bool
-    {
-        return null !== $this->currentRun;
     }
 }

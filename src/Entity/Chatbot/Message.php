@@ -38,7 +38,6 @@ class Message
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ExternalResourceTrait;
 
     public const ROLE_USER = 'user';
     public const ROLE_ASSISTANT = 'assistant';
