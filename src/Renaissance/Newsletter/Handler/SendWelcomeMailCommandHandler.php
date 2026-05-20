@@ -9,6 +9,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Message;
 use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Renaissance\Newsletter\Command\SendWelcomeMailCommand;
+use App\Repository\Renaissance\NewsletterSourceRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -18,6 +19,7 @@ class SendWelcomeMailCommandHandler
     public function __construct(
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly NewsletterSourceRepository $sourceRepository,
     ) {
     }
 
@@ -32,12 +34,17 @@ class SendWelcomeMailCommandHandler
 
     private function createMessage(NewsletterSubscription $subscription): Message
     {
+        $template = $subscription->source
+            ? $this->sourceRepository->findOneByCode($subscription->source)?->confirmationEmailTemplate
+            : null;
+
         return RenaissanceNewsletterSubscriptionConfirmationMessage::create(
             $subscription->email,
             $this->urlGenerator->generate('app_renaissance_newsletter_confirm', [
                 'uuid' => $subscription->getUuid()->toRfc4122(),
                 'confirm_token' => $subscription->token->toRfc4122(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
+            $template,
         );
     }
 }

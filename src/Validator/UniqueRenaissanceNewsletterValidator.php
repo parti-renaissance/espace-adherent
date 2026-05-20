@@ -34,7 +34,9 @@ class UniqueRenaissanceNewsletterValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->repository->findOneByEmail($value->email)) {
+        $subscription = $this->repository->findOneByEmail($value->email);
+
+        if ($subscription?->isConfirmed()) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->addViolation()

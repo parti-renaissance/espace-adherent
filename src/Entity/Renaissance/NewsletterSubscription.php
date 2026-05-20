@@ -49,14 +49,19 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     public static function create(SubscriptionRequest $request): self
     {
         $object = new self();
-
-        $object->firstName = $request->firstName ?: $object->firstName;
-        $object->lastName = $request->lastName ?: $object->lastName;
-        $object->zipCode = $request->postalCode ?: $object->zipCode;
         $object->email = $request->email;
-        $object->source = $request->source ?: $object->source;
+
+        $object->updateFromRequest($request);
 
         return $object;
+    }
+
+    public function updateFromRequest(SubscriptionRequest $request): void
+    {
+        $this->firstName = $request->firstName ?: $this->firstName;
+        $this->lastName = $request->lastName ?: $this->lastName;
+        $this->zipCode = $request->postalCode ?: $this->zipCode;
+        $this->source = $request->source ?: $this->source;
     }
 
     public function getEmail(): ?string

@@ -35,7 +35,7 @@ class EmailPersisterEventSubscriber implements EventSubscriberInterface
         $emailTemplate = $event->getEmail();
         $message = $event->getMessage();
 
-        $email = EmailLog::createFromMessage($message, $emailTemplate->getHttpRequestPayload(), $emailTemplate->fromTemplate());
+        $email = EmailLog::createFromMessage($message, $emailTemplate->getHttpRequestPayload(), $emailTemplate->fromTemplate(), $emailTemplate->getSenderName());
 
         $this->manager->persist($email);
         $this->manager->flush();

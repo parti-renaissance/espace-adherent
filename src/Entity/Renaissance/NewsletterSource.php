@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Renaissance;
 
+use App\Entity\Email\TransactionalEmailTemplate;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Renaissance\NewsletterSourceRepository;
@@ -33,6 +34,10 @@ class NewsletterSource
 
     #[ORM\Column(nullable: true)]
     public ?string $mailchimpTag = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: TransactionalEmailTemplate::class)]
+    public ?TransactionalEmailTemplate $confirmationEmailTemplate = null;
 
     #[ORM\Column(options: ['default' => true])]
     public bool $enabled = true;

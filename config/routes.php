@@ -260,15 +260,16 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->add('app_renaissance_newsletter_confirm', '/newsletter/confirmation/{uuid}/{confirm_token}')
         ->host('{app_domain}')
         ->controller(App\Controller\Renaissance\Newsletter\ConfirmNewsletterController::class)
-        ->defaults([
-            'app_domain' => '%user_vox_host%',
-        ])
-        ->methods([
-            'GET',
-        ])
-        ->requirements([
-            'app_domain' => '%national_event_host%|%user_vox_host%',
-        ]);
+        ->defaults(['app_domain' => '%user_vox_host%'])
+        ->methods(['GET'])
+        ->requirements(['app_domain' => '%national_event_host%|%user_vox_host%']);
+
+    $routingConfigurator->add('app_renaissance_newsletter_save', '/api/newsletter')
+        ->host('{app_domain}')
+        ->controller(App\Controller\Renaissance\Newsletter\SaveNewsletterController::class)
+        ->defaults(['app_domain' => '%user_vox_host%'])
+        ->methods(['POST'])
+        ->requirements(['app_domain' => '%user_vox_host%|%api_renaissance_host%']);
 
     $routingConfigurator->import('../src/Controller/EnMarche/UserController.php', 'attribute')
         ->defaults([

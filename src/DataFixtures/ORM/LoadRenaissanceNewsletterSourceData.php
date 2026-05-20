@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Email\TransactionalEmailTemplate;
 use App\Entity\Renaissance\NewsletterSource;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadRenaissanceNewsletterSourceData extends Fixture
+class LoadRenaissanceNewsletterSourceData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -34,6 +36,10 @@ class LoadRenaissanceNewsletterSourceData extends Fixture
             mailchimpTag: 'Ensemble',
             redirectUrl: 'https://legislatives.parti-renaissance.dev/confirmation-newsletter',
             enabled: true,
+            confirmationEmailTemplate: $this->getReference(
+                LoadTransactionalEmailTemplateData::REFERENCE_NEWSLETTER_CONFIRMATION,
+                TransactionalEmailTemplate::class,
+            ),
         ));
 
         $manager->persist($this->createSource(
@@ -53,6 +59,7 @@ class LoadRenaissanceNewsletterSourceData extends Fixture
         ?string $mailchimpTag,
         ?string $redirectUrl,
         bool $enabled,
+        ?TransactionalEmailTemplate $confirmationEmailTemplate = null,
     ): NewsletterSource {
         $source = new NewsletterSource();
         $source->code = $code;
@@ -60,7 +67,13 @@ class LoadRenaissanceNewsletterSourceData extends Fixture
         $source->mailchimpTag = $mailchimpTag;
         $source->confirmationRedirectUrl = $redirectUrl;
         $source->enabled = $enabled;
+        $source->confirmationEmailTemplate = $confirmationEmailTemplate;
 
         return $source;
+    }
+
+    public function getDependencies(): array
+    {
+        return [LoadTransactionalEmailTemplateData::class];
     }
 }
