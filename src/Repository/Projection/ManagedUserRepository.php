@@ -59,8 +59,6 @@ class ManagedUserRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('u')
             ->addSelect('COALESCE(u.lastMembershipDonation, u.createdAt) as HIDDEN order_column')
-            ->where('u.status = :status')
-            ->setParameter('status', ManagedUser::STATUS_READY)
             ->orderBy('order_column', 'DESC')
         ;
 
@@ -72,8 +70,6 @@ class ManagedUserRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('u')
             ->addSelect('COALESCE(u.lastMembershipDonation, u.createdAt) as HIDDEN order_column')
-            ->where('u.status = :status')
-            ->setParameter('status', ManagedUser::STATUS_READY)
             ->orderBy('order_column', 'DESC')
         ;
 

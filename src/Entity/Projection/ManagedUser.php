@@ -55,15 +55,12 @@ use Symfony\Component\Uid\Uuid;
 )]
 #[ORM\Entity(repositoryClass: ManagedUserRepository::class)]
 #[ORM\Index(fields: ['adherentUuid'])]
-#[ORM\Index(fields: ['status'])]
 #[ORM\Index(fields: ['originalId'])]
 #[ORM\Table(name: 'projection_managed_users')]
 class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageExposeInterface, ZoneableEntityInterface
 {
     use EntityZoneTrait;
     use ImageTrait;
-
-    public const STATUS_READY = 1;
 
     /**
      * @var int
@@ -73,12 +70,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\GeneratedValue]
     #[ORM\Id]
     private $id;
-
-    /**
-     * @var int
-     */
-    #[ORM\Column(type: 'smallint')]
-    private $status;
 
     /**
      * @var string|null
@@ -399,7 +390,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     protected Collection $zones;
 
     public function __construct(
-        int $status,
         ?string $source,
         int $originalId,
         string $email,
@@ -442,7 +432,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         ?\DateTime $campusRegisteredAt = null,
         ?string $imageName = null,
     ) {
-        $this->status = $status;
         $this->source = $source;
         $this->originalId = $originalId;
         $this->adherentUuid = $uuid;
@@ -493,11 +482,6 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getStatus(): int
-    {
-        return $this->status;
     }
 
     public function getOriginalId(): int

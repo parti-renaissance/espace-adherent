@@ -264,7 +264,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $age = $birthdate ? $this->calculateAge($birthdate) : null;
 
         $managedUser = new ManagedUser(
-            status: ManagedUser::STATUS_READY,
             source: $options['source'] ?? null,
             originalId: $adherent->getId(),
             email: $adherent->getEmailAddress(),
