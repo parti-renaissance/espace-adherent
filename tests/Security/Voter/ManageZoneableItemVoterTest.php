@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Security\Voter;
 
+use App\Collection\ZoneCollection;
 use App\Entity\Adherent;
 use App\Entity\Agora;
 use App\Entity\AgoraMembership;
@@ -12,6 +13,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
+use App\Entity\Projection\ManagedUser;
 use App\Entity\ZoneableEntityInterface;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\Scope;
@@ -119,6 +121,21 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, self::PERMISSION, $event);
     }
 
+    public function testVoteEventWithCommitteeMismatchDoesNotFallBackToZone(): void
+    {
+        // An Event is committee-bound: a committee mismatch denies access even when the scope has zones.
+        $adherent = new Adherent();
+        $event = new Event();
+        $event->setCommittee($this->createCommitteeStub(self::COMMITTEE_UUID_OUT));
+
+        $scopeZones = [$this->createStub(Zone::class)];
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN], zones: $scopeZones);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(false, true, $adherent, self::PERMISSION, $event);
+    }
+
     public function testVoteEventWithAgoraMatchIsGranted(): void
     {
         $adherent = new Adherent();
@@ -150,6 +167,20 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
         $committee = $this->createCommitteeStub(self::COMMITTEE_UUID_OUT);
 
         $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN]);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(false, true, $adherent, self::PERMISSION, $committee);
+    }
+
+    public function testVoteCommitteeMismatchDoesNotFallBackToZone(): void
+    {
+        // A Committee is committee-bound: a mismatch denies access even when the scope has zones.
+        $adherent = new Adherent();
+        $committee = $this->createCommitteeStub(self::COMMITTEE_UUID_OUT);
+
+        $scopeZones = [$this->createStub(Zone::class)];
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN], zones: $scopeZones);
         $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
         $this->zoneRepository->expects(self::never())->method('isInZones');
 
@@ -234,6 +265,76 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
         $adherent = new Adherent();
         $subject = new Adherent();
         $subject->setCommitteeMembership($this->createCommitteeMembershipStub(self::COMMITTEE_UUID_OUT));
+
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN]);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(false, true, $adherent, self::PERMISSION, $subject);
+    }
+
+    public function testVoteManagedUserWithCommitteeMembershipMatchIsGranted(): void
+    {
+        // The single-adherent endpoint (/v3/adherents/{uuid}) votes on a ManagedUser projection, not an Adherent.
+        // An animator scope has no zones, only committee UUIDs: access must be granted via committee membership.
+        $adherent = new Adherent();
+        $subject = $this->createManagedUserSubject(committeeUuids: [self::COMMITTEE_UUID_OUT, self::COMMITTEE_UUID_IN]);
+
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN]);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(true, true, $adherent, self::PERMISSION, $subject);
+    }
+
+    public function testVoteManagedUserWithCommitteeV2MatchIsGranted(): void
+    {
+        $adherent = new Adherent();
+        $subject = $this->createManagedUserSubject(committeeUuid: self::COMMITTEE_UUID_IN);
+
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN]);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(true, true, $adherent, self::PERMISSION, $subject);
+    }
+
+    public function testVoteManagedUserWithAgoraMatchIsGranted(): void
+    {
+        $adherent = new Adherent();
+        $subject = $this->createManagedUserSubject(agoraUuid: self::AGORA_UUID_IN);
+
+        $scope = $this->createScopeStub(agoraUuids: [self::AGORA_UUID_IN]);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
+        $this->assertGrantedForAdherent(true, true, $adherent, self::PERMISSION, $subject);
+    }
+
+    public function testVoteManagedUserWithCommitteeMismatchButZoneOkIsGranted(): void
+    {
+        $adherent = new Adherent();
+        $zone = $this->createStub(Zone::class);
+        $subject = $this->createManagedUserSubject(committeeUuids: [self::COMMITTEE_UUID_OUT], zones: [$zone]);
+
+        $scopeZones = [$this->createStub(Zone::class)];
+        $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN], zones: $scopeZones);
+        $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
+
+        $this->zoneRepository
+            ->expects(self::once())
+            ->method('isInZones')
+            ->with([$zone], $scopeZones)
+            ->willReturn(true)
+        ;
+
+        $this->assertGrantedForAdherent(true, true, $adherent, self::PERMISSION, $subject);
+    }
+
+    public function testVoteManagedUserOutOfCommitteeAndZoneIsDenied(): void
+    {
+        $adherent = new Adherent();
+        $subject = $this->createManagedUserSubject(committeeUuids: [self::COMMITTEE_UUID_OUT]);
 
         $scope = $this->createScopeStub(committeeUuids: [self::COMMITTEE_UUID_IN]);
         $this->scopeGeneratorResolver->expects(self::once())->method('generate')->willReturn($scope);
@@ -336,6 +437,21 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
     private function createAdherentSubject(): Adherent
     {
         return new Adherent();
+    }
+
+    private function createManagedUserSubject(
+        array $committeeUuids = [],
+        ?string $committeeUuid = null,
+        ?string $agoraUuid = null,
+        array $zones = [],
+    ): ManagedUser&Stub {
+        $managedUser = $this->createStub(ManagedUser::class);
+        $managedUser->method('getCommitteeUuids')->willReturn($committeeUuids);
+        $managedUser->method('getCommitteeUuid')->willReturn($committeeUuid ? Uuid::fromString($committeeUuid) : null);
+        $managedUser->method('getAgoraUuid')->willReturn($agoraUuid ? Uuid::fromString($agoraUuid) : null);
+        $managedUser->method('getZones')->willReturn(new ZoneCollection($zones));
+
+        return $managedUser;
     }
 
     private function createAuthorInstanceSubject(string $instanceKey): AuthorInstanceInterface&ZoneableEntityInterface&Stub

@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\Committee;
 use App\Entity\Event\Event;
+use App\Entity\Projection\ManagedUser;
 use App\Entity\ZoneableEntityInterface;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -43,34 +44,27 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             }
         }
 
-        // Committee/Agora-based access for Events
-        if (!empty($committeeUuids) && $subject instanceof Event && $subject->getCommittee()) {
-            return \in_array($subject->getCommitteeUuid(), $committeeUuids);
-        }
+        [$subjectCommitteeUuids, $subjectAgoraUuids] = $this->getSubjectScopeMemberships($subject, $adherent);
 
-        if (!empty($agoraUuids) && $subject instanceof Event && $subject->agora) {
-            return \in_array($subject->agora->getUuid()->toRfc4122(), $agoraUuids);
-        }
+        $isCommitteeAgoraBoundResource = $subject instanceof Event || $subject instanceof Committee;
 
-        // Committee-based access for Committee entities
-        if (!empty($committeeUuids) && $subject instanceof Committee) {
-            return \in_array($subject->getUuid()->toRfc4122(), $committeeUuids);
-        }
-
-        // Committee/Agora-based access for Adherents (via membership)
-        if ($subject instanceof Adherent && $subject !== $adherent) {
-            if (!empty($committeeUuids) && ($membership = $subject->getCommitteeMembership())) {
-                if (\in_array($membership->getCommittee()->getUuid()->toRfc4122(), $committeeUuids)) {
-                    return true;
-                }
+        if (!empty($committeeUuids) && !empty($subjectCommitteeUuids)) {
+            if (array_intersect($committeeUuids, $subjectCommitteeUuids)) {
+                return true;
             }
 
-            if (!empty($agoraUuids)) {
-                foreach ($subject->agoraMemberships as $agoraMembership) {
-                    if (\in_array($agoraMembership->agora->getUuid()->toRfc4122(), $agoraUuids)) {
-                        return true;
-                    }
-                }
+            if ($isCommitteeAgoraBoundResource) {
+                return false;
+            }
+        }
+
+        if (!empty($agoraUuids) && !empty($subjectAgoraUuids)) {
+            if (array_intersect($agoraUuids, $subjectAgoraUuids)) {
+                return true;
+            }
+
+            if ($isCommitteeAgoraBoundResource) {
+                return false;
             }
         }
 
@@ -78,17 +72,59 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             return false;
         }
 
-        foreach ($subject->getZones() as $zone) {
-            if ($this->zoneRepository->isInZones([$zone], $scopeZones)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($subject->getZones()->toArray(), fn ($zone) => $this->zoneRepository->isInZones([$zone], $scopeZones));
     }
 
     protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntityInterface;
+    }
+
+    /**
+     * Returns the committee and agora UUIDs (rfc4122) the subject is bound to, as [committeeUuids, agoraUuids].
+     *
+     * @return array{0: list<string>, 1: list<string>}
+     */
+    private function getSubjectScopeMemberships($subject, Adherent $adherent): array
+    {
+        if ($subject instanceof Event) {
+            return [
+                $subject->getCommittee() ? [$subject->getCommitteeUuid()] : [],
+                $subject->agora ? [$subject->agora->getUuid()->toRfc4122()] : [],
+            ];
+        }
+
+        if ($subject instanceof Committee) {
+            return [[$subject->getUuid()->toRfc4122()], []];
+        }
+
+        if ($subject instanceof ManagedUser) {
+            $committeeUuids = $subject->getCommitteeUuids() ?? [];
+            if ($committeeUuid = $subject->getCommitteeUuid()) {
+                $committeeUuids[] = $committeeUuid->toRfc4122();
+            }
+
+            return [
+                array_values($committeeUuids),
+                ($agoraUuid = $subject->getAgoraUuid()) ? [$agoraUuid->toRfc4122()] : [],
+            ];
+        }
+
+        // An Adherent must never gain access to their own profile through their own memberships:
+        // self-management is handled by the geographic fallback instead.
+        if ($subject instanceof Adherent && $subject !== $adherent) {
+            $committeeUuids = ($membership = $subject->getCommitteeMembership())
+                ? [$membership->getCommittee()->getUuid()->toRfc4122()]
+                : [];
+
+            $agoraUuids = [];
+            foreach ($subject->agoraMemberships as $agoraMembership) {
+                $agoraUuids[] = $agoraMembership->agora->getUuid()->toRfc4122();
+            }
+
+            return [$committeeUuids, $agoraUuids];
+        }
+
+        return [[], []];
     }
 }
