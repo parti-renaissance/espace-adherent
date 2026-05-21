@@ -93,4 +93,15 @@ class FeatureEnum extends Enum
             self::CONTACTS_EXPORT,
         ]);
     }
+
+    /**
+     * Features that may be granted to the militant scope (its global config is restricted to this whitelist).
+     */
+    public static function getMilitantFeatures(): array
+    {
+        return [
+            self::EVENTS,
+            self::ACTIONS,
+        ];
+    }
 }

@@ -9,6 +9,7 @@ use App\Address\AddressInterface;
 use App\Committee\Event\CommitteeEventInterface;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
 use App\Event\EventEvent;
@@ -17,6 +18,8 @@ use App\Geo\ZoneMatcher;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\Geo\ZoneRepository;
+use App\Scope\Scope;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -76,10 +79,41 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         if ($event->getCommittee()) {
             $event->setZones([$event->getCommittee()->getAssemblyZone()]);
         } elseif ($scope = $this->scopeGeneratorResolver->generate()) {
-            $event->setZones($scope->getZones());
+            if (ScopeEnum::MILITANT === $scope->getMainCode()) {
+                $event->setZones($this->resolveMilitantZones($event, $scope));
+            } else {
+                $event->setZones($scope->getZones());
+            }
         }
 
         $this->em->flush();
+    }
+
+    /**
+     * A militant event is attached to the commune of its address, or to the adherent's city when online.
+     *
+     * @return Zone[]
+     */
+    private function resolveMilitantZones(Event $event, Scope $scope): array
+    {
+        if ($address = $event->getPostAddress()) {
+            $cityZones = array_filter(
+                $this->zoneMatcher->match($address),
+                static fn (Zone $zone) => Zone::CITY === $zone->getType(),
+            );
+
+            if ($cityZones) {
+                return [array_values($cityZones)[0]];
+            }
+        }
+
+        // Online event without a usable address: fall back to the adherent's own city.
+        // The militant scope is zone-less, so the city is read directly from the adherent.
+        if (!$adherent = $scope->getCurrentUser()) {
+            return [];
+        }
+
+        return $adherent->getZonesOfType(Zone::CITY);
     }
 
     public function assignZoneToAdherent(UserEvent $event): void

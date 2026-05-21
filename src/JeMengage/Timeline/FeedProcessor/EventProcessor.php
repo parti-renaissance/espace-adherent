@@ -90,6 +90,8 @@ class EventProcessor extends AbstractFeedProcessor
             'committee_uuid' => $item['committee_uuid'] ?? null,
             'agora_uuid' => $item['agora_uuid'] ?? null,
             'is_national' => $item['is_national'] ?? false,
+            'author_uuid' => $item['author']['uuid'] ?? null,
+            'author_scope' => $item['author']['scope'] ?? null,
         ]);
 
         return $item;

@@ -205,6 +205,22 @@ Feature:
             """
             [
                 {
+                    "code": "militant",
+                    "name": "Militant",
+                    "role_name": "Militant",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [],
+                    "apps": ["jemarche"],
+                    "features": ["events", "actions"]
+                },
+                {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
                     "name": "Président d'Assemblée délégué",
                     "role_name": "Responsable communication",
@@ -306,6 +322,22 @@ Feature:
         Then the JSON should be equal to:
             """
             [
+                {
+                    "code": "militant",
+                    "name": "Militant",
+                    "role_name": "Militant",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [],
+                    "apps": ["jemarche"],
+                    "features": ["events", "actions"]
+                },
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
                     "name": "Président d'Assemblée délégué",

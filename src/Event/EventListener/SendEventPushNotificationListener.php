@@ -7,6 +7,7 @@ namespace App\Event\EventListener;
 use App\Event\EventEvent;
 use App\Events;
 use App\JeMengage\Push\Command\EventCreationNotificationCommand;
+use App\Scope\ScopeEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -21,6 +22,11 @@ class SendEventPushNotificationListener implements EventSubscriberInterface
         $event = $eventEvent->getEvent();
 
         if ($event->hidden || $event->agora || $event->isInvitation()) {
+            return;
+        }
+
+        // A militant event without a city zone (online, adherent without a city) has no audience.
+        if (ScopeEnum::MILITANT === $event->getAuthorScope() && $event->getZones()->isEmpty()) {
             return;
         }
 

@@ -49,6 +49,22 @@ Feature:
                     ]
                 },
                 {
+                    "code": "militant",
+                    "name": "Militant",
+                    "role_name": "Militant",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [],
+                    "apps": ["jemarche"],
+                    "features": ["events", "actions"]
+                },
+                {
                     "code": "national_communication",
                     "name": "National communication : Directeur général adjoint",
                     "role_name": "Directeur général adjoint",
@@ -341,6 +357,22 @@ Feature:
                     "name": "Présidente d'Agora",
                     "role_name": "Présidente",
                     "zones": []
+                },
+                {
+                    "code": "militant",
+                    "name": "Militante",
+                    "role_name": "Militante",
+                    "attributes": {
+                        "theme": {
+                            "primary": "#3A7DFF",
+                            "soft": "#E8F0FF",
+                            "hover": "#2F6FE0",
+                            "active": "#1C5CD8"
+                        }
+                    },
+                    "zones": [],
+                    "apps": ["jemarche"],
+                    "features": ["events", "actions"]
                 },
                 {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",

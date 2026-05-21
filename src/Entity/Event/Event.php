@@ -65,6 +65,7 @@ use App\Repository\Event\EventRepository;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
+use App\Validator\MilitantEventCreation;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -173,6 +174,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     interval: '3 days',
     messageDate: 'committee.event.invalid_finish_date'
 )]
+#[MilitantEventCreation(groups: ['event_creation'])]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\HasLifecycleCallbacks]

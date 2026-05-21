@@ -35,15 +35,23 @@ class GetTimelineFeedsController extends AbstractController
         }
 
         $userId = $user->getId();
-        $zoneCode = $user->getAssemblyZone()?->getTypeCode();
         $tags = $user->tags ?? [];
 
         $baseOr = [
             'is_national:true',
             "adherent_ids:$userId",
-            $zoneCode ? "zone_codes:$zoneCode" : null,
             'type:publication',
         ];
+
+        // Assembly zone + the user's own city, so militant events — indexed with their city code
+        // only — surface in the right local timelines.
+        if ($assemblyZone = $user->getAssemblyZone()) {
+            $baseOr[] = 'zone_codes:'.$assemblyZone->getTypeCode();
+        }
+
+        foreach ($user->getZonesOfType(Zone::CITY) as $zone) {
+            $baseOr[] = 'zone_codes:'.$zone->getTypeCode();
+        }
 
         $baseOr = array_filter($baseOr);
         $baseClause = '('.implode(' OR ', $baseOr).')';

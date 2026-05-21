@@ -11,6 +11,7 @@ use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\FeatureEnum;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 
@@ -56,6 +57,8 @@ class CanManageEventVoter extends AbstractAdherentVoter
                 'committee_uuid' => $subject->getCommitteeUuid(),
                 'agora_uuid' => $subject->agora?->getUuid()->toRfc4122(),
                 'is_national' => $subject->isNational(),
+                'author_uuid' => $subject->getAuthor()?->getUuidAsString(),
+                'author_scope' => $subject->getAuthorScope(),
             ]);
         }
 
@@ -65,6 +68,11 @@ class CanManageEventVoter extends AbstractAdherentVoter
 
         if ($scope->isNational()) {
             return true;
+        }
+
+        // A militant manages only their own militant events (the scope is never delegated).
+        if (ScopeEnum::MILITANT === $scope->getMainCode() && ScopeEnum::MILITANT === $subject->getAuthorScope()) {
+            return $adherent === $subject->getAuthor();
         }
 
         if ($subject->getInstanceKey()) {
@@ -89,23 +97,34 @@ class CanManageEventVoter extends AbstractAdherentVoter
     private function canManageEventItem(Adherent $adherent, array $event): bool
     {
         try {
-            $scopes = array_filter(
-                $this->generalScopeGenerator->generateScopes($adherent),
-                static function (Scope $scope) use ($event) {
-                    if ($scope->isNational() && $scope->hasFeature(FeatureEnum::EVENTS)) {
-                        return true;
-                    }
-
-                    if (!empty($event['instance_key'])) {
-                        return $scope->getInstanceKey() === $event['instance_key'] && $scope->hasFeature(FeatureEnum::EVENTS);
-                    }
-
-                    return $scope->getScopeInstance() === $event['instance'] && $scope->hasFeature(FeatureEnum::EVENTS);
-                }
-            );
+            $scopes = $this->generalScopeGenerator->generateScopes($adherent);
         } catch (ScopeExceptionInterface $e) {
             return false;
         }
+
+        if (
+            ScopeEnum::MILITANT === ($event['author_scope'] ?? null)
+            && !empty($event['author_uuid'])
+            && $event['author_uuid'] === $adherent->getUuidAsString()
+            && array_any($scopes, static fn (Scope $scope) => ScopeEnum::MILITANT === $scope->getMainCode() && $scope->hasFeature(FeatureEnum::EVENTS))
+        ) {
+            return true;
+        }
+
+        $scopes = array_filter(
+            $scopes,
+            static function (Scope $scope) use ($event) {
+                if ($scope->isNational() && $scope->hasFeature(FeatureEnum::EVENTS)) {
+                    return true;
+                }
+
+                if (!empty($event['instance_key'])) {
+                    return $scope->getInstanceKey() === $event['instance_key'] && $scope->hasFeature(FeatureEnum::EVENTS);
+                }
+
+                return $scope->getScopeInstance() === $event['instance'] && $scope->hasFeature(FeatureEnum::EVENTS);
+            }
+        );
 
         if (empty($scopes)) {
             return false;

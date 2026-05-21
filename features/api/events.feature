@@ -1318,6 +1318,95 @@ Feature:
             }
             """
 
+    Scenario: As a cadre I cannot create an event with the militant scope
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/events?scope=militant" with body:
+            """
+            {
+                "name": "Événement militant",
+                "category": "kiosque",
+                "description": "Une description de l'événement",
+                "begin_at": "2023-01-29 16:30:30",
+                "finish_at": "2023-01-30 16:30:30",
+                "capacity": 100,
+                "is_national": false,
+                "mode": "online",
+                "visio_url": "https://en-marche.fr/reunions/123",
+                "time_zone": "Europe/Paris"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "message": "Validation Failed",
+                "status": "error",
+                "violations": [
+                    {
+                        "message": "Seul un adhérent sans responsabilité cadre peut créer un événement militant.",
+                        "propertyPath": ""
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a pure militant I can create a public event
+        Given I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events?scope=militant" with body:
+            """
+            {
+                "name": "Apéro militant",
+                "category": "kiosque",
+                "description": "Une description de l'événement",
+                "begin_at": "2023-01-29 16:30:30",
+                "finish_at": "2023-01-30 16:30:30",
+                "capacity": 100,
+                "is_national": false,
+                "mode": "online",
+                "visio_url": "https://en-marche.fr/reunions/123",
+                "time_zone": "Europe/Paris"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON nodes should match:
+            | organizer.first_name | Benjamin |
+            | visibility           | public   |
+
+    Scenario: As a pure militant I cannot create an event with a restricted visibility
+        Given I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/events?scope=militant" with body:
+            """
+            {
+                "name": "Apéro militant",
+                "category": "kiosque",
+                "description": "Une description de l'événement",
+                "begin_at": "2023-01-29 16:30:30",
+                "finish_at": "2023-01-30 16:30:30",
+                "capacity": 100,
+                "is_national": false,
+                "mode": "online",
+                "visio_url": "https://en-marche.fr/reunions/123",
+                "time_zone": "Europe/Paris",
+                "visibility": "private"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "message": "Validation Failed",
+                "status": "error",
+                "violations": [
+                    {
+                        "message": "Un événement militant doit être public et répertorié.",
+                        "propertyPath": "visibility"
+                    }
+                ]
+            }
+            """
+
     Scenario: As a deputy I can create an event
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "POST" request to "/api/v3/events?scope=president_departmental_assembly" with body:

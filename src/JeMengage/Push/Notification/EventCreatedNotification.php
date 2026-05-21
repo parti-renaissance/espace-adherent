@@ -7,6 +7,7 @@ namespace App\JeMengage\Push\Notification;
 use App\Entity\Event\Event;
 use App\Firebase\Notification\AbstractMulticastNotification;
 use App\JeMengage\Push\NotificationScope;
+use App\Scope\ScopeEnum;
 
 class EventCreatedNotification extends AbstractMulticastNotification
 {
@@ -37,6 +38,10 @@ class EventCreatedNotification extends AbstractMulticastNotification
             return 'Nouvel événement';
         }
 
+        if (ScopeEnum::MILITANT === $event->getAuthorScope() && !$event->getZones()->isEmpty()) {
+            return \sprintf('%s, nouvel événement', $event->getZones()->first()->getName());
+        }
+
         if (!$assemblyZone = $event->getAssemblyZone()) {
             throw new \RuntimeException(\sprintf('Event #%d has no assembly zone — cannot resolve notification title.', $event->getId()));
         }
@@ -56,6 +61,10 @@ class EventCreatedNotification extends AbstractMulticastNotification
 
         if ($event->isNational()) {
             return NotificationScope::national();
+        }
+
+        if (ScopeEnum::MILITANT === $event->getAuthorScope() && !$event->getZones()->isEmpty()) {
+            return NotificationScope::zone($event->getZones()->first()->getCode());
         }
 
         if (!$assemblyZone = $event->getAssemblyZone()) {

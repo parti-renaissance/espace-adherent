@@ -6,7 +6,9 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Adherent;
 use App\Entity\Event\Event;
+use App\Entity\Geo\Zone;
 use App\Repository\EventRegistrationRepository;
+use App\Scope\ScopeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -128,6 +130,15 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         if ($object->getZones()->isEmpty()) {
             return null;
+        }
+
+        // A militant event is indexed with its own zone code(s) only — without parent expansion —
+        // so it surfaces in the timeline of its city only, not the whole department.
+        if (ScopeEnum::MILITANT === $object->getAuthorScope()) {
+            return array_values(array_unique(array_map(
+                static fn (Zone $zone) => $zone->getTypeCode(),
+                $object->getZones()->toArray(),
+            )));
         }
 
         $zonesCodes = [];

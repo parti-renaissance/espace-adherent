@@ -30,6 +30,13 @@ class LoadScopeData extends Fixture
         FeatureEnum::REFERRALS,
     ];
 
+    private const JEMARCHE_SCOPES = [
+        ScopeEnum::PHONING,
+        ScopeEnum::PAP,
+        ScopeEnum::MEETING_SCANNER,
+        ScopeEnum::MILITANT,
+    ];
+
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
@@ -37,7 +44,7 @@ class LoadScopeData extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach (ScopeEnum::ALL as $code) {
-            $manager->persist($this->createScope($code, \in_array($code, [ScopeEnum::PHONING, ScopeEnum::PAP, ScopeEnum::MEETING_SCANNER]) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));
+            $manager->persist($this->createScope($code, \in_array($code, self::JEMARCHE_SCOPES, true) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));
         }
 
         $manager->flush();
@@ -63,6 +70,7 @@ class LoadScopeData extends Fixture
             ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE, FeatureEnum::ELECTED_REPRESENTATIVE]),
             ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
             ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
+            ScopeEnum::MILITANT => [FeatureEnum::EVENTS, FeatureEnum::ACTIONS],
             ScopeEnum::PAP,
             ScopeEnum::MEETING_SCANNER,
             ScopeEnum::PHONING => [],

@@ -8,6 +8,7 @@ use App\Form\ColorType;
 use App\JMEFilter\FiltersGenerator;
 use App\Scope\AppEnum;
 use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -36,6 +37,11 @@ class ScopeAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
+        // The militant scope can only carry militant-compatible features.
+        $featureChoices = ScopeEnum::MILITANT === $this->getSubject()?->getCode()
+            ? FeatureEnum::getMilitantFeatures()
+            : FeatureEnum::ALL;
+
         $form
             ->with('Metadonnées 🧱', ['class' => 'col-md-6'])
                 ->add('code', TextType::class, [
@@ -65,7 +71,7 @@ class ScopeAdmin extends AbstractAdmin
             ->with('Fonctionnalités 🗝️️', ['box_class' => 'box box-warning'])
                 ->add('features', ChoiceType::class, [
                     'label' => 'Code',
-                    'choices' => FeatureEnum::ALL,
+                    'choices' => $featureChoices,
                     'choice_label' => function (string $choice) {
                         return "scope.feature.$choice";
                     },
@@ -75,7 +81,7 @@ class ScopeAdmin extends AbstractAdmin
                 ])
                 ->add('canaryFeatures', ChoiceType::class, [
                     'label' => 'Fonctionnalités en test',
-                    'choices' => FeatureEnum::ALL,
+                    'choices' => $featureChoices,
                     'choice_label' => function (string $choice) {
                         return "scope.feature.$choice";
                     },

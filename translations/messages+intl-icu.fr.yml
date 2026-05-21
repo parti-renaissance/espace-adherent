@@ -136,6 +136,12 @@ role.deputy: >-
       other {Délégué de circonscription}
     }
 
+role.militant: >-
+    {gender, select,
+      female {Militante}
+      other {Militant}
+    }
+
 role.senator: >-
     {gender, select,
       female {Sénatrice}
@@ -1467,6 +1473,12 @@ scope.role.deputy: >-
     {gender, select,
       female {Déléguée}
       other {Délégué}
+    }
+
+scope.role.militant: >-
+    {gender, select,
+      female {Militante}
+      other {Militant}
     }
 
 scope.role.senator: >-

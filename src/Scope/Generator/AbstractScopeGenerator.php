@@ -156,10 +156,16 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 
         if ($this->delegatedAccess) {
             if ($delegatedScopeFeatures = $this->delegatedAccess->getScopeFeatures()) {
-                return array_values(array_intersect($scopeFeatures, array_merge(FeatureEnum::DELEGATED_ACCESSES_BY_DEFAULT, $delegatedScopeFeatures)));
+                $scopeFeatures = array_values(array_intersect($scopeFeatures, array_merge(FeatureEnum::DELEGATED_ACCESSES_BY_DEFAULT, $delegatedScopeFeatures)));
+            } else {
+                $scopeFeatures = [];
             }
 
-            return [];
+            $scopeFeatures = array_values(array_diff($scopeFeatures, $this->delegatedAccess->getDelegator()->disabledScopeFeatures));
+        }
+
+        if ($adherent->disabledScopeFeatures) {
+            $scopeFeatures = array_values(array_diff($scopeFeatures, $adherent->disabledScopeFeatures));
         }
 
         return $scopeFeatures;
