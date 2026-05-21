@@ -15,6 +15,10 @@ class DummyAgent implements AgentInterface
     private static ?\Throwable $nextException = null;
     private static array $calls = [];
 
+    public function __construct(mixed ...$ignored)
+    {
+    }
+
     public static function willReturn(ResultInterface $result): void
     {
         self::$nextResult = $result;

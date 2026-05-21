@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Chatbot;
 
-use App\Chatbot\Agent\ChatbotAgentRegistry;
 use App\Chatbot\ChatbotManager;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -27,17 +26,14 @@ class PostMessageController extends AbstractController
     private const MAX_MESSAGE_LENGTH = 4000;
 
     public function __construct(
-        private readonly ChatbotAgentRegistry $agentRegistry,
+        #[AutowireLocator('ai.agent', indexAttribute: 'name')]
+        private readonly ContainerInterface $agents,
         private readonly RateLimiterFactory $botChatbotLimiter,
         private readonly AuthorizationChecker $authorizationChecker,
         private readonly LoggerInterface $logger,
     ) {
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function __invoke(Request $request, ChatbotManager $chatbotManager, #[CurrentUser] Adherent $user): StreamedResponse
     {
         if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CHATBOT])) {
@@ -48,7 +44,7 @@ class PostMessageController extends AbstractController
             $data = $request->toArray();
             $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';
             $threadId = isset($data['thread_id']) && \is_string($data['thread_id']) ? $data['thread_id'] : null;
-            $agentId = isset($data['agent_id']) && \is_string($data['agent_id']) ? $data['agent_id'] : '';
+            $agentId = isset($data['agent_id']) && \is_string($data['agent_id']) ? $data['agent_id'] : 'gemini';
         } catch (\Throwable) {
             throw new BadRequestHttpException('JSON invalide');
         }
@@ -61,7 +57,7 @@ class PostMessageController extends AbstractController
             throw new BadRequestHttpException(\sprintf('Message trop long (max %d caractères).', self::MAX_MESSAGE_LENGTH));
         }
 
-        if (!$this->agentRegistry->has($agentId)) {
+        if (!$this->agents->has($agentId)) {
             throw new BadRequestHttpException('agent_id manquant ou invalide.');
         }
 
@@ -70,7 +66,7 @@ class PostMessageController extends AbstractController
             throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - time()));
         }
 
-        $agent = $this->agentRegistry->get($agentId);
+        $agent = $this->agents->get($agentId);
         $thread = $chatbotManager->handleUserMessage($message, $threadId, $user);
         $messageBag = $chatbotManager->buildContextMessageBag($thread);
 

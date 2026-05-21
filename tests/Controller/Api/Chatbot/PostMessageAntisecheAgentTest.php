@@ -118,15 +118,6 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
         $this->assertResponseStatusCode(Response::HTTP_TOO_MANY_REQUESTS, $this->client->getResponse());
     }
 
-    public function testMissingAgentIdReturns400(): void
-    {
-        $accessToken = $this->authenticateWithChatbotAccess();
-
-        $this->postJson(['message' => 'Salut'], $accessToken);
-
-        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-    }
-
     public function testUnknownAgentIdReturns400(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();

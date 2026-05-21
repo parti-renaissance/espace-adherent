@@ -14,6 +14,10 @@ class DummyAntisecheAgent implements AgentInterface
     private static ?ResultInterface $nextResult = null;
     private static ?\Throwable $nextException = null;
 
+    public function __construct(mixed ...$ignored)
+    {
+    }
+
     public static function willReturn(ResultInterface $result): void
     {
         self::$nextResult = $result;

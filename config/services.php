@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
@@ -198,12 +197,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 ],
             ],
         ]]);
-
-    $services->set(App\Chatbot\Agent\ChatbotAgentRegistry::class)
-        ->args([service_locator([
-            'gemini' => service('ai.agent.gemini'),
-            'antiseche' => service('ai.agent.antiseche'),
-        ])]);
 
     $services->load('App\Controller\Admin\\', __DIR__.'/../src/Controller/Admin')
         ->public()

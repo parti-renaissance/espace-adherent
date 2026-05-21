@@ -257,6 +257,26 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertCount(2, $userMessages);
     }
 
+    public function testMissingAgentIdDefaultsToGemini(): void
+    {
+        $accessToken = $this->authenticateWithChatbotAccess();
+
+        DummyAgent::willReturn(new TextResult('réponse gemini par défaut'));
+
+        $this->client->request('POST', '/api/v3/ai/chat', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ], json_encode([
+            'message' => 'Salut',
+        ]));
+
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
+
+        $calls = DummyAgent::getCalls();
+        self::assertCount(1, $calls, 'Sans agent_id explicite, gemini doit être appelé par défaut');
+    }
+
     public function testBotErrorDoesNotPreventResponse(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
