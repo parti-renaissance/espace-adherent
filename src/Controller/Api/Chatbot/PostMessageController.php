@@ -8,20 +8,27 @@ use App\Chatbot\ChatbotManager;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\AI\Agent\AgentInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/v3/ai/chat', methods: ['POST'])]
 class PostMessageController extends AbstractController
 {
+    private const MAX_MESSAGE_LENGTH = 4000;
+
     public function __construct(
-        private readonly AgentInterface $geminiAgent,
+        #[AutowireLocator('ai.agent', indexAttribute: 'name')]
+        private readonly ContainerInterface $agents,
+        private readonly RateLimiterFactory $botChatbotLimiter,
         private readonly AuthorizationChecker $authorizationChecker,
         private readonly LoggerInterface $logger,
     ) {
@@ -37,6 +44,7 @@ class PostMessageController extends AbstractController
             $data = $request->toArray();
             $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';
             $threadId = isset($data['thread_id']) && \is_string($data['thread_id']) ? $data['thread_id'] : null;
+            $agentId = isset($data['agent_id']) && \is_string($data['agent_id']) ? $data['agent_id'] : 'gemini';
         } catch (\Throwable) {
             throw new BadRequestHttpException('JSON invalide');
         }
@@ -45,16 +53,30 @@ class PostMessageController extends AbstractController
             throw new BadRequestHttpException('Aucun message');
         }
 
+        if (mb_strlen($message) > self::MAX_MESSAGE_LENGTH) {
+            throw new BadRequestHttpException(\sprintf('Message trop long (max %d caractères).', self::MAX_MESSAGE_LENGTH));
+        }
+
+        if (!$this->agents->has($agentId)) {
+            throw new BadRequestHttpException('agent_id manquant ou invalide.');
+        }
+
+        $limit = $this->botChatbotLimiter->create('chatbot_'.$agentId.'_'.$user->getUuid()->toRfc4122())->consume(1);
+        if (!$limit->isAccepted()) {
+            throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - time()));
+        }
+
+        $agent = $this->agents->get($agentId);
         $thread = $chatbotManager->handleUserMessage($message, $threadId, $user);
         $messageBag = $chatbotManager->buildContextMessageBag($thread);
 
-        return new StreamedResponse(function () use ($messageBag, $thread, $chatbotManager) {
+        return new StreamedResponse(function () use ($agent, $messageBag, $thread, $chatbotManager) {
             set_time_limit(0);
 
             $fullResponse = '';
 
             try {
-                $result = $this->geminiAgent->call($messageBag);
+                $result = $agent->call($messageBag);
                 $content = $result->getContent();
 
                 foreach (is_iterable($content) ? $content : [$content] as $content) {

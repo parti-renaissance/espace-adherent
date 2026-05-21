@@ -31,6 +31,16 @@ class PostMessageControllerTest extends AbstractApiTestCase
         parent::setUp();
 
         DummyAgent::reset();
+        $this->resetChatbotRateLimiter();
+    }
+
+    private function resetChatbotRateLimiter(): void
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
+        self::getContainer()
+            ->get('limiter.bot_chatbot')
+            ->create('chatbot_gemini_'.$adherent->getUuid()->toRfc4122())
+            ->reset();
     }
 
     protected function tearDown(): void
@@ -46,6 +56,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'CONTENT_TYPE' => 'application/json',
         ], json_encode([
             'message' => 'Hello',
+            'agent_id' => 'gemini',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
@@ -67,6 +78,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Hello',
+            'agent_id' => 'gemini',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -121,6 +133,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Bonjour le bot',
+            'agent_id' => 'gemini',
         ]));
 
         $response = $this->client->getResponse();
@@ -167,6 +180,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $thread->getUuid()->toRfc4122(),
             'message' => 'Final question',
+            'agent_id' => 'gemini',
         ]));
 
         $response = $this->client->getResponse();
@@ -194,6 +208,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Premier message',
+            'agent_id' => 'gemini',
         ]));
 
         $threadUuid = $this->client->getResponse()->headers->get('X-Chatbot-Thread-UUID');
@@ -207,6 +222,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $threadUuid,
             'message' => 'Deuxième message',
+            'agent_id' => 'gemini',
         ]));
 
         $response = $this->client->getResponse();
@@ -241,6 +257,26 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertCount(2, $userMessages);
     }
 
+    public function testMissingAgentIdDefaultsToGemini(): void
+    {
+        $accessToken = $this->authenticateWithChatbotAccess();
+
+        DummyAgent::willReturn(new TextResult('réponse gemini par défaut'));
+
+        $this->client->request('POST', '/api/v3/ai/chat', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ], json_encode([
+            'message' => 'Salut',
+        ]));
+
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
+
+        $calls = DummyAgent::getCalls();
+        self::assertCount(1, $calls, 'Sans agent_id explicite, gemini doit être appelé par défaut');
+    }
+
     public function testBotErrorDoesNotPreventResponse(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
@@ -252,6 +288,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Message provoquant une erreur',
+            'agent_id' => 'gemini',
         ]));
 
         $response = $this->client->getResponse();

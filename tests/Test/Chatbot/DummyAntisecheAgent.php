@@ -9,11 +9,10 @@ use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\AI\Platform\Result\ResultInterface;
 use Symfony\AI\Platform\Result\TextResult;
 
-class DummyAgent implements AgentInterface
+class DummyAntisecheAgent implements AgentInterface
 {
     private static ?ResultInterface $nextResult = null;
     private static ?\Throwable $nextException = null;
-    private static array $calls = [];
 
     public function __construct(mixed ...$ignored)
     {
@@ -35,23 +34,15 @@ class DummyAgent implements AgentInterface
     {
         self::$nextResult = null;
         self::$nextException = null;
-        self::$calls = [];
-    }
-
-    public static function getCalls(): array
-    {
-        return self::$calls;
     }
 
     public function getName(): string
     {
-        return 'dummy';
+        return 'antiseche';
     }
 
     public function call(MessageBag $messages, array $options = []): ResultInterface
     {
-        self::$calls[] = $messages;
-
         if (self::$nextException) {
             throw self::$nextException;
         }

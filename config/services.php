@@ -186,6 +186,18 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->load('App\Controller\\', __DIR__.'/../src/Controller/')
         ->tag('controller.service_arguments');
 
+    $services->set('app.chatbot.antiseche.model_catalog', Symfony\AI\Platform\Bridge\Generic\ModelCatalog::class)
+        ->args([[
+            'antiseche-rag' => [
+                'class' => Symfony\AI\Platform\Bridge\Generic\CompletionsModel::class,
+                'capabilities' => [
+                    Symfony\AI\Platform\Capability::INPUT_MESSAGES,
+                    Symfony\AI\Platform\Capability::OUTPUT_TEXT,
+                    Symfony\AI\Platform\Capability::OUTPUT_STREAMING,
+                ],
+            ],
+        ]]);
+
     $services->load('App\Controller\Admin\\', __DIR__.'/../src/Controller/Admin')
         ->public()
         ->tag('controller.service_arguments');
