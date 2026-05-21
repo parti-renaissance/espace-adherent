@@ -39,8 +39,8 @@ class Contact implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(nullable: true)]
     public ?string $civility = null;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    public ?\DateTimeInterface $birthdate = null;
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
+    public ?\DateTimeImmutable $birthdate = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $addressStreet = null;
@@ -66,14 +66,14 @@ class Contact implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'integer', nullable: true)]
     public ?int $paymentCount = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $lastPaymentDate = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $lastPaymentDate = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $ohmeCreatedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $ohmeCreatedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $ohmeUpdatedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $ohmeUpdatedAt = null;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]

@@ -24,7 +24,7 @@ class LoadContributionPaymentData extends Fixture implements DependentFixtureInt
         $payment = new Payment(Uuid::fromString(self::PAYMENT_01_UUID));
         $payment->adherent = $erDepartment92;
         $payment->ohmeId = '12345789';
-        $payment->date = new \DateTime('2023-03-16');
+        $payment->date = new \DateTimeImmutable('2023-03-16');
         $payment->method = 'IBAN';
         $payment->status = 'confirmed';
         $payment->amount = 50;
@@ -36,7 +36,7 @@ class LoadContributionPaymentData extends Fixture implements DependentFixtureInt
         $payment = new Payment(Uuid::fromString(self::PAYMENT_02_UUID));
         $payment->adherent = $erDepartment92;
         $payment->ohmeId = '987654321';
-        $payment->date = new \DateTime('2023-04-16');
+        $payment->date = new \DateTimeImmutable('2023-04-16');
         $payment->method = 'IBAN';
         $payment->status = 'confirmed';
         $payment->amount = 50;
