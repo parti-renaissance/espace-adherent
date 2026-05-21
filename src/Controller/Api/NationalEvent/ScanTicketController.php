@@ -9,6 +9,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\TicketScan;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,10 +34,16 @@ class ScanTicketController extends AbstractController
         $scanHistory = $inscription->getTicketScans();
         $lastScanDate = $inscription->lastTicketScannedAt;
 
-        if (!$inscription->lastTicketScannedAt || $inscription->lastTicketScannedAt < new \DateTimeImmutable('-1 minute')) {
-            $inscription->addTicketScan(new TicketScan($adherent, $inscription->status));
-            $entityManager->flush();
-        }
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $em) use ($inscription, $adherent): void {
+            // Serialize concurrent scans of the same ticket: avoids the
+            // INSERT-child / UPDATE-parent FK deadlock and duplicate scans.
+            $em->lock($inscription, LockMode::PESSIMISTIC_WRITE);
+            $em->refresh($inscription); // re-read lastTicketScannedAt under the lock
+
+            if (!$inscription->lastTicketScannedAt || $inscription->lastTicketScannedAt < new \DateTimeImmutable('-1 minute')) {
+                $inscription->addTicketScan(new TicketScan($adherent, $inscription->status));
+            }
+        });
 
         if ($inscription->isApproved()) {
             $visitDayParts = array_filter([
