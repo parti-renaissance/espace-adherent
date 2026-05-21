@@ -49,6 +49,12 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['data_corner'],
             ],
             [
+                'code' => 'militant',
+                'zones' => [],
+                'apps' => ['jemarche'],
+                'features' => ['events', 'actions'],
+            ],
+            [
                 'code' => 'national_communication',
                 'zones' => [],
                 'apps' => ['data_corner'],
@@ -111,6 +117,12 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['data_corner'],
             ],
             [
+                'code' => 'militant',
+                'zones' => [],
+                'apps' => ['jemarche'],
+                'features' => ['events', 'actions'],
+            ],
+            [
                 'code' => 'pap',
                 'zones' => [],
                 'apps' => ['jemarche'],
@@ -148,7 +160,14 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'features' => ['dashboard', 'contacts', 'events', 'mobile_app'],
             ],
         ]];
-        yield [LoadAdherentData::ADHERENT_2_UUID, []];
+        yield [LoadAdherentData::ADHERENT_2_UUID, [
+            [
+                'code' => 'militant',
+                'zones' => [],
+                'apps' => ['jemarche'],
+                'features' => ['events', 'actions'],
+            ],
+        ]];
         yield [LoadAdherentData::ADHERENT_20_UUID, [
             [
                 'code' => 'fde_coordinator',
@@ -162,6 +181,12 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'meeting_scanner',
                 'zones' => [],
                 'apps' => ['jemarche'],
+            ],
+            [
+                'code' => 'militant',
+                'zones' => [],
+                'apps' => ['jemarche'],
+                'features' => ['events', 'actions'],
             ],
             [
                 'code' => 'municipal_pilot',

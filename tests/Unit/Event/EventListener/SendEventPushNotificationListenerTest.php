@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Event\EventListener;
 
+use App\Entity\Adherent;
 use App\Entity\Event\Event;
 use App\Event\EventEvent;
 use App\Event\EventListener\SendEventPushNotificationListener;
 use App\JeMengage\Push\Command\EventCreationNotificationCommand;
+use App\Scope\Scope;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -41,6 +43,21 @@ class SendEventPushNotificationListenerTest extends TestCase
             ->with(self::isInstanceOf(EventCreationNotificationCommand::class))
             ->willReturn(new Envelope(new \stdClass()))
         ;
+
+        $listener = new SendEventPushNotificationListener($bus);
+        $listener->notifyEventCreation(new EventEvent(null, $event));
+    }
+
+    public function testNotifyEventCreationWhenMilitantEventHasNoZoneDoesNotDispatch(): void
+    {
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus
+            ->expects(self::never())
+            ->method('dispatch')
+        ;
+
+        $event = new Event();
+        $event->updateFromScope(new Scope('militant', 'Militant', 'Militant', [], [], [], $this->createStub(Adherent::class)));
 
         $listener = new SendEventPushNotificationListener($bus);
         $listener->notifyEventCreation(new EventEvent(null, $event));

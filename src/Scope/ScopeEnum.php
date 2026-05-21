@@ -35,6 +35,7 @@ class ScopeEnum extends Enum
     public const FDE_COORDINATOR = 'fde_coordinator';
     public const AGORA_PRESIDENT = 'agora_president';
     public const AGORA_GENERAL_SECRETARY = 'agora_general_secretary';
+    public const MILITANT = 'militant';
 
     // Ordered by display priority (used for sorting roles in UI)
     public const ALL = [
@@ -72,6 +73,9 @@ class ScopeEnum extends Enum
         self::PHONING,
         self::PAP,
         self::MEETING_SCANNER,
+
+        // Militant (granted to every connected adherent)
+        self::MILITANT,
     ];
 
     public const SCOPE_TARGET_CHOICES = [

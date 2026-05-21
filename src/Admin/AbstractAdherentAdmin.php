@@ -48,6 +48,7 @@ use App\History\AdministratorActionEvents;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
+use App\Scope\FeatureEnum;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
@@ -400,6 +401,18 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                             'allow_add' => true,
                             'allow_delete' => true,
                             'by_reference' => false,
+                        ])
+                    ->end()
+                    ->with('Fonctionnalités désactivées', ['class' => 'col-md-6'])
+                        ->add('disabledScopeFeatures', ChoiceType::class, [
+                            'label' => 'Fonctionnalités désactivées (tous scopes)',
+                            'choices' => FeatureEnum::ALL,
+                            'choice_label' => function (string $choice): string {
+                                return "scope.feature.$choice";
+                            },
+                            'multiple' => true,
+                            'expanded' => true,
+                            'required' => false,
                         ])
                     ->end()
                     ->with('Responsabilités locales', ['class' => 'col-md-6'])

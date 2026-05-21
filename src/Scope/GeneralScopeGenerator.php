@@ -71,6 +71,13 @@ class GeneralScopeGenerator
         return array_unique(array_merge(...array_map(fn (Scope $scope) => $scope->getFeatures(), $this->generateScopes($adherent))));
     }
 
+    public function isPureMilitant(Adherent $adherent): bool
+    {
+        $scopes = $this->generateScopes($adherent);
+
+        return 1 === \count($scopes) && ScopeEnum::MILITANT === $scopes[0]->getMainCode();
+    }
+
     public function getGenerator(string $scopeCode, Adherent $adherent): ScopeGeneratorInterface
     {
         if (self::isDelegatedScopeCode($scopeCode)) {

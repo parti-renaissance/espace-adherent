@@ -568,6 +568,9 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     #[ORM\Column(type: 'simple_array', nullable: true)]
     public array $tags = [];
 
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    public array $disabledScopeFeatures = [];
+
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $v2 = false;
 
