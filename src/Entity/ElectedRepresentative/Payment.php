@@ -44,18 +44,4 @@ class Payment
     {
         $this->uuid = $uuid ?? Uuid::v4();
     }
-
-    public static function fromArray(ElectedRepresentative $electedRepresentative, array $data): self
-    {
-        $payment = new self();
-
-        $payment->electedRepresentative = $electedRepresentative;
-        $payment->ohmeId = $data['id'];
-        $payment->date = $data['date'] ? \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['date']) : null;
-        $payment->method = $data['payment_method_name'];
-        $payment->status = $data['payment_status'];
-        $payment->amount = (int) round($data['amount']);
-
-        return $payment;
-    }
 }
