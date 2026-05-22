@@ -39,7 +39,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
         self::getContainer()
             ->get('limiter.bot_chatbot')
-            ->create('chatbot_gemini_'.$adherent->getUuid()->toRfc4122())
+            ->create('chatbot_chatbot_'.$adherent->getUuid()->toRfc4122())
             ->reset();
     }
 
@@ -257,11 +257,11 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertCount(2, $userMessages);
     }
 
-    public function testMissingAgentIdDefaultsToGemini(): void
+    public function testMissingAgentIdDefaultsToChatbot(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
 
-        DummyAgent::willReturn(new TextResult('réponse gemini par défaut'));
+        DummyAgent::willReturn(new TextResult('réponse chatbot par défaut'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -274,7 +274,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
 
         $calls = DummyAgent::getCalls();
-        self::assertCount(1, $calls, 'Sans agent_id explicite, gemini doit être appelé par défaut');
+        self::assertCount(1, $calls, 'Sans agent_id explicite, chatbot doit être appelé par défaut');
     }
 
     public function testBotErrorDoesNotPreventResponse(): void
