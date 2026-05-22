@@ -22,7 +22,7 @@ class ChatbotManager
     ) {
     }
 
-    public function handleUserMessage(string $content, ?string $threadId, Adherent $adherent): Thread
+    public function handleUserMessage(string $content, ?string $threadId, Adherent $adherent, string $agentId): Thread
     {
         $thread = null;
 
@@ -30,8 +30,8 @@ class ChatbotManager
             $thread = $this->threadRepository->findOneByUuid($threadId);
         }
 
-        if (!$thread || $thread->adherent !== $adherent) {
-            $thread = new Thread($adherent, mb_substr(trim($content), 0, self::FIRST_MESSAGE_TITLE_LENGTH) ?: null);
+        if (!$thread || $thread->adherent !== $adherent || $thread->agent !== $agentId) {
+            $thread = new Thread($adherent, $agentId, mb_substr(trim($content), 0, self::FIRST_MESSAGE_TITLE_LENGTH) ?: null);
             $this->entityManager->persist($thread);
         }
 

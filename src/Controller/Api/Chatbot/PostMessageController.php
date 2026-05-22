@@ -67,7 +67,7 @@ class PostMessageController extends AbstractController
         }
 
         $agent = $this->agents->get($agentId);
-        $thread = $chatbotManager->handleUserMessage($message, $threadId, $user);
+        $thread = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
         $messageBag = $chatbotManager->buildContextMessageBag($thread);
 
         return new StreamedResponse(function () use ($agent, $messageBag, $thread, $chatbotManager) {
