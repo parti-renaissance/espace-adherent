@@ -7,7 +7,6 @@ namespace App\Entity\Chatbot;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
@@ -23,7 +22,6 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource(
     operations: [
         new GetCollection(),
-        new Get(),
     ],
     routePrefix: '/v3/ai',
     normalizationContext: ['groups' => ['chatbot:thread_read']],
