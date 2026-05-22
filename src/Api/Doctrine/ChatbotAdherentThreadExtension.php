@@ -30,7 +30,7 @@ class ChatbotAdherentThreadExtension implements QueryItemExtensionInterface, Que
             return;
         }
 
-        $this->modifyQuery($queryBuilder, $context);
+        $this->modifyQuery($queryBuilder);
     }
 
     public function applyToCollection(
@@ -44,10 +44,10 @@ class ChatbotAdherentThreadExtension implements QueryItemExtensionInterface, Que
             return;
         }
 
-        $this->modifyQuery($queryBuilder, $context);
+        $this->modifyQuery($queryBuilder);
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, array $context): void
+    private function modifyQuery(QueryBuilder $queryBuilder): void
     {
         $alias = $queryBuilder->getRootAliases()[0];
 

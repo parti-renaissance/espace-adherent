@@ -107,8 +107,8 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                 $audienceExcludeKeys[] = 'tag:'.substr($tag, 1);
             } else {
                 $audienceKeys[] = 'tag:'.$tag;
+                $enabledFilters['tag'] = true;
             }
-            $enabledFilters['tag'] = true;
         }
 
         /* @var Zone[] $zones */
@@ -139,8 +139,8 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                 $audienceExcludeKeys[] = 'mandate_type:'.substr($electMandate, 1);
             } else {
                 $audienceKeys[] = 'mandate_type:'.$electMandate;
+                $enabledFilters['mandate_type'] = true;
             }
-            $enabledFilters['mandate_type'] = true;
         }
 
         // Declared mandate
@@ -149,8 +149,8 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                 $audienceExcludeKeys[] = 'declared_mandate:'.substr($declaredMandate, 1);
             } else {
                 $audienceKeys[] = 'declared_mandate:'.$declaredMandate;
+                $enabledFilters['declared_mandate'] = true;
             }
-            $enabledFilters['declared_mandate'] = true;
         }
 
         if ($filter->getGender()) {
@@ -167,8 +167,7 @@ class PublicationNormalizer extends AbstractJeMengageTimelineFeedNormalizer
         }
 
         if (null !== $filter->getIsCommitteeMember()) {
-            $audienceKeys[] = 'is_committee_member:'.($filter->getIsCommitteeMember() ? '1' : '0');
-            $enabledFilters['committee_member'] = true;
+            $enabledFilters['committee_member'] = $filter->getIsCommitteeMember() ? 1 : 0;
         }
 
         // Scope targets

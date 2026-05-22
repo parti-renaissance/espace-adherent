@@ -277,6 +277,91 @@ final class PublicationNormalizerTest extends TestCase
         self::assertContains('scope_targets:deputy:*', $result['audience']['include']);
     }
 
+    public function testGetAudienceWithExcludeOnlyTagDoesNotEnableTagFilter(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->electTags = '!elu';
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        // An exclude-only tag must NOT enable the positive tag filter, otherwise the
+        // publication requires a positive include match it can never satisfy and stays
+        // invisible to everyone instead of "everyone except the excluded tag".
+        self::assertFalse($result['audience']['tag']);
+        self::assertArrayHasKey('exclude', $result['audience']);
+        self::assertContains('tag:elu', $result['audience']['exclude']);
+        self::assertEmpty($this->includeKeysWithPrefix($result, 'tag:'));
+    }
+
+    public function testGetAudienceWithIncludeTagEnablesTagFilter(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->adherentTags = 'sympathisant';
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        self::assertTrue($result['audience']['tag']);
+        self::assertContains('tag:sympathisant', $result['audience']['include']);
+    }
+
+    public function testGetAudienceWithExcludeOnlyMandateTypeDoesNotEnableMandateFilter(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->setElectMandate('!deputy');
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        self::assertFalse($result['audience']['mandate_type']);
+        self::assertArrayHasKey('exclude', $result['audience']);
+        self::assertContains('mandate_type:deputy', $result['audience']['exclude']);
+        self::assertEmpty($this->includeKeysWithPrefix($result, 'mandate_type:'));
+    }
+
+    public function testGetAudienceWithExcludeOnlyDeclaredMandateDoesNotEnableDeclaredMandateFilter(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->setDeclaredMandate('!mayor');
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        self::assertFalse($result['audience']['declared_mandate']);
+        self::assertArrayHasKey('exclude', $result['audience']);
+        self::assertContains('declared_mandate:mayor', $result['audience']['exclude']);
+        self::assertEmpty($this->includeKeysWithPrefix($result, 'declared_mandate:'));
+    }
+
+    public function testGetAudienceTargetingCommitteeMembersIndexesOne(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->setIsCommitteeMember(true);
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        // The controller reads the scalar audience.committee_member (2=none, 1=member, 0=non-member).
+        self::assertSame(1, $result['audience']['committee_member']);
+    }
+
+    public function testGetAudienceTargetingNonCommitteeMembersIndexesZero(): void
+    {
+        $filter = new AdherentMessageFilter();
+        $filter->setIsCommitteeMember(false);
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        // Must be 0 (not boolean true): otherwise non-members can never match and members
+        // wrongly match, inverting the "target non-members" audience.
+        self::assertSame(0, $result['audience']['committee_member']);
+    }
+
+    public function testGetAudienceWithoutCommitteeMemberTargetingKeepsSentinel(): void
+    {
+        $filter = new AdherentMessageFilter();
+
+        $result = $this->normalizer->normalize($this->createMessageWithFilter($filter));
+
+        self::assertSame(2, $result['audience']['committee_member']);
+    }
+
     public function testSupportsNormalizationReturnsTrueForAdherentMessage(): void
     {
         $message = $this->createMock(AdherentMessage::class);
@@ -295,5 +380,32 @@ final class PublicationNormalizerTest extends TestCase
 
         self::assertFalse($this->normalizer->supportsNormalization($message));
         self::assertFalse($this->normalizer->supportsNormalization($message, 'json'));
+    }
+
+    private function createMessageWithFilter(AdherentMessageFilter $filter): AdherentMessage&MockObject
+    {
+        $message = $this->createMock(AdherentMessage::class);
+        $message->method('getUuid')->willReturn(Uuid::v4());
+        $message->method('getSubject')->willReturn('Test subject');
+        $message->method('getJsonContent')->willReturn('Test content');
+        $message->method('getSentAt')->willReturn(new \DateTimeImmutable());
+        $message->method('getSender')->willReturn(null);
+        $message->method('getFilter')->willReturn($filter);
+        $message->method('getAuthor')->willReturn(null);
+
+        return $message;
+    }
+
+    /**
+     * @param array<string, mixed> $result
+     *
+     * @return string[]
+     */
+    private function includeKeysWithPrefix(array $result, string $prefix): array
+    {
+        return array_filter(
+            $result['audience']['include'] ?? [],
+            static fn (string $key): bool => str_starts_with($key, $prefix)
+        );
     }
 }
