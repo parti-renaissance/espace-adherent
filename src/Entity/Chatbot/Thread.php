@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Chatbot;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Adherent;
@@ -16,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiFilter(SearchFilter::class, properties: ['agent' => 'exact'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -35,6 +38,10 @@ class Thread
     #[ORM\Column(nullable: true)]
     public ?string $title = null;
 
+    #[Groups(['chatbot:thread_read'])]
+    #[ORM\Column(length: 50)]
+    public string $agent;
+
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
@@ -46,9 +53,10 @@ class Thread
     #[ORM\OrderBy(['date' => 'ASC'])]
     public Collection $messages;
 
-    public function __construct(Adherent $adherent, ?string $title = null, ?Uuid $uuid = null)
+    public function __construct(Adherent $adherent, string $agent, ?string $title = null, ?Uuid $uuid = null)
     {
         $this->adherent = $adherent;
+        $this->agent = $agent;
         $this->title = $title;
         $this->uuid = $uuid ?? Uuid::v4();
         $this->messages = new ArrayCollection();

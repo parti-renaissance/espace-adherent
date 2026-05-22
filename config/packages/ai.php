@@ -19,7 +19,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
         ],
         'agent' => [
-            'gemini' => [
+            'chatbot' => [
                 'platform' => 'ai.platform.vertexai',
                 'model' => [
                     'name' => 'gemini-2.5-flash-lite',

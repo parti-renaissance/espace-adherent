@@ -74,7 +74,7 @@ class ChatbotManagerTest extends TestCase
     private function createThreadWithMessages(int $count): Thread
     {
         $adherent = $this->createMock(Adherent::class);
-        $thread = new Thread($adherent);
+        $thread = new Thread($adherent, 'chatbot');
         $base = new \DateTimeImmutable('-1 hour');
 
         for ($i = 1; $i <= $count; ++$i) {
