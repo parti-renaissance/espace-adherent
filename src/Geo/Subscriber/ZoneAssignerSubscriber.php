@@ -18,7 +18,6 @@ use App\Geo\ZoneMatcher;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\Geo\ZoneRepository;
-use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
@@ -80,10 +79,12 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
             $event->setZones([$event->getCommittee()->getAssemblyZone()]);
         } elseif ($scope = $this->scopeGeneratorResolver->generate()) {
             if (ScopeEnum::MILITANT === $scope->getMainCode()) {
-                $event->setZones($this->resolveMilitantZones($event, $scope));
+                $event->setZones($this->resolveMilitantZones($event, $scope->getCurrentUser()));
             } else {
                 $event->setZones($scope->getZones());
             }
+        } elseif (ScopeEnum::MILITANT === $event->getAuthorScope() && ($author = $event->getAuthor()) instanceof Adherent) {
+            $event->setZones($this->resolveMilitantZones($event, $author));
         }
 
         $this->em->flush();
@@ -94,7 +95,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
      *
      * @return Zone[]
      */
-    private function resolveMilitantZones(Event $event, Scope $scope): array
+    private function resolveMilitantZones(Event $event, ?Adherent $adherent): array
     {
         if ($address = $event->getPostAddress()) {
             $cityZones = array_filter(
@@ -109,7 +110,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
 
         // Online event without a usable address: fall back to the adherent's own city.
         // The militant scope is zone-less, so the city is read directly from the adherent.
-        if (!$adherent = $scope->getCurrentUser()) {
+        if (!$adherent) {
             return [];
         }
 

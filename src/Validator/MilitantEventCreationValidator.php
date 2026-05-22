@@ -9,7 +9,6 @@ use App\Entity\Event\Event;
 use App\Event\EventVisibilityEnum;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
-use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,7 +19,6 @@ class MilitantEventCreationValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly Security $security,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly GeneralScopeGenerator $generalScopeGenerator,
     ) {
     }
@@ -39,9 +37,8 @@ class MilitantEventCreationValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, Event::class);
         }
 
-        $scope = $this->scopeGeneratorResolver->generate();
-        if (!$scope || ScopeEnum::MILITANT !== $scope->getMainCode()) {
-            return; // Not a militant-scoped creation: nothing to enforce.
+        if (ScopeEnum::MILITANT !== $value->getAuthorScope()) {
+            return;
         }
 
         $adherent = $this->security->getUser();

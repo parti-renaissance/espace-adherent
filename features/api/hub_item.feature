@@ -242,3 +242,155 @@ Feature:
                 ]
             }
             """
+
+    # ---- Anonymous (no Bearer token): same merge logic, Event data via /api/events rules,
+    #      Action data masked by ActionCleaner (CONTEXT_PUBLIC_ANONYMOUS) ----
+    Scenario: As a non logged-in user the latest action is returned with masked data
+        # Ordering by beginAt desc pins the furthest-future fixture Action (random uuid/coords),
+        # so we match the variable fields and assert the masked shape exactly.
+        When I send a "GET" request to "/api/hub-item?order[beginAt]=desc&page_size=1"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 83,
+                    "items_per_page": 1,
+                    "count": 1,
+                    "current_page": 1,
+                    "last_page": 83
+                },
+                "items": [
+                    {
+                        "type": "action",
+                        "uuid": "@uuid@",
+                        "name": "@string@",
+                        "slug": null,
+                        "time_zone": null,
+                        "live_url": null,
+                        "visibility": null,
+                        "created_at": null,
+                        "begin_at": "@string@.matchRegex('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/')",
+                        "finish_at": null,
+                        "organizer": {
+                            "uuid": null,
+                            "first_name": "@string@",
+                            "last_name": "@string@",
+                            "image_url": null,
+                            "scope": null,
+                            "role": null,
+                            "instance": null,
+                            "zone": null,
+                            "theme": null
+                        },
+                        "participants_count": null,
+                        "status": "scheduled",
+                        "capacity": null,
+                        "post_address": {
+                            "address": null,
+                            "postal_code": "75008",
+                            "city": null,
+                            "city_name": "Paris 8ème",
+                            "country": "FR",
+                            "latitude": null,
+                            "longitude": null
+                        },
+                        "category": {
+                            "event_group_category": null,
+                            "description": null,
+                            "name": "@string@",
+                            "slug": "@string@"
+                        },
+                        "visio_url": null,
+                        "pinned": false,
+                        "hidden": false,
+                        "editable": false,
+                        "is_national": false,
+                        "mode": null,
+                        "local_begin_at": null,
+                        "local_finish_at": null,
+                        "image_url": null,
+                        "image": null,
+                        "user_registered_at": null,
+                        "object_state": "partial"
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a non logged-in user a public event exposes the full canonical shape but is not editable
+        When I send a "GET" request to "/api/hub-item?zone=92&page_size=1"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "metadata": {
+                    "total_items": 58,
+                    "items_per_page": 1,
+                    "count": 1,
+                    "current_page": 1,
+                    "last_page": 58
+                },
+                "items": [
+                    {
+                        "type": "event",
+                        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                        "name": "Nouvel événement online",
+                        "slug": "@string@-nouvel-evenement-online",
+                        "time_zone": "Europe/Paris",
+                        "begin_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "participants_count": 0,
+                        "is_national": false,
+                        "status": "SCHEDULED",
+                        "capacity": 50,
+                        "visio_url": null,
+                        "mode": "online",
+                        "category": null,
+                        "post_address": {
+                            "address": "47 rue Martre",
+                            "postal_code": "92110",
+                            "city": "92110-92024",
+                            "city_name": "Clichy",
+                            "country": "FR",
+                            "latitude": 48.9016,
+                            "longitude": 2.305268
+                        },
+                        "visibility": "public",
+                        "live_url": null,
+                        "hidden": false,
+                        "pinned": true,
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()",
+                        "author": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "R",
+                            "image_url": null,
+                            "scope": null,
+                            "role": "Président",
+                            "instance": "Assemblée départementale",
+                            "zone": null,
+                            "theme": null
+                        },
+                        "local_begin_at": "@string@.isDateTime()",
+                        "local_finish_at": "@string@.isDateTime()",
+                        "organizer": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent",
+                            "image_url": null
+                        },
+                        "image_url": null,
+                        "image": null,
+                        "editable": false,
+                        "object_state": "full"
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a non logged-in user a far-future beginAt filter returns zero items
+        When I send a "GET" request to "/api/hub-item?beginAt[strictly_after]=2050-01-01&page_size=300"
+        Then the response status code should be 200
+        And the JSON node "metadata.total_items" should be equal to "0"

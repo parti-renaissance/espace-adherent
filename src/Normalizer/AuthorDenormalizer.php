@@ -7,8 +7,15 @@ namespace App\Normalizer;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInterface;
+use App\Entity\Event\Event;
+use App\OAuth\Model\Scope as OAuthScope;
+use App\Scope\Exception\ScopeExceptionInterface;
+use App\Scope\GeneralScopeGenerator;
+use App\Scope\Scope;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -20,6 +27,8 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
     public function __construct(
         private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly GeneralScopeGenerator $generalScopeGenerator,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -33,15 +42,32 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
             $data->setAuthor($scope ? $scope->getMainUser() : $this->security->getUser());
         }
 
-        if (
-            $data instanceof AuthorInstanceInterface
-            && !$data->getAuthorInstance()
-            && ($scope = $this->scopeGeneratorResolver->generate())
-        ) {
-            $data->updateFromScope($scope);
+        if ($data instanceof AuthorInstanceInterface && !$data->getAuthorInstance()) {
+            $scope = $this->scopeGeneratorResolver->generate();
+
+            if (!$scope && $data instanceof Event && ($author = $data->getAuthor()) instanceof Adherent) {
+                $scope = $this->resolveMilitantScope($author);
+            }
+
+            if ($scope) {
+                $data->updateFromScope($scope);
+            }
         }
 
         return $data;
+    }
+
+    private function resolveMilitantScope(Adherent $author): ?Scope
+    {
+        if (!$this->authorizationChecker->isGranted(OAuthScope::generateRole(OAuthScope::JEMARCHE_APP))) {
+            return null;
+        }
+
+        try {
+            return $this->generalScopeGenerator->getGenerator(ScopeEnum::MILITANT, $author)->generate($author);
+        } catch (ScopeExceptionInterface) {
+            return null;
+        }
     }
 
     public function getSupportedTypes(?string $format): array

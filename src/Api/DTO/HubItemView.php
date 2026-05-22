@@ -15,14 +15,18 @@ use App\Normalizer\ImageExposeNormalizer;
     operations: [
         new GetCollection(
             uriTemplate: '/v3/hub-item',
-            paginationItemsPerPage: 100,
-            paginationMaximumItemsPerPage: 300,
-            normalizationContext: ['groups' => ['event_list_read', 'action_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]],
+            provider: HubItemProvider::class,
+        ),
+        new GetCollection(
+            uriTemplate: '/hub-item',
             provider: HubItemProvider::class,
         ),
     ],
+    normalizationContext: ['groups' => ['event_list_read', 'action_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]],
+    paginationItemsPerPage: 100,
+    paginationMaximumItemsPerPage: 300,
 )]
-final class HubItemView
+class HubItemView
 {
     public function __construct(
         public string $type,
