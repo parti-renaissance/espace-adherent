@@ -261,8 +261,12 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
         ->host('{app_domain}')
         ->controller(App\Controller\Renaissance\Newsletter\ConfirmNewsletterController::class)
         ->defaults(['app_domain' => '%user_vox_host%'])
-        ->methods(['GET'])
-        ->requirements(['app_domain' => '%national_event_host%|%user_vox_host%']);
+        ->methods(['GET', 'POST'])
+        ->requirements([
+            'app_domain' => '%national_event_host%|%user_vox_host%',
+            'uuid' => '%pattern_uuid%',
+            'confirm_token' => '%pattern_uuid%',
+        ]);
 
     $routingConfigurator->add('app_renaissance_newsletter_save', '/api/newsletter')
         ->host('{app_domain}')

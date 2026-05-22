@@ -1,0 +1,20 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Confirmation en cours' %}
+
+{% block flash_message '' %}
+
+{% block body_classes 'min-h-screen flex flex-col justify-center items-center gap-2' %}
+
+{% block content %}
+    <div class="relative flex h-6 w-6 items-center justify-center self-center">
+        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
+        <div class="relative inline-flex rounded-full h-5 w-5 bg-sky-500"></div>
+    </div>
+
+    <div class="mt-6 font-medium animate-pulse self-center">Confirmation de votre inscription…</div>
+
+    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_renaissance_newsletter_confirm', {uuid: uuid, confirm_token: confirm_token}) }}" method="POST" class="hidden">
+        <button type="submit">Confirmer mon inscription</button>
+    </form>
+{% endblock %}

@@ -4,25 +4,40 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Newsletter;
 
-use App\Entity\Renaissance\NewsletterSubscription;
 use App\Newsletter\Events;
 use App\Newsletter\NewsletterEvent;
 use App\Repository\Renaissance\NewsletterSourceRepository;
+use App\Repository\Renaissance\NewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ConfirmNewsletterController extends AbstractController
 {
     public function __invoke(
-        #[MapEntity(expr: 'repository.findOneByUuidAndToken(uuid, confirm_token)')]
-        NewsletterSubscription $subscription,
+        Request $request,
+        string $uuid,
+        string $confirm_token,
+        NewsletterSubscriptionRepository $subscriptionRepository,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         NewsletterSourceRepository $newsletterSourceRepository,
     ): Response {
+        if (!$request->isMethod(Request::METHOD_POST)) {
+            return $this->render('renaissance/newsletter/confirm.html.twig', [
+                'uuid' => $uuid,
+                'confirm_token' => $confirm_token,
+            ]);
+        }
+
+        $subscription = $subscriptionRepository->findOneByUuidAndToken($uuid, $confirm_token);
+
+        if (!$subscription) {
+            throw $this->createNotFoundException();
+        }
+
         if (!$subscription->confirmedAt) {
             $subscription->confirmedAt = new \DateTime();
             $entityManager->flush();
