@@ -12,6 +12,7 @@
 /build/
 /var/
 /vendor/
+/config/reference.php
 /public/css/cropper.min.css
 /public/bundles/
 /public/built/
