@@ -123,6 +123,33 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
         self::assertStringContainsString('/app', $location);
     }
 
+    public function testGetDoesNotConfirmSubscriptionToProtectAgainstLinkScanners(): void
+    {
+        $email = 'confirm-get-only@en-marche-dev.fr';
+
+        $this->postSubscription([
+            'email' => $email,
+            'postal_code' => '75001',
+            'recaptcha' => 'fake',
+            'cgu_accepted' => true,
+            'source' => 'site_renaissance',
+        ]);
+        $this->assertResponseStatusCodeSame(201);
+
+        $subscription = $this->findSubscriptionByEmail($email);
+        self::assertNotNull($subscription);
+
+        // A GET (e.g. an email security scanner pre-fetching the link) only renders the
+        // interstitial page and must NOT confirm the subscription.
+        $this->requestConfirmation($subscription, Request::METHOD_GET);
+        $this->assertResponseIsSuccessful();
+        self::assertNull($this->findSubscriptionByEmail($email)->confirmedAt);
+
+        // The interstitial auto-submits a POST, which performs the actual confirmation.
+        $this->requestConfirmation($subscription, Request::METHOD_POST);
+        self::assertNotNull($this->findSubscriptionByEmail($email)->confirmedAt);
+    }
+
     public function testConfirmationEmailUsesSourceConfiguredTemplate(): void
     {
         $this->postSubscription([
@@ -265,10 +292,10 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
         );
     }
 
-    private function requestConfirmation(NewsletterSubscription $subscription): void
+    private function requestConfirmation(NewsletterSubscription $subscription, string $method = Request::METHOD_POST): void
     {
         $this->client->request(
-            Request::METHOD_GET,
+            $method,
             \sprintf(
                 '/newsletter/confirmation/%s/%s',
                 $subscription->getUuid()->toRfc4122(),
