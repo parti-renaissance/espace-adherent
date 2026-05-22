@@ -22,8 +22,8 @@ class ChatbotManagerTest extends TestCase
     protected function setUp(): void
     {
         $this->manager = new ChatbotManager(
-            $this->createMock(EntityManagerInterface::class),
-            $this->createMock(ThreadRepository::class),
+            $this->createStub(EntityManagerInterface::class),
+            $this->createStub(ThreadRepository::class),
         );
     }
 
@@ -38,7 +38,7 @@ class ChatbotManagerTest extends TestCase
         self::assertSame(Role::User, $messages[0]->getRole());
         self::assertSame('U1', $messages[0]->getContent()[0]->getText());
         self::assertSame(Role::Assistant, $messages[1]->getRole());
-        self::assertSame('A1', $messages[1]->getContent());
+        self::assertSame('A1', $messages[1]->asText());
         self::assertSame(Role::User, $messages[2]->getRole());
         self::assertSame('U2', $messages[2]->getContent()[0]->getText());
     }
@@ -54,7 +54,7 @@ class ChatbotManagerTest extends TestCase
         self::assertSame(Role::User, $messages[0]->getRole());
         self::assertSame('U4', $messages[0]->getContent()[0]->getText());
         self::assertSame(Role::Assistant, $messages[13]->getRole());
-        self::assertSame('A10', $messages[13]->getContent());
+        self::assertSame('A10', $messages[13]->asText());
     }
 
     public function testBuildContextMessageBagDoesNotStartWithOrphanAssistantMessage(): void
@@ -68,12 +68,12 @@ class ChatbotManagerTest extends TestCase
         self::assertSame(Role::User, $messages[0]->getRole());
         self::assertSame('U2', $messages[0]->getContent()[0]->getText());
         self::assertSame(Role::Assistant, $messages[13]->getRole());
-        self::assertSame('A8', $messages[13]->getContent());
+        self::assertSame('A8', $messages[13]->asText());
     }
 
     private function createThreadWithMessages(int $count): Thread
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $thread = new Thread($adherent, 'chatbot');
         $base = new \DateTimeImmutable('-1 hour');
 

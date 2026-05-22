@@ -2643,10 +2643,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             base_url?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         amazeeai?: array{
+ *             base_url?: string|Param,
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *         anthropic?: array{
  *             api_key?: string|Param,
  *             version?: string|Param, // Default: null
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             cache_retention?: "none"|"short"|"long"|Param, // Prompt cache retention policy for Anthropic models // Default: "short"
  *         },
  *         azure?: array<string, array{ // Default: []
  *             api_key?: string|Param,
@@ -2661,12 +2667,21 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         }>,
  *         cache?: array<string, array{ // Default: []
  *             platform?: string|Param,
- *             service?: string|Param, // The cache service id as defined under the "cache" configuration key
+ *             service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
  *             cache_key?: string|Param, // Key used to store platform results, if not set, the current platform name will be used, the "prompt_cache_key" can be set during platform call to override this value
+ *             ttl?: int|Param,
  *         }>,
  *         cartesia?: array{
  *             api_key?: string|Param,
  *             version?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         cerebras?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         cohere?: array{
+ *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         decart?: array{
@@ -2674,11 +2689,18 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             host?: string|Param, // Default: "https://api.decart.ai/v1"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         deepseek?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         dockermodelrunner?: array{
+ *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *         elevenlabs?: array{
  *             api_key?: string|Param,
- *             host?: string|Param, // Default: "https://api.elevenlabs.io/v1"
+ *             endpoint?: string|Param, // Default: "https://api.elevenlabs.io/v1/"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             api_catalog?: bool|Param, // If set, the ElevenLabs API will be used to build the catalog and retrieve models information, using this option leads to additional HTTP calls
  *         },
  *         failover?: array<string, array{ // Default: []
  *             platforms?: list<scalar|Param|null>,
@@ -2703,48 +2725,41 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             provider?: string|Param, // Default: "hf-inference"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
- *         vertexai?: array{
- *             location?: string|Param,
- *             project_id?: string|Param,
- *             api_key?: string|Param, // Default: null
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         openai?: array{
- *             api_key?: string|Param,
- *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
+ *         lmstudio?: array{
+ *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         mistral?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
+ *         ollama?: array{
+ *             endpoint?: string|Param, // Endpoint for Ollama (e.g. "http://127.0.0.1:11434" for local, or a cloud endpoint). If null, the http_client is used as-is and must already be configured with a base URI.
+ *             api_key?: string|Param, // API key for Ollama Cloud authentication (optional for local usage)
+ *             http_client?: string|Param, // Service ID of the HTTP client to use. When "endpoint" is null, this client must be pre-configured (e.g. with a base_uri). // Default: "http_client"
+ *         },
+ *         openai?: array{
+ *             api_key?: string|Param,
+ *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         openresponses?: array<string, array{ // Default: []
+ *             base_url?: string|Param,
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *             model_catalog?: string|Param, // Service ID of the model catalog to use
+ *             responses_path?: string|Param, // Default: "/v1/responses"
+ *         }>,
  *         openrouter?: array{
  *             api_key?: string|Param,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
- *         lmstudio?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         ollama?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:11434"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             api_catalog?: bool|Param, // If set, the Ollama API will be used to build the catalog and retrieve models information, using this option leads to additional HTTP calls
- *         },
- *         cerebras?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         voyage?: array{
- *             api_key?: string|Param,
+ *         ovh?: array{
+ *             api_key?: scalar|Param|null,
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         perplexity?: array{
  *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         dockermodelrunner?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         scaleway?: array{
@@ -2752,6 +2767,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
  *         },
  *         transformersphp?: array<mixed>,
+ *         vertexai?: array{
+ *             location?: string|Param, // Required for the project-scoped endpoint. Must be set together with "project_id". // Default: null
+ *             project_id?: string|Param, // Required for the project-scoped endpoint. Must be set together with "location". // Default: null
+ *             api_key?: string|Param, // When set without "location" and "project_id", uses the global endpoint. Note: API keys only identify the project for billing and do not provide identity-based access control. For production use with IAM, audit logging, or data residency, prefer the project-scoped endpoint with service account authentication. // Default: null
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
+ *         voyage?: array{
+ *             api_key?: string|Param,
+ *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
+ *         },
  *     },
  *     model?: array<string, array<string, array{ // Default: []
  *         class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
@@ -2781,6 +2806,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         keep_tool_messages?: bool|Param, // Keep tool messages in the conversation history // Default: false
  *         include_sources?: bool|Param, // Include sources exposed by tools as part of the tool result metadata // Default: false
  *         fault_tolerant_toolbox?: bool|Param, // Continue the agent run even if a tool call fails // Default: true
+ *         speech?: bool|array{ // Speech (TTS/STT) decorator configuration
+ *             enabled?: bool|Param, // Default: true
+ *             text_to_speech_platform?: string|Param, // Service name of the TTS platform (e.g. ai.platform.elevenlabs). // Default: null
+ *             speech_to_text_platform?: string|Param, // Service name of the STT platform (e.g. ai.platform.openai). // Default: null
+ *             tts_model?: string|Param, // Text-to-speech model name // Default: null
+ *             tts_options?: mixed, // Provider-specific TTS options // Default: []
+ *             stt_model?: string|Param, // Speech-to-text model name // Default: null
+ *             stt_options?: mixed, // Provider-specific STT options // Default: []
+ *         },
  *     }>,
  *     multi_agent?: array<string, array{ // Default: []
  *         orchestrator?: string|Param, // Service ID of the orchestrator agent
@@ -2791,14 +2825,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         azuresearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             api_key?: string|Param,
- *             index_name?: string|Param,
  *             api_version?: string|Param,
- *             vector_field?: string|Param,
+ *             index_name?: string|Param, // The name of the store will be used if the "index_name" option is not set
+ *             http_client?: string|Param, // Default: "http_client"
+ *             vector_field?: string|Param, // Default: "vector"
  *         }>,
  *         cache?: array<string, array{ // Default: []
  *             service?: string|Param, // Default: "cache.app"
- *             cache_key?: string|Param, // The name of the store will be used if the key is not set
- *             strategy?: string|Param,
+ *             cache_key?: string|Param, // The name of the store will be used if the key is not set.
+ *             strategy?: string|Param, // Default: "cosine"
  *         }>,
  *         chromadb?: array<string, array{ // Default: []
  *             client?: string|Param, // Default: "Codewithkyrian\\ChromaDB\\Client"
@@ -2818,6 +2853,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             metric?: string|Param, // Default: "cosine"
  *             endpoint?: string|Param,
  *         }>,
+ *         elasticsearch?: array<string, array{ // Default: []
+ *             endpoint?: string|Param,
+ *             index_name?: string|Param,
+ *             vectors_field?: string|Param, // Default: "_vectors"
+ *             dimensions?: int|Param, // Default: 1536
+ *             similarity?: string|Param, // Default: "cosine"
+ *             http_client?: string|Param, // Default: "http_client"
+ *         }>,
  *         manticoresearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             table?: string|Param,
@@ -2835,11 +2878,13 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             setup_options?: array{
  *                 dimensions?: int|Param,
  *             },
+ *             distance?: "cosine"|"euclidean"|"distance"|Param, // Distance metric to use for vector similarity search // Default: "euclidean"
  *         }>,
  *         meilisearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             api_key?: string|Param,
  *             index_name?: string|Param,
+ *             http_client?: string|Param, // Default: "http_client"
  *             embedder?: string|Param, // Default: "default"
  *             vector_field?: string|Param, // Default: "_vectors"
  *             dimensions?: int|Param, // Default: 1536
@@ -2864,6 +2909,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             index_name?: string|Param,
  *             vector_field?: string|Param, // Default: "vector"
  *             bulk_write?: bool|Param, // Default: false
+ *             setup_options?: array{
+ *                 fields?: mixed, // Default: []
+ *             },
  *         }>,
  *         neo4j?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -2876,14 +2924,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             dimensions?: int|Param, // Default: 1536
  *             distance?: string|Param, // Default: "cosine"
  *             quantization?: bool|Param,
- *         }>,
- *         elasticsearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             index_name?: string|Param,
- *             vectors_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             similarity?: string|Param, // Default: "cosine"
- *             http_client?: string|Param, // Default: "http_client"
  *         }>,
  *         opensearch?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
@@ -2907,15 +2947,23 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             table_name?: string|Param,
  *             vector_field?: string|Param, // Default: "embedding"
  *             distance?: "cosine"|"inner_product"|"l1"|"l2"|Param, // Distance metric to use for vector similarity search // Default: "l2"
+ *             lang?: string|Param, // Default: "english"
  *             dbal_connection?: string|Param,
+ *             setup_options?: array{
+ *                 vector_type?: string|Param, // Default: "vector"
+ *                 vector_size?: int|Param, // Default: 1536
+ *                 index_method?: string|Param, // Default: "ivfflat"
+ *                 index_opclass?: string|Param, // Default: "vector_cosine_ops"
+ *             },
  *         }>,
  *         qdrant?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             api_key?: string|Param,
- *             collection_name?: string|Param,
+ *             collection_name?: string|Param, // The name of the store will be used if the "collection_name" is not set
+ *             http_client?: string|Param, // Default: "http_client"
  *             dimensions?: int|Param, // Default: 1536
  *             distance?: string|Param, // Default: "Cosine"
- *             async?: bool|Param,
+ *             async?: bool|Param, // Default: false
  *         }>,
  *         redis?: array<string, array{ // Default: []
  *             connection_parameters?: mixed, // see https://github.com/phpredis/phpredis?tab=readme-ov-file#example-1
@@ -2923,6 +2971,23 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             index_name?: string|Param,
  *             key_prefix?: string|Param, // Default: "vector:"
  *             distance?: "COSINE"|"L2"|"IP"|Param, // Distance metric to use for vector similarity search // Default: "COSINE"
+ *         }>,
+ *         s3vectors?: array<string, array{ // Default: []
+ *             client?: string|Param, // Service reference to an existing S3VectorsClient
+ *             configuration?: array<mixed>,
+ *             vector_bucket_name?: string|Param,
+ *             index_name?: string|Param,
+ *             filter?: array<mixed>,
+ *             top_k?: int|Param, // Default number of results to return // Default: 3
+ *         }>,
+ *         sqlite?: array<string, array{ // Default: []
+ *             dsn?: string|Param,
+ *             connection?: string|Param,
+ *             table_name?: string|Param,
+ *             strategy?: string|Param,
+ *             vec?: bool|Param, // Default: false
+ *             distance?: "cosine"|"L2"|Param, // Default: "cosine"
+ *             vector_dimension?: int|Param, // Default: 1536
  *         }>,
  *         supabase?: array<string, array{ // Default: []
  *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
@@ -2955,7 +3020,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         weaviate?: array<string, array{ // Default: []
  *             endpoint?: string|Param,
  *             api_key?: string|Param,
- *             collection?: string|Param,
+ *             http_client?: string|Param, // Default: "http_client"
+ *             collection?: string|Param, // The name of the store will be used if the "collection" is not set
+ *         }>,
+ *         vektor?: array<string, array{ // Default: []
+ *             storage_path?: string|Param, // Default: "%kernel.project_dir%/var/share"
+ *             dimensions?: int|Param, // Default: 1536
  *         }>,
  *     },
  *     message_store?: array{
@@ -3022,7 +3092,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         model?: mixed,
  *     }>,
  *     indexer?: array<string, array{ // Default: []
- *         loader?: string|Param, // Service name of loader
+ *         loader?: string|Param, // Service name of loader // Default: null
  *         source?: mixed, // Source identifier (file path, URL, etc.) or array of sources // Default: null
  *         transformers?: list<scalar|Param|null>,
  *         filters?: list<scalar|Param|null>,

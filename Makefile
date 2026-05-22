@@ -16,7 +16,7 @@ DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf lint ls ly lt lintfix
+.PHONY: help start stop reset rebuild docker-clean db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf lint ls ly lt lintfix
 .PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock assets
 
@@ -33,7 +33,13 @@ stop:                                                                           
 	$(DOCKER_COMPOSE) kill || true
 	$(DOCKER_COMPOSE) rm -v --force
 
-reset: stop rm-docker-dev.lock start
+reset: stop start                                                                                      ## Restart the project (rebuilds only if docker/ changed)
+
+rebuild: stop rm-docker-dev.lock start                                                                 ## Force a clean rebuild of the docker images
+
+docker-clean:                                                                                          ## Reclaim dangling images and build cache (safe, keeps tagged images)
+	docker image prune -f
+	docker builder prune -f
 
 clear: perm rm-docker-dev.lock                                                                                             ## Remove all the cache, the logs, the sessions and the built assets
 	-$(EXEC) rm -rf var/cache/*
@@ -212,6 +218,7 @@ build: docker-dev.lock
 docker-dev.lock: $(DOCKER_FILES)
 	$(DOCKER_COMPOSE) pull --ignore-pull-failures
 	$(DOCKER_COMPOSE) build --force-rm --pull
+	docker image prune -f
 	touch docker-dev.lock
 
 rm-docker-dev.lock:
