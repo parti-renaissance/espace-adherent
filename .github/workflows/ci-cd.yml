@@ -119,6 +119,9 @@ jobs:
                   skip-install: ${{ steps.composer-cache.outputs.cache-hit }}
             - uses: ./.github/actions/setup-pnpm
 
+            - name: Validate composer.json and composer.lock
+              run: composer validate --no-check-all --no-check-publish
+
             - name: PHP Coding Standards Fixer
               run: make phpcs
 
