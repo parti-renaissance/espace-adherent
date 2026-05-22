@@ -26,7 +26,7 @@ class AdherentChangeCommandHandler
             return;
         }
 
-        if ($adherent->isPending()) {
+        if ($adherent->isPending() || $adherent->isToDelete()) {
             return;
         }
 
