@@ -71,6 +71,7 @@ class HubItemViewNormalizerTest extends TestCase
         $action->type = ActionTypeEnum::TRACTAGE;
 
         $this->innerNormalizer
+            ->expects(self::once())
             ->method('normalize')
             ->willReturn([
                 'uuid' => 'uuid-2',
@@ -102,6 +103,49 @@ class HubItemViewNormalizerTest extends TestCase
         self::assertSame('2026-05-02T10:00:00+02:00', $output['user_registered_at']);
     }
 
+    public function testShapeActionAnonymousSetsObjectStatePartial(): void
+    {
+        $action = new Action();
+        $action->type = ActionTypeEnum::PAP;
+
+        $this->innerNormalizer
+            ->expects(self::once())
+            ->method('normalize')
+            ->willReturn([
+                'uuid' => 'uuid-1',
+                'type' => 'pap',
+                'date' => '2026-06-01',
+                'status' => 'scheduled',
+                'object_state' => 'partial',
+            ])
+        ;
+
+        $output = $this->normalizer->normalize(new HubItemView('action', $action));
+
+        self::assertSame('partial', $output['object_state']);
+    }
+
+    public function testShapeActionAuthenticatedDefaultsObjectStateFull(): void
+    {
+        $action = new Action();
+        $action->type = ActionTypeEnum::PAP;
+
+        $this->innerNormalizer
+            ->expects(self::once())
+            ->method('normalize')
+            ->willReturn([
+                'uuid' => 'uuid-1',
+                'type' => 'pap',
+                'date' => '2026-06-01T10:00:00+02:00',
+                'status' => 'scheduled',
+            ])
+        ;
+
+        $output = $this->normalizer->normalize(new HubItemView('action', $action));
+
+        self::assertSame('full', $output['object_state']);
+    }
+
     public function testEventPayloadIsPassedThroughWithTypePrefix(): void
     {
         $event = $this->createStub(Event::class);
@@ -126,6 +170,8 @@ class HubItemViewNormalizerTest extends TestCase
     public function testSupportsHubItemViewAndRejectsRawEntities(): void
     {
         $view = new HubItemView('event', $this->createStub(Event::class));
+
+        $this->innerNormalizer->expects(self::never())->method('normalize');
 
         self::assertTrue($this->normalizer->supportsNormalization($view));
         self::assertFalse($this->normalizer->supportsNormalization($this->createStub(Event::class)));

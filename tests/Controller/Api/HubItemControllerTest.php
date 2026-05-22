@@ -24,6 +24,7 @@ class HubItemControllerTest extends AbstractApiTestCase
     use ApiControllerTestTrait;
 
     private const URL = '/api/v3/hub-item';
+    private const ANON_URL = '/api/hub-item';
     private const PRESIDENT_AD_UUID = '9fec3385-8cfb-46e8-8305-c9bae10e4517';
 
     private ?string $accessToken = null;
@@ -64,6 +65,60 @@ class HubItemControllerTest extends AbstractApiTestCase
         $types = array_count_values(array_column($data['items'], 'type'));
         self::assertArrayHasKey('event', $types, 'Baseline must contain at least one event');
         self::assertArrayHasKey('action', $types, 'Baseline must contain at least one action');
+    }
+
+    public function testAnonymousHubMergesEventsAndActionsWithoutToken(): void
+    {
+        $data = $this->callAnonymous(self::ANON_URL.'?page_size=300');
+
+        $types = array_count_values(array_column($data['items'], 'type'));
+        self::assertArrayHasKey('event', $types, 'Anonymous hub must contain at least one event');
+        self::assertArrayHasKey('action', $types, 'Anonymous hub must contain at least one action');
+    }
+
+    public function testAnonymousHubEventsMatchPublicEventsEndpoint(): void
+    {
+        $hub = $this->callAnonymous(self::ANON_URL.'?page_size=300');
+        $events = $this->callAnonymous('/api/events?page_size=300');
+
+        $hubEventCount = \count(array_filter($hub['items'], static fn ($i) => 'event' === $i['type']));
+
+        self::assertSame(
+            $events['metadata']['total_items'],
+            $hubEventCount,
+            'The anonymous hub must surface the same events as /api/events'
+        );
+    }
+
+    public function testAnonymousActionsAreMasked(): void
+    {
+        $data = $this->callAnonymous(self::ANON_URL.'?page_size=300');
+
+        $actions = array_filter($data['items'], static fn ($i) => 'action' === $i['type']);
+        self::assertNotEmpty($actions, 'Anonymous hub must expose at least one action to assert masking');
+
+        foreach ($actions as $action) {
+            self::assertSame('partial', $action['object_state']);
+            self::assertNull($action['participants_count'], 'participants_count must be masked anonymously');
+            self::assertArrayNotHasKey('first_participants', $action, 'first_participants must never surface anonymously');
+
+            if (null !== $action['post_address']) {
+                self::assertNull($action['post_address']['address'], 'Exact street address must be masked anonymously');
+                self::assertArrayHasKey('city_name', $action['post_address'], 'City must remain visible anonymously');
+            }
+        }
+    }
+
+    public function testAuthenticatedHubActionsAreNotMasked(): void
+    {
+        $data = $this->call(self::URL.'?page_size=300');
+
+        $actions = array_filter($data['items'], static fn ($i) => 'action' === $i['type']);
+        self::assertNotEmpty($actions, 'Authenticated hub must expose actions');
+
+        foreach ($actions as $action) {
+            self::assertSame('full', $action['object_state'], 'Authenticated actions must not be masked');
+        }
     }
 
     public function testCompatibleFilterZoneRestrictsResults(): void
@@ -359,6 +414,16 @@ class HubItemControllerTest extends AbstractApiTestCase
 
         $response = $this->client->getResponse();
         self::assertTrue($response->isSuccessful(), 'Request failed: '.$response->getContent());
+
+        return json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+    }
+
+    private function callAnonymous(string $url): array
+    {
+        $this->client->request(Request::METHOD_GET, $url);
+
+        $response = $this->client->getResponse();
+        self::assertTrue($response->isSuccessful(), 'Anonymous request failed: '.$response->getContent());
 
         return json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
     }

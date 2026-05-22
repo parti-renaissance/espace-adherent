@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Action\ActionCleaner;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
@@ -25,6 +26,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         private readonly Security $security,
         private readonly ActionParticipantRepository $actionParticipantRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ActionCleaner $actionCleaner,
     ) {
     }
 
@@ -44,6 +46,11 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         }
 
         $action['editable'] = $this->authorizationChecker->isGranted(CanManageActionVoter::CAN_MANAGE_ACTION, $object);
+
+        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext) {
+            $action = $this->actionCleaner->cleanActionData($action);
+            $action['object_state'] = 'partial';
+        }
 
         return $action;
     }

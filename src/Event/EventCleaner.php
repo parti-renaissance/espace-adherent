@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Normalizer\DataCleaner;
+
 class EventCleaner
 {
     private const ALLOWED_KEYS = [
@@ -57,25 +59,12 @@ class EventCleaner
         'user_registered_at',
     ];
 
+    public function __construct(private readonly DataCleaner $cleaner)
+    {
+    }
+
     public function cleanEventData(array $eventData, array $allowedKeys = self::ALLOWED_KEYS): array
     {
-        foreach ($eventData as $key => $value) {
-            if (!\in_array($key, $allowedKeys)) {
-                $eventData[$key] = null;
-                continue;
-            }
-
-            if (\is_array($value) && !empty($allowedKeys[$key]) && \is_array($allowedKeys[$key])) {
-                $eventData[$key] = $this->cleanEventData($value, $allowedKeys[$key]);
-                continue;
-            }
-
-            // Keep only date part of datetime fields
-            if ($value && str_ends_with($key, '_at')) {
-                $eventData[$key] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d') : substr($value, 0, 10);
-            }
-        }
-
-        return $eventData;
+        return $this->cleaner->clean($eventData, $allowedKeys);
     }
 }

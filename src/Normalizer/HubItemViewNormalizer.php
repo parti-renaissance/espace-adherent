@@ -82,6 +82,7 @@ class HubItemViewNormalizer implements NormalizerInterface, NormalizerAwareInter
             'image_url' => null,
             'image' => null,
             'user_registered_at' => $raw['user_registered_at'] ?? null,
+            'object_state' => $raw['object_state'] ?? 'full',
         ];
     }
 }
