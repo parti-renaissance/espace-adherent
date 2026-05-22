@@ -10,6 +10,7 @@ use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,18 +80,26 @@ class PostMessageController extends AbstractController
                 $result = $agent->call($messageBag);
                 $content = $result->getContent();
 
-                foreach (is_iterable($content) ? $content : [$content] as $content) {
+                foreach (is_iterable($content) ? $content : [$content] as $chunk) {
                     if (connection_aborted()) {
                         break;
                     }
 
-                    if (empty($content)) {
+                    if ($chunk instanceof TextDelta) {
+                        $text = $chunk->getText();
+                    } elseif (\is_string($chunk)) {
+                        $text = $chunk;
+                    } else {
                         continue;
                     }
 
-                    $fullResponse .= $content;
+                    if ('' === $text) {
+                        continue;
+                    }
 
-                    echo 'data: '.json_encode($content, \JSON_UNESCAPED_UNICODE)."\n\n";
+                    $fullResponse .= $text;
+
+                    echo 'data: '.json_encode($text, \JSON_UNESCAPED_UNICODE)."\n\n";
 
                     if (ob_get_level() > 0) {
                         ob_flush();

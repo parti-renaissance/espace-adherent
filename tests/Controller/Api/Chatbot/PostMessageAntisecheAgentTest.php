@@ -11,6 +11,7 @@ use App\Entity\Chatbot\Thread;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\AI\Platform\Result\StreamResult;
 use Symfony\AI\Platform\Result\TextResult;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,6 +64,12 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
         $response = $this->client->getResponse();
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
         self::assertStringStartsWith('text/event-stream', $response->headers->get('Content-Type'));
+
+        // The streamed body must carry the decoded text deltas, not empty `data: {}` events.
+        $body = $this->client->getInternalResponse()->getContent();
+        self::assertStringContainsString('data: "Bon"', $body);
+        self::assertStringContainsString('data: "jour"', $body);
+        self::assertStringNotContainsString('data: {}', $body);
 
         $threadUuid = $response->headers->get('X-Chatbot-Thread-UUID');
         self::assertNotEmpty($threadUuid);
@@ -127,11 +134,15 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
 
-    /** @param list<string> $chunks */
+    /**
+     * Mirrors production: Symfony AI bridges stream TextDelta objects, not raw strings.
+     *
+     * @param list<string> $chunks
+     */
     private function yieldChunks(array $chunks): \Generator
     {
         foreach ($chunks as $chunk) {
-            yield $chunk;
+            yield new TextDelta($chunk);
         }
     }
 

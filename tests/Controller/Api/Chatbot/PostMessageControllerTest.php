@@ -237,7 +237,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         self::assertSame('Premier message', $secondCallBag[0]->getContent()[0]->getText());
 
         self::assertSame(Role::Assistant, $secondCallBag[1]->getRole());
-        self::assertSame('Réponse 1', $secondCallBag[1]->getContent());
+        self::assertSame('Réponse 1', $secondCallBag[1]->asText());
 
         self::assertSame(Role::User, $secondCallBag[2]->getRole());
         self::assertSame('Deuxième message', $secondCallBag[2]->getContent()[0]->getText());
