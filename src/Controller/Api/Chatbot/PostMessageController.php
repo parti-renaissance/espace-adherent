@@ -44,7 +44,7 @@ class PostMessageController extends AbstractController
             $data = $request->toArray();
             $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';
             $threadId = isset($data['thread_id']) && \is_string($data['thread_id']) ? $data['thread_id'] : null;
-            $agentId = isset($data['agent_id']) && \is_string($data['agent_id']) ? $data['agent_id'] : 'gemini';
+            $agentId = isset($data['agent_id']) && \is_string($data['agent_id']) ? $data['agent_id'] : 'chatbot';
         } catch (\Throwable) {
             throw new BadRequestHttpException('JSON invalide');
         }

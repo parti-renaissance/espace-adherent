@@ -20,7 +20,7 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
     {
         // Thread 1: owned by canary tester (president-ad-1), 25 messages for pagination testing
         $adherent1 = $this->getReference('president-ad-1', Adherent::class);
-        $thread1 = new Thread($adherent1, 'gemini', 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
+        $thread1 = new Thread($adherent1, 'chatbot', 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
 
         $base = new \DateTime('2026-03-01 10:00:00');
         for ($i = 1; $i <= 25; ++$i) {
@@ -36,7 +36,7 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
 
         // Thread 2: owned by another adherent (adherent-5), 2 messages for security isolation testing
         $adherent2 = $this->getReference('adherent-5', Adherent::class);
-        $thread2 = new Thread($adherent2, 'gemini', 'Thread autre utilisateur', Uuid::fromString(self::THREAD_2_UUID));
+        $thread2 = new Thread($adherent2, 'chatbot', 'Thread autre utilisateur', Uuid::fromString(self::THREAD_2_UUID));
         $thread2->addUserMessage('Question privée', new \DateTime('2026-03-01 11:00:00'));
         $thread2->addAssistantMessage('Réponse privée', new \DateTime('2026-03-01 11:01:00'));
 

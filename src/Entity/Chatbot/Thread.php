@@ -41,7 +41,7 @@ class Thread
     public ?string $title = null;
 
     #[Groups(['chatbot:thread_read'])]
-    #[ORM\Column(length: 50, options: ['default' => 'gemini'])]
+    #[ORM\Column(length: 50)]
     public string $agent;
 
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
@@ -55,7 +55,7 @@ class Thread
     #[ORM\OrderBy(['date' => 'ASC'])]
     public Collection $messages;
 
-    public function __construct(Adherent $adherent, string $agent = 'gemini', ?string $title = null, ?Uuid $uuid = null)
+    public function __construct(Adherent $adherent, string $agent, ?string $title = null, ?Uuid $uuid = null)
     {
         $this->adherent = $adherent;
         $this->agent = $agent;

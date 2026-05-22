@@ -56,7 +56,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'CONTENT_TYPE' => 'application/json',
         ], json_encode([
             'message' => 'Hello',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
@@ -78,7 +78,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Hello',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -133,7 +133,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Bonjour le bot',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $response = $this->client->getResponse();
@@ -163,7 +163,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $accessToken = $this->authenticateWithChatbotAccess();
 
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        $thread = new Thread($adherent);
+        $thread = new Thread($adherent, 'chatbot');
         for ($i = 1; $i <= 9; ++$i) {
             $date = new \DateTime('-'.(20 - $i).' minutes');
             $thread->addUserMessage("User question $i", $date);
@@ -180,7 +180,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $thread->getUuid()->toRfc4122(),
             'message' => 'Final question',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $response = $this->client->getResponse();
@@ -208,7 +208,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Premier message',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $threadUuid = $this->client->getResponse()->headers->get('X-Chatbot-Thread-UUID');
@@ -222,7 +222,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $threadUuid,
             'message' => 'Deuxième message',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $response = $this->client->getResponse();
@@ -288,7 +288,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Message provoquant une erreur',
-            'agent_id' => 'gemini',
+            'agent_id' => 'chatbot',
         ]));
 
         $response = $this->client->getResponse();

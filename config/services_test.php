@@ -66,9 +66,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(Tests\App\Test\Chatbot\DummyAgent::class);
     $services->set(Tests\App\Test\Chatbot\DummyAntisecheAgent::class);
 
-    $services->set('ai.agent.gemini', Tests\App\Test\Chatbot\DummyAgent::class)
+    $services->set('ai.agent.chatbot', Tests\App\Test\Chatbot\DummyAgent::class)
         ->args([null, null])
-        ->tag('ai.agent', ['name' => 'gemini']);
+        ->tag('ai.agent', ['name' => 'chatbot']);
     $services->set('ai.agent.antiseche', Tests\App\Test\Chatbot\DummyAntisecheAgent::class)
         ->args([null, null])
         ->tag('ai.agent', ['name' => 'antiseche']);
