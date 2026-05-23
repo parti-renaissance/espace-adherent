@@ -1,42 +1,42 @@
 # Renaissance Newsletter API
 
-Endpoint public pour inscrire une adresse email à une newsletter Renaissance.
+API publique d'inscription à une newsletter Renaissance, en double opt-in.
 
-Le flux se déroule en deux temps :
+## Vue d'ensemble
 
-1. L'utilisateur soumet ses informations → `POST /api/newsletter` répond `201`.
-2. Il reçoit un email contenant un lien de confirmation. Le clic finalise l'inscription et le redirige vers une page de confirmation dédiée à ton site (configurée par l'équipe Renaissance lors de l'onboarding), ou vers une page générique par défaut.
+Le flux comporte deux étapes obligatoires :
 
-Sans le clic de confirmation, l'inscription reste en attente et **aucune** donnée n'est transmise en aval. C'est un double opt-in systématique.
+1. Le client (site web, application, intégration serveur-à-serveur) envoie `POST /api/newsletter` avec l'adresse email et les métadonnées d'inscription. Le serveur répond `201 Created` et envoie un email de confirmation à l'utilisateur.
+2. L'utilisateur clique sur le lien contenu dans l'email de confirmation. Ce clic finalise l'inscription côté serveur et redirige l'utilisateur vers une page de confirmation (dédiée au site appelant si configurée, sinon générique).
 
----
+Tant que la deuxième étape n'a pas eu lieu, **aucune donnée n'est transmise en aval** (segmentation, envois marketing, etc.). Une inscription non confirmée reste en attente côté serveur et finit par être purgée.
 
-## Prérequis d'intégration
+## Prérequis
 
-Avant de pouvoir utiliser l'endpoint, il faut obtenir un **code de source** auprès de l'équipe tech Renaissance. Ce code est un identifiant technique (ex. `site_eu_2026`) qui :
+L'endpoint exige un **code de source** propre à chaque intégrateur. Ce code est attribué par l'équipe tech Renaissance et identifie l'origine de chaque inscription. Il configure également la page de confirmation vers laquelle l'utilisateur est redirigé après le clic sur le lien email.
 
-- Trace l'origine de chaque inscription,
-- Définit la page de confirmation vers laquelle l'utilisateur sera redirigé après avoir cliqué sur le lien reçu par email.
+Pour obtenir un code de source, transmettre à l'équipe tech :
 
-Fournis à l'équipe tech :
-- Un nom lisible pour ton site,
-- L'URL HTTPS de la page de confirmation (si tu en as une dédiée),
-- Une adresse de contact technique.
+- un nom lisible pour l'intégration (ex. `attalpresident.fr — campagne 2027`) ;
+- l'URL HTTPS de la page de confirmation dédiée, si elle existe — sinon la page générique sera utilisée ;
+- une adresse de contact technique.
 
-Tu recevras en retour ton `code`. Tant que ce code n'a pas été provisionné, l'endpoint refusera tes requêtes avec un `400`.
-
----
+Tant que le code n'est pas provisionné côté serveur, l'endpoint rejette toute requête avec ce code par un `400 Bad Request`.
 
 ## `POST /api/newsletter`
 
 ### Requête
 
-- **Méthode** : `POST`
-- **URL** : `https://<host>/api/newsletter`
-- **Auth** : aucune
-- **Content-Type** : `application/json`
+| Élément        | Valeur               |
+| -------------- | -------------------- |
+| Méthode        | `POST`               |
+| URL            | `https://<host>/api/newsletter` |
+| Authentification | aucune             |
+| `Content-Type` | `application/json`   |
 
-> ⚠ Les clés du body sont en **snake_case**. Envoyer `firstName` au lieu de `first_name` ne produira pas d'erreur mais le champ sera ignoré.
+Les clés du body sont en **`snake_case`**. Toute clé non listée dans le tableau ci-dessous est silencieusement ignorée à la désérialisation — par exemple `firstName` (camelCase), `id`, `created_at` sont reçus sans erreur mais ne sont pas pris en compte.
+
+#### Exemple de body valide
 
 ```json
 {
@@ -50,24 +50,39 @@ Tu recevras en retour ton `code`. Tant que ce code n'a pas été provisionné, l
 }
 ```
 
-| Champ | Type | Requis | Description |
-|---|---|---|---|
-| `first_name` | string | non | Prénom |
-| `last_name` | string | non | Nom |
-| `postal_code` | string | **oui** | Code postal |
-| `email` | string | **oui** | Adresse email valide (format RFC) |
-| `source` | string | **oui** | Code de source fourni par l'équipe tech (voir prérequis) |
-| `cgu_accepted` | bool | **oui** | Doit valoir `true` — l'utilisateur doit avoir accepté les CGU |
-| `recaptcha` | string | **oui** | Token de solution Friendly Captcha (voir section dédiée) |
+#### Exemple de body minimal (champs requis uniquement)
+
+```json
+{
+  "email": "jane.doe@example.com",
+  "source": "ton_code_de_source",
+  "cgu_accepted": true,
+  "recaptcha": "<friendly-captcha-solution-token>"
+}
+```
+
+#### Tableau des champs
+
+| Champ          | Type     | Requis  | Validation serveur                                                                                                            | Comportement si absent ou `null`                              |
+| -------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `first_name`   | `string` | non     | Aucune.                                                                                                                       | Le prénom est laissé vide côté serveur.                       |
+| `last_name`    | `string` | non     | Aucune.                                                                                                                       | Le nom est laissé vide côté serveur.                          |
+| `postal_code`  | `string` | non     | **Aucune validation de format.** Le champ accepte n'importe quelle chaîne et est stocké tel quel (utile pour les inscriptions hors France où le format varie). Voir la note ci-dessous pour les recommandations côté intégrateur. | Le code postal est laissé vide côté serveur.                  |
+| `email`        | `string` | **oui** | Format email valide (validation interne stricte, sans vérification DNS). Doit être unique parmi les inscriptions **déjà confirmées**. | `400 Bad Request` (`violations[].propertyPath = "email"`).    |
+| `source`       | `string` | **oui** | Doit être un code de source provisionné et actif. Maximum 100 caractères.                                                     | `400 Bad Request` (`violations[].propertyPath = "source"`).   |
+| `cgu_accepted` | `bool`   | **oui** | Doit valoir exactement `true`. Toute autre valeur (`false`, `null`, `1`, `"true"`, etc.) est rejetée.                          | `400 Bad Request` (`violations[].propertyPath = "cguAccepted"`). |
+| `recaptcha`    | `string` | **oui** | Token Friendly Captcha valide et non consommé, vérifié côté serveur contre l'API Friendly Captcha. Un token absent, vide, invalide ou déjà consommé est rejeté. | `400 Bad Request` (`violations[].propertyPath = "recaptcha"`). |
+
+> **Note sur `postal_code`** : aucune validation de format n'est appliquée côté serveur, intentionnellement, afin de supporter les codes postaux internationaux (US `90210-1234`, UK `SW1A 1AA`, NL `1234 AB`, etc.) ainsi que l'absence totale de code postal pour les inscriptions hors France. L'intégrateur reste libre de valider côté client si la qualité des données est critique pour son cas d'usage (segmentation géographique fine, par exemple).
 
 ### Réponses
 
-| Code | Corps | Signification |
-|---|---|---|
-| `201 Created` | `"OK"` | L'inscription est enregistrée et un email de confirmation vient d'être envoyé à l'adresse fournie. |
-| `400 Bad Request` | JSON avec un tableau `violations[]` (voir format ci-dessous) | Body invalide, captcha invalide ou expiré, ou combinaison champs/source non acceptée. |
+| Code              | Corps                                                       | Signification                                                                                                                                                                |
+| ----------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201 Created`     | `"OK"`                                                      | L'inscription est enregistrée côté serveur et un email de confirmation a été envoyé. L'inscription reste **en attente** tant que l'utilisateur n'a pas cliqué sur le lien.   |
+| `400 Bad Request` | JSON avec un tableau `violations[]` (format ci-dessous).    | Body invalide, captcha invalide ou expiré, email déjà inscrit et confirmé, ou source inconnue/désactivée.                                                                    |
 
-Format du corps pour un `400` :
+#### Format du corps `400`
 
 ```json
 {
@@ -80,19 +95,28 @@ Format du corps pour un `400` :
 }
 ```
 
-Le champ `propertyPath` indique le champ en faute. Plusieurs violations peuvent être retournées simultanément.
+Le champ `propertyPath` désigne le champ en faute, en **camelCase** (ex. `email`, `postalCode`, `cguAccepted`, `recaptcha`, `source`). Plusieurs violations peuvent être retournées simultanément.
 
-### Recommandations UX côté client
+#### Cas particuliers de `400`
 
-- **Ne jamais révéler à l'utilisateur si son adresse est déjà inscrite.** En cas de `400`, affiche un message neutre du type « Si cette adresse est valide, tu vas recevoir un email de confirmation dans quelques instants. » — ça préserve la vie privée et couvre le cas du doublon sans le leak.
-- Côté `201`, le message doit inviter l'utilisateur à vérifier sa boîte mail (y compris les spams) pour finaliser l'inscription.
-- Ne pas retenter automatiquement en cas de `400`. Présenter l'erreur à l'utilisateur ou log silencieux côté intégrateur.
+| Cas                                              | Détail                                                                                                                                                                                                          |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Email déjà inscrit **et confirmé**                | La requête est rejetée avec une violation générique sur `email` (pas de message « déjà inscrit » dans la réponse, par doctrine de vie privée — voir les recommandations UX ci-dessous).                          |
+| Email déjà inscrit **mais non confirmé**          | La requête répond `201`. La source est mise à jour si elle a changé, et un nouvel email de confirmation est envoyé. Permet de relancer une inscription en attente, par exemple depuis un autre site Renaissance.|
+| Source inconnue                                  | Violation sur `source`.                                                                                                                                                                                         |
+| Source provisionnée mais désactivée par l'équipe tech | Violation sur `source`.                                                                                                                                                                                         |
+| `recaptcha` consommé (déjà soumis une fois)      | Violation sur `recaptcha`. Un token Friendly Captcha est à usage unique — chaque nouvelle requête doit fournir un nouveau token.                                                                                |
 
----
+## Recommandations UX côté client
+
+- **Ne jamais révéler à l'utilisateur si son adresse est déjà inscrite.** Sur un `400`, afficher un message neutre du type « Si cette adresse est valide, un email de confirmation vous sera envoyé dans quelques instants. » Ce phrasing couvre à la fois le cas du doublon et le cas de l'erreur de saisie sans leak de présence en base.
+- Sur un `201`, inviter l'utilisateur à vérifier sa boîte mail **y compris le dossier spam/indésirables** pour cliquer sur le lien de confirmation.
+- Ne **pas** retenter automatiquement en cas de `400` : présenter une erreur générique ou log silencieux côté intégrateur. Un retry automatique risque d'épuiser des tokens Friendly Captcha valides et de polluer les métriques.
+- Pour les utilisateurs sans code postal français (Français de l'étranger, intégrations internationales), laisser le champ vide ou envoyer leur code postal local tel quel — le serveur l'accepte sans validation.
 
 ## Friendly Captcha
 
-L'endpoint exige un token de solution Friendly Captcha dans le champ `recaptcha`. C'est la protection anti-bot de l'endpoint.
+L'endpoint exige un token Friendly Captcha dans le champ `recaptcha`. C'est la protection anti-bot de l'endpoint — sans token valide, la requête est rejetée.
 
 ### Site key
 
@@ -100,20 +124,18 @@ L'endpoint exige un token de solution Friendly Captcha dans le champ `recaptcha`
 FCMUUBPHUHST12CT
 ```
 
-Cette clé peut être utilisée depuis n'importe quel contexte client (site web, SPA, application mobile, intégration serveur-à-serveur).
+Cette clé est publique et peut être utilisée depuis n'importe quel contexte client (site web, SPA, application mobile, intégration serveur-à-serveur).
 
-### Flux côté client (browser / SPA)
+### Flux côté client (browser, SPA)
 
-1. Intégrer le widget Friendly Captcha dans ta page avec `data-sitekey="FCMUUBPHUHST12CT"`. Voir la [documentation officielle Friendly Captcha](https://docs.friendlycaptcha.com/).
-2. Laisser le widget résoudre le challenge (automatique par défaut).
-3. Récupérer la valeur de l'input `frc-captcha-solution` généré par le widget.
-4. L'envoyer dans le champ `recaptcha` du body JSON.
+1. Intégrer le widget Friendly Captcha dans la page avec `data-sitekey="FCMUUBPHUHST12CT"`. Voir la [documentation officielle Friendly Captcha](https://docs.friendlycaptcha.com/).
+2. Laisser le widget résoudre le challenge proof-of-work (automatique par défaut, sans interaction utilisateur).
+3. Récupérer la valeur de l'input `frc-captcha-solution` généré par le widget une fois le challenge résolu.
+4. Envoyer cette valeur dans le champ `recaptcha` du body JSON de la requête.
 
-### Flux côté serveur / intégration programmatique
+### Flux serveur ou intégration programmatique
 
 Utiliser le [SDK Friendly Captcha](https://docs.friendlycaptcha.com/) approprié pour résoudre un challenge côté serveur, puis transmettre le token dans la requête.
-
----
 
 ## Exemple cURL
 
@@ -131,18 +153,24 @@ curl -X POST https://<host>/api/newsletter \
   }'
 ```
 
----
-
 ## Questions fréquentes
 
-**Est-ce que je peux tester avec un email que j'ai déjà inscrit ?**
-Oui, mais la requête sera rejetée avec `400`. Utilise une adresse différente pour chaque test. Pour des tests répétés, pense à utiliser des alias (`prefix+test1@example.com`, `prefix+test2@example.com`, etc.).
+### Est-ce que je peux tester avec un email que j'ai déjà inscrit ?
 
-**Combien de temps l'utilisateur a-t-il pour confirmer son inscription ?**
-Il n'y a pas d'expiration stricte côté client, mais les inscriptions non confirmées sont purgées périodiquement côté serveur. Demande à l'utilisateur de confirmer dans la foulée de l'inscription pour éviter toute ambiguïté.
+Oui, mais la requête sera rejetée avec `400` si cet email est déjà confirmé. Pour des tests répétés, utiliser des alias (`prefix+test1@example.com`, `prefix+test2@example.com`, etc.). La plupart des fournisseurs mail traitent ces alias comme une seule boîte de réception.
 
-**Est-ce que je reçois un callback quand l'utilisateur a cliqué sur le lien de confirmation ?**
-Non. Si tu as besoin de savoir qu'un utilisateur a confirmé, le plus simple est de passer un paramètre de tracking dans l'URL de confirmation que tu as fournie à l'équipe tech lors de l'onboarding, et de le récupérer quand l'utilisateur atterrit sur ta page.
+### Combien de temps l'utilisateur a-t-il pour confirmer son inscription ?
 
-**Comment désactiver temporairement un code de source ?**
-Contacter l'équipe tech Renaissance. La désactivation est immédiate et n'empêche pas les utilisateurs déjà inscrits de confirmer leur email, mais bloque les nouvelles inscriptions avec ce code.
+Il n'y a pas d'expiration stricte côté client, mais les inscriptions non confirmées sont purgées périodiquement côté serveur. Inviter l'utilisateur à confirmer dans la foulée de l'inscription pour éviter toute ambiguïté.
+
+### Est-ce que je reçois un callback quand l'utilisateur a cliqué sur le lien de confirmation ?
+
+Non, il n'y a pas de webhook de confirmation. Pour mesurer le taux de confirmation, passer un paramètre de tracking dans l'URL de la page de confirmation fournie lors de l'onboarding (par exemple `?utm_source=newsletter_confirmation`), et le récupérer côté frontend quand l'utilisateur atterrit sur cette page.
+
+### Comment désactiver temporairement un code de source ?
+
+Contacter l'équipe tech Renaissance. La désactivation est immédiate : elle bloque toute nouvelle inscription utilisant ce code mais n'empêche pas les utilisateurs déjà inscrits de confirmer un lien email reçu avant la désactivation.
+
+### Pourquoi `postal_code` n'est pas validé côté serveur ?
+
+Par choix : valider strictement le format français exclut de facto les Français de l'étranger ainsi que toute intégration internationale. La validation est laissée à l'intégrateur, qui connaît son audience et peut décider du compromis acceptable entre permissivité (acquisition maximale) et qualité des données (segmentation géographique). Si Renaissance décide à l'avenir de resserrer la validation côté serveur, ce sera signalé via une PR sur ce document.
